@@ -274,8 +274,8 @@ public class DebugWindow : EditorWindow
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("TriggerInitialize", GUILayout.Width(Screen.width * Constants.percent33)))
-            OnResetClick();
+        if (GUILayout.Button("Reload", GUILayout.Width(Screen.width * Constants.percent33)))
+            OnReloadStageClick();
 
         if (GUILayout.Button("< Previous", GUILayout.Width(Screen.width * Constants.percent33)))
             OnPreviousStageClick();
@@ -501,7 +501,7 @@ public class DebugWindow : EditorWindow
 
 
     //Blank click events for the buttons
-    private void OnResetClick()
+    private void OnReloadStageClick()
     {
         stageManager.Reload();
     }
