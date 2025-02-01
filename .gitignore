@@ -78,3 +78,9 @@ crashlytics-build.properties
 # Plastic SCM
 .plastic/
 .plastic*
+
+# Ignore Plastic SCM metadata
+.plastic/
+.plastic/cachedTrees
+plastic.wktree
+hidden_changes.conf
