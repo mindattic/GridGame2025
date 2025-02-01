@@ -498,8 +498,6 @@ public class DebugWindow : EditorWindow
         }
     }
 
-
-
     //Blank click events for the buttons
     private void OnReloadStageClick()
     {

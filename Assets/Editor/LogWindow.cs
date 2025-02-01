@@ -11,8 +11,8 @@ public class LogWindow : EditorWindow
     private bool showError = true;
     private bool showException = true;
     private bool showTimestamps = false;
-    private int selectedRadioOption = 0; //0 = Show Timestamps, 1 = TriggerInitialize Timestamps
-    private string[] radioOptions = new string[] { "Show Timestamps", "TriggerInitialize Timestamps" };
+    private int selectedRadioOption = 0; //0 = Show Timestamps, 1 = Hide Timestamps
+    private string[] radioOptions = new string[] { "Show Timestamps", "Hide Timestamps" };
 
     [MenuItem("Window/Custom Log")]
     public static void ShowWindow()
@@ -86,9 +86,9 @@ public class LogWindow : EditorWindow
 
         //1. Buttons at the top
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("TriggerInitialize Log"))
+        if (GUILayout.Button("Hide Log"))
         {
-            logText = ""; //TriggerInitialize the log content
+            logText = ""; //Hide the log content
         }
 
         if (GUILayout.Button("Export Log"))

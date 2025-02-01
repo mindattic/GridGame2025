@@ -64,7 +64,7 @@ public class TurnManager : MonoBehaviour
         attackLineManager.Clear();
         combatManager.Clear();
 
-        //TriggerInitialize actor sorting
+        //Reset actor sorting
         actors.ForEach(x => x.sortingOrder = SortingOrder.Default);
 
         if (isPlayerTurn)
