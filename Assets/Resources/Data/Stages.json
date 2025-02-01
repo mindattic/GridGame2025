@@ -1,0 +1,221 @@
+﻿{
+  "Items": [
+    {
+      "Name": "Stage1",
+      "Description": "Intro Battle",
+      "CompletionCondition": "DefeatAllEnemies",
+      "CompletionValue": 0,
+      "Actors": [
+        {
+          "Character": "Paladin",
+          "Team": "Player",
+          "Location": "(2, 7)"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy",
+          "Location": "(5, 6)"
+        },
+        {
+          "Character": "Barbarian",
+          "Team": "Player",
+          "Location": "(4, 5)"
+        }
+      ],
+      "DottedLines": [
+        {
+          "Segment": "Vertical",
+          "Location": "(2, 3)"
+        },
+        {
+          "Segment": "Vertical",
+          "Location": "(2, 4)"
+        },
+        {
+          "Segment": "Vertical",
+          "Location": "(2, 5)"
+        },
+        {
+          "Segment": "Vertical",
+          "Location": "(2, 6)"
+        },
+        {
+          "Segment": "TurnBottomRight",
+          "Location": "(2, 2)"
+        },
+        {
+          "Segment": "Horizontal",
+          "Location": "(3, 2)"
+        },
+        {
+          "Segment": "Horizontal",
+          "Location": "(4, 2)"
+        },
+        {
+          "Segment": "TurnBottomLeft",
+          "Location": "(5, 2)"
+        },
+        {
+          "Segment": "Vertical",
+          "Location": "(5, 3)"
+        },
+        {
+          "Segment": "Vertical",
+          "Location": "(5, 4)"
+        },
+        {
+          "Segment": "Vertical",
+          "Location": "(5, 5)"
+        },
+        {
+          "Segment": "Vertical",
+          "Location": "(5, 6)"
+        },
+        {
+          "Segment": "TurnTopRight",
+          "Location": "(5, 7)"
+        },
+        {
+          "Segment": "TurnTopLeft",
+          "Location": "(6, 7)"
+        },
+        {
+          "Segment": "Vertical",
+          "Location": "(6, 6)"
+        },
+        {
+          "Segment": "ArrowUp",
+          "Location": "(6, 5)"
+        }
+      ]
+    },
+    {
+      "Name": "Stage 2",
+      "Description": "DefeatAllEnemies",
+      "CompletionCondition": "DefeatAllEnemies",
+      "CompletionValue": 0,
+      "Actors": [
+        {
+          "Character": "Paladin",
+          "Team": "Player"
+        },
+        {
+          "Character": "Barbarian",
+          "Team": "Player"
+        },
+        {
+          "Character": "Cleric",
+          "Team": "Player"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy"
+        }
+      ],
+      "DottedLines": []
+    },
+    {
+      "Name": "Stage 3",
+      "Description": "DefeatAllEnemies",
+      "CompletionCondition": "DefeatAllEnemies",
+      "CompletionValue": 0,
+      "Actors": [
+        {
+          "Character": "Paladin",
+          "Team": "Player"
+        },
+        {
+          "Character": "Barbarian",
+          "Team": "Player"
+        },
+        {
+          "Character": "Cleric",
+          "Team": "Player"
+        },
+        {
+          "Character": "Ninja",
+          "Team": "Player"
+        },
+        {
+          "Character": "Scorpion",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Bat",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Bat",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Bat",
+          "Team": "Enemy"
+        }
+      ],
+      "DottedLines": []
+    },
+
+    {
+      "Name": "Stage 4",
+      "Description": "DefeatAllEnemies",
+      "CompletionCondition": "DefeatAllEnemies",
+      "CompletionValue": 0,
+      "Actors": [
+        {
+          "Character": "Paladin",
+          "Team": "Player"
+        },
+        {
+          "Character": "Barbarian",
+          "Team": "Player"
+        },
+        {
+          "Character": "Cleric",
+          "Team": "Player"
+        },
+        {
+          "Character": "Ninja",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Yeti",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Bat",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy"
+        },
+        {
+          "Character": "Slime",
+          "Team": "Enemy"
+        }
+      ],
+      "DottedLines": []
+    }
+  ]
+}

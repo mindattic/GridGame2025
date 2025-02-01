@@ -1,0 +1,236 @@
+﻿{
+  "Items": [
+    {
+      "Character": "Barbarian",
+      "Description": "A warrior driven by rage.",
+      "Stats": {
+        "Level": 1,
+        "PreviousHP": 40,
+        "HP": 40,
+        "MaxHP": 40,
+        "PreviousAP": 0,
+        "AP": 0,
+        "MaxAP": 100,
+        "Strength": 9,
+        "Vitality": 6,
+        "Agility": 4,
+        "Speed": 5,
+        "Luck": 5
+      },
+      "ThumbnailSettings": {
+        "OffsetX": -60,
+        "OffsetY": -80,
+        "Width": 256,
+        "Height": 256
+      },
+      "Details": {
+        "Description": "A warrior driven by rage. ",
+        "Card": "Gains <color=#FF0000>[Rage]</color> when attacking or being attacked. Will eventually go <color=#FF0000>[Berserk]</color> and attack multiple nearby enemies.",
+        "Lore": [ "Likes jerky", "Hates Reptiles" ]
+      }
+    },
+    {
+      "Character": "Bat",
+      "Description": "A flying menace.",
+      "Stats": {
+        "Level": 1,
+        "PreviousHP": 5,
+        "HP": 5,
+        "MaxHP": 5,
+        "PreviousAP": 0,
+        "AP": 0,
+        "MaxAP": 100,
+        "Strength": 2,
+        "Vitality": 4,
+        "Agility": 1,
+        "Speed": 1,
+        "Luck": 6
+      },
+      "ThumbnailSettings": {
+        "OffsetX": 0,
+        "OffsetY": 0,
+        "Width": 1024,
+        "Height": 1024
+      },
+      "Details": {
+        "Description": "A warrior driven by rage.",
+        "Card": "Intermittently goes <color=#FF0000>[Berserk]</color> attacking multiple nearby enemies.",
+        "Lore": [ "Likes jerky", "Hates Reptiles" ]
+      }
+    },
+    {
+      "Character": "Cleric",
+      "Description": "A strict adherent to the church.",
+      "Stats": {
+        "Level": 1,
+        "PreviousHP": 30,
+        "HP": 30,
+        "MaxHP": 30,
+        "PreviousAP": 0,
+        "AP": 0,
+        "MaxAP": 100,
+        "Strength": 2,
+        "Vitality": 5,
+        "Agility": 3,
+        "Speed": 3,
+        "Luck": 9
+      },
+      "ThumbnailSettings": {
+        "OffsetX": 0,
+        "OffsetY": -50,
+        "Width": 326,
+        "Height": 316
+      },
+      "Details": {
+        "Description": "An adherent to the Lightbearer Orthodoxy.",
+        "Card": "Casts <color=#00FF00>[Cure]</color> when supporting an attacker.",
+        "Lore": [ "Likes jerky", "Hates Reptiles" ]
+      }
+    },
+    {
+      "Character": "Ninja",
+      "Description": "A stealthy assassin.",
+      "Stats": {
+        "Level": 1,
+        "PreviousHP": 35,
+        "HP": 35,
+        "MaxHP": 35,
+        "PreviousAP": 0,
+        "AP": 0,
+        "MaxAP": 100,
+        "Strength": 4,
+        "Vitality": 4,
+        "Agility": 10,
+        "Speed": 10,
+        "Luck": 5
+      },
+      "ThumbnailSettings": {
+        "OffsetX": 0,
+        "OffsetY": 0,
+        "Width": 196,
+        "Height": 196
+      },
+      "Details": {
+        "Description": "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
+        "Card": "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy attacks",
+        "Lore": [ "Likes jerky", "Hates Reptiles" ]
+      }
+    },
+    {
+      "Character": "Paladin",
+      "Description": "A holy knight.",
+      "Stats": {
+        "Level": 1,
+        "PreviousHP": 50,
+        "HP": 50,
+        "MaxHP": 50,
+        "PreviousAP": 0,
+        "AP": 0,
+        "MaxAP": 100,
+        "Strength": 6,
+        "Vitality": 8,
+        "Agility": 3,
+        "Speed": 3,
+        "Luck": 6
+      },
+      "ThumbnailSettings": {
+        "OffsetX": 20,
+        "OffsetY": -30,
+        "Width": 196,
+        "Height": 196
+      },
+      "Details": {
+        "Description": "A holy knight honor bound to defend the Lightbearer Orthodoxy.",
+        "Card": "Intermittently uses <color=#FF0000>[Taunt]</color> to force enemies to focus their attacks.",
+        "Lore": [ "Likes jerky", "Hates Reptiles" ]
+      }
+    },
+    {
+      "Character": "Scorpion",
+      "Description": "A poisonous insectile predator.",
+      "Stats": {
+        "Level": 2,
+        "PreviousHP": 100,
+        "HP": 100,
+        "MaxHP": 100,
+        "PreviousAP": 0,
+        "AP": 0,
+        "MaxAP": 100,
+        "Strength": 4,
+        "Vitality": 2,
+        "Agility": 1,
+        "Speed": 4,
+        "Luck": 2
+      },
+      "ThumbnailSettings": {
+        "OffsetX": -125,
+        "OffsetY": -300,
+        "Width": 256,
+        "Height": 256
+      },
+      "Details": {
+        "Description": "A poisonous insectile predator.",
+        "Card": "Attacks have chance of inflicting <color=#00FF00>[Poison]</color>",
+        "Lore": [ "Likes jerky", "Hates Reptiles" ]
+      }
+    },
+    {
+      "Character": "Slime",
+      "Description": "A weak and squishy creature.",
+      "Stats": {
+        "Level": 1,
+        "PreviousHP": 8,
+        "HP": 8,
+        "MaxHP": 8,
+        "PreviousAP": 0,
+        "AP": 0,
+        "MaxAP": 100,
+        "Strength": 1,
+        "Vitality": 1,
+        "Agility": 1,
+        "Speed": 1,
+        "Luck": 1
+      },
+      "ThumbnailSettings": {
+        "OffsetX": -150,
+        "OffsetY": -300,
+        "Width": 512,
+        "Height": 512
+      },
+      "Details": {
+        "Description": "A weak and squishy creature.",
+        "Card": "The most common denisen of the dark; neither good nor evil a monster still has to eat.",
+        "Lore": [ "Likes jerky", "Hates Reptiles" ]
+      }
+    },
+    {
+      "Character": "Yeti",
+      "Description": "An large humanoid under dewller",
+      "Stats": {
+        "Level": 5,
+        "PreviousHP": 50,
+        "HP": 50,
+        "MaxHP": 50,
+        "PreviousAP": 0,
+        "AP": 0,
+        "MaxAP": 100,
+        "Strength": 4,
+        "Vitality": 10,
+        "Agility": 1,
+        "Speed": 1,
+        "Luck": 5
+      },
+      "ThumbnailSettings": {
+        "OffsetX": -150,
+        "OffsetY": -100,
+        "Width": 256,
+        "Height": 256
+      },
+      "Details": {
+        "Description": "An large humanoid under dewller",
+        "Card": "Intermittently goes <color=#FF0000>[Berserk]</color> attacking multiple nearby enemies.",
+        "Lore": [ "Likes jerky", "Hates Reptiles" ]
+      }
+    }
+  ]
+}

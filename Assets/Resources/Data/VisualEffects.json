@@ -1,0 +1,274 @@
+﻿{
+  "Items": [
+    {
+      "Name": "AcidSplash",
+      "RelativeOffset": "(0, 0.01, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "AirSlash",
+      "RelativeOffset": "(0.01, -0.15, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.15, 0.15, 0.15)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "BloodClaw",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.15, 0.15, 0)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "BlueSlash1",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0.12",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "BlueSlash2",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "BlueSlash3",
+      "RelativeOffset": "(0.02, -0.15, 0)",
+      "AngularRotation": "(30, 30, 0)",
+      "RelativeScale": "(0.08, 0.08, 0)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "BlueSword",
+      "RelativeOffset": "(0, 0.05, 0)",
+      "AngularRotation": "(30, 30, 0)",
+      "RelativeScale": "(0.12, 0.08, 0)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "BlueSword4X",
+      "RelativeOffset": "(-0.05, -0.1, 0)",
+      "AngularRotation": "(30, 30, 0)",
+      "RelativeScale": "(0.08, 0.08, 0)",
+      "Delay": "0",
+      "Duration": "3",
+      "IsLoop": false
+    },
+    {
+      "Name": "BlueYellowSword",
+      "RelativeOffset": "(0.03, 0.01, 0)",
+      "AngularRotation": "(60, 0, 0)",
+      "RelativeScale": "(0.07, 0.07, 0.07)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "BlueYellowSword3X",
+      "RelativeOffset": "(0.02, -0.05, 0)",
+      "AngularRotation": "(60, 0, 0)",
+      "RelativeScale": "(0.07, 0.07, 0.07)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "BuffLife",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.16, 0.16, 0)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "DoubleClaw",
+      "RelativeOffset": "(-0.03, -0.1, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.12, 0.12, 0)",
+      "Delay": "0.22",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "FireRain",
+      "RelativeOffset": "(0.03, -0.05, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0)",
+      "Delay": "0",
+      "Duration": "4",
+      "IsLoop": false
+    },
+    {
+      "Name": "GodRays",
+      "RelativeOffset": "(0, -0.25, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.07, 0.07, 0)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "GoldBuff",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.08, 0.08, 0.08)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "GreenBuff",
+      "RelativeOffset": "(0.02, -0.25, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.08, 0.08, 0.08)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "HexShield",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.16, 0.16, 0.16)",
+      "Delay": "0",
+      "Duration": "6",
+      "IsLoop": false
+    },
+    {
+      "Name": "LevelUp",
+      "RelativeOffset": "(0, -0.15, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.3, 0.3, 0)",
+      "Delay": "0",
+      "Duration": "3",
+      "IsLoop": false
+    },
+    {
+      "Name": "LightningExplosion",
+      "RelativeOffset": "(0, -0.1, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0)",
+      "Delay": "0",
+      "Duration": "3",
+      "IsLoop": false
+    },
+    {
+      "Name": "LightningStrike",
+      "RelativeOffset": "(-0.07, 0.1, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.05, 0.05, 0)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "MoonFeather",
+      "RelativeOffset": "(0, -0.02, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(4, 4, 0)",
+      "Delay": "0",
+      "Duration": "3",
+      "IsLoop": false
+    },
+    {
+      "Name": "OrangeSlash",
+      "RelativeOffset": "(-0.12, 0.01, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.03, 0.03, 0.03)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "PinkSpark",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.04, 0.04, 0.04)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "PuffyExplosion",
+      "RelativeOffset": "(-0.02, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.2, 0.2, 0)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "RayBlast",
+      "RelativeOffset": "(0.02, -0.02, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0)",
+      "Delay": "0",
+      "Duration": "3",
+      "IsLoop": false
+    },
+    {
+      "Name": "RedSlash2X",
+      "RelativeOffset": "(0.05, -0.07, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.08, 0.08, 0)",
+      "Delay": "0",
+      "Duration": "1",
+      "IsLoop": false
+    },
+    {
+      "Name": "RedSword",
+      "RelativeOffset": "(-0.06, 0.05, 0)",
+      "AngularRotation": "(0, 0, 142)",
+      "RelativeScale": "(0.2, 0.2, 0.2)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "RotaryKnife",
+      "RelativeOffset": "(0.03, -0.05, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.25, 0.25, 0)",
+      "Delay": "0",
+      "Duration": "1",
+      "IsLoop": false
+    },
+    {
+      "Name": "ToxicCloud",
+      "RelativeOffset": "(-0.02, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.15, 0.15, 0.15)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    },
+    {
+      "Name": "YellowHit",
+      "RelativeOffset": "(-0.02, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.2, 0.2, 0)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": false
+    }
+  ]
+}

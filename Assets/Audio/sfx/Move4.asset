@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eeb7b50cc639bac47a42e1cb580f7074, type: 3}
+  m_Name: Move4
+  m_EditorClassIdentifier: 
+  id: Move4
+  audio: {fileID: 8300000, guid: 70ce488998a1eec47b5865002f84dccc, type: 3}

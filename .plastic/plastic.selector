@@ -1,0 +1,4 @@
+repository "GridGame2025@MindAttic@cloud"
+  path "/"
+    br "/main"
+    co "/main"

@@ -1,0 +1,16 @@
+{
+    "Parameters": [
+        {
+            "Key": "Role",
+            "Value": "Tank"
+        },
+        {
+            "Key": "Description",
+            "Value": "A brave warrior with high defense."
+        },
+        {
+            "Key": "LevelRequirement",
+            "Value": "10"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4301714c932594592b97961ca2a1c910
+timeCreated: 1454699969
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 40375
+  packageName: SQLite Database
+  packageVersion: 1.7
+  assetPath: Assets/StreamingAssets/MyDatabase.db
+  uploadId: 329475
