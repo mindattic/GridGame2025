@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SupportLineInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected float tileSize => GameManager.instance.tileSize;
     protected BoardInstance board => GameManager.instance.board;
     public Transform parent
@@ -12,7 +12,6 @@ public class SupportLineInstance : MonoBehaviour
         get => gameObject.transform.parent;
         set => gameObject.transform.SetParent(value, true);
     }
-    #endregion
 
     //Fields
     public float alpha = 0;

@@ -3,25 +3,11 @@ using UnityEngine;
 
 public class FootstepInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
-    #endregion
 
-    //Fields
-    float Duration;
-
-    //Method which is used for initialization tasks that need to occur before the game starts 
-    private void Awake()
-    {
-        transform.localScale = tileScale / 2;
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        Duration = Interval.OneSecond * 10;
-
-    }
-
-    #region Components
-
+    //Inernal properties
     public string Name
     {
         get => name;
@@ -46,7 +32,7 @@ public class FootstepInstance : MonoBehaviour
         set => gameObject.transform.rotation = value;
     }
 
-    SpriteRenderer spriteRenderer;
+
 
 
     public Sprite sprite
@@ -54,10 +40,23 @@ public class FootstepInstance : MonoBehaviour
         get => spriteRenderer.sprite;
         set => spriteRenderer.sprite = value;
     }
-    #endregion
 
 
-    public void Spawn(Vector3 position, Quaternion rotation, bool isRightFoot)
+    //Fields
+    float Duration;
+    SpriteRenderer spriteRenderer;
+
+
+    //Method which is used for initialization tasks that need to occur before the game starts 
+    private void Awake()
+    {
+        transform.localScale = tileScale / 2;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        Duration = Interval.OneSecond * 10;
+
+    }
+
+     public void Spawn(Vector3 position, Quaternion rotation, bool isRightFoot)
     {
         this.Position = position;
         this.Rotation = rotation;

@@ -6,10 +6,9 @@ using UnityEngine;
 
 public class GhostManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected float tileSize => GameManager.instance.tileSize;
     protected BoardInstance board => GameManager.instance.board;
-    #endregion
 
     //Fields
     [SerializeField] public GameObject ghostPrefab;

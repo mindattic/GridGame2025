@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PortraitInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
 
     public Transform parent
     {
@@ -39,7 +39,6 @@ public class PortraitInstance : MonoBehaviour
             spriteRenderer.sortingOrder = value;
         }
     }
-    #endregion
 
     //Fields
     //[SerializeField] public ActorInstance actor;

@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class ActorHealthBar
 {
-    #region Properties
+    //External properties
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
     protected ActorRenderers render => instance.render;
     protected ActorStats stats => instance.stats;
-    #endregion
-
+  
+    //Fields
     private ActorInstance instance;
     public bool isDraining;
 

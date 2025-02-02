@@ -6,25 +6,12 @@ namespace Game.Instances
 {
     public class AttackLineInstance : MonoBehaviour
     {
-        #region Properties
+        //External properties
         protected float tileSize => GameManager.instance.tileSize;
         protected BoardInstance board => GameManager.instance.board;
-        public Transform parent
-        {
-            get => gameObject.transform.parent;
-            set => gameObject.transform.SetParent(value, true);
-        }
-        public Vector3 position
-        {
-            get => gameObject.transform.position;
-            set => gameObject.transform.position = value;
-        }
-        public int sortingOrder
-        {
-            get => lineRenderer.sortingOrder;
-            set => lineRenderer.sortingOrder = value;
-        }
-        #endregion
+        public Transform parent { get => gameObject.transform.parent; set => gameObject.transform.SetParent(value, true); }
+        public Vector3 position { get => gameObject.transform.position; set => gameObject.transform.position = value; }
+        public int sortingOrder { get => lineRenderer.sortingOrder; set => lineRenderer.sortingOrder = value; }
 
         //Fields
         public float alpha;

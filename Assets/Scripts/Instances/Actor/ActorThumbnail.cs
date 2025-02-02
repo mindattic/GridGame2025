@@ -1,17 +1,16 @@
 ﻿using Assets.Scripts.Models;
-using Game.Manager;
 using UnityEngine;
 
 public class ActorThumbnail
 {
-    #region Properties
+    //External properties
     protected DataManager dataManager => GameManager.instance.dataManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
     protected ActorRenderers render => instance.render;
     protected ActorStats stats => instance.stats;
-    #endregion
 
+    //Fields
     private ActorInstance instance;
     public Texture2D texture; //The full 1024x1024 texture
     public Sprite sprite;

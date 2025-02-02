@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class DamageTextInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected float tileSize => GameManager.instance.tileSize;
     public Transform parent
     {
@@ -18,7 +18,6 @@ public class DamageTextInstance : MonoBehaviour
         get => gameObject.transform.position;
         set => gameObject.transform.position = value;
     }
-    #endregion
 
     public TextMeshPro textMesh;
     public Vector3 speed;

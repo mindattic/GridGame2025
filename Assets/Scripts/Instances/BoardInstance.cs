@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class BoardInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected float tileSize => GameManager.instance.tileSize;
     protected ProfileManager profileManager => GameManager.instance.profileManager;
     protected StageManager stageManager => GameManager.instance.stageManager;
     protected BoardInstance board => GameManager.instance.board;
-    #endregion
 
     //Fields
     [SerializeField] public GameObject TilePrefab;

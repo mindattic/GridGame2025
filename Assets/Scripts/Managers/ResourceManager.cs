@@ -1,3 +1,4 @@
+using Assets.Scripts.Models;
 using Game.Behaviors;
 using Newtonsoft.Json;
 using System;
@@ -6,49 +7,14 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-[System.Serializable]
-public class ResourceParameter
-{
-    public string Key;   //The parameter name (e.g., "Role", "Description")
-    public string Value; //The parameter entry (e.g., "Tank", "A brave warrior")
-}
-
-[System.Serializable]
-public class ResourceItem<T>
-{
-    public T Value;                     //The resource itself (e.g., Sprite, AudioClip)
-    public List<ResourceParameter> Parameters; //Parameters loaded from the JSON file
-}
-
-public static class ResourceFolder
-{
-    public static string Backgrounds = "Backgrounds";
-    public static string Portraits = "Portraits";
-    public static string SoundEffects = "SoundEffects";
-    public static string MusicTracks = "MusicTracks";
-    public static string Materials = "Materials";
-    public static string Seamless = "Seamless";
-    public static string Sprites = "Sprites";
-    public static string WeaponTypes = "Sprites/WeaponTypes";
-    public static string VisualEffects = "VisualEffects";
-
-}
-
-//Helper class for deserializing parameter lists
-[System.Serializable]
-public class ParameterList
-{
-    public List<ResourceParameter> Parameters = new List<ResourceParameter>();
-}
 
 public class ResourceManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected DataManager dataManager => GameManager.instance.dataManager;
     protected LogManager logManager => GameManager.instance.logManager;
-    #endregion
 
-
+    //Fields
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> backgrounds = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Texture2D>> portraits = new Dictionary<string, ResourceItem<Texture2D>>();
     [SerializeField] public Dictionary<string, ResourceItem<AudioClip>> soundEffects = new Dictionary<string, ResourceItem<AudioClip>>();
@@ -210,36 +176,6 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
-    ///<summary>
-    ///Load all resources from a folder and their matching JSON parameters.
-    ///</summary>
-    //public List<ResourceItem<Sprite>> LoadFolder(string resourcePath)
-    //{
-    //   Sprite[] sprites = Resources.LoadAll<Sprite>(resourcePath);
-    //   List<ResourceItem<Sprite>> entries = new List<ResourceItem<Sprite>>();
-
-    //   foreach (var sprite in sprites)
-    //   {
-    //       //Load matching JSON file for parameters
-    //       List<ResourceParameter> parameters = LoadParameters(resourcePath, sprite.name);
-
-    //       entries.SpawnActor(new ResourceItem<Sprite>
-    //       {
-    //           Key = sprite.name,
-    //           Value = sprite,
-    //           Parameters = parameters
-    //       });
-    //   }
-
-    //   return entries;
-    //}
-
-    ///<summary>
-    ///Load specific resources by their IDs and matching JSON parameters.
-    ///</summary>
-    ///
-
-
     public T Load<T>(string resourcePath) where T : UnityEngine.Object
     {
         T resource = Resources.Load<T>(resourcePath);
@@ -249,8 +185,7 @@ public class ResourceManager : MonoBehaviour
         return resource;
     }
 
-
-    public Dictionary<string, ResourceItem<T>> LoadResources<T>(string resourcePath, List<string> keys) where T : UnityEngine.Object
+    private Dictionary<string, ResourceItem<T>> LoadResources<T>(string resourcePath, List<string> keys) where T : UnityEngine.Object
     {
         Dictionary<string, ResourceItem<T>> entries = new Dictionary<string, ResourceItem<T>>();
 
@@ -267,7 +202,7 @@ public class ResourceManager : MonoBehaviour
                 }
 
                 //Load the matching JSON file for parameters
-                List<ResourceParameter> parameters = LoadParameters(resourcePath, key);
+                List<ResourceParameter> parameters = LoadResourceParameters(resourcePath, key);
 
                 entries.Add(key, new ResourceItem<T>
                 {
@@ -284,14 +219,10 @@ public class ResourceManager : MonoBehaviour
         return entries;
     }
 
-
-
-
-
     ///<summary>
     ///Load parameters from a JSON file matching the resource name.
     ///</summary>
-    private List<ResourceParameter> LoadParameters(string folderPath, string resourceName)
+    private List<ResourceParameter> LoadResourceParameters(string folderPath, string resourceName)
     {
         string jsonPath = Path.Combine(Application.dataPath, "Resources", folderPath, $"{resourceName}.json");
 
@@ -299,11 +230,8 @@ public class ResourceManager : MonoBehaviour
             return null;
 
         string json = File.ReadAllText(jsonPath);
-        return JsonConvert.DeserializeObject<ParameterList>(json).Parameters;
+        return JsonConvert.DeserializeObject<ResourceParameterList>(json).Parameters;
     }
-
-
-
     public Dictionary<string, VisualEffect> LoadVisualEffects(List<string> keys)
     {
         Dictionary<string, VisualEffect> entries = new Dictionary<string, VisualEffect>();
@@ -350,27 +278,4 @@ public class ResourceManager : MonoBehaviour
 
         return entries;
     }
-
-
-
-
-
-
-    //[SerializeField] public List<VisualEffect> visualEffects = new List<VisualEffect>();
-
-
-    //public VisualEffect VisualEffect(string id)
-    //{
-    //   try
-    //   {
-    //       return visualEffects.First(x => x.id.Equals(id));
-    //   }
-    //   catch (Exception ex)
-    //   {
-    //       logManager.Error($"Failed to retrieve visual effect `{id}` from resource manager. | Error: {ex.Message}");
-    //   }
-
-    //   return null;
-    //}
-
 }

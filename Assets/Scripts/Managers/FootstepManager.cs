@@ -6,11 +6,10 @@ using UnityEngine;
 
 public class FootstepManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected float tileSize => GameManager.instance.tileSize;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected BoardInstance board => GameManager.instance.board;
-    #endregion
 
     //Fields
     [SerializeField] public GameObject FootstepPrefab;

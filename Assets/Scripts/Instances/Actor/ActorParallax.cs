@@ -6,8 +6,10 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorParallax
     {
+        //External properies
         protected float tileSize => GameManager.instance.tileSize;
 
+        //Fields
         private ActorInstance instance;
         public float maxSpeed = 0f;
         public float targetX = 0f;

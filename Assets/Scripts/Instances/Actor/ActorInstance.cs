@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class ActorInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;
     protected CoinManager coinManager => GameManager.instance.coinManager;
@@ -32,80 +32,8 @@ public class ActorInstance : MonoBehaviour
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
     protected bool hasFocusedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
-    #endregion
 
-    public Action<ActorInstance> OnOverlapDetected;
-
-    //Fields
-    public Character character;
-
-    public Vector2Int previousLocation;
-    public Vector2Int location;
-    //public Vector2Int? nextLocation;
-    //public Vector3? nextPosition;
-
-
-    //public Vector2Int? redirectedLocation;
-
-
-
-    public Team team = Team.Neutral;
-    public int spawnDelay = -1;
-    //public int turnDelay = 0;
-    public int attackingPairCount = 0;
-    public int supportingPairCount = 0;
-    public float wiggleSpeed;
-    public float wiggleAmplitude;
-
-    //Modules
-    public ActorRenderers render = new ActorRenderers();
-    public ActorStats stats = new ActorStats();
-    public ActorFlags flags = new ActorFlags();
-    public ActorAbilities abilities = new ActorAbilities();
-    public ActorVFX vfx = new ActorVFX();
-    public ActorWeapon weapon = new ActorWeapon();
-    public ActorActions action = new ActorActions();
-    public ActorMovement move = new ActorMovement();
-    public ActorHealthBar healthBar = new ActorHealthBar();
-    public ActorActionBar actionBar = new ActorActionBar();
-    public ActorGlow glow = new ActorGlow();
-    public ActorParallax parallax = new ActorParallax();
-    public ActorThumbnail thumbnail = new ActorThumbnail();
-
-
-    //Miscellaneous
-    //ActorSprite sprites;
-    [SerializeField] public AnimationCurve glowCurve;
-    //public VisualEffect attack;
-
-    //Method which is used for initialization tasks that need to occur before the game starts 
-    private void Awake()
-    {
-        render.Initialize(this);
-        action.Initialize(this);
-        move.Initialize(this);
-        healthBar.Initialize(this);
-        actionBar.Initialize(this);
-        glow.Initialize(this);
-        parallax.Initialize(this);
-        thumbnail.Initialize(this);
-
-        wiggleSpeed = tileSize * 24f;
-        wiggleAmplitude = 15f;  //Amplitude (difference from -45 degrees)
-
-        //nextLocation = null;
-        //redirectedLocation = null;
-        //nextPosition = null;
-
-        //Event bindings
-        OnOverlapDetected += (other) =>
-        {
-            //Debug.Log($"[OnOverlapDetected] {name} received event from {other.name}");
-            move.HandleOnOverlapDetected(other);
-        };
-    }
-
-    //Helpers
+    //Internal properties
     public TileInstance currentTile => board.tileMap.GetTile(location); //tiles.First(x => x.location.Equals(location));
     public bool isPlayer => team.Equals(Team.Player);
     public bool isEnemy => team.Equals(Team.Enemy);
@@ -121,47 +49,32 @@ public class ActorInstance : MonoBehaviour
     public bool isDead => !isActive && stats.HP < 1;
     public bool isSpawnable => !isActive && isAlive && spawnDelay <= turnManager.currentTurn;
     public bool hasMaxAP => isActive && isAlive && stats.AP == stats.MaxAP;
-
     public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isPlayerInvincible);
-
-
-
     public Transform parent
     {
         get => gameObject.transform.parent;
         set => gameObject.transform.SetParent(value, true);
     }
-
     public Vector3 position
     {
         get => gameObject.transform.position;
         set => gameObject.transform.position = value;
     }
-
     public Vector3 thumbnailPosition
     {
         get => gameObject.transform.GetChild("Thumbnail").gameObject.transform.position;
         set => gameObject.transform.GetChild("Thumbnail").gameObject.transform.position = value;
     }
-
     public Quaternion rotation
     {
         get => gameObject.transform.rotation;
         set => gameObject.transform.rotation = value;
     }
-
     public Vector3 scale
     {
         get => gameObject.transform.localScale;
         set => gameObject.transform.localScale = value;
     }
-
-    //public Sprite thumbnailSettings
-    //{
-    //   get => render.thumbnailSettings.sprite;
-    //   set => render.thumbnailSettings.sprite = value;
-    //}
-
     public int sortingOrder
     {
         get
@@ -200,6 +113,63 @@ public class ActorInstance : MonoBehaviour
         }
     }
 
+    //Events
+    public Action<ActorInstance> OnOverlapDetected;
+
+    //Fields
+    [SerializeField] public AnimationCurve glowCurve;
+    public Character character;
+    public Vector2Int previousLocation;
+    public Vector2Int location;
+    public Team team = Team.Neutral;
+    public int spawnDelay = -1;
+    public int attackingPairCount = 0;
+    public int supportingPairCount = 0;
+    public float wiggleSpeed;
+    public float wiggleAmplitude;
+
+    //Modules
+    public ActorRenderers render = new ActorRenderers();
+    public ActorStats stats = new ActorStats();
+    public ActorFlags flags = new ActorFlags();
+    public ActorAbilities abilities = new ActorAbilities();
+    public ActorVFX vfx = new ActorVFX();
+    public ActorWeapon weapon = new ActorWeapon();
+    public ActorActions action = new ActorActions();
+    public ActorMovement move = new ActorMovement();
+    public ActorHealthBar healthBar = new ActorHealthBar();
+    public ActorActionBar actionBar = new ActorActionBar();
+    public ActorGlow glow = new ActorGlow();
+    public ActorParallax parallax = new ActorParallax();
+    public ActorThumbnail thumbnail = new ActorThumbnail();
+
+    //Method which is used for initialization tasks that need to occur before the game starts 
+    private void Awake()
+    {
+        render.Initialize(this);
+        action.Initialize(this);
+        move.Initialize(this);
+        healthBar.Initialize(this);
+        actionBar.Initialize(this);
+        glow.Initialize(this);
+        parallax.Initialize(this);
+        thumbnail.Initialize(this);
+
+        wiggleSpeed = tileSize * 24f;
+        wiggleAmplitude = 15f;  //Amplitude (difference from -45 degrees)
+
+        //nextLocation = null;
+        //redirectedLocation = null;
+        //nextPosition = null;
+
+        //Event bindings
+        OnOverlapDetected += (other) =>
+        {
+            //Debug.Log($"[OnOverlapDetected] {name} received event from {other.name}");
+            move.HandleOnOverlapDetected(other);
+        };
+    }
+
     public bool IsSameColumn(Vector2Int other) => location.x == other.x;
     public bool IsSameRow(Vector2Int other) => location.y == other.y;
     public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(location, other).Equals(1);
@@ -211,7 +181,6 @@ public class ActorInstance : MonoBehaviour
     public bool IsNorthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y - 1;
     public bool IsSouthWestOf(Vector2Int other) => location.x == other.x - 1 && location.y == other.y + 1;
     public bool IsSouthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y + 1;
-
 
     public Direction GetDirectionTo(ActorInstance other, bool mustBeAdjacent = false)
     {
@@ -304,7 +273,6 @@ public class ActorInstance : MonoBehaviour
     private void Update()
     {
         CheckRotation();
-
     }
     void FixedUpdate()
     {

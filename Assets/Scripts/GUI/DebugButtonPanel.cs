@@ -6,18 +6,17 @@ namespace Assets.Scripts.GUI
 {
     public class DebugButtonPanel : MonoBehaviour
     {
+        //External properties
         protected BoardInstance board => GameManager.instance.board;
+        protected StageManager stageManager => GameManager.instance.stageManager;
+        protected DebugManager debugManager => GameManager.instance.debugManager;
 
-        //Serialize fields to assign buttons in the Inspector
+        //Fields
         [SerializeField] private RectTransform PanelRect;
         [SerializeField] private Button ReloadButton;
         [SerializeField] private Button PreviousStageButton;
         [SerializeField] private Button NextStageButton;
         [SerializeField] private Button SpawnRandomEnemyButton;
-
-        //Dependencies
-        protected StageManager stageManager => GameManager.instance.stageManager;
-        protected DebugManager debugManager => GameManager.instance.debugManager;
 
         private void Start()
         {

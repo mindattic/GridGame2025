@@ -3,11 +3,12 @@ using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     public bool IsPaused => Time.timeScale == 0f;
-    #endregion
+
+    //Fields
 
     private Image buttonImage;
     private Sprite pause;

@@ -5,8 +5,10 @@ using UnityEngine.UIElements;
 
 public class BackgroundInstance : MonoBehaviour
 {
+    //External properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
 
+    //Fields
     private bool isMoving;
     private Vector3 initialPosition;
     private SpriteRenderer spriteRenderer;

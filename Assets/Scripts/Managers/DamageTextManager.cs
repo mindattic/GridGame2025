@@ -6,9 +6,8 @@ using UnityEngine;
 
 public class DamageTextManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected Canvas canvas3D => GameManager.instance.canvas3D;
-    #endregion
 
     //Fields
     [SerializeField] public GameObject DamageTextPrefab;

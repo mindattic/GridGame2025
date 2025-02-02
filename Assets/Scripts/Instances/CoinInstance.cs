@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class CoinInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected float tileSize => GameManager.instance.tileSize;
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected CoinBarInstance coinBar => GameManager.instance.coinBar;
@@ -31,7 +31,6 @@ public class CoinInstance : MonoBehaviour
         get => gameObject.transform.localScale;
         set => gameObject.transform.localScale = value;
     }
-    #endregion
 
     //Fields
     public AnimationCurve linearCurve;

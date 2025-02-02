@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class ActorActionBar
 {
-    #region Properties
-
+    //External properties
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected ActorFlags flags => instance.flags;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
     protected ActorRenderers render => instance.render;
     protected ActorStats stats => instance.stats;
     protected bool hasSelectedPlayer => selectedPlayer != null;
-    #endregion
 
+    //Internal properties
+    private Vector3 initialScale => render.actionBarBack.transform.localScale;
+
+    //Fields
     private ActorInstance instance;
 
     public void Initialize(ActorInstance parentInstance)
@@ -22,9 +24,7 @@ public class ActorActionBar
         this.instance = parentInstance;
     }
 
-    //Properties
-    private Vector3 initialScale => render.actionBarBack.transform.localScale;
-
+   
     private Vector3 GetScale(float value)
     {
         return new Vector3(

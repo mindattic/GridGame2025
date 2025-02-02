@@ -6,7 +6,7 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorActions
     {
-        #region Properties
+        //External properties
         protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
         protected ActorRenderers render => instance.render;
         protected ActorStats stats => instance.stats;
@@ -19,7 +19,8 @@ namespace Assets.Scripts.Instances.Actor
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
         protected Vector3 tileScale => GameManager.instance.tileScale;
-        #endregion
+       
+        //Fields
 
         private ActorInstance instance;
 

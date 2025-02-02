@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GhostInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected float tileSize => GameManager.instance.tileSize;
     public Transform parent
     {
@@ -35,7 +35,6 @@ public class GhostInstance : MonoBehaviour
             renderers.frame.sortingOrder = value + 1;
         }
     }
-    #endregion
 
     //Constants
     const int Thumbnail = 0;

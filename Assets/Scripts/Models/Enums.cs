@@ -35,8 +35,10 @@ public enum TurnPhase
 {
     Start,
     Move,
+    PreAttack,
     Attack,
-    //Stop
+    PostAttack,
+    End
 }
 
 

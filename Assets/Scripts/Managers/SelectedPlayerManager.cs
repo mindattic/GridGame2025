@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SelectedPlayerManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected CombatManager combatManager => GameManager.instance.combatManager;
     protected Card cardManager => GameManager.instance.cardManager;
     protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -22,7 +22,6 @@ public class SelectedPlayerManager : MonoBehaviour
     protected TimerBarInstance timerBar => GameManager.instance.timerBar;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
-    #endregion
 
     public void Focus()
     {

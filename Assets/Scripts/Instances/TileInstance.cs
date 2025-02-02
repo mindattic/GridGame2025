@@ -5,7 +5,7 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public class TileInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected List<ActorInstance> actors => GameManager.instance.actors;
     public bool IsOccupied => actors.Any(x => x != null && x.isActive && x.isAlive && x.location == location);
@@ -55,7 +55,7 @@ public class TileInstance : MonoBehaviour
     public bool IsSouthWestOf(Vector2Int other) => this.location.x == other.x - 1 && this.location.y == other.y + 1;
     public bool IsSouthEastOf(Vector2Int other) => this.location.x == other.x + 1 && this.location.y == other.y + 1;
     public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(this.location, other) == 1;
-    #endregion
+
 
     //Fields
     public Vector2Int location;

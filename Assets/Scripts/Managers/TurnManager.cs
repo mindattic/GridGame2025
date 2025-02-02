@@ -9,7 +9,7 @@ using Phase = TurnPhase;
 
 public class TurnManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected AttackLineManager attackLineManager => GameManager.instance.attackLineManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected CombatManager combatManager => GameManager.instance.combatManager;
@@ -27,7 +27,8 @@ public class TurnManager : MonoBehaviour
     public bool isMovePhase => currentPhase.Equals(Phase.Move);
     public bool isAttackPhase => currentPhase.Equals(Phase.Attack);
     public bool isFirstTurn => currentTurn == 1;
-    #endregion
+
+    //Internal properties
 
     //Fields
     [SerializeField] public int currentTurn = 1;
@@ -35,15 +36,21 @@ public class TurnManager : MonoBehaviour
     [SerializeField] public Phase currentPhase = Phase.Start;
 
 
+    // These lists hold actions that are scheduled for each phase.
+    private List<CombatAction> startPhaseActions = new List<CombatAction>();
+    private List<CombatAction> movePhaseActions = new List<CombatAction>();
+    private List<CombatAction> preAttackPhaseActions = new List<CombatAction>();
+    private List<CombatAction> attackPhaseActions = new List<CombatAction>();
+    private List<CombatAction> postAttackPhaseActions = new List<CombatAction>();
+    private List<CombatAction> endPhaseActions = new List<CombatAction>();
+
+
+
     //Method which is automatically called before the first frame update  
     void Start()
     {
         Reset();
     }
-
-    void Update() { }
-
-    void FixedUpdate() { }
 
     public void Reset()
     {
@@ -53,6 +60,44 @@ public class TurnManager : MonoBehaviour
         players.Where(x => x.isActive && x.isAlive).ToList().ForEach(x => x.glow.TriggerGlow());
         //musicSource.Stop();
         //musicSource.PlayOneShot(resourceManager.MusicTrack($"MelancholyLull"));
+    }
+
+
+    private IEnumerator ExecuteTurn()
+    {
+        // For example, resolve phases in the following order:
+        yield return StartCoroutine(ResolvePhase(startPhaseActions));
+        yield return StartCoroutine(ResolvePhase(movePhaseActions));
+        yield return StartCoroutine(ResolvePhase(preAttackPhaseActions));
+        yield return StartCoroutine(ResolvePhase(attackPhaseActions));
+        yield return StartCoroutine(ResolvePhase(postAttackPhaseActions));
+        yield return StartCoroutine(ResolvePhase(endPhaseActions));
+
+        // After all phases, proceed to the next turn.
+        NextTurn();
+    }
+
+    // Generic method to execute all actions for a given phase.
+    // You can decide if they should run sequentially or concurrently.
+    private IEnumerator ResolvePhase(List<CombatAction> actions)
+    {
+        // Option 1: Sequential execution (each action waits for the previous one to complete)
+        foreach (CombatAction action in actions)
+        {
+            yield return StartCoroutine(action.Execute());
+        }
+
+        // Option 2: Concurrent execution (if actions do not depend on one another)
+        // List<Coroutine> runningActions = new List<Coroutine>();
+        // foreach (CombatAction action in actions)
+        // {
+        //     runningActions.Add(StartCoroutine(action.Execute()));
+        // }
+        // // Wait until all concurrent actions are complete.
+        // foreach (Coroutine routine in runningActions)
+        // {
+        //     yield return routine;
+        // }
     }
 
     public void NextTurn()

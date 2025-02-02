@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected DataManager dataManager => GameManager.instance.dataManager;
     public int totalCoins
     {
@@ -29,15 +29,16 @@ public class StageManager : MonoBehaviour
         get => GameManager.instance.actors;
         set => GameManager.instance.actors = value;
     }
-    #endregion
 
+    //Internal properties
+    public int enemyCount => actors.FindAll(x => x.isEnemy).Count;
+
+    //Fields
 
     [SerializeField] GameObject actorPrefab;
-
-
     public StageData currentStage;
 
-    public int enemyCount => actors.FindAll(x => x.isEnemy).Count;
+   
 
 
     public void Initialize()

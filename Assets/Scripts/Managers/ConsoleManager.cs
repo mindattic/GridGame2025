@@ -6,7 +6,7 @@ namespace Game.Behaviors
 {
     public class ConsoleManager : MonoBehaviour
     {
-        #region Properties
+        //Internal properties
         public string text
         {
             get => textMesh.text;
@@ -17,7 +17,6 @@ namespace Game.Behaviors
             get => textMesh.color;
             set => textMesh.color = value;
         }
-        #endregion
 
         //Fields
         public TextMeshProUGUI textMesh;

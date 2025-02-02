@@ -3,10 +3,9 @@ using UnityEngine;
 
 public class CoinBarInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected int totalCoins => GameManager.instance.totalCoins;
-    #endregion
 
     //Fields
     [HideInInspector] public GameObject icon;

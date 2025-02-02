@@ -5,7 +5,7 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorGlow
     {
-        #region Properties
+        //External properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected Vector3 tileScale => GameManager.instance.tileScale;
         protected ActorRenderers render => instance.render;
@@ -14,14 +14,8 @@ namespace Assets.Scripts.Instances.Actor
         private bool isPlayer => instance.isPlayer;
         private bool isEnemy => instance.isEnemy;
         protected AnimationCurve glowCurve => instance.glowCurve;
-        //glowCurve = new AnimationCurve(
-        //   new Keyframe(0f, 0f, 0f, 0f),      //First keyframe at time 0, value 0
-        //   new Keyframe(1f, 0.25f, 0f, 0f)    //Second keyframe at time 1, value 0.25
-        //);
-        //glowCurve.preWrapMode = WrapMode.Loop;
-        //glowCurve.postWrapMode = WrapMode.Loop;
-        #endregion
-
+    
+        //Fields
 
         private ActorInstance instance;
         private Vector3 initialScale;

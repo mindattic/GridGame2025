@@ -7,12 +7,11 @@ using UnityEngine;
 
 public class PortraitManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
-    #endregion
 
 
     //Fields

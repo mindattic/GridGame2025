@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected AttackLineManager attackLineManager => GameManager.instance.attackLineManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
@@ -20,13 +20,13 @@ public class CombatManager : MonoBehaviour
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
     protected ActorInstance previousSelectedPlayer => GameManager.instance.previousSelectedPlayer;
-    #endregion
+
+    //Fields
 
     private CombatParticipants participants = new CombatParticipants();
 
+
     public void Clear() => participants.Clear();
-
-
 
     public void TriggerCombat()
     {

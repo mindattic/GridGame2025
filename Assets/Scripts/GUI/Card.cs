@@ -10,28 +10,24 @@ namespace Game.Behaviors
 {
     public class Card : MonoBehaviour
     {
-        #region Properties
+        //External properties
         protected float cardPortraitSize => GameManager.instance.cardPortraitSize;
         protected DataManager dataManager => GameManager.instance.dataManager;
         protected ResourceManager resourceManager => GameManager.instance.resourceManager;
         protected List<ActorInstance> actors => GameManager.instance.actors;
-        #endregion
+        
+
 
         //Fields
         RectTransform rectTransform;
-
-
         GameObject backdrop;
-
         GameObject portrait;
         GameObject title;
         GameObject details;
-
         Image backdropImage;
         Image portraitImage;
         TextMeshProUGUI titleText;
         TextMeshProUGUI detailsText;
-
         Vector3 destination;
         Vector3 offscreenPosition;
         AnimationCurve slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);

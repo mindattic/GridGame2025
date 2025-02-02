@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected PauseManager pauseManager => GameManager.instance.pauseManager;
     protected ActorInstance focusedActor => GameManager.instance.focusedActor;
     protected ActorInstance previousSelectedPlayer => GameManager.instance.previousSelectedPlayer;
@@ -13,7 +13,6 @@ public class InputManager : MonoBehaviour
     protected StageManager stageManager => GameManager.instance.stageManager;
     protected float dragThreshold;
     protected float tileSize => GameManager.instance.tileSize;
-    #endregion
 
     //Fields
     private bool isDragging;

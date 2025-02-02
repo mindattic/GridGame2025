@@ -5,12 +5,11 @@ using UnityEngine.UIElements;
 
 public class TimerBarInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected float tileSize => GameManager.instance.tileSize;
     protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
     protected float snapDistance => GameManager.instance.snapDistance;
-    #endregion
 
     //Fields
     private bool isRunning = false;

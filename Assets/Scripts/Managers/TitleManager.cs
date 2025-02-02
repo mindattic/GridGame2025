@@ -5,7 +5,7 @@
 
 //public class TitleManager : MonoBehaviour
 //{
-//   #region Properties
+//   //External properties
 //   public string text
 //   {
 //       get => label.text;

@@ -12,11 +12,10 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorMovement
     {
+        //External properties
         protected float percent33 => Constants.percent33;
         protected Vector3 tileScale => GameManager.instance.tileScale;
-
         protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-
         protected List<ActorInstance> actors => GameManager.instance.actors;
         protected AudioManager audioManager => GameManager.instance.audioManager;
         protected BoardInstance board => GameManager.instance.board;
@@ -41,6 +40,7 @@ namespace Assets.Scripts.Instances.Actor
         protected bool isSelectedPlayer => hasSelectedPlayer && selectedPlayer == instance;
         protected UnityEvent<Vector2Int> onSelectedPlayerLocationChanged => GameManager.instance.onSelectedPlayerLocationChanged;
 
+        //Fields
         private ActorInstance instance;
 
         public void Initialize(ActorInstance parentInstance)

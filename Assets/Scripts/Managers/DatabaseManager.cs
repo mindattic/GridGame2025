@@ -43,7 +43,7 @@
 //       }
 
 
-//       #region Properties
+//       //External properties
 //       protected LogManager logManager => GameManager.instance.logManager;
 //       #endregion
 

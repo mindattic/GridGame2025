@@ -4,16 +4,10 @@ using UnityEngine;
 
 public class TooltipInstance : MonoBehaviour
 {
-    #region Properties
+    //External properties
     protected float tileSize => GameManager.instance.tileSize;
-    #endregion
 
-    //Fields
-    SpriteRenderer spriteRenderer;
-    TextMeshPro textMesh;
-    Vector2 offset;
-
-    #region Components
+    //Internal properties
 
     public Transform parent
     {
@@ -39,8 +33,13 @@ public class TooltipInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    #endregion
 
+    //Fields
+    SpriteRenderer spriteRenderer;
+    TextMeshPro textMesh;
+    Vector2 offset;
+
+ 
     //Method which is used for initialization tasks that need to occur before the game starts 
     void Awake()
     {
