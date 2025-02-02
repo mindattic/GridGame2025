@@ -167,9 +167,15 @@
     <Compile Include="Assets\Scripts\Managers\WallManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Resources\Data\Actors.json" />
-    <None Include="Assets\Resources\Data\Stages.json" />
-    <None Include="Assets\Resources\Data\VisualEffects.json" />
+    <Content Include="Assets\Resources\Data\Actors.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Resources\Data\Stages.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\Resources\Data\VisualEffects.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Assets\Shader\Add_CenterGlow 2.shader" />
     <None Include="Assets\Shader\henshuuv_b.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
