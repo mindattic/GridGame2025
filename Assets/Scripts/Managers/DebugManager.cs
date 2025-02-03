@@ -82,7 +82,7 @@ public class DebugManager : MonoBehaviour
 
     public void SupportLineTest()
     {
-        var alignedPairs = new HashSet<CombatPair>();
+        var alignedPairs = new HashSet<ActorPair>();
         foreach (var actor1 in players)
         {
             foreach (var actor2 in players)
@@ -92,12 +92,12 @@ public class DebugManager : MonoBehaviour
 
                 if (actor1.IsSameColumn(actor2.location))
                 {
-                    var pair = new CombatPair(actor1, actor2, Axis.Vertical);
+                    var pair = new ActorPair(actor1, actor2, Axis.Vertical);
                     alignedPairs.Add(pair);
                 }
                 else if (actor1.IsSameRow(actor2.location))
                 {
-                    var pair = new CombatPair(actor1, actor2, Axis.Horizontal);
+                    var pair = new ActorPair(actor1, actor2, Axis.Horizontal);
                     alignedPairs.Add(pair);
                 }
 
@@ -154,7 +154,7 @@ public class DebugManager : MonoBehaviour
 
 
 
-        var alignedPairs = new HashSet<CombatPair>();
+        var alignedPairs = new HashSet<ActorPair>();
         foreach (var actor1 in players)
         {
             foreach (var actor2 in players)
@@ -167,12 +167,12 @@ public class DebugManager : MonoBehaviour
 
                 if (actor1.IsSameColumn(actor2.location))
                 {
-                    var pair = new CombatPair(actor1, actor2, Axis.Vertical);
+                    var pair = new ActorPair(actor1, actor2, Axis.Vertical);
                     alignedPairs.Add(pair);
                 }
                 else if (actor1.IsSameRow(actor2.location))
                 {
-                    var pair = new CombatPair(actor1, actor2, Axis.Horizontal);
+                    var pair = new ActorPair(actor1, actor2, Axis.Horizontal);
                     alignedPairs.Add(pair);
                 }
 

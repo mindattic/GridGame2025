@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Assets.Scripts.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CombatPair
+public class ActorPair
 {
     //Fields
     public ActorInstance actor1 = null;
@@ -11,6 +12,7 @@ public class CombatPair
     public List<TileInstance> gaps = null;
     public List<ActorInstance> opponents = null;
     public List<ActorInstance> allies = null;
+    public List<AttackResult> attackResults;
 
     public bool hasOpponentsBetween => opponents?.Count > 0;
     public bool hasAlliesBetween => allies?.Count > 0;
@@ -60,12 +62,13 @@ public class CombatPair
     public float start => axis == Axis.Vertical ? startActor.location.y : startActor.location.x;
     public float end => axis == Axis.Vertical ? endActor.location.y : endActor.location.x;
 
-    public CombatPair(ActorInstance actor1, ActorInstance actor2, Axis axis)
+    public ActorPair(ActorInstance actor1, ActorInstance actor2, Axis axis)
     {
         this.actor1 = actor1;
         this.actor2 = actor2;
         this.axis = axis;
- 
+        this.attackResults = new List<AttackResult>();
+
         if (axis == Axis.Vertical)
         {
             opponents = GameManager.instance.actors.Where(x => x.isActive && x.isAlive && x.isEnemy && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();

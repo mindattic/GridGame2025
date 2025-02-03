@@ -1,6 +1,8 @@
 ﻿using Game.Behaviors;
 using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace Assets.Scripts.Utilities
 {
@@ -60,23 +62,27 @@ namespace Assets.Scripts.Utilities
             return Mathf.Round(spd + lck - armor);
         }
 
-        public static bool IsHit(ActorInstance attacker, ActorInstance defender)
+        public static bool IsHit(ActorInstance attacker, ActorInstance target)
         {
             var accuracy = Accuracy(attacker.stats);
-            var evasion = Evasion(defender.stats);
+            var evasion = Evasion(target.stats);
             var d100 = Random.Int(1, 100);
             var isHit = accuracy - evasion >= d100;
 
             var msg
-                = $"{attacker.name} vs {defender.name}: "
+                = $"{attacker.name} vs {target.name}: "
                 + $@"Accuracy(<color=""yellow"">{accuracy}</color>) - "
                 + $@"Evasion(<color=""yellow"">{evasion}</color>) "
                 + $@"{(isHit ? ">" : "<")} "
                 + $@"1d100(<color=""yellow"">{d100}</color>) => "
                 + $@"{(isHit ? "Hit" : "Miss")}";
             log.Info(msg);
-
             return isHit;
+        }
+
+        public static bool IsCriticalHit(ActorInstance attacker, ActorInstance target)
+        {
+            return false;
         }
 
         public static float Offense(ActorStats stats)

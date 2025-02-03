@@ -488,7 +488,7 @@ public class ActorInstance : MonoBehaviour
     public void SetDefending()
     {
         flags.IsDefending = true;
-        sortingOrder = SortingOrder.Defender;
+        sortingOrder = SortingOrder.Target;
     }
 
     public void SetSupporting()

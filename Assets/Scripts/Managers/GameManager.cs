@@ -49,7 +49,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public DebugManager debugManager;
     [HideInInspector] public ConsoleManager consoleManager;
     [HideInInspector] public LogManager logManager;
-    [HideInInspector] public CombatManager combatManager;
     [HideInInspector] public DottedLineManager dottedLineManager;
 
     //Board
@@ -167,7 +166,6 @@ public class GameManager : Singleton<GameManager>
         vfxManager = game.GetComponent<VFXManager>() ?? throw new UnityException("VFXManager is null");
         coinManager = game.GetComponent<CoinManager>() ?? throw new UnityException("CoinManager is null");
         pauseManager = game.GetComponent<PauseManager>() ?? throw new UnityException("PauseManager is null");
-        combatManager = game.GetComponent<CombatManager>() ?? throw new UnityException("CombatManager is null");
         dottedLineManager = game.GetComponent<DottedLineManager>() ?? throw new UnityException("DottedLineManager is null");
 
         resourceManager = GameObject.Find(Constants.Resources).GetComponent<ResourceManager>() ?? throw new UnityException("ResourceManager is null");

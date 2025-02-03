@@ -8,5 +8,4 @@ if exist ExportedScripts.txt del ExportedScripts.txt
 for /r %%f in (*.cs) do type "%%f" >> ExportedScripts.txt
 
 echo Export completed.
-
-PAUSE
+timeout /t 3

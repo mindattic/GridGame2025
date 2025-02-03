@@ -1,136 +1,188 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class TimerBarInstance : MonoBehaviour
 {
-    //External properties
+    // External properties
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected float tileSize => GameManager.instance.tileSize;
     protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
     protected float snapDistance => GameManager.instance.snapDistance;
 
-    //Fields
-    private bool isRunning = false;
+    // Timer settings
     private const float maxDuration = 6f;
-    private float timeRemaining = 6f;
+    private float timeRemaining = maxDuration;
+    private bool isRunning = false;
+
+    // UI elements (assumed to be SpriteRenderers)
     private SpriteRenderer back;
     private SpriteRenderer bar;
     private SpriteRenderer front;
-    Vector3 scale = new Vector3(1f, 1f, 1f);
-    Vector3 initialPosition;
-    Vector3 offscreenPosition;
-    float slideSpeed;
-    float width;
 
-    //Method which is used for initialization tasks that need to occur before the game starts 
+    // Cached values for sliding and scaling
+    private Vector3 scale = Vector3.one;
+    private Vector3 initialPosition;
+    private Vector3 offscreenPosition;
+    private float slideSpeed;
+    private float width;
+
+    // Reference to the active countdown coroutine
+    private Coroutine countdownCoroutine;
+
     private void Awake()
     {
-        back = gameObject.transform.GetChild(0).GetComponent<SpriteRenderer>();
-        bar = gameObject.transform.GetChild(1).GetComponent<SpriteRenderer>();
-        front = gameObject.transform.GetChild(2).GetComponent<SpriteRenderer>();
+        // Assumes the children are ordered: 0 = back, 1 = bar, 2 = front.
+        back = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        bar = transform.GetChild(1).GetComponent<SpriteRenderer>();
+        front = transform.GetChild(2).GetComponent<SpriteRenderer>();
     }
 
-    //Method which is automatically called before the first frame update  
     private void Start()
     {
-        bar.transform.localScale = new Vector3(scale.x, scale.y, scale.z);
+        // Initialize the bar's scale.
+        bar.transform.localScale = scale;
+        // Calculate slide speed based on tileSize.
         slideSpeed = tileSize * 0.25f;
+        // Use the front's bounds (plus an offset) to compute the offscreen width.
         width = front.bounds.size.x + 2.4f;
-        initialPosition = transform.position;   
+        // Save the on-screen (initial) position.
+        initialPosition = transform.position;
+        // Compute the offscreen position by subtracting the width from the initial position.
         offscreenPosition = initialPosition.SubtractX(width);
     }
 
-    void FixedUpdate()
-    {
-        if (debugManager.isTimerInfinite)
-            return;
+    ///// <summary>
+    ///// Resets the timer bar by sliding it into view and resetting the countdown.
+    ///// </summary>
+    //public void TriggerInitialize()
+    //{
+    //    // Stop any running coroutines (e.g. a SlideOut or a countdown)
+    //    StopAllCoroutines();
+    //    countdownCoroutine = null;
+    //    // Start sliding the timer bar into its initial position.
+    //    StartCoroutine(Initialize());
+    //}
 
-        if (isRunning && timeRemaining > 0)
-        {
-            timeRemaining -= Time.deltaTime;
-            bar.transform.localScale = new Vector3(scale.x * (timeRemaining / maxDuration), scale.y, scale.z);
-        }
-        else
-        {
-            isRunning = false;
+    ///// <summary>
+    ///// Coroutine that slides the timer bar to its initial position and resets its state.
+    ///// </summary>
+    //IEnumerator Initialize()
+    //{
+    //    // Reset bar scale and timer.
+    //    bar.transform.localScale = new Vector3(1f, scale.y, scale.z);
+    //    timeRemaining = maxDuration;
+    //    isRunning = false;
 
-            //DEBUG: This is where the "three body problem" can occur...
-            selectedPlayerManager.Unselect();
-        }
-    }
+    //    // Slide the bar into the on?screen position.
+    //    while (Vector3.Distance(transform.position, initialPosition) > snapDistance)
+    //    {
+    //        transform.position = Vector3.MoveTowards(transform.position, initialPosition, slideSpeed * Time.deltaTime);
+    //        yield return Wait.OneTick();
+    //    }
+    //    transform.position = initialPosition;
+    //}
 
-    public void TriggerInitialize()
-    {
-        StopCoroutine(Initialize());
-        StartCoroutine(Initialize());
-    }
-
-    IEnumerator Initialize()
-    {
-        //Before:
-        bar.transform.localScale = new Vector3(1f, scale.y, scale.z);
-        timeRemaining = maxDuration;
-        isRunning = false;
-
-        //During:
-        while (transform.position != initialPosition)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, initialPosition, slideSpeed);
-
-            //Determine whether to snap
-            bool isSnapDistance = Vector2.Distance(transform.position, initialPosition) <= snapDistance;
-            if (isSnapDistance)
-                transform.position = initialPosition;
-
-            yield return Wait.OneTick();
-        }
-
-        //After:
-        gameObject.transform.position = initialPosition;
-    }
-
-    public void Play()
+    /// <summary>
+    /// Coroutine that counts down the timer bar.
+    /// When time expires, calls selectedPlayerManager.Unselect().
+    /// </summary>
+    private IEnumerator CountdownCoroutine()
     {
         isRunning = true;
+        while (timeRemaining > 0)
+        {
+            // If debug mode has the timer infinite, simply wait.
+            if (debugManager.isTimerInfinite)
+            {
+                yield return null;
+                continue;
+            }
+
+            timeRemaining -= Time.deltaTime;
+            // Update the bar's horizontal scale to reflect the remaining time.
+            float newXScale = scale.x * (timeRemaining / maxDuration);
+            bar.transform.localScale = new Vector3(newXScale, scale.y, scale.z);
+            yield return null;
+        }
+        isRunning = false;
+        // When the timer expires, force unselect (only once).
+        selectedPlayerManager.Unselect();
     }
 
+    /// <summary>
+    /// Starts the countdown.
+    /// </summary>
+    public void Play()
+    {
+        // If a countdown is already running, stop it.
+        if (countdownCoroutine != null)
+        {
+            StopCoroutine(countdownCoroutine);
+        }
+        countdownCoroutine = StartCoroutine(CountdownCoroutine());
+    }
+
+    /// <summary>
+    /// Pauses the countdown.
+    /// </summary>
     public void Pause()
     {
         isRunning = false;
-    }
-
-    public void Hide()
-    {
-       
-        StartCoroutine(SlideOut());
-    }
-
-    IEnumerator SlideOut()
-    {
-        //Before:
-
-        //During:
-        while (transform.position != offscreenPosition)
+        if (countdownCoroutine != null)
         {
-            transform.position = Vector3.MoveTowards(transform.position, offscreenPosition, slideSpeed);
-
-            //Determine whether to snap
-            bool isSnapDistance = Vector2.Distance(transform.position, offscreenPosition) <= snapDistance;
-            if (isSnapDistance)
-                transform.position = offscreenPosition;
-
-            yield return Wait.OneTick();
+            StopCoroutine(countdownCoroutine);
+            countdownCoroutine = null;
         }
-
-        //After:
-        gameObject.transform.position = offscreenPosition;
     }
 
-    public void Show()
+    public void Refill()
     {
-        bar.enabled = true;
+        isRunning = false;
+        back.color = ColorHelper.Solid.White;
+        bar.color = ColorHelper.Solid.White;
+        front.color = ColorHelper.Solid.White;
+
+
+        timeRemaining = maxDuration;
+        float newXScale = scale.x;
+        bar.transform.localScale = new Vector3(newXScale, scale.y, scale.z);
     }
 
+    public void Lock()
+    {
+        back.color = ColorHelper.Translucent.Red;
+        bar.color = ColorHelper.Translucent.Red;
+        front.color = ColorHelper.Translucent.Red;
+    }
+
+    /// <summary>
+    /// Slides the timer bar off-screen.
+    /// </summary>
+    //public void Hide()
+    //{
+    //    // Stop any countdown while hiding.
+    //    Pause();
+    //    StartCoroutine(SlideOut());
+    //}
+
+    /// <summary>
+    /// Coroutine that slides the timer bar to the offscreen position.
+    /// </summary>
+    //IEnumerator SlideOut()
+    //{
+    //    while (Vector3.Distance(transform.position, offscreenPosition) > snapDistance)
+    //    {
+    //        transform.position = Vector3.MoveTowards(transform.position, offscreenPosition, slideSpeed * Time.deltaTime);
+    //        yield return Wait.OneTick();
+    //    }
+    //    transform.position = offscreenPosition;
+    //}
+
+    /// <summary>
+    /// Optionally, you can use this method to simply enable the bar.
+    /// </summary>
+    //public void Show()
+    //{
+    //    bar.enabled = true;
+    //}
 }

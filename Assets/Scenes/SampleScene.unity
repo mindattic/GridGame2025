@@ -8969,7 +8969,6 @@ MonoBehaviour:
   debugManager: {fileID: 0}
   consoleManager: {fileID: 0}
   logManager: {fileID: 0}
-  combatManager: {fileID: 0}
   dottedLineManager: {fileID: 0}
   boardOverlay: {fileID: 0}
   canvasOverlay: {fileID: 0}
@@ -9050,7 +9049,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTurn: 1
   currentTeam: 0
-  currentPhase: 0
 --- !u!114 &1751276283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9534,7 +9532,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751276275}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbc9a166243343b49ab9f2b72a404c2b, type: 3}
   m_Name: 

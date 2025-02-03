@@ -9,8 +9,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -62,6 +61,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.22f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Models\Actions\AttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\DamageTextManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DataManager.cs" />
     <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
@@ -83,9 +83,9 @@
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
-    <Compile Include="Assets\Scripts\Models\CombatPair.cs" />
     <Compile Include="Assets\Scripts\Instances\CoinBarInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Models\Actions\TurnAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Models\CombatParticipants.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceItem.cs" />
@@ -100,7 +100,9 @@
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
+    <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceParameter.cs" />
+    <Compile Include="Assets\Scripts\Models\Actions\EnemySpawnAction.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Models\VisualEffect.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
+    <Compile Include="Assets\Scripts\Models\Actions\EnemyMoveAction.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
@@ -137,9 +140,11 @@
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
+    <Compile Include="Assets\Scripts\Models\PlayerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
+    <Compile Include="Assets\Scripts\Models\Actions\EnemyStartAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />
@@ -152,7 +157,6 @@
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
-    <Compile Include="Assets\Scripts\Models\CombatAction.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
@@ -162,20 +166,12 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorThumbnail.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAbilities.cs" />
     <Compile Include="Assets\Scripts\Instances\Canvas2DInstance.cs" />
+    <Compile Include="Assets\Scripts\Models\Actions\EnemyAttackAction.cs" />
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\TileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\WallManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Resources\Data\Actors.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Resources\Data\Stages.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\Resources\Data\VisualEffects.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Assets\Shader\Add_CenterGlow 2.shader" />
     <None Include="Assets\Shader\henshuuv_b.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -196,6 +192,7 @@
     <None Include="Assets\Shader\InvertColor.shader" />
     <None Include="Assets\Shader\Dissolve_Rimlight.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\Scripts\ExportedScripts.txt" />
     <None Include="Assets\Shader\MaskUV 1.shader" />
     <None Include="Assets\Shader\water_ramp.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
@@ -1603,7 +1600,8 @@
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

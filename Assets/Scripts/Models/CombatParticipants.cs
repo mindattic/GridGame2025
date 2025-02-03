@@ -4,9 +4,9 @@ using System.Linq;
 
 public class CombatParticipants
 {
-    public List<CombatPair> alignedPairs = new List<CombatPair>();
-    public List<CombatPair> attackingPairs = new List<CombatPair>();
-    public List<CombatPair> supportingPairs = new List<CombatPair>();
+    public List<ActorPair> alignedPairs = new List<ActorPair>();
+    public List<ActorPair> attackingPairs = new List<ActorPair>();
+    public List<ActorPair> supportingPairs = new List<ActorPair>();
 
     public CombatParticipants() { }
 
@@ -21,7 +21,7 @@ public class CombatParticipants
     }
 
     //Select all participants in actor x
-    public List<ActorInstance> Get(CombatPair pair)
+    public List<ActorInstance> Get(ActorPair pair)
     {
 
         return new[] { pair.actor1, pair.actor2 }
@@ -47,12 +47,12 @@ public class CombatParticipants
     }
 
 
-    public bool HasAttackingPair(CombatPair pair)
+    public bool HasAttackingPair(ActorPair pair)
     {
         return attackingPairs.Count > 0 && attackingPairs.Any(x => x.HasPair(pair.actor1, pair.actor2));
     }
 
-    public bool HasSupportingPair(CombatPair pair)
+    public bool HasSupportingPair(ActorPair pair)
     {
         return supportingPairs.Count > 0 && supportingPairs.Any(x => x.HasPair(pair.actor1, pair.actor2));
     }

@@ -80,7 +80,7 @@ public class StageManager : MonoBehaviour
         coinBar.Refresh();
         actorManager.Clear();
         dottedLineManager.Clear();
-        turnManager.Reset();
+        turnManager.Initialize();
         canvasOverlay.Show($"{currentStage.Name}");
         canvasOverlay.TriggerFadeOut(Interval.OneSecond);
 

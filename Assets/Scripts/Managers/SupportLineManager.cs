@@ -10,13 +10,13 @@ public class SupportLineManager : MonoBehaviour
     [SerializeField] public GameObject supportLinePrefab;
     public Dictionary<(Vector2Int, Vector2Int), SupportLineInstance> supportLines = new Dictionary<(Vector2Int, Vector2Int), SupportLineInstance>();
 
-    public bool Exists(CombatPair pair)
+    public bool Exists(ActorPair pair)
     {
         var key = GetKey(pair);
         return supportLines.ContainsKey(key);
     }
 
-    public void Spawn(CombatPair pair)
+    public void Spawn(ActorPair pair)
     {
         var key = GetKey(pair);
 
@@ -29,7 +29,7 @@ public class SupportLineManager : MonoBehaviour
         instance.Spawn(pair);
     }
 
-    public void Despawn(CombatPair pair)
+    public void Despawn(ActorPair pair)
     {
         var key = GetKey(pair);
         if (supportLines.TryGetValue(key, out var instance))
@@ -48,7 +48,7 @@ public class SupportLineManager : MonoBehaviour
         supportLines.Clear();
     }
 
-    private (Vector2Int, Vector2Int) GetKey(CombatPair pair)
+    private (Vector2Int, Vector2Int) GetKey(ActorPair pair)
     {
         return (pair.actor1.location, pair.actor2.location);
     }

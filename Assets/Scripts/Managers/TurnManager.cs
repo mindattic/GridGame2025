@@ -1,71 +1,152 @@
 using Assets.Scripts.Models;
-using Assets.Scripts.Utilities;
 using Game.Behaviors;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using Phase = TurnPhase;
 
 public class TurnManager : MonoBehaviour
 {
-    //External properties
+    // External properties
     protected AttackLineManager attackLineManager => GameManager.instance.attackLineManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
-    protected CombatManager combatManager => GameManager.instance.combatManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
-    //protected CombatParticipants participants { get => GameManager.instance.participants; set => GameManager.instance.participants = value; }
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected TimerBarInstance timerBar => GameManager.instance.timerBar;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
+
     public bool isPlayerTurn => currentTeam.Equals(Team.Player);
     public bool isEnemyTurn => currentTeam.Equals(Team.Enemy);
-    public bool isStartPhase => currentPhase.Equals(Phase.Start);
-    public bool isMovePhase => currentPhase.Equals(Phase.Move);
-    public bool isAttackPhase => currentPhase.Equals(Phase.Attack);
+    public bool isStartPhase => CurrentPhase.Equals(TurnPhase.Start);
+    public bool isMovePhase => CurrentPhase.Equals(TurnPhase.Move);
+    public bool isPreAttackPhase => CurrentPhase.Equals(TurnPhase.PreAttack);
+    public bool isAttackPhase => CurrentPhase.Equals(TurnPhase.Attack);
+    public bool isPostAttackPhase => CurrentPhase.Equals(TurnPhase.PostAttack);
+    public bool isEndPhase => CurrentPhase.Equals(TurnPhase.End);
     public bool isFirstTurn => currentTurn == 1;
 
-    //Internal properties
+    // Internal properties
+    public int currentTurn = 1;
+    public Team currentTeam = Team.Player;
 
-    //Fields
-    [SerializeField] public int currentTurn = 1;
-    [SerializeField] public Team currentTeam = Team.Player;
-    [SerializeField] public Phase currentPhase = Phase.Start;
-
-
-    // These lists hold actions that are scheduled for each phase.
-    private List<CombatAction> startPhaseActions = new List<CombatAction>();
-    private List<CombatAction> movePhaseActions = new List<CombatAction>();
-    private List<CombatAction> preAttackPhaseActions = new List<CombatAction>();
-    private List<CombatAction> attackPhaseActions = new List<CombatAction>();
-    private List<CombatAction> postAttackPhaseActions = new List<CombatAction>();
-    private List<CombatAction> endPhaseActions = new List<CombatAction>();
-
-
-
-    //Method which is automatically called before the first frame update  
-    void Start()
+    // Instead of a public field for the current phase, we create a private backing field and a public property.
+    private TurnPhase phase = TurnPhase.Start;
+    public TurnPhase CurrentPhase
     {
-        Reset();
+        get { return phase; }
+        set
+        {
+            if (phase != value)
+            {
+                phase = value;
+                // Fire the event when the phase changes.
+                OnTurnPhaseChanged?.Invoke(phase);
+            }
+        }
     }
 
-    public void Reset()
+    // Event that fires whenever the turn phase changes.
+    public event Action<TurnPhase> OnTurnPhaseChanged;
+
+    // Phase action lists (used on enemy turns)
+    private List<TurnAction> startPhaseActions = new List<TurnAction>();
+    private List<TurnAction> movePhaseActions = new List<TurnAction>();
+    private List<TurnAction> preAttackPhaseActions = new List<TurnAction>();
+    private List<TurnAction> attackPhaseActions = new List<TurnAction>();
+    private List<TurnAction> postAttackPhaseActions = new List<TurnAction>();
+    private List<TurnAction> endPhaseActions = new List<TurnAction>();
+
+    void Start()
+    {
+        // Optionally initialize the turn here.
+    }
+
+    public void Initialize()
     {
         currentTurn = 1;
         currentTeam = Team.Player;
-        currentPhase = Phase.Start;
+        CurrentPhase = TurnPhase.Start; // This will fire OnTurnPhaseChanged.
+        // For example, trigger glow for all active players.
         players.Where(x => x.isActive && x.isAlive).ToList().ForEach(x => x.glow.TriggerGlow());
-        //musicSource.Stop();
-        //musicSource.PlayOneShot(resourceManager.MusicTrack($"MelancholyLull"));
+    }
+
+    // Add an action to a specific phase.
+    public void AddActionToPhase(TurnPhase phase, TurnAction action)
+    {
+        switch (phase)
+        {
+            case TurnPhase.Start:
+                startPhaseActions.Add(action);
+                break;
+            case TurnPhase.Move:
+                movePhaseActions.Add(action);
+                break;
+            case TurnPhase.PreAttack:
+                preAttackPhaseActions.Add(action);
+                break;
+            case TurnPhase.Attack:
+                attackPhaseActions.Add(action);
+                break;
+            case TurnPhase.PostAttack:
+                postAttackPhaseActions.Add(action);
+                break;
+            case TurnPhase.End:
+                endPhaseActions.Add(action);
+                break;
+        }
+    }
+
+    public void ResetSortingOrder()
+    {
+        foreach (var actor in actors.Where(x => x.isActive && x.isAlive))
+        {
+            actor.sortingOrder = SortingOrder.Default;
+        }
+    }
+
+    public void NextTurn()
+    {
+        // Switch team for the next turn.
+        currentTeam = isPlayerTurn ? Team.Enemy : Team.Player;
+        // Set phase to Start (which will fire the OnTurnPhaseChanged event).
+        CurrentPhase = TurnPhase.Start;
+
+        supportLineManager.Clear();
+        attackLineManager.Clear();
+        ResetSortingOrder();
+
+        if (isEnemyTurn)
+        {
+            // For enemy turns, automatically add phase actions and run ExecuteTurn().
+            timerBar.Lock();
+            AddActionToPhase(TurnPhase.Start, new EnemySpawnAction());
+            AddActionToPhase(TurnPhase.Start, new EnemyStartAction());
+            StartCoroutine(ExecuteTurn());
+        }
+        else if (isPlayerTurn)
+        {
+            // For player turns, we want to pause in the Move phase.
+            currentTurn++;
+            timerBar.Refill();
+            players.Where(x => x.isActive && x.isAlive).ToList().ForEach(x => x.glow.TriggerGlow());
+            // Do NOT start ExecuteTurn() automatically here.
+            // Instead, SelectedPlayerManager or another system will eventually call turnManager.NextTurn() when the player has completed their move.
+        }
+    }
+
+    public void TriggerExecuteTurn()
+    {
+        StartCoroutine(ExecuteTurn());
     }
 
 
+    // Execute all phases in order (used for enemy turns)
     private IEnumerator ExecuteTurn()
     {
-        // For example, resolve phases in the following order:
         yield return StartCoroutine(ResolvePhase(startPhaseActions));
         yield return StartCoroutine(ResolvePhase(movePhaseActions));
         yield return StartCoroutine(ResolvePhase(preAttackPhaseActions));
@@ -73,177 +154,16 @@ public class TurnManager : MonoBehaviour
         yield return StartCoroutine(ResolvePhase(postAttackPhaseActions));
         yield return StartCoroutine(ResolvePhase(endPhaseActions));
 
-        // After all phases, proceed to the next turn.
         NextTurn();
     }
 
-    // Generic method to execute all actions for a given phase.
-    // You can decide if they should run sequentially or concurrently.
-    private IEnumerator ResolvePhase(List<CombatAction> actions)
+    // Execute a specific phase's actions.
+    private IEnumerator ResolvePhase(List<TurnAction> actions)
     {
-        // Option 1: Sequential execution (each action waits for the previous one to complete)
-        foreach (CombatAction action in actions)
+        foreach (TurnAction action in actions)
         {
             yield return StartCoroutine(action.Execute());
         }
-
-        // Option 2: Concurrent execution (if actions do not depend on one another)
-        // List<Coroutine> runningActions = new List<Coroutine>();
-        // foreach (CombatAction action in actions)
-        // {
-        //     runningActions.Add(StartCoroutine(action.Execute()));
-        // }
-        // // Wait until all concurrent actions are complete.
-        // foreach (Coroutine routine in runningActions)
-        // {
-        //     yield return routine;
-        // }
+        actions.Clear();
     }
-
-    public void NextTurn()
-    {
-        currentTeam = isPlayerTurn ? Team.Enemy : Team.Player;
-        currentPhase = Phase.Start;
-
-        supportLineManager.Clear();
-        attackLineManager.Clear();
-        combatManager.Clear();
-
-        //Reset actor sorting
-        actors.ForEach(x => x.sortingOrder = SortingOrder.Default);
-
-        if (isPlayerTurn)
-        {
-            currentTurn++;
-            timerBar.TriggerInitialize();
-            players.Where(x => x.isActive && x.isAlive).ToList().ForEach(x => x.glow.TriggerGlow());
-        }
-        else if (isEnemyTurn)
-        {
-            timerBar.Hide();
-
-            CheckEnemySpawn();
-            ExecuteEnemyMove();
-        }
-    }
-
-    #region Enemy Attack Methods
-
-
-    private void CheckEnemySpawn()
-    {
-        //Check abort conditions
-        if (!isEnemyTurn || !isStartPhase)
-            return;
-
-        var spawnableEnemies = enemies.Where(x => x.isSpawnable).ToList();
-        foreach (var enemy in spawnableEnemies)
-        {
-            enemy.Spawn(Random.UnoccupiedLocation);
-        }
-    }
-
-    private void ExecuteEnemyMove()
-    {
-        StartCoroutine(EnemyMove());
-    }
-
-    private IEnumerator EnemyMove()
-    {
-        //Check abort conditions
-        if (!isEnemyTurn || !isStartPhase)
-            yield break;
-
-        currentPhase = Phase.Move;
-
-        var readyEnemies = enemies.Where(x => x.isActive && x.isAlive && x.hasMaxAP).ToList();
-        if (readyEnemies.Count > 0)
-        {
-            yield return Wait.For(Intermission.Before.Enemy.Move);
-
-            foreach (var enemy in readyEnemies)
-            {
-                //enemy.render.SetParallaxSpeed(0.25f, 0.25f);
-     
-                enemy.CalculateAttackStrategy();
-                yield return enemy.move.MoveTowardDestination();
-            }
-
-            currentPhase = Phase.Attack;
-            ExecuteEnemyAttack();
-        }
-        else
-        {
-            NextTurn();
-        }
-
-
-    }
-
-
-
-
-
-    private void ExecuteEnemyAttack()
-    {
-        StartCoroutine(EnemyAttack());
-    }
-
-    private IEnumerator EnemyAttack()
-    {
-        //Check abort conditions
-        if (!isEnemyTurn || !isAttackPhase)
-            yield break;
-
-        var readyEnemies = enemies.Where(x => x.isActive && x.isAlive && x.hasMaxAP).ToList();
-        if (readyEnemies.Count < 1)
-            yield break;
-
-        yield return Wait.For(Intermission.Before.Enemy.Attack);
-
-        foreach (var enemy in readyEnemies)
-        {
-            var defendingPlayers = players.Where(x => x.isActive && x.isAlive && x.IsAdjacentTo(enemy.location)).ToList();
-            if (defendingPlayers.Count < 1)
-                continue;
-
-            foreach (var player in defendingPlayers)
-            {
-                IEnumerator Attack()
-                {
-                    var isHit = Formulas.IsHit(enemy, player);
-                    var isCriticalHit = false;
-                    var damage = Formulas.CalculateDamage(enemy, player);
-                    var attack = new AttackResult()
-                    {
-                        Opponent = player,
-                        IsHit = isHit,
-                        IsCriticalHit = isCriticalHit,
-                        Damage = damage
-                    };
-                    yield return enemy.Attack(attack);
-                }
-
-                var direction = enemy.GetDirectionTo(player);
-                var trigger = new Trigger(Attack());
-                yield return enemy.action.Bump(direction, trigger);
-            }
-
-            enemy.actionBar.Reset();
-            //enemy.render.SetParallaxSpeed(0.05f, 0.05f);
-        }
-
-        var dyingPlayers = actors.Where(x => x.isDying).ToList();
-        foreach (var player in dyingPlayers)
-        {
-            yield return player.Die();
-        }
-
-        NextTurn();
-    }
-
-    #endregion
-
-
-
 }
