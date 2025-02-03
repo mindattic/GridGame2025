@@ -6,6 +6,3 @@ if exist ExportedScripts.txt del ExportedScripts.txt
 
 :: Append all .cs files recursively to ExportedScripts.txt
 for /r %%f in (*.cs) do type "%%f" >> ExportedScripts.txt
-
-echo Export completed.
-timeout /t 3

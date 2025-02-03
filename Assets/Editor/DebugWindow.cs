@@ -171,7 +171,7 @@ public class DebugWindow : EditorWindow
 
         GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Turn: {(turnManager.isPlayerTurn ? "Player" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
-        GUILayout.Label($"Phase: {turnManager.CurrentPhase}", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label($"Phase: {turnManager.currentTurnPhase}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.width * 0.25f));
 
         GUILayout.EndHorizontal();

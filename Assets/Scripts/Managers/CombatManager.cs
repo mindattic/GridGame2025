@@ -104,7 +104,7 @@
 //                pair.attackResults = CalculateAttackResults(pair);
 //                foreach (var result in pair.attackResults)
 //                {
-//                    turnManager.AddActionToPhase(TurnPhase.Attack, new AttackAction(result));
+//                    turnManager.AddAction(TurnPhase.Attack, new AttackAction(result));
 //                }
 //            }
 //        }

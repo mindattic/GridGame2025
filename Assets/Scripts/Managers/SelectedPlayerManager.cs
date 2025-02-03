@@ -13,16 +13,14 @@ public class SelectedPlayerManager : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
     protected Vector3 mouseOffset { get => GameManager.instance.mouseOffset; set => GameManager.instance.mouseOffset = value; }
-    protected ActorInstance focusedActor { get => GameManager.instance.focusedActor; set => GameManager.instance.focusedActor = value; }
+    protected ActorInstance selectedActor { get => GameManager.instance.focusedActor; set => GameManager.instance.focusedActor = value; }
     protected ActorInstance previousSelectedPlayer { get => GameManager.instance.previousSelectedPlayer; set => GameManager.instance.previousSelectedPlayer = value; }
-    protected ActorInstance selectedPlayer { get => GameManager.instance.selectedPlayer; set => GameManager.instance.selectedPlayer = value; }
+    protected ActorInstance movingPlayer { get => GameManager.instance.selectedPlayer; set => GameManager.instance.selectedPlayer = value; }
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
-
-
-    protected bool hasFocusedActor => focusedActor != null;
-    protected bool hasSelectedPlayer => selectedPlayer != null;
+    protected bool hasSelectedActor => selectedActor != null;
+    protected bool hasMovingPlayer => movingPlayer != null;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected TimerBarInstance timerBar => GameManager.instance.timerBar;
     protected ActorManager actorManager => GameManager.instance.actorManager;
@@ -30,41 +28,16 @@ public class SelectedPlayerManager : MonoBehaviour
 
     private void Start()
     {
-        // Subscribe to the TurnManager's OnTurnPhaseChanged event.
-        turnManager.OnTurnPhaseChanged += phase =>
-        {
-            Debug.Log("Turn phase changed to: " + phase);
-
-            if (phase == TurnPhase.Attack)
-            {
-                if (turnManager.isPlayerTurn)
-                {
-                    // For a player turn, we assume that a PlayerAttackAction has already been added.
-                    // Trigger execution of the attack phase (for example, by calling a public method on TurnManager).
-                    turnManager.TriggerExecuteTurn();
-                }
-                else if (turnManager.isEnemyTurn)
-                {
-                    // If it's enemy turn, check if any enemy is ready to attack.
-                    bool anyEnemyReady = enemies.Any(x => x.isActive && x.isAlive && x.stats.AP == x.stats.MaxAP);
-                    if (!anyEnemyReady)
-                    {
-                        // If no enemy is ready, immediately advance to the next turn (which will be player turn).
-                        turnManager.NextTurn();
-                    }
-                    // Otherwise, enemy actions will be executed as part of the enemy turn.
-                }
-            }
-        };
+ 
     }
 
-    public void Focus()
+    public void Select()
     {
-        // Check abort conditions
+        // Check abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase)
             return;
 
-        // Find actor using collision overlap
+        // Find actor using collision overlap.
         var collisions = Physics2D.OverlapPointAll(mousePosition3D);
         if (collisions == null)
             return;
@@ -77,73 +50,75 @@ public class SelectedPlayerManager : MonoBehaviour
 
         // Clear selection boxes from all actors, then select this actor.
         actors.ForEach(x => x.render.SetSelectionBoxEnabled(isEnabled: false));
-        focusedActor = actor;
-        focusedActor.render.SetSelectionBoxEnabled(isEnabled: true);
+        selectedActor = actor;
+        selectedActor.render.SetSelectionBoxEnabled(isEnabled: true);
 
         // Calculate mouse offset.
-        mouseOffset = focusedActor.position - mousePosition3D;
+        mouseOffset = selectedActor.position - mousePosition3D;
 
         // Update the card UI.
-        cardManager.Assign(focusedActor);
+        cardManager.Assign(selectedActor);
 
-        if (focusedActor.isPlayer)
-            StartCoroutine(focusedActor.move.MoveTowardCursor());
+        if (selectedActor.isPlayer)
+            StartCoroutine(selectedActor.move.MoveTowardCursor());
     }
 
-    public void Unfocus()
+    public void Deselect()
     {
         // If no focused actor, do nothing.
-        if (!hasFocusedActor)
+        if (!hasSelectedActor)
             return;
 
-        // If nothing is selected, snap the focused actor back.
-        if (!hasSelectedPlayer)
-            focusedActor.position = focusedActor.currentTile.position;
+        // If nothing is being moved, snap the focused actor back to its current tile.
+        if (!hasMovingPlayer)
+            selectedActor.position = selectedActor.currentTile.position;
 
-        focusedActor = null;
+        selectedActor = null;
     }
 
-    public void Select()
+    public void Drag()
     {
         // Check abort conditions.
-        if (!turnManager.isPlayerTurn || !turnManager.isStartPhase || focusedActor == null || focusedActor.isEnemy)
+        if (!turnManager.isPlayerTurn || !turnManager.isStartPhase || !hasSelectedActor || selectedActor.isEnemy)
             return;
 
-        // Set the selected player.
-        selectedPlayer = focusedActor;
-        Unfocus();
+        // Set the selected player to be moved.
+        movingPlayer = selectedActor;
+        Deselect();
 
-        // Change phase from Start to Move by invoking the property.
-        turnManager.CurrentPhase = TurnPhase.Move;
+
+        // When the phase switches to Move on the player turn, start the timer and enable enemy AP checking.
         audioManager.Play("Select");
         timerBar.Play();
         actorManager.CheckEnemyAP();
-        StartCoroutine(selectedPlayer.move.MoveTowardCursor());
+        if (movingPlayer != null)
+            StartCoroutine(movingPlayer.move.MoveTowardCursor());
+
+        // Change phase from Start to Move.
+        turnManager.SetPhase(TurnPhase.Move);
     }
 
-    public void Unselect()
+    public void Drop()
     {
         // Check abort conditions.
-        if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasSelectedPlayer)
+        if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasMovingPlayer)
             return;
 
-        // Snap the selected player to the closest tile.
-        var closestTile = Geometry.GetClosestTile(selectedPlayer.position);
-        closestTile.spriteRenderer.color = ColorHelper.Translucent.White;
-        selectedPlayer.location = closestTile.location;
-        selectedPlayer.position = closestTile.position;
-        previousSelectedPlayer = selectedPlayer;
-        selectedPlayer = null;
+        // Snap the moving player to the closest tile.
+        var closestTile = Geometry.GetClosestTile(movingPlayer.position);
+        movingPlayer.location = closestTile.location;
+        movingPlayer.position = closestTile.position;
+        previousSelectedPlayer = movingPlayer;
+        movingPlayer = null;
 
         // Reset UI and other elements.
         tileManager.Reset();
         cardManager.Reset();
         timerBar.Pause();
 
-        // Add a PlayerAttackAction to the Attack phase.
-        turnManager.AddActionToPhase(TurnPhase.Attack, new PlayerAttackAction());
-
-        // Change the turn phase to Pre-Attack using the property so that the event fires.
-        turnManager.CurrentPhase = TurnPhase.Attack;
+        // Now that the player has dropped their unit,
+        // add the PlayerAttackAction and trigger the execution of pending turn actions.
+        turnManager.AddAction(new PlayerAttackAction());
+        turnManager.SetPhase(TurnPhase.Attack);
     }
 }

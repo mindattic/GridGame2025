@@ -8,6 +8,11 @@ using UnityEngine;
 
 public class PlayerAttackAction : TurnAction
 {
+    protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
+    protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
+    protected IQueryable<ActorInstance> players => GameManager.instance.players;
+
+
     // A local instance for tracking combat participants.
     private CombatParticipants participants = new CombatParticipants();
 
@@ -159,7 +164,7 @@ public class PlayerAttackAction : TurnAction
 
     private void UpdateSortingOrder()
     {
-        foreach (var actor in GameManager.instance.actors.Where(x => x.isActive && x.isAlive))
+        foreach (var actor in actors.Where(x => x.isActive && x.isAlive))
         {
             actor.sortingOrder = SortingOrder.Default;
         }
@@ -167,6 +172,8 @@ public class PlayerAttackAction : TurnAction
         foreach (var pair in participants.attackingPairs)
         {
             pair.actor1.sortingOrder = SortingOrder.Attacker;
+            pair.actor2.sortingOrder = SortingOrder.Attacker;
+
             foreach (var opponent in pair.opponents)
             {
                 opponent.sortingOrder = SortingOrder.Target;

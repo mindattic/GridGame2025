@@ -20,7 +20,7 @@ public class DottedLineInstance : MonoBehaviour
     SpriteRenderer spriteRenderer;
     public Vector2Int location;
     public DottedLineSegment segment;
-    //public bool isOccupied => hasSelectedPlayer && selectedPlayer.location == currentLocation;
+    //public bool isOccupied => hasMovingPlayer && movingPlayer.location == currentLocation;
 
     public Vector2Int top => location + new Vector2Int(0, -1);
     public Vector2Int right => location + new Vector2Int(1, 0);

@@ -22,14 +22,11 @@ namespace Assets.Scripts.Models
             // (Optional) Log or perform any setup needed at the very start of the enemy turn.
             Debug.Log("EnemyStartAction executing: preparing enemy movement.");
 
-            // Add the EnemyMoveAction to the Move phase.
-            turnManager.AddActionToPhase(TurnPhase.Move, new EnemyMoveAction());
-
-            // Switch the current phase to Move so that the EnemyMoveAction is processed next.
-            turnManager.CurrentPhase = TurnPhase.Move;
+            turnManager.AddAction(new EnemyMoveAction());
+            turnManager.SetPhase(TurnPhase.Move);
 
             // Yield return null (or any brief wait) to allow the phase change to propagate.
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
     }
 }

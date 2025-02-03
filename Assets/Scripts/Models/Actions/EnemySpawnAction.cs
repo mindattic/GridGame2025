@@ -17,7 +17,7 @@ namespace Assets.Scripts.Models
             {
                 enemy.Spawn(Random.UnoccupiedLocation);
             }
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
     }
 }

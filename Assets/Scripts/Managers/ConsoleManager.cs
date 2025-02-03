@@ -44,7 +44,7 @@ namespace Game.Behaviors
         {
             //string fps = $@"{fpsMonitor.currentFps}";
             //string turn = turnManager.isPlayerTurn ? "Player" : "Opponent";
-            //string phase = turnManager.currentPhase.ToString();
+            //string phase = turnManager.currentTurnPhase.ToString();
 
             //textMesh.text = ""
             //   + $"{fps} FPS" + Environment.NewLine 
@@ -54,16 +54,16 @@ namespace Game.Behaviors
             //   + "";
 
 
-            //string character = hasSelectedPlayer ? focusedActor.character : "-";
-            //string boardLocation = hasSelectedPlayer ? $@"({focusedActor.boardLocation.x},{focusedActor.boardLocation.y})" : "-";
-            //string boardPosition = hasSelectedPlayer ? $@"({focusedActor.transform.boardPosition.x},{focusedActor.transform.boardPosition.y})" : "-";
+            //string character = hasMovingPlayer ? selectedActor.character : "-";
+            //string boardLocation = hasMovingPlayer ? $@"({selectedActor.boardLocation.x},{selectedActor.boardLocation.y})" : "-";
+            //string boardPosition = hasMovingPlayer ? $@"({selectedActor.transform.boardPosition.x},{selectedActor.transform.boardPosition.y})" : "-";
             //string mouse2D = mousePosition2D.x >= 0 ? $@"({mousePosition2D.x.ToString("N0").Replace(",", ""):N0},{mousePosition2D.y.ToString("N0").Replace(",", ""):N0})" : "-";
             //string mouse3D = mousePosition3D.x >= -4 ? $@"({mousePosition3D.x.ToString("N0").Replace(",", ""):N0},{mousePosition3D.y.ToString("N0").Replace(",", ""):N0},{mousePosition3D.z.ToString("N0").Replace(", ", ""):N0})" : "-";
             //string attackers = battle.attackers.Any() ? $"[{string.Join(",", battle.attackers.Select(x => x.character))}]" : "-";
             //string supports = battle.supporters.Any() ? $"[{string.Join(",", battle.supporters.Select(x => x.character))}]" : "-";
             //string defenders = battle.defenders.Any() ? $"[{string.Join(",", battle.defenders.Select(x => x.character))}]" : "-";
             //string currentTeam = turnManager != null ? turnManager.currentTeam.ToString() : "-";
-            //string currentPhase = turnManager != null ? turnManager.currentPhase.ToString() : "-";
+            //string currentTurnPhase = turnManager != null ? turnManager.currentTurnPhase.ToString() : "-";
 
 
             //string a0 = actors[0] != null ? $"{actors[0].name}: {actors[0].HP}{Environment.NewLine}": $"{Environment.NewLine}";

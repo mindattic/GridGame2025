@@ -39,9 +39,8 @@ namespace Assets.Scripts.Models
                 }
 
                 // After moving, add the enemy attack action.
-                turnManager.AddActionToPhase(TurnPhase.Attack, new EnemyAttackAction());
-                // Switch the phase to Attack so that enemy attacks are executed.
-                turnManager.CurrentPhase = TurnPhase.Attack;
+                turnManager.AddAction(new EnemyAttackAction());
+                turnManager.SetPhase(TurnPhase.Attack);
             }
             else
             {

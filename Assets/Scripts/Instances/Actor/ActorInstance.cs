@@ -45,6 +45,7 @@ public class ActorInstance : MonoBehaviour
     public bool onWestEdge => location.x == 1;
     public bool isActive => isActiveAndEnabled;
     public bool isAlive => isActive && stats.HP > 0;
+    public bool isReady => isActive && isAlive && stats.AP == stats.MaxAP;
     public bool isDying => isActive && stats.HP < 1;
     public bool isDead => !isActive && stats.HP < 1;
     public bool isSpawnable => !isActive && isAlive && spawnDelay <= turnManager.currentTurn;
@@ -705,7 +706,7 @@ public class ActorInstance : MonoBehaviour
     //flags.IsWaiting = true;
 
     //During:
-    //while (hasSelectedPlayer)
+    //while (hasMovingPlayer)
     //{
     //if (ap < apMax)
     //{

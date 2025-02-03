@@ -7,7 +7,7 @@ public class InputManager : MonoBehaviour
     protected ActorInstance focusedActor => GameManager.instance.focusedActor;
     protected ActorInstance previousSelectedPlayer => GameManager.instance.previousSelectedPlayer;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
-    protected bool hasFocusedActor => focusedActor != null;
+    protected bool hasSelectedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
     protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
     protected StageManager stageManager => GameManager.instance.stageManager;
@@ -34,14 +34,14 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            selectedPlayerManager.Focus();
-            isDragging = hasFocusedActor;
+            selectedPlayerManager.Select();
+            isDragging = hasSelectedActor;
 
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            selectedPlayerManager.Unfocus();
-            selectedPlayerManager.Unselect();
+            selectedPlayerManager.Deselect();
+            selectedPlayerManager.Drop();
             isDragging = false;
         }
 
@@ -51,13 +51,13 @@ public class InputManager : MonoBehaviour
     private void CheckDragging()
     {
         //Check abort conditions
-        if (!isDragging || !hasFocusedActor)
+        if (!isDragging || !hasSelectedActor)
             return;
 
         var dragDistance = Vector3.Distance(focusedActor.position, focusedActor.currentTile.position);
         if (dragDistance > dragThreshold)
         {
-            selectedPlayerManager.Select();
+            selectedPlayerManager.Drag();
         }
 
     }

@@ -27,7 +27,7 @@ public class TimerBarInstance : MonoBehaviour
     private float width;
 
     // Reference to the active countdown coroutine
-    private Coroutine countdownCoroutine;
+    private Coroutine countdown;
 
     private void Awake()
     {
@@ -58,7 +58,7 @@ public class TimerBarInstance : MonoBehaviour
     //{
     //    // Stop any running coroutines (e.g. a SlideOut or a countdown)
     //    StopAllCoroutines();
-    //    countdownCoroutine = null;
+    //    countdown = null;
     //    // Start sliding the timer bar into its initial position.
     //    StartCoroutine(Initialize());
     //}
@@ -86,7 +86,7 @@ public class TimerBarInstance : MonoBehaviour
     /// Coroutine that counts down the timer bar.
     /// When time expires, calls selectedPlayerManager.Unselect().
     /// </summary>
-    private IEnumerator CountdownCoroutine()
+    private IEnumerator Countdown()
     {
         isRunning = true;
         while (timeRemaining > 0)
@@ -94,7 +94,7 @@ public class TimerBarInstance : MonoBehaviour
             // If debug mode has the timer infinite, simply wait.
             if (debugManager.isTimerInfinite)
             {
-                yield return null;
+                yield return Wait.UntilNextFrame();
                 continue;
             }
 
@@ -102,11 +102,12 @@ public class TimerBarInstance : MonoBehaviour
             // Update the bar's horizontal scale to reflect the remaining time.
             float newXScale = scale.x * (timeRemaining / maxDuration);
             bar.transform.localScale = new Vector3(newXScale, scale.y, scale.z);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         isRunning = false;
-        // When the timer expires, force unselect (only once).
-        selectedPlayerManager.Unselect();
+
+        // When the timer expires, force drop (only once).
+        selectedPlayerManager.Drop();
     }
 
     /// <summary>
@@ -114,12 +115,10 @@ public class TimerBarInstance : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        // If a countdown is already running, stop it.
-        if (countdownCoroutine != null)
-        {
-            StopCoroutine(countdownCoroutine);
-        }
-        countdownCoroutine = StartCoroutine(CountdownCoroutine());
+        if (countdown != null)
+            StopCoroutine(countdown);
+
+        countdown = StartCoroutine(Countdown());
     }
 
     /// <summary>
@@ -128,10 +127,10 @@ public class TimerBarInstance : MonoBehaviour
     public void Pause()
     {
         isRunning = false;
-        if (countdownCoroutine != null)
+        if (countdown != null)
         {
-            StopCoroutine(countdownCoroutine);
-            countdownCoroutine = null;
+            StopCoroutine(countdown);
+            countdown = null;
         }
     }
 
@@ -141,7 +140,6 @@ public class TimerBarInstance : MonoBehaviour
         back.color = ColorHelper.Solid.White;
         bar.color = ColorHelper.Solid.White;
         front.color = ColorHelper.Solid.White;
-
 
         timeRemaining = maxDuration;
         float newXScale = scale.x;

@@ -140,7 +140,6 @@
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
-    <Compile Include="Assets\Scripts\Models\PlayerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
@@ -151,6 +150,7 @@
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\PortraitInstance.cs" />
+    <Compile Include="Assets\Scripts\Models\Actions\PlayerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\TooltipManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
