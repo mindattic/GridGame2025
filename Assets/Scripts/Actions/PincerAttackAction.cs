@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerAttackAction : TurnAction
+public class PincerAttackAction : TurnAction
 {
+    protected TurnManager turnManager => GameManager.instance.turnManager;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
@@ -63,6 +64,7 @@ public class PlayerAttackAction : TurnAction
                (actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location));
     }
 
+
     private void AssignAlignedPairs(IQueryable<ActorInstance> teamMembers)
     {
         foreach (var actor1 in teamMembers)
@@ -88,18 +90,41 @@ public class PlayerAttackAction : TurnAction
     {
         foreach (var pair in participants.alignedPairs)
         {
-            // If there are opponents between the pair (and no conflicting allies), then add it.
-            if (pair.hasOpponentsBetween && !participants.HasAttackingPair(pair))
+            //Ensure there are NO gaps or allies between attackers
+            if (!pair.hasOpponentsBetween || pair.hasGapsBetween || pair.hasAlliesBetween) continue;
+
+            participants.attackingPairs.Add(pair);
+            pair.attackResults = CalculateAttackResults(pair); //Precompute attack results only if valid
+
+            if (pair.attackResults.Any())
             {
-                participants.attackingPairs.Add(pair);
-                // Precompute attack results for this pair.
-                pair.attackResults = CalculateAttackResults(pair);
+                foreach (var attack in pair.attackResults)
+                {
+                    Debug.Log($"Pincer attack! {pair.actor1.name} and {pair.actor2.name} attacking {attack.Opponent.name}");
+                    turnManager.AddAction(new AttackAction(attack));
+                }
             }
+
         }
     }
 
+
+    private bool IsBetween(ActorInstance attacker1, ActorInstance attacker2, ActorInstance opponent)
+    {
+        int minX = Mathf.Min(attacker1.location.x, attacker2.location.x);
+        int maxX = Mathf.Max(attacker1.location.x, attacker2.location.x);
+        int minY = Mathf.Min(attacker1.location.y, attacker2.location.y);
+        int maxY = Mathf.Max(attacker1.location.y, attacker2.location.y);
+
+        //Check if opponent is within the bounds formed by attacker1 and attacker2
+        return (opponent.location.x > minX && opponent.location.x < maxX) ||
+               (opponent.location.y > minY && opponent.location.y < maxY);
+    }
+
+
     private List<AttackResult> CalculateAttackResults(ActorPair pair)
     {
+        //TODO: Somehow combine actor1 and actor 2 attacks?...
         return pair.opponents.Select(opponent =>
         {
             var isHit = Formulas.IsHit(pair.actor1, opponent);
@@ -123,10 +148,19 @@ public class PlayerAttackAction : TurnAction
 
         yield return GrowAndShrink(pair.actor1, pair.actor2);
 
+        List<ActorInstance> dyingOpponents = new List<ActorInstance>();
+
         foreach (var attack in pair.attackResults)
         {
             yield return PerformAttack(pair.actor1, attack);
+
+            if (attack.Opponent.isDying)
+                dyingOpponents.Add(attack.Opponent);
         }
+
+        //Wait until all death dissolves have completed before moving to next pair
+        if (dyingOpponents.Count > 0)
+            yield return new WaitUntil(() => dyingOpponents.All(x => x.isDead));
     }
 
     private IEnumerator GrowAndShrink(ActorInstance actor1, ActorInstance actor2)

@@ -118,7 +118,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
         // Now that the player has dropped their unit,
         // add the PlayerAttackAction and trigger the execution of pending turn actions.
-        turnManager.AddAction(new PlayerAttackAction());
+        turnManager.AddAction(new PincerAttackAction());
         turnManager.SetPhase(TurnPhase.Attack);
     }
 }
