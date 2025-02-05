@@ -61,11 +61,11 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.0.22f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Models\Actions\AttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\DamageTextManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DataManager.cs" />
     <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Actions\EnemyStartAction.cs" />
     <Compile Include="Assets\Scripts\Utilities\LogWindow.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
@@ -76,6 +76,7 @@
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
     <Compile Include="Assets\Scripts\Instances\DamageTextInstance.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
+    <Compile Include="Assets\Scripts\Actions\EnemySpawnAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\Random.cs" />
@@ -85,15 +86,14 @@
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
     <Compile Include="Assets\Scripts\Instances\CoinBarInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Models\Actions\TurnAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
-    <Compile Include="Assets\Scripts\Models\CombatParticipants.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceItem.cs" />
     <Compile Include="Assets\Scripts\Managers\DatabaseManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
+    <Compile Include="Assets\Scripts\Actions\EnemyAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
@@ -102,7 +102,8 @@
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceParameter.cs" />
-    <Compile Include="Assets\Scripts\Models\Actions\EnemySpawnAction.cs" />
+    <Compile Include="Assets\Scripts\Actions\AttackAction.cs" />
+    <Compile Include="Assets\Scripts\Actions\TurnAction.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Models\VisualEffect.cs" />
@@ -110,10 +111,12 @@
     <Compile Include="Assets\Scripts\GUI\Card.cs" />
     <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
+    <Compile Include="Assets\Scripts\Actions\PlayerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Instances\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\TimerBarInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
+    <Compile Include="Assets\Scripts\Actions\EnemyMoveAction.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Instances\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
@@ -130,8 +133,8 @@
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
-    <Compile Include="Assets\Scripts\Models\Actions\EnemyMoveAction.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Models\PincerAttackParticipants.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
@@ -143,14 +146,12 @@
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
-    <Compile Include="Assets\Scripts\Models\Actions\EnemyStartAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\PortraitInstance.cs" />
-    <Compile Include="Assets\Scripts\Models\Actions\PlayerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\TooltipManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
@@ -166,7 +167,6 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorThumbnail.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAbilities.cs" />
     <Compile Include="Assets\Scripts\Instances\Canvas2DInstance.cs" />
-    <Compile Include="Assets\Scripts\Models\Actions\EnemyAttackAction.cs" />
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\TileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\WallManager.cs" />

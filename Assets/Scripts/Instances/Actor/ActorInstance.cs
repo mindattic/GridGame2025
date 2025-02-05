@@ -419,7 +419,7 @@ public class ActorInstance : MonoBehaviour
         while (healthBar.isDraining)
             yield return Wait.UntilNextFrame();
 
-        yield return Wait.For(Intermission.After.HealthBar.Empty);
+        //yield return Wait.For(Intermission.After.HealthBar.Empty);
 
         portraitManager.Dissolve(this);
         audioManager.Play("Death");

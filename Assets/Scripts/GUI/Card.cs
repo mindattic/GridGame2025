@@ -77,7 +77,7 @@ namespace Game.Behaviors
             var position = portraitImage.rectTransform.localPosition;
             float width = portraitImage.rectTransform.rect.width;
             float height = portraitImage.rectTransform.rect.height;
-            destination = new Vector3(position.x + width / 2, position.y - (height * 1.25f), position.z);
+            destination = new Vector3(position.x + width / 2, position.y + height / 2, position.z);
 
             offscreenPosition = new Vector3(Screen.width + width, destination.y, destination.z);
             portraitImage.rectTransform.localPosition = offscreenPosition;
@@ -89,7 +89,7 @@ namespace Game.Behaviors
             portraitImage.sprite = resourceManager.Portrait(actor.character.ToString()).Value.ToSprite();
             portraitImage.enabled = true;
 
-            titleText.text = actor.name;
+            titleText.text = actor.name.Split("_")[0];
 
             var hp = $"{actor.stats.HP,2}/{actor.stats.MaxHP,-3}"; //HP/MaxHP with dynamic padding
             var str = $"{actor.stats.Strength,4}";                //Right-align Stats to 4 characters

@@ -14,7 +14,7 @@ public class PlayerAttackAction : TurnAction
 
 
     // A local instance for tracking combat participants.
-    private CombatParticipants participants = new CombatParticipants();
+    private PincerAttackParticipants participants = new PincerAttackParticipants();
 
     public override IEnumerator Execute()
     {

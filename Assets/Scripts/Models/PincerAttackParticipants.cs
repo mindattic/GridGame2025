@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class CombatParticipants
+public class PincerAttackParticipants
 {
     public List<ActorPair> alignedPairs = new List<ActorPair>();
     public List<ActorPair> attackingPairs = new List<ActorPair>();
     public List<ActorPair> supportingPairs = new List<ActorPair>();
 
-    public CombatParticipants() { }
+    public PincerAttackParticipants() { }
 
     //Select all participants
     public List<ActorInstance> Get()
