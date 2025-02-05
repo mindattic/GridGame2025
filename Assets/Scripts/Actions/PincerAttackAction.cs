@@ -4,10 +4,13 @@ using Game.Behaviors;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PincerAttackAction : TurnAction
 {
+    protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
@@ -30,7 +33,9 @@ public class PincerAttackAction : TurnAction
             yield break;
         }
 
-        SetupCombatState();
+        //Setup combat 
+        UpdateSortingOrder();
+        boardOverlay.TriggerFadeIn();
 
         foreach (var pair in participants.attackingPairs)
         {
@@ -39,7 +44,10 @@ public class PincerAttackAction : TurnAction
             yield return ResolveAttack(pair);
         }
 
-        CleanupCombatState();
+        //Cleanup combat
+        boardOverlay.TriggerFadeOut();
+        turnManager.ResetSortingOrder();
+        ClearCombatParticipants();
 
         yield break;
     }
@@ -146,55 +154,39 @@ public class PincerAttackAction : TurnAction
         if (pair.attackResults == null || pair.attackResults.Count == 0)
             yield break;
 
-        yield return GrowAndShrink(pair.actor1, pair.actor2);
+        //Grow and shrink
+        yield return CoroutineHelper.WaitForAll(GameManager.instance, pair.actor1.action.Grow(), pair.actor2.action.Grow());
+        yield return CoroutineHelper.WaitForAll(GameManager.instance, pair.actor1.action.Shrink(), pair.actor2.action.Shrink());
 
         List<ActorInstance> dyingOpponents = new List<ActorInstance>();
 
         foreach (var attack in pair.attackResults)
         {
-            yield return PerformAttack(pair.actor1, attack);
+            //yield return PerformAttack(pair.actor1, attack);
+            var attacker = attack.Pair.actor1; //TODO: Somehow combine actor1 and actor2?...
+            var direction = attacker.GetDirectionTo(attack.Opponent);
+            var trigger = new Trigger(attacker.Attack(attack));
+            yield return attacker.action.Bump(direction, trigger);
 
+            // If the opponent is dying, handle death
             if (attack.Opponent.isDying)
+            {
                 dyingOpponents.Add(attack.Opponent);
+                yield return HandleDeath(attack.Opponent);
+            }
         }
 
-        //Wait until all death dissolves have completed before moving to next pair
-        if (dyingOpponents.Count > 0)
+        //Wait until all deaths have completed before moving to next pair
+        if (dyingOpponents.Any())
             yield return new WaitUntil(() => dyingOpponents.All(x => x.isDead));
-    }
-
-    private IEnumerator GrowAndShrink(ActorInstance actor1, ActorInstance actor2)
-    {
-        // Wait for both actors to "grow" (attack animation start)
-        yield return CoroutineHelper.WaitForAll(GameManager.instance, actor1.action.Grow(), actor2.action.Grow());
-        // Then wait for both to "shrink" (attack animation end)
-        yield return CoroutineHelper.WaitForAll(GameManager.instance, actor1.action.Shrink(), actor2.action.Shrink());
-    }
-
-    private IEnumerator PerformAttack(ActorInstance attacker, AttackResult attack)
-    {
-        var direction = attacker.GetDirectionTo(attack.Opponent);
-        var trigger = new Trigger(attacker.Attack(attack));
-        yield return attacker.action.Bump(direction, trigger);
-
-        // If the opponent is dying, handle death.
-        if (attack.Opponent.isDying)
-        {
-            yield return HandleDeath(attack.Opponent);
-        }
     }
 
     private IEnumerator HandleDeath(ActorInstance target)
     {
         target.TriggerDie();
-        yield return null;
+        yield return Wait.UntilNextFrame();
     }
 
-    private void SetupCombatState()
-    {
-        UpdateSortingOrder();
-        GameManager.instance.boardOverlay.TriggerFadeIn();
-    }
 
     private void UpdateSortingOrder()
     {
