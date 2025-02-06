@@ -83,6 +83,7 @@ public class StageData
         CompletionValue = other.CompletionValue;
         Actors = other.Actors != null ? new List<StageActor>(other.Actors) : new List<StageActor>();
         DottedLines = other.DottedLines != null ? new List<StageDottedLine>(other.DottedLines) : new List<StageDottedLine>();
+        Tutorials = other.Tutorials != null ? new List<string>(other.Tutorials) : new List<string>();
     }
 
     public string Name;
@@ -91,6 +92,8 @@ public class StageData
     public int CompletionValue;
     public List<StageActor> Actors;
     public List<StageDottedLine> DottedLines;
+    public List<string> Tutorials;
+
 }
 
 

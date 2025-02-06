@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Assets.Scripts.Models
 {
@@ -16,8 +13,35 @@ namespace Assets.Scripts.Models
         public static string Materials = "Materials";
         public static string Seamless = "Seamless";
         public static string Sprites = "Sprites";
+        public static string Textures = "Textures";
         public static string WeaponTypes = "Sprites/WeaponTypes";
         public static string VisualEffects = "VisualEffects";
-
     }
+
+    [Serializable]
+    public class ResourceWrapper<T>
+    {
+        public List<T> Items = new List<T>();
+    }
+
+    [Serializable]
+    public class ResourceItem<T>
+    {
+        public T Value;                     
+        public List<ResourceParameter> Parameters = new List<ResourceParameter>();
+    }
+
+    [Serializable]
+    public class ResourceParameter
+    {
+        public string Key;  
+        public string Value;
+    }
+
+    [Serializable]
+    public class ResourceParameterList
+    {
+        public List<ResourceParameter> Parameters = new List<ResourceParameter>();
+    }
+
 }

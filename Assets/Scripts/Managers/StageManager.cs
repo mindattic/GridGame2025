@@ -1,3 +1,5 @@
+using Assets.Scripts.GUI;
+using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;
 using System;
@@ -13,6 +15,7 @@ public class StageManager : MonoBehaviour
 {
     //External properties
     protected DataManager dataManager => GameManager.instance.dataManager;
+    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     public int totalCoins
     {
         get => GameManager.instance.totalCoins;
@@ -24,6 +27,9 @@ public class StageManager : MonoBehaviour
     protected CoinBarInstance coinBar => GameManager.instance.coinBar;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected BoardInstance board => GameManager.instance.board;
+    protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
+
+
     protected List<ActorInstance> actors
     {
         get => GameManager.instance.actors;
@@ -81,6 +87,7 @@ public class StageManager : MonoBehaviour
         actorManager.Clear();
         dottedLineManager.Clear();
         turnManager.Initialize();
+        canvasOverlay.Reset();
         canvasOverlay.Show($"{currentStage.Name}");
         canvasOverlay.TriggerFadeOut(Interval.OneSecond);
 
@@ -93,7 +100,7 @@ public class StageManager : MonoBehaviour
             SpawnActor(character, team, location);
         }
 
-        //Spawn dotted lines
+        //Spawn dotted lines (if applicable)
         foreach (var stageDottedLine in currentStage.DottedLines)
         {
             var segment = Convert.ToDottedLineSegment(stageDottedLine.Segment);
@@ -101,7 +108,12 @@ public class StageManager : MonoBehaviour
             dottedLineManager.Spawn(segment, location);
         }
 
-
+        //Show first tutorial (if applicable)
+        var tutorialKey = currentStage.Tutorials.FirstOrDefault();
+        if (!string.IsNullOrWhiteSpace(tutorialKey)) {
+            var tutorial = resourceManager.Tutorial(tutorialKey);
+            tutorialPopup.Load(tutorial);
+        }
     }
 
     //private void Update()
@@ -119,7 +131,6 @@ public class StageManager : MonoBehaviour
         instance.transform.parent = board.transform;
         instance.character = character;
         instance.name = $"{character}_{Guid.NewGuid():N}";
-
 
         instance.team = team;
         instance.stats = dataManager.GetStats(character);

@@ -86,7 +86,6 @@
     <Compile Include="Assets\Scripts\Instances\CoinBarInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
-    <Compile Include="Assets\Scripts\Models\ResourceItem.cs" />
     <Compile Include="Assets\Scripts\Managers\DatabaseManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
@@ -100,8 +99,8 @@
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
-    <Compile Include="Assets\Scripts\Models\ResourceParameter.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackAction.cs" />
+    <Compile Include="Assets\Scripts\GUI\TutorialPopup.cs" />
     <Compile Include="Assets\Scripts\Actions\TurnAction.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
@@ -125,9 +124,9 @@
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
-    <Compile Include="Assets\Scripts\Models\ResourceFolder.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\Trigger.cs" />
+    <Compile Include="Assets\Scripts\Models\ResourceModels.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
@@ -157,6 +156,7 @@
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
+    <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />

@@ -87,7 +87,8 @@
           "Segment": "ArrowUp",
           "Location": "(6, 5)"
         }
-      ]
+      ],
+      "Tutorials": [ "Tutorial1" ]
     },
     {
       "Name": "Stage 2",
@@ -132,7 +133,8 @@
           "Team": "Enemy"
         }
       ],
-      "DottedLines": []
+      "DottedLines": [],
+      "Tutorials": []
     },
     {
       "Name": "Stage 3",
@@ -173,7 +175,8 @@
           "Team": "Enemy"
         }
       ],
-      "DottedLines": []
+      "DottedLines": [],
+      "Tutorials": []
     },
 
     {
@@ -196,7 +199,7 @@
         },
         {
           "Character": "Ninja",
-          "Team": "Enemy"
+          "Team": "Player"
         },
         {
           "Character": "Yeti",
@@ -215,7 +218,8 @@
           "Team": "Enemy"
         }
       ],
-      "DottedLines": []
+      "DottedLines": [],
+      "Tutorial": []
     }
   ]
 }

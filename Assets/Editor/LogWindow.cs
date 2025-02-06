@@ -88,7 +88,7 @@ public class LogWindow : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Hide Log"))
         {
-            logText = ""; //Hide the log content
+            logText = ""; //Hide the log Content
         }
 
         if (GUILayout.Button("Export Log"))

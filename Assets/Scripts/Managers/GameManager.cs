@@ -1,3 +1,4 @@
+using Assets.Scripts.GUI;
 using Game.Behaviors;
 using Game.Manager;
 using Game.Models;
@@ -11,13 +12,24 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public string deviceType;
 
     //Settings
-    [HideInInspector] public int targetFramerate = 120;
-    [HideInInspector] public int vSyncCount = 0;
-    [HideInInspector] public float gameSpeed = 1.0f;
+    [HideInInspector] public int targetFramerate = 60;
+    [HideInInspector] public int vSyncCount = 1;
+
+    public float gameSpeed
+    {
+        get => Time.timeScale;
+        set => Time.timeScale = value;
+    }
+
+    public float previousGameSpeed;
 
     //Audio
     [HideInInspector] public AudioSource soundSource;
     [HideInInspector] public AudioSource musicSource;
+
+    //GUI
+    [HideInInspector] public Card cardManager;
+    [HideInInspector] public TutorialPopup tutorialPopup;
 
     //Managers
     //[HideInInspector] public DatabaseManager databaseManager;
@@ -34,7 +46,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public DamageTextManager damageTextManager;
     [HideInInspector] public GhostManager ghostManager;
     [HideInInspector] public PortraitManager portraitManager;
-    [HideInInspector] public Card cardManager;
+   
     [HideInInspector] public ActorManager actorManager;
     [HideInInspector] public SelectedPlayerManager selectedPlayerManager;
     [HideInInspector] public PlayerManager playerManager;
@@ -104,7 +116,7 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         onSelectedPlayerLocationChanged = new UnityEvent<Vector2Int>();
-
+        previousGameSpeed = Time.timeScale;
 
         //DEBUG: Need to add buffer so tile doesn't align to left-most and right-most edge,
         //however this causes actors to not align properly after moving for some reason
@@ -124,10 +136,13 @@ public class GameManager : Singleton<GameManager>
         snapDistance = tileSize * 0.125f;
         ShakeIntensity.Initialize(tileSize);
 
+        //GUI
+        tutorialPopup = GameObject.Find(Constants.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
+        cardManager = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
+
         board = GameObject.Find(Constants.Board).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
         canvas2D = GameObject.Find(Constants.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
         canvas3D = GameObject.Find(Constants.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
-        cardManager = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
         timerBar = GameObject.Find(Constants.TimerBar).GetComponent<TimerBarInstance>() ?? throw new UnityException("TimerBarInstance is null");
         coinBar = GameObject.Find(Constants.CoinBar).GetComponent<CoinBarInstance>() ?? throw new UnityException("CoinBarInstance is null");
 
@@ -183,8 +198,6 @@ public class GameManager : Singleton<GameManager>
         stageManager.Initialize();      //03
 
 
-
-       
         totalCoins = 0;
 
         #region Platform Dependent Compilation

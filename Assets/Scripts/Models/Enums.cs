@@ -159,7 +159,8 @@ public enum DebugOptions
     AttackLineTest,
     EnemyAttackTest,
     TitleTest,
-    TooltipTest
+    TooltipTest,
+    TutorialTest
 }
 
 public enum VFX

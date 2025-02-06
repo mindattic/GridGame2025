@@ -23,8 +23,10 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> seamless = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> sprites = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> weaponTypes = new Dictionary<string, ResourceItem<Sprite>>();
+    [SerializeField] public Dictionary<string, ResourceItem<Texture2D>> textures = new Dictionary<string, ResourceItem<Texture2D>>();
+    [SerializeField] public Dictionary<string, Tutorial> tutorials = new Dictionary<string, Tutorial>();
     [SerializeField] public Dictionary<string, VisualEffect> visualEffects = new Dictionary<string, VisualEffect>();
-
+   
     public void Awake()
     {
 
@@ -77,6 +79,15 @@ public class ResourceManager : MonoBehaviour
             "Bow", "Claw", "Crossbow", "Dagger", "Grenade", "Hammer", "Katana", "Mace", "Pistol", "Polearm", "Potion",
             "Scythe", "Shield", "Shuriken", "Spear", "Staff", "Sword", "Wand");
         weaponTypes = LoadResources<Sprite>(ResourceFolder.WeaponTypes, keys);
+
+        //Textures
+        keys.SetRange(
+            "Tutorial.1-1", "Tutorial.1-2", "Tutorial.1-3");
+        textures = LoadResources<Texture2D>(ResourceFolder.Textures, keys);
+
+        keys.SetRange(
+            "Tutorial1");
+        tutorials = LoadTutorials(keys);
 
         //Visual Effects Types
         keys.SetRange(
@@ -167,6 +178,25 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
+
+    public ResourceItem<Texture2D> Texture(string key)
+    {
+        if (textures.TryGetValue(key, out var entry))
+            return entry;
+
+        logManager.Error($"Failed to retrieve texture2D `{key}` from resource manager.");
+        return null;
+    }
+
+    public Tutorial Tutorial(string key)
+    {
+        if (tutorials.TryGetValue(key, out var entry))
+            return entry;
+
+        logManager.Error($"Failed to retrieve tutorial `{key}` from resource manager.");
+        return null;
+    }
+
     public VisualEffect VisualEffect(string key)
     {
         if (visualEffects.TryGetValue(key, out var entry))
@@ -232,6 +262,7 @@ public class ResourceManager : MonoBehaviour
         string json = File.ReadAllText(jsonPath);
         return JsonConvert.DeserializeObject<ResourceParameterList>(json).Parameters;
     }
+
     public Dictionary<string, VisualEffect> LoadVisualEffects(List<string> keys)
     {
         Dictionary<string, VisualEffect> entries = new Dictionary<string, VisualEffect>();
@@ -244,7 +275,7 @@ public class ResourceManager : MonoBehaviour
                 var data = dataManager.GetVisualEffect(key);
                 if (data == null)
                 {
-                    logManager.Error($"Visual Effect Entity `{key}` is null");
+                    logManager.Error($"Visual Effect Entry `{key}` is null");
                     continue;
                 }
 
@@ -278,4 +309,37 @@ public class ResourceManager : MonoBehaviour
 
         return entries;
     }
+
+    public static Dictionary<string, Tutorial> LoadTutorials(List<string> keys)
+    {
+        Dictionary<string, Tutorial> entries = new Dictionary<string, Tutorial>();
+
+        try
+        {
+            // Load JSON from Resources
+            TextAsset jsonFile = Resources.Load<TextAsset>("Data/Tutorials");
+            if (jsonFile == null)
+            {
+                Debug.LogError("Tutorials.json not found in Resources/Data/");
+                return null;
+            }
+
+            // Deserialize JSON
+            ResourceWrapper<Tutorial> tutorials = JsonConvert.DeserializeObject<ResourceWrapper<Tutorial>>(jsonFile.text);
+
+            foreach (var key in keys)
+            {
+                var tutorial = tutorials.Items.FirstOrDefault(x => x.Key == key);
+                entries.Add(key, tutorial);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"Error loading tutorials: {ex.Message}");
+        }
+
+        return entries;
+    }
+
+
 }

@@ -69,7 +69,7 @@ public class CanvasOverlay : MonoBehaviour
 
     }
 
-    public void Show(string text, float duration = 0f)
+    public void Show(string text)
     {
         backgroundColor.a = backgroundMaxAlpha;
         backgroundImage.color = backgroundColor;
@@ -105,7 +105,6 @@ public class CanvasOverlay : MonoBehaviour
         float elapsedTime = 0f;
 
         //Set initial values
-        float alpha = backgroundMinAlpha;
         float startAngle = -90f;
         float endAngle = 0f;
 
@@ -121,7 +120,7 @@ public class CanvasOverlay : MonoBehaviour
             float t = Mathf.Clamp01(elapsedTime / duration);
 
             //Update background alpha
-            alpha = Mathf.Lerp(backgroundMinAlpha, backgroundMaxAlpha, t);
+            var alpha = Mathf.Lerp(backgroundMinAlpha, backgroundMaxAlpha, t);
             backgroundColor.a = alpha;
             backgroundImage.color = backgroundColor;
 

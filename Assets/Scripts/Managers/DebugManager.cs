@@ -1,3 +1,4 @@
+using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;
@@ -27,6 +28,8 @@ public class DebugManager : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
+    protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
+
 
     //Internal properties
     ActorInstance paladin => players.First(x => x.name == "Paladin");
@@ -222,6 +225,12 @@ public class DebugManager : MonoBehaviour
         var text = $"Test {Random.Int(1000, 9999)}";
         var position = Random.Player.currentTile.position;
         tooltipManager.Spawn(text, position);
+    }
+
+    public void TutorialTest()
+    {
+        var tutorial = resourceManager.tutorials.FirstOrDefault().Value;
+        tutorialPopup.Load(tutorial);
     }
 
     public void VFXTest_BlueSlash1()

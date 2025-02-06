@@ -435,8 +435,6 @@ public class DebugWindow : EditorWindow
                 gameManager.gameSpeed = 4f;
                 break;
         }
-
-        Time.timeScale = gameManager.gameSpeed;
     }
 
     private void OnDebugOptionRunClick()
@@ -456,6 +454,10 @@ public class DebugWindow : EditorWindow
             case DebugOptions.EnemyAttackTest: debugManager.EnemyAttackTest(); break;
             case DebugOptions.TitleTest: debugManager.TitleTest(); break;
             case DebugOptions.TooltipTest: debugManager.TooltipTest(); break;
+            case DebugOptions.TutorialTest: debugManager.TooltipTest(); break;
+
+
+
             default: Debug.LogWarning("OnDebugOptionRunClick failed."); break;
         }
     }

@@ -19,7 +19,7 @@ public static class Constants
     public const string Card = "Card";
     public const string TimerBar = "TimerBar";
     public const string CoinBar = "CoinBar";
-
+    public const string TutorialPopup = "TutorialPopup";
 
 
     //Percent
@@ -293,12 +293,12 @@ public static class Increment
 
     public static class HealthBar
     {
-        public static float Drain = 1f;
+        public static float Drain = 0.25f;
     }
 
     public static class ActionBar
     {
-        public static float Drain = 1f;
+        public static float Drain = 0.25f;
     }
 }
 
