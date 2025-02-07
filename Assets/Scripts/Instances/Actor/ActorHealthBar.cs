@@ -10,10 +10,13 @@ public class ActorHealthBar
     protected ActorRenderers render => instance.render;
     protected ActorStats stats => instance.stats;
 
+    //Internal properties
+    public bool isEmpty => !isDraining && stats.PreviousHP < 1;
+
     //Fields
     private ActorInstance instance;
     public bool isDraining;
-    public bool isEmpty;
+    
 
     public void Initialize(ActorInstance parentInstance)
     {
@@ -68,7 +71,6 @@ public class ActorHealthBar
         scale = GetScale(stats.PreviousHP);
         render.healthBarDrain.transform.localScale = scale;
         isDraining = false;
-        isEmpty = stats.PreviousHP == 0;
     }
 
 
