@@ -9,10 +9,11 @@ public class ActorHealthBar
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
     protected ActorRenderers render => instance.render;
     protected ActorStats stats => instance.stats;
-  
+
     //Fields
     private ActorInstance instance;
     public bool isDraining;
+    public bool isEmpty;
 
     public void Initialize(ActorInstance parentInstance)
     {
@@ -36,7 +37,8 @@ public class ActorHealthBar
         render.healthBarFill.transform.localScale = GetScale(stats.HP);
         render.healthBarText.text = $@"{stats.HP}/{stats.MaxHP}";
 
-        instance.StartCoroutine(Drain());
+        if (instance.isActive)
+            instance.StartCoroutine(Drain());
     }
 
     private IEnumerator Drain()
@@ -66,6 +68,7 @@ public class ActorHealthBar
         scale = GetScale(stats.PreviousHP);
         render.healthBarDrain.transform.localScale = scale;
         isDraining = false;
+        isEmpty = stats.PreviousHP == 0;
     }
 
 

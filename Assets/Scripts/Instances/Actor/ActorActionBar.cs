@@ -46,7 +46,7 @@ public class ActorActionBar
 
     private void TriggerDrain()
     {
-        if (instance.isActive && instance.isAlive)
+        if (instance.isActive)
             instance.StartCoroutine(Drain());
     }
 
@@ -78,14 +78,14 @@ public class ActorActionBar
 
     public void TriggerFill()
     {
-        if (instance.isActive && instance.isAlive)
+        if (instance.isActive)
             instance.StartCoroutine(Fill());
     }
 
     private IEnumerator Fill()
     {
         //Check abort conditions
-        if (debugManager.isEnemyStunned || !hasSelectedPlayer || !instance.isEnemy || !instance.isActive || !instance.isAlive || instance.hasMaxAP || flags.isGainingAP)
+        if (debugManager.isEnemyStunned || !hasSelectedPlayer || !instance.isEnemy || !instance.isPlaying || instance.hasMaxAP || flags.isGainingAP)
             yield break;
 
         //Before:
@@ -93,7 +93,7 @@ public class ActorActionBar
         float amount = stats.Speed * 0.1f;
 
         //During:
-        while (hasSelectedPlayer && instance.isEnemy && instance.isActive && instance.isAlive && !instance.hasMaxAP)
+        while (hasSelectedPlayer && instance.isEnemy && instance.isPlaying && !instance.hasMaxAP)
         {
             stats.AP += amount;
             stats.AP = Mathf.Clamp(stats.AP, 0, stats.MaxAP);

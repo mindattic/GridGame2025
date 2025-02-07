@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
 
     public void TriggerGlow()
     {
-        players.Where(x => x.isActive && x.isAlive).ToList().ForEach(x => x.glow.TriggerGlow());
+        players.Where(x => x.isPlaying).ToList().ForEach(x => x.glow.TriggerGlow());
     }
 
 }

@@ -127,9 +127,9 @@ static class Random
 
 
 
-    public static ActorInstance Player => players.Where(x => x.isActive && x.isAlive).Shuffle().First();
+    public static ActorInstance Player => players.Where(x => x.isPlaying).Shuffle().First();
 
-    public static ActorInstance Enemy => enemies.Where(x => x.isActive && x.isAlive).Shuffle().First();
+    public static ActorInstance Enemy => enemies.Where(x => x.isPlaying).Shuffle().First();
 
     public static TileInstance Tile => tiles.Shuffle().First();
 

@@ -14,6 +14,7 @@ namespace Assets.Scripts.GUI
 
         //Internal properties
         bool hasPages => pages != null && pages.Count > 0;
+        int lastPage => pages?.Count - 1 ?? 0;
 
         //Fields
         [SerializeField] public GameObject panel;
@@ -28,6 +29,14 @@ namespace Assets.Scripts.GUI
 
         private void Start()
         {
+            //RectTransform rect;
+            
+            //rect = panel.GetComponent<RectTransform>();
+            //rect.sizeDelta = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+
+            //rect = image.GetComponent<RectTransform>();
+            //rect.sizeDelta = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
+
             panel.SetActive(false);
         }
 
@@ -62,13 +71,12 @@ namespace Assets.Scripts.GUI
 
             //Manage Button Visibility
             previousButton.gameObject.SetActive(currentPage > 0);
-            nextButton.gameObject.SetActive(currentPage < pages.Count - 1);
-            closeButton.gameObject.SetActive(currentPage == pages.Count - 1);
+            nextButton.gameObject.SetActive(currentPage < lastPage);
+            closeButton.gameObject.SetActive(currentPage == lastPage);
         }
 
         public void PreviousPage()
         {
-            Debug.Log("Previous button clicked!");
             if (currentPage > 0)
             {
                 currentPage--;
@@ -78,7 +86,7 @@ namespace Assets.Scripts.GUI
 
         public void NextPage()
         {
-            if (currentPage < pages.Count - 1)
+            if (currentPage < lastPage)
             {
                 currentPage++;
                 Navigate();

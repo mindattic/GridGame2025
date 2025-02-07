@@ -44,7 +44,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] GameObject actorPrefab;
     public StageData currentStage;
 
-   
+
 
 
     public void Initialize()
@@ -80,7 +80,7 @@ public class StageManager : MonoBehaviour
     public void LoadStage(string name)
     {
         currentStage = dataManager.GetStage(name);
-  
+
         //Reset game elements
         actors.Clear();
         coinBar.Refresh();
@@ -96,8 +96,9 @@ public class StageManager : MonoBehaviour
         {
             var character = Convert.ToCharacter(stageActor.Character);
             var team = Convert.ToTeam(stageActor.Team);
+            var spawnTurn = stageActor.SpawnTurn;
             var location = Convert.ToVector2Int(stageActor.Location);
-            SpawnActor(character, team, location);
+            SpawnActor(character, team, spawnTurn, location);
         }
 
         //Spawn dotted lines (if applicable)
@@ -110,7 +111,8 @@ public class StageManager : MonoBehaviour
 
         //Show first tutorial (if applicable)
         var tutorialKey = currentStage.Tutorials.FirstOrDefault();
-        if (!string.IsNullOrWhiteSpace(tutorialKey)) {
+        if (!string.IsNullOrWhiteSpace(tutorialKey))
+        {
             var tutorial = resourceManager.Tutorial(tutorialKey);
             tutorialPopup.Load(tutorial);
         }
@@ -124,33 +126,25 @@ public class StageManager : MonoBehaviour
     //   }
     //}
 
-    public void SpawnActor(Character character, Team team, Vector2Int location)
+    public void SpawnActor(Character character, Team team, int spawnTurn = 0, Vector2Int? location = null)
     {
         var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<ActorInstance>();
         instance.transform.parent = board.transform;
         instance.character = character;
         instance.name = $"{character}_{Guid.NewGuid():N}";
-
         instance.team = team;
         instance.stats = dataManager.GetStats(character);
         instance.transform.localScale = GameManager.instance.tileScale;
-
-        if (instance.spawnDelay < 1)
-        {
-            instance.Spawn(location);
-        }
-        else
-        {
-            instance.spawnDelay = 5; //TODO: incorporate into json or find a better way...
-            instance.gameObject.SetActive(false);
-        }
-
+        instance.spawnTurn = spawnTurn;
+        instance.location = location.HasValue ? location.Value : Random.UnoccupiedLocation;
+        instance.Spawn();
         actors.Add(instance);
     }
 
     public void AddEnemy(Character character)
     {
-        SpawnActor(character, Team.Enemy, Random.UnoccupiedLocation);
+        SpawnActor(character, Team.Enemy);
     }
 }
+

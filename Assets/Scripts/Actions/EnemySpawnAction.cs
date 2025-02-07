@@ -15,7 +15,7 @@ namespace Assets.Scripts.Models
             var spawnableEnemies = enemies.ToList().FindAll(x => x.isSpawnable);
             foreach (var enemy in spawnableEnemies)
             {
-                enemy.Spawn(Random.UnoccupiedLocation);
+                enemy.Spawn();
             }
             yield return Wait.UntilNextFrame();
         }

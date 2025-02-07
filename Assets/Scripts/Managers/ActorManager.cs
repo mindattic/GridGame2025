@@ -13,7 +13,7 @@ namespace Game.Manager
 
         public void CheckEnemyAP()
         {
-            var notReadyEnemies = enemies.Where(x => !x.hasMaxAP).ToList();
+            var notReadyEnemies = enemies.Where(x => x.isPlaying && !x.hasMaxAP).ToList();
             notReadyEnemies.ForEach(x => x.actionBar.TriggerFill());
         }
 

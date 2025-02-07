@@ -71,14 +71,14 @@ public class ActorPair
 
         if (axis == Axis.Vertical)
         {
-            opponents = GameManager.instance.actors.Where(x => x.isActive && x.isAlive && x.isEnemy && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();
-            allies = GameManager.instance.actors.Where(x => x.isActive && x.isAlive && x.isPlayer && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();
+            opponents = GameManager.instance.actors.Where(x => x.isPlaying && x.isEnemy && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();
+            allies = GameManager.instance.actors.Where(x => x.isPlaying && x.isPlayer && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();
             gaps = GameManager.instance.tiles.Where(x => !x.IsOccupied && actor1.IsSameColumn(x.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();
         }
         else if (axis == Axis.Horizontal)
         {
-            opponents = GameManager.instance.actors.Where(x => x.isActive && x.isAlive && x.isEnemy && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start)).OrderBy(x => x.location.x).ToList();
-            allies = GameManager.instance.actors.Where(x => x.isActive && x.isAlive && x.isPlayer && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start)).OrderBy(x => x.location.x).ToList();
+            opponents = GameManager.instance.actors.Where(x => x.isPlaying && x.isEnemy && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start)).OrderBy(x => x.location.x).ToList();
+            allies = GameManager.instance.actors.Where(x => x.isPlaying && x.isPlayer && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start)).OrderBy(x => x.location.x).ToList();
             gaps = GameManager.instance.tiles.Where(x => !x.IsOccupied && actor1.IsSameRow(x.location) && AlignmentHelper.IsBetween(x.location.x, end, start)).OrderBy(x => x.location.x).ToList();
         }
 

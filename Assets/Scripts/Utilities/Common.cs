@@ -190,8 +190,9 @@ public static class ColorHelper
 
     public static class HealthBar
     {
-        public static Color Green = new Color(0f, 1f, 0f);
-
+        public static Color Green = RGB(0, 255, 0);
+        public static Color Red = RGB(255, 0, 0);
+        public static Color Yellow = RGB(255, 255, 0);
     }
 
     public static class ActionBar

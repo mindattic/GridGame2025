@@ -32,12 +32,12 @@ namespace Assets.Scripts.Instances.Actor
         }
 
 
-        private bool IsGlowing => isActive && isAlive && turnManager.isStartPhase && (turnManager.isPlayerTurn && isPlayer) || (turnManager.isEnemyTurn && isEnemy);
+        private bool IsGlowing => instance.isPlaying && turnManager.isStartPhase && (turnManager.isPlayerTurn && isPlayer) || (turnManager.isEnemyTurn && isEnemy);
 
 
         public void TriggerGlow()
         {
-            if (isActive && isAlive)
+            if (instance.isActive)
                 instance.StartCoroutine(Glow());
         }
 

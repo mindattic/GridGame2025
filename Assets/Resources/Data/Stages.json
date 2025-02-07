@@ -114,23 +114,28 @@
         },
         {
           "Character": "Slime",
-          "Team": "Enemy"
+          "Team": "Enemy",
+          "SpawnTurn": 2
         },
         {
           "Character": "Slime",
-          "Team": "Enemy"
+          "Team": "Enemy",
+          "SpawnTurn": 3
         },
         {
           "Character": "Slime",
-          "Team": "Enemy"
+          "Team": "Enemy",
+          "SpawnTurn": 4
         },
         {
           "Character": "Slime",
-          "Team": "Enemy"
+          "Team": "Enemy",
+          "SpawnTurn": 5
         },
         {
           "Character": "Slime",
-          "Team": "Enemy"
+          "Team": "Enemy",
+          "SpawnTurn": 6
         }
       ],
       "DottedLines": [],
@@ -215,7 +220,8 @@
         },
         {
           "Character": "Slime",
-          "Team": "Enemy"
+          "Team": "Enemy",
+          "SpawnTurn": 5
         }
       ],
       "DottedLines": [],

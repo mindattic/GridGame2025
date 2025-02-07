@@ -204,7 +204,7 @@ public class DebugManager : MonoBehaviour
 
     public void EnemyAttackTest()
     {
-        var attackingEnemies = enemies.Where(x => x.isActive && x.isAlive).ToList();
+        var attackingEnemies = enemies.Where(x => x.isPlaying).ToList();
         attackingEnemies.ForEach(x => x.SetReady());
 
         if (turnManager.isPlayerTurn)

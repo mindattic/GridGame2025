@@ -16,8 +16,10 @@ public class ActorRenderers
     public float parallaxAlphaMax = Opacity.Percent50;
     public Color thumbnailColor = ColorHelper.Solid.White;
     public Color frameColor = ColorHelper.Solid.White;
-    public Color healthBarColor = ColorHelper.HealthBar.Green;
+    public Color healthBarColor = ColorHelper.HealthBar.Red;
+    public Color healthBarDrainColor = ColorHelper.HealthBar.Yellow;
     public Color actionBarColor = ColorHelper.ActionBar.Blue;
+    public Color actionBarDrainColor = ColorHelper.HealthBar.Yellow;
     public Color turnDelayColor = ColorHelper.Solid.Red;
     public Color weaponIconColor = ColorHelper.Solid.White;
     public Color armorColor = ColorHelper.Solid.White;
@@ -225,9 +227,10 @@ public class ActorRenderers
     public void SetHealthBarAlpha(float alpha)
     {
         healthBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Percent70));
-        healthBarDrain.color = new Color(1, 0, 0, alpha);
-        healthBarColor.a = alpha;
-        healthBarFill.color = healthBarColor;
+        var drain = healthBarDrainColor;
+        healthBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);
+        var fill = healthBarColor;
+        healthBarFill.color = new Color(fill.r, fill.g, fill.b, alpha);
         healthBarText.color = new Color(1, 1, 1, alpha);
     }
 
@@ -235,8 +238,10 @@ public class ActorRenderers
     {
         actionBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Percent70));
         actionBarDrain.color = new Color(1, 0, 0, alpha);
-        actionBarColor.a = alpha;
-        actionBarFill.color = actionBarColor;
+        var drain = actionBarDrainColor;
+        actionBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);
+        var fill = actionBarColor;
+        actionBarFill.color = new Color(fill.r, fill.g, fill.b, alpha);
         actionBarText.color = new Color(1, 1, 1, alpha);
     }
 
@@ -349,34 +354,17 @@ public class ActorRenderers
         nameTagText.enabled = isEnabled;
     }
 
-    public void SetHealthBarColor(Color color)
-    {
-
-        healthBarColor = color;
-        healthBarFill.color = actionBarColor;
-    }
-
     public void SetActionBarEnabled(bool isEnabled)
     {
         actionBarBack.enabled = isEnabled;
         actionBarFill.enabled = isEnabled;
     }
 
-    public void SetActionBarColor(Color color)
-    {
-        actionBarColor = color;
-        actionBarFill.color = actionBarColor;
-    }
-
-
-
-
     public void SetWeaponIconAlpha(float alpha)
     {
         weaponIconColor = new Color(1, 1, 1, alpha);
         weaponIcon.color = weaponIconColor;
     }
-
 
     public void SetArmorAlpha(float alpha)
     {

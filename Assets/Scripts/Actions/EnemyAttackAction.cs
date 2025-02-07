@@ -19,14 +19,14 @@ namespace Assets.Scripts.Models
         {
             if (!turnManager.isEnemyTurn || turnManager.currentTurnPhase != TurnPhase.Attack) yield break;
 
-            var readyEnemies = enemies.ToList().Where(x => x.isActive && x.isAlive && x.hasMaxAP).ToList();
+            var readyEnemies = enemies.ToList().Where(x => x.isPlaying && x.hasMaxAP).ToList();
             if (readyEnemies.Count < 1) yield break;
 
             yield return Wait.For(Intermission.Before.Enemy.Attack);
 
             foreach (var enemy in readyEnemies)
             {
-                var defendingPlayers = players.ToList().Where(x => x.isActive && x.isAlive && x.IsAdjacentTo(enemy.location)).ToList();
+                var defendingPlayers = players.ToList().Where(x => x.isPlaying && x.IsAdjacentTo(enemy.location)).ToList();
                 if (defendingPlayers.Count < 1) continue;
 
                 foreach (var player in defendingPlayers)

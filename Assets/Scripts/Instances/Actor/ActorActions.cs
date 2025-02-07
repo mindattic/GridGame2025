@@ -256,7 +256,7 @@ namespace Assets.Scripts.Instances.Actor
             if (maxSize != 0f)
                 trigger.AddAttribute("maxSize", maxSize);
 
-            if (isActive && isAlive)
+            if (instance.isActive)
                 instance.StartCoroutine(Grow(trigger));
         }
 
@@ -296,7 +296,7 @@ namespace Assets.Scripts.Instances.Actor
             if (minSize != 0f)
                 trigger.AddAttribute("minSize", minSize);
 
-            if (isActive && isAlive)
+            if (instance.isActive)
                 instance.StartCoroutine(Shrink(trigger));
         }
 

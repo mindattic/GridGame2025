@@ -178,7 +178,7 @@ public class PincerAttackAction : TurnAction
 
         //Wait until all deaths have completed before moving to next pair
         if (dyingOpponents.Any())
-            yield return new WaitUntil(() => dyingOpponents.All(x => x.isDead));
+            yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
     }
 
     private IEnumerator HandleDeath(ActorInstance target)
@@ -190,7 +190,7 @@ public class PincerAttackAction : TurnAction
 
     private void UpdateSortingOrder()
     {
-        foreach (var actor in actors.Where(x => x.isActive && x.isAlive))
+        foreach (var actor in actors.Where(x => x.isPlaying))
         {
             actor.sortingOrder = SortingOrder.Default;
         }

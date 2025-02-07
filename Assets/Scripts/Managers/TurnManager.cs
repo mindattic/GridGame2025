@@ -78,15 +78,13 @@ public class TurnManager : MonoBehaviour
                         timerBar.Lock();
                         AddAction(new EnemySpawnAction());
 
-                        bool anyReadyEnemies = enemies.Any(x => x.isReady);
+                        bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
                         if (!anyReadyEnemies)
                         {
                             TriggerExecuteActions();
                             break;
                         }
-                            
-
-
+    
                         AddAction(new EnemyStartAction());
                         TriggerExecuteActions();
                         break;
@@ -110,7 +108,7 @@ public class TurnManager : MonoBehaviour
 
     public void ResetSortingOrder()
     {
-        foreach (var actor in actors.Where(x => x.isActive && x.isAlive))
+        foreach (var actor in actors.Where(x => x.isPlaying))
         {
             actor.sortingOrder = SortingOrder.Default;
         }

@@ -8,6 +8,11 @@ using UnityEngine;
 
 public static class Convert
 {
+    public static int ToInt(string value)
+    {
+        return int.TryParse(value, out var i) ? i : 0;
+    }
+
     public static Vector3 ToVector3(string value)
     {
         if (string.IsNullOrWhiteSpace(value))

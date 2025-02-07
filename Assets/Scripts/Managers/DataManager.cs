@@ -111,7 +111,8 @@ public class StageActor
 
     public string Character;
     public string Team;
-    public string Location;
+    public int SpawnTurn;
+    public string Location;   
 }
 
 [Serializable]

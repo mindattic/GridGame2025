@@ -6,7 +6,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class ActorInstance : MonoBehaviour
@@ -45,11 +44,12 @@ public class ActorInstance : MonoBehaviour
     public bool onWestEdge => location.x == 1;
     public bool isActive => isActiveAndEnabled;
     public bool isAlive => isActive && stats.HP > 0;
-    public bool isReady => isActive && isAlive && stats.AP == stats.MaxAP;
+    public bool isPlaying => isActive && isAlive;
     public bool isDying => isActive && stats.HP < 1;
     public bool isDead => !isActive && stats.HP < 1;
-    public bool isSpawnable => !isActive && isAlive && spawnDelay <= turnManager.currentTurn;
-    public bool hasMaxAP => isActive && isAlive && stats.AP == stats.MaxAP;
+    public bool isSpawnable => !isPlaying && !hasSpawned && spawnTurn <= turnManager.currentTurn;
+    public bool hasMaxAP => stats.AP == stats.MaxAP;
+
     public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isPlayerInvincible);
     public Transform parent
     {
@@ -123,7 +123,8 @@ public class ActorInstance : MonoBehaviour
     public Vector2Int previousLocation;
     public Vector2Int location;
     public Team team = Team.Neutral;
-    public int spawnDelay = -1;
+    public int spawnTurn = 0;
+    public bool hasSpawned = false;
     public int attackingPairCount = 0;
     public int supportingPairCount = 0;
     public float wiggleSpeed;
@@ -207,14 +208,10 @@ public class ActorInstance : MonoBehaviour
         return Direction.None;
     }
 
-
-    public void Spawn(Vector2Int startLocation)
+    public void Spawn()
     {
-        gameObject.SetActive(true);
-
-        previousLocation = startLocation;
-        location = startLocation;
-
+        gameObject.SetActive(false);
+        previousLocation = location;
         position = Geometry.GetPositionByLocation(location);
 
         //sprites = resourceManager.ActorSprite(this.character.ToString());
@@ -233,15 +230,12 @@ public class ActorInstance : MonoBehaviour
             render.SetGlowColor(ColorHelper.Solid.White);
             render.SetParallaxSprite(resourceManager.Seamless("WhiteFire2").Value);
 
-
             render.SetParallaxMaterial(resourceManager.Material("PlayerParallax", thumbnail.texture).Value);
             render.SetParallaxAlpha(Opacity.Percent50);
             //render.SetParallaxSpeed(1, 1);
 
             //render.SetThumbnailMaterial(resourceManager.Material("Sprites-Default", thumbnailSettings.texture));
             //render.SetFrameColor(quality.Color);
-            render.SetHealthBarColor(ColorHelper.HealthBar.Green);
-            render.SetActionBarColor(ColorHelper.ActionBar.Blue);
             render.SetSelectionBoxEnabled(isEnabled: false);
             vfx.Attack = resourceManager.VisualEffect("BlueSlash1");
         }
@@ -255,8 +249,6 @@ public class ActorInstance : MonoBehaviour
             //render.SetParallaxSpeed(1, 1);
             //render.SetThumbnailMaterial(resourceManager.Material("Sprites-Default", thumbnailSettings.texture));
             render.SetFrameColor(ColorHelper.Solid.Red);
-            render.SetHealthBarColor(ColorHelper.HealthBar.Green);
-            render.SetActionBarColor(ColorHelper.ActionBar.Blue);
             render.SetSelectionBoxEnabled(isEnabled: false);
             vfx.Attack = resourceManager.VisualEffect("DoubleClaw");
         }
@@ -266,8 +258,14 @@ public class ActorInstance : MonoBehaviour
 
         healthBar.Update();
         actionBar.Reset();
-        action.TriggerFadeIn();
-        action.TriggerSpin360();
+
+        if (isSpawnable)
+        {
+            gameObject.SetActive(true);
+            hasSpawned = true;
+            action.TriggerFadeIn();
+            action.TriggerSpin360();
+        }
     }
 
 
@@ -314,17 +312,17 @@ public class ActorInstance : MonoBehaviour
         switch (attackStrategy)
         {
             case AttackStrategy.AttackClosest:
-                var targetPlayer = players.Where(x => x.isActive && x.isAlive).OrderBy(x => Vector3.Distance(x.position, position)).FirstOrDefault();
+                var targetPlayer = players.Where(x => x.isPlaying).OrderBy(x => Vector3.Distance(x.position, position)).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
 
             case AttackStrategy.AttackWeakest:
-                targetPlayer = players.Where(x => x.isActive && x.isAlive).OrderBy(x => x.stats.HP).FirstOrDefault();
+                targetPlayer = players.Where(x => x.isPlaying).OrderBy(x => x.stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
 
             case AttackStrategy.AttackStrongest:
-                targetPlayer = players.Where(x => x.isActive && x.isAlive).OrderByDescending(x => x.stats.HP).FirstOrDefault();
+                targetPlayer = players.Where(x => x.isPlaying).OrderByDescending(x => x.stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
 
@@ -418,7 +416,7 @@ public class ActorInstance : MonoBehaviour
 
         //Wait for health bar to finish draining
         if (healthBar.isDraining)
-            yield return new WaitUntil(() => stats.PreviousHP == stats.HP);
+            yield return new WaitUntil(() => stats.PreviousHP == 0);
         //while (healthBar.isDraining)
         //    yield return Wait.UntilNextFrame();
 
@@ -456,7 +454,7 @@ public class ActorInstance : MonoBehaviour
 
     private void TriggerSpawnCoins(int amount)
     {
-        if (isActive && isAlive)
+        if (isPlaying)
             StartCoroutine(SpawnCoins(amount)); //TODO: TriggerSpawn coins based on enemy Stats...
     }
 
@@ -525,7 +523,7 @@ public class ActorInstance : MonoBehaviour
 
     //public void ExecuteAngry()
     //{
-    //   if (isActive && isAlive)
+    //   if (isPlaying)
     //       StartCoroutine(Angry());
     //}
 
@@ -662,7 +660,7 @@ public class ActorInstance : MonoBehaviour
 
     //public void ParallaxFadeOutAsync()
     //{
-    //   if (!isActive && isAlive)
+    //   if (!isPlaying)
     //       return;
     //   TriggerFadeOut(render.parallax, TriggerFill.FivePercent, Interval.OneTick, startAlpha: 0.5f, endAlpha: 0f);
     //}
@@ -747,7 +745,7 @@ public class ActorInstance : MonoBehaviour
 
 
     //Check abort status
-    //if (!isActive && isAlive || isMoving)
+    //if (!isPlaying || isMoving)
     //   return;
 
     //var closestTile = Geometry.GetClosestTile(boardPosition);
@@ -779,7 +777,7 @@ public class ActorInstance : MonoBehaviour
     //public void AssignSkillWait()
     //{
     //   //Check abort conditions
-    //   if (!isActive && isAlive)
+    //   if (!isPlaying)
     //       return;
 
     //   //TODO: Calculate based on Stats....
@@ -868,7 +866,7 @@ public class ActorInstance : MonoBehaviour
     //public void AssignActionWait()
     //{
     //   //Check abort conditions
-    //   if (!isActive && isAlive)
+    //   if (!isPlaying)
     //       return;
 
     //   //TODO: Calculate based on Stats....
@@ -884,7 +882,7 @@ public class ActorInstance : MonoBehaviour
     //public void CheckActionBar()
     //{
     //Check abort conditions
-    //if (!isActive && isAlive || turnManager.isEnemyTurn || (!turnManager.isStartPhase && !turnManager.isMovePhase))
+    //if (!isPlaying || turnManager.isEnemyTurn || (!turnManager.isStartPhase && !turnManager.isMovePhase))
     //   return;
 
 
@@ -962,7 +960,7 @@ public class ActorInstance : MonoBehaviour
     //private void CheckBobbing()
     //{
     //   //Check abort conditions
-    //   if (!isActive && isAlive || !turnManager.isStartPhase)
+    //   if (!isPlaying || !turnManager.isStartPhase)
     //       return;
 
 

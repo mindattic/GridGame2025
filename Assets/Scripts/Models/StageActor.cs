@@ -48,7 +48,7 @@ using UnityEngine;
 
 
 
-    //public StageActor(Character character, string name, ActorStats Stats, Team team, Rarity quality, int spawnDelay)
+    //public StageActor(Character character, string name, ActorStats Stats, Team team, Rarity quality, int spawnTurn)
     //{
     //   this.character = character;
     //   this.name = name;
@@ -57,7 +57,7 @@ using UnityEngine;
     //   this.team = team;
     //   this.quality = quality;
     //   this.boardLocation = boardLocation.NowhereLocation;
-    //   this.spawnDelay = spawnDelay;
+    //   this.spawnTurn = spawnTurn;
     //}
 
 

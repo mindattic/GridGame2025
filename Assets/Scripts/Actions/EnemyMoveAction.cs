@@ -22,7 +22,7 @@ namespace Assets.Scripts.Models
                 yield break;
 
             // Find all enemies that are ready (active, alive and with full AP).
-            var readyEnemies = enemies.ToList().Where(x => x.isActive && x.isAlive && x.hasMaxAP).ToList();
+            var readyEnemies = enemies.ToList().Where(x => x.isPlaying && x.hasMaxAP).ToList();
 
 
 
