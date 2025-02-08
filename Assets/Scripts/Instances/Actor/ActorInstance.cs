@@ -46,7 +46,6 @@ public class ActorInstance : MonoBehaviour
     public bool isAlive =>  stats.HP > 0;
     public bool isPlaying => isActive && isAlive;
     public bool isDying => isActive && stats.HP < 1;
-    public bool isDead => !isActive && stats.HP < 1;
     public bool isSpawnable => !hasSpawned && spawnTurn <= turnManager.currentTurn;
     public bool hasMaxAP => stats.AP == stats.MaxAP;
 

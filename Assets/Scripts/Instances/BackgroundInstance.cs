@@ -50,32 +50,6 @@ public class BackgroundInstance : MonoBehaviour
 
     }
 
-    //private IEnumerator MoveToRandomPositions()
-    //{
-    //   while (true)
-    //   {
-    //       //Pick a random position within the screen bounds
-    //       float screenHeight = Camera.main.orthographicSize * 2f;
-    //       float screenWidth = screenHeight * Camera.main.aspect;
-
-    //       float randomX = Random.Float(-screenWidth / 2f, screenWidth / 2f);
-    //       float randomY = Random.Float(-screenHeight / 2f, screenHeight / 2f);
-    //       targetPosition = new Vector3(randomX, randomY, transform.position.z);
-
-    //       //Move toward the target position
-    //       isMoving = true;
-    //       while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
-    //       {
-    //           transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * 2f);
-    //           yield return null;
-    //       }
-
-    //       //Wait for a second at the target
-    //       isMoving = false;
-    //       yield return new WaitForSeconds(1f);
-    //   }
-    //}
-
     private void FixedUpdate()
     {
         time += Time.deltaTime;
@@ -85,7 +59,5 @@ public class BackgroundInstance : MonoBehaviour
         var y = initialPosition.y + Mathf.Sin(time * speed.y) * amplitude.y;
         transform.position = new Vector3(x, y, initialPosition.z);
     }
-
-
 
 }

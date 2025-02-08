@@ -265,28 +265,6 @@ public class ActorRenderers
         radialText.color = new Color(1, 1, 1, alpha);
     }
 
-    //public void SetBloomColor(color color)
-    //{
-    //   bloomColor = color;
-    //   this.bloom.color = color;
-
-    //   var intensity = (bloomColor.r + bloomColor.g + bloomColor.b) / 3f;
-    //   var factor = 1f / intensity;
-    //   var emissionColor = new color(bloomColor.r * factor, bloomColor.g * factor, bloomColor.b * factor, bloomColor.a);
-    //   this.bloom.material.SetColor("_EmissionColor", emissionColor);
-    //}
-
-    //public void SetBloomAlpha(float alpha)
-    //{
-    //   bloomColor.a = alpha;
-    //   this.bloom.color = bloomColor;
-
-    //   var intensity = (bloomColor.r + bloomColor.g + bloomColor.b) / 3f;
-    //   var factor = 1f / intensity;
-    //   var emissionColor = new color(bloomColor.r * factor, bloomColor.g * factor, bloomColor.b * factor, alpha);
-    //   this.bloom.material.SetColor("_EmissionColor", emissionColor);
-    //}
-
     public void SetFrameColor(Color color)
     {
         frameColor = color;

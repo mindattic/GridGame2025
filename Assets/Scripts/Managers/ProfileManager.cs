@@ -96,7 +96,7 @@ public class ProfileManager : MonoBehaviour
         //Generate a new GUID
         string guid;
 
-        // Ensure the generated GUID is unique in profileFolders
+        //Ensure the generated GUID is unique in profileFolders
         do guid = Guid.NewGuid().ToString("N");
         while (Directory.Exists(Path.Combine(FolderHelper.Folders.Profiles, guid)));
 

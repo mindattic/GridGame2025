@@ -349,7 +349,7 @@ public class ResourceManager : MonoBehaviour
 
         try
         {
-            // Initialize JSON from Resources
+            //Initialize JSON from Resources
             TextAsset jsonFile = Resources.Load<TextAsset>("Data/Tutorials");
             if (jsonFile == null)
             {
@@ -357,7 +357,7 @@ public class ResourceManager : MonoBehaviour
                 return null;
             }
 
-            // Deserialize JSON
+            //Deserialize JSON
             var tutorials = JsonConvert.DeserializeObject<JsonWrapper<Tutorial>>(jsonFile.text);
 
             foreach (var key in keys)

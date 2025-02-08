@@ -51,41 +51,6 @@ public class TimerBarInstance : MonoBehaviour
         offscreenPosition = initialPosition.SubtractX(width);
     }
 
-    ///// <summary>
-    ///// Resets the timer bar by sliding it into view and resetting the countdown.
-    ///// </summary>
-    //public void TriggerInitialize()
-    //{
-    //    // Stop any running coroutines (e.g. a SlideOut or a countdown)
-    //    StopAllCoroutines();
-    //    countdown = null;
-    //    // Start sliding the timer bar into its initial position.
-    //    StartCoroutine(Initialize());
-    //}
-
-    ///// <summary>
-    ///// Coroutine that slides the timer bar to its initial position and resets its state.
-    ///// </summary>
-    //IEnumerator Initialize()
-    //{
-    //    // Reset bar scale and timer.
-    //    bar.transform.localScale = new Vector3(1f, scale.y, scale.z);
-    //    timeRemaining = maxDuration;
-    //    isRunning = false;
-
-    //    // Slide the bar into the on?screen position.
-    //    while (Vector3.Distance(transform.position, initialPosition) > snapDistance)
-    //    {
-    //        transform.position = Vector3.MoveTowards(transform.position, initialPosition, slideSpeed * Time.deltaTime);
-    //        yield return Wait.OneTick();
-    //    }
-    //    transform.position = initialPosition;
-    //}
-
-    /// <summary>
-    /// Coroutine that counts down the timer bar.
-    /// When time expires, calls selectedPlayerManager.Unselect().
-    /// </summary>
     private IEnumerator Countdown()
     {
         isRunning = true;
@@ -153,34 +118,4 @@ public class TimerBarInstance : MonoBehaviour
         front.color = ColorHelper.Translucent.Red;
     }
 
-    /// <summary>
-    /// Slides the timer bar off-screen.
-    /// </summary>
-    //public void Hide()
-    //{
-    //    // Stop any countdown while hiding.
-    //    Pause();
-    //    StartCoroutine(SlideOut());
-    //}
-
-    /// <summary>
-    /// Coroutine that slides the timer bar to the offscreen position.
-    /// </summary>
-    //IEnumerator SlideOut()
-    //{
-    //    while (Vector3.Distance(transform.position, offscreenPosition) > snapDistance)
-    //    {
-    //        transform.position = Vector3.MoveTowards(transform.position, offscreenPosition, slideSpeed * Time.deltaTime);
-    //        yield return Wait.OneTick();
-    //    }
-    //    transform.position = offscreenPosition;
-    //}
-
-    /// <summary>
-    /// Optionally, you can use this method to simply enable the bar.
-    /// </summary>
-    //public void Show()
-    //{
-    //    bar.enabled = true;
-    //}
 }

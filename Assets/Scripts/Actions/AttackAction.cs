@@ -16,7 +16,7 @@ namespace Assets.Scripts.Models
 
         public override IEnumerator Execute()
         {
-            // Pass the full AttackResult to TakeDamage
+            //Pass the full AttackResult to TakeDamage
             attackResult.Opponent.TakeDamage(attackResult);
 
             yield return null;

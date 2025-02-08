@@ -14,7 +14,7 @@ public class SelectedPlayerManager : MonoBehaviour
     protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
     protected Vector3 mouseOffset { get => GameManager.instance.mouseOffset; set => GameManager.instance.mouseOffset = value; }
     protected ActorInstance selectedActor { get => GameManager.instance.focusedActor; set => GameManager.instance.focusedActor = value; }
-    protected ActorInstance previousSelectedPlayer { get => GameManager.instance.previousSelectedPlayer; set => GameManager.instance.previousSelectedPlayer = value; }
+    protected ActorInstance previousMovingPlayer { get => GameManager.instance.previousSelectedPlayer; set => GameManager.instance.previousSelectedPlayer = value; }
     protected ActorInstance movingPlayer { get => GameManager.instance.selectedPlayer; set => GameManager.instance.selectedPlayer = value; }
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
@@ -100,24 +100,24 @@ public class SelectedPlayerManager : MonoBehaviour
 
     public void Drop()
     {
-        // Check abort conditions.
+        //Check abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasMovingPlayer)
             return;
 
-        // Snap the moving player to the closest tile.
+        //Snap the moving player to the closest tile.
         var closestTile = Geometry.GetClosestTile(movingPlayer.position);
         movingPlayer.location = closestTile.location;
         movingPlayer.position = closestTile.position;
-        previousSelectedPlayer = movingPlayer;
+        previousMovingPlayer = movingPlayer;
         movingPlayer = null;
 
-        // Reset UI and other elements.
+        //Reset UI and other elements.
         tileManager.Reset();
         cardManager.Reset();
         timerBar.Pause();
 
-        // Now that the player has dropped their unit,
-        // add the PlayerAttackAction and trigger the execution of pending turn actions.
+        //Now that the player has dropped their unit,
+        //add the PlayerAttackAction and trigger the execution of pending turn actions.
         turnManager.AddAction(new PincerAttackAction());
         turnManager.SetPhase(TurnPhase.Attack);
     }

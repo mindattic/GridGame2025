@@ -153,8 +153,8 @@ public class StageManager : MonoBehaviour
 
     public void CheckStageCompletion(ActorInstance actor)
     {
-        bool anyEnemies = enemies.Where(x => x.isEnemy && x.isPlaying).Any();
-        if (!anyEnemies)
+        bool anyRemainingEnemies = enemies.Where(x => x.isEnemy && x.hasSpawned && x.stats.HP > 0).Any();
+        if (!anyRemainingEnemies)
         {
             LoadStage("Stage 2");
         }
