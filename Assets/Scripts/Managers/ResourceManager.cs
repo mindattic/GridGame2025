@@ -51,7 +51,7 @@ public class ResourceManager : MonoBehaviour
         //Sound Effects
         keys.SetRange(
             "Death", "Move1", "Move2", "Move3", "Move4", "Move5", "Move6", "NextTurn", "PlayerGlow", "Portrait", "Rumble",
-            "Select", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
+            "Load", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
         soundEffects = LoadResources<AudioClip>(ResourceFolder.SoundEffects, keys);
 
         //Music Tracks
@@ -85,11 +85,12 @@ public class ResourceManager : MonoBehaviour
             "Tutorial.1-1", "Tutorial.1-2", "Tutorial.1-3");
         textures = LoadResources<Texture2D>(ResourceFolder.Textures, keys);
 
+        //Tutorials
         keys.SetRange(
             "Tutorial1");
         tutorials = LoadTutorials(keys);
 
-        //Visual Effects Types
+        //Visual Effects
         keys.SetRange(
             "AcidSplash", "AirSlash", "BloodClaw", "BlueSlash1", "BlueSlash2", "BlueSlash3", "BlueSword", "BlueSword4X",
             "BlueYellowSword", "BlueYellowSword3X", "BuffLife", "DoubleClaw", "FireRain", "GodRays", "GoldBuff",
@@ -101,6 +102,9 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Sprite> Background(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (backgrounds.TryGetValue(key, out var entry))
             return entry;
 
@@ -110,6 +114,9 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Texture2D> Portrait(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (portraits.TryGetValue(key, out var entry))
             return entry;
 
@@ -119,6 +126,9 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<AudioClip> SoundEffect(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (soundEffects.TryGetValue(key, out var entry))
             return entry;
 
@@ -128,6 +138,9 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<AudioClip> MusicTrack(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (musicTracks.TryGetValue(key, out var entry))
             return entry;
 
@@ -137,6 +150,9 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Material> Material(string key, Texture2D texture = null)
     {
+        if (string.IsNullOrWhiteSpace(key))
+            return null;
+
         static bool SetMaterialTexture(ref ResourceItem<Material> entry, Texture2D texture = null)
         {
             if (texture != null)
@@ -153,6 +169,9 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Sprite> Seamless(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (seamless.TryGetValue(key, out var entry))
             return entry;
 
@@ -162,6 +181,9 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Sprite> Sprite(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (sprites.TryGetValue(key, out var entry))
             return entry;
 
@@ -171,6 +193,9 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Sprite> WeaponType(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (weaponTypes.TryGetValue(key, out var entry))
             return entry;
 
@@ -178,9 +203,11 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
-
     public ResourceItem<Texture2D> Texture(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (textures.TryGetValue(key, out var entry))
             return entry;
 
@@ -190,6 +217,9 @@ public class ResourceManager : MonoBehaviour
 
     public Tutorial Tutorial(string key)
     {
+        if (string.IsNullOrWhiteSpace(key)) 
+            return null;
+
         if (tutorials.TryGetValue(key, out var entry))
             return entry;
 
@@ -199,6 +229,9 @@ public class ResourceManager : MonoBehaviour
 
     public VisualEffect VisualEffect(string key)
     {
+        if (string.IsNullOrWhiteSpace(key))
+            return null;
+
         if (visualEffects.TryGetValue(key, out var entry))
             return entry;
 
@@ -223,7 +256,7 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var key in keys)
             {
-                //Load the sprite
+                //Initialize the sprite
                 T value = Resources.Load<T>($"{resourcePath}/{key}");
                 if (value == null)
                 {
@@ -231,7 +264,7 @@ public class ResourceManager : MonoBehaviour
                     continue;
                 }
 
-                //Load the matching JSON file for parameters
+                //Initialize the matching JSON file for parameters
                 List<ResourceParameter> parameters = LoadResourceParameters(resourcePath, key);
 
                 entries.Add(key, new ResourceItem<T>
@@ -250,7 +283,7 @@ public class ResourceManager : MonoBehaviour
     }
 
     ///<summary>
-    ///Load parameters from a JSON file matching the resource name.
+    ///Initialize parameters from a JSON file matching the resource name.
     ///</summary>
     private List<ResourceParameter> LoadResourceParameters(string folderPath, string resourceName)
     {
@@ -316,7 +349,7 @@ public class ResourceManager : MonoBehaviour
 
         try
         {
-            // Load JSON from Resources
+            // Initialize JSON from Resources
             TextAsset jsonFile = Resources.Load<TextAsset>("Data/Tutorials");
             if (jsonFile == null)
             {
@@ -325,7 +358,7 @@ public class ResourceManager : MonoBehaviour
             }
 
             // Deserialize JSON
-            ResourceWrapper<Tutorial> tutorials = JsonConvert.DeserializeObject<ResourceWrapper<Tutorial>>(jsonFile.text);
+            var tutorials = JsonConvert.DeserializeObject<JsonWrapper<Tutorial>>(jsonFile.text);
 
             foreach (var key in keys)
             {

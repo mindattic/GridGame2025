@@ -15,12 +15,15 @@ using Stage = Game.Models.ProfileStageSection;
 
 public class ProfileManager : MonoBehaviour
 {
-    public const bool PRETTY_PRINT = true;
 
-    public List<Profile> profiles = new List<Profile>();
+    //Internal properties
+    public string currentStage => currentProfile?.Stage.CurrentStage ?? "Stage 1";
+
+    //Fields
+    public Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
     public Profile currentProfile = null;
 
-    public void LoadProfiles()
+    public void Initialize()
     {
         var sw = Stopwatch.StartNew();
 
@@ -31,11 +34,11 @@ public class ProfileManager : MonoBehaviour
             return;
         }
 
-        //Retrieve existing profile folders
-        var folders = Directory.GetDirectories(FileHelper.Folders.Profiles).ToList();
+        //Retrieve existing profile profileFolders
+        var profileFolders = Directory.GetDirectories(FolderHelper.Folders.Profiles).ToList();
 
-        //If no profile folders found...
-        if (folders == null || folders.Count < 1)
+        //If no profile profileFolders found...
+        if (profileFolders == null || profileFolders.Count < 1)
         {
             //...create a new profile folder with associated JSON files...
             var successful = CreateProfile();
@@ -45,19 +48,19 @@ public class ProfileManager : MonoBehaviour
                 return;
             }
 
-            //Retrieve newly created profile folders
-            folders = Directory.GetDirectories(FileHelper.Folders.Profiles).ToList();
+            //Retrieve newly created profile profileFolders
+            profileFolders = Directory.GetDirectories(FolderHelper.Folders.Profiles).ToList();
         }
 
-        //Validate profile folders exist
-        if (folders == null || folders.Count < 1)
+        //Validate profile profileFolders exist
+        if (profileFolders == null || profileFolders.Count < 1)
         {
-            Debug.LogError($"Failed to retrieve any profile folders from: {FileHelper.Folders.Profiles}");
+            Debug.LogError($"Failed to retrieve any profile profileFolders from: {FolderHelper.Folders.Profiles}");
             return;
         }
 
         //Retrive each profile object
-        foreach (var folder in folders)
+        foreach (var folder in profileFolders)
         {
             //Retrieve GUID from folder name
             string guid = new DirectoryInfo(folder).Name;
@@ -69,7 +72,7 @@ public class ProfileManager : MonoBehaviour
             if (profile == null || !profile.IsValid())
                 continue;
 
-            profiles.Add(profile);
+            profiles.Add(guid, profile);
         }
 
         if (profiles == null || profiles.Count < 1)
@@ -80,6 +83,9 @@ public class ProfileManager : MonoBehaviour
 
         sw.Stop();
         //Debug.LogWarning($"Loaded current save file in {sw.ElapsedMilliseconds} ms.");
+
+        //TODO: Have user select profile, for now just use first profile
+        Load(profiles.First().Key);       
     }
 
     ///<summary>
@@ -88,9 +94,11 @@ public class ProfileManager : MonoBehaviour
     private bool CreateProfile()
     {
         //Generate a new GUID
-        var guid = Guid.NewGuid().ToString("N");
+        string guid;
 
-        //TODO: Verify guid is unique in folders (extremely unlikely)
+        // Ensure the generated GUID is unique in profileFolders
+        do guid = Guid.NewGuid().ToString("N");
+        while (Directory.Exists(Path.Combine(FolderHelper.Folders.Profiles, guid)));
 
         //Instantiate current profile with the generated GUID; create folder
         currentProfile = new Profile(guid);
@@ -170,7 +178,7 @@ public class ProfileManager : MonoBehaviour
         else if (typeof(T) == typeof(Party))
             fileName = "party.json";
 
-        var folder = Path.Combine(FileHelper.Folders.Profiles, guid);
+        var folder = Path.Combine(FolderHelper.Folders.Profiles, guid);
         var filePath = Path.Combine(folder, fileName);
         if (!File.Exists(filePath))
         {
@@ -246,12 +254,15 @@ public class ProfileManager : MonoBehaviour
     }
 
 
-    public void Select(int index)
+    public void Load(string guid)
     {
         if (!HasProfiles())
             return;
 
-        currentProfile = profiles[index];
+        if (!profiles.TryGetValue(guid, out Profile profile))
+            return;
+
+        currentProfile = profile;
     }
 
     public bool HasProfiles()
@@ -262,17 +273,17 @@ public class ProfileManager : MonoBehaviour
     private bool HasValidFolderStructure()
     {
         //Verify profiles folder can be created
-        if (string.IsNullOrWhiteSpace(FileHelper.Folders.Profiles))
+        if (string.IsNullOrWhiteSpace(FolderHelper.Folders.Profiles))
         {
-            Debug.LogError($"FileHelper.Folders.Profiles is null or whitespace.");
+            Debug.LogError($"FolderHelper.Folders.Profiles is null or whitespace.");
             return false;
         }
 
         //Create profiles folder (if applicable)
-        if (!Directory.Exists(FileHelper.Folders.Profiles))
-            Directory.CreateDirectory(FileHelper.Folders.Profiles);
+        if (!Directory.Exists(FolderHelper.Folders.Profiles))
+            Directory.CreateDirectory(FolderHelper.Folders.Profiles);
 
-        return Directory.Exists(FileHelper.Folders.Profiles);
+        return Directory.Exists(FolderHelper.Folders.Profiles);
     }
 
 

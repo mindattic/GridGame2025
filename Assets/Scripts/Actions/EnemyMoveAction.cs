@@ -7,7 +7,7 @@ namespace Assets.Scripts.Models
 {
     public class EnemyMoveAction : TurnAction
     {
-        // Shortcut properties
+        // External properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
 

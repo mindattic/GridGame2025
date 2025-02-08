@@ -1,7 +1,7 @@
 ﻿{
   "Items": [
     {
-      "Name": "Stage1",
+      "Name": "Stage 1",
       "Description": "Intro Battle",
       "CompletionCondition": "DefeatAllEnemies",
       "CompletionValue": 0,

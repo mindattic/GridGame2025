@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using static FileHelper;
+using static FolderHelper;
 using Global = Game.Models.ProfileGlobalSection;
 using Party = Game.Models.ProfilePartySection;
 using Stage = Game.Models.ProfileStageSection;
@@ -32,7 +32,7 @@ namespace Game.Models
 
             Stage = new Stage
             {
-                CurrentStage = 5 //DEBUG: Default to 5
+                CurrentStage = "Stage 1"
             };
 
             Party = new Party();
@@ -69,11 +69,11 @@ namespace Game.Models
     [Serializable]
     public class ProfileStageSection : ProfileSection
     {
-        public int CurrentStage;
+        public string CurrentStage;
 
         public ProfileStageSection()
         {
-            CurrentStage = 5; //DEBUG: Default to 5
+            CurrentStage = "Stage 1";
         }
     }
 

@@ -65,7 +65,7 @@ namespace Assets.Scripts.GUI
         {
             if (!hasPages) return;
 
-            image.sprite = resourceManager.Texture(pages[currentPage].ImageKey).Value.ToSprite();
+            image.sprite = resourceManager.Texture(pages[currentPage].TextureKey).Value.ToSprite();
             title.text = pages[currentPage].Title;
             content.text = pages[currentPage].Content;
 

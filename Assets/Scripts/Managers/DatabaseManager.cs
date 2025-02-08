@@ -25,7 +25,7 @@
 
 //       public static class Queries
 //       {
-//           public static class Select
+//           public static class Load
 //           {
 //               public static class Actor
 //               {
@@ -87,7 +87,7 @@
 //           if (!isConnected)
 //               throw new UnityException($"Failed to connect to database: {instance.DBName}");
 
-//           Load(); //TODO: Load data based on current stage???...
+//           Initialize(); //TODO: Initialize data based on current stage???...
 //       }
 
 
@@ -98,14 +98,14 @@
 //       //StageData 05: ["Slime", "Scorpion", "Bat", "Yeti"]
 
 
-//       void Load()
+//       void Initialize()
 //       {
 //           DBReader reader;
 
 //           Entities.Actors.Clear();
 
 //           //reader = instance.GetAllData(Schema.Table.Actor);
-//           reader = instance.ExecuteReader(Queries.Select.Actor.Entities);
+//           reader = instance.ExecuteReader(Queries.Load.Actor.Entities);
 //           while (reader != null && reader.Read())
 //           {
 //               var x = new ActorData()

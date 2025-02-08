@@ -13,7 +13,7 @@ namespace Assets.Scripts.Models
     [Serializable]
     public class TutorialPage
     {
-        public string ImageKey;
+        public string TextureKey;
         public string Title;
         public string Content;
     }

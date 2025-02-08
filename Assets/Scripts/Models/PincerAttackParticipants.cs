@@ -10,7 +10,7 @@ public class PincerAttackParticipants
 
     public PincerAttackParticipants() { }
 
-    //Select all participants
+    //Load all participants
     public List<ActorInstance> Get()
     {
         return attackingPairs
@@ -20,7 +20,7 @@ public class PincerAttackParticipants
                 .ToList();
     }
 
-    //Select all participants in actor x
+    //Load all participants in actor x
     public List<ActorInstance> Get(ActorPair pair)
     {
 

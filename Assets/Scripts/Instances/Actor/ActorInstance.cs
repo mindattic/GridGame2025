@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
 public class ActorInstance : MonoBehaviour
 {
     //External properties
@@ -16,6 +15,7 @@ public class ActorInstance : MonoBehaviour
     protected CoinManager coinManager => GameManager.instance.coinManager;
     protected DamageTextManager damageTextManager => GameManager.instance.damageTextManager;
     protected DebugManager debugManager => GameManager.instance.debugManager;
+    protected StageManager stageManager => GameManager.instance.stageManager;
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
@@ -43,11 +43,11 @@ public class ActorInstance : MonoBehaviour
     public bool onSouthEdge => location.y == board.rowCount;
     public bool onWestEdge => location.x == 1;
     public bool isActive => isActiveAndEnabled;
-    public bool isAlive => isActive && stats.HP > 0;
+    public bool isAlive =>  stats.HP > 0;
     public bool isPlaying => isActive && isAlive;
     public bool isDying => isActive && stats.HP < 1;
     public bool isDead => !isActive && stats.HP < 1;
-    public bool isSpawnable => !isPlaying && !hasSpawned && spawnTurn <= turnManager.currentTurn;
+    public bool isSpawnable => !hasSpawned && spawnTurn <= turnManager.currentTurn;
     public bool hasMaxAP => stats.AP == stats.MaxAP;
 
     public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isPlayerInvincible);
@@ -116,6 +116,7 @@ public class ActorInstance : MonoBehaviour
 
     //Events
     public Action<ActorInstance> OnOverlapDetected;
+    public Action<ActorInstance> OnDeathDetected;
 
     //Fields
     [SerializeField] public AnimationCurve glowCurve;
@@ -144,33 +145,6 @@ public class ActorInstance : MonoBehaviour
     public ActorGlow glow = new ActorGlow();
     public ActorParallax parallax = new ActorParallax();
     public ActorThumbnail thumbnail = new ActorThumbnail();
-
-    //Method which is used for initialization tasks that need to occur before the game starts 
-    private void Awake()
-    {
-        render.Initialize(this);
-        action.Initialize(this);
-        move.Initialize(this);
-        healthBar.Initialize(this);
-        actionBar.Initialize(this);
-        glow.Initialize(this);
-        parallax.Initialize(this);
-        thumbnail.Initialize(this);
-
-        wiggleSpeed = tileSize * 24f;
-        wiggleAmplitude = 15f;  //Amplitude (difference from -45 degrees)
-
-        //nextLocation = null;
-        //redirectedLocation = null;
-        //nextPosition = null;
-
-        //Event bindings
-        OnOverlapDetected += (other) =>
-        {
-            //Debug.Log($"[OnOverlapDetected] {name} received event from {other.name}");
-            move.HandleOnOverlapDetected(other);
-        };
-    }
 
     public bool IsSameColumn(Vector2Int other) => location.x == other.x;
     public bool IsSameRow(Vector2Int other) => location.y == other.y;
@@ -208,34 +182,49 @@ public class ActorInstance : MonoBehaviour
         return Direction.None;
     }
 
-    public void Spawn()
+    private void Awake()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+
+        render.Initialize(this);
+        action.Initialize(this);
+        move.Initialize(this);
+        healthBar.Initialize(this);
+        actionBar.Initialize(this);
+        glow.Initialize(this);
+        parallax.Initialize(this);
+        thumbnail.Initialize(this);
+
+        wiggleSpeed = tileSize * 24f;
+        wiggleAmplitude = 15f;  //Amplitude (difference from -45 degrees)
+
+        //Events
+        OnOverlapDetected += (other) => move.HandleOnOverlapDetected(other);
+        OnDeathDetected += (actor) => stageManager.CheckStageCompletion();
+    }
+
+    public void Spawn(Vector2Int startLocation)
+    {
+        location = startLocation;
         previousLocation = location;
         position = Geometry.GetPositionByLocation(location);
 
-        //sprites = resourceManager.ActorSprite(this.character.ToString());
         thumbnail.Generate();
 
-        //TODO: Equip actor at stagemaanger load based on save file: party.json
+        //TODO: Equip actor at stagemanger load based on save file: party.json
         weapon.Type = Random.WeaponType();
         weapon.Attack = Random.Float(10, 15);
         weapon.Defense = Random.Float(0, 5);
         weapon.Name = $"{weapon.Type}";
         render.weaponIcon.sprite = resourceManager.WeaponType(weapon.Type.ToString()).Value;
-
+  
         if (isPlayer)
         {
             render.SetQualityColor(ColorHelper.Solid.White);
             render.SetGlowColor(ColorHelper.Solid.White);
             render.SetParallaxSprite(resourceManager.Seamless("WhiteFire2").Value);
-
             render.SetParallaxMaterial(resourceManager.Material("PlayerParallax", thumbnail.texture).Value);
             render.SetParallaxAlpha(Opacity.Percent50);
-            //render.SetParallaxSpeed(1, 1);
-
-            //render.SetThumbnailMaterial(resourceManager.Material("Sprites-Default", thumbnailSettings.texture));
-            //render.SetFrameColor(quality.Color);
             render.SetSelectionBoxEnabled(isEnabled: false);
             vfx.Attack = resourceManager.VisualEffect("BlueSlash1");
         }
@@ -246,8 +235,6 @@ public class ActorInstance : MonoBehaviour
             render.SetParallaxSprite(resourceManager.Seamless("RedFire1").Value);
             render.SetParallaxMaterial(resourceManager.Material("EnemyParallax", thumbnail.texture).Value);
             render.SetParallaxAlpha(Opacity.Percent50);
-            //render.SetParallaxSpeed(1, 1);
-            //render.SetThumbnailMaterial(resourceManager.Material("Sprites-Default", thumbnailSettings.texture));
             render.SetFrameColor(ColorHelper.Solid.Red);
             render.SetSelectionBoxEnabled(isEnabled: false);
             vfx.Attack = resourceManager.VisualEffect("DoubleClaw");
@@ -266,16 +253,12 @@ public class ActorInstance : MonoBehaviour
             action.TriggerFadeIn();
             action.TriggerSpin360();
         }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
-
-    private void Update()
-    {
-        CheckRotation();
-    }
-    void FixedUpdate()
-    {
-    }
 
 
     private void CheckRotation()
@@ -416,7 +399,7 @@ public class ActorInstance : MonoBehaviour
 
         //Wait for health bar to finish draining
         if (healthBar.isDraining)
-            yield return new WaitUntil(() => stats.PreviousHP == 0);
+            yield return new WaitUntil(() => healthBar.isEmpty);
         //while (healthBar.isDraining)
         //    yield return Wait.UntilNextFrame();
 
@@ -447,9 +430,8 @@ public class ActorInstance : MonoBehaviour
         //After:       
         location = board.NowhereLocation;
         position = board.NowherePosition;
-        //nextPosition = null;
-
         gameObject.SetActive(false);
+        OnDeathDetected.Invoke(this);
     }
 
     private void TriggerSpawnCoins(int amount)
@@ -988,5 +970,6 @@ public class ActorInstance : MonoBehaviour
     private void OnDestroy()
     {
         OnOverlapDetected -= move.HandleOnOverlapDetected;
+
     }
 }

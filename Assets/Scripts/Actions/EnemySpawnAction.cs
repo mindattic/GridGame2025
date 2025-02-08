@@ -12,10 +12,10 @@ namespace Assets.Scripts.Models
 
         public override IEnumerator Execute()
         {
-            var spawnableEnemies = enemies.Where(x => x.isSpawnable);
+            var spawnableEnemies = enemies.Where(x => x.isSpawnable).ToList();
             foreach (var enemy in spawnableEnemies)
             {
-                enemy.Spawn();
+                enemy.Spawn(Random.UnoccupiedLocation);
             }
             yield return Wait.UntilNextFrame();
         }

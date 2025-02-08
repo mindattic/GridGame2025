@@ -115,6 +115,9 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
+        Application.targetFrameRate = targetFramerate;
+        QualitySettings.vSyncCount = vSyncCount;
+
         onSelectedPlayerLocationChanged = new UnityEvent<Vector2Int>();
         previousGameSpeed = Time.timeScale;
 
@@ -191,14 +194,9 @@ public class GameManager : Singleton<GameManager>
         //Canvas componenets
         canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
 
-        
-        //Initialize in specific order:
-        dataManager.Initialize();       //01
-        resourceManager.Initialize();   //02
-        stageManager.Initialize();      //03
-
-
         totalCoins = 0;
+
+      
 
         #region Platform Dependent Compilation
 
@@ -225,14 +223,16 @@ public class GameManager : Singleton<GameManager>
         //#endif
 
         #endregion
-
     }
 
     //Method which is automatically called before the first frame update  
     void Start()
     {
-        Application.targetFrameRate = targetFramerate;
-        QualitySettings.vSyncCount = vSyncCount;
+        //Initialize in specific order:
+        dataManager.Initialize();       //01
+        resourceManager.Initialize();   //02
+        profileManager.Initialize();    //03
+        stageManager.Initialize();      //04
     }
 
 }

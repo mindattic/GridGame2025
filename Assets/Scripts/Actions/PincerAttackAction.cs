@@ -67,8 +67,7 @@ public class PincerAttackAction : TurnAction
     private bool AreActorsAligned(ActorInstance actor1, ActorInstance actor2)
     {
         return actor1 != null && actor2 != null && actor1 != actor2 &&
-               actor1.isActive && actor1.isAlive &&
-               actor2.isActive && actor2.isAlive &&
+               actor1.isPlaying && actor2.isPlaying &&
                (actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location));
     }
 
@@ -207,12 +206,7 @@ public class PincerAttackAction : TurnAction
         }
     }
 
-    private void CleanupCombatState()
-    {
-        GameManager.instance.boardOverlay.TriggerFadeOut();
-        GameManager.instance.turnManager.ResetSortingOrder();
-        ClearCombatParticipants();
-    }
+
 
     private void ClearCombatParticipants()
     {

@@ -19,12 +19,6 @@ namespace Assets.Scripts.Models
     }
 
     [Serializable]
-    public class ResourceWrapper<T>
-    {
-        public List<T> Items = new List<T>();
-    }
-
-    [Serializable]
     public class ResourceItem<T>
     {
         public T Value;                     

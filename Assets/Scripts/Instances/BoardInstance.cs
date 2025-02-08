@@ -39,12 +39,7 @@ public class BoardInstance : MonoBehaviour
         //Order of Operations:
         CalculateBounds();
         GenerateTiles();
-        profileManager.LoadProfiles();
-        profileManager.Select(0); //TODO: Have user select profile, for now just use index 0   
-        stageManager.LoadStage("Stage1");
     }
-
-
 
     private void CalculateBounds()
     {

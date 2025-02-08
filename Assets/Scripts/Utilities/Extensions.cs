@@ -51,7 +51,7 @@ public static class Convert
             return new Vector2Int(x, y);
         }
 
-        return Random.UnoccupiedLocation; //Default fallback
+        return GameManager.instance.board.NowhereLocation; //Default fallback
     }
 
     public static Character ToCharacter(string value)

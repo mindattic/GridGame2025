@@ -66,7 +66,7 @@ public static class Tag
     public static string SupportLine = "SupportLine";
     public static string AttackLine = "AttackLine";
     public static string Trail = "Trail";
-    public static string Select = "Select";
+    public static string Select = "Load";
     public static string DamageText = "DamageText";
     public static string AnnouncementText = "AnnouncementText";
     public static string Portrait = "ActorPortrait";
@@ -376,11 +376,12 @@ public static class SortingOrder
     public const int Max = 999;
 }
 
-
-public static class FileHelper
+public static class FolderHelper
 {
     public static class Folders
     {
+        //persistentDataPath == C:\Users\<YourUsername>\AppData\LocalLow\<CompanyName>\<ProductName>\
+
         public static string Profiles;
 
         static Folders()
@@ -391,7 +392,7 @@ public static class FileHelper
                 return;
             }
 
-            Profiles = Path.Combine(Application.persistentDataPath, "profiles");
+            Profiles = Path.Combine(Application.persistentDataPath, "Profiles");
         }
     }
 
@@ -408,11 +409,6 @@ public static class FileHelper
     {
         return Directory.GetDirectories(basePath).ToList();
     }
-
-
-
-
-
 }
 
 

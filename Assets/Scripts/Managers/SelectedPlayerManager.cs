@@ -88,7 +88,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
 
         // When the phase switches to Move on the player turn, start the timer and enable enemy AP checking.
-        audioManager.Play("Select");
+        audioManager.Play("Load");
         timerBar.Play();
         actorManager.CheckEnemyAP();
         if (movingPlayer != null)

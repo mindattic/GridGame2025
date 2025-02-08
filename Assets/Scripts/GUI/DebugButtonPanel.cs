@@ -38,17 +38,17 @@ namespace Assets.Scripts.GUI
 
         private void OnLoadButtonClicked()
         {
-            stageManager.LoadStage("Stage1");
+            stageManager.LoadStage(stageManager.currentStage.Name);
         }
 
         private void OnPreviousStageButtonClicked()
         {
-            //stageManager.Previous();
+            stageManager.Previous();
         }
 
         private void OnNextStageButtonClicked()
         {
-            //stageManager.Next();
+            stageManager.Next();
         }
 
         private void OnSpawnRandomEnemyButtonClicked()
