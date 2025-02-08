@@ -12,7 +12,7 @@ namespace Assets.Scripts.Models
 
         public override IEnumerator Execute()
         {
-            var spawnableEnemies = enemies.ToList().FindAll(x => x.isSpawnable);
+            var spawnableEnemies = enemies.Where(x => x.isSpawnable);
             foreach (var enemy in spawnableEnemies)
             {
                 enemy.Spawn();
