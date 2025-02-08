@@ -5,6 +5,29 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public static class DebugWindowTrigger
+{
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void OnSceneLoaded()
+    {
+        if (!EditorApplication.isPlaying)
+            return;
+
+        // Check if the Game scene is loaded
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            Debug.Log("[DebugWindow] Game scene loaded, opening Debug Window.");
+            EditorApplication.delayCall += OpenDebugWindow;
+        }
+    }
+
+    private static void OpenDebugWindow()
+    {
+        DebugWindow.ShowWindow();
+    }
+}
 
 [InitializeOnLoad] //This attribute ensures that the static constructor is called on load
 public class DebugWindow : EditorWindow
@@ -50,20 +73,42 @@ public class DebugWindow : EditorWindow
         instance = null;
         isWindowOpen = false;
     }
+
     private static void OnPlayModeStateChanged(PlayModeStateChange state)
     {
-        if (state != PlayModeStateChange.EnteredPlayMode)
-            return;
-
-        //Close the window when entering play mode
-        if (isWindowOpen)
-            CloseWindow();
-
-        DelayCall(() =>
+#if UNITY_EDITOR_WIN
+        if (state == PlayModeStateChange.EnteredPlayMode)
         {
-            ShowWindow();
-        });
+            // Close the window when entering Play Mode
+            if (isWindowOpen)
+                CloseWindow();
+
+            // Wait for Game scene to load, then reopen the window
+            EditorApplication.delayCall += WaitForGameScene;
+        }
+#endif
     }
+
+#if UNITY_EDITOR_WIN
+    private static void WaitForGameScene()
+    {
+        // Check every frame if the Game scene is loaded
+        EditorApplication.update += CheckSceneLoad;
+    }
+
+    private static void CheckSceneLoad()
+    {
+        if (!EditorApplication.isPlaying) return;
+
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Game")
+        {
+            Debug.Log("[DebugWindow] Game scene detected, opening Debug Window.");
+            ShowWindow();
+            EditorApplication.update -= CheckSceneLoad; // Stop checking
+        }
+    }
+#endif
+
 
     private void OnEnable()
     {
@@ -86,6 +131,9 @@ public class DebugWindow : EditorWindow
 
     private void Initialize()
     {
+        if (GameManager.instance == null)
+            return;
+
         instance = this;
         isWindowOpen = true;
         lastUpdateTime = DateTime.Now;

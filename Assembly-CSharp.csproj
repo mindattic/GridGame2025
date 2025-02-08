@@ -110,6 +110,7 @@
     <Compile Include="Assets\Scripts\GUI\Card.cs" />
     <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
+    <Compile Include="Assets\SplashScreen.cs" />
     <Compile Include="Assets\Scripts\Instances\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\TimerBarInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />

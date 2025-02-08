@@ -138,6 +138,8 @@ public class StageManager : MonoBehaviour
         instance.stats = dataManager.GetStats(character);
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = spawnTurn;
+
+        //TODO: This should probably be cleaned up...
         var startLocation = spawnTurn <= 1 && location != board.NowhereLocation ? location : Random.UnoccupiedLocation;
         instance.Spawn(startLocation);
         actors.Add(instance);
@@ -149,7 +151,7 @@ public class StageManager : MonoBehaviour
     }
 
 
-    public void CheckStageCompletion()
+    public void CheckStageCompletion(ActorInstance actor)
     {
         bool anyEnemies = enemies.Where(x => x.isEnemy && x.isPlaying).Any();
         if (!anyEnemies)

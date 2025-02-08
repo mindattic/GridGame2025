@@ -10722,7 +10722,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90dd63d40e76f2948b234e5b2121b82f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profiles: []
   currentProfile:
     Guid: 
     Folder: 

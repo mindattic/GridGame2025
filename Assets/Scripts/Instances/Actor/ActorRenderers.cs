@@ -119,6 +119,12 @@ public class ActorRenderers
         SetSelectionAlpha(alpha);
     }
 
+    public void SetOpaqueColor(Color color)
+    {
+        opaqueColor = new Color(color.r, color.g, color.b, color.a);
+        opaque.color = opaqueColor;
+    }
+
     public void SetOpaqueAlpha(float alpha)
     {
         opaqueColor.a = Mathf.Clamp(alpha, 0, 1);
