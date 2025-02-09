@@ -6,7 +6,7 @@ public class SplashScreen : MonoBehaviour
 {
     //Fields
     private Fade fade;
-    private float waitDuration = 3f;
+    private float waitDuration = float.MaxValue;
 
     private void Awake()
     {

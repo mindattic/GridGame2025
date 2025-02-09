@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b5200cfcc73fc8a4f80abd123a888780
+guid: d3849f8fdfcb9684ea5fc860136e5ea8
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7432745010064137781
-    second: SplashScreen-19x5.9_0
+      213: 7484501243202053553
+    second: SplashScreen-Window_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -49,8 +49,8 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 0
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 1, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -178,7 +178,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: SplashScreen-19x5.9_0
+      name: SplashScreen-Window_0
       rect:
         serializedVersion: 2
         x: 0
@@ -186,15 +186,15 @@ TextureImporter:
         width: 1170
         height: 2352
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 53e1eeec43a662760800000000000000
-      internalID: 7432745010064137781
+      spriteID: 1b52702e93a4ed760800000000000000
+      internalID: 7484501243202053553
       vertices: []
       indices: 
       edges: []
@@ -204,7 +204,7 @@ TextureImporter:
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      SplashScreen-19x5.9_0: 7432745010064137781
+      SplashScreen-Window_0: 7484501243202053553
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

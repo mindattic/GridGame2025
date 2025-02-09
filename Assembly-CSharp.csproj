@@ -138,6 +138,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
+    <Compile Include="Assets\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
