@@ -55,7 +55,7 @@ namespace Assets.Scripts.GUI
         {
             if (!hasPages) return;
 
-            Time.timeScale = 0f;
+            //Time.timeScale = 0f;
             this.currentPage = currentPage;       
             panel.SetActive(true);
             Navigate();
@@ -97,7 +97,7 @@ namespace Assets.Scripts.GUI
 
         public void Close()
         {
-            Time.timeScale = 1f;
+            //Time.timeScale = 1f;
             panel.SetActive(false);
         }
 

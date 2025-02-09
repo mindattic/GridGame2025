@@ -3,20 +3,16 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class MainMenu : MonoBehaviour
 {
     //Fields
     private Fade fade;
-    //[SerializeField] private Button continueButton;
-    //[SerializeField] private Button newGameButton;
-    //[SerializeField] private Button loadGameButton;
-    //[SerializeField] private Button optionsButton;
-    //[SerializeField] private Button quiteButton;
 
     private void Awake()
     {
-        fade = GameObject.Find("Fade").GetComponent<Fade>();
+        fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
     }
 
     void Start()
@@ -51,7 +47,7 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator LoadScene(string sceneName)
     {
-        ToggleButtons(interactable: false);
+        DisableButtons();
         IEnumerator loadScene()
         {
             SceneManager.LoadScene(sceneName);
@@ -62,7 +58,7 @@ public class MainMenu : MonoBehaviour
 
     private IEnumerator Quit()
     {
-        ToggleButtons(interactable: false);
+        DisableButtons();
         IEnumerator quit()
         {
             Application.Quit();
@@ -71,11 +67,13 @@ public class MainMenu : MonoBehaviour
         yield return StartCoroutine(fade.FadeOut(quit()));
     }
 
-    private void ToggleButtons(bool interactable)
+    private void DisableButtons()
     {
-        //foreach (Button button in buttons)
-        //{
-        //    button.interactable = interactable;
-        //}
+        Button[] buttons = GameObject.Find("Panel").GetComponentsInChildren<Button>();
+
+        foreach (var button in buttons)
+        {
+            button.interactable = false;
+        }
     }
 }

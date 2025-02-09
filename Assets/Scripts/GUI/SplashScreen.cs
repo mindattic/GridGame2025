@@ -10,7 +10,7 @@ public class SplashScreen : MonoBehaviour
 
     private void Awake()
     {
-        fade = GameObject.Find("Fade").GetComponent<Fade>();
+        fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
     }
 
     void Start()
@@ -28,11 +28,12 @@ public class SplashScreen : MonoBehaviour
     {
         yield return fade.FadeIn();
         yield return new WaitForSeconds(waitDuration);
-        yield return LoadScene();
+        StartCoroutine(LoadScene());
     }
 
     private IEnumerator LoadScene()
     {
+        StopCoroutine(Startup());
         yield return fade.FadeOut();
         SceneManager.LoadScene(Scene.TitleScreen);
     }

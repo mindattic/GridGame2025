@@ -3,6 +3,7 @@ using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,7 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     //External properties
+    protected Fade fade => GameManager.instance.fade;
     protected DataManager dataManager => GameManager.instance.dataManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected ProfileManager profileManager => GameManager.instance.profileManager;
@@ -87,9 +89,10 @@ public class StageManager : MonoBehaviour
         actorManager.Clear();
         dottedLineManager.Clear();
         turnManager.Initialize();
-        canvasOverlay.Reset();
-        canvasOverlay.Show($"{currentStage.Name}");
-        canvasOverlay.TriggerFadeOut(Interval.OneSecond);
+
+        //canvasOverlay.Reset();
+        //canvasOverlay.Show($"{currentStage.Name}");
+        //canvasOverlay.TriggerFadeOut(Interval.OneSecond);
 
         //Spawn actors
         foreach (var stageActor in currentStage.Actors)
@@ -110,9 +113,16 @@ public class StageManager : MonoBehaviour
         }
 
         //Show first tutorial (if applicable)
-        var tutorialKey = currentStage.Tutorials.FirstOrDefault();
-        var tutorial = resourceManager.Tutorial(tutorialKey);
-        tutorialPopup.Load(tutorial);
+        IEnumerator showTutorial()
+        {
+            var tutorialKey = currentStage.Tutorials.FirstOrDefault();
+            var tutorial = resourceManager.Tutorial(tutorialKey);
+            tutorialPopup.Load(tutorial);
+            yield return null;
+        }
+       
+
+        StartCoroutine(fade.FadeIn(showTutorial()));
     }
 
     //private void Update()
@@ -124,9 +134,9 @@ public class StageManager : MonoBehaviour
     //}
 
     public void SpawnActor(
-        Character character, 
-        Team team, 
-        int spawnTurn, 
+        Character character,
+        Team team,
+        int spawnTurn,
         Vector2Int location)
     {
         var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
@@ -154,11 +164,15 @@ public class StageManager : MonoBehaviour
     public void CheckStageCompletion(ActorInstance actor)
     {
         bool allEnemiesDefeated = enemies.All(x => x.hasSpawned && x.isDead);
+        if (!allEnemiesDefeated)
+            return;
 
-        if (allEnemiesDefeated)
+        IEnumerator loadStage()
         {
             LoadStage(currentStage.NextStage);
+            yield return Wait.UntilNextFrame();
         }
+        StartCoroutine(fade.FadeOut(loadStage()));
     }
 }
 

@@ -92,6 +92,10 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public ActorInstance selectedPlayer;
     [HideInInspector] public ActorInstance previousSelectedPlayer;
 
+
+    [HideInInspector] public Fade fade;
+
+
     public bool hasSelectedPlayer => selectedPlayer != null;
     public UnityEvent<Vector2Int> onSelectedPlayerLocationChanged;
 
@@ -142,6 +146,7 @@ public class GameManager : Singleton<GameManager>
         //GUI
         tutorialPopup = GameObject.Find(Constants.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
         cardManager = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
+        fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
 
         board = GameObject.Find(Constants.Board).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
         canvas2D = GameObject.Find(Constants.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
