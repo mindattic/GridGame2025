@@ -376,6 +376,15 @@ public static class SortingOrder
     public const int Max = 999;
 }
 
+public static class Scene
+{
+    public static string Game = "Game";
+    public static string Options = "Options";
+    public static string TitleScreen = "TitleScreen";
+    public static string SplashScreen = "SplashScreen";
+
+}
+
 public static class FolderHelper
 {
     public static class Folders

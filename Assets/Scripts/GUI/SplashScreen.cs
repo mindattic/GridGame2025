@@ -1,14 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class SplashScreen : MonoBehaviour
 {
-    [SerializeField] public Image fade;
+    //Fields
+    private Fade fade;
+    private float waitDuration = 3f;
 
-    float fadeDuration = 0.5f;
-    float waitDuration = 3f;
+    private void Awake()
+    {
+        fade = GameObject.Find("Fade").GetComponent<Fade>();
+    }
 
     void Start()
     {
@@ -23,43 +26,14 @@ public class SplashScreen : MonoBehaviour
 
     private IEnumerator Startup()
     {
-        fade.gameObject.SetActive(true);
-        fade.color = new Color(0, 0, 0, 1);
-        yield return FadeIn();
+        yield return fade.FadeIn();
         yield return new WaitForSeconds(waitDuration);
         yield return LoadScene();
     }
 
     private IEnumerator LoadScene()
     {
-        yield return FadeOut();
-        SceneManager.LoadScene("TitleScreen");
+        yield return fade.FadeOut();
+        SceneManager.LoadScene(Scene.TitleScreen);
     }
-
-    private IEnumerator FadeIn()
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < fadeDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float alpha = 1 - Mathf.Clamp01(elapsedTime / fadeDuration);
-            fade.color = new Color(0, 0, 0, alpha);
-            yield return null;
-        }
-        fade.color = new Color(0, 0, 0, 0);
-    }
-
-    private IEnumerator FadeOut()
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < fadeDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            float alpha = Mathf.Clamp01(elapsedTime / fadeDuration);
-            fade.color = new Color(0, 0, 0, alpha);
-            yield return null;
-        }
-        fade.color = new Color(0, 0, 0, 1);
-    }
-
 }
