@@ -33,7 +33,6 @@ public class SplashScreen : MonoBehaviour
 
     private IEnumerator LoadScene()
     {
-        StopCoroutine(Startup());
         yield return fade.FadeOut();
         SceneManager.LoadScene(Scene.TitleScreen);
     }

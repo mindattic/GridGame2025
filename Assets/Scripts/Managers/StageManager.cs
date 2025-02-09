@@ -167,12 +167,14 @@ public class StageManager : MonoBehaviour
         if (!allEnemiesDefeated)
             return;
 
-        IEnumerator loadStage()
-        {
-            LoadStage(currentStage.NextStage);
-            yield return Wait.UntilNextFrame();
-        }
-        StartCoroutine(fade.FadeOut(loadStage()));
+        StartCoroutine(fade.FadeOut(LoadStage()));
     }
+
+    private IEnumerator LoadStage()
+    {
+        LoadStage(currentStage.NextStage);
+        yield return Wait.UntilNextFrame();
+    }
+
 }
 

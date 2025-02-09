@@ -9,10 +9,12 @@ public class MainMenu : MonoBehaviour
 {
     //Fields
     private Fade fade;
+    private Button[] buttons;
 
     private void Awake()
     {
         fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        buttons = GameObject.Find("Panel").GetComponentsInChildren<Button>();
     }
 
     void Start()
@@ -22,55 +24,45 @@ public class MainMenu : MonoBehaviour
 
     public void OnContinueClicked()
     {
-        StartCoroutine(LoadScene(Scene.Game));
+        StartCoroutine(fade.FadeOut(LoadScene(Scene.Game)));
     }
 
     public void OnNewGameClicked()
     {
-        StartCoroutine(LoadScene(Scene.Game));
+        StartCoroutine(fade.FadeOut(LoadScene(Scene.Game)));
     }
 
     public void OnLoadGameClicked()
     {
-        StartCoroutine(LoadScene(Scene.Game));
+        StartCoroutine(fade.FadeOut(LoadScene(Scene.Game)));
     }
 
     public void OnOptionsClicked()
     {
-        StartCoroutine(LoadScene(Scene.Game));
+        StartCoroutine(fade.FadeOut(LoadScene(Scene.Options)));
     }
 
     public void OnQuitClicked()
-    {
-        StartCoroutine(Quit());
+    {     
+        StartCoroutine(fade.FadeOut(Quit()));
     }
 
     private IEnumerator LoadScene(string sceneName)
     {
         DisableButtons();
-        IEnumerator loadScene()
-        {
-            SceneManager.LoadScene(sceneName);
-            yield return Wait.UntilNextFrame();
-        }
-        yield return StartCoroutine(fade.FadeOut(loadScene()));
+        SceneManager.LoadScene(sceneName);
+        yield return Wait.UntilNextFrame();
     }
 
     private IEnumerator Quit()
     {
         DisableButtons();
-        IEnumerator quit()
-        {
-            Application.Quit();
-            yield return Wait.UntilNextFrame();
-        }
-        yield return StartCoroutine(fade.FadeOut(quit()));
+        Application.Quit();
+        yield return Wait.UntilNextFrame();
     }
 
     private void DisableButtons()
     {
-        Button[] buttons = GameObject.Find("Panel").GetComponentsInChildren<Button>();
-
         foreach (var button in buttons)
         {
             button.interactable = false;
