@@ -52,7 +52,7 @@ public class VFXInstance : MonoBehaviour
 
         SetLooping(vfx.IsLoop);
 
-        //Wait until delay is over
+        //Wait until waitDuration is over
         if (vfx.Delay != 0f)
             yield return new WaitForSeconds(vfx.Delay);
 

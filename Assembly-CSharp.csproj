@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
+    <Compile Include="Assets\Scripts\GUI\MainMenu.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
@@ -110,7 +111,6 @@
     <Compile Include="Assets\Scripts\GUI\Card.cs" />
     <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
-    <Compile Include="Assets\SplashScreen.cs" />
     <Compile Include="Assets\Scripts\Instances\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\TimerBarInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
@@ -132,6 +132,7 @@
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
+    <Compile Include="Assets\Scripts\GUI\SplashScreen.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackParticipants.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\PortraitInstance.cs" />
+    <Compile Include="Assets\Scripts\GUI\ScrollingBackground.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\TooltipManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />

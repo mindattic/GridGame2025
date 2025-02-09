@@ -28,7 +28,7 @@ namespace Assets.Scripts.Models
 
             if (readyEnemies.Count > 0)
             {
-                //Wait for a predetermined delay before enemy movement starts.
+                //Wait for a predetermined waitDuration before enemy movement starts.
                 yield return Wait.For(Intermission.Before.Enemy.Move);
 
                 //For each ready enemy, calculate its attack strategy and move it to its destination.

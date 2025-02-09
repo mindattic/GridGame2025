@@ -78,19 +78,19 @@
 //       transform.eulerAngles = new Vector3(angle, 0, 0);
 //   }
 
-//   public void TriggerFadeOut(float delay = 0)
+//   public void TriggerFadeOut(float waitDuration = 0)
 //   {
-//       StartCoroutine(FadeOut(delay));
+//       StartCoroutine(FadeOut(waitDuration));
 //   }
 
-//   private IEnumerator FadeOut(float delay = 0)
+//   private IEnumerator FadeOut(float waitDuration = 0)
 //   {
 //       //Begin:
 //       float alpha = maxAlpha;
 //       label.color = new Color(1f, 1f, 1f, alpha);
 
-//       if (delay != 0)
-//           yield return Wait.For(delay);
+//       if (waitDuration != 0)
+//           yield return Wait.For(waitDuration);
 
 //       //During:
 //       while (alpha > minAlpha)

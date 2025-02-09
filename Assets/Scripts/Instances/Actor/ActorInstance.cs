@@ -46,6 +46,7 @@ public class ActorInstance : MonoBehaviour
     public bool isAlive =>  stats.HP > 0;
     public bool isPlaying => isActive && isAlive;
     public bool isDying => isActive && stats.HP < 1;
+    public bool isDead => !isActive && !isAlive;
     public bool isSpawnable => !hasSpawned && spawnTurn <= turnManager.currentTurn;
     public bool hasMaxAP => stats.AP == stats.MaxAP;
 
@@ -198,14 +199,14 @@ public class ActorInstance : MonoBehaviour
         wiggleAmplitude = 15f;  //Amplitude (difference from -45 degrees)
 
         //Events
-        OnOverlapDetected += (other) => move.HandleOnOverlapDetected(other);
+        OnOverlapDetected += (actor) => move.HandleOnOverlapDetected(actor);
         OnDeathDetected += (actor) => stageManager.CheckStageCompletion(actor);
     }
 
     private void OnDestroy()
     {
         OnOverlapDetected -= move.HandleOnOverlapDetected;
-        OnDeathDetected -= stageManager.CheckStageCompletion;
+        //OnDeathDetected -= stageManager.CheckStageCompletion;
     }
 
     public void Spawn(Vector2Int startLocation)

@@ -153,10 +153,11 @@ public class StageManager : MonoBehaviour
 
     public void CheckStageCompletion(ActorInstance actor)
     {
-        bool anyRemainingEnemies = enemies.Where(x => x.isEnemy && x.hasSpawned && x.stats.HP > 0).Any();
-        if (!anyRemainingEnemies)
+        bool allEnemiesDefeated = enemies.All(x => x.hasSpawned && x.isDead);
+
+        if (allEnemiesDefeated)
         {
-            LoadStage("Stage 2");
+            LoadStage(currentStage.NextStage);
         }
     }
 }

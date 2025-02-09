@@ -89,6 +89,7 @@ namespace Assets.Scripts.Models
         public string Description;
         public string CompletionCondition;
         public int CompletionValue;
+        public string NextStage = "Stage 2";
         public List<StageActor> Actors;
         public List<StageDottedLine> DottedLines;
         public List<string> Tutorials;

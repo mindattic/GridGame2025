@@ -428,7 +428,7 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             if (delay != 0f)
-                trigger.AddAttribute("delay", delay);
+                trigger.AddAttribute("waitDuration", delay);
 
             instance.StartCoroutine(FadeIn(trigger));
         }
@@ -439,7 +439,7 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             //Before:
-            float delay = trigger.GetAttribute("delay", 0f);
+            float delay = trigger.GetAttribute("waitDuration", 0f);
             float increment = trigger.GetAttribute("increment", 0.05f);
             float alpha = 0;
             render.SetAlpha(alpha);
