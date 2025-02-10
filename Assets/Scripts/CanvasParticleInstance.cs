@@ -10,25 +10,23 @@ public class CanvasParticleInstance : MonoBehaviour
     private float zRotationSpeed;
     private float horizontalSpeed;
     private float fallSpeed;
-    private float lifetime;
     private RectTransform rectTransform;
 
-    public void Initialize(float rotationSpeed, float horizontalSpeed, float fallSpeed, float lifetime)
+    public void Initialize(float rotationSpeed, float horizontalSpeed, float fallSpeed)
     {
-        this.xRotationSpeed = Random.Float(0, rotationSpeed);
-        this.yRotationSpeed = 0;
+        this.xRotationSpeed = 0; // Random.Float(0, rotationSpeed);
+        this.yRotationSpeed = Random.Float(0, rotationSpeed);
         this.zRotationSpeed = rotationSpeed;
         this.horizontalSpeed = horizontalSpeed;
         this.fallSpeed = fallSpeed;
-        this.lifetime = lifetime;
         rectTransform = GetComponent<RectTransform>();
         StartCoroutine(MoveAndDestroy());
     }
 
     private IEnumerator MoveAndDestroy()
     {
-        float elapsedTime = 0f;
-        while (elapsedTime < lifetime)
+
+        while (rectTransform.anchoredPosition.x < Screen.width)
         {
             rectTransform.anchoredPosition += new Vector2(
                 horizontalSpeed * Time.deltaTime,
@@ -39,7 +37,6 @@ public class CanvasParticleInstance : MonoBehaviour
                 yRotationSpeed * Time.deltaTime,
                 zRotationSpeed * Time.deltaTime);
 
-            elapsedTime += Time.deltaTime;
             yield return null;
         }
         Destroy(gameObject);

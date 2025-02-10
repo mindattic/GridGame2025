@@ -13,7 +13,6 @@ public class CanvasParticleEmitter : MonoBehaviour
     [SerializeField] private float x;
     [SerializeField] private float yMin;
     [SerializeField] private float yMax;
-    [SerializeField] private float lifetime; // Time before the image is destroyed
     [SerializeField] private float rotationSpeedMin; // Min rotation speed
     [SerializeField] private float rotationSpeedMax; // Max rotation speed
     [SerializeField] private float fallSpeedMin; // Minimum downward speed
@@ -63,6 +62,6 @@ public class CanvasParticleEmitter : MonoBehaviour
         imageRect.localScale = new Vector3(scale, scale, 1f);
 
         CanvasParticleInstance instance = newImage.AddComponent<CanvasParticleInstance>();
-        instance.Initialize(rotationSpeed, horizontalSpeed, fallSpeed, lifetime);
+        instance.Initialize(rotationSpeed, horizontalSpeed, fallSpeed);
     }
 }
