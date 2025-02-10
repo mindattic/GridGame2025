@@ -94,8 +94,10 @@
     <Compile Include="Assets\Scripts\GUI\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyAttackAction.cs" />
+    <Compile Include="Assets\Scripts\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\GUI\MainMenu.cs" />
+    <Compile Include="Assets\Scripts\CanvasParticleInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
