@@ -19,11 +19,22 @@ public class CanvasParticleEmitter : MonoBehaviour
     [SerializeField] private float fallSpeedMax; // Maximum downward speed
     [SerializeField] private float scaleMin; // Minimum scale
     [SerializeField] private float scaleMax; // Maximum scale
-    [SerializeField] private Sprite[] spriteSheet; // Array of sprites from the sprite sheet
+    [SerializeField] private int prewarmCount; // Number of particles to spawn on start
+    [SerializeField] private Sprite[] sprites; // Array of sprites from the sprite sheet
+   
 
     void Start()
     {
+        PrewarmParticles();  // Spawn initial particles
         StartCoroutine(SpawnImages());
+    }
+
+    private void PrewarmParticles()
+    {
+        for (int i = 0; i < prewarmCount; i++)
+        {
+            SpawnImage(prewarm: true);
+        }
     }
 
     private IEnumerator SpawnImages()
@@ -36,7 +47,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         }
     }
 
-    private void SpawnImage()
+    private void SpawnImage(bool prewarm = false)
     {
         GameObject newImage = Instantiate(imagePrefab, canvasTransform);
         RectTransform imageRect = newImage.GetComponent<RectTransform>();
@@ -44,13 +55,13 @@ public class CanvasParticleEmitter : MonoBehaviour
         if (imageRect == null || imageComponent == null) return;
 
         // Assign a random sprite from the sprite sheet
-        if (spriteSheet.Length > 0)
+        if (sprites.Length > 0)
         {
-            imageComponent.sprite = spriteSheet[Random.Int(0, spriteSheet.Length - 1)];
+            imageComponent.sprite = sprites[Random.Int(0, sprites.Length - 1)];
         }
 
-        // Set random start position (off-screen left)
-        float startX = -50; //-canvasTransform.rect.width / 2 - 50
+        // Assign start position
+        float startX = prewarm ? Random.Float(-50, Screen.width) : -50; // Prewarm particles start mid-flight
         float startY = Random.Float(yMin, yMax);
         imageRect.anchoredPosition = new Vector2(startX, startY);
 

@@ -26,7 +26,6 @@ public class CanvasParticleInstance : MonoBehaviour
 
     private IEnumerator MoveAndDestroy()
     {
-
         while (rectTransform.anchoredPosition.x < Screen.width)
         {
             rectTransform.anchoredPosition += new Vector2(
