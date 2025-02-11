@@ -295,7 +295,7 @@ public class DebugWindow : EditorWindow
 
         GUILayout.Label("Debug OptionsScreen", GUILayout.Width(Screen.width * 0.25f));
         selectedOption = (DebugOptions)EditorGUILayout.EnumPopup(selectedOption, GUILayout.Width(Screen.width * 0.5f));
-        if (GUILayout.Button("Execute", GUILayout.Width(Screen.width * 0.25f)))
+        if (GUILayout.Button("StartCoroutine", GUILayout.Width(Screen.width * 0.25f)))
             OnDebugOptionRunClick();
 
         GUILayout.EndHorizontal();

@@ -78,7 +78,8 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Trigger coroutine (if applicable):
-            yield return trigger.StartCoroutine(instance);
+            trigger.SetContext(instance);
+            yield return trigger.StartCoroutine();
 
             //After:
             instance.thumbnailPosition = originalPosition;
@@ -161,7 +162,8 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Trigger coroutine (if applicable):
-            yield return trigger.StartCoroutine(instance);
+            trigger.SetContext(instance);
+            yield return trigger.StartCoroutine();
 
 
             //After:
@@ -226,7 +228,8 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Trigger coroutine (if applicable):
-            yield return trigger.StartCoroutine(instance);
+            trigger.SetContext(instance);
+            yield return trigger.StartCoroutine();
 
             //Phase 3: Return to Starting position (rotate back to zero and move back slowly)
             elapsedTime = 0f;
@@ -282,7 +285,8 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Trigger coroutine (if applicable):
-            yield return trigger.StartCoroutine(instance);
+            trigger.SetContext(instance);
+            yield return trigger.StartCoroutine();
 
             //After:
             scale = new Vector3(maxSize, maxSize, 0);
@@ -322,7 +326,8 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Trigger coroutine (if applicable):
-            yield return trigger.StartCoroutine(instance);
+            trigger.SetContext(instance);
+            yield return trigger.StartCoroutine();
 
             //After:
             scale = new Vector3(minSize, minSize, 0);
@@ -360,7 +365,8 @@ namespace Assets.Scripts.Instances.Actor
                     rotY = 90f;
 
                     //Trigger coroutine (if applicable):
-                    yield return trigger.StartCoroutine(instance);
+                    trigger.SetContext(instance);
+                    yield return trigger.StartCoroutine();
                 }
 
                 isDone = trigger.HasTriggered && rotY <= 0f;
@@ -408,7 +414,8 @@ namespace Assets.Scripts.Instances.Actor
                 if (!trigger.HasTriggered && rotY >= 240f)
                 {
                     //Trigger coroutine (if applicable):
-                    yield return trigger.StartCoroutine(instance);
+                    trigger.SetContext(instance);
+                    yield return trigger.StartCoroutine();
                 }
 
                 isDone = rotY >= 360f;
@@ -456,7 +463,8 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Trigger coroutine (if applicable):
-            yield return trigger.StartCoroutine(instance);
+            trigger.SetContext(instance);
+            yield return trigger.StartCoroutine();
 
             //After:
             alpha = 1;
@@ -497,7 +505,8 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Trigger coroutine (if applicable):
-            yield return trigger.StartCoroutine(instance);
+            trigger.SetContext(instance);
+            yield return trigger.StartCoroutine();
 
             //After:
             rotZ = start;
@@ -551,7 +560,8 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Trigger coroutine (if applicable):
-            yield return trigger.StartCoroutine(instance);
+            trigger.SetContext(instance);
+            yield return trigger.StartCoroutine();
 
             //After
             render.turnDelayText.transform.rotation = Quaternion.Euler(0, 0, 0);

@@ -14,8 +14,9 @@ public class CanvasParticleInstance : MonoBehaviour
 
     public void Initialize(float rotationSpeed, float horizontalSpeed, float fallSpeed)
     {
-        this.xRotationSpeed = 0; // Random.Float(0, rotationSpeed);
-        this.yRotationSpeed = Random.Float(0, rotationSpeed);
+
+        this.xRotationSpeed = Random.Boolean ? Random.Float(0, rotationSpeed) : 0;
+        this.yRotationSpeed = Random.Boolean ? Random.Float(0, rotationSpeed) : 0;
         this.zRotationSpeed = rotationSpeed;
         this.horizontalSpeed = horizontalSpeed;
         this.fallSpeed = fallSpeed;

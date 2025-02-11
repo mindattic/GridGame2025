@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Trigger
 {
-    //Variables
+    // Variables
     public IEnumerator Coroutine = null;
     public bool IsAsync = true;
     public bool HasTriggered = false;
     private Dictionary<string, object> attributes = new Dictionary<string, object>();
 
-    //Properties
+    private MonoBehaviour context; // Stores the MonoBehaviour instance
+
+    // Properties
     public bool IsValid => Coroutine != null && !HasTriggered;
 
-    //Constructors
+    // Constructors
     public Trigger() { }
     public Trigger(IEnumerator coroutine)
     {
@@ -25,7 +27,13 @@ public class Trigger
         IsAsync = isAsync;
     }
 
-    public IEnumerator StartCoroutine(MonoBehaviour context = null)
+    // Assigns the MonoBehaviour context
+    public void SetContext(MonoBehaviour instance)
+    {
+        context = instance;
+    }
+
+    public IEnumerator StartCoroutine()
     {
         if (!IsValid || HasTriggered)
             yield break;
@@ -65,7 +73,7 @@ public class Trigger
             IsAsync = this.IsAsync
         };
 
-        //Copy attributes dictionary
+        // Copy attributes dictionary
         foreach (var kvp in this.attributes)
         {
             clone.AddAttribute(kvp.Key, kvp.Value);
@@ -73,5 +81,4 @@ public class Trigger
 
         return clone;
     }
-
 }

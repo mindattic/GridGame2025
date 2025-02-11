@@ -57,7 +57,8 @@ public class VFXInstance : MonoBehaviour
             yield return new WaitForSeconds(vfx.Delay);
 
         //Trigger coroutine (if applicable)
-        yield return trigger.StartCoroutine(this);
+        trigger.SetContext(this);
+        yield return trigger.StartCoroutine();
 
         //Wait until VFX duration completes
         if (vfx.Duration != 0f)
