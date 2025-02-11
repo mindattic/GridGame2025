@@ -379,7 +379,7 @@ public static class SortingOrder
 public static class Scene
 {
     public static string Game = "Game";
-    public static string Options = "Options";
+    public static string OptionsScreen = "OptionsScreen";
     public static string TitleScreen = "TitleScreen";
     public static string SplashScreen = "SplashScreen";
 

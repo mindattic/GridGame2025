@@ -96,7 +96,6 @@
     <Compile Include="Assets\Scripts\Actions\EnemyAttackAction.cs" />
     <Compile Include="Assets\Scripts\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
-    <Compile Include="Assets\Scripts\GUI\MainMenu.cs" />
     <Compile Include="Assets\Scripts\CanvasParticleInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
@@ -140,6 +139,7 @@
     <Compile Include="Assets\Scripts\Models\PincerAttackParticipants.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
+    <Compile Include="Assets\OptionsScreen.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
@@ -151,6 +151,7 @@
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
+    <Compile Include="Assets\Scripts\GUI\TitleScreen.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />

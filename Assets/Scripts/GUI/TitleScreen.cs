@@ -5,7 +5,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-public class MainMenu : MonoBehaviour
+public class TitleScreen : MonoBehaviour
 {
     //Fields
     private Fade fade;
@@ -39,7 +39,7 @@ public class MainMenu : MonoBehaviour
 
     public void OnOptionsClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(Scene.Options)));
+        StartCoroutine(fade.FadeOut(LoadScene(Scene.OptionsScreen)));
     }
 
     public void OnQuitClicked()
