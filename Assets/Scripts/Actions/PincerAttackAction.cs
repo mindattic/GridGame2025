@@ -25,7 +25,7 @@ public class PincerAttackAction : TurnAction
         participants.Clear();
 
         // Use the player team for combat.
-        IQueryable<ActorInstance> teamMembers = GameManager.instance.players;
+        IQueryable<ActorInstance> teamMembers = players.Where(x => x.isPlaying);
 
         if (!AssignParticipants(teamMembers))
         {
@@ -60,7 +60,11 @@ public class PincerAttackAction : TurnAction
             return false;
 
         AssignAttackingPairs();
-        return participants.attackingPairs.Any();
+
+        AssignSupportingPairs();
+
+        var hasAttackers = participants.attackingPairs.Any();
+        return hasAttackers;
     }
 
     // Returns true if the two actors are aligned and both active.
@@ -112,6 +116,28 @@ public class PincerAttackAction : TurnAction
                 }
             }
 
+        }
+    }
+
+
+    private void AssignSupportingPairs()
+    {
+        foreach (var pair in participants.alignedPairs)
+        {
+            // Ensure the pair is valid for support: aligned, has no allies or enemies between, but can have gaps
+            if (!pair.hasOpponentsBetween && !pair.hasAlliesBetween)
+            {
+                participants.supportingPairs.Add(pair);
+            }
+        }
+
+        // If there are supporting pairs, spawn support visuals
+        if (participants.supportingPairs.Any())
+        {
+            foreach (var pair in participants.supportingPairs)
+            {
+                GameManager.instance.supportLineManager.Spawn(pair);
+            }
         }
     }
 
@@ -204,6 +230,12 @@ public class PincerAttackAction : TurnAction
                 opponent.sortingOrder = SortingOrder.Target;
             }
         }
+
+        foreach (var actor in participants.supportingPairs)
+        {
+            actor.sortingOrder = SortingOrder.Supporter;
+        }
+
     }
 
 

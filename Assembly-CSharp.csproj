@@ -135,6 +135,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
     <Compile Include="Assets\Scripts\GUI\SplashScreen.cs" />
+    <Compile Include="Assets\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackParticipants.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
