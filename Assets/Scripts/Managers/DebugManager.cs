@@ -1,3 +1,4 @@
+using Assets.Scripts.Actions;
 using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
 using Game.Behaviors;
@@ -32,10 +33,10 @@ public class DebugManager : MonoBehaviour
 
 
     //Internal properties
-    ActorInstance paladin => players.First(x => x.name == "Paladin");
-    ActorInstance barbarian => players.First(x => x.name == "Barbarian");
-    ActorInstance cleric => players.First(x => x.name == "Cleric");
-    ActorInstance ninja => players.First(x => x.name == "Ninja");
+    ActorInstance paladin => players.First(x => x.name.StartsWith("Paladin"));
+    ActorInstance barbarian => players.First(x => x.name.StartsWith("Barbarian"));
+    ActorInstance cleric => players.First(x => x.name.StartsWith("Cleric"));
+    ActorInstance ninja => players.First(x => x.name.StartsWith("Ninja"));
 
     //Fields
     [SerializeField] private TMP_Dropdown Dropdown;
@@ -232,6 +233,25 @@ public class DebugManager : MonoBehaviour
         var tutorial = resourceManager.tutorials.FirstOrDefault().Value;
         tutorialPopup.Load(tutorial);
     }
+
+    public void FireballTest()
+    {
+        var caster = paladin;
+        var target = enemies.FirstOrDefault();
+        var action = new FireballSpellAction(caster, target);
+        turnManager.AddAction(action);
+        turnManager.TriggerExecuteActions();
+    }
+
+    public void HealTest()
+    {
+        var caster = paladin;
+        var target = barbarian;
+        var action = new HealSpellAction(caster, target);
+        turnManager.AddAction(action);
+        turnManager.TriggerExecuteActions();
+    }
+
 
     public void VFXTest_BlueSlash1()
     {

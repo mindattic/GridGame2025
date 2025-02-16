@@ -293,9 +293,9 @@ public class DebugWindow : EditorWindow
     {
         GUILayout.BeginHorizontal();
 
-        GUILayout.Label("Debug OptionsScreen", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label("Debug Options", GUILayout.Width(Screen.width * 0.25f));
         selectedOption = (DebugOptions)EditorGUILayout.EnumPopup(selectedOption, GUILayout.Width(Screen.width * 0.5f));
-        if (GUILayout.Button("StartCoroutine", GUILayout.Width(Screen.width * 0.25f)))
+        if (GUILayout.Button("Run", GUILayout.Width(Screen.width * 0.25f)))
             OnDebugOptionRunClick();
 
         GUILayout.EndHorizontal();
@@ -419,14 +419,6 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-
-
-
-
-
-
-
-
     private void RenderLog()
     {
         GUILayout.BeginHorizontal();
@@ -503,6 +495,8 @@ public class DebugWindow : EditorWindow
             case DebugOptions.TitleTest: debugManager.TitleTest(); break;
             case DebugOptions.TooltipTest: debugManager.TooltipTest(); break;
             case DebugOptions.TutorialTest: debugManager.TooltipTest(); break;
+            case DebugOptions.FireballTest: debugManager.FireballTest(); break;
+            case DebugOptions.HealTest: debugManager.HealTest(); break;
 
 
 

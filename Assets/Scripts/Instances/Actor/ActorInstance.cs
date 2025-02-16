@@ -338,6 +338,18 @@ public class ActorInstance : MonoBehaviour
         StartCoroutine(TakeDamage(attack));
     }
 
+    public IEnumerator FireDamage(float amount)
+    {
+        damageTextManager.Spawn($"Fireball: - {amount} HP", position);
+        yield return Wait.UntilNextFrame();
+    }
+
+    public IEnumerator Heal(float amount)
+    {
+        damageTextManager.Spawn($"Heal: +{amount} HP", position);
+        yield return Wait.UntilNextFrame();
+    }
+
     public IEnumerator TakeDamage(AttackResult attack)
     {
         //Check abort conditions

@@ -19,7 +19,7 @@ public class VFXManager : MonoBehaviour
 
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
-        instance.name = $"VFX_{resource.Name}Attack{Guid.NewGuid():N}";
+        instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
         visualEffects.Add(instance.name, instance);
         StartCoroutine(instance.Spawn(resource, position, trigger));
     }
@@ -31,7 +31,7 @@ public class VFXManager : MonoBehaviour
 
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
-        instance.name = $"VFX_{resource.Name}Initialize{Guid.NewGuid():N}";
+        instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         visualEffects.Add(instance.name, instance);
 

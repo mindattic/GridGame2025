@@ -18,7 +18,7 @@ public class TrailManager : MonoBehaviour
 
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<TrailInstance>();
-        instance.name = $"Trail_{resource.Name}Attack{Guid.NewGuid():N}";
+        instance.name = $"Trail_{resource.Name}_{Guid.NewGuid():N}";
         trailEffects.Add(instance.name, instance);
         StartCoroutine(instance.Spawn(resource, position, trigger));
     }
@@ -30,7 +30,7 @@ public class TrailManager : MonoBehaviour
 
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<TrailInstance>();
-        instance.name = $"Trail_{resource.Name}Initialize{Guid.NewGuid():N}";
+        instance.name = $"Trail_{resource.Name}_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         trailEffects.Add(instance.name, instance);
 

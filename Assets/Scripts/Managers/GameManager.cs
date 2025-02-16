@@ -62,6 +62,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public ConsoleManager consoleManager;
     [HideInInspector] public LogManager logManager;
     [HideInInspector] public DottedLineManager dottedLineManager;
+    [HideInInspector] public SpellManager spellManager;
 
     //Board
     [HideInInspector] public BoardOverlay boardOverlay;
@@ -196,8 +197,9 @@ public class GameManager : Singleton<GameManager>
         coinManager = game.GetComponent<CoinManager>() ?? throw new UnityException("CoinManager is null");
         pauseManager = game.GetComponent<PauseManager>() ?? throw new UnityException("PauseManager is null");
         dottedLineManager = game.GetComponent<DottedLineManager>() ?? throw new UnityException("DottedLineManager is null");
+        spellManager = game.GetComponent<SpellManager>() ?? throw new UnityException("SpellManager is null");
 
-   
+
         //Overlay components
         boardOverlay = GameObject.Find(Constants.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
         canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
