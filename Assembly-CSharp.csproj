@@ -9,7 +9,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -85,6 +86,7 @@
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Fade.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
+    <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
     <Compile Include="Assets\Scripts\Instances\CoinBarInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
@@ -108,10 +110,10 @@
     <Compile Include="Assets\Scripts\Actions\TurnAction.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
-    <Compile Include="Assets\Scripts\Models\VisualEffect.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\GUI\Card.cs" />
     <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
+    <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Instances\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\TimerBarInstance.cs" />
@@ -122,7 +124,9 @@
     <Compile Include="Assets\Scripts\Instances\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Location.cs" />
+    <Compile Include="Assets\Scripts\Models\VFXResource.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
+    <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
@@ -181,6 +185,11 @@
     <Compile Include="Assets\Scripts\Managers\WallManager.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Resources\Data\Actors.json" />
+    <None Include="Assets\Resources\Data\Stages.json" />
+    <None Include="Assets\Resources\Data\Tutorials.json" />
+    <None Include="Assets\Resources\Data\TrailEffects.json" />
+    <None Include="Assets\Resources\Data\VisualEffects.json" />
     <None Include="Assets\Shader\Add_CenterGlow 2.shader" />
     <None Include="Assets\Shader\henshuuv_b.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -210,7 +219,6 @@
     <None Include="Assets\Shader\Innerglow.shader" />
     <None Include="Assets\Shader\RadialFill.shader" />
     <None Include="Assets\Shader\kongjianniuqu.shader" />
-    <None Include="Assets\Resources\Trails\Readme.txt" />
     <None Include="Assets\Shader\SpriteOutline.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />

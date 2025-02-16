@@ -84,3 +84,7 @@ crashlytics-build.properties
 .plastic/cachedTrees
 plastic.wktree
 hidden_changes.conf
+
+# Resource Data
+!Assets/Resources/Data/
+!Assets/Resources/Data/*.json

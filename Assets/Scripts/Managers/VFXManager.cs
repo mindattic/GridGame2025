@@ -12,30 +12,30 @@ public class VFXManager : MonoBehaviour
     //Fields
     Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();
 
-    public void TriggerSpawn(VisualEffect vfx, Vector3 position, Trigger trigger = default)
+    public void TriggerSpawn(VFXResource resource, Vector3 position, Trigger trigger = default)
     {
         if (trigger == default)
             trigger = new Trigger();
 
-        var prefab = Instantiate(vfx.Prefab, Vector2.zero, Quaternion.identity);
+        var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
-        instance.name = $"VFX_{vfx.Name}Attack{Guid.NewGuid():N}";
+        instance.name = $"VFX_{resource.Name}Attack{Guid.NewGuid():N}";
         visualEffects.Add(instance.name, instance);
-        StartCoroutine(instance.Spawn(vfx, position, trigger));
+        StartCoroutine(instance.Spawn(resource, position, trigger));
     }
 
-    public IEnumerator Spawn(VisualEffect vfx, Vector3 position, Trigger trigger = default)
+    public IEnumerator Spawn(VFXResource resource, Vector3 position, Trigger trigger = default)
     {
         if (trigger == default)
             trigger = new Trigger();
 
-        var prefab = Instantiate(vfx.Prefab, Vector2.zero, Quaternion.identity);
+        var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
-        instance.name = $"VFX_{vfx.Name}Initialize{Guid.NewGuid():N}";
+        instance.name = $"VFX_{resource.Name}Initialize{Guid.NewGuid():N}";
         instance.parent = board.transform;
         visualEffects.Add(instance.name, instance);
 
-        yield return instance.Spawn(vfx, position, trigger);
+        yield return instance.Spawn(resource, position, trigger);
     }
 
 

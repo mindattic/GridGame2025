@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class VisualEffect
+public class TrailResource
 {
     public string Name;
     public GameObject Prefab;
@@ -9,5 +9,5 @@ public class VisualEffect
     public Vector3 RelativeScale;
     public float Delay = 0f;
     public float Duration = 2f;
-    public bool IsLoop;
+    public bool IsLoop = true;
 }

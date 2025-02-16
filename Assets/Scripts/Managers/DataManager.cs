@@ -12,13 +12,15 @@ public class DataManager : MonoBehaviour
     public static class Resource
     {
         public static string Actors = "Actors";
-        public static string VisualEffects = "VisualEffects";
         public static string Stages = "Stages";
+        public static string TrailEffects = "TrailEffects";
+        public static string VisualEffects = "VisualEffects";
     }
 
     public List<ActorData> Actors = new List<ActorData>();
-    public List<VisualEffectData> VisualEffects = new List<VisualEffectData>();
     public List<StageData> Stages = new List<StageData>();
+    public List<TrailData> TrailEffects = new List<TrailData>();
+    public List<VFXData> VisualEffects = new List<VFXData>();
 
     public List<T> ParseJson<T>(string resource)
     {
@@ -40,8 +42,9 @@ public class DataManager : MonoBehaviour
     public void Initialize()
     {
         Actors = ParseJson<ActorData>(Resource.Actors);
-        VisualEffects = ParseJson<VisualEffectData>(Resource.VisualEffects);
         Stages = ParseJson<StageData>(Resource.Stages);
+        TrailEffects = ParseJson<TrailData>(Resource.TrailEffects);
+        VisualEffects = ParseJson<VFXData>(Resource.VisualEffects);
     }
 
     public ActorStats GetStats(Character character)
@@ -54,7 +57,6 @@ public class DataManager : MonoBehaviour
         return new ActorStats(data); //Return a new copy instead of a shared reference
         //return data;
     }
-
 
     public ThumbnailSettings GetThumbnailSetting(Character character)
     {
@@ -72,16 +74,7 @@ public class DataManager : MonoBehaviour
         if (data == null)
             logManager.Error($"Unable to retrieve actor details for `{character}`");
 
-        return new ActorDetails(data);
-    }
-
-    public VisualEffectData GetVisualEffect(string name)
-    {
-        var data = VisualEffects.Where(x => x.Name == name).FirstOrDefault();
-        if (data == null)
-            logManager.Error($"Unable to retrieve visual effect for `{name}`");
-
-        return new VisualEffectData(data);
+        return new ActorDetails(data); //Return a new copy instead of a shared reference
     }
 
     public StageData GetStage(string name)
@@ -90,7 +83,24 @@ public class DataManager : MonoBehaviour
         if (data == null)
             logManager.Error($"Unable to retrieve stage for `{name}`");
 
-        return new StageData(data);
+        return new StageData(data); //Return a new copy instead of a shared reference
+    }
+    public TrailData GetTrailEffect(string name)
+    {
+        var data = TrailEffects.Where(x => x.Name == name).FirstOrDefault();
+        if (data == null)
+            logManager.Error($"Unable to retrieve trail effect for `{name}`");
+
+        return new TrailData(data); //Return a new copy instead of a shared reference
+    }
+
+    public VFXData GetVisualEffect(string name)
+    {
+        var data = VisualEffects.Where(x => x.Name == name).FirstOrDefault();
+        if (data == null)
+            logManager.Error($"Unable to retrieve visual effect for `{name}`");
+
+        return new VFXData(data); //Return a new copy instead of a shared reference
     }
 
 }

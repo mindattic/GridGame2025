@@ -24,14 +24,12 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> sprites = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> weaponTypes = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Texture2D>> textures = new Dictionary<string, ResourceItem<Texture2D>>();
+    [SerializeField] public Dictionary<string, TrailResource> trailEffects = new Dictionary<string, TrailResource>();
     [SerializeField] public Dictionary<string, Tutorial> tutorials = new Dictionary<string, Tutorial>();
-    [SerializeField] public Dictionary<string, VisualEffect> visualEffects = new Dictionary<string, VisualEffect>();
-   
+    [SerializeField] public Dictionary<string, VFXResource> visualEffects = new Dictionary<string, VFXResource>();
+ 
     public void Awake()
     {
-
-
-
     }
 
     public void Initialize()
@@ -84,6 +82,12 @@ public class ResourceManager : MonoBehaviour
         keys.SetRange(
             "Tutorial.1-1", "Tutorial.1-2", "Tutorial.1-3");
         textures = LoadResources<Texture2D>(ResourceFolder.Textures, keys);
+
+        //Trail Effects
+        keys.SetRange(
+            "BlueGlow", "Bubble", "Feather", "Fireball", "Flame", "GoldSparkle", "GreenSparkle", "IceSparkle",
+            "PinkDust", "RosePetal", "StarSparkle");
+        trailEffects = LoadTrailEffects(keys);
 
         //Tutorials
         keys.SetRange(
@@ -227,7 +231,7 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
-    public VisualEffect VisualEffect(string key)
+    public VFXResource VisualEffect(string key)
     {
         if (string.IsNullOrWhiteSpace(key))
             return null;
@@ -296,9 +300,56 @@ public class ResourceManager : MonoBehaviour
         return JsonConvert.DeserializeObject<ResourceParameterList>(json).Parameters;
     }
 
-    public Dictionary<string, VisualEffect> LoadVisualEffects(List<string> keys)
+    public Dictionary<string, TrailResource> LoadTrailEffects(List<string> keys)
     {
-        Dictionary<string, VisualEffect> entries = new Dictionary<string, VisualEffect>();
+        Dictionary<string, TrailResource> entries = new Dictionary<string, TrailResource>();
+
+        try
+        {
+            foreach (var key in keys)
+            {
+                //DEBUG: Should the JSON parsing be here in the Resource Manager? Or depend on OOO?...
+                var data = dataManager.GetTrailEffect(key);
+                if (data == null)
+                {
+                    logManager.Error($"Trail Effect Entry `{key}` is null");
+                    continue;
+                }
+
+                var resourcePath = ResourceFolder.TrailEffects.ToString();
+                var prefab = Resources.Load<GameObject>($"{resourcePath}/{key}");
+                if (prefab == null)
+                {
+                    logManager.Error($"Trail Effect Prefab `{key}` not found at resource path `{resourcePath}`");
+                    continue;
+                }
+
+                var trailData = new TrailResource()
+                {
+                    Name = key,
+                    Prefab = prefab,
+                    RelativeOffset = Convert.ToVector3(data.RelativeOffset),
+                    AngularRotation = Convert.ToVector3(data.AngularRotation),
+                    RelativeScale = Convert.ToVector3(data.RelativeScale),
+                    Delay = data.Delay,
+                    Duration = data.Duration,
+                    IsLoop = data.IsLoop,
+                };
+
+                entries.Add(key, trailData);
+            }
+        }
+        catch (Exception ex)
+        {
+            logManager.Error(ex.Message);
+        }
+
+        return entries;
+    }
+
+    public Dictionary<string, VFXResource> LoadVisualEffects(List<string> keys)
+    {
+        Dictionary<string, VFXResource> entries = new Dictionary<string, VFXResource>();
 
         try
         {
@@ -320,7 +371,7 @@ public class ResourceManager : MonoBehaviour
                     continue;
                 }
 
-                var visualEffect = new VisualEffect()
+                var vfxData = new VFXResource()
                 {
                     Name = key,
                     Prefab = prefab,
@@ -332,7 +383,7 @@ public class ResourceManager : MonoBehaviour
                     IsLoop = data.IsLoop,
                 };
 
-                entries.Add(key, visualEffect);
+                entries.Add(key, vfxData);
             }
         }
         catch (Exception ex)

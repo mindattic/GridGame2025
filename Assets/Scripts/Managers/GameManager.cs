@@ -45,8 +45,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AttackLineManager attackLineManager;
     [HideInInspector] public DamageTextManager damageTextManager;
     [HideInInspector] public GhostManager ghostManager;
-    [HideInInspector] public PortraitManager portraitManager;
-   
+    [HideInInspector] public PortraitManager portraitManager; 
     [HideInInspector] public ActorManager actorManager;
     [HideInInspector] public SelectedPlayerManager selectedPlayerManager;
     [HideInInspector] public PlayerManager playerManager;
@@ -56,6 +55,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TooltipManager tooltipManager;
     [HideInInspector] public AudioManager audioManager;
     [HideInInspector] public VFXManager vfxManager;
+    [HideInInspector] public TrailManager trailManager;
     [HideInInspector] public CoinManager coinManager;
     [HideInInspector] public PauseManager pauseManager;
     [HideInInspector] public DebugManager debugManager;
@@ -143,6 +143,11 @@ public class GameManager : Singleton<GameManager>
         snapDistance = tileSize * 0.125f;
         ShakeIntensity.Initialize(tileSize);
 
+        totalCoins = 0;
+
+        //Resources
+        resourceManager = GameObject.Find(Constants.Resources).GetComponent<ResourceManager>() ?? throw new UnityException("ResourceManager is null");
+
         //GUI
         tutorialPopup = GameObject.Find(Constants.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
         cardManager = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
@@ -187,21 +192,15 @@ public class GameManager : Singleton<GameManager>
         consoleManager = game.GetComponent<ConsoleManager>() ?? throw new UnityException("ConsoleManager is null");
         logManager = game.GetComponent<LogManager>() ?? throw new UnityException("LogManager is null");
         vfxManager = game.GetComponent<VFXManager>() ?? throw new UnityException("VFXManager is null");
+        trailManager = game.GetComponent<TrailManager>() ?? throw new UnityException("TrailManager is null");
         coinManager = game.GetComponent<CoinManager>() ?? throw new UnityException("CoinManager is null");
         pauseManager = game.GetComponent<PauseManager>() ?? throw new UnityException("PauseManager is null");
         dottedLineManager = game.GetComponent<DottedLineManager>() ?? throw new UnityException("DottedLineManager is null");
 
-        resourceManager = GameObject.Find(Constants.Resources).GetComponent<ResourceManager>() ?? throw new UnityException("ResourceManager is null");
-
-        //Board components
+   
+        //Overlay components
         boardOverlay = GameObject.Find(Constants.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
-
-        //Canvas componenets
         canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
-
-        totalCoins = 0;
-
-      
 
         #region Platform Dependent Compilation
 

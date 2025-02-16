@@ -1,12 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class VFXInstance : MonoBehaviour
+public class TrailInstance : MonoBehaviour
 {
 
-    protected VFXManager vfxManager => GameManager.instance.vfxManager;
+    protected TrailManager trailManager => GameManager.instance.trailManager;
     protected Vector3 tileScale => GameManager.instance.tileScale;
 
     public Transform parent
@@ -36,33 +36,33 @@ public class VFXInstance : MonoBehaviour
 
 
 
-    public IEnumerator Spawn(VFXResource vfx, Vector3 position, Trigger trigger = default)
+    public IEnumerator Spawn(TrailResource trail, Vector3 position, Trigger trigger = default)
     {
         if (trigger == default)
             trigger = new Trigger();
 
         //Translate, rotate, and relativeScale relative to tile dimensions (determined by device)
-        //var offset = Geometry.Tile.Relative.Translation(vfx.RelativeOffset);
-        //var scale = Geometry.Tile.Relative.Scale(vfx.RelativeScale);
-        //var rotation = Geometry.Rotation(vfx.AngularRotation);
+        //var offset = Geometry.Tile.Relative.Translation(trail.RelativeOffset);
+        //var scale = Geometry.Tile.Relative.Scale(trail.RelativeScale);
+        //var rotation = Geometry.Rotation(trail.AngularRotation);
 
-        //this.position = position + vfx.RelativeOffset;
+        //this.position = position + trail.RelativeOffset;
         this.position = position;
-        this.scale = tileScale.MultiplyBy(vfx.RelativeScale);
+        this.scale = tileScale.MultiplyBy(trail.RelativeScale);
 
-        SetLooping(vfx.IsLoop);
+        SetLooping(trail.IsLoop);
 
         //Wait until waitDuration is over
-        if (vfx.Delay != 0f)
-            yield return new WaitForSeconds(vfx.Delay);
+        if (trail.Delay != 0f)
+            yield return new WaitForSeconds(trail.Delay);
 
         //Trigger coroutine (if applicable)
         trigger.SetContext(this);
         yield return trigger.StartCoroutine();
 
         //Wait until VFX duration completes
-        if (vfx.Duration != 0f)
-            yield return Wait.For(vfx.Duration);
+        if (trail.Duration != 0f)
+            yield return Wait.For(trail.Duration);
 
         //Despawn VFX
         Despawn(name);
@@ -95,7 +95,7 @@ public class VFXInstance : MonoBehaviour
 
     private void Despawn(string name)
     {
-        vfxManager.Despawn(name);
+        trailManager.Despawn(name);
     }
 
 }

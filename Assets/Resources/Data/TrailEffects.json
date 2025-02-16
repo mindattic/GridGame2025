@@ -1,0 +1,103 @@
+﻿{
+  "Items": [
+    {
+      "Name": "BlueGlow",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "Bubble",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "Feather",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "Fireball",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "Flame",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "GoldSparkle",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "GreenSparkle",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "IceSparkle",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "PinkDust",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "RosePetal",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    },
+    {
+      "Name": "StarSparkle",
+      "RelativeOffset": "(0, 0, 0)",
+      "AngularRotation": "(0, 0, 0)",
+      "RelativeScale": "(0.1, 0.1, 0.1)",
+      "Delay": "0",
+      "Duration": "2",
+      "IsLoop": true
+    }
+  ]
+}
