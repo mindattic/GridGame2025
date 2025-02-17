@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8729401995653371942}
   - component: {fileID: 6392316343900927055}
   - component: {fileID: 2511830790435871748}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4846,7 +4846,7 @@ GameObject:
   - component: {fileID: 8165971616000337701}
   - component: {fileID: 2976417034690024431}
   - component: {fileID: 8873790682102870650}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: petal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9529,7 +9529,7 @@ GameObject:
   - component: {fileID: 8286665120869458165}
   - component: {fileID: 8531086034470675716}
   - component: {fileID: 1208130238789683394}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14213,9 +14213,9 @@ GameObject:
   - component: {fileID: 8232481997944797560}
   - component: {fileID: 1977382421595713130}
   - component: {fileID: 4959109600528507381}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: RosePetal
-  m_TagString: Untagged
+  m_TagString: Trail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1801477424705907417}
   - component: {fileID: 5518157838584804129}
   - component: {fileID: 436101137185499562}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: feather
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4703,7 +4703,7 @@ GameObject:
   - component: {fileID: 7944821721148880281}
   - component: {fileID: 5693361528296049626}
   - component: {fileID: 494609635213470102}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9476,7 +9476,7 @@ GameObject:
   - component: {fileID: 5254651682850595686}
   - component: {fileID: 1172012208397692011}
   - component: {fileID: 5862793557590930116}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14159,7 +14159,7 @@ GameObject:
   - component: {fileID: 2224485074822341014}
   - component: {fileID: 2604761830004183347}
   - component: {fileID: 2459788372602282713}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: twink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18824,7 +18824,7 @@ GameObject:
   - component: {fileID: 3097580044513622537}
   - component: {fileID: 2016884713067164417}
   - component: {fileID: 5505803921094757832}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: frag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23535,9 +23535,9 @@ GameObject:
   - component: {fileID: 8164302173456829189}
   - component: {fileID: 1166577241299701339}
   - component: {fileID: 5372433155651624169}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Feather
-  m_TagString: Untagged
+  m_TagString: Trail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28410,7 +28410,7 @@ GameObject:
   - component: {fileID: 942855842010192766}
   - component: {fileID: 310793209053752302}
   - component: {fileID: 9124774670048743193}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}

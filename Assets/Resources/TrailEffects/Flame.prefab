@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6963138901222103734}
   - component: {fileID: 1135891479943341944}
   - component: {fileID: 2727944405945755874}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Flame
-  m_TagString: Untagged
+  m_TagString: Trail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4890,7 +4890,7 @@ GameObject:
   - component: {fileID: 7960339234859742661}
   - component: {fileID: 8236446429092767742}
   - component: {fileID: 1058044649625509204}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9744,7 +9744,7 @@ GameObject:
   - component: {fileID: 3405405680672483211}
   - component: {fileID: 253930781389368196}
   - component: {fileID: 3545323444460277020}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: smoke (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14607,7 +14607,7 @@ GameObject:
   - component: {fileID: 3026604011628605474}
   - component: {fileID: 6851399030989588085}
   - component: {fileID: 8656665478171938537}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: fire
   m_TagString: Untagged
   m_Icon: {fileID: 0}

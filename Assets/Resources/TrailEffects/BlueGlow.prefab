@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1039777909116658153}
   - component: {fileID: 135003354367971374}
   - component: {fileID: 9045111514973554057}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail_Frap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4721,7 +4721,7 @@ GameObject:
   - component: {fileID: 1612582897642768859}
   - component: {fileID: 5018813419903430476}
   - component: {fileID: 5466113740280375348}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail_glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9403,7 +9403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5124083559148651130}
   - component: {fileID: 4864112575747417637}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail_Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9562,9 +9562,9 @@ GameObject:
   - component: {fileID: 2462337246081531263}
   - component: {fileID: 8467821264871179303}
   - component: {fileID: -7523527703634553140}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BlueGlow
-  m_TagString: Untagged
+  m_TagString: Trail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14424,7 +14424,7 @@ GameObject:
   - component: {fileID: 6104299093984628040}
   - component: {fileID: 7703808631188321471}
   - component: {fileID: 2939079386763098798}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail_twink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19134,7 +19134,7 @@ GameObject:
   - component: {fileID: 778718176424547563}
   - component: {fileID: 3902911306046514636}
   - component: {fileID: 5935614072152212740}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Star
   m_TagString: Untagged
   m_Icon: {fileID: 0}

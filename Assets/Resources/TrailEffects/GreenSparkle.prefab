@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5433491311222818086}
   - component: {fileID: 9010444119965737478}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,7 +150,7 @@ GameObject:
   - component: {fileID: 858204590742395036}
   - component: {fileID: 1874770856327121587}
   - component: {fileID: 898922188323003390}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4996,9 +4996,9 @@ GameObject:
   - component: {fileID: 8281438199746555420}
   - component: {fileID: 1344998488661677329}
   - component: {fileID: -7003899584268685384}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: GreenSparkle
-  m_TagString: Untagged
+  m_TagString: Trail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9857,7 +9857,7 @@ GameObject:
   - component: {fileID: 3931849369913425390}
   - component: {fileID: 4194919450380515920}
   - component: {fileID: 530744156613334150}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14702,7 +14702,7 @@ GameObject:
   - component: {fileID: 3233760350385464276}
   - component: {fileID: 8460397698089853219}
   - component: {fileID: 5637367185878849383}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: twink
   m_TagString: Untagged
   m_Icon: {fileID: 0}

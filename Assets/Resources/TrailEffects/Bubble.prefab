@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6233892645752289278}
   - component: {fileID: 9134306664309955019}
   - component: {fileID: 8160145240584683947}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: frag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4721,7 +4721,7 @@ GameObject:
   - component: {fileID: 5988892506775840331}
   - component: {fileID: 7576181182445623736}
   - component: {fileID: 5741677505028573998}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: twink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9387,9 +9387,9 @@ GameObject:
   - component: {fileID: 5081576853149542759}
   - component: {fileID: 2636356247355661664}
   - component: {fileID: -4921865721769554600}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Bubble
-  m_TagString: Untagged
+  m_TagString: Trail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14262,7 +14262,7 @@ GameObject:
   - component: {fileID: 9209856146705071852}
   - component: {fileID: 7806839948928029322}
   - component: {fileID: 5321784616617969380}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19098,7 +19098,7 @@ GameObject:
   - component: {fileID: 320137262914332893}
   - component: {fileID: 6769651332869363290}
   - component: {fileID: 9221725422963157096}
-  m_Layer: 5
+  m_Layer: 9
   m_Name: bubble
   m_TagString: Untagged
   m_Icon: {fileID: 0}

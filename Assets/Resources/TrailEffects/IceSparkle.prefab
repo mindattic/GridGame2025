@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4809990130842809187}
   - component: {fileID: 7836918241568190261}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 3272623332834325350}
   - component: {fileID: 1711199822590528116}
   - component: {fileID: 5949347353813181752}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail_Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5022,7 +5022,7 @@ GameObject:
   - component: {fileID: 8178404730568070248}
   - component: {fileID: 8208422420497271072}
   - component: {fileID: 6199595421941642451}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail_fragments
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9876,7 +9876,7 @@ GameObject:
   - component: {fileID: 2108649002292810898}
   - component: {fileID: 6282773216349768205}
   - component: {fileID: 5023686737613619256}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14739,7 +14739,7 @@ GameObject:
   - component: {fileID: 4179271522905334258}
   - component: {fileID: 7572210668561853026}
   - component: {fileID: 6909897534337431279}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail_Particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19592,7 +19592,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8576703956789562654}
   - component: {fileID: 7119265759743556303}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19740,7 +19740,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4644666294222956228}
   - component: {fileID: 2973291738529044943}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19888,7 +19888,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5288965502163693721}
   - component: {fileID: 143196900994216227}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20036,7 +20036,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2595212357491080064}
   - component: {fileID: 1769761202614397383}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20184,7 +20184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 130030091484858296}
   - component: {fileID: 5003663685273027831}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20333,7 +20333,7 @@ GameObject:
   - component: {fileID: 923849601595636812}
   - component: {fileID: 3762920495218692953}
   - component: {fileID: 5295291408621865267}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail_Dust2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25195,7 +25195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4478406417523418281}
   - component: {fileID: 4009153679110110366}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25343,7 +25343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7063710446252652205}
   - component: {fileID: 2234952611883433783}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25491,7 +25491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2983498973714072300}
   - component: {fileID: 8613764746205484162}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TraiBright (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25640,7 +25640,7 @@ GameObject:
   - component: {fileID: 4824669462028657547}
   - component: {fileID: 3665317729381525104}
   - component: {fileID: 5184671337425976466}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30504,9 +30504,9 @@ GameObject:
   - component: {fileID: 5582641204705281828}
   - component: {fileID: 7908764049852452994}
   - component: {fileID: -4263306302883944853}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: IceSparkle
-  m_TagString: Untagged
+  m_TagString: Trail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

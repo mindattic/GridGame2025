@@ -36,6 +36,12 @@ public class SpellManager : MonoBehaviour
             case MagicBallType.GreenSparkle:
                 trailKey = "GreenSparkle";
                 vfxKey = "BuffLife";
+                AnimationCurve overshootCurve = new AnimationCurve(
+                                                new Keyframe(0f, 0f),
+                                                new Keyframe(0.5f, 1.2f),
+                                                new Keyframe(1f, 1f)
+                                            );
+                curve = overshootCurve;
                 // Optionally assign a designer-set curve here.
                 duration = 1.2f;
                 break;
@@ -69,5 +75,5 @@ public class SpellManager : MonoBehaviour
         spells.Remove(name);
     }
 
-   
+
 }

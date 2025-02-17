@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4160975764869557050}
   - component: {fileID: 134404054487445671}
   - component: {fileID: 7429101460036080884}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4844,7 +4844,7 @@ GameObject:
   - component: {fileID: 6057053067954181690}
   - component: {fileID: 4105145139531603159}
   - component: {fileID: 5576930488766587806}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9678,9 +9678,9 @@ GameObject:
   - component: {fileID: 3266233068664735479}
   - component: {fileID: 3318266743556449049}
   - component: {fileID: -817163275934482659}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PinkDust
-  m_TagString: Untagged
+  m_TagString: Trail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14526,7 +14526,7 @@ GameObject:
   - component: {fileID: 3125444906164297324}
   - component: {fileID: 1991165166965601438}
   - component: {fileID: 7621255489088028561}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
