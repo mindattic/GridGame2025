@@ -10,7 +10,7 @@ public class Trigger
     public bool HasTriggered = false;
     private Dictionary<string, object> attributes = new Dictionary<string, object>();
 
-    private MonoBehaviour context; // Stores the MonoBehaviour instance
+    private MonoBehaviour context; // Stores the MonoBehaviour trailInstance
 
     // Properties
     public bool IsValid => Coroutine != null && !HasTriggered;

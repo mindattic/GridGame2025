@@ -243,6 +243,19 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
+    public TrailResource TrailEffect(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            return null;
+
+        if (trailEffects.TryGetValue(key, out var entry))
+            return entry;
+
+        logManager.Error($"Failed to retrieve trailInstance effect `{key}` from resource manager.");
+        return null;
+    }
+
+
     public T Load<T>(string resourcePath) where T : UnityEngine.Object
     {
         T resource = Resources.Load<T>(resourcePath);

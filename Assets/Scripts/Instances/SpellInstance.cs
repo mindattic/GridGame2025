@@ -1,11 +1,18 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Models;
+using Game.Behaviors;
+using System.Collections;
+using TMPro;
 using UnityEngine;
+
 
 public class SpellInstance : MonoBehaviour
 {
+    protected BoardInstance board => GameManager.instance.board;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected SpellManager spellManager => GameManager.instance.spellManager;
+    protected float tileSize => GameManager.instance.tileSize;
+
 
     public Transform parent
     {
@@ -31,82 +38,100 @@ public class SpellInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    // Source and target actors.
-    public ActorInstance caster;
-    public ActorInstance target;
+    private SpellSettings spell = new SpellSettings();
 
-    // Keys for visual effects.
-    public string trailKey;   // e.g., "GreenSparkle" or "Fireball"
-    public string vfxKey;    // e.g., "BuffLife" or "PuffyExplosion"
-
-    // Movement parameters.
-    public AnimationCurve pathCurve; // Used to add an arc (e.g., vertical offset).
-    public float travelDuration = 2.0f;
-
-    // Callback to invoke on arrival (e.g., to heal or damage the target).
-    public System.Action onArrival;
-
-    // Private fields for movement and for the instantiated trail.
+    // Private fields for movement and for the instantiated trailInstance.
     private Vector3 startPosition;
     private Vector3 endPosition;
     private GameObject trailInstance;
 
-    public void Spawn()
+    public IEnumerator Spawn(SpellSettings spell)
     {
-        // Capture caster and target positions.
-        startPosition = caster.position;
-        endPosition = target.position;
-        transform.position = startPosition;
-
-        // Look up and instantiate the trail effect from the resourceManager.
-        TrailResource trailRes;
-        if (resourceManager.trailEffects.TryGetValue(trailKey, out trailRes))
-        {
-            // Instantiate the trail prefab as a child of this SpellInstance.
-            trailInstance = Instantiate(trailRes.Prefab, transform.position, Quaternion.identity, transform);
-            // Adjust its transform based on the resource.
-            trailInstance.transform.localPosition = trailRes.RelativeOffset;
-            trailInstance.transform.localEulerAngles = trailRes.AngularRotation;
-            trailInstance.transform.localScale = trailRes.RelativeScale;
-            // The prefab itself should handle delay, duration, and looping.
-        }
-        else
-        {
-            Debug.LogWarning("Trail resource not found for key: " + trailKey);
-        }
-
-        // Begin movement along the animation curve.
-        //StartCoroutine(MoveAlongCurve());
-        //StartCoroutine(MoveWithSpringEffect());
-        //StartCoroutine(MoveWithBezierCurve());
-
-        Vector3 launchDir = (target.position - caster.position).normalized + Vector3.up * 0.7f;
-        float launchDist = 3.0f;
-        StartCoroutine(MoveWithDirectedBezierCurve(launchDir, launchDist));
+        this.spell = spell;
+        yield return SpawnTrail();
+        yield return SpawnVFX();
+        spellManager.Despawn(gameObject.name);
     }
 
-    private IEnumerator MoveWithSpringEffect()
+    private IEnumerator SpawnTrail()
+    {
+        startPosition = spell.source.position;
+        endPosition = spell.target.position;
+        transform.position = startPosition;
+
+        TrailResource trailResource = resourceManager.TrailEffect(spell.trailKey);
+        trailInstance = Instantiate(trailResource.Prefab, transform.position, Quaternion.identity, transform);
+        //trailInstance.transform.parent = board.transform;
+        trailInstance.transform.localPosition = trailResource.RelativeOffset;
+        trailInstance.transform.localEulerAngles = trailResource.AngularRotation;
+        trailInstance.transform.localScale = trailResource.RelativeScale;
+
+        switch (spell.path)
+        {
+            case SpellPath.AnimationCurve:
+                yield return StartCoroutine(MoveAlongCurve());
+                break;
+            case SpellPath.Elastic:
+                yield return StartCoroutine(MoveAlongElastic());
+                break;
+            case SpellPath.BezierCurve:
+                yield return StartCoroutine(MoveAlongBezierCurve());
+                break;
+            case SpellPath.CubicBezierCurve:
+                yield return StartCoroutine(MoveAlongCubicBezierCurve());
+                break;
+            default:
+                yield return StartCoroutine(MoveAlongCurve());
+                break;
+        }
+
+    }
+
+    private IEnumerator MoveAlongCurve()
     {
         float elapsed = 0f;
-        float duration = travelDuration;
+        while (elapsed < spell.duration)
+        {
+            float t = elapsed / spell.duration;
 
-        // Damping motion parameters (adjust as needed)
-        float A = 1.3f;  // Overshoot intensity
-        float b = 3.5f;  // Damping factor (higher = stops oscillating faster)
-        float omega = 8f; // Frequency of oscillation
+            // Interpolate between start and end positions.
+            var pos = Vector3.Lerp(startPosition, endPosition, spell.curve.Evaluate(t));
+
+
+            //var offset = Random.Float(-45, 45);
+            //pos.y += offset;
+
+            trailInstance.transform.position = pos;
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+
+        transform.position = endPosition;
+    }
+
+    private IEnumerator MoveAlongElastic()
+    {
+        float elapsed = 0f;
 
         Vector3 direction = (endPosition - startPosition);
         Vector3 initialOffset = startPosition;
 
-        while (elapsed < duration)
+        while (elapsed < spell.duration)
         {
-            float t = elapsed / duration;
+            float t = elapsed / spell.duration;
 
             // Damped spring function with smooth approach
-            float springFactor = A * (1 - Mathf.Exp(-b * t) * Mathf.Cos(omega * t));
+            float springFactor
+                = spell.overshootIntensity
+                * (1 - Mathf.Exp(-spell.dampingFactor * t)
+                * Mathf.Cos(spell.oscillationFrequency * t));
 
             // Apply movement along the calculated direction
-            transform.position = Vector3.Lerp(transform.position, initialOffset + direction * springFactor, 0.9f);
+            trailInstance.transform.position = Vector3.Lerp(
+                transform.position,
+                initialOffset + direction * springFactor,
+                spell.smoothingFactor);
 
             elapsed += Time.deltaTime;
             yield return null;
@@ -117,113 +142,189 @@ public class SpellInstance : MonoBehaviour
         float smoothElapsed = 0f;
         while (smoothElapsed < smoothDuration)
         {
-            transform.position = Vector3.Lerp(transform.position, endPosition, smoothElapsed / smoothDuration);
+            trailInstance.transform.position = Vector3.Lerp(transform.position, endPosition, smoothElapsed / smoothDuration);
             smoothElapsed += Time.deltaTime;
             yield return null;
         }
 
-        transform.position = endPosition;
+        trailInstance.transform.position = endPosition;
+
     }
 
-    private IEnumerator MoveWithBezierCurve()
+    //private IEnumerator MoveAlongBezierCurve()
+    //{
+    //    float elapsed = 0f;
+
+    //    // Compute direction from source to target
+    //    Vector3 direction = (endPosition - startPosition).normalized;
+
+    //    // Apply launch angle offset
+    //    Vector3 launchDirection = Quaternion.Euler(0, spell.launchAngle, 0) * direction;
+
+    //    // Determine launch point (how far the spell travels before curving)
+    //    float launchDistance = Vector3.Distance(startPosition, endPosition) * spell.launchDistanceFactor;
+    //    Vector3 launchPoint = startPosition + (launchDirection * launchDistance);
+
+    //    // Apply curve deviation
+    //    Vector3 curveDirection = Quaternion.Euler(0, spell.curveDeviation, 0) * (endPosition - launchPoint).normalized;
+    //    Vector3 controlPoint = Vector3.Lerp(launchPoint, endPosition, 0.5f)
+    //                           + curveDirection * (launchDistance * spell.launchDistanceFactor)
+    //                           + Vector3.up * spell.curveHeightFactor;
+
+    //    Debug.Log($"[Bezier] Start={startPosition}, End={endPosition}, Launch={launchPoint}, Control={controlPoint}");
+
+    //    while (elapsed < spell.duration)
+    //    {
+    //        float t = elapsed / spell.duration;
+
+    //        // Quadratic Bezier
+    //        Vector3 pos = (1 - t) * (1 - t) * startPosition
+    //                    + 2 * (1 - t) * t * controlPoint
+    //                    + t * t * endPosition;
+
+    //        trailInstance.transform.position = pos;
+
+    //        elapsed += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    // Snap exactly to the end
+    //    trailInstance.transform.position = endPosition;
+    //}
+
+    private IEnumerator MoveAlongBezierCurve()
     {
+        // === Variables to tweak ===
+        float duration = 5f;         // total flight time in seconds
+        float sideAngleDegrees = 30f;        // rotate 'forwardDir' by this many degrees to left/right
+        float sideFactor = 1.5f;       // how wide the arc is as a fraction of distance
+        float upFactor = 1.0f;       // how high the arc is as a fraction of distance
+        float forwardFactor = 0.5f;       // how far along the path to place the control point (in forward direction)
+        // ==========================
+
+        // Basic references
+        Vector3 start = startPosition;
+        Vector3 end = endPosition;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 directFwd = (end - start).normalized;
+
+        // 1) Rotate the forward direction by sideAngleDegrees around Y-axis
+        Vector3 angledForward = Quaternion.Euler(0f, sideAngleDegrees, 0f) * directFwd;
+
+        // 2) A perpendicular direction to the angledForward for big side arcs
+        Vector3 sideDir = Vector3.Cross(angledForward, Vector3.up).normalized;
+
+        // 3) Define a single control point for the quadratic
+        //    This point is partway along angledForward, plus some side/up offsets
+        //    e.g., big arc = big sideFactor / upFactor
+        Vector3 control = start
+            + angledForward * (distance * forwardFactor)
+            + sideDir * (distance * sideFactor)
+            + Vector3.up * (distance * upFactor);
+
+        // 4) Animate from t=0 to t=1 over 'duration'
         float elapsed = 0f;
-        float duration = travelDuration;
-
-        // Calculate control point (this is past the target for the overshoot)
-        Vector3 controlPoint = endPosition + (endPosition - startPosition) * 0.7f; // Adjust multiplier for more/less overshoot
-
         while (elapsed < duration)
         {
             float t = elapsed / duration;
+            float omt = 1f - t;
 
-            // Quadratic Bezier Curve formula
-            Vector3 pos = (1 - t) * (1 - t) * startPosition
-                        + 2 * (1 - t) * t * controlPoint
-                        + t * t * endPosition;
+            // Quadratic Bezier formula:
+            // B(t) = (1 - t)^2 * start
+            //      + 2 (1 - t) t * control
+            //      + t^2         * end
+            Vector3 pos =
+                  (omt * omt) * start
+                + 2f * omt * t * control
+                + (t * t) * end;
 
-            transform.position = pos;
+            trailInstance.transform.position = pos;
+
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Ensure final position is exact
-        transform.position = endPosition;
+        // Snap to the final position
+        trailInstance.transform.position = end;
     }
 
-    private IEnumerator MoveWithDirectedBezierCurve(Vector3 launchDirection, float launchDistance)
+    private IEnumerator MoveAlongCubicBezierCurve()
     {
+        // === Variables to tweak ===
+        float duration = 5f;    // total flight time in seconds
+        float sideAngleDegrees = 30f;   // rotate 'forwardDir' by this many degrees to left/right
+        float sideFactor = 1.5f;  // how wide the arc is as a fraction of distance
+        float upFactor = 1.0f;  // how high the arc is as a fraction of distance
+        float forwardFactorStart = 0.3f;  // how far from the start to place the first control point
+        float forwardFactorEnd = 0.3f;  // how far from the end to place the second control point
+        // ==========================
+
+        // Basic references
+        Vector3 start = startPosition;
+        Vector3 end = endPosition;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 directForward = (end - start).normalized;
+
+        // 1) Rotate the forward direction by sideAngleDegrees around Y-axis
+        //    Positive angle means "turn right," negative angle means "turn left."
+        Vector3 angledForward = Quaternion.Euler(0f, sideAngleDegrees, 0f) * directForward;
+
+        // 2) Compute a perpendicular direction to angledForward for big side arcs
+        Vector3 sideDir = Vector3.Cross(angledForward, Vector3.up).normalized;
+
+        // 3) Define two control points
+        //    - control1 near the start, offset by angledForward + side/vertical
+        //    - control2 near the end, offset in the opposite side direction
+        Vector3 control1 = start
+            + angledForward * (distance * forwardFactorStart)
+            + sideDir * (distance * sideFactor)
+            + Vector3.up * (distance * upFactor);
+
+        Vector3 control2 = end
+            - angledForward * (distance * forwardFactorEnd)
+            - sideDir * (distance * sideFactor)
+            + Vector3.up * (distance * upFactor);
+
+        // 4) Animate from t=0 to t=1 over 'duration'
         float elapsed = 0f;
-        float duration = travelDuration;
-
-        // Calculate the launch point (in the desired direction)
-        Vector3 launchPoint = startPosition + (launchDirection.normalized * launchDistance);
-
-        // Calculate the control point that ensures a smooth curve to the target
-        Vector3 controlPoint = (launchPoint + endPosition) * 0.5f + Vector3.up * 1.5f; // Adjust for curve height
-
         while (elapsed < duration)
         {
             float t = elapsed / duration;
+            float omt = 1f - t;
 
-            // Quadratic Bezier Curve formula
-            Vector3 pos = (1 - t) * (1 - t) * startPosition
-                        + 2 * (1 - t) * t * controlPoint
-                        + t * t * endPosition;
+            // Standard Cubic Bezier formula:
+            // B(t) = (1 - t)^3 * start
+            //      + 3(1 - t)^2 t * control1
+            //      + 3(1 - t) t^2 * control2
+            //      + t^3 * end
+            Vector3 pos =
+                (omt * omt * omt) * start +
+                3f * (omt * omt) * t * control1 +
+                3f * omt * (t * t) * control2 +
+                (t * t * t) * end;
 
-            transform.position = pos;
+            trailInstance.transform.position = pos;
+
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Ensure final position is exact
-        transform.position = endPosition;
+        // Snap to the final position
+        trailInstance.transform.position = end;
     }
 
+    
 
-    private IEnumerator MoveAlongCurve()
+    private IEnumerator SpawnVFX()
     {
-        float elapsed = 0f;
-        while (elapsed < travelDuration)
-        {
-            float t = elapsed / travelDuration;
+        //TODO: Differnet trail hides? Hide, Fade, Shrink, etc...
+        trailInstance.SetActive(false); //Hide trail until end
 
-            // Interpolate between start and end positions.
-            Vector3 pos = Vector3.Lerp(startPosition, endPosition, t);
-            // Add an offset from the animation curve (for example, a vertical arc).
-            float offset = pathCurve.Evaluate(t);
-            pos.y += offset;
-
-            transform.position = pos;
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        // Snap exactly to the target's position.
-        transform.position = endPosition;
-
-        // Remove the trail effect.
-        if (trailInstance != null)
-        {
-            Destroy(trailInstance);
-        }
-
-        // Look up the arrival VFX resource from the resourceManager.
-        VFXResource vfxRes;
-        if (resourceManager.visualEffects.TryGetValue(vfxKey, out vfxRes))
-        {
-            // Spawn the VFX at the target's position.
-            yield return vfxManager.Spawn(vfxRes, target.position);
-        }
-        else
-        {
-            Debug.LogWarning("VFX resource not found for key: " + vfxKey);
-        }
-
-        // Invoke the arrival callback to trigger healing or damage.
-        onArrival?.Invoke();
-
-        // Finally, remove this SpellInstance.
-        spellManager.Despawn(name);
+        VFXResource vfxResource = resourceManager.VisualEffect(spell.vfxKey);
+        yield return vfxManager.Spawn(vfxResource, spell.target.position, spell.trigger);
     }
+
+
 }

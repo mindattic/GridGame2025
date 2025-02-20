@@ -149,6 +149,7 @@ public class DebugWindow : EditorWindow
         //Assign initial flags
         debugManager.showActorNameTag = false;
         debugManager.showActorFrame = false;
+        debugManager.showTutorials = false;
         debugManager.isPlayerInvincible = false;
         debugManager.isEnemyInvincible = false;
         debugManager.isTimerInfinite = false;
@@ -246,6 +247,14 @@ public class DebugWindow : EditorWindow
         {
             debugManager.showActorFrame = onCheckChanged;
             gameManager.actors.ForEach(x => x.render.SetFrameEnabled(onCheckChanged));
+        }
+
+        //Show Actor Frames checkbox
+        onCheckChanged = EditorGUILayout.Toggle("Show Tutorials", debugManager.showTutorials, GUILayout.Width(Screen.width * 0.25f));
+        if (debugManager.showTutorials != onCheckChanged)
+        {
+            debugManager.showTutorials = onCheckChanged;
+            gameManager.tutorialPopup.gameObject.SetActive(debugManager.showTutorials);
         }
 
         //Are Players Invinciple? checkbox

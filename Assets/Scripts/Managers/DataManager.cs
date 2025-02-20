@@ -89,7 +89,7 @@ public class DataManager : MonoBehaviour
     {
         var data = TrailEffects.Where(x => x.Name == name).FirstOrDefault();
         if (data == null)
-            logManager.Error($"Unable to retrieve trail effect for `{name}`");
+            logManager.Error($"Unable to retrieve trailInstance effect for `{name}`");
 
         return new TrailData(data); //Return a new copy instead of a shared reference
     }

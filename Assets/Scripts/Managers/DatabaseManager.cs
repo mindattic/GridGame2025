@@ -44,12 +44,12 @@
 
 
 //       //External properties
-//       protected LogManager logManager => GameManager.instance.logManager;
+//       protected LogManager logManager => GameManager.trailInstance.logManager;
 //       #endregion
 
 //       //Fields
 //       public const bool autoOverwrite = true; //Used to reinstall app every load...
-//       private SQLiteDB instance = SQLiteDB.Instance;
+//       private SQLiteDB trailInstance = SQLiteDB.Instance;
 
 
 //       void OnEnable()
@@ -69,23 +69,23 @@
 
 //       void OnApplicationQuit()
 //       {
-//           instance.Dispose();
+//           trailInstance.Dispose();
 //       }
 
 //       //Method which is used for initialization tasks that need to occur before the game starts 
 //       private void Awake()
 //       {
-//           instance.DBLocation = Application.persistentDataPath;
-//           instance.DBName = Schema.DBName;
+//           trailInstance.DBLocation = Application.persistentDataPath;
+//           trailInstance.DBName = Schema.DBName;
 
 //           //Update if this is the first load of the application
-//           if (autoOverwrite || !instance.Exists)
-//               instance.CreateDatabase(instance.DBName, isOverWrite: true);
+//           if (autoOverwrite || !trailInstance.Exists)
+//               trailInstance.CreateDatabase(trailInstance.DBName, isOverWrite: true);
 
-//           var isConnected = instance.ConnectToDefaultDatabase(instance.DBName, loadFresh: true);
+//           var isConnected = trailInstance.ConnectToDefaultDatabase(trailInstance.DBName, loadFresh: true);
 
 //           if (!isConnected)
-//               throw new UnityException($"Failed to connect to database: {instance.DBName}");
+//               throw new UnityException($"Failed to connect to database: {trailInstance.DBName}");
 
 //           Initialize(); //TODO: Initialize data based on current stage???...
 //       }
@@ -104,8 +104,8 @@
 
 //           Entities.Actors.Clear();
 
-//           //reader = instance.GetAllData(Schema.Table.Actor);
-//           reader = instance.ExecuteReader(Queries.Load.Actor.Entities);
+//           //reader = trailInstance.GetAllData(Schema.Table.Actor);
+//           reader = trailInstance.ExecuteReader(Queries.Load.Actor.Entities);
 //           while (reader != null && reader.Read())
 //           {
 //               var x = new ActorData()

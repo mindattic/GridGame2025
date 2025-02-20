@@ -10,8 +10,6 @@ using UnityEngine.Events;
 public class GameManager : Singleton<GameManager>
 {
     [HideInInspector] public string deviceType;
-
-    //Settings
     [HideInInspector] public int targetFramerate = 60;
     [HideInInspector] public int vSyncCount = 1;
 

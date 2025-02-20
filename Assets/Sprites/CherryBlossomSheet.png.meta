@@ -487,7 +487,19 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      CherryBlossomSheet_0: 6964323125434852510
+      CherryBlossomSheet_1: -6853439907763546000
+      CherryBlossomSheet_10: -8363608855773241433
+      CherryBlossomSheet_11: 6109728258175429272
+      CherryBlossomSheet_2: 6372647871257404681
+      CherryBlossomSheet_3: 967189237743919344
+      CherryBlossomSheet_4: 2146484724432616701
+      CherryBlossomSheet_5: 559654592048187398
+      CherryBlossomSheet_6: 4802694126611512576
+      CherryBlossomSheet_7: -7101058382605396622
+      CherryBlossomSheet_8: -3261781506955592955
+      CherryBlossomSheet_9: 2598039917348828659
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

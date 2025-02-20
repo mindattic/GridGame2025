@@ -10194,12 +10194,14 @@ GameObject:
   - component: {fileID: 1751276300}
   - component: {fileID: 1751276302}
   - component: {fileID: 1751276303}
+  - component: {fileID: 1751276314}
   - component: {fileID: 1751276304}
   - component: {fileID: 1751276305}
   - component: {fileID: 1751276306}
   - component: {fileID: 1751276307}
   - component: {fileID: 1751276310}
   - component: {fileID: 1751276312}
+  - component: {fileID: 1751276315}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -10265,12 +10267,14 @@ MonoBehaviour:
   tooltipManager: {fileID: 0}
   audioManager: {fileID: 0}
   vfxManager: {fileID: 0}
+  trailManager: {fileID: 0}
   coinManager: {fileID: 0}
   pauseManager: {fileID: 0}
   debugManager: {fileID: 0}
   consoleManager: {fileID: 0}
   logManager: {fileID: 0}
   dottedLineManager: {fileID: 0}
+  spellManager: {fileID: 0}
   boardOverlay: {fileID: 0}
   canvasOverlay: {fileID: 0}
   viewport: {x: 0, y: 0}
@@ -10856,8 +10860,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Actors: []
-  VisualEffects: []
   Stages: []
+  TrailEffects: []
+  VisualEffects: []
+--- !u!114 &1751276314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751276275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a27822ed945bc84793b0a22acdb588b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1751276315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751276275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a33243b23eefa5f4ab071a3ff5dad7dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spellPrefab: {fileID: 6838878580379675105, guid: 8c4d3c548186c264784e976fff9b1d21, type: 3}
 --- !u!1 &1754065672
 GameObject:
   m_ObjectHideFlags: 0

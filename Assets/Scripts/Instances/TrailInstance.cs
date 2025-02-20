@@ -42,11 +42,11 @@ public class TrailInstance : MonoBehaviour
             trigger = new Trigger();
 
         //Translate, rotate, and relativeScale relative to tile dimensions (determined by device)
-        //var offset = Geometry.Tile.Relative.Translation(trail.RelativeOffset);
-        //var scale = Geometry.Tile.Relative.Scale(trail.RelativeScale);
-        //var rotation = Geometry.Rotation(trail.AngularRotation);
+        //var offset = Geometry.Tile.Relative.Translation(trailInstance.RelativeOffset);
+        //var scale = Geometry.Tile.Relative.Scale(trailInstance.RelativeScale);
+        //var rotation = Geometry.Rotation(trailInstance.AngularRotation);
 
-        //this.position = position + trail.RelativeOffset;
+        //this.position = position + trailInstance.RelativeOffset;
         this.position = position;
         this.scale = tileScale.MultiplyBy(trail.RelativeScale);
 

@@ -10,7 +10,8 @@ namespace Assets.Scripts.GUI
     {
         //External properties
         protected float previousGameSpeed { get => GameManager.instance.previousGameSpeed; set => GameManager.instance.previousGameSpeed = value; }
-        protected ResourceManager resourceManager => GameManager.instance.resourceManager; 
+        protected ResourceManager resourceManager => GameManager.instance.resourceManager;
+        protected DebugManager debugManager => GameManager.instance.debugManager;
 
         //Internal properties
         bool hasPages => pages != null && pages.Count > 0;
@@ -37,12 +38,12 @@ namespace Assets.Scripts.GUI
             //rect = image.GetComponent<RectTransform>();
             //rect.sizeDelta = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
-            panel.SetActive(false);
+            panel.SetActive(debugManager.showTutorials);
         }
 
         public void Load(Tutorial tutorial, bool show = true)
         {
-            if (tutorial == null || tutorial.Pages.Count < 1) return;
+            if (!debugManager.showTutorials || tutorial == null || tutorial.Pages.Count < 1) return;
 
             this.pages = tutorial.Pages;
             currentPage = 0;
@@ -53,7 +54,7 @@ namespace Assets.Scripts.GUI
 
         public void Show(int currentPage = 0)
         {
-            if (!hasPages) return;
+            if (!debugManager.showTutorials || !hasPages) return;
 
             //Time.timeScale = 0f;
             this.currentPage = currentPage;       
@@ -63,7 +64,7 @@ namespace Assets.Scripts.GUI
 
         private void Navigate()
         {
-            if (!hasPages) return;
+            if (!debugManager.showTutorials || !hasPages) return;
 
             image.sprite = resourceManager.Texture(pages[currentPage].TextureKey).Value.ToSprite();
             title.text = pages[currentPage].Title;

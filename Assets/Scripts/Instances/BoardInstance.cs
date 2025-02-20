@@ -65,7 +65,7 @@ public class BoardInstance : MonoBehaviour
                 instance.name = $"Tile_{col}x{row}";
                 instance.Initialize(col, row);
                 tileMap.Add(instance);
-                //tiles.SpawnActor(instance);
+                //tiles.SpawnActor(trailInstance);
             }
         }
 

@@ -1,32 +1,33 @@
-﻿using Assets.Scripts.Models;
-using System.Collections;
-using UnityEngine;
+﻿//using Assets.Scripts.Models;
+//using System.Collections;
+//using UnityEditor.Experimental.GraphView;
+//using UnityEngine;
 
-namespace Assets.Scripts.Actions
-{
-    public class FireballSpellAction : TurnAction
-    {
-        protected SpellManager spellManager => GameManager.instance.spellManager;
+//namespace Assets.Scripts.Actions
+//{
+//    public class FireballSpellAction : TurnAction
+//    {
+//        protected SpellManager spellManager => GameManager.instance.spellManager;
+//        private SpellSettings spell;
+      
 
-        private ActorInstance caster;
-        private ActorInstance target;
+//        public FireballSpellAction(SpellSettings spell)
+//        {
+//            this.spell = spell;
+//        }
 
-        public FireballSpellAction(ActorInstance caster, ActorInstance target)
-        {
-            this.caster = caster;
-            this.target = target;
-        }
+//        public override IEnumerator Execute()
+//        {
+//            //bool completed = false;
+//            //source, target, MagicBallType.Fireball, () =>
+//            //{
+//            //    // When the spell reaches the enemy, apply flame damage.
+//            //    target.FireDamage(10);
+//            //    completed = true;
+//            //}
 
-        public override IEnumerator Execute()
-        {
-            bool completed = false;
-            spellManager.Spawn(caster, target, MagicBallType.Fireball, () =>
-            {
-                // When the spell reaches the enemy, apply flame damage.
-                target.FireDamage(10);
-                completed = true;
-            });
-            yield return new WaitUntil(() => completed);
-        }
-    }
-}
+//            yield return spellManager.Spawn(spell);
+//            //yield return new WaitUntil(() => completed);
+//        }
+//    }
+//}

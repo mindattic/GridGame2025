@@ -17,7 +17,7 @@ public class PincerAttackAction : TurnAction
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
 
 
-    // A local instance for tracking combat participants.
+    // A local trailInstance for tracking combat participants.
     private PincerAttackParticipants participants = new PincerAttackParticipants();
 
     public override IEnumerator Execute()

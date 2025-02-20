@@ -8,8 +8,8 @@ using UnityEngine;
 //[Serializable]
 //public class StageActor
 //{
-//   protected DataManager dataManager => GameManager.instance.dataManager;
-//   protected List<ActorInstance> actors => GameManager.instance.actors;
+//   protected DataManager dataManager => GameManager.trailInstance.dataManager;
+//   protected List<ActorInstance> actors => GameManager.trailInstance.actors;
 
 //   public Character character;
 //   public string name;

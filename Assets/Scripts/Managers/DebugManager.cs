@@ -7,8 +7,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
+using static Unity.VisualScripting.Member;
 
 public class DebugManager : MonoBehaviour
 {
@@ -42,6 +44,7 @@ public class DebugManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown Dropdown;
     public bool showActorNameTag = false;
     public bool showActorFrame = false;
+    public bool showTutorials = false;
     public bool isPlayerInvincible = false;
     public bool isEnemyInvincible = false;
     public bool isTimerInfinite = false;
@@ -233,25 +236,6 @@ public class DebugManager : MonoBehaviour
         var tutorial = resourceManager.tutorials.FirstOrDefault().Value;
         tutorialPopup.Load(tutorial);
     }
-
-    public void FireballTest()
-    {
-        var caster = paladin;
-        var target = enemies.FirstOrDefault();
-        var action = new FireballSpellAction(caster, target);
-        turnManager.AddAction(action);
-        turnManager.TriggerExecuteActions();
-    }
-
-    public void HealTest()
-    {
-        var caster = paladin;
-        var target = barbarian;
-        var action = new HealSpellAction(caster, target);
-        turnManager.AddAction(action);
-        turnManager.TriggerExecuteActions();
-    }
-
 
     public void VFXTest_BlueSlash1()
     {
@@ -568,5 +552,57 @@ public class DebugManager : MonoBehaviour
         else if (r == 8) SpawnBat();
         else if (r == 9) SpawnScorpion();
         else if (r == 10) SpawnYeti();
+    }
+
+
+    public void FireballTest()
+    {
+        var source = paladin;
+        var target = enemies.FirstOrDefault();
+        var spell = new SpellSettings()
+        {
+            friendlyName = "Fireball",
+            source = source,
+            target = enemies.FirstOrDefault(),
+            //path = SpellPath.AnimationCurve,
+            //curve = new AnimationCurve(
+            //    new Keyframe(0f, 0f),  // Start (fast acceleration)
+            //    new Keyframe(0.5f, 1.4f), // Overshoot past 1.0
+            //    new Keyframe(1f, 1f)   // Settle back at 1.0
+            //),
+            path = SpellPath.BezierCurve,
+            trailKey = "Fireball",
+            vfxKey = "PuffyExplosion",
+            trigger = new Trigger(coroutine: target.FireDamage(10), isAsync: false)
+        };
+        var action = new CastSpellAction(spell);
+        turnManager.AddAction(action);
+        turnManager.TriggerExecuteActions();
+    }
+
+    public void HealTest()
+    {
+        var source = paladin;
+        var target = barbarian;
+
+        var spell = new SpellSettings()
+        {
+            friendlyName = "Heal",
+            source = source,
+            target = target,
+            //path = SpellPath.AnimationCurve,
+            //curve = new AnimationCurve(
+            //    new Keyframe(0f, 0f),
+            //    new Keyframe(1f, 1f)
+            //),
+            path = SpellPath.CubicBezierCurve,
+            trailKey = "GreenSparkle",
+            vfxKey = "BuffLife",
+            trigger = new Trigger(coroutine: target.Heal(10), isAsync: false)
+        };
+        var action = new CastSpellAction(spell);
+        turnManager.AddAction(action);
+        turnManager.TriggerExecuteActions();
+
     }
 }

@@ -6,7 +6,7 @@ namespace Assets.Scripts.Models
 {
     public class EnemyStartAction : TurnAction
     {
-        // Shortcut property to access the TurnManager instance.
+        // Shortcut property to access the TurnManager trailInstance.
         protected TurnManager turnManager => GameManager.instance.turnManager;
 
         public EnemyStartAction()

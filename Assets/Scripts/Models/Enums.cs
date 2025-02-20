@@ -225,3 +225,13 @@ public enum DottedLineSegment
     ArrowLeft,
     ArrowRight
 }
+
+public enum SpellPath
+{
+    AnimationCurve,
+    Elastic,
+    BezierCurve,
+    CubicBezierCurve,
+    Instant,
+    Ricochet
+}

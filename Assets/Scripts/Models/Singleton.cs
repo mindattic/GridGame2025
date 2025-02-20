@@ -29,7 +29,7 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
                 {
                     if (instances.Length > 1)
                     {
-                        Debug.LogWarning($"[{nameof(Singleton)}<{typeof(T)}>] More than one instance found. Destroying extras.");
+                        Debug.LogWarning($"[{nameof(Singleton)}<{typeof(T)}>] More than one trailInstance found. Destroying extras.");
                         for (int i = 1; i < instances.Length; i++)
                             Destroy(instances[i]);
                     }
@@ -39,10 +39,10 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
                 // Allow null if we are not in the Game scene
                 if (SceneManager.GetActiveScene().name != "Game")
                 {
-                    return null; // Do not create a new instance
+                    return null; // Do not create a new trailInstance
                 }
 
-                Debug.Log($"[{nameof(Singleton)}<{typeof(T)}>] Creating new instance in Game scene.");
+                Debug.Log($"[{nameof(Singleton)}<{typeof(T)}>] Creating new trailInstance in Game scene.");
                 return _instance = new GameObject($"({nameof(Singleton)}){typeof(T)}")
                             .AddComponent<T>();
             }
