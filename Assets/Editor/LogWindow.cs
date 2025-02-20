@@ -142,7 +142,7 @@ public class LogWindow : EditorWindow
         {
             //Write the log text to the specified file path
             File.WriteAllText(filePath, logText);
-            Debug.Log($"Log exported to: {filePath}");
+            //Debug.Log($"Log exported to: {filePath}");
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Assets.Scripts.GUI
 
         //Fields
         [SerializeField] private RectTransform PanelRect;
-        [SerializeField] private Button ReloadButton;
+        [SerializeField] private Button ReloadStageButton;
         [SerializeField] private Button PreviousStageButton;
         [SerializeField] private Button NextStageButton;
         [SerializeField] private Button SpawnRandomEnemyButton;
@@ -29,16 +29,16 @@ namespace Assets.Scripts.GUI
             //PanelRect.anchoredPosition = Vector2.zero;
 
             //Assign button click listeners
-            ReloadButton.onClick.AddListener(OnLoadButtonClicked);
+            ReloadStageButton.onClick.AddListener(OnReloadStageButtonClicked);
             PreviousStageButton.onClick.AddListener(OnPreviousStageButtonClicked);
             NextStageButton.onClick.AddListener(OnNextStageButtonClicked);
             SpawnRandomEnemyButton.onClick.AddListener(OnSpawnRandomEnemyButtonClicked);
         }
 
 
-        private void OnLoadButtonClicked()
+        private void OnReloadStageButtonClicked()
         {
-            stageManager.LoadStage(stageManager.currentStage.Name);
+            stageManager.LoadStage();
         }
 
         private void OnPreviousStageButtonClicked()

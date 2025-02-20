@@ -20,7 +20,7 @@ namespace Assets.Scripts.Models
                 yield break;
 
             // (Optional) Log or perform any setup needed at the very start of the enemy turn.
-            Debug.Log("EnemyStartAction executing: preparing enemy movement.");
+            //Debug.Log("EnemyStartAction executing: preparing enemy movement.");
 
             turnManager.AddAction(new EnemyMoveAction());
             turnManager.SetPhase(TurnPhase.Move);

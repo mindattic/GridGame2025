@@ -22,23 +22,19 @@ public class BoardInstance : MonoBehaviour
     [HideInInspector] public Vector3 NowherePosition = new Vector3(-1000, -1000, -1000);
     [HideInInspector] public Vector2 center;
 
-    //Method which is automatically called before the first frame update  
-    private void Start()
+    public void Initialize()
     {
+        CalculateOffset();
+        CalculateBounds();
+        GenerateTiles();
+    }
 
-        //var x = -tileSize * (columnCount / 2f) + tileSize / 2f;
-        //var y = tileSize * (rowCount / 2f) - tileSize / 2f;
-        //offset = new Vector2(x, y);
-        //transform.position = offset;
-
+    private void CalculateOffset()
+    {
         var x = -(tileSize * 3) - tileSize / 2;
         var y = (tileSize * 4) + tileSize * 2;
         offset = new Vector2(x, y);
         transform.position = offset;
-
-        //Order of Operations:
-        CalculateBounds();
-        GenerateTiles();
     }
 
     private void CalculateBounds()

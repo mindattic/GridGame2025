@@ -111,7 +111,7 @@ public class PincerAttackAction : TurnAction
             {
                 foreach (var attack in pair.attackResults)
                 {
-                    Debug.Log($"Pincer attack! {pair.actor1.name} and {pair.actor2.name} attacking {attack.Opponent.name}");
+                    //Debug.Log($"Pincer attack! {pair.actor1.name} and {pair.actor2.name} attacking {attack.Opponent.name}");
                     turnManager.AddAction(new AttackAction(attack));
                 }
             }

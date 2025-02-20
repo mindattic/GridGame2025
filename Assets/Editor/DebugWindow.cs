@@ -18,7 +18,7 @@ public static class DebugWindowTrigger
         // Check if the Game scene is loaded
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            Debug.Log("[DebugWindow] Game scene loaded, opening Debug Window.");
+            //Debug.Log("[DebugWindow] Game scene loaded, opening Debug Window.");
             EditorApplication.delayCall += OpenDebugWindow;
         }
     }
@@ -102,7 +102,7 @@ public class DebugWindow : EditorWindow
 
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Game")
         {
-            Debug.Log("[DebugWindow] Game scene detected, opening Debug Window.");
+            //Debug.Log("[DebugWindow] Game scene detected, opening Debug Window.");
             ShowWindow();
             EditorApplication.update -= CheckSceneLoad; // Stop checking
         }
@@ -506,9 +506,6 @@ public class DebugWindow : EditorWindow
             case DebugOptions.TutorialTest: debugManager.TooltipTest(); break;
             case DebugOptions.FireballTest: debugManager.FireballTest(); break;
             case DebugOptions.HealTest: debugManager.HealTest(); break;
-
-
-
             default: Debug.LogWarning("OnDebugOptionRunClick failed."); break;
         }
     }
@@ -554,7 +551,7 @@ public class DebugWindow : EditorWindow
     //Blank click events for the buttons
     private void OnReloadStageClick()
     {
-        stageManager.Reload();
+        stageManager.LoadStage();
     }
 
     private void OnPreviousStageClick()

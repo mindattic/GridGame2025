@@ -32,7 +32,7 @@ namespace Game.Models
 
             Stage = new Stage
             {
-                CurrentStage = "Stage 1"
+                CurrentStageName = "Stage 1"
             };
 
             Party = new Party();
@@ -69,11 +69,11 @@ namespace Game.Models
     [Serializable]
     public class ProfileStageSection : ProfileSection
     {
-        public string CurrentStage;
+        public string CurrentStageName;
 
         public ProfileStageSection()
         {
-            CurrentStage = "Stage 1";
+            CurrentStageName = "Stage 1";
         }
     }
 

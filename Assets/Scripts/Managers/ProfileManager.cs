@@ -15,10 +15,6 @@ using Stage = Game.Models.ProfileStageSection;
 
 public class ProfileManager : MonoBehaviour
 {
-
-    //Internal properties
-    public string currentStage => currentProfile?.Stage.CurrentStage ?? "Stage 1";
-
     //Fields
     public Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
     public Profile currentProfile = null;
@@ -194,7 +190,7 @@ public class ProfileManager : MonoBehaviour
         }
 
         sw.Stop();
-        Debug.Log($"Loaded {fileName} successfully in {sw.ElapsedMilliseconds} ms.");
+        //Debug.Log($"Loaded {fileName} successfully in {sw.ElapsedMilliseconds} ms.");
 
         return section;
     }

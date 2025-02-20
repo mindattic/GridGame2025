@@ -25,8 +25,7 @@ public class DataManager : MonoBehaviour
     public List<T> ParseJson<T>(string resource)
     {
         string filePath = $"Data/{resource}";
-
-        Debug.Log(filePath);
+        //Debug.Log(filePath);
         TextAsset jsonFile = Resources.Load<TextAsset>(filePath);
 
         if (jsonFile == null)

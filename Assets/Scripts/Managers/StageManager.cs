@@ -45,19 +45,14 @@ public class StageManager : MonoBehaviour
     public int enemyCount => actors.FindAll(x => x.isEnemy).Count;
 
     //Fields
-
-    [SerializeField] GameObject actorPrefab;
+    [SerializeField] public GameObject actorPrefab;
     public StageData currentStage;
 
     public void Initialize()
     {
-        LoadStage(profileManager.currentStage);
-    }
-
-
-    public void Reload()
-    {
-        LoadStage(currentStage.Name);
+        var stageName = profileManager.currentProfile.Stage.CurrentStageName;
+        currentStage = dataManager.GetStage(stageName);
+        LoadStage();
     }
 
     public void Previous()
@@ -66,7 +61,7 @@ public class StageManager : MonoBehaviour
         if (currentIndex > 0)
             currentStage = dataManager.Stages[currentIndex - 1];
 
-        Reload();
+        LoadStage();
     }
 
     public void Next()
@@ -75,14 +70,12 @@ public class StageManager : MonoBehaviour
         if (currentIndex >= 0 && currentIndex < dataManager.Stages.Count - 1)
             currentStage = dataManager.Stages[currentIndex + 1];
 
-        Reload();
+        LoadStage();
     }
 
 
-    public void LoadStage(string name)
+    public void LoadStage()
     {
-        currentStage = dataManager.GetStage(name);
-
         //Reset game elements
         actors.Clear();
         coinBar.Refresh();
@@ -91,7 +84,7 @@ public class StageManager : MonoBehaviour
         turnManager.Initialize();
 
         //canvasOverlay.Reset();
-        //canvasOverlay.Show($"{currentStage.Name}");
+        //canvasOverlay.Show($"{currentStageName.Name}");
         //canvasOverlay.TriggerFadeOut(Interval.OneSecond);
 
         //Spawn actors
@@ -127,9 +120,9 @@ public class StageManager : MonoBehaviour
 
     //private void Update()
     //{
-    //   if (currentStage != null && currentStage.IsStageComplete(this))
+    //   if (currentStageName != null && currentStageName.IsStageComplete(this))
     //   {
-    //       Debug.Log($"StageData '{currentStage.Name}' Complete!");
+    //       Debug.Log($"StageData '{currentStageName.Name}' Complete!");
     //   }
     //}
 
@@ -167,14 +160,18 @@ public class StageManager : MonoBehaviour
         if (!allEnemiesDefeated)
             return;
 
-        StartCoroutine(fade.FadeOut(LoadStage()));
+        IEnumerator loadStage()
+        {
+            var stageName = currentStage.NextStage;
+            currentStage = dataManager.GetStage(stageName);
+            LoadStage();
+            yield return null;
+        }
+
+        StartCoroutine(fade.FadeOut(loadStage()));
     }
 
-    private IEnumerator LoadStage()
-    {
-        LoadStage(currentStage.NextStage);
-        yield return Wait.UntilNextFrame();
-    }
+ 
 
 }
 

@@ -150,52 +150,10 @@ public class SpellInstance : MonoBehaviour
         trailInstance.transform.position = endPosition;
 
     }
-
-    //private IEnumerator MoveAlongBezierCurve()
-    //{
-    //    float elapsed = 0f;
-
-    //    // Compute direction from source to target
-    //    Vector3 direction = (endPosition - startPosition).normalized;
-
-    //    // Apply launch angle offset
-    //    Vector3 launchDirection = Quaternion.Euler(0, spell.launchAngle, 0) * direction;
-
-    //    // Determine launch point (how far the spell travels before curving)
-    //    float launchDistance = Vector3.Distance(startPosition, endPosition) * spell.launchDistanceFactor;
-    //    Vector3 launchPoint = startPosition + (launchDirection * launchDistance);
-
-    //    // Apply curve deviation
-    //    Vector3 curveDirection = Quaternion.Euler(0, spell.curveDeviation, 0) * (endPosition - launchPoint).normalized;
-    //    Vector3 controlPoint = Vector3.Lerp(launchPoint, endPosition, 0.5f)
-    //                           + curveDirection * (launchDistance * spell.launchDistanceFactor)
-    //                           + Vector3.up * spell.curveHeightFactor;
-
-    //    Debug.Log($"[Bezier] Start={startPosition}, End={endPosition}, Launch={launchPoint}, Control={controlPoint}");
-
-    //    while (elapsed < spell.duration)
-    //    {
-    //        float t = elapsed / spell.duration;
-
-    //        // Quadratic Bezier
-    //        Vector3 pos = (1 - t) * (1 - t) * startPosition
-    //                    + 2 * (1 - t) * t * controlPoint
-    //                    + t * t * endPosition;
-
-    //        trailInstance.transform.position = pos;
-
-    //        elapsed += Time.deltaTime;
-    //        yield return null;
-    //    }
-
-    //    // Snap exactly to the end
-    //    trailInstance.transform.position = endPosition;
-    //}
-
     private IEnumerator MoveAlongBezierCurve()
     {
         // === Variables to tweak ===
-        float duration = 5f;         // total flight time in seconds
+        float duration = 1f;         // total flight time in seconds
         float sideAngleDegrees = 30f;        // rotate 'forwardDir' by this many degrees to left/right
         float sideFactor = 1.5f;       // how wide the arc is as a fraction of distance
         float upFactor = 1.0f;       // how high the arc is as a fraction of distance
