@@ -487,7 +487,7 @@ public static class BezierCurveHelper
 {
     /// <summary>
     /// Generates control points for a gentle S-curve movement.
-    /// Useful for spells that follow an elegant, flowing path.
+    /// Ensures the perpendicular wave follows the travel direction properly.
     /// </summary>
     public static List<Vector3> Gentle(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 1f)
     {
@@ -497,19 +497,21 @@ public static class BezierCurveHelper
 
         float distance = Vector3.Distance(start, end);
         Vector3 direction = (end - start).normalized;
-        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
+        Vector3 perpendicular = Vector3.Cross(Vector3.up, direction).normalized; // Ensure perpendicular aligns with direction
 
-        float sideModifier = Random.Boolean ? 1f : -1f;
+        // Alternate the wave direction properly
+        float sideModifier1 = Random.Boolean ? 1f : -1f;
+        float sideModifier2 = -sideModifier1; // Ensure the second control point inverts the curve correctly
 
         Vector3 control1 = start
-            + direction * (distance * 0.3f * travelModifier)
-            + perpendicular * (distance * 0.3f * sideModifier * waveModifier)
-            + Vector3.up * (distance * 0.2f * waveModifier);
+            + direction * (distance * 0.3f * travelModifier)  // Move forward
+            + perpendicular * (distance * 0.3f * sideModifier1 * waveModifier) // First curve direction
+            + Vector3.up * (distance * 0.2f * waveModifier); // Add some height
 
         Vector3 control2 = end
-            - direction * (distance * 0.3f * travelModifier)
-            - perpendicular * (distance * 0.3f * sideModifier * waveModifier)
-            + Vector3.up * (distance * 0.1f * waveModifier);
+            - direction * (distance * 0.3f * travelModifier)  // Move slightly backward
+            + perpendicular * (distance * 0.3f * sideModifier2 * waveModifier) // Reverse the curve direction
+            + Vector3.up * (distance * 0.1f * waveModifier); // Slightly different vertical height
 
         controlPoints.Add(start);
         controlPoints.Add(control1);
@@ -591,7 +593,7 @@ public static class BezierCurveHelper
     /// Generates control points for a reverse boomerang arc.
     /// The spell overshoots the target and curves back dramatically.
     /// </summary>
-    public static List<Vector3> ReverseBoomerang(ActorInstance source, ActorInstance target, float travelModifier = 1.2f, float waveModifier = 0.8f)
+    public static List<Vector3> Boomerang(ActorInstance source, ActorInstance target, float travelModifier = 1.2f, float waveModifier = 0.8f)
     {
         List<Vector3> controlPoints = new List<Vector3>();
         Vector3 start = source.position;
@@ -687,6 +689,8 @@ public static class BezierCurveHelper
 
         return controlPoints;
     }
+
+
 }
 
 
