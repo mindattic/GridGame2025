@@ -55,25 +55,28 @@ public class StageManager : MonoBehaviour
         currentStage = dataManager.GetStage(stageName);
         LoadStage();
     }
-
     public void Previous()
     {
-        var currentIndex = dataManager.Stages.FindIndex(x => x.Name == currentStage.Name);
-        if (currentIndex > 0)
-            currentStage = dataManager.Stages[currentIndex - 1];
-
-        LoadStage();
+        // Find the previous stage by iterating over the dictionary
+        foreach (var stage in dataManager.Stages.Values)
+        {
+            if (stage.NextStage == currentStage.Name) // Find which stage points to the current one
+            {
+                currentStage = stage;
+                LoadStage();
+                return;
+            }
+        }
     }
 
     public void Next()
     {
-        var currentIndex = dataManager.Stages.FindIndex(x => x.Name == currentStage.Name);
-        if (currentIndex >= 0 && currentIndex < dataManager.Stages.Count - 1)
-            currentStage = dataManager.Stages[currentIndex + 1];
-
-        LoadStage();
+        if (!string.IsNullOrEmpty(currentStage.NextStage) && dataManager.Stages.ContainsKey(currentStage.NextStage))
+        {
+            currentStage = dataManager.Stages[currentStage.NextStage];
+            LoadStage();
+        }
     }
-
 
     public void LoadStage()
     {

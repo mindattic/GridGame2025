@@ -369,7 +369,6 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var key in keys)
             {
-                //DEBUG: Should the JSON parsing be here in the Resource Manager? Or depend on OOO?...
                 var data = dataManager.GetVisualEffect(key);
                 if (data == null)
                 {
@@ -408,35 +407,37 @@ public class ResourceManager : MonoBehaviour
         return entries;
     }
 
-    public static Dictionary<string, Tutorial> LoadTutorials(List<string> keys)
+    public Dictionary<string, Tutorial> LoadTutorials(List<string> keys)
     {
-        Dictionary<string, Tutorial> entries = new Dictionary<string, Tutorial>();
+        //Dictionary<string, Tutorial> entries = new Dictionary<string, Tutorial>();
 
-        try
-        {
-            //Initialize JSON from Resources
-            TextAsset jsonFile = Resources.Load<TextAsset>("Data/Tutorials");
-            if (jsonFile == null)
-            {
-                Debug.LogError("Tutorials.json not found in Resources/Data/");
-                return null;
-            }
+        //try
+        //{
+        //    //Initialize JSON from Resources
+        //    TextAsset jsonFile = Resources.Load<TextAsset>("Data/Tutorials");
+        //    if (jsonFile == null)
+        //    {
+        //        Debug.LogError("Tutorials.json not found in Resources/Data/");
+        //        return null;
+        //    }
 
-            //Deserialize JSON
-            var tutorials = JsonConvert.DeserializeObject<JsonWrapper<Tutorial>>(jsonFile.text);
+        //    //Deserialize JSON
+        //    var tutorials = JsonConvert.DeserializeObject<JsonWrapper<Tutorial>>(jsonFile.text);
 
-            foreach (var key in keys)
-            {
-                var tutorial = tutorials.Items.FirstOrDefault(x => x.Key == key);
-                entries.Add(key, tutorial);
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError($"Error loading tutorials: {ex.Message}");
-        }
+        //    foreach (var key in keys)
+        //    {
+        //        var tutorial = tutorials.Items.FirstOrDefault(x => x.Key == key);
+        //        entries.Add(key, tutorial);
+        //    }
+        //}
+        //catch (System.Exception ex)
+        //{
+        //    Debug.LogError($"Error loading tutorials: {ex.Message}");
+        //}
 
-        return entries;
+        //return entries;
+
+        return dataManager.Tutorials;
     }
 
 
