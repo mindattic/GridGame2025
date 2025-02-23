@@ -1,5 +1,6 @@
 using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
+using Assets.Scripts.Utilities;
 using Game.Behaviors;
 using Game.Manager;
 using System;
@@ -90,18 +91,18 @@ public class StageManager : MonoBehaviour
         //Spawn actors
         foreach (var stageActor in currentStage.Actors)
         {
-            var character = Convert.ToCharacter(stageActor.Character);
-            var team = Convert.ToTeam(stageActor.Team);
+            var character = ConvertString.ToCharacter(stageActor.Character);
+            var team = ConvertString.ToTeam(stageActor.Team);
             var spawnTurn = stageActor.SpawnTurn;
-            var location = Convert.ToVector2Int(stageActor.Location);
+            var location = ConvertString.ToVector2Int(stageActor.Location);
             SpawnActor(character, team, spawnTurn, location);
         }
 
         //Spawn dotted lines (if applicable)
         foreach (var stageDottedLine in currentStage.DottedLines)
         {
-            var segment = Convert.ToDottedLineSegment(stageDottedLine.Segment);
-            var location = Convert.ToVector2Int(stageDottedLine.Location);
+            var segment = ConvertString.ToDottedLineSegment(stageDottedLine.Segment);
+            var location = ConvertString.ToVector2Int(stageDottedLine.Location);
             dottedLineManager.Spawn(segment, location);
         }
 

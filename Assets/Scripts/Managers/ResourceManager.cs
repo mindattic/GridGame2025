@@ -1,4 +1,5 @@
 using Assets.Scripts.Models;
+using Assets.Scripts.Utilities;
 using Game.Behaviors;
 using Newtonsoft.Json;
 using System;
@@ -333,7 +334,7 @@ public class ResourceManager : MonoBehaviour
                 var prefab = Resources.Load<GameObject>($"{resourcePath}/{key}");
                 if (prefab == null)
                 {
-                    logManager.Error($"Trail Effect Prefab `{key}` not found at resource path `{resourcePath}`");
+                    logManager.Error($"Trail Effect `{key}` not found at resource path `{resourcePath}`");
                     continue;
                 }
 
@@ -341,9 +342,9 @@ public class ResourceManager : MonoBehaviour
                 {
                     Name = key,
                     Prefab = prefab,
-                    RelativeOffset = Convert.ToVector3(data.RelativeOffset),
-                    AngularRotation = Convert.ToVector3(data.AngularRotation),
-                    RelativeScale = Convert.ToVector3(data.RelativeScale),
+                    RelativeOffset = ConvertString.ToVector3(data.RelativeOffset),
+                    AngularRotation = ConvertString.ToVector3(data.AngularRotation),
+                    RelativeScale = ConvertString.ToVector3(data.RelativeScale),
                     Delay = data.Delay,
                     Duration = data.Duration,
                     IsLoop = data.IsLoop,
@@ -380,7 +381,7 @@ public class ResourceManager : MonoBehaviour
                 var prefab = Resources.Load<GameObject>($"{resourcePath}/{key}");
                 if (prefab == null)
                 {
-                    logManager.Error($"Visual Effect Prefab `{key}` not found at resource path `{resourcePath}`");
+                    logManager.Error($"Visual Effect `{key}` not found at resource path `{resourcePath}`");
                     continue;
                 }
 
@@ -388,9 +389,9 @@ public class ResourceManager : MonoBehaviour
                 {
                     Name = key,
                     Prefab = prefab,
-                    RelativeOffset = Convert.ToVector3(data.RelativeOffset),
-                    AngularRotation = Convert.ToVector3(data.AngularRotation),
-                    RelativeScale = Convert.ToVector3(data.RelativeScale),
+                    RelativeOffset = ConvertString.ToVector3(data.RelativeOffset),
+                    AngularRotation = ConvertString.ToVector3(data.AngularRotation),
+                    RelativeScale = ConvertString.ToVector3(data.RelativeScale),
                     Delay = data.Delay,
                     Duration = data.Duration,
                     IsLoop = data.IsLoop,

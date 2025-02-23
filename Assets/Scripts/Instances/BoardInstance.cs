@@ -89,7 +89,7 @@ public class BoardInstance : MonoBehaviour
             _ => Vector3.zero //Fallback case
         };
 
-        //Convert the world position to screen space
+        //ConvertString the world position to screen space
         Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
 
         //Return only the X and Y screen coordinates

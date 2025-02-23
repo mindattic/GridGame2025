@@ -564,13 +564,13 @@ public class DebugManager : MonoBehaviour
             friendlyName = "Fireball",
             source = source,
             target = enemies.FirstOrDefault(),
+            path = SpellPath.BezierCurve,
             //path = SpellPath.AnimationCurve,
             //curve = new AnimationCurve(
             //    new Keyframe(0f, 0f),  // Start (fast acceleration)
             //    new Keyframe(0.5f, 1.4f), // Overshoot past 1.0
             //    new Keyframe(1f, 1f)   // Settle back at 1.0
             //),
-            path = SpellPath.BezierCurve,
             trailKey = "Fireball",
             vfxKey = "PuffyExplosion",
             trigger = new Trigger(coroutine: target.FireDamage(10), isAsync: false)
@@ -590,12 +590,8 @@ public class DebugManager : MonoBehaviour
             friendlyName = "Heal",
             source = source,
             target = target,
-            //path = SpellPath.AnimationCurve,
-            //curve = new AnimationCurve(
-            //    new Keyframe(0f, 0f),
-            //    new Keyframe(1f, 1f)
-            //),
-            path = SpellPath.CubicBezierCurve,
+            path = SpellPath.AnimationCurve,
+            curve = AnimationCurve.EaseInOut(0, 0, 1, 1),
             trailKey = "GreenSparkle",
             vfxKey = "BuffLife",
             trigger = new Trigger(coroutine: target.Heal(10), isAsync: false)

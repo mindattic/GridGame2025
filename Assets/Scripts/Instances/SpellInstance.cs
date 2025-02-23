@@ -3,6 +3,7 @@ using Game.Behaviors;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class SpellInstance : MonoBehaviour
@@ -12,6 +13,7 @@ public class SpellInstance : MonoBehaviour
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected SpellManager spellManager => GameManager.instance.spellManager;
     protected float tileSize => GameManager.instance.tileSize;
+    protected Vector3 tileScale => GameManager.instance.tileScale;
 
 
     public Transform parent
@@ -60,11 +62,11 @@ public class SpellInstance : MonoBehaviour
         transform.position = startPosition;
 
         TrailResource trailResource = resourceManager.TrailEffect(spell.trailKey);
-        trailInstance = Instantiate(trailResource.Prefab, transform.position, Quaternion.identity, transform);
+        trailInstance = Instantiate(trailResource.Prefab, transform.position, Quaternion.identity);
         //trailInstance.transform.parent = board.transform;
         trailInstance.transform.localPosition = trailResource.RelativeOffset;
         trailInstance.transform.localEulerAngles = trailResource.AngularRotation;
-        trailInstance.transform.localScale = trailResource.RelativeScale;
+        trailInstance.transform.localScale = tileScale.MultiplyBy(trailResource.RelativeScale);
 
         switch (spell.path)
         {
@@ -153,8 +155,8 @@ public class SpellInstance : MonoBehaviour
     private IEnumerator MoveAlongBezierCurve()
     {
         // === Variables to tweak ===
-        float duration = 1f;         // total flight time in seconds
-        float sideAngleDegrees = 30f;        // rotate 'forwardDir' by this many degrees to left/right
+        float duration = 0.7f;         // total flight time in seconds
+        float sideAngleDegrees = 45f;        // rotate 'forwardDir' by this many degrees to left/right
         float sideFactor = 1.5f;       // how wide the arc is as a fraction of distance
         float upFactor = 1.0f;       // how high the arc is as a fraction of distance
         float forwardFactor = 0.5f;       // how far along the path to place the control point (in forward direction)
@@ -210,7 +212,7 @@ public class SpellInstance : MonoBehaviour
     private IEnumerator MoveAlongCubicBezierCurve()
     {
         // === Variables to tweak ===
-        float duration = 5f;    // total flight time in seconds
+        float duration = 1f;    // total flight time in seconds
         float sideAngleDegrees = 30f;   // rotate 'forwardDir' by this many degrees to left/right
         float sideFactor = 1.5f;  // how wide the arc is as a fraction of distance
         float upFactor = 1.0f;  // how high the arc is as a fraction of distance

@@ -3,6 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SingularityGroup.HotReload.Editor", "SingularityGroup.HotReload.Editor.csproj", "{12B81E21-889F-AFEA-7B34-3396E5583904}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SingularityGroup.HotReload.Runtime.Public", "SingularityGroup.HotReload.Runtime.Public.csproj", "{A7E069DE-F518-4769-82CE-AED846DD8100}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SingularityGroup.HotReload.Runtime", "SingularityGroup.HotReload.Runtime.csproj", "{090EACC3-6996-C855-6437-1786E628CD29}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{22BEDCAA-F5B1-5B3D-F214-4748B7A29511}"
 EndProject
 Global
@@ -15,6 +21,18 @@ Global
 		{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12B81E21-889F-AFEA-7B34-3396E5583904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12B81E21-889F-AFEA-7B34-3396E5583904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12B81E21-889F-AFEA-7B34-3396E5583904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12B81E21-889F-AFEA-7B34-3396E5583904}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E069DE-F518-4769-82CE-AED846DD8100}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E069DE-F518-4769-82CE-AED846DD8100}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E069DE-F518-4769-82CE-AED846DD8100}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E069DE-F518-4769-82CE-AED846DD8100}.Release|Any CPU.Build.0 = Release|Any CPU
+		{090EACC3-6996-C855-6437-1786E628CD29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{090EACC3-6996-C855-6437-1786E628CD29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{090EACC3-6996-C855-6437-1786E628CD29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{090EACC3-6996-C855-6437-1786E628CD29}.Release|Any CPU.Build.0 = Release|Any CPU
 		{22BEDCAA-F5B1-5B3D-F214-4748B7A29511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{22BEDCAA-F5B1-5B3D-F214-4748B7A29511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22BEDCAA-F5B1-5B3D-F214-4748B7A29511}.Release|Any CPU.ActiveCfg = Release|Any CPU
