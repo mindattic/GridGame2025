@@ -8,6 +8,7 @@ namespace Assets.Scripts.Models
     {
         // Shortcut property to access the TurnManager trailInstance.
         protected TurnManager turnManager => GameManager.instance.turnManager;
+        protected ActionManager actionManager => GameManager.instance.actionManager;
 
         public EnemyStartAction()
         {
@@ -22,7 +23,7 @@ namespace Assets.Scripts.Models
             // (Optional) Log or perform any setup needed at the very start of the enemy turn.
             //Debug.Log("EnemyStartAction executing: preparing enemy movement.");
 
-            turnManager.AddAction(new EnemyMoveAction());
+            actionManager.AddAction(new EnemyMoveAction());
             turnManager.SetPhase(TurnPhase.Move);
 
             // Yield return null (or any brief wait) to allow the phase change to propagate.

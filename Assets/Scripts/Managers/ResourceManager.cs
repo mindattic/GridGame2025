@@ -427,7 +427,7 @@ public class ResourceManager : MonoBehaviour
         //    foreach (var key in keys)
         //    {
         //        var tutorial = tutorials.Items.FirstOrDefault(x => x.Key == key);
-        //        entries.Add(key, tutorial);
+        //        entries.Enqueue(key, tutorial);
         //    }
         //}
         //catch (System.Exception ex)

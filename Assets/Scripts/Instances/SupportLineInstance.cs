@@ -46,7 +46,7 @@ public class SupportLineInstance : MonoBehaviour
         startPosition = pair.startActor.position;
         endPosition = pair.endActor.position;
 
-        //lineRenderer.sortingOrder = SortingOrder.SupportLine;
+        lineRenderer.sortingOrder = SortingOrder.SupportLine;
         lineRenderer.SetPosition(0, startPosition);
         lineRenderer.SetPosition(1, endPosition);
 

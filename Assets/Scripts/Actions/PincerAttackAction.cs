@@ -1,23 +1,20 @@
 ﻿using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
-using Game.Behaviors;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class PincerAttackAction : TurnAction
 {
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
     protected TurnManager turnManager => GameManager.instance.turnManager;
+    protected ActionManager actionManager => GameManager.instance.actionManager;
+    protected SpellManager spellManager => GameManager.instance.spellManager;
+    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
-
-
-    // A local trailInstance for tracking combat participants.
     private PincerAttackParticipants participants = new PincerAttackParticipants();
 
     public override IEnumerator Execute()
@@ -60,7 +57,6 @@ public class PincerAttackAction : TurnAction
             return false;
 
         AssignAttackingPairs();
-
         AssignSupportingPairs();
 
         var hasAttackers = participants.attackingPairs.Any();
@@ -112,7 +108,7 @@ public class PincerAttackAction : TurnAction
                 foreach (var attack in pair.attackResults)
                 {
                     //Debug.Log($"Pincer attack! {pair.actor1.name} and {pair.actor2.name} attacking {attack.Opponent.name}");
-                    turnManager.AddAction(new AttackAction(attack));
+                    actionManager.AddAction(new AttackAction(attack));
                 }
             }
 
@@ -136,7 +132,11 @@ public class PincerAttackAction : TurnAction
         {
             foreach (var pair in participants.supportingPairs)
             {
-                GameManager.instance.supportLineManager.Spawn(pair);
+                supportLineManager.Spawn(pair);
+                if (pair.actor1.character == Character.Cleric)
+                    spellManager.CastHeal(pair.actor1, pair.actor2);
+                else if (pair.actor2.character == Character.Cleric)
+                    spellManager.CastHeal(pair.actor2, pair.actor1);
             }
         }
     }

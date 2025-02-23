@@ -9,6 +9,7 @@ namespace Assets.Scripts.Models
     {
         //External properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
+        protected ActionManager actionManager => GameManager.instance.actionManager;
         protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
 
         public EnemyMoveAction()
@@ -39,7 +40,7 @@ namespace Assets.Scripts.Models
                 }
 
                 //After moving, add the enemy attack action.
-                turnManager.AddAction(new EnemyAttackAction());
+                actionManager.AddAction(new EnemyAttackAction());
                 turnManager.SetPhase(TurnPhase.Attack);
             }
             else

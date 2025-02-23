@@ -25,6 +25,7 @@ public class SelectedPlayerManager : MonoBehaviour
     protected TimerBarInstance timerBar => GameManager.instance.timerBar;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
+    protected ActionManager actionManager => GameManager.instance.actionManager;
 
     private void Start()
     {
@@ -118,7 +119,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
         //Now that the player has dropped their unit,
         //add the PlayerAttackAction and trigger the execution of pending turn actions.
-        turnManager.AddAction(new PincerAttackAction());
+        actionManager.AddAction(new PincerAttackAction());
         turnManager.SetPhase(TurnPhase.Attack);
     }
 }

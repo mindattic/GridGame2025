@@ -66,7 +66,7 @@ public class BoardInstance : MonoBehaviour
         }
 
         //TODO: Remove this an just use the tileMap for all lookups...
-        //Assign tiles list
+        //Assign tiles queue
         GameObject.FindGameObjectsWithTag(Tag.Tile).ToList()
             .ForEach(x => GameManager.instance.tiles.Add(x.GetComponent<TileInstance>()));
     }

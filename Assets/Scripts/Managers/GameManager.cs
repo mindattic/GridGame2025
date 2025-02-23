@@ -61,6 +61,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public LogManager logManager;
     [HideInInspector] public DottedLineManager dottedLineManager;
     [HideInInspector] public SpellManager spellManager;
+    [HideInInspector] public ActionManager actionManager;
 
     //Board
     [HideInInspector] public BoardOverlay boardOverlay;
@@ -196,37 +197,38 @@ public class GameManager : Singleton<GameManager>
         pauseManager = game.GetComponent<PauseManager>() ?? throw new UnityException("PauseManager is null");
         dottedLineManager = game.GetComponent<DottedLineManager>() ?? throw new UnityException("DottedLineManager is null");
         spellManager = game.GetComponent<SpellManager>() ?? throw new UnityException("SpellManager is null");
+        actionManager = game.GetComponent<ActionManager>() ?? throw new UnityException("ActionManager is null");
 
 
         //Overlay components
         boardOverlay = GameObject.Find(Constants.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
         canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
 
-        #region Platform Dependent Compilation
+//        #region Platform Dependent Compilation
 
-        //https://docs.unity3d.com/520/Documentation/Manual/PlatformDependentCompilation.html
-#if UNITY_STANDALONE_WIN
-               deviceType = "UNITY_STANDALONE_WIN";
-#elif UNITY_STANDALONE_LINUX
-         deviceType = "UNITY_STANDALONE_LINUX";
-#elif UNITY_IPHONE
-               deviceType = "UNITY_IPHONE";
-#elif UNITY_STANDALONE_OSX
-           deviceType = "UNITY_STANDALONE_OSX"
-#elif UNITY_WEBPLAYER
-         deviceType = "UNITY_WEBPLAYER";
-#elif UNITY_WEBGL
-         deviceType = "UNITY_WEBGL";
-#else
-        deviceType = "Unknown";
-#endif
-        Debug.Log($"Running on {deviceType}");
+//        //https://docs.unity3d.com/520/Documentation/Manual/PlatformDependentCompilation.html
+//#if UNITY_STANDALONE_WIN
+//               deviceType = "UNITY_STANDALONE_WIN";
+//#elif UNITY_STANDALONE_LINUX
+//         deviceType = "UNITY_STANDALONE_LINUX";
+//#elif UNITY_IPHONE
+//               deviceType = "UNITY_IPHONE";
+//#elif UNITY_STANDALONE_OSX
+//           deviceType = "UNITY_STANDALONE_OSX"
+//#elif UNITY_WEBPLAYER
+//         deviceType = "UNITY_WEBPLAYER";
+//#elif UNITY_WEBGL
+//         deviceType = "UNITY_WEBGL";
+//#else
+//        deviceType = "Unknown";
+//#endif
+//        Debug.Log($"Running on {deviceType}");
 
-#if UNITY_EDITOR
-        Debug.Log($"Emulated on UNITY_EDITOR");
-#endif
+//#if UNITY_EDITOR
+//        Debug.Log($"Emulated on UNITY_EDITOR");
+//#endif
 
-        #endregion
+//        #endregion
     }
 
     //Method which is automatically called before the first frame update  

@@ -16,8 +16,9 @@ public class TurnManager : MonoBehaviour
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected PlayerManager playerManager => GameManager.instance.playerManager;
-    protected TimerBarInstance timerBar => GameManager.instance.timerBar;
+    protected ActionManager actionManager => GameManager.instance.actionManager;
 
+    protected TimerBarInstance timerBar => GameManager.instance.timerBar;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
@@ -33,14 +34,13 @@ public class TurnManager : MonoBehaviour
     public bool isFirstTurn => currentTurn == 1;
 
     // Events
-    public event Action<TurnPhase> OnTurnPhaseChanged;
+    public event System.Action<TurnPhase> OnTurnPhaseChanged;
 
     //Fields
     public int currentTurn = 1;
     public Team currentTeam = Team.Player;
     public TurnPhase currentTurnPhase = TurnPhase.Start;
-    private Queue<TurnAction> pendingTurnActions = new Queue<TurnAction>();
-
+   
     public void SetPhase(TurnPhase turnPhase)
     {
         currentTurnPhase = turnPhase;
@@ -65,7 +65,7 @@ public class TurnManager : MonoBehaviour
                         playerManager.TriggerGlow();
                         break;
                     case TurnPhase.Attack:
-                        TriggerExecuteActions();
+                        actionManager.TriggerExecuteActions();
                         break;
                 }
             }
@@ -76,17 +76,17 @@ public class TurnManager : MonoBehaviour
                     case TurnPhase.Start:
                         // For enemy turns, automatically add phase actions and run ExecuteActions().
                         timerBar.Lock();
-                        AddAction(new EnemySpawnAction());
+                        actionManager.AddAction(new EnemySpawnAction());
 
                         bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
                         if (!anyReadyEnemies)
                         {
-                            TriggerExecuteActions();
+                            actionManager.TriggerExecuteActions();
                             break;
                         }
-    
-                        AddAction(new EnemyStartAction());
-                        TriggerExecuteActions();
+
+                        actionManager.AddAction(new EnemyStartAction());
+                        actionManager.TriggerExecuteActions();
                         break;
                 }
             }
@@ -101,10 +101,7 @@ public class TurnManager : MonoBehaviour
         SetPhase(TurnPhase.Start);
     }
 
-    public void AddAction(TurnAction action)
-    {
-        pendingTurnActions.Enqueue(action);
-    }
+
 
     public void ResetSortingOrder()
     {
@@ -124,21 +121,6 @@ public class TurnManager : MonoBehaviour
         SetPhase(TurnPhase.Start);
     }
 
-    public void TriggerExecuteActions()
-    {
-        StartCoroutine(ExecuteActions());
-    }
-
-    private IEnumerator ExecuteActions()
-    {
-        while (pendingTurnActions.Count > 0)
-        {
-            TurnAction action = pendingTurnActions.Dequeue();
-            yield return StartCoroutine(action.Execute());
-        }
-
-        NextTurn(); // Move to the next turn after all actions are executed
-    }
 
 
 }

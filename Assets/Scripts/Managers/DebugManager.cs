@@ -32,7 +32,7 @@ public class DebugManager : MonoBehaviour
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
-
+    protected ActionManager actionManager => GameManager.instance.actionManager;
 
     //Internal properties
     ActorInstance paladin => players.First(x => x.name.StartsWith("Paladin"));
@@ -576,8 +576,8 @@ public class DebugManager : MonoBehaviour
             trigger = new Trigger(coroutine: target.FireDamage(10), isAsync: false)
         };
         var action = new CastSpellAction(spell);
-        turnManager.AddAction(action);
-        turnManager.TriggerExecuteActions();
+        actionManager.AddAction(action);
+        actionManager.TriggerExecuteActions();
     }
 
     public void HealTest()
@@ -597,8 +597,8 @@ public class DebugManager : MonoBehaviour
             trigger = new Trigger(coroutine: target.Heal(10), isAsync: false)
         };
         var action = new CastSpellAction(spell);
-        turnManager.AddAction(action);
-        turnManager.TriggerExecuteActions();
+        actionManager.AddAction(action);
+        actionManager.TriggerExecuteActions();
 
     }
 }
