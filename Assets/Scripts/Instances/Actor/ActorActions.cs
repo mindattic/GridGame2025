@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Models;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts.Instances.Actor
@@ -19,7 +18,7 @@ namespace Assets.Scripts.Instances.Actor
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
         protected Vector3 tileScale => GameManager.instance.tileScale;
-       
+
         //Fields
 
         private ActorInstance instance;

@@ -2,11 +2,11 @@ using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Instances.Actor;
 using Assets.Scripts.Models;
 using Game.Instances.Actor;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 public class ActorInstance : MonoBehaviour
 {
     //External properties
@@ -43,7 +43,7 @@ public class ActorInstance : MonoBehaviour
     public bool onSouthEdge => location.y == board.rowCount;
     public bool onWestEdge => location.x == 1;
     public bool isActive => isActiveAndEnabled;
-    public bool isAlive =>  stats.HP > 0;
+    public bool isAlive => stats.HP > 0;
     public bool isPlaying => isActive && isAlive;
     public bool isDying => isActive && stats.HP < 1;
     public bool isDead => !isActive && !isAlive;
@@ -114,9 +114,9 @@ public class ActorInstance : MonoBehaviour
         }
     }
 
-    //Events
-    public Action<ActorInstance> OnOverlapDetected;
-    public Action<ActorInstance> OnDeathDetected;
+    //System.Action event handlers
+    public System.Action<ActorInstance> OnOverlapDetected;
+    public System.Action<ActorInstance> OnDeathDetected;
 
     //Fields
     [SerializeField] public AnimationCurve glowCurve;
@@ -223,7 +223,7 @@ public class ActorInstance : MonoBehaviour
         weapon.Defense = Random.Float(0, 5);
         weapon.Name = $"{weapon.Type}";
         render.weaponIcon.sprite = resourceManager.WeaponType(weapon.Type.ToString()).Value;
-  
+
         if (isPlayer)
         {
             render.SetOpaqueColor(ColorHelper.Solid.White);
@@ -524,5 +524,5 @@ public class ActorInstance : MonoBehaviour
     }
 
 
- 
+
 }

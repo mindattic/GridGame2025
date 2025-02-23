@@ -1,8 +1,5 @@
 using Assets.Scripts.Models;
 using Game.Behaviors;
-using Game.Manager;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -33,14 +30,14 @@ public class TurnManager : MonoBehaviour
     public bool isEndPhase => currentTurnPhase.Equals(TurnPhase.End);
     public bool isFirstTurn => currentTurn == 1;
 
-    // Events
+    //System.Action event handlers
     public event System.Action<TurnPhase> OnTurnPhaseChanged;
 
     //Fields
     public int currentTurn = 1;
     public Team currentTeam = Team.Player;
     public TurnPhase currentTurnPhase = TurnPhase.Start;
-   
+
     public void SetPhase(TurnPhase turnPhase)
     {
         currentTurnPhase = turnPhase;
@@ -65,7 +62,7 @@ public class TurnManager : MonoBehaviour
                         playerManager.TriggerGlow();
                         break;
                     case TurnPhase.Attack:
-                        actionManager.TriggerExecuteActions();
+                        actionManager.TriggerExecute();
                         break;
                 }
             }
@@ -74,19 +71,19 @@ public class TurnManager : MonoBehaviour
                 switch (currentTurnPhase)
                 {
                     case TurnPhase.Start:
-                        // For enemy turns, automatically add phase actions and run ExecuteActions().
+                        // For enemy turns, automatically add phase actions and run Execute().
                         timerBar.Lock();
-                        actionManager.AddAction(new EnemySpawnAction());
+                        actionManager.Add(new EnemySpawnAction());
 
                         bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
                         if (!anyReadyEnemies)
                         {
-                            actionManager.TriggerExecuteActions();
+                            actionManager.TriggerExecute();
                             break;
                         }
 
-                        actionManager.AddAction(new EnemyStartAction());
-                        actionManager.TriggerExecuteActions();
+                        actionManager.Add(new EnemyStartAction());
+                        actionManager.TriggerExecute();
                         break;
                 }
             }

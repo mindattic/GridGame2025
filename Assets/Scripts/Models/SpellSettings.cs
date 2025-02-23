@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
+
     public class SpellSettings
     {
         public string friendlyName;
@@ -14,19 +16,18 @@ namespace Assets.Scripts.Models
         public Trigger trigger;
 
         //AnimationCurve
-        public AnimationCurve curve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        public AnimationCurve travelCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+        public AnimationCurve waveCurve = AnimationCurve.EaseInOut(0, 0, 1, 0); //Straight: new Keyframe(0, 0), new Keyframe(1, 0));
 
-        //Elastic
-        public float overshootIntensity = 1.3f;  // Overshoot intensity
-        public float dampingFactor = 3.5f;  // Damping factor (higher = stops oscillating faster)
-        public float oscillationFrequency = 8f; // Frequency of oscillation
-        public float smoothingFactor = 0.9f; //0.9f means 90% of the new position is determined by the target position, and 10% is preserved from the previous frame.
 
         //Bezier
+        public float travelModifier;
+        public float waveModifier;
         public float launchAngle = 180f;
         public float curveDeviation = 30f;
         public float launchDistanceFactor = 0.5f;
         public float curveHeightFactor = 1.5f;
+        public List<Vector3> controlPoints;
     }
 
 }

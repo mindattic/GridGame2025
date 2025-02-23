@@ -1,11 +1,10 @@
 ﻿using System.Collections;
 using System.Linq;
-using Assets.Scripts.Models;
-using UnityEngine;
+using Action = Assets.Scripts.Models.PhaseAction;
 
 namespace Assets.Scripts.Models
 {
-    public class EnemyMoveAction : TurnAction
+    public class EnemyMoveAction : Action
     {
         //External properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -40,7 +39,7 @@ namespace Assets.Scripts.Models
                 }
 
                 //After moving, add the enemy attack action.
-                actionManager.AddAction(new EnemyAttackAction());
+                actionManager.Add(new EnemyAttackAction());
                 turnManager.SetPhase(TurnPhase.Attack);
             }
             else

@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using Game.Behaviors;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -73,14 +74,8 @@ public class SpellInstance : MonoBehaviour
             case SpellPath.AnimationCurve:
                 yield return StartCoroutine(MoveAlongCurve());
                 break;
-            case SpellPath.Elastic:
-                yield return StartCoroutine(MoveAlongElastic());
-                break;
             case SpellPath.BezierCurve:
                 yield return StartCoroutine(MoveAlongBezierCurve());
-                break;
-            case SpellPath.CubicBezierCurve:
-                yield return StartCoroutine(MoveAlongCubicBezierCurve());
                 break;
             default:
                 yield return StartCoroutine(MoveAlongCurve());
@@ -92,190 +87,141 @@ public class SpellInstance : MonoBehaviour
     private IEnumerator MoveAlongCurve()
     {
         float elapsed = 0f;
+        Vector3 direction = (endPosition - startPosition).normalized; // Travel direction
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized; // Perpendicular axis
+
         while (elapsed < spell.duration)
         {
             float t = elapsed / spell.duration;
 
-            // Interpolate between start and end positions.
-            var pos = Vector3.Lerp(startPosition, endPosition, spell.curve.Evaluate(t));
+            // Interpolate position along the travel curve
+            Vector3 pos = Vector3.Lerp(startPosition, endPosition, spell.travelCurve.Evaluate(t));
 
+            // Calculate wave offset along the perpendicular direction
+            float waveOffset = spell.waveCurve.Evaluate(t);
+            pos += perpendicular * waveOffset;
 
-            //var offset = Random.Float(-45, 45);
-            //pos.y += offset;
-
+            // Apply position update
             trailInstance.transform.position = pos;
             elapsed += Time.deltaTime;
             yield return null;
         }
-
 
         transform.position = endPosition;
     }
 
-    private IEnumerator MoveAlongElastic()
+    private IEnumerator MoveAlongBezierCurve()
     {
+        if (spell.controlPoints == null || spell.controlPoints.Count < 2)
+        {
+            spell.controlPoints = GenerateBezierControlPoints();
+        }
+
         float elapsed = 0f;
-
-        Vector3 direction = (endPosition - startPosition);
-        Vector3 initialOffset = startPosition;
-
         while (elapsed < spell.duration)
         {
             float t = elapsed / spell.duration;
+            Vector3 pos = EvaluateBezier(spell.controlPoints, t);
 
-            // Damped spring function with smooth approach
-            float springFactor
-                = spell.overshootIntensity
-                * (1 - Mathf.Exp(-spell.dampingFactor * t)
-                * Mathf.Cos(spell.oscillationFrequency * t));
-
-            // Apply movement along the calculated direction
-            trailInstance.transform.position = Vector3.Lerp(
-                transform.position,
-                initialOffset + direction * springFactor,
-                spell.smoothingFactor);
-
+            trailInstance.transform.position = pos;
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Final smoothing to ensure exact target position
-        float smoothDuration = 0.1f;
-        float smoothElapsed = 0f;
-        while (smoothElapsed < smoothDuration)
+        // Snap to final position
+        trailInstance.transform.position = spell.controlPoints[spell.controlPoints.Count - 1];
+    }
+
+    private Vector3 EvaluateBezier(List<Vector3> points, float t)
+    {
+        if (points.Count == 1)
+            return points[0];
+
+        List<Vector3> newPoints = new List<Vector3>();
+        for (int i = 0; i < points.Count - 1; i++)
         {
-            trailInstance.transform.position = Vector3.Lerp(transform.position, endPosition, smoothElapsed / smoothDuration);
-            smoothElapsed += Time.deltaTime;
-            yield return null;
+            newPoints.Add(Vector3.Lerp(points[i], points[i + 1], t));
         }
 
-        trailInstance.transform.position = endPosition;
-
+        return EvaluateBezier(newPoints, t);
     }
-    private IEnumerator MoveAlongBezierCurve()
-    {
-        // === Variables to tweak ===
-        float duration = 0.7f;         // total flight time in seconds
-        float sideAngleDegrees = 45f;        // rotate 'forwardDir' by this many degrees to left/right
-        float sideFactor = 1.5f;       // how wide the arc is as a fraction of distance
-        float upFactor = 1.0f;       // how high the arc is as a fraction of distance
-        float forwardFactor = 0.5f;       // how far along the path to place the control point (in forward direction)
-        // ==========================
 
-        // Basic references
+    private List<Vector3> GenerateBezierControlPoints()
+    {
+        List<Vector3> controlPoints = new List<Vector3>();
         Vector3 start = startPosition;
         Vector3 end = endPosition;
 
         float distance = Vector3.Distance(start, end);
-        Vector3 directFwd = (end - start).normalized;
+        Vector3 direction = (end - start).normalized;
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
 
-        // 1) Rotate the forward direction by sideAngleDegrees around Y-axis
-        Vector3 angledForward = Quaternion.Euler(0f, sideAngleDegrees, 0f) * directFwd;
+        // Always add start position as first point
+        controlPoints.Add(start);
 
-        // 2) A perpendicular direction to the angledForward for big side arcs
-        Vector3 sideDir = Vector3.Cross(angledForward, Vector3.up).normalized;
-
-        // 3) Define a single control point for the quadratic
-        //    This point is partway along angledForward, plus some side/up offsets
-        //    e.g., big arc = big sideFactor / upFactor
-        Vector3 control = start
-            + angledForward * (distance * forwardFactor)
-            + sideDir * (distance * sideFactor)
-            + Vector3.up * (distance * upFactor);
-
-        // 4) Animate from t=0 to t=1 over 'duration'
-        float elapsed = 0f;
-        while (elapsed < duration)
+        // Check if control points are provided
+        if (spell.controlPoints != null && spell.controlPoints.Count > 0)
         {
-            float t = elapsed / duration;
-            float omt = 1f - t;
+            // Use provided control points
+            controlPoints.AddRange(spell.controlPoints);
+        }
+        else
+        {
+            // Default to 2 auto-generated control points for a smooth curve
+            int numControlPoints = 2;
 
-            // Quadratic Bezier formula:
-            // B(t) = (1 - t)^2 * start
-            //      + 2 (1 - t) t * control
-            //      + t^2         * end
-            Vector3 pos =
-                  (omt * omt) * start
-                + 2f * omt * t * control
-                + (t * t) * end;
+            for (int i = 1; i <= numControlPoints; i++)
+            {
+                float factor = (float)i / (numControlPoints + 1); // Distribute points evenly
+                float forwardOffset = distance * factor;
+                float sideOffset = Mathf.Sin(factor * Mathf.PI) * distance * spell.curveDeviation;
+                float heightOffset = Mathf.Cos(factor * Mathf.PI) * distance * spell.curveHeightFactor;
 
-            trailInstance.transform.position = pos;
+                Vector3 control = start
+                    + direction * forwardOffset
+                    + perpendicular * sideOffset
+                    + Vector3.up * heightOffset;
 
-            elapsed += Time.deltaTime;
-            yield return null;
+                controlPoints.Add(control);
+            }
         }
 
-        // Snap to the final position
-        trailInstance.transform.position = end;
+        // Always add end position as last point
+        controlPoints.Add(end);
+
+        return controlPoints;
     }
 
-    private IEnumerator MoveAlongCubicBezierCurve()
-    {
-        // === Variables to tweak ===
-        float duration = 1f;    // total flight time in seconds
-        float sideAngleDegrees = 30f;   // rotate 'forwardDir' by this many degrees to left/right
-        float sideFactor = 1.5f;  // how wide the arc is as a fraction of distance
-        float upFactor = 1.0f;  // how high the arc is as a fraction of distance
-        float forwardFactorStart = 0.3f;  // how far from the start to place the first control point
-        float forwardFactorEnd = 0.3f;  // how far from the end to place the second control point
-        // ==========================
+    //List<Vector3> GenerateCubicBezierControlPoints()
+    //{
+    //    List<Vector3> controlPoints = new List<Vector3>();
+    //    Vector3 start = startPosition;
+    //    Vector3 end = endPosition;
 
-        // Basic references
-        Vector3 start = startPosition;
-        Vector3 end = endPosition;
+    //    float distance = Vector3.Distance(start, end);
+    //    Vector3 direction = (end - start).normalized;
+    //    Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
 
-        float distance = Vector3.Distance(start, end);
-        Vector3 directForward = (end - start).normalized;
+    //    // First control point - closer to start
+    //    Vector3 control1 = start
+    //        + direction * (distance * 0.3f)    // Move forward (30% of distance)
+    //        + perpendicular * (distance * 0.5f) // Side deviation
+    //        + Vector3.up * (distance * 0.8f);  // Height deviation
 
-        // 1) Rotate the forward direction by sideAngleDegrees around Y-axis
-        //    Positive angle means "turn right," negative angle means "turn left."
-        Vector3 angledForward = Quaternion.Euler(0f, sideAngleDegrees, 0f) * directForward;
+    //    // Second control point - closer to end
+    //    Vector3 control2 = end
+    //        - direction * (distance * 0.3f)    // Move backward (mirrored to control1)
+    //        - perpendicular * (distance * 0.5f) // Side deviation (mirrored to control1)
+    //        + Vector3.up * (distance * 0.8f);  // Height deviation (same as control1)
 
-        // 2) Compute a perpendicular direction to angledForward for big side arcs
-        Vector3 sideDir = Vector3.Cross(angledForward, Vector3.up).normalized;
+    //    // Add all points in order
+    //    controlPoints.Add(start);   // P0
+    //    controlPoints.Add(control1); // P1
+    //    controlPoints.Add(control2); // P2
+    //    controlPoints.Add(end);     // P3
 
-        // 3) Define two control points
-        //    - control1 near the start, offset by angledForward + side/vertical
-        //    - control2 near the end, offset in the opposite side direction
-        Vector3 control1 = start
-            + angledForward * (distance * forwardFactorStart)
-            + sideDir * (distance * sideFactor)
-            + Vector3.up * (distance * upFactor);
-
-        Vector3 control2 = end
-            - angledForward * (distance * forwardFactorEnd)
-            - sideDir * (distance * sideFactor)
-            + Vector3.up * (distance * upFactor);
-
-        // 4) Animate from t=0 to t=1 over 'duration'
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            float t = elapsed / duration;
-            float omt = 1f - t;
-
-            // Standard Cubic Bezier formula:
-            // B(t) = (1 - t)^3 * start
-            //      + 3(1 - t)^2 t * control1
-            //      + 3(1 - t) t^2 * control2
-            //      + t^3 * end
-            Vector3 pos =
-                (omt * omt * omt) * start +
-                3f * (omt * omt) * t * control1 +
-                3f * omt * (t * t) * control2 +
-                (t * t * t) * end;
-
-            trailInstance.transform.position = pos;
-
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        // Snap to the final position
-        trailInstance.transform.position = end;
-    }
-
-    
+    //    return controlPoints;
+    //}
 
     private IEnumerator SpawnVFX()
     {

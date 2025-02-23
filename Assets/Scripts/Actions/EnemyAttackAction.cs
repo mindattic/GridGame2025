@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
-    public class EnemyAttackAction : TurnAction
+    public class EnemyAttackAction : PhaseAction
     {
         private TurnManager turnManager => GameManager.instance.turnManager;
         private IQueryable<ActorInstance> enemies => GameManager.instance.enemies;

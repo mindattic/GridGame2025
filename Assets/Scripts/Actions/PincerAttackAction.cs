@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PincerAttackAction : TurnAction
+public class PincerAttackAction : PhaseAction
 {
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
     protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -108,7 +108,7 @@ public class PincerAttackAction : TurnAction
                 foreach (var attack in pair.attackResults)
                 {
                     //Debug.Log($"Pincer attack! {pair.actor1.name} and {pair.actor2.name} attacking {attack.Opponent.name}");
-                    actionManager.AddAction(new AttackAction(attack));
+                    actionManager.Add(new AttackAction(attack));
                 }
             }
 
@@ -134,9 +134,9 @@ public class PincerAttackAction : TurnAction
             {
                 supportLineManager.Spawn(pair);
                 if (pair.actor1.character == Character.Cleric)
-                    spellManager.CastHeal(pair.actor1, pair.actor2);
+                    spellManager.EnqueueHeal(pair.actor1, pair.actor2);
                 else if (pair.actor2.character == Character.Cleric)
-                    spellManager.CastHeal(pair.actor2, pair.actor1);
+                    spellManager.EnqueueHeal(pair.actor2, pair.actor1);
             }
         }
     }

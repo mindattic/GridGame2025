@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using Assets.Scripts.Models;
-using UnityEngine;
+using Action = Assets.Scripts.Models.PhaseAction;
 
 namespace Assets.Scripts.Models
 {
-    public class EnemyStartAction : TurnAction
+    public class EnemyStartAction : Action
     {
         // Shortcut property to access the TurnManager trailInstance.
         protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -23,7 +22,7 @@ namespace Assets.Scripts.Models
             // (Optional) Log or perform any setup needed at the very start of the enemy turn.
             //Debug.Log("EnemyStartAction executing: preparing enemy movement.");
 
-            actionManager.AddAction(new EnemyMoveAction());
+            actionManager.Add(new EnemyMoveAction());
             turnManager.SetPhase(TurnPhase.Move);
 
             // Yield return null (or any brief wait) to allow the phase change to propagate.

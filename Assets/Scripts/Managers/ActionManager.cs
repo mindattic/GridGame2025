@@ -1,8 +1,7 @@
 using Assets.Scripts.Models;
-using Game.Behaviors;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Action = Assets.Scripts.Models.PhaseAction;
 
 public class ActionManager : MonoBehaviour
 {
@@ -10,29 +9,29 @@ public class ActionManager : MonoBehaviour
     // External properties
     protected TurnManager turnManager => GameManager.instance.turnManager;
 
-    private ActionQueue<TurnAction> pendingActions = new ActionQueue<TurnAction>();
+    //Fields
+    private ActionQueue<Action> pendingActions = new ActionQueue<Action>();
 
-
-    public void AddAction(TurnAction action)
+    public void Add(Action action)
     {
         pendingActions.Add(action);
     }
 
-    public void InsertAction(TurnAction action)
+    public void Insert(Action action)
     {
         pendingActions.Insert(action);
     }
 
-    public void TriggerExecuteActions()
+    public void TriggerExecute()
     {
-        StartCoroutine(ExecuteActions());
+        StartCoroutine(Execute());
     }
 
-    private IEnumerator ExecuteActions()
+    private IEnumerator Execute()
     {
         while (pendingActions.Count > 0)
         {
-            TurnAction action = pendingActions.Dequeue();
+            var action = pendingActions.Remove();
             yield return StartCoroutine(action.Execute());
         }
 

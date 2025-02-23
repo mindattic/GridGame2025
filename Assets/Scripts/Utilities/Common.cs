@@ -385,11 +385,316 @@ public static class Scene
 
 }
 
+public static class AnimationCurveHelper
+{
+    /// <summary>
+    /// A smooth ease-in and ease-out curve for natural acceleration and deceleration.
+    /// </summary>
+    public static AnimationCurve EaseInOut => AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+    /// <summary>
+    /// A linear movement curve, maintaining a constant speed from start to finish.
+    /// </summary>
+    public static AnimationCurve Linear => new AnimationCurve(
+        new Keyframe(0, 0),
+        new Keyframe(1, 1)
+    );
+
+    /// <summary>
+    /// A fast start that slows down toward the end.
+    /// </summary>
+    public static AnimationCurve EaseOut => new AnimationCurve(
+        new Keyframe(0, 0, 0, 2),
+        new Keyframe(1, 1, 0, 0)
+    );
+
+    /// <summary>
+    /// A slow start that speeds up toward the end.
+    /// </summary>
+    public static AnimationCurve EaseIn => new AnimationCurve(
+        new Keyframe(0, 0, 0, 0),
+        new Keyframe(1, 1, 2, 0)
+    );
+
+    /// <summary>
+    /// A bounce effect that overshoots and settles back.
+    /// </summary>
+    public static AnimationCurve Bounce => new AnimationCurve(
+        new Keyframe(0, 0),
+        new Keyframe(0.5f, 1.2f), // Overshoot
+        new Keyframe(0.75f, 0.8f), // Rebound
+        new Keyframe(1, 1)
+    );
+
+    /// <summary>
+    /// A wave motion with one oscillation.
+    /// </summary>
+    public static AnimationCurve SingleWave => new AnimationCurve(
+        new Keyframe(0, 0),
+        new Keyframe(0.25f, 1),
+        new Keyframe(0.5f, 0),
+        new Keyframe(0.75f, -1),
+        new Keyframe(1, 0)
+    );
+
+    /// <summary>
+    /// A wave motion with two oscillations.
+    /// </summary>
+    public static AnimationCurve DoubleWave => new AnimationCurve(
+        new Keyframe(0, 0),
+        new Keyframe(0.2f, 1),
+        new Keyframe(0.4f, 0),
+        new Keyframe(0.6f, -1),
+        new Keyframe(0.8f, 0),
+        new Keyframe(1, 1)
+    );
+
+    /// <summary>
+    /// A sudden jump with a sharp drop, useful for explosive effects.
+    /// </summary>
+    public static AnimationCurve SharpSpike => new AnimationCurve(
+        new Keyframe(0, 0),
+        new Keyframe(0.2f, 1),
+        new Keyframe(0.3f, -0.5f),
+        new Keyframe(0.4f, 0.75f),
+        new Keyframe(0.6f, -0.25f),
+        new Keyframe(1, 1)
+    );
+
+    /// <summary>
+    /// An elastic movement that springs back and forth before settling.
+    /// </summary>
+    public static AnimationCurve Elastic => new AnimationCurve(
+        new Keyframe(0, 0),
+        new Keyframe(0.3f, 1.2f),  // Overshoot
+        new Keyframe(0.5f, -0.8f), // Undershoot
+        new Keyframe(0.7f, 1.1f),  // Rebound
+        new Keyframe(1, 1)
+    );
+
+    /// <summary>
+    /// A steep drop followed by a slow recovery.
+    /// </summary>
+    public static AnimationCurve FallAndRecover => new AnimationCurve(
+        new Keyframe(0, 0),
+        new Keyframe(0.2f, -1.2f),
+        new Keyframe(0.5f, -0.5f),
+        new Keyframe(1, 1)
+    );
+}
+
+public static class BezierCurveHelper
+{
+    /// <summary>
+    /// Generates control points for a gentle S-curve movement.
+    /// Useful for spells that follow an elegant, flowing path.
+    /// </summary>
+    public static List<Vector3> Gentle(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 1f)
+    {
+        List<Vector3> controlPoints = new List<Vector3>();
+        Vector3 start = source.position;
+        Vector3 end = target.position;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 direction = (end - start).normalized;
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
+
+        float sideModifier = Random.Boolean ? 1f : -1f;
+
+        Vector3 control1 = start
+            + direction * (distance * 0.3f * travelModifier)
+            + perpendicular * (distance * 0.3f * sideModifier * waveModifier)
+            + Vector3.up * (distance * 0.2f * waveModifier);
+
+        Vector3 control2 = end
+            - direction * (distance * 0.3f * travelModifier)
+            - perpendicular * (distance * 0.3f * sideModifier * waveModifier)
+            + Vector3.up * (distance * 0.1f * waveModifier);
+
+        controlPoints.Add(start);
+        controlPoints.Add(control1);
+        controlPoints.Add(control2);
+        controlPoints.Add(end);
+
+        return controlPoints;
+    }
+
+    /// <summary>
+    /// Generates control points for an overshooting arc.
+    /// The spell overshoots the target before curving back.
+    /// </summary>
+    public static List<Vector3> Overshooting(ActorInstance source, ActorInstance target, float travelModifier = 1.3f, float waveModifier = 0.8f, bool overshoot = true)
+    {
+        List<Vector3> controlPoints = new List<Vector3>();
+        Vector3 start = source.position;
+        Vector3 end = target.position;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 direction = (end - start).normalized;
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
+
+        float verticalModifier = Random.Boolean ? 1f : -1f;
+
+        Vector3 control1 = start
+            + direction * (distance * 0.5f * travelModifier)
+            + perpendicular * (distance * 0.3f * waveModifier)
+            + Vector3.up * (distance * 0.7f * verticalModifier * waveModifier);
+
+        Vector3 control2 = end
+            + direction * (distance * 0.3f * travelModifier)
+            - perpendicular * (distance * 0.3f * waveModifier)
+            + Vector3.up * (distance * 0.5f * verticalModifier * waveModifier);
+
+        if (overshoot)
+        {
+            control2 += direction * (distance * 0.2f);
+        }
+
+        controlPoints.Add(start);
+        controlPoints.Add(control1);
+        controlPoints.Add(control2);
+        controlPoints.Add(end);
+
+        return controlPoints;
+    }
+
+    /// <summary>
+    /// Generates control points for a lobbed arc.
+    /// Similar to how a grenade or fireball might travel.
+    /// </summary>
+    public static List<Vector3> LobbedArc(ActorInstance source, ActorInstance target, float travelModifier = 0.8f, float waveModifier = 1.5f)
+    {
+        List<Vector3> controlPoints = new List<Vector3>();
+        Vector3 start = source.position;
+        Vector3 end = target.position;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 direction = (end - start).normalized;
+
+        Vector3 control1 = start
+            + direction * (distance * 0.5f * travelModifier)
+            + Vector3.up * (distance * 1.5f * waveModifier);
+
+        Vector3 control2 = end
+            - direction * (distance * 0.2f * travelModifier)
+            + Vector3.up * (distance * 0.5f * waveModifier);
+
+        controlPoints.Add(start);
+        controlPoints.Add(control1);
+        controlPoints.Add(control2);
+        controlPoints.Add(end);
+
+        return controlPoints;
+    }
+
+    /// <summary>
+    /// Generates control points for a reverse boomerang arc.
+    /// The spell overshoots the target and curves back dramatically.
+    /// </summary>
+    public static List<Vector3> ReverseBoomerang(ActorInstance source, ActorInstance target, float travelModifier = 1.2f, float waveModifier = 0.8f)
+    {
+        List<Vector3> controlPoints = new List<Vector3>();
+        Vector3 start = source.position;
+        Vector3 end = target.position;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 direction = (end - start).normalized;
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
+
+        float verticalModifier = Random.Boolean ? 1f : -1f;
+
+        Vector3 control1 = start
+            + direction * (distance * 0.5f * travelModifier)
+            + perpendicular * (distance * 0.3f * waveModifier)
+            + Vector3.up * (distance * 1.0f * verticalModifier * waveModifier);
+
+        Vector3 control2 = end
+            + direction * (distance * 0.3f * travelModifier)
+            - perpendicular * (distance * 0.3f * waveModifier)
+            + Vector3.up * (distance * 0.5f * verticalModifier * waveModifier);
+
+        controlPoints.Add(start);
+        controlPoints.Add(control1);
+        controlPoints.Add(control2);
+        controlPoints.Add(end);
+
+        return controlPoints;
+    }
+
+    /// <summary>
+    /// Generates control points for a homing spiral effect.
+    /// The spell moves in a corkscrew pattern toward the target.
+    /// </summary>
+    public static List<Vector3> HomingSpiral(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 2f)
+    {
+        List<Vector3> controlPoints = new List<Vector3>();
+        Vector3 start = source.position;
+        Vector3 end = target.position;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 direction = (end - start).normalized;
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
+
+        Vector3 control1 = start
+            + direction * (distance * 0.3f * travelModifier)
+            + perpendicular * (distance * 0.5f * waveModifier)
+            + Vector3.up * (distance * 0.5f * waveModifier);
+
+        Vector3 control2 = start
+            + direction * (distance * 0.6f * travelModifier)
+            - perpendicular * (distance * 0.5f * waveModifier)
+            + Vector3.up * (distance * 1.0f * waveModifier);
+
+        controlPoints.Add(start);
+        controlPoints.Add(control1);
+        controlPoints.Add(control2);
+        controlPoints.Add(end);
+
+        return controlPoints;
+    }
+
+    /// <summary>
+    /// Generates control points for a zig-zag dash.
+    /// The spell moves erratically toward the target.
+    /// </summary>
+    public static List<Vector3> ZigZagDash(ActorInstance source, ActorInstance target, float travelModifier = 1.1f, float waveModifier = 1.2f)
+    {
+        List<Vector3> controlPoints = new List<Vector3>();
+        Vector3 start = source.position;
+        Vector3 end = target.position;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 direction = (end - start).normalized;
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
+
+        Vector3 control1 = start
+            + direction * (distance * 0.25f * travelModifier)
+            + perpendicular * (distance * 0.4f * waveModifier);
+
+        Vector3 control2 = start
+            + direction * (distance * 0.5f * travelModifier)
+            - perpendicular * (distance * 0.4f * waveModifier);
+
+        Vector3 control3 = start
+            + direction * (distance * 0.75f * travelModifier)
+            + perpendicular * (distance * 0.3f * waveModifier);
+
+        controlPoints.Add(start);
+        controlPoints.Add(control1);
+        controlPoints.Add(control2);
+        controlPoints.Add(control3);
+        controlPoints.Add(end);
+
+        return controlPoints;
+    }
+}
+
+
 public static class FolderHelper
 {
     public static class Folders
     {
-        //persistentDataPath == C:\Users\<YourUsername>\AppData\LocalLow\<CompanyName>\<ProductName>\
+        //Windows: persistentDataPath == C:\Users\<YourUsername>\AppData\LocalLow\<CompanyName>\<ProductName>\
 
         public static string Profiles;
 

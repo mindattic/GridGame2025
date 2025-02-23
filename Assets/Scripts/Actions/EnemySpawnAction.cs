@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
-    public class EnemySpawnAction : TurnAction
+    public class EnemySpawnAction : PhaseAction
     {
         protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
 

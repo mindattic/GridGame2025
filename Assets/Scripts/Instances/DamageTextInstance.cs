@@ -68,7 +68,7 @@ public class DamageTextInstance : MonoBehaviour
             //Calculate the normalized time (0 to 1) based on the duration
             float normalizedTime = (timer % duration) / duration;
 
-            //Use the curve to determine the horizontal boardPosition
+            //Use the travelCurve to determine the horizontal boardPosition
             float curveValue = riseCurve.Evaluate(normalizedTime) * tileSize / 8;
 
             var x = initialPosition.x + curveValue;

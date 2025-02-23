@@ -58,7 +58,7 @@ public class SwingingWindow : MonoBehaviour
                 float acceleration = Mathf.Lerp(minAcceleration, maxAcceleration, windStrength) * accelerationFactor;
                 currentVelocity = Mathf.Lerp(currentVelocity, acceleration, Time.deltaTime * 3f);
 
-                // Enqueue wiggle effect to simulate air currents while moving
+                // Add wiggle effect to simulate air currents while moving
                 float wiggle = Mathf.Sin(time * wiggleFrequency) * wiggleIntensity;
                 float adjustedTarget = Mathf.Clamp(targetYRotation + wiggle, minAngle, maxAngle);
 

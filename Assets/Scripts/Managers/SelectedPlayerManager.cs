@@ -1,7 +1,5 @@
-using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -29,7 +27,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
     private void Start()
     {
- 
+
     }
 
     public void Select()
@@ -119,7 +117,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
         //Now that the player has dropped their unit,
         //add the PlayerAttackAction and trigger the execution of pending turn actions.
-        actionManager.AddAction(new PincerAttackAction());
+        actionManager.Add(new PincerAttackAction());
         turnManager.SetPhase(TurnPhase.Attack);
     }
 }

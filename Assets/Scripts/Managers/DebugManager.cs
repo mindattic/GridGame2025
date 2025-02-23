@@ -32,6 +32,7 @@ public class DebugManager : MonoBehaviour
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
+    protected SpellManager spellManager => GameManager.instance.spellManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
 
     //Internal properties
@@ -559,25 +560,8 @@ public class DebugManager : MonoBehaviour
     {
         var source = paladin;
         var target = enemies.FirstOrDefault();
-        var spell = new SpellSettings()
-        {
-            friendlyName = "Fireball",
-            source = source,
-            target = enemies.FirstOrDefault(),
-            path = SpellPath.BezierCurve,
-            //path = SpellPath.AnimationCurve,
-            //curve = new AnimationCurve(
-            //    new Keyframe(0f, 0f),  // Start (fast acceleration)
-            //    new Keyframe(0.5f, 1.4f), // Overshoot past 1.0
-            //    new Keyframe(1f, 1f)   // Settle back at 1.0
-            //),
-            trailKey = "Fireball",
-            vfxKey = "PuffyExplosion",
-            trigger = new Trigger(coroutine: target.FireDamage(10), isAsync: false)
-        };
-        var action = new CastSpellAction(spell);
-        actionManager.AddAction(action);
-        actionManager.TriggerExecuteActions();
+        spellManager.EnqueueFireball(source, target);
+        actionManager.TriggerExecute();
     }
 
     public void HealTest()
@@ -585,20 +569,7 @@ public class DebugManager : MonoBehaviour
         var source = paladin;
         var target = barbarian;
 
-        var spell = new SpellSettings()
-        {
-            friendlyName = "Heal",
-            source = source,
-            target = target,
-            path = SpellPath.AnimationCurve,
-            curve = AnimationCurve.EaseInOut(0, 0, 1, 1),
-            trailKey = "GreenSparkle",
-            vfxKey = "BuffLife",
-            trigger = new Trigger(coroutine: target.Heal(10), isAsync: false)
-        };
-        var action = new CastSpellAction(spell);
-        actionManager.AddAction(action);
-        actionManager.TriggerExecuteActions();
-
+        spellManager.EnqueueHeal(source, target);
+        actionManager.TriggerExecute();
     }
 }

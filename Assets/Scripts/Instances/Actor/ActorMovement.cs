@@ -1,12 +1,9 @@
 ﻿using Assets.Scripts.Behaviors.Actor;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace Assets.Scripts.Instances.Actor
 {

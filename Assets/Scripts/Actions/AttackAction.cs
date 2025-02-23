@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Action = Assets.Scripts.Models.PhaseAction;
 
 namespace Assets.Scripts.Models
 {
-    public class AttackAction : TurnAction
+    public class AttackAction : PhaseAction
     {
         private AttackResult attackResult;
 

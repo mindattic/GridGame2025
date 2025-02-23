@@ -38,7 +38,7 @@ public class SwingingLogo : MonoBehaviour
     //    float initialRotation = 0f;
     //    float variation = Random.Float(variationMin, variationMax) * (Random.Float(0f, 1f) < 0.5f ? -1f : 1f);
     //    initialRotation = Mathf.Clamp(initialRotation + variation, minAngle, maxAngle);
-    //    targetRotations.Enqueue(initialRotation);
+    //    targetRotations.Add(initialRotation);
     //}
 
     //private IEnumerator SwingWindow()
@@ -48,7 +48,7 @@ public class SwingingLogo : MonoBehaviour
     //        if (targetRotations.Count == 0)
     //            GenerateRotationBuffer();
 
-    //        float targetYRotation = targetRotations.Dequeue();
+    //        float targetYRotation = targetRotations.Remove();
 
     //        while (Mathf.Abs(currentYRotation - targetYRotation) > snapThreshold)
     //        {
@@ -58,7 +58,7 @@ public class SwingingLogo : MonoBehaviour
     //            float acceleration = Mathf.Lerp(minAcceleration, maxAcceleration, windStrength) * accelerationFactor;
     //            currentVelocity = Mathf.Lerp(currentVelocity, acceleration, Time.deltaTime * 3f);
 
-    //            // Enqueue wiggle effect to simulate air currents while moving
+    //            // Add wiggle effect to simulate air currents while moving
     //            float wiggle = Mathf.Sin(time * wiggleFrequency) * wiggleIntensity;
     //            float adjustedTarget = Mathf.Clamp(targetYRotation + wiggle, minAngle, maxAngle);
 

@@ -229,9 +229,5 @@ public enum DottedLineSegment
 public enum SpellPath
 {
     AnimationCurve,
-    Elastic,
-    BezierCurve,
-    CubicBezierCurve,
-    Instant,
-    Ricochet
+    BezierCurve
 }

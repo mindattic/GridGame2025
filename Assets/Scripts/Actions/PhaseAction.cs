@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Models
 {
-    public abstract class TurnAction
+    public abstract class PhaseAction
     {
         // StartCoroutine returns an IEnumerator so that it can yield for asynchronous operations.
         public abstract IEnumerator Execute();

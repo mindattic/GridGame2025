@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Assets.Scripts.Actions
 {
-    public class CastSpellAction : TurnAction
+    public class CastSpellAction : PhaseAction
     {
         protected SpellManager spellManager => GameManager.instance.spellManager;
         private SpellSettings spell;
