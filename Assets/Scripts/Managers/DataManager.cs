@@ -9,18 +9,6 @@ public class DataManager : MonoBehaviour
 {
     protected LogManager logManager => GameManager.instance.logManager;
 
-    public static class Resource
-    {
-        public static string Actors = "Actors";
-        public static string Stages = "Stages";
-        public static string TrailEffects = "TrailEffects";
-        public static string VisualEffects = "VisualEffects";
-    }
-
-    //public List<ActorData> Actors = new List<ActorData>();
-    //public List<StageData> Stages = new List<StageData>();
-    //public List<TrailData> TrailEffects = new List<TrailData>();
-
     public readonly Dictionary<string, ActorData> Actors = new Dictionary<string, ActorData>
     {
         { "Barbarian", new ActorData
@@ -177,8 +165,6 @@ public class DataManager : MonoBehaviour
         }
     };
 
-
-
     public readonly Dictionary<string, StageData> Stages = new Dictionary<string, StageData>
     {
         { "Stage 1", new StageData
@@ -285,20 +271,140 @@ public class DataManager : MonoBehaviour
         }
     };
 
-
-    public readonly Dictionary<string, TrailData> TrailEffects = new Dictionary<string, TrailData>
+    public readonly Dictionary<string, TrailResource> TrailEffects = new Dictionary<string, TrailResource>
     {
-        { "BlueGlow", new TrailData { Name = "BlueGlow", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.1, 0.1, 0.1)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "Bubble", new TrailData { Name = "Bubble", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.1, 0.1, 0.1)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "Feather", new TrailData { Name = "Feather", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.1, 0.1, 0.1)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "Fireball", new TrailData { Name = "Fireball", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.5, 0.5, 0.5)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "Flame", new TrailData { Name = "Flame", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.08, 0.08, 0.08)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "GoldSparkle", new TrailData { Name = "GoldSparkle", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(2.5, 2.5, 2.5)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "GreenSparkle", new TrailData { Name = "GreenSparkle", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(2.5, 2.5, 2.5)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "IceSparkle", new TrailData { Name = "IceSparkle", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.1, 0.1, 0.1)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "PinkDust", new TrailData { Name = "PinkDust", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.1, 0.1, 0.1)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "RosePetal", new TrailData { Name = "RosePetal", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.1, 0.1, 0.1)", Delay = 0f, Duration = 2f, IsLoop = true } },
-        { "StarSparkle", new TrailData { Name = "StarSparkle", RelativeOffset = "(0, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.1, 0.1, 0.1)", Delay = 0f, Duration = 2f, IsLoop = true } }
+        { "BlueGlow", new TrailResource
+            {
+                Name = "BlueGlow",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "Bubble", new TrailResource
+            {
+                Name = "Bubble",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "Feather", new TrailResource
+            {
+                Name = "Feather",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "Fireball", new TrailResource
+            {
+                Name = "Fireball",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.5f, 0.5f, 0.5f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "Flame", new TrailResource
+            {
+                Name = "Flame",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "GoldSparkle", new TrailResource
+            {
+                Name = "GoldSparkle",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "GreenSparkle", new TrailResource
+            {
+                Name = "GreenSparkle",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "IceSparkle", new TrailResource
+            {
+                Name = "IceSparkle",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "PinkDust", new TrailResource
+            {
+                Name = "PinkDust",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "RosePetal", new TrailResource
+            {
+                Name = "RosePetal",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        },
+        { "StarSparkle", new TrailResource
+            {
+                Name = "StarSparkle",
+                Prefab = null,
+                RelativeOffset = new Vector3(0, 0, 0),
+                AngularRotation = new Vector3(0, 0, 0),
+                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                Delay = 0f,
+                Duration = 2f,
+                IsLoop = true
+            }
+        }
     };
 
     public readonly Dictionary<string, Tutorial> Tutorials = new Dictionary<string, Tutorial>
@@ -349,7 +455,6 @@ public class DataManager : MonoBehaviour
         { "ToxicCloud", new VFXData { Name = "ToxicCloud", RelativeOffset = "(-0.02, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.15, 0.15, 0.15)", Delay = 0f, Duration = 2f, IsLoop = false } },
         { "YellowHit", new VFXData { Name = "YellowHit", RelativeOffset = "(-0.02, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.2, 0.2, 0)", Delay = 0f, Duration = 2f, IsLoop = false } }
     };
-
 
     //public List<T> ParseJson<T>(string resource)
     //{
@@ -413,13 +518,13 @@ public class DataManager : MonoBehaviour
 
         return new StageData(data); //Return a new copy instead of a shared reference
     }
-    public TrailData GetTrailEffect(string name)
+    public TrailResource GetTrailEffect(string name)
     {
         var data = TrailEffects[name];
         if (data == null)
             logManager.Error($"Unable to retrieve trailInstance effect for `{name}`");
 
-        return new TrailData(data); //Return a new copy instead of a shared reference
+        return new TrailResource(data); //Return a new copy instead of a shared reference
     }
 
     public VFXData GetVisualEffect(string name)

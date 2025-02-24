@@ -489,7 +489,7 @@ public static class BezierCurveHelper
     /// Generates control points for a gentle S-curve movement.
     /// Ensures the perpendicular wave follows the travel direction properly.
     /// </summary>
-    public static List<Vector3> Gentle(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 1f)
+    public static List<Vector3> Gentle(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 1.2f)
     {
         List<Vector3> controlPoints = new List<Vector3>();
         Vector3 start = source.position;
@@ -506,12 +506,12 @@ public static class BezierCurveHelper
         Vector3 control1 = start
             + direction * (distance * 0.3f * travelModifier)  // Move forward
             + perpendicular * (distance * 0.3f * sideModifier1 * waveModifier) // First curve direction
-            + Vector3.up * (distance * 0.2f * waveModifier); // Add some height
+            + Vector3.up * (distance * 0.2f * sideModifier1 * waveModifier); // **Now alternates up/down**
 
         Vector3 control2 = end
             - direction * (distance * 0.3f * travelModifier)  // Move slightly backward
             + perpendicular * (distance * 0.3f * sideModifier2 * waveModifier) // Reverse the curve direction
-            + Vector3.up * (distance * 0.1f * waveModifier); // Slightly different vertical height
+            + Vector3.up * (distance * 0.1f * sideModifier2 * waveModifier); // **Now alternates up/down**
 
         controlPoints.Add(start);
         controlPoints.Add(control1);
@@ -520,6 +520,7 @@ public static class BezierCurveHelper
 
         return controlPoints;
     }
+
 
     /// <summary>
     /// Generates control points for an overshooting arc.

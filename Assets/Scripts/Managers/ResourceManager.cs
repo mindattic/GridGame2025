@@ -338,19 +338,19 @@ public class ResourceManager : MonoBehaviour
                     continue;
                 }
 
-                var trailData = new TrailResource()
+                var resource = new TrailResource()
                 {
                     Name = key,
                     Prefab = prefab,
-                    RelativeOffset = ConvertString.ToVector3(data.RelativeOffset),
-                    AngularRotation = ConvertString.ToVector3(data.AngularRotation),
-                    RelativeScale = ConvertString.ToVector3(data.RelativeScale),
+                    RelativeOffset = data.RelativeOffset,
+                    AngularRotation =data.AngularRotation,
+                    RelativeScale = data.RelativeScale,
                     Delay = data.Delay,
                     Duration = data.Duration,
                     IsLoop = data.IsLoop,
                 };
 
-                entries.Add(key, trailData);
+                entries.Add(key, resource);
             }
         }
         catch (Exception ex)

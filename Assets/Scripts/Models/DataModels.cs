@@ -59,30 +59,7 @@ namespace Assets.Scripts.Models
         public bool IsLoop;
     }
 
-    [Serializable]
-    public class TrailData
-    {
-        public TrailData() { }
-
-        public TrailData(TrailData other)
-        {
-            Name = other.Name;
-            RelativeOffset = other.RelativeOffset;
-            AngularRotation = other.AngularRotation;
-            RelativeScale = other.RelativeScale;
-            Delay = other.Delay;
-            Duration = other.Duration;
-            IsLoop = other.IsLoop;
-        }
-
-        public string Name;
-        public string RelativeOffset;
-        public string AngularRotation;
-        public string RelativeScale;
-        public float Delay;
-        public float Duration;
-        public bool IsLoop;
-    }
+   
 
     [Serializable]
     public enum StageCompletionCondition
