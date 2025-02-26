@@ -17,7 +17,7 @@ namespace Assets.Scripts.Models
 
         public override IEnumerator Execute()
         {
-            if (!turnManager.isEnemyTurn || turnManager.currentTurnPhase != TurnPhase.Attack) yield break;
+            if (!turnManager.isEnemyTurn || turnManager.currentPhase != TurnPhase.Attack) yield break;
 
             var readyEnemies = enemies.ToList().Where(x => x.isPlaying && x.hasMaxAP).ToList();
             if (readyEnemies.Count < 1) yield break;

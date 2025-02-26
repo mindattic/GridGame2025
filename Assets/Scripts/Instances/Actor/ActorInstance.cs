@@ -117,8 +117,8 @@ public class ActorInstance : MonoBehaviour
     }
 
     //System.Action event handlers
-    public System.Action<ActorInstance> OnOverlapDetected;
-    public System.Action OnDeathDetected;
+    public System.Action<ActorInstance> onOverlapDetected;
+    public System.Action onActorDeath;
     public System.Action OnSortingOrderChanged;
 
     //Fields
@@ -202,17 +202,15 @@ public class ActorInstance : MonoBehaviour
         wiggleAmplitude = 15f;  //Amplitude (difference from -45 degrees)
 
         //Events
-        OnOverlapDetected += (actor) => move.HandleOnOverlapDetected(actor);
-        OnDeathDetected += stageManager.HandleCheckStageCompletion;
-        OnDeathDetected += stageManager.HandleCheckGameOver;
+        onOverlapDetected += (actor) => move.OnOverlapDetected(actor);
+        onActorDeath += stageManager.OnActorDeath;
 
     }
 
     private void OnDestroy()
     {
-        OnOverlapDetected -= move.HandleOnOverlapDetected;
-        OnDeathDetected -= stageManager.HandleCheckStageCompletion;
-        OnDeathDetected -= stageManager.HandleCheckGameOver;
+        onOverlapDetected -= move.OnOverlapDetected;
+        onActorDeath -= stageManager.OnActorDeath;
     }
 
     public void Spawn(Vector2Int startLocation)
@@ -442,7 +440,7 @@ public class ActorInstance : MonoBehaviour
         location = board.NowhereLocation;
         position = board.NowherePosition;
         gameObject.SetActive(false);
-        OnDeathDetected.Invoke();
+        onActorDeath.Invoke();
     }
 
     private void TriggerSpawnCoins(int amount)

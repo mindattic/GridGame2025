@@ -44,7 +44,7 @@ namespace Game.Behaviors
         {
             //string fps = $@"{fpsMonitor.currentFps}";
             //string turn = turnManager.isPlayerTurn ? "Player" : "Opponent";
-            //string phase = turnManager.currentTurnPhase.ToString();
+            //string phase = turnManager.currentPhase.ToString();
 
             //textMesh.text = ""
             //   + $"{fps} FPS" + Environment.NewLine 
@@ -63,7 +63,7 @@ namespace Game.Behaviors
             //string supports = battle.supporters.Any() ? $"[{string.Join(",", battle.supporters.Load(x => x.character))}]" : "-";
             //string defenders = battle.defenders.Any() ? $"[{string.Join(",", battle.defenders.Load(x => x.character))}]" : "-";
             //string currentTeam = turnManager != null ? turnManager.currentTeam.ToString() : "-";
-            //string currentTurnPhase = turnManager != null ? turnManager.currentTurnPhase.ToString() : "-";
+            //string currentPhase = turnManager != null ? turnManager.currentPhase.ToString() : "-";
 
 
             //string a0 = actors[0] != null ? $"{actors[0].name}: {actors[0].HP}{Environment.NewLine}": $"{Environment.NewLine}";

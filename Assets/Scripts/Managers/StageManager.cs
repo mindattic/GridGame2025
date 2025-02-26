@@ -159,7 +159,14 @@ public class StageManager : MonoBehaviour
     }
 
 
-    public void HandleCheckStageCompletion()
+
+    public void OnActorDeath()
+    {
+        CheckGameOver();
+        CheckStageCompletion();
+    }
+
+    private void CheckStageCompletion()
     {
         bool allEnemiesDead = enemies.All(x => x.hasSpawned && x.isDead);
         if (!allEnemiesDead)
@@ -176,7 +183,7 @@ public class StageManager : MonoBehaviour
         StartCoroutine(fade.FadeOut(loadNextStage()));
     }
 
-    public void HandleCheckGameOver()
+    private void CheckGameOver()
     {
         bool allPlayersDead = players.All(x => x.hasSpawned && x.isDead);
         if (!allPlayersDead)

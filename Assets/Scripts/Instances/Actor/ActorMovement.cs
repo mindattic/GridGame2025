@@ -196,7 +196,7 @@ namespace Assets.Scripts.Instances.Actor
                     //If the overlapping actor is not already swapping, trigger its overlap event.
                     if (!overlappingActor.flags.IsSwapping)
                     {
-                        overlappingActor.OnOverlapDetected.Invoke(instance);
+                        overlappingActor.onOverlapDetected.Invoke(instance);
                     }
                     //Do not update location until the swap resolves.
                     return;
@@ -212,7 +212,7 @@ namespace Assets.Scripts.Instances.Actor
         ///Called when an overlap with another actor is detected.
         ///Initiates a swap movement if not already in progress.
         ///</summary>
-        public void HandleOnOverlapDetected(ActorInstance other)
+        public void OnOverlapDetected(ActorInstance other)
         {
             //If already swapping, ignore additional overlap events.
             if (flags.IsSwapping)

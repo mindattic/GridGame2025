@@ -24,16 +24,16 @@ public class LogWindow : EditorWindow
     private void OnEnable()
     {
         //Subscribe to Unity log messages
-        Application.logMessageReceived += HandleLog;
+        Application.logMessageReceived += OnLogMessageReceived;
     }
 
     private void OnDisable()
     {
         //Unsubscribe from Unity log messages
-        Application.logMessageReceived -= HandleLog;
+        Application.logMessageReceived -= OnLogMessageReceived;
     }
 
-    private void HandleLog(string logString, string stackTrace, LogType type)
+    private void OnLogMessageReceived(string logString, string stackTrace, LogType type)
     {
         //Filter log messages based on the checkboxes
         if (ShouldShowLog(type))

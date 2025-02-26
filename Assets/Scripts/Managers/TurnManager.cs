@@ -22,77 +22,83 @@ public class TurnManager : MonoBehaviour
 
     public bool isPlayerTurn => currentTeam.Equals(Team.Player);
     public bool isEnemyTurn => currentTeam.Equals(Team.Enemy);
-    public bool isStartPhase => currentTurnPhase.Equals(TurnPhase.Start);
-    public bool isMovePhase => currentTurnPhase.Equals(TurnPhase.Move);
-    public bool isPreAttackPhase => currentTurnPhase.Equals(TurnPhase.PreAttack);
-    public bool isAttackPhase => currentTurnPhase.Equals(TurnPhase.Attack);
-    public bool isPostAttackPhase => currentTurnPhase.Equals(TurnPhase.PostAttack);
-    public bool isEndPhase => currentTurnPhase.Equals(TurnPhase.End);
-    public bool isFirstTurn => currentTurn == 1;
+    public bool isStartPhase => currentPhase.Equals(TurnPhase.Start);
+    public bool isMovePhase => currentPhase.Equals(TurnPhase.Move);
+    public bool isPreAttackPhase => currentPhase.Equals(TurnPhase.PreAttack);
+    public bool isAttackPhase => currentPhase.Equals(TurnPhase.Attack);
+    public bool isPostAttackPhase => currentPhase.Equals(TurnPhase.PostAttack);
+    public bool isEndPhase => currentPhase.Equals(TurnPhase.End);
+    public bool isFirstTurn => currentTurn == 0;
 
     //System.Action event handlers
-    public event System.Action<TurnPhase> OnTurnPhaseChanged;
+    public event System.Action<TurnPhase> onTurnPhaseChanged;
 
     //Fields
-    public int currentTurn = 1;
+    public int currentTurn = 0;
     public Team currentTeam = Team.Player;
-    public TurnPhase currentTurnPhase = TurnPhase.Start;
+    public TurnPhase currentPhase = TurnPhase.Start;
 
     public void SetPhase(TurnPhase turnPhase)
     {
-        currentTurnPhase = turnPhase;
-        OnTurnPhaseChanged?.Invoke(currentTurnPhase);
+        currentPhase = turnPhase;
+        onTurnPhaseChanged?.Invoke(currentPhase);
     }
 
-    void Start()
+
+  
+    void Awake()
     {
-        // Subscribe to the TurnManager's OnTurnPhaseChanged event.
-        OnTurnPhaseChanged += (TurnPhase turnPhase) =>
-        {
-            currentTurnPhase = turnPhase;
-
-            if (isPlayerTurn)
-            {
-                switch (currentTurnPhase)
-                {
-                    case TurnPhase.Start:
-                        // For player turns, pause in the Move phase.
-                        currentTurn++;
-                        timerBar.Refill();
-                        playerManager.TriggerGlow();
-                        break;
-                    case TurnPhase.Attack:
-                        actionManager.TriggerExecute();
-                        break;
-                }
-            }
-            else if (isEnemyTurn)
-            {
-                switch (currentTurnPhase)
-                {
-                    case TurnPhase.Start:
-                        // For enemy turns, automatically add phase actions and run Execute().
-                        timerBar.Lock();
-                        actionManager.Add(new EnemySpawnAction());
-
-                        bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
-                        if (!anyReadyEnemies)
-                        {
-                            actionManager.TriggerExecute();
-                            break;
-                        }
-
-                        actionManager.Add(new EnemyStartAction());
-                        actionManager.TriggerExecute();
-                        break;
-                }
-            }
-        };
+        onTurnPhaseChanged += (TurnPhase turnPhase) => OnTurnPhaseChanged(turnPhase);
     }
+
+
+    private void OnTurnPhaseChanged(TurnPhase turnPhase)
+    {
+        currentPhase = turnPhase;
+
+        if (isPlayerTurn)
+        {
+            switch (currentPhase)
+            {
+                case TurnPhase.Start:
+                    // For player turns, pause in the Move phase.
+                    currentTurn++;
+                    timerBar.Refill();
+                    playerManager.TriggerGlow();
+                    break;
+                case TurnPhase.Attack:
+                    actionManager.TriggerExecute();
+                    break;
+            }
+        }
+        else if (isEnemyTurn)
+        {
+            switch (currentPhase)
+            {
+                case TurnPhase.Start:
+                    // For enemy turns, automatically add phase actions and run Execute().
+                    timerBar.Lock();
+                    actionManager.Add(new EnemySpawnAction());
+
+                    bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
+                    if (!anyReadyEnemies)
+                    {
+                        actionManager.TriggerExecute();
+                        break;
+                    }
+
+                    actionManager.Add(new EnemyStartAction());
+                    actionManager.TriggerExecute();
+                    break;
+            }
+        }
+    }
+
+
 
     public void Initialize()
     {
-        currentTurn = 1;
+        currentTurn = 0;
         currentTeam = Team.Player;
         playerManager.TriggerGlow();
         SetPhase(TurnPhase.Start);
