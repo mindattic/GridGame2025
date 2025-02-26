@@ -204,12 +204,15 @@ public class ActorInstance : MonoBehaviour
         //Events
         OnOverlapDetected += (actor) => move.HandleOnOverlapDetected(actor);
         OnDeathDetected += stageManager.HandleCheckStageCompletion;
+        OnDeathDetected += stageManager.HandleCheckGameOver;
+
     }
 
     private void OnDestroy()
     {
         OnOverlapDetected -= move.HandleOnOverlapDetected;
         OnDeathDetected -= stageManager.HandleCheckStageCompletion;
+        OnDeathDetected -= stageManager.HandleCheckGameOver;
     }
 
     public void Spawn(Vector2Int startLocation)

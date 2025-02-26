@@ -165,7 +165,7 @@ public class StageManager : MonoBehaviour
         if (!allEnemiesDead)
             return;
 
-        IEnumerator loadStage()
+        IEnumerator loadNextStage()
         {
             var stageName = currentStage.NextStage;
             currentStage = dataManager.GetStage(stageName);
@@ -173,7 +173,7 @@ public class StageManager : MonoBehaviour
             yield return null;
         }
 
-        StartCoroutine(fade.FadeOut(loadStage()));
+        StartCoroutine(fade.FadeOut(loadNextStage()));
     }
 
     public void HandleCheckGameOver()
