@@ -187,11 +187,11 @@ public class DebugManager : MonoBehaviour
             }
         }
 
-        foreach (var pair in alignedPairs)
+        foreach (var actorPair in alignedPairs)
         {
-            pair.startActor.sortingOrder = SortingOrder.Attacker;
-            pair.endActor.sortingOrder = SortingOrder.Attacker;
-            attackLineManager.Spawn(pair);
+            actorPair.startActor.sortingOrder = SortingOrder.Attacker;
+            actorPair.endActor.sortingOrder = SortingOrder.Attacker;
+            attackLineManager.Spawn(actorPair);
         }
 
         IEnumerator _()

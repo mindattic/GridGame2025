@@ -60,7 +60,7 @@ public class PortraitManager : MonoBehaviour
     }
 
 
-    public IEnumerator Play(ActorPair pair)
+    public IEnumerator Play(ActorPair actorPair)
     {
         sortingOrder = SortingOrder.Max;
 
@@ -68,9 +68,9 @@ public class PortraitManager : MonoBehaviour
 
         audioManager.Play("Portrait");
 
-        var (direction1, direction2) = GetDirection(pair);
-        SlideIn(pair.actor1, direction1);
-        SlideIn(pair.actor2, direction2);
+        var (direction1, direction2) = GetDirection(actorPair);
+        SlideIn(actorPair.actor1, direction1);
+        SlideIn(actorPair.actor2, direction2);
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
 
@@ -78,13 +78,13 @@ public class PortraitManager : MonoBehaviour
     }
 
 
-    private (Direction, Direction) GetDirection(ActorPair pair)
+    private (Direction, Direction) GetDirection(ActorPair actorPair)
     {
-        var first = pair.axis == Axis.Vertical ? Direction.North : Direction.West;
-        var second = pair.axis == Axis.Vertical ? Direction.South : Direction.East;
+        var first = actorPair.axis == Axis.Vertical ? Direction.North : Direction.West;
+        var second = actorPair.axis == Axis.Vertical ? Direction.South : Direction.East;
        
-        return (pair.actor1 == pair.startActor ? first : second,
-                pair.actor2 == pair.startActor ? first : second);
+        return (actorPair.actor1 == actorPair.startActor ? first : second,
+                actorPair.actor2 == actorPair.startActor ? first : second);
     }
 
 

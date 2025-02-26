@@ -64,7 +64,7 @@ public class TrailInstance : MonoBehaviour
         if (trail.Duration != 0f)
             yield return Wait.For(trail.Duration);
 
-        //Despawn VFX
+        //Destroy VFX
         Despawn(name);
     }
 

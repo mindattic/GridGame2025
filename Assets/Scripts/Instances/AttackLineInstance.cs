@@ -42,13 +42,13 @@ namespace Game.Instances
             lineRenderer.endWidth = thickness;
         }
 
-        public void Spawn(ActorPair pair)
+        public void Spawn(ActorPair actorPair)
         {
             parent = board.transform;
             name = $"AttackLine_{Guid.NewGuid():N}";
 
-            startPosition = pair.startActor.position;
-            endPosition = pair.endActor.position;
+            startPosition = actorPair.startActor.position;
+            endPosition = actorPair.endActor.position;
             
             Vector3[] points = { };
             Vector3 ul;
@@ -57,7 +57,7 @@ namespace Game.Instances
             Vector3 ll;
             float offset = tileSize / 2;
 
-            if (pair.axis == Axis.Vertical)
+            if (actorPair.axis == Axis.Vertical)
             {
                 ul = new Vector3(startPosition.x - offset, startPosition.y - offset, 0);
                 ur = new Vector3(startPosition.x + offset, startPosition.y - offset, 0);
@@ -65,7 +65,7 @@ namespace Game.Instances
                 ll = new Vector3(endPosition.x - offset, endPosition.y + offset, 0);
                 points = new Vector3[] { ul, ur, lr, ll, ul };
             }
-            else if (pair.axis == Axis.Horizontal)
+            else if (actorPair.axis == Axis.Horizontal)
             {
 
                 ul = new Vector3(endPosition.x - offset, endPosition.y - offset, 0);

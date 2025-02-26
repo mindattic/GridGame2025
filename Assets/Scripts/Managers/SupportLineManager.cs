@@ -29,12 +29,12 @@ public class SupportLineManager : MonoBehaviour
         instance.Spawn(pair);
     }
 
-    public void Despawn(ActorPair pair)
+    public void Destroy(ActorPair pair)
     {
         var key = GetKey(pair);
         if (supportLines.TryGetValue(key, out var instance))
         {
-            instance.TriggerDespawn();
+            instance.Destroy();
             supportLines.Remove(key);
         }
     }
@@ -43,13 +43,19 @@ public class SupportLineManager : MonoBehaviour
     {
         foreach (var instance in supportLines.Values)
         {
-            Destroy(instance.gameObject);
+            instance.Destroy();
         }
         supportLines.Clear();
     }
 
-    private (Vector2Int, Vector2Int) GetKey(ActorPair pair)
+    private (Vector2Int, Vector2Int) GetKey(ActorPair actorPair)
     {
-        return (pair.actor1.location, pair.actor2.location);
+        var location1 = actorPair.actor1.location;
+        var location2 = actorPair.actor2.location;
+
+        return location1.x < location2.x || (location1.x == location2.x && location1.y < location2.y)
+            ? (location1, location2)
+            : (location2, location1);
     }
+
 }

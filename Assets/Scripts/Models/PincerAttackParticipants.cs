@@ -21,12 +21,12 @@ public class PincerAttackParticipants
     }
 
     //Load all participants in actor x
-    public List<ActorInstance> Get(ActorPair pair)
+    public List<ActorInstance> Get(ActorPair actorPair)
     {
 
-        return new[] { pair.actor1, pair.actor2 }
-            .Concat(pair.opponents)
-            .Concat(pair.allies)
+        return new[] { actorPair.actor1, actorPair.actor2 }
+            .Concat(actorPair.opponents)
+            .Concat(actorPair.allies)
             .Distinct()
             .ToList();
     }
@@ -41,20 +41,20 @@ public class PincerAttackParticipants
         }
     }
 
-    public bool HasAlignedPair(ActorInstance actor1, ActorInstance actor2)
+    public bool IsAlignedPair(ActorInstance actor1, ActorInstance actor2)
     {
-        return alignedPairs.Count > 0 && alignedPairs.Any(x => x.HasPair(actor1, actor2));
+        return alignedPairs.Count > 0 && alignedPairs.Any(x => x.ContainsActorPair(actor1, actor2));
     }
 
 
-    public bool HasAttackingPair(ActorPair pair)
+    public bool HasAttackingPair(ActorPair actorPair)
     {
-        return attackingPairs.Count > 0 && attackingPairs.Any(x => x.HasPair(pair.actor1, pair.actor2));
+        return attackingPairs.Count > 0 && attackingPairs.Any(x => x.ContainsActorPair(actorPair.actor1, actorPair.actor2));
     }
 
-    public bool HasSupportingPair(ActorPair pair)
+    public bool HasSupportingPair(ActorPair actorPair)
     {
-        return supportingPairs.Count > 0 && supportingPairs.Any(x => x.HasPair(pair.actor1, pair.actor2));
+        return supportingPairs.Count > 0 && supportingPairs.Any(x => x.ContainsActorPair(actorPair.actor1, actorPair.actor2));
     }
 
 }

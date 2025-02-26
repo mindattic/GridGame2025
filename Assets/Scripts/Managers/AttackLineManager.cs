@@ -13,23 +13,23 @@ namespace Game.Behaviors
         [SerializeField] public GameObject AttackLinePrefab;
         public Dictionary<(Vector2Int, Vector2Int), AttackLineInstance> attackLines = new Dictionary<(Vector2Int, Vector2Int), AttackLineInstance>();
 
-        public bool Exists(ActorPair pair)
+        public bool Exists(ActorPair actorPair)
         {
-            var key = GetKey(pair);
+            var key = GetKey(actorPair);
             return attackLines.ContainsKey(key);
         }
 
-        public void Spawn(ActorPair pair)
+        public void Spawn(ActorPair actorPair)
         {
-            var key = GetKey(pair);
+            var key = GetKey(actorPair);
 
-            if (Exists(pair))
+            if (Exists(actorPair))
                 return;
 
             var prefab = Instantiate(AttackLinePrefab, Vector2.zero, Quaternion.identity);
             var instance = prefab.GetComponent<AttackLineInstance>();
             attackLines[key] = instance;
-            instance.Spawn(pair);
+            instance.Spawn(actorPair);
         }
 
         public void Despawn(ActorPair pair)
@@ -60,9 +60,9 @@ namespace Game.Behaviors
             attackLines.Clear();
         }
 
-        private (Vector2Int, Vector2Int) GetKey(ActorPair pair)
+        private (Vector2Int, Vector2Int) GetKey(ActorPair actorPair)
         {
-            return (pair.startActor.location, pair.endActor.location);
+            return (actorPair.startActor.location, actorPair.endActor.location);
         }
     }
 }

@@ -49,7 +49,7 @@ public class PincerAttackAction : PhaseAction
         yield break;
     }
 
-    // Returns true if there is at least one valid attacking pair.
+    // Returns true if there is at least one valid attacking actorPair.
     private bool AssignParticipants(IQueryable<ActorInstance> teamMembers)
     {
         AssignAlignedPairs(teamMembers);
@@ -78,7 +78,7 @@ public class PincerAttackAction : PhaseAction
         {
             foreach (var actor2 in teamMembers)
             {
-                if (AreActorsAligned(actor1, actor2) && !participants.HasAlignedPair(actor1, actor2))
+                if (AreActorsAligned(actor1, actor2) && !participants.IsAlignedPair(actor1, actor2))
                 {
                     var pair = CreateAlignedPair(actor1, actor2);
                     participants.alignedPairs.Add(pair);
@@ -107,7 +107,7 @@ public class PincerAttackAction : PhaseAction
             {
                 foreach (var attack in pair.attackResults)
                 {
-                    //Debug.Log($"Pincer attack! {pair.actor1.name} and {pair.actor2.name} attacking {attack.Opponent.name}");
+                    //Debug.Log($"Pincer attack! {actorPair.actor1.name} and {actorPair.actor2.name} attacking {attack.Opponent.name}");
                     actionManager.Add(new AttackAction(attack));
                 }
             }
@@ -120,7 +120,7 @@ public class PincerAttackAction : PhaseAction
     {
         foreach (var pair in participants.alignedPairs)
         {
-            // Ensure the pair is valid for support: aligned, has no allies or enemies between, but can have gaps
+            // Ensure the actorPair is valid for support: aligned, has no allies or enemies between, but can have gaps
             if (!pair.hasOpponentsBetween && !pair.hasAlliesBetween)
             {
                 participants.supportingPairs.Add(pair);
@@ -130,13 +130,13 @@ public class PincerAttackAction : PhaseAction
         // If there are supporting pairs, spawn support visuals
         if (participants.supportingPairs.Any())
         {
-            foreach (var pair in participants.supportingPairs)
+            foreach (var actorPair in participants.supportingPairs)
             {
-                supportLineManager.Spawn(pair);
-                if (pair.actor1.character == Character.Cleric)
-                    spellManager.EnqueueHeal(pair.actor1, pair.actor2);
-                else if (pair.actor2.character == Character.Cleric)
-                    spellManager.EnqueueHeal(pair.actor2, pair.actor1);
+                supportLineManager.Spawn(actorPair);
+                if (actorPair.actor1.character == Character.Cleric)
+                    spellManager.EnqueueHeal(actorPair.actor1, actorPair.actor2);
+                else if (actorPair.actor2.character == Character.Cleric)
+                    spellManager.EnqueueHeal(actorPair.actor2, actorPair.actor1);
             }
         }
     }
@@ -174,20 +174,20 @@ public class PincerAttackAction : PhaseAction
         }).ToList();
     }
 
-    private IEnumerator ResolveAttack(ActorPair pair)
+    private IEnumerator ResolveAttack(ActorPair actorPair)
     {
-        if (pair.attackResults == null || pair.attackResults.Count == 0)
+        if (actorPair.attackResults == null || actorPair.attackResults.Count == 0)
             yield break;
 
         //Grow and shrink
-        yield return CoroutineHelper.WaitForAll(GameManager.instance, pair.actor1.action.Grow(), pair.actor2.action.Grow());
-        yield return CoroutineHelper.WaitForAll(GameManager.instance, pair.actor1.action.Shrink(), pair.actor2.action.Shrink());
+        yield return CoroutineHelper.WaitForAll(GameManager.instance, actorPair.actor1.action.Grow(), actorPair.actor2.action.Grow());
+        yield return CoroutineHelper.WaitForAll(GameManager.instance, actorPair.actor1.action.Shrink(), actorPair.actor2.action.Shrink());
 
         List<ActorInstance> dyingOpponents = new List<ActorInstance>();
 
-        foreach (var attack in pair.attackResults)
+        foreach (var attack in actorPair.attackResults)
         {
-            //yield return PerformAttack(pair.actor1, attack);
+            //yield return PerformAttack(actorPair.actor1, attack);
             var attacker = attack.Pair.actor1; //TODO: Somehow combine actor1 and actor2?...
             var direction = attacker.GetDirectionTo(attack.Opponent);
             var trigger = new Trigger(attacker.Attack(attack));
@@ -201,7 +201,7 @@ public class PincerAttackAction : PhaseAction
             }
         }
 
-        //Wait until all deaths have completed before moving to next pair
+        //Wait until all deaths have completed before moving to next actorPair
         if (dyingOpponents.Any())
             yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
     }

@@ -367,7 +367,6 @@ public static class SortingOrder
     public const int Min = 0;
     public const int Default = 50;
     public const int BoardOverlay = 100;
-    public const int SupportLine = 100;
     public const int Target = 120;
     public const int Supporter = 140;
     public const int Attacker = 150;
@@ -526,7 +525,7 @@ public static class BezierCurveHelper
     /// Generates control points for an overshooting arc.
     /// The spell overshoots the target before curving back.
     /// </summary>
-    public static List<Vector3> Overshooting(ActorInstance source, ActorInstance target, float travelModifier = 1.3f, float waveModifier = 0.8f, bool overshoot = true)
+    public static List<Vector3> Overshooting(ActorInstance source, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
     {
         List<Vector3> controlPoints = new List<Vector3>();
         Vector3 start = source.position;
@@ -560,6 +559,43 @@ public static class BezierCurveHelper
 
         return controlPoints;
     }
+
+    public static List<Vector3> OvershootingWave(ActorInstance source, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
+    {
+        List<Vector3> controlPoints = new List<Vector3>();
+        Vector3 start = source.position;
+        Vector3 end = target.position;
+
+        float distance = Vector3.Distance(start, end);
+        Vector3 direction = (end - start).normalized;
+        Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized;
+
+        float verticalModifier1 = Random.Boolean ? 1f : -1f;
+        float verticalModifier2 = -verticalModifier1; // Reverse the wave direction
+
+        Vector3 control1 = start
+            + direction * (distance * 0.5f * travelModifier)
+            + perpendicular * (distance * 0.3f * waveModifier)
+            + Vector3.up * (distance * 0.7f * verticalModifier1 * waveModifier); // Alternating up/down
+
+        Vector3 control2 = end
+            + direction * (distance * 0.3f * travelModifier)
+            - perpendicular * (distance * 0.3f * waveModifier)
+            + Vector3.up * (distance * 0.5f * verticalModifier2 * waveModifier); // Opposite vertical direction
+
+        if (overshoot)
+        {
+            control2 += direction * (distance * 0.2f);
+        }
+
+        controlPoints.Add(start);
+        controlPoints.Add(control1);
+        controlPoints.Add(control2);
+        controlPoints.Add(end);
+
+        return controlPoints;
+    }
+
 
     /// <summary>
     /// Generates control points for a lobbed arc.

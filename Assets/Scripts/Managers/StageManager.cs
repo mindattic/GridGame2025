@@ -33,6 +33,7 @@ public class StageManager : MonoBehaviour
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected BoardInstance board => GameManager.instance.board;
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
+    protected IQueryable<ActorInstance> players => GameManager.instance.players;
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
 
 
@@ -158,10 +159,10 @@ public class StageManager : MonoBehaviour
     }
 
 
-    public void CheckStageCompletion(ActorInstance actor)
+    public void HandleCheckStageCompletion()
     {
-        bool allEnemiesDefeated = enemies.All(x => x.hasSpawned && x.isDead);
-        if (!allEnemiesDefeated)
+        bool allEnemiesDead = enemies.All(x => x.hasSpawned && x.isDead);
+        if (!allEnemiesDead)
             return;
 
         IEnumerator loadStage()
@@ -175,7 +176,20 @@ public class StageManager : MonoBehaviour
         StartCoroutine(fade.FadeOut(loadStage()));
     }
 
- 
+    public void HandleCheckGameOver()
+    {
+        bool allPlayersDead = players.All(x => x.hasSpawned && x.isDead);
+        if (!allPlayersDead)
+            return;
+
+        IEnumerator reloadStage()
+        {
+            LoadStage();
+            yield return null;
+        }
+
+        StartCoroutine(fade.FadeOut(reloadStage()));
+    }
 
 }
 

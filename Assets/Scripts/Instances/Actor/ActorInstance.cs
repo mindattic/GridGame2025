@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ActorInstance : MonoBehaviour
 {
@@ -111,12 +112,14 @@ public class ActorInstance : MonoBehaviour
             render.armorWest.sortingOrder = value + ActorLayer.Value.Armor.ArmorWest;
             render.overlay.sortingOrder = value + ActorLayer.Value.Overlay;
             render.selectionBox.sortingOrder = value + ActorLayer.Value.SelectionBox;
+            OnSortingOrderChanged?.Invoke();
         }
     }
 
     //System.Action event handlers
     public System.Action<ActorInstance> OnOverlapDetected;
-    public System.Action<ActorInstance> OnDeathDetected;
+    public System.Action OnDeathDetected;
+    public System.Action OnSortingOrderChanged;
 
     //Fields
     [SerializeField] public AnimationCurve glowCurve;
@@ -200,13 +203,13 @@ public class ActorInstance : MonoBehaviour
 
         //Events
         OnOverlapDetected += (actor) => move.HandleOnOverlapDetected(actor);
-        OnDeathDetected += (actor) => stageManager.CheckStageCompletion(actor);
+        OnDeathDetected += stageManager.HandleCheckStageCompletion;
     }
 
     private void OnDestroy()
     {
         OnOverlapDetected -= move.HandleOnOverlapDetected;
-        //OnDeathDetected -= stageManager.CheckStageCompletion;
+        OnDeathDetected -= stageManager.HandleCheckStageCompletion;
     }
 
     public void Spawn(Vector2Int startLocation)
@@ -266,21 +269,6 @@ public class ActorInstance : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-
-
-
-    private void CheckRotation()
-    {
-        if (transform.localEulerAngles.y == 0f)
-            return;
-
-        bool isFlipped = transform.localEulerAngles.y > 90f && transform.localEulerAngles.y < 270f;
-
-        //Toggle visibility
-        render.front.gameObject.SetActive(!isFlipped);
-        render.back.gameObject.SetActive(isFlipped);
-    }
-
 
     public IEnumerator Attack(AttackResult attack)
     {
@@ -451,7 +439,7 @@ public class ActorInstance : MonoBehaviour
         location = board.NowhereLocation;
         position = board.NowherePosition;
         gameObject.SetActive(false);
-        OnDeathDetected.Invoke(this);
+        OnDeathDetected.Invoke();
     }
 
     private void TriggerSpawnCoins(int amount)

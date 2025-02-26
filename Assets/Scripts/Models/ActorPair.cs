@@ -84,7 +84,7 @@ public class ActorPair
 
     }
 
-    public bool HasPair(ActorInstance actor1, ActorInstance actor2)
+    public bool ContainsActorPair(ActorInstance actor1, ActorInstance actor2)
     {
         return (this.actor1 == actor1 && this.actor2 == actor2) || (this.actor1 == actor2 && this.actor2 == actor1);
     }

@@ -64,7 +64,7 @@ public class VFXInstance : MonoBehaviour
         if (vfx.Duration != 0f)
             yield return Wait.For(vfx.Duration);
 
-        //Despawn VFX
+        //Destroy VFX
         Despawn(name);
     }
 
