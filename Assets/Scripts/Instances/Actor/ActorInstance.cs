@@ -130,20 +130,44 @@ public class ActorInstance : MonoBehaviour
     public Team team = Team.Neutral;
     public int spawnTurn = 0;
     public bool hasSpawned = false;
-    public int attackingPairCount = 0;
-    public int supportingPairCount = 0;
     public float wiggleSpeed;
     public float wiggleAmplitude;
 
+    public bool hasPartner => partner != null;
 
-    public bool isAttacker => attackingPairCount > 0;
-    public bool isSupporter => supportingPairCount > 0;
-    public bool IsPureSupporter => supportingPairCount > 0 && attackingPairCount == 0;
+    public bool isAttacker => hasPartner;
+    public bool isSupporter => supporting.Any();
+    public bool IsPureSupporter => !isAttacker && isSupporter;
 
 
-    public ActorInstance partner;
+    public ActorInstance partner = null;
     public List<ActorInstance> opponents = new List<ActorInstance>();
-    public List<ActorInstance> supporters = new List<ActorInstance>(); 
+    public List<ActorInstance> supporters = new List<ActorInstance>(); // Who supports this actor
+    public List<ActorInstance> supporting = new List<ActorInstance>(); // Who this actor is supporting
+
+
+    public void AddSupporter(ActorInstance supporter)
+    {
+        if (!supporters.Contains(supporter))
+            supporters.Add(supporter);
+
+        if (!supporter.supporting.Contains(this))
+            supporter.supporting.Add(this);
+    }
+
+    public void RemoveSupporter(ActorInstance supporter)
+    {
+        supporters.Remove(supporter);
+        supporter.supporting.Remove(this);
+    }
+
+
+
+
+
+
+
+
 
     //Modules
     public ActorRenderers render = new ActorRenderers();
@@ -352,7 +376,7 @@ public class ActorInstance : MonoBehaviour
 
     public IEnumerator TakeDamage(AttackResult attack)
     {
-        //EnqueueAttacks abort conditions
+        //TriggerEnqueueAttacks abort conditions
         if (!isActive || !isAlive)
             yield break;
 
@@ -409,7 +433,7 @@ public class ActorInstance : MonoBehaviour
 
     public IEnumerator Die()
     {
-        //EnqueueAttacks abort conditions
+        //TriggerEnqueueAttacks abort conditions
         if (!isDying)
             yield break;
 
@@ -485,7 +509,6 @@ public class ActorInstance : MonoBehaviour
     public void SetAttacking()
     {
         flags.IsAttacking = true;
-        attackingPairCount++;
         sortingOrder = SortingOrder.Attacker;
     }
 
@@ -498,7 +521,6 @@ public class ActorInstance : MonoBehaviour
     public void SetSupporting()
     {
         flags.IsSupporting = true;
-        supportingPairCount++;
         sortingOrder = SortingOrder.Supporter;
     }
 
@@ -513,7 +535,7 @@ public class ActorInstance : MonoBehaviour
 
     public void SetReady()
     {
-        //EnqueueAttacks abort conditions
+        //TriggerEnqueueAttacks abort conditions
         if (!isActive || !isAlive || !isEnemy)
             return;
 

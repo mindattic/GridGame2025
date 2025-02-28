@@ -28,7 +28,7 @@ public class InputManager : MonoBehaviour
 
     void Update()
     {
-        //EnqueueAttacks abort conditions
+        //TriggerEnqueueAttacks abort conditions
         if (pauseManager.IsPaused)
             return;
 
@@ -50,7 +50,7 @@ public class InputManager : MonoBehaviour
 
     private void CheckDragging()
     {
-        //EnqueueAttacks abort conditions
+        //TriggerEnqueueAttacks abort conditions
         if (!isDragging || !hasSelectedActor)
             return;
 

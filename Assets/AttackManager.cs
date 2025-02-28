@@ -1,3 +1,4 @@
+using Assets.Scripts.Actions;
 using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
 using System.Collections;
@@ -25,13 +26,14 @@ public class AttackManager : MonoBehaviour
 
         //If not attacks, goto next turn...
         if (!participants.AttackingPairs.Any())
+        {
             turnManager.NextTurn();
+            return;
+        }
 
         //...otherwise queue attacks
         StartCoroutine(EnqueueAttacks(participants));
     }
-
-
 
     /// <summary>
     /// Calculates attack pairs from the current player team and then
@@ -41,15 +43,20 @@ public class AttackManager : MonoBehaviour
     {
         SetSortingOrder(participants);
 
-        // Queue up the attack-phase actions.
-        actionManager.Add(new PreAttackSupportAction(participants));
+        // Queue up support actions first
+        foreach (var pair in participants.AttackingPairs)
+        {
+            actionManager.Add(new AttackSupportAction(pair));
+        }
+
+        // Then queue up attack-phase actions
         foreach (var pair in participants.AttackingPairs)
         {
             actionManager.Add(new PincerAttackAction(pair));
         }
-        actionManager.Add(new PostAttackSupportAction(participants));
 
-        // Optionally trigger visual effects before and after the actions.
+        //TODO: queue up post attack support actions here...
+
         yield return boardOverlay.FadeIn();
         yield return actionManager.Execute();
         yield return boardOverlay.FadeOut();
@@ -57,48 +64,104 @@ public class AttackManager : MonoBehaviour
         ResetSortingOrder();
         participants.Clear();
 
-        // Advance to the next turn.
         turnManager.NextTurn();
         yield break;
     }
 
     /// <summary>
+    /// Returns true if there is no other actor (friendly or enemy) between loc1 and loc2
+    /// along the same row or column. Excludes the endpoints.
+    /// </summary>
+    private bool IsClearPathBetween(Vector2Int loc1, Vector2Int loc2)
+    {
+        // Use all actors currently active in the game.
+        var allActors = GameManager.instance.actors.Where(x => x.isActive && x.isAlive).ToList();
+
+        if (loc1.x == loc2.x)
+        {
+            int minY = Mathf.Min(loc1.y, loc2.y);
+            int maxY = Mathf.Max(loc1.y, loc2.y);
+            // Exclude endpoints.
+            return !allActors.Any(a => a.location.x == loc1.x && a.location.y > minY && a.location.y < maxY);
+        }
+        else if (loc1.y == loc2.y)
+        {
+            int minX = Mathf.Min(loc1.x, loc2.x);
+            int maxX = Mathf.Max(loc1.x, loc2.x);
+            return !allActors.Any(a => a.location.y == loc1.y && a.location.x > minX && a.location.x < maxX);
+        }
+        return false;
+    }
+
+    /// <summary>
     /// Builds the attack participants by pairing up aligned player actors.
+    /// Then, for each attacker (actor1 and actor2), assigns supporters as those friendly actors
+    /// that are in the same row or column with a clear path between them (i.e. no actor, friendly or enemy, in between).
+    /// Finally, for each supporter, adds the attacker to that supporter's "supporting" list.
     /// </summary>
     private void CalculateParticipants(PincerAttackParticipants participants)
     {
         participants.Clear();
+        var teamMembers = players.Where(x => x.isPlaying).ToList();
 
-        var teamMembers = players.Where(x => x.isPlaying);
+        // Create aligned pairs.
         foreach (var actor1 in teamMembers)
         {
             foreach (var actor2 in teamMembers)
             {
-                if (actor1 == actor2)
+                if (actor1 == actor2 || !actor1.isPlaying || !actor2.isPlaying)
                     continue;
-                if (!(actor1.isPlaying && actor2.isPlaying))
-                    continue;
-                // EnqueueAttacks if actors are aligned (same row or same column).
+
                 if (!(actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location)))
                     continue;
-                // Avoid duplicates.
-                if (participants.AlignedPairs.Any(pair => pair.Is(actor1, actor2)))
+
+                if (participants.AlignedPairs.Any(pair => pair.Matches(actor1, actor2)))
                     continue;
-                // Determine the axis based on their alignment.
+
                 var axis = actor1.IsSameColumn(actor2.location) ? Axis.Vertical : Axis.Horizontal;
                 var pair = new ActorPair(actor1, actor2, axis);
                 participants.AlignedPairs.Add(pair);
             }
         }
-        // For each pair that qualifies as an attacking pair, assign roles and calculate attack results.
+
+        // Assign supporters based on a clear path (no actor between, friendly or enemy)
+        foreach (var pair in participants.AlignedPairs)
+        {
+            // For actor1: choose friendly actors that share the same row/column and have a clear path.
+            pair.actor1.supporters = teamMembers
+                .Where(x => x != pair.actor1 &&
+                            (pair.actor1.IsSameRow(x.location) || pair.actor1.IsSameColumn(x.location)) &&
+                            IsClearPathBetween(pair.actor1.location, x.location))
+                .ToList();
+
+            foreach (var supporter in pair.actor1.supporters)
+            {
+                if (!supporter.supporting.Contains(pair.actor1))
+                    supporter.supporting.Add(pair.actor1);
+            }
+
+            // For actor2:
+            pair.actor2.supporters = teamMembers
+                .Where(x => x != pair.actor2 &&
+                            (pair.actor2.IsSameRow(x.location) || pair.actor2.IsSameColumn(x.location)) &&
+                            IsClearPathBetween(pair.actor2.location, x.location))
+                .ToList();
+
+            foreach (var supporter in pair.actor2.supporters)
+            {
+                if (!supporter.supporting.Contains(pair.actor2))
+                    supporter.supporting.Add(pair.actor2);
+            }
+        }
+
+        // Process attack pairs: assign partners and calculate attack results.
         foreach (var pair in participants.AlignedPairs.Where(p => p.isAttacker))
         {
             pair.actor1.partner = pair.actor2;
-            pair.actor2.partner = pair.actor1; // Ensuring bidirectional partnership.
+            pair.actor2.partner = pair.actor1;
 
             pair.attackResults = CalculateAttackResults(pair);
 
-            // Assign the same opponent list to both actors.
             var opponents = pair.attackResults.Select(a => a.Opponent).Distinct().ToList();
             pair.actor1.opponents = opponents;
             pair.actor2.opponents = opponents;
@@ -107,11 +170,11 @@ public class AttackManager : MonoBehaviour
 
 
     /// <summary>
-    /// Computes the attack results for a given pair by determining hit, crit and damage.
+    /// Computes the attack results for a given actorPair by determining hit, crit and damage.
     /// </summary>
     private List<AttackResult> CalculateAttackResults(ActorPair pair)
     {
-        // This assumes that pair.opponents has already been populated or computed.
+        // This assumes that actorPair.opponents has already been populated or computed.
         return pair.opponents.Select(opponent =>
         {
             bool isHit = Formulas.IsHit(pair.actor1, opponent);
@@ -173,7 +236,7 @@ public class AttackManager : MonoBehaviour
 
         foreach (var pair in participants.SupportingPairs)
         {
-            //TODO: Set SortingOrder.Supporter to any pair.actor1 or pair2.actor2 that isn't already an attacker
+            //TODO: Set SortingOrder.Supporter to any actorPair.actor1 or pair2.actor2 that isn't already an attacker
             if (!pair.actor1.isAttacker)
                 pair.actor1.sortingOrder = SortingOrder.Supporter;
             if (!pair.actor2.isAttacker)

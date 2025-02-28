@@ -178,6 +178,7 @@
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
     <Compile Include="Assets\Scripts\Utilities\ConvertString.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
+    <Compile Include="Assets\Scripts\Actions\AttackSupportAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SpellInstance.cs" />

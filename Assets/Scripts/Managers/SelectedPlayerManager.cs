@@ -11,14 +11,14 @@ public class SelectedPlayerManager : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
     protected Vector3 mouseOffset { get => GameManager.instance.mouseOffset; set => GameManager.instance.mouseOffset = value; }
-    protected ActorInstance selectedActor { get => GameManager.instance.focusedActor; set => GameManager.instance.focusedActor = value; }
+    protected ActorInstance focusedActor { get => GameManager.instance.focusedActor; set => GameManager.instance.focusedActor = value; }
     protected ActorInstance previousMovingPlayer { get => GameManager.instance.previousSelectedPlayer; set => GameManager.instance.previousSelectedPlayer = value; }
-    protected ActorInstance movingPlayer { get => GameManager.instance.selectedPlayer; set => GameManager.instance.selectedPlayer = value; }
+    protected ActorInstance selectedPlayer { get => GameManager.instance.selectedPlayer; set => GameManager.instance.selectedPlayer = value; }
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
-    protected bool hasSelectedActor => selectedActor != null;
-    protected bool hasMovingPlayer => movingPlayer != null;
+    protected bool hasFocusedActor => focusedActor != null;
+    protected bool hasSelectedPlayer => selectedPlayer != null;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected TimerBarInstance timerBar => GameManager.instance.timerBar;
     protected ActorManager actorManager => GameManager.instance.actorManager;
@@ -33,7 +33,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
     public void Select()
     {
-        // EnqueueAttacks abort conditions.
+        // TriggerEnqueueAttacks abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase)
             return;
 
@@ -50,40 +50,40 @@ public class SelectedPlayerManager : MonoBehaviour
 
         // Clear selection boxes from all actors, then select this actor.
         actors.ForEach(x => x.render.SetSelectionBoxEnabled(isEnabled: false));
-        selectedActor = actor;
-        selectedActor.render.SetSelectionBoxEnabled(isEnabled: true);
+        focusedActor = actor;
+        focusedActor.render.SetSelectionBoxEnabled(isEnabled: true);
 
         // Calculate mouse offset.
-        mouseOffset = selectedActor.position - mousePosition3D;
+        mouseOffset = focusedActor.position - mousePosition3D;
 
         // Update the card UI.
-        cardManager.Assign(selectedActor);
+        cardManager.Assign(focusedActor);
 
-        if (selectedActor.isPlayer)
-            StartCoroutine(selectedActor.move.MoveTowardCursor());
+        if (focusedActor.isPlayer)
+            StartCoroutine(focusedActor.move.MoveTowardCursor());
     }
 
     public void Deselect()
     {
         // If no focused actor, do nothing.
-        if (!hasSelectedActor)
+        if (!hasFocusedActor)
             return;
 
         // If nothing is being moved, snap the focused actor back to its current tile.
-        if (!hasMovingPlayer)
-            selectedActor.position = selectedActor.currentTile.position;
+        if (!hasSelectedPlayer)
+            focusedActor.position = focusedActor.currentTile.position;
 
-        selectedActor = null;
+        focusedActor = null;
     }
 
     public void Drag()
     {
-        // EnqueueAttacks abort conditions.
-        if (!turnManager.isPlayerTurn || !turnManager.isStartPhase || !hasSelectedActor || selectedActor.isEnemy)
+        // TriggerEnqueueAttacks abort conditions.
+        if (!turnManager.isPlayerTurn || !turnManager.isStartPhase || !hasFocusedActor || focusedActor.isEnemy)
             return;
 
         // Set the selected player to be moved.
-        movingPlayer = selectedActor;
+        selectedPlayer = focusedActor;
         Deselect();
 
 
@@ -91,8 +91,8 @@ public class SelectedPlayerManager : MonoBehaviour
         audioManager.Play("Load");
         timerBar.Play();
         actorManager.CheckEnemyAP();
-        if (movingPlayer != null)
-            StartCoroutine(movingPlayer.move.MoveTowardCursor());
+        if (selectedPlayer != null)
+            StartCoroutine(selectedPlayer.move.MoveTowardCursor());
 
         // Change phase from Start to Move.
         turnManager.SetPhase(TurnPhase.Move);
@@ -100,16 +100,16 @@ public class SelectedPlayerManager : MonoBehaviour
 
     public void Drop()
     {
-        //EnqueueAttacks abort conditions.
-        if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasMovingPlayer)
+        //TriggerEnqueueAttacks abort conditions.
+        if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasSelectedPlayer)
             return;
 
         //Snap the moving player to the closest tile.
-        var closestTile = Geometry.GetClosestTile(movingPlayer.position);
-        movingPlayer.location = closestTile.location;
-        movingPlayer.position = closestTile.position;
-        previousMovingPlayer = movingPlayer;
-        movingPlayer = null;
+        var closestTile = Geometry.GetClosestTile(selectedPlayer.position);
+        selectedPlayer.location = closestTile.location;
+        selectedPlayer.position = closestTile.position;
+        previousMovingPlayer = selectedPlayer;
+        selectedPlayer = null;
 
         //Reset UI and other elements.
         tileManager.Reset();

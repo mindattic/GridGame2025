@@ -110,6 +110,4 @@ public class TurnManager : MonoBehaviour
         SetPhase(TurnPhase.Start);
     }
 
-
-
 }

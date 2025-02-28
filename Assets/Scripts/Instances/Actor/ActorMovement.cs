@@ -183,7 +183,7 @@ namespace Assets.Scripts.Instances.Actor
 
             if (location != closestLocation)
             {
-                //EnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
+                //TriggerEnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
                 ActorInstance overlappingActor = actors.FirstOrDefault(x =>
                     x != null &&
                     x != instance &&

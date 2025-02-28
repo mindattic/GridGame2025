@@ -159,7 +159,7 @@ public class SpellInstance : MonoBehaviour
         // Always add start position as first point
         controlPoints.Add(start);
 
-        // EnqueueAttacks if control points are provided
+        // TriggerEnqueueAttacks if control points are provided
         if (spell.controlPoints != null && spell.controlPoints.Count > 0)
         {
             // Use provided control points

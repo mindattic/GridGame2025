@@ -270,13 +270,13 @@ public class DebugWindow : EditorWindow
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
-        //Is Infinite Timer? checkbox
-        onCheckChanged = EditorGUILayout.Toggle("Is Timer Infinite?", debugManager.isTimerInfinite, GUILayout.Width(Screen.width * 0.25f));
+        //Matches Infinite Timer? checkbox
+        onCheckChanged = EditorGUILayout.Toggle("Matches Timer Infinite?", debugManager.isTimerInfinite, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.isTimerInfinite != onCheckChanged)
             debugManager.isTimerInfinite = onCheckChanged;
 
-        //Is Opponent Stunned? checkbox
-        onCheckChanged = EditorGUILayout.Toggle("Is Opponent Stunned?", debugManager.isEnemyStunned, GUILayout.Width(Screen.width * 0.25f));
+        //Matches Opponent Stunned? checkbox
+        onCheckChanged = EditorGUILayout.Toggle("Matches Opponent Stunned?", debugManager.isEnemyStunned, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.isEnemyStunned != onCheckChanged)
             debugManager.isEnemyStunned = onCheckChanged;
 

@@ -9937,6 +9937,7 @@ GameObject:
   - component: {fileID: 1751276312}
   - component: {fileID: 1751276315}
   - component: {fileID: 1751276316}
+  - component: {fileID: 1751276317}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -10011,6 +10012,7 @@ MonoBehaviour:
   dottedLineManager: {fileID: 0}
   spellManager: {fileID: 0}
   actionManager: {fileID: 0}
+  attackManager: {fileID: 0}
   boardOverlay: {fileID: 0}
   canvasOverlay: {fileID: 0}
   viewport: {x: 0, y: 0}
@@ -10091,7 +10093,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentTurn: 1
   currentTeam: 0
-  currentTurnPhase: 0
+  currentPhase: 0
 --- !u!114 &1751276283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10631,6 +10633,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 004981acf071b344dbd2e2b499699e78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1751276317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751276275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7867e97153d6fa147b94875ee142c048, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1754065672

@@ -1,3 +1,4 @@
+using Assets.Scripts.Models;
 using Game.Instances;
 using System;
 using System.Collections;

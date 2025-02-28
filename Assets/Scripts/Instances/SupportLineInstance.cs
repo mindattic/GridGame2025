@@ -1,3 +1,4 @@
+using Assets.Scripts.Models;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -19,7 +20,9 @@ public class SupportLineInstance : MonoBehaviour
     public float alpha = 0;
     private float minAlpha = Opacity.Transparent;
     private float maxAlpha = Opacity.Percent50;
-    private ActorPair actorPair;
+    private ActorInstance actor1;
+    private ActorInstance actor2;
+
     private Color color = ColorHelper.RGBA(48, 161, 49, 0);
     private LineRenderer lineRenderer;
     private int baseSortingOffset = -1; // Ensure it's always beneath actors
@@ -38,20 +41,21 @@ public class SupportLineInstance : MonoBehaviour
         lineRenderer.endWidth = tileSize / 2;
     }
 
-    public void Spawn(ActorPair actorPair)
+    public void Spawn(ActorInstance actor1, ActorInstance actor2)
     {
+        this.actor1 = actor1;
+        this.actor2 = actor2;
+
         parent = board.transform;
         name = $"SupportLine_{Guid.NewGuid():N}";
 
-        this.actorPair = actorPair;
-
         UpdateSortingOrder();
-        lineRenderer.SetPosition(0, actorPair.startActor.position);
-        lineRenderer.SetPosition(1, actorPair.endActor.position);
+        lineRenderer.SetPosition(0, actor1.position);
+        lineRenderer.SetPosition(1, actor2.position);
 
         // Subscribe to sorting order changes
-        actorPair.actor1.OnSortingOrderChanged += UpdateSortingOrder;
-        actorPair.actor2.OnSortingOrderChanged += UpdateSortingOrder;
+        actor1.OnSortingOrderChanged += UpdateSortingOrder;
+        actor2.OnSortingOrderChanged += UpdateSortingOrder;
 
         StartCoroutine(FadeIn());
     }
@@ -116,30 +120,25 @@ public class SupportLineInstance : MonoBehaviour
 
         Debug.Log("Fade-out complete, destroying support line");
 
-        supportLineManager.Destroy(actorPair);
+        supportLineManager.Destroy(actor1, actor2);
     }
 
 
     public void UpdateSortingOrder()
     {
-        if (this == null || actorPair == null || lineRenderer == null) return;
+        if (this == null || actor1 == null || actor2 == null || lineRenderer == null) return;
 
-        int lowestSortingOrder = Mathf.Min(actorPair.actor1.sortingOrder, actorPair.actor2.sortingOrder);
+        int lowestSortingOrder = Mathf.Min(actor1.sortingOrder, actor2.sortingOrder);
         lineRenderer.sortingOrder = lowestSortingOrder + baseSortingOffset;
     }
 
 
-
     public void Destroy()
     {
-        if (actorPair != null)
-        {
-            actorPair.actor1.OnSortingOrderChanged -= UpdateSortingOrder;
-            actorPair.actor2.OnSortingOrderChanged -= UpdateSortingOrder;
-        }
+        actor1.OnSortingOrderChanged -= UpdateSortingOrder;
+        actor2.OnSortingOrderChanged -= UpdateSortingOrder;
         Destroy(this.gameObject);
     }
-
 
 
 }

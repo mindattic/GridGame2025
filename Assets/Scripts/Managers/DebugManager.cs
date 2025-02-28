@@ -116,7 +116,7 @@ public class DebugManager : MonoBehaviour
         {
             pair.startActor.sortingOrder = SortingOrder.Supporter;
             pair.endActor.sortingOrder = SortingOrder.Supporter;
-            supportLineManager.Spawn(pair);
+            supportLineManager.Spawn(pair.startActor, pair.endActor);
         }
 
         IEnumerator _()
