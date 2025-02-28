@@ -24,6 +24,7 @@ public class SelectedPlayerManager : MonoBehaviour
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
+    protected AttackManager attackManager => GameManager.instance.attackManager;
 
     private void Start()
     {
@@ -115,8 +116,11 @@ public class SelectedPlayerManager : MonoBehaviour
         cardManager.Reset();
         timerBar.Pause();
 
-        actionManager.Add(new PincerAttackAction());
-        turnManager.SetPhase(TurnPhase.Attack);
-        actionManager.TriggerExecute();
+
+        StartCoroutine(attackManager.CalculateAndExecute());
+
+        //actionManager.Add(new PincerAttackAction());
+        //turnManager.SetPhase(TurnPhase.Attack);
+        //actionManager.TriggerExecute();
     }
 }

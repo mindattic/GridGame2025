@@ -77,6 +77,7 @@ public class ActorInstance : MonoBehaviour
         get => gameObject.transform.localScale;
         set => gameObject.transform.localScale = value;
     }
+
     public int sortingOrder
     {
         get
