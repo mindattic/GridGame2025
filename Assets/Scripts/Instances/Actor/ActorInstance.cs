@@ -352,7 +352,7 @@ public class ActorInstance : MonoBehaviour
 
     public IEnumerator TakeDamage(AttackResult attack)
     {
-        //Check abort conditions
+        //EnqueueAttacks abort conditions
         if (!isActive || !isAlive)
             yield break;
 
@@ -409,7 +409,7 @@ public class ActorInstance : MonoBehaviour
 
     public IEnumerator Die()
     {
-        //Check abort conditions
+        //EnqueueAttacks abort conditions
         if (!isDying)
             yield break;
 
@@ -492,7 +492,7 @@ public class ActorInstance : MonoBehaviour
     public void SetDefending()
     {
         flags.IsDefending = true;
-        sortingOrder = SortingOrder.Target;
+        sortingOrder = SortingOrder.Opponent;
     }
 
     public void SetSupporting()
@@ -513,7 +513,7 @@ public class ActorInstance : MonoBehaviour
 
     public void SetReady()
     {
-        //Check abort conditions
+        //EnqueueAttacks abort conditions
         if (!isActive || !isAlive || !isEnemy)
             return;
 

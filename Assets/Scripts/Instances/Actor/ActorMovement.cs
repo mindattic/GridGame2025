@@ -107,7 +107,7 @@ namespace Assets.Scripts.Instances.Actor
             //--- Horizontal Movement ---
             if (Mathf.Abs(position.x - destination.x) > snapThreshold)
             {
-                //Target position for horizontal movement.
+                //Opponent position for horizontal movement.
                 Vector3 horizontalTarget = new Vector3(destination.x, position.y, position.z);
                 while (Mathf.Abs(position.x - destination.x) > snapThreshold)
                 {
@@ -135,7 +135,7 @@ namespace Assets.Scripts.Instances.Actor
             //--- Vertical Movement ---
             if (Mathf.Abs(position.y - destination.y) > snapThreshold)
             {
-                //Target position for vertical movement.
+                //Opponent position for vertical movement.
                 Vector3 verticalTarget = new Vector3(position.x, destination.y, position.z);
                 while (Mathf.Abs(position.y - destination.y) > snapThreshold)
                 {
@@ -183,7 +183,7 @@ namespace Assets.Scripts.Instances.Actor
 
             if (location != closestLocation)
             {
-                //Check if any other active and alive actor (except this one) already occupies the tile.
+                //EnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
                 ActorInstance overlappingActor = actors.FirstOrDefault(x =>
                     x != null &&
                     x != instance &&

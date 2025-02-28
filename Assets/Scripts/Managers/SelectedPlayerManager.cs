@@ -33,7 +33,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
     public void Select()
     {
-        // Check abort conditions.
+        // EnqueueAttacks abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase)
             return;
 
@@ -78,7 +78,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
     public void Drag()
     {
-        // Check abort conditions.
+        // EnqueueAttacks abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase || !hasSelectedActor || selectedActor.isEnemy)
             return;
 
@@ -100,7 +100,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
     public void Drop()
     {
-        //Check abort conditions.
+        //EnqueueAttacks abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasMovingPlayer)
             return;
 
@@ -117,7 +117,7 @@ public class SelectedPlayerManager : MonoBehaviour
         timerBar.Pause();
 
 
-        StartCoroutine(attackManager.CalculateAndExecute());
+        attackManager.Check();
 
         //actionManager.Add(new PincerAttackAction());
         //turnManager.SetPhase(TurnPhase.Attack);

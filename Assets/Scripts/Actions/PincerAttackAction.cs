@@ -50,10 +50,10 @@ public class PreAttackSupportAction : PhaseAction
 }
 
 // PhaseAction for processing a single attacking pair.
-public class AttackPairAction : PhaseAction
+public class PincerAttackAction : PhaseAction
 {
     private ActorPair pair;
-    public AttackPairAction(ActorPair pair)
+    public PincerAttackAction(ActorPair pair)
     {
         this.pair = pair;
     }
@@ -123,105 +123,105 @@ public class PostAttackSupportAction : PhaseAction
 }
 
 // Composite PhaseAction that enqueues the three sub-actions.
-public class PincerAttackAction : PhaseAction
-{
-    private PincerAttackContext context = new PincerAttackContext();
+//public class PincerAttackAction : PhaseAction
+//{
+//    private PincerAttackContext context = new PincerAttackContext();
 
-    // Cached game manager components.
-    private BoardOverlay BoardOverlay => GameManager.instance.boardOverlay;
-    private TurnManager TurnManager => GameManager.instance.turnManager;
-    private ActionManager ActionManager => GameManager.instance.actionManager;
+//    // Cached game manager components.
+//    private BoardOverlay BoardOverlay => GameManager.instance.boardOverlay;
+//    private TurnManager TurnManager => GameManager.instance.turnManager;
+//    private ActionManager ActionManager => GameManager.instance.actionManager;
 
-    public override IEnumerator Execute()
-    {
-        // Build the attack context.
-        ClearContext();
-        ComputeContext();
-        if (!context.AttackingPairs.Any())
-        {
-            TurnManager.NextTurn();
-            yield break;
-        }
+//    public override IEnumerator Execute()
+//    {
+//        // Build the attack context.
+//        ClearContext();
+//        ComputeContext();
+//        if (!context.AttackingPairs.Any())
+//        {
+//            TurnManager.NextTurn();
+//            yield break;
+//        }
 
 
-        // Enqueue sub-actions.
-        ActionManager.Add(new PreAttackSupportAction(context));
-        foreach (var pair in context.AttackingPairs)
-            ActionManager.Add(new AttackPairAction(pair));
-        ActionManager.Add(new PostAttackSupportAction(context));
+//        // Enqueue sub-actions.
+//        ActionManager.Add(new PreAttackSupportAction(context));
+//        foreach (var pair in context.AttackingPairs)
+//            ActionManager.Add(new PincerAttackAction(pair));
+//        ActionManager.Add(new PostAttackSupportAction(context));
 
-        BoardOverlay.TriggerFadeIn();
-        yield return ActionManager.Execute();
-        BoardOverlay.TriggerFadeOut();
-        TurnManager.ResetSortingOrder();
-        ClearContext();
-        TurnManager.NextTurn();
-        yield break;
-    }
+//        BoardOverlay.TriggerFadeIn();
+//        yield return ActionManager.Execute();
+//        BoardOverlay.TriggerFadeOut();
+//        TurnManager.ResetSortingOrder();
+//        ClearContext();
+//        TurnManager.NextTurn();
+//        yield break;
+//    }
 
-    // Computes aligned pairs from the player team and sets up attacking pairs.
-    private void ComputeContext()
-    {
-        var teamMembers = GameManager.instance.players.Where(x => x.isPlaying);
-        // Fill context.AlignedPairs using existing logic.
-        foreach (var actor1 in teamMembers)
-        {
-            foreach (var actor2 in teamMembers)
-            {
-                if (actor1 == actor2)
-                    continue;
-                if (!(actor1.isPlaying && actor2.isPlaying))
-                    continue;
-                if (!(actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location)))
-                    continue;
-                // Avoid duplicates.
-                if (context.AlignedPairs.Any(pair => pair.ContainsActorPair(actor1, actor2)))
-                    continue;
-                var axis = actor1.IsSameColumn(actor2.location) ? Axis.Vertical : Axis.Horizontal;
-                var pair = new ActorPair(actor1, actor2, axis);
-                context.AlignedPairs.Add(pair);
-            }
-        }
-        // For each pair that qualifies as an attacking pair, assign roles.
-        foreach (var pair in context.AlignedPairs.Where(p => p.isAttacker))
-        {
-            pair.actor1.partner = pair.actor2;
-            pair.attackResults = CalculateAttackResults(pair);
-            pair.actor1.opponents = pair.attackResults.Select(a => a.Opponent).Distinct().ToList();
-        }
-    }
+//    // Computes aligned pairs from the player team and sets up attacking pairs.
+//    private void ComputeContext()
+//    {
+//        var teamMembers = GameManager.instance.players.Where(x => x.isPlaying);
+//        // Fill context.AlignedPairs using existing logic.
+//        foreach (var actor1 in teamMembers)
+//        {
+//            foreach (var actor2 in teamMembers)
+//            {
+//                if (actor1 == actor2)
+//                    continue;
+//                if (!(actor1.isPlaying && actor2.isPlaying))
+//                    continue;
+//                if (!(actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location)))
+//                    continue;
+//                // Avoid duplicates.
+//                if (context.AlignedPairs.Any(pair => pair.ContainsActorPair(actor1, actor2)))
+//                    continue;
+//                var axis = actor1.IsSameColumn(actor2.location) ? Axis.Vertical : Axis.Horizontal;
+//                var pair = new ActorPair(actor1, actor2, axis);
+//                context.AlignedPairs.Add(pair);
+//            }
+//        }
+//        // For each pair that qualifies as an attacking pair, assign roles.
+//        foreach (var pair in context.AlignedPairs.Where(p => p.isAttacker))
+//        {
+//            pair.actor1.partner = pair.actor2;
+//            pair.attackResults = CalculateAttackResults(pair);
+//            pair.actor1.opponents = pair.attackResults.Select(a => a.Opponent).Distinct().ToList();
+//        }
+//    }
 
-    private List<AttackResult> CalculateAttackResults(ActorPair pair)
-    {
-        return pair.opponents.Select(opponent =>
-        {
-            bool isHit = Formulas.IsHit(pair.actor1, opponent);
-            bool isCriticalHit = Formulas.IsCriticalHit(pair.actor1, opponent);
-            int damage = isHit ? Formulas.CalculateDamage(pair.actor1, opponent) : 0;
-            return new AttackResult
-            {
-                Pair = pair,
-                Opponent = opponent,
-                IsHit = isHit,
-                IsCriticalHit = isCriticalHit,
-                Damage = damage,
-            };
-        }).ToList();
-    }
+//    private List<AttackResult> CalculateAttackResults(ActorPair pair)
+//    {
+//        return pair.opponents.Select(opponent =>
+//        {
+//            bool isHit = Formulas.IsHit(pair.actor1, opponent);
+//            bool isCriticalHit = Formulas.IsCriticalHit(pair.actor1, opponent);
+//            int damage = isHit ? Formulas.CalculateDamage(pair.actor1, opponent) : 0;
+//            return new AttackResult
+//            {
+//                Pair = pair,
+//                Opponent = opponent,
+//                IsHit = isHit,
+//                IsCriticalHit = isCriticalHit,
+//                Damage = damage,
+//            };
+//        }).ToList();
+//    }
 
-    private void ClearContext()
-    {
-        foreach (var pair in context.AlignedPairs)
-        {
-            pair.actor1.partner = null;
-            pair.actor1.opponents.Clear();
-            pair.actor1.supporters.Clear();
-            pair.actor2.partner = null;
-            pair.actor2.opponents.Clear();
-            pair.actor2.supporters.Clear();
-        }
-        context.AlignedPairs.Clear();
-    }
+//    private void ClearContext()
+//    {
+//        foreach (var pair in context.AlignedPairs)
+//        {
+//            pair.actor1.partner = null;
+//            pair.actor1.opponents.Clear();
+//            pair.actor1.supporters.Clear();
+//            pair.actor2.partner = null;
+//            pair.actor2.opponents.Clear();
+//            pair.actor2.supporters.Clear();
+//        }
+//        context.AlignedPairs.Clear();
+//    }
 
-}
+//}
 

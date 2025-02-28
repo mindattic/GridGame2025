@@ -16,27 +16,36 @@ public class AttackManager : MonoBehaviour
 
 
     /// <summary>
-    /// Calculates attack pairs from the current player team and then
-    /// either queues up the attack actions or immediately advances the turn.
+    /// Determine if there are pending attacks
     /// </summary>
-    public IEnumerator CalculateAndExecute()
+    public void Check()
     {
-        // Build the attack context.
         PincerAttackContext context = new PincerAttackContext();
         ComputeContext(context);
 
-        // If there are no attacking pairs, just move to the next turn.
+        //If not attacks, goto next turn...
         if (!context.AttackingPairs.Any())
-        {
             turnManager.NextTurn();
-            yield break;
-        }
+
+        //...otherwise queue attacks
+        StartCoroutine(EnqueueAttacks(context));
+    }
+
+
+
+    /// <summary>
+    /// Calculates attack pairs from the current player team and then
+    /// either queues up the attack actions or immediately advances the turn.
+    /// </summary>
+    private IEnumerator EnqueueAttacks(PincerAttackContext context)
+    {
+        turnManager.SetSortingOrder();
 
         // Queue up the attack-phase actions.
         actionManager.Add(new PreAttackSupportAction(context));
         foreach (var pair in context.AttackingPairs)
         {
-            actionManager.Add(new AttackPairAction(pair));
+            actionManager.Add(new PincerAttackAction(pair));
         }
         actionManager.Add(new PostAttackSupportAction(context));
 
@@ -68,7 +77,7 @@ public class AttackManager : MonoBehaviour
                     continue;
                 if (!(actor1.isPlaying && actor2.isPlaying))
                     continue;
-                // Check if actors are aligned (same row or same column).
+                // EnqueueAttacks if actors are aligned (same row or same column).
                 if (!(actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location)))
                     continue;
                 // Avoid duplicates.

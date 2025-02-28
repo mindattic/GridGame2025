@@ -52,7 +52,7 @@ public class ActorActionBar
 
     private IEnumerator Drain()
     {
-        //Check abort conditions
+        //EnqueueAttacks abort conditions
         if (stats.PreviousAP == stats.AP)
             yield break;
 
@@ -84,7 +84,7 @@ public class ActorActionBar
 
     private IEnumerator Fill()
     {
-        //Check abort conditions
+        //EnqueueAttacks abort conditions
         if (debugManager.isEnemyStunned || !hasSelectedPlayer || !instance.isEnemy || !instance.isPlaying || instance.hasMaxAP || flags.isGainingAP)
             yield break;
 

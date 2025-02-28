@@ -212,7 +212,7 @@ public class Geometry
         Vector3 AB = endPosition - startPosition;
         Vector3 AC = currentPosition - startPosition;
 
-        //Check for division by zero; Handle the case where startPosition and endPosition are the same point
+        //EnqueueAttacks for division by zero; Handle the case where startPosition and endPosition are the same point
         if (AB.magnitude == 0)
             return 0;
 

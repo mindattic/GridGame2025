@@ -15,7 +15,7 @@ public static class DebugWindowTrigger
         if (!EditorApplication.isPlaying)
             return;
 
-        // Check if the Game scene is loaded
+        // EnqueueAttacks if the Game scene is loaded
         if (SceneManager.GetActiveScene().name == "Game")
         {
             //Debug.Log("[DebugWindow] Game scene loaded, opening Debug Window.");
@@ -92,7 +92,7 @@ public class DebugWindow : EditorWindow
 #if UNITY_EDITOR_WIN
     private static void WaitForGameScene()
     {
-        // Check every frame if the Game scene is loaded
+        // EnqueueAttacks every frame if the Game scene is loaded
         EditorApplication.update += CheckSceneLoad;
     }
 
@@ -186,7 +186,7 @@ public class DebugWindow : EditorWindow
 
     private void OnGUI()
     {
-        //Check abort conditions
+        //EnqueueAttacks abort conditions
         if (!EditorApplication.isPlaying
             || gameManager == null
             || debugManager == null
