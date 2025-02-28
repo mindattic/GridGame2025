@@ -5,248 +5,268 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class PincerAttackAction : PhaseAction
-{
-    protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
-    protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected ActionManager actionManager => GameManager.instance.actionManager;
-    protected SpellManager spellManager => GameManager.instance.spellManager;
-    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
-    protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
-    protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
-    protected IQueryable<ActorInstance> players => GameManager.instance.players;
-    private PincerAttackParticipants participants = new PincerAttackParticipants();
+//public class PincerAttackAction : PhaseAction
+//{
+//    // Cached game manager components.
+//    private BoardOverlay BoardOverlay => GameManager.instance.boardOverlay;
+//    private TurnManager TurnManager => GameManager.instance.turnManager;
+//    private ActionManager ActionManager => GameManager.instance.actionManager;
+//    private SpellManager SpellManager => GameManager.instance.spellManager;
+//    private SupportLineManager SupportLineManager => GameManager.instance.supportLineManager;
+//    private List<ActorInstance> Actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
+//    private IQueryable<ActorInstance> Enemies => GameManager.instance.enemies;
+//    private IQueryable<ActorInstance> Players => GameManager.instance.players;
 
-    public override IEnumerator Execute()
-    {
-        participants.Clear();
+//    // Participants now only holds the list of aligned pairs.
+//    private PincerAttackParticipants participants = new PincerAttackParticipants();
 
-        // Use the player team for combat.
-        IQueryable<ActorInstance> teamMembers = players.Where(x => x.isPlaying);
+//    public override IEnumerator Execute()
+//    {
+//        participants.Clear();
 
-        if (!AssignParticipants(teamMembers))
-        {
-            // No valid aligned pairs; simply exit.
-            yield break;
-        }
+//        // Use the player team for combat.
+//        var teamMembers = Players.Where(x => x.isPlaying);
+//        if (!AssignParticipants(teamMembers))
+//            yield break; // No valid aligned pairs.
 
-        //Setup combat 
-        UpdateSortingOrder();
-        boardOverlay.TriggerFadeIn();
+//        // Queue pre-attack support actions.
+//        ProcessPreAttackSupport();
+//        yield return ActionManager.Execute();
 
-        foreach (var pair in participants.attackingPairs)
-        {
-            // Spawn an attack line for visual effect.
-            GameManager.instance.attackLineManager.Spawn(pair);
-            yield return ResolveAttack(pair);
-        }
+//        SetupCombat();
 
-        //Cleanup combat
-        boardOverlay.TriggerFadeOut();
-        turnManager.ResetSortingOrder();
-        ClearCombatParticipants();
+//        // Process attack actions.
+//        yield return ProcessAttacks();
+//        yield return ActionManager.Execute();
 
-        yield break;
-    }
+//        // Queue post-attack support actions.
+//        ProcessPostAttackSupport();
+//        yield return ActionManager.Execute();
 
-    // Returns true if there is at least one valid attacking actorPair.
-    private bool AssignParticipants(IQueryable<ActorInstance> teamMembers)
-    {
-        AssignAlignedPairs(teamMembers);
-        if (!participants.alignedPairs.Any())
-            return false;
+//        yield return BoardOverlay.FadeOut();
+//        TurnManager.ResetSortingOrder();
+//        ClearCombatParticipants();
 
-        AssignAttackingPairs();
-        AssignSupportingPairs();
+//        // Manually trigger turn change.
+//        TurnManager.NextTurn();
+//        yield break;
+//    }
 
-        var hasAttackers = participants.attackingPairs.Any();
-        return hasAttackers;
-    }
+//    private bool AssignParticipants(IQueryable<ActorInstance> teamMembers)
+//    {
+//        CreateAlignedPairs(teamMembers);
+//        if (!participants.alignedPairs.Any())
+//            return false;
 
-    // Returns true if the two actors are aligned and both active.
-    private bool AreActorsAligned(ActorInstance actor1, ActorInstance actor2)
-    {
-        return actor1 != null && actor2 != null && actor1 != actor2 &&
-               actor1.isPlaying && actor2.isPlaying &&
-               (actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location));
-    }
+//        ProcessPairs();
+//        // Return true if any aligned pair qualifies as an attacking pair.
+//        return participants.alignedPairs.Any(pair => pair.isAttacker);
+//    }
 
+//    // Create aligned pairs from team members (actors in the same row or column).
+//    private void CreateAlignedPairs(IQueryable<ActorInstance> teamMembers)
+//    {
+//        foreach (var actor1 in teamMembers)
+//        {
+//            foreach (var actor2 in teamMembers)
+//            {
+//                if (actor1 == actor2)
+//                    continue;
+//                if (!(actor1.isPlaying && actor2.isPlaying))
+//                    continue;
+//                if (!(actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location)))
+//                    continue;
+//                if (participants.IsAlignedPair(actor1, actor2))
+//                    continue;
 
-    private void AssignAlignedPairs(IQueryable<ActorInstance> teamMembers)
-    {
-        foreach (var actor1 in teamMembers)
-        {
-            foreach (var actor2 in teamMembers)
-            {
-                if (AreActorsAligned(actor1, actor2) && !participants.IsAlignedPair(actor1, actor2))
-                {
-                    var pair = CreateAlignedPair(actor1, actor2);
-                    participants.alignedPairs.Add(pair);
-                }
-            }
-        }
-    }
+//                var axis = actor1.IsSameColumn(actor2.location) ? Axis.Vertical : Axis.Horizontal;
+//                var pair = new ActorPair(actor1, actor2, axis);
+//                participants.alignedPairs.Add(pair);
+//            }
+//        }
+//    }
 
-    private ActorPair CreateAlignedPair(ActorInstance actor1, ActorInstance actor2)
-    {
-        var axis = actor1.IsSameColumn(actor2.location) ? Axis.Vertical : Axis.Horizontal;
-        return new ActorPair(actor1, actor2, axis);
-    }
+//    /// <summary>
+//    /// Process each aligned pair.
+//    /// For pairs that qualify as attacking pairs, designate actor1 as the primary attacker,
+//    /// assign actor2 as its partner, compute attack results, and assign opponents.
+//    /// </summary>
+//    private void ProcessPairs()
+//    {
+//        foreach (var pair in participants.alignedPairs)
+//        {
+//            if (pair.isAttacker)
+//            {
+//                pair.actor1.partner = pair.actor2;
+//                pair.attackResults = CalculateAttackResults(pair);
+//                pair.actor1.opponents = pair.attackResults
+//                    .Select(a => a.Opponent)
+//                    .Distinct()
+//                    .ToList();
+//            }
+//        }
+//    }
 
-    private void AssignAttackingPairs()
-    {
-        foreach (var pair in participants.alignedPairs)
-        {
-            //Ensure there are NO gaps or allies between attackers
-            if (!pair.hasOpponentsBetween || pair.hasGapsBetween || pair.hasAlliesBetween) continue;
+//    // Calculates attack results for the given pair.
+//    private List<AttackResult> CalculateAttackResults(ActorPair pair)
+//    {
+//        return pair.opponents.Select(opponent =>
+//        {
+//            bool isHit = Formulas.IsHit(pair.actor1, opponent);
+//            bool isCriticalHit = Formulas.IsCriticalHit(pair.actor1, opponent);
+//            int damage = isHit ? Formulas.CalculateDamage(pair.actor1, opponent) : 0;
+//            return new AttackResult
+//            {
+//                Pair = pair,
+//                Opponent = opponent,
+//                IsHit = isHit,
+//                IsCriticalHit = isCriticalHit,
+//                Damage = damage,
+//            };
+//        }).ToList();
+//    }
 
-            participants.attackingPairs.Add(pair);
-            pair.attackResults = CalculateAttackResults(pair); //Precompute attack results only if valid
+//    private IEnumerator ProcessAttacks()
+//    {
+//        // Derive attacking pairs from aligned pairs.
+//        var attackingPairs = participants.alignedPairs.Where(pair => pair.isAttacker).ToList();
+//        foreach (var attackPair in attackingPairs)
+//        {
+//            GameManager.instance.attackLineManager.Spawn(attackPair);
 
-            if (pair.attackResults.Any())
-            {
-                foreach (var attack in pair.attackResults)
-                {
-                    //Debug.Log($"Pincer attack! {actorPair.actor1.name} and {actorPair.actor2.name} attacking {attack.Opponent.name}");
-                    actionManager.Add(new AttackAction(attack));
-                }
-            }
+//            if (attackPair.attackResults == null || !attackPair.attackResults.Any())
+//                continue;
 
-        }
-    }
+//            // Animate the attack: actors grow then shrink.
+//            yield return CoroutineHelper.WaitForAll(GameManager.instance,
+//                attackPair.actor1.action.Grow(),
+//                attackPair.actor2.action.Grow());
+//            yield return CoroutineHelper.WaitForAll(GameManager.instance,
+//                attackPair.actor1.action.Shrink(),
+//                attackPair.actor2.action.Shrink());
 
+//            List<ActorInstance> dyingOpponents = new List<ActorInstance>();
 
-    private void AssignSupportingPairs()
-    {
-        foreach (var pair in participants.alignedPairs)
-        {
-            // Ensure the actorPair is valid for support: aligned, has no allies or enemies between, but can have gaps
-            if (!pair.hasOpponentsBetween && !pair.hasAlliesBetween)
-            {
-                participants.supportingPairs.Add(pair);
-            }
-        }
+//            // Execute each attack from the pair, with actor1 as the designated attacker.
+//            foreach (var attack in attackPair.attackResults)
+//            {
+//                var attacker = attackPair.actor1;
+//                var direction = attacker.GetDirectionTo(attack.Opponent);
+//                var trigger = new Trigger(attacker.Attack(attack));
+//                yield return attacker.action.Bump(direction, trigger);
 
-        // If there are supporting pairs, spawn support visuals
-        if (participants.supportingPairs.Any())
-        {
-            foreach (var actorPair in participants.supportingPairs)
-            {
-                supportLineManager.Spawn(actorPair);
-                if (actorPair.actor1.character == Character.Cleric)
-                    spellManager.EnqueueHeal(actorPair.actor1, actorPair.actor2);
-                else if (actorPair.actor2.character == Character.Cleric)
-                    spellManager.EnqueueHeal(actorPair.actor2, actorPair.actor1);
-            }
-        }
-    }
+//                if (attack.Opponent.isDying)
+//                {
+//                    dyingOpponents.Add(attack.Opponent);
+//                    yield return HandleDeath(attack.Opponent);
+//                }
+//            }
 
+//            if (dyingOpponents.Any())
+//                yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
+//        }
+//    }
 
-    private bool IsBetween(ActorInstance attacker1, ActorInstance attacker2, ActorInstance opponent)
-    {
-        int minX = Mathf.Min(attacker1.location.x, attacker2.location.x);
-        int maxX = Mathf.Max(attacker1.location.x, attacker2.location.x);
-        int minY = Mathf.Min(attacker1.location.y, attacker2.location.y);
-        int maxY = Mathf.Max(attacker1.location.y, attacker2.location.y);
+//    // Process support actions that occur BEFORE the attack.
+//    private void ProcessPreAttackSupport()
+//    {
+//        var supportingPairs = participants.alignedPairs.Where(pair => pair.isSupporter).ToList();
+//        foreach (var supportPair in supportingPairs)
+//        {
+//            ActorInstance a = supportPair.actor1;
+//            ActorInstance b = supportPair.actor2;
 
-        //Check if opponent is within the bounds formed by attacker1 and attacker2
-        return (opponent.location.x > minX && opponent.location.x < maxX) ||
-               (opponent.location.y > minY && opponent.location.y < maxY);
-    }
+//            // They support each other if they aren’t attacking as a pair.
+//            if (a.partner != b)
+//            {
+//                if (!a.supporters.Contains(b))
+//                    a.supporters.Add(b);
+//                if (!b.supporters.Contains(a))
+//                    b.supporters.Add(a);
 
+//                // Enqueue healing: if a is a Cleric, heal b; if b is a Cleric, heal a.
+//                if (a.character == Character.Cleric)
+//                    SpellManager.EnqueueHeal(a, b, castBeforeAttack: true);
+//                if (b.character == Character.Cleric)
+//                    SpellManager.EnqueueHeal(b, a, castBeforeAttack: true);
+//            }
 
-    private List<AttackResult> CalculateAttackResults(ActorPair pair)
-    {
-        //TODO: Somehow combine actor1 and actor 2 attacks?...
-        return pair.opponents.Select(opponent =>
-        {
-            var isHit = Formulas.IsHit(pair.actor1, opponent);
-            var isCriticalHit = Formulas.IsCriticalHit(pair.actor1, opponent);
-            var damage = isHit ? Formulas.CalculateDamage(pair.actor1, opponent) : 0;
-            return new AttackResult
-            {
-                Pair = pair,
-                Opponent = opponent,
-                IsHit = isHit,
-                IsCriticalHit = isCriticalHit,
-                Damage = damage,
-            };
-        }).ToList();
-    }
+//            // Always spawn the support visual.
+//            SupportLineManager.Spawn(supportPair);
+//        }
+//    }
 
-    private IEnumerator ResolveAttack(ActorPair actorPair)
-    {
-        if (actorPair.attackResults == null || actorPair.attackResults.Count == 0)
-            yield break;
+//    // Process support actions that occur AFTER the attack.
+//    private void ProcessPostAttackSupport()
+//    {
+//        var supportingPairs = participants.alignedPairs.Where(pair => pair.isSupporter).ToList();
+//        foreach (var supportPair in supportingPairs)
+//        {
+//            ActorInstance a = supportPair.actor1;
+//            ActorInstance b = supportPair.actor2;
 
-        //Grow and shrink
-        yield return CoroutineHelper.WaitForAll(GameManager.instance, actorPair.actor1.action.Grow(), actorPair.actor2.action.Grow());
-        yield return CoroutineHelper.WaitForAll(GameManager.instance, actorPair.actor1.action.Shrink(), actorPair.actor2.action.Shrink());
+//            if (a.partner != b)
+//            {
+//                if (a.character == Character.Cleric)
+//                    SpellManager.EnqueueHeal(a, b, castBeforeAttack: false);
+//                if (b.character == Character.Cleric)
+//                    SpellManager.EnqueueHeal(b, a, castBeforeAttack: false);
+//            }
+//        }
+//    }
 
-        List<ActorInstance> dyingOpponents = new List<ActorInstance>();
+//    private IEnumerator HandleDeath(ActorInstance target)
+//    {
+//        target.TriggerDie();
+//        yield return Wait.UntilNextFrame();
+//    }
 
-        foreach (var attack in actorPair.attackResults)
-        {
-            //yield return PerformAttack(actorPair.actor1, attack);
-            var attacker = attack.Pair.actor1; //TODO: Somehow combine actor1 and actor2?...
-            var direction = attacker.GetDirectionTo(attack.Opponent);
-            var trigger = new Trigger(attacker.Attack(attack));
-            yield return attacker.action.Bump(direction, trigger);
+//    private void SetupCombat()
+//    {
+//        UpdateSortingOrder();
+//        BoardOverlay.TriggerFadeIn();
+//    }
 
-            // If the opponent is dying, handle death
-            if (attack.Opponent.isDying)
-            {
-                dyingOpponents.Add(attack.Opponent);
-                yield return HandleDeath(attack.Opponent);
-            }
-        }
+//    private void CleanupCombat()
+//    {
+//        BoardOverlay.TriggerFadeOut();
+//        TurnManager.ResetSortingOrder();
+//        ClearCombatParticipants();
+//    }
 
-        //Wait until all deaths have completed before moving to next actorPair
-        if (dyingOpponents.Any())
-            yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
-    }
+//    private void UpdateSortingOrder()
+//    {
+//        foreach (var actor in Actors.Where(x => x.isPlaying))
+//            actor.sortingOrder = SortingOrder.Default;
 
-    private IEnumerator HandleDeath(ActorInstance target)
-    {
-        target.TriggerDie();
-        yield return Wait.UntilNextFrame();
-    }
+//        // Derive attacking pairs from aligned pairs.
+//        var attackingPairs = participants.alignedPairs.Where(pair => pair.isAttacker).ToList();
+//        foreach (var pair in attackingPairs)
+//        {
+//            pair.actor1.sortingOrder = SortingOrder.Attacker;
+//            pair.actor2.sortingOrder = SortingOrder.Attacker;
+//            foreach (var opponent in pair.opponents)
+//                opponent.sortingOrder = SortingOrder.Target;
+//        }
 
+//        var supportingPairs = participants.alignedPairs.Where(pair => pair.isSupporter).ToList();
+//        foreach (var pair in supportingPairs)
+//        {
+//            if (pair.actor1.partner == null)
+//                pair.actor1.sortingOrder = SortingOrder.Supporter;
+//            if (pair.actor2.partner == null)
+//                pair.actor2.sortingOrder = SortingOrder.Supporter;
+//        }
+//    }
 
-    private void UpdateSortingOrder()
-    {
-        foreach (var actor in actors.Where(x => x.isPlaying))
-        {
-            actor.sortingOrder = SortingOrder.Default;
-        }
-
-        foreach (var pair in participants.attackingPairs)
-        {
-            pair.actor1.sortingOrder = SortingOrder.Attacker;
-            pair.actor2.sortingOrder = SortingOrder.Attacker;
-
-            foreach (var opponent in pair.opponents)
-            {
-                opponent.sortingOrder = SortingOrder.Target;
-            }
-        }
-
-        foreach (var actor in participants.supportingPairs)
-        {
-            actor.sortingOrder = SortingOrder.Supporter;
-        }
-
-    }
-
-
-
-    private void ClearCombatParticipants()
-    {
-        foreach (var actor in participants.Get())
-        {
-            actor.attackingPairCount = 0;
-            actor.supportingPairCount = 0;
-            actor.SetDefault();
-        }
-    }
-}
+//    private void ClearCombatParticipants()
+//    {
+//        foreach (var actor in participants.Get())
+//        {
+//            actor.partner = null;
+//            actor.opponents.Clear();
+//            actor.supporters.Clear();
+//            actor.SetDefault();
+//        }
+//    }
+//}

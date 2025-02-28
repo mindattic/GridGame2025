@@ -27,15 +27,13 @@ public class ActionManager : MonoBehaviour
         StartCoroutine(Execute());
     }
 
-    private IEnumerator Execute()
+    public IEnumerator Execute()
     {
         while (pendingActions.Count > 0)
         {
             var action = pendingActions.Remove();
             yield return StartCoroutine(action.Execute());
         }
-
-        turnManager.NextTurn(); // Move to the next turn after all actions are executed
     }
 
 }

@@ -30,14 +30,14 @@ namespace Assets.Scripts.Models
       
         public void Insert(Action item, Action node, InsertOrder order = InsertOrder.Before)
         {
-            var @this = queue.Find(node);
-            if (@this == null)
-                throw new UnityException($"Node `{@this}` not found.");
+            var nodeRef = queue.Find(node);
+            if (nodeRef == null)
+                throw new UnityException($"Node `{nodeRef}` not found.");
 
             if (order == InsertOrder.Before)
-                queue.AddBefore(@this, item);
+                queue.AddBefore(nodeRef, item);
             else
-                queue.AddAfter(@this, item);
+                queue.AddAfter(nodeRef, item);
         }
 
         public Action Remove()

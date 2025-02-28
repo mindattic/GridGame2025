@@ -134,6 +134,16 @@ public class ActorInstance : MonoBehaviour
     public float wiggleSpeed;
     public float wiggleAmplitude;
 
+
+    public bool isAttacker => attackingPairCount > 0;
+    public bool isSupporter => supportingPairCount > 0;
+    public bool IsPureSupporter => supportingPairCount > 0 && attackingPairCount == 0;
+
+
+    public ActorInstance partner;
+    public List<ActorInstance> opponents = new List<ActorInstance>();
+    public List<ActorInstance> supporters = new List<ActorInstance>(); 
+
     //Modules
     public ActorRenderers render = new ActorRenderers();
     public ActorStats stats = new ActorStats();

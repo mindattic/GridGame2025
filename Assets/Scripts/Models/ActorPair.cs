@@ -18,6 +18,9 @@ public class ActorPair
     public bool hasAlliesBetween => allies?.Count > 0;
     public bool hasGapsBetween => gaps?.Count > 0;
 
+    public bool isAttacker => hasOpponentsBetween && !hasAlliesBetween && !hasGapsBetween;
+    public bool isSupporter => !hasOpponentsBetween && !hasAlliesBetween; // Can have gaps
+
     ///<summary>
     ///Property that retrieves either the top-most or right-most actor depending upon axial alignment
     ///</summary>

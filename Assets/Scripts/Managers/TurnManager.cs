@@ -61,14 +61,11 @@ public class TurnManager : MonoBehaviour
             switch (currentPhase)
             {
                 case TurnPhase.Start:
-                    // For player turns, pause in the Move phase.
                     currentTurn++;
                     timerBar.Refill();
                     playerManager.TriggerGlow();
                     break;
-                case TurnPhase.Attack:
-                    actionManager.TriggerExecute();
-                    break;
+                    // We no longer auto-trigger execution in the Attack phase.
             }
         }
         else if (isEnemyTurn)
@@ -76,7 +73,6 @@ public class TurnManager : MonoBehaviour
             switch (currentPhase)
             {
                 case TurnPhase.Start:
-                    // For enemy turns, automatically add phase actions and run Execute().
                     timerBar.Lock();
                     actionManager.Add(new EnemySpawnAction());
 
@@ -84,6 +80,8 @@ public class TurnManager : MonoBehaviour
                     if (!anyReadyEnemies)
                     {
                         actionManager.TriggerExecute();
+                        // No enemy is ready; advance the turn immediately.
+                        NextTurn();
                         break;
                     }
 
