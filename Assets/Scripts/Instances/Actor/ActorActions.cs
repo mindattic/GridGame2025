@@ -13,7 +13,7 @@ namespace Assets.Scripts.Instances.Actor
         private bool isAlive => instance.isAlive;
         protected float percent33 => Constants.percent33;
         protected float tileSize => GameManager.instance.tileSize;
-        private int sortingOrder { get => instance.sortingOrder; set => instance.sortingOrder = value; }
+        //private int sortingOrder { get => instance.sortingOrder; set => instance.sortingOrder = value; }
         private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
@@ -198,7 +198,7 @@ namespace Assets.Scripts.Instances.Actor
             var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, tileSize * percent33);
 
             //Increase sorting order to ensure this tile is on top
-            sortingOrder = SortingOrder.Max;
+            //sortingOrder = SortingOrder.Max;
 
             //Phase 1: Windup (move slightly in the opposite direction)
             float elapsedTime = 0f;
@@ -244,7 +244,7 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //Initialize sorting order and position
-            sortingOrder = SortingOrder.Default;
+            //sortingOrder = SortingOrder.Default;
             position = startPosition;
             rotation = Quaternion.identity;
         }

@@ -5,9 +5,14 @@ using System.Linq;
 
 public class ActorPair
 {
+    protected List<ActorInstance> actors => GameManager.instance.actors;
+    protected List<TileInstance> tiles => GameManager.instance.tiles;
+
+
     //Fields
     public ActorInstance actor1 = null;
     public ActorInstance actor2 = null;
+
     public Axis axis = Axis.None;
     public List<TileInstance> gaps = null;
     public List<ActorInstance> opponents = null;
@@ -47,21 +52,6 @@ public class ActorPair
         }
     }
 
-    public int sortingOrder
-    {
-        get
-        {
-            return actor1.sortingOrder;
-        }
-        set
-        {
-            actor1.sortingOrder = value;
-            actor2.sortingOrder = value;
-            opponents.ForEach(x => x.sortingOrder = value);
-            allies.ForEach(x => x.sortingOrder = value);
-        }
-    }
-
     public float start => axis == Axis.Vertical ? startActor.location.y : startActor.location.x;
     public float end => axis == Axis.Vertical ? endActor.location.y : endActor.location.x;
 
@@ -74,20 +64,36 @@ public class ActorPair
 
         if (axis == Axis.Vertical)
         {
-            opponents = GameManager.instance.actors.Where(x => x.isPlaying && x.isEnemy && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();
-            allies = GameManager.instance.actors.Where(x => x.isPlaying && x.isPlayer && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();
-            gaps = GameManager.instance.tiles.Where(x => !x.IsOccupied && actor1.IsSameColumn(x.location) && AlignmentHelper.IsBetween(x.location.y, end, start)).OrderBy(x => x.location.y).ToList();
+            opponents = GameManager.instance.actors
+                .Where(x => x.isPlaying && x.isEnemy && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start))
+                .OrderBy(x => x.location.y).ToList();
+
+            allies = GameManager.instance.actors
+                .Where(x => x.isPlaying && x.isPlayer && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start))
+                .OrderBy(x => x.location.y).ToList();
+
+            gaps = tiles
+                .Where(x => !x.IsOccupied && actor1.IsSameColumn(x.location) && AlignmentHelper.IsBetween(x.location.y, end, start))
+                .OrderBy(x => x.location.y).ToList();
         }
         else if (axis == Axis.Horizontal)
         {
-            opponents = GameManager.instance.actors.Where(x => x.isPlaying && x.isEnemy && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start)).OrderBy(x => x.location.x).ToList();
-            allies = GameManager.instance.actors.Where(x => x.isPlaying && x.isPlayer && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start)).OrderBy(x => x.location.x).ToList();
-            gaps = GameManager.instance.tiles.Where(x => !x.IsOccupied && actor1.IsSameRow(x.location) && AlignmentHelper.IsBetween(x.location.x, end, start)).OrderBy(x => x.location.x).ToList();
+            opponents = GameManager.instance.actors
+                .Where(x => x.isPlaying && x.isEnemy && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start))
+                .OrderBy(x => x.location.x).ToList();
+
+            allies = GameManager.instance.actors
+                .Where(x => x.isPlaying && x.isPlayer && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start))
+                .OrderBy(x => x.location.x).ToList();
+
+            gaps = tiles
+                .Where(x => !x.IsOccupied && actor1.IsSameRow(x.location) && AlignmentHelper.IsBetween(x.location.x, end, start))
+                .OrderBy(x => x.location.x).ToList();
         }
 
     }
 
-    public bool ContainsActorPair(ActorInstance actor1, ActorInstance actor2)
+    public bool Is(ActorInstance actor1, ActorInstance actor2)
     {
         return (this.actor1 == actor1 && this.actor2 == actor2) || (this.actor1 == actor2 && this.actor2 == actor1);
     }

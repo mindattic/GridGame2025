@@ -20,15 +20,15 @@ public class AttackManager : MonoBehaviour
     /// </summary>
     public void Check()
     {
-        PincerAttackContext context = new PincerAttackContext();
-        ComputeContext(context);
+        PincerAttackParticipants participants = new PincerAttackParticipants();
+        CalculateParticipants(participants);
 
         //If not attacks, goto next turn...
-        if (!context.AttackingPairs.Any())
+        if (!participants.AttackingPairs.Any())
             turnManager.NextTurn();
 
         //...otherwise queue attacks
-        StartCoroutine(EnqueueAttacks(context));
+        StartCoroutine(EnqueueAttacks(participants));
     }
 
 
@@ -37,26 +37,25 @@ public class AttackManager : MonoBehaviour
     /// Calculates attack pairs from the current player team and then
     /// either queues up the attack actions or immediately advances the turn.
     /// </summary>
-    private IEnumerator EnqueueAttacks(PincerAttackContext context)
+    private IEnumerator EnqueueAttacks(PincerAttackParticipants participants)
     {
-        turnManager.SetSortingOrder();
+        SetSortingOrder(participants);
 
         // Queue up the attack-phase actions.
-        actionManager.Add(new PreAttackSupportAction(context));
-        foreach (var pair in context.AttackingPairs)
+        actionManager.Add(new PreAttackSupportAction(participants));
+        foreach (var pair in participants.AttackingPairs)
         {
             actionManager.Add(new PincerAttackAction(pair));
         }
-        actionManager.Add(new PostAttackSupportAction(context));
+        actionManager.Add(new PostAttackSupportAction(participants));
 
         // Optionally trigger visual effects before and after the actions.
-        boardOverlay.TriggerFadeIn();
+        yield return boardOverlay.FadeIn();
         yield return actionManager.Execute();
-        boardOverlay.TriggerFadeOut();
+        yield return boardOverlay.FadeOut();
 
-        // Reset board overlay ordering and clear context data.
-        turnManager.ResetSortingOrder();
-        ClearContext(context);
+        ResetSortingOrder();
+        participants.Clear();
 
         // Advance to the next turn.
         turnManager.NextTurn();
@@ -64,10 +63,12 @@ public class AttackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Builds the attack context by pairing up aligned player actors.
+    /// Builds the attack participants by pairing up aligned player actors.
     /// </summary>
-    private void ComputeContext(PincerAttackContext context)
+    private void CalculateParticipants(PincerAttackParticipants participants)
     {
+        participants.Clear();
+
         var teamMembers = players.Where(x => x.isPlaying);
         foreach (var actor1 in teamMembers)
         {
@@ -81,22 +82,29 @@ public class AttackManager : MonoBehaviour
                 if (!(actor1.IsSameColumn(actor2.location) || actor1.IsSameRow(actor2.location)))
                     continue;
                 // Avoid duplicates.
-                if (context.AlignedPairs.Any(pair => pair.ContainsActorPair(actor1, actor2)))
+                if (participants.AlignedPairs.Any(pair => pair.Is(actor1, actor2)))
                     continue;
                 // Determine the axis based on their alignment.
                 var axis = actor1.IsSameColumn(actor2.location) ? Axis.Vertical : Axis.Horizontal;
                 var pair = new ActorPair(actor1, actor2, axis);
-                context.AlignedPairs.Add(pair);
+                participants.AlignedPairs.Add(pair);
             }
         }
         // For each pair that qualifies as an attacking pair, assign roles and calculate attack results.
-        foreach (var pair in context.AlignedPairs.Where(p => p.isAttacker))
+        foreach (var pair in participants.AlignedPairs.Where(p => p.isAttacker))
         {
             pair.actor1.partner = pair.actor2;
+            pair.actor2.partner = pair.actor1; // Ensuring bidirectional partnership.
+
             pair.attackResults = CalculateAttackResults(pair);
-            pair.actor1.opponents = pair.attackResults.Select(a => a.Opponent).Distinct().ToList();
+
+            // Assign the same opponent list to both actors.
+            var opponents = pair.attackResults.Select(a => a.Opponent).Distinct().ToList();
+            pair.actor1.opponents = opponents;
+            pair.actor2.opponents = opponents;
         }
     }
+
 
     /// <summary>
     /// Computes the attack results for a given pair by determining hit, crit and damage.
@@ -121,11 +129,11 @@ public class AttackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Clears the context by resetting partner, opponents, and supporters for each actor.
+    /// Clears the participants by resetting partner, opponents, and supporters for each actor.
     /// </summary>
-    private void ClearContext(PincerAttackContext context)
+    private void ClearParticipants(PincerAttackParticipants participants)
     {
-        foreach (var pair in context.AlignedPairs)
+        foreach (var pair in participants.AlignedPairs)
         {
             pair.actor1.partner = null;
             pair.actor1.opponents.Clear();
@@ -134,6 +142,52 @@ public class AttackManager : MonoBehaviour
             pair.actor2.opponents.Clear();
             pair.actor2.supporters.Clear();
         }
-        context.AlignedPairs.Clear();
+        participants.AlignedPairs.Clear();
     }
+
+
+
+
+
+    public void SetSortingOrder(PincerAttackParticipants participants)
+    {
+        ResetSortingOrder();
+
+        foreach (var pair in participants.AttackingPairs)
+        {
+            var attackers = new List<ActorInstance>() { pair.actor1, pair.actor2 };
+            var opponents = pair.opponents; // This includes all actors in the .opponents list.
+
+            // Assign sorting order for attackers
+            foreach (var attacker in attackers)
+            {
+                attacker.sortingOrder = SortingOrder.Attacker;
+            }
+
+            // Assign sorting order for opponents
+            foreach (var opponent in opponents)
+            {
+                opponent.sortingOrder = SortingOrder.Opponent;
+            }
+        }
+
+        foreach (var pair in participants.SupportingPairs)
+        {
+            //TODO: Set SortingOrder.Supporter to any pair.actor1 or pair2.actor2 that isn't already an attacker
+            if (!pair.actor1.isAttacker)
+                pair.actor1.sortingOrder = SortingOrder.Supporter;
+            if (!pair.actor2.isAttacker)
+                pair.actor2.sortingOrder = SortingOrder.Supporter;
+        }
+    }
+
+    public void ResetSortingOrder()
+    {
+        foreach (var actor in actors.Where(x => x.isPlaying))
+        {
+            actor.sortingOrder = SortingOrder.Default;
+        }
+    }
+
+
 }

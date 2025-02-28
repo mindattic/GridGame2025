@@ -101,50 +101,12 @@ public class TurnManager : MonoBehaviour
         SetPhase(TurnPhase.Start);
     }
 
-
-    public void SetSortingOrder()
-    {
-        foreach (var actor in players.Where(x => x.isPlaying))
-        {
-            // If the actor is involved in an attack (has a partner and non-empty opponents),
-            // assume they are the attacker.
-            if (actor.partner != null && actor.opponents.Count > 0)
-            {
-                actor.sortingOrder = SortingOrder.Attacker;
-            }
-            // Otherwise, if the actor is an opponent (targeted by an attacker), assign the opponent order.
-            else if (actor.opponents.Count > 0)
-            {
-                actor.sortingOrder = SortingOrder.Opponent;
-            }
-            // Otherwise, if the actor is involved in a support relationship, assign the supporter order.
-            else if (actor.supporters.Count > 0)
-            {
-                actor.sortingOrder = SortingOrder.Supporter;
-            }
-            // Otherwise, use the default sorting order.
-            else
-            {
-                actor.sortingOrder = SortingOrder.Default;
-            }
-        }
-    }
-
-    public void ResetSortingOrder()
-    {
-        foreach (var actor in actors.Where(x => x.isPlaying))
-        {
-            actor.sortingOrder = SortingOrder.Default;
-        }
-    }
-
     public void NextTurn()
     {
         // Switch team for the next turn.
         currentTeam = isPlayerTurn ? Team.Enemy : Team.Player;
         supportLineManager.Clear();
         attackLineManager.Clear();
-        ResetSortingOrder();
         SetPhase(TurnPhase.Start);
     }
 
