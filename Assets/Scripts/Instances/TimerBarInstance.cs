@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TimerBarInstance : MonoBehaviour
 {
-    // External properties
+   //Quick Reference Properties
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected float tileSize => GameManager.instance.tileSize;
     protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
@@ -12,7 +12,7 @@ public class TimerBarInstance : MonoBehaviour
     // Timer settings
     private const float maxDuration = 6f;
     private float timeRemaining = maxDuration;
-    private bool isRunning = false;
+    //private bool isRunning => timeRemaining < maxDuration;
 
     // UI elements (assumed to be SpriteRenderers)
     private SpriteRenderer back;
@@ -53,7 +53,6 @@ public class TimerBarInstance : MonoBehaviour
 
     private IEnumerator Countdown()
     {
-        isRunning = true;
         while (timeRemaining > 0)
         {
             // If debug mode has the timer infinite, simply wait.
@@ -69,7 +68,6 @@ public class TimerBarInstance : MonoBehaviour
             bar.transform.localScale = new Vector3(newXScale, scale.y, scale.z);
             yield return Wait.UntilNextFrame();
         }
-        isRunning = false;
 
         // When the timer expires, force drop (only once).
         selectedPlayerManager.Drop();
@@ -91,7 +89,6 @@ public class TimerBarInstance : MonoBehaviour
     /// </summary>
     public void Pause()
     {
-        isRunning = false;
         if (countdown != null)
         {
             StopCoroutine(countdown);
@@ -101,7 +98,6 @@ public class TimerBarInstance : MonoBehaviour
 
     public void Refill()
     {
-        isRunning = false;
         back.color = ColorHelper.Solid.White;
         bar.color = ColorHelper.Solid.White;
         front.color = ColorHelper.Solid.White;

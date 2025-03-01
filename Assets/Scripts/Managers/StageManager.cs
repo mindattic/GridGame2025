@@ -15,7 +15,7 @@ using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected Fade fade => GameManager.instance.fade;
     protected DataManager dataManager => GameManager.instance.dataManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
@@ -25,7 +25,6 @@ public class StageManager : MonoBehaviour
         get => GameManager.instance.totalCoins;
         set => GameManager.instance.totalCoins = value;
     }
-
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
@@ -168,7 +167,7 @@ public class StageManager : MonoBehaviour
 
     private void CheckStageCompletion()
     {
-        bool allEnemiesDead = enemies.All(x => x.hasSpawned && x.isDead);
+        bool allEnemiesDead = enemies.All(x => x.flags.HasSpawned && x.isDead);
         if (!allEnemiesDead)
             return;
 
@@ -185,7 +184,7 @@ public class StageManager : MonoBehaviour
 
     private void CheckGameOver()
     {
-        bool allPlayersDead = players.All(x => x.hasSpawned && x.isDead);
+        bool allPlayersDead = players.All(x => x.flags.HasSpawned && x.isDead);
         if (!allPlayersDead)
             return;
 

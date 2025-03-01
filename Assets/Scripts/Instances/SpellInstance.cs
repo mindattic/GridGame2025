@@ -1,14 +1,12 @@
 ﻿using Assets.Scripts.Models;
-using Game.Behaviors;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 
 public class SpellInstance : MonoBehaviour
 {
+   //Quick Reference Properties
     protected BoardInstance board => GameManager.instance.board;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected VFXManager vfxManager => GameManager.instance.vfxManager;

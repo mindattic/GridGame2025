@@ -316,7 +316,7 @@ public static class Intermission
 
         public static class Player
         {
-            public static float Attack = Interval.HalfSecond;
+            public static float Attack = 0;
         }
 
         public static class Portrait

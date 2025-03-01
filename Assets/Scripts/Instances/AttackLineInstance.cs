@@ -6,7 +6,7 @@ namespace Game.Instances
 {
     public class AttackLineInstance : MonoBehaviour
     {
-        //External properties
+       //Quick Reference Properties
         protected float tileSize => GameManager.instance.tileSize;
         protected BoardInstance board => GameManager.instance.board;
         public Transform parent { get => gameObject.transform.parent; set => gameObject.transform.SetParent(value, true); }
@@ -49,7 +49,7 @@ namespace Game.Instances
 
             startPosition = actorPair.startActor.position;
             endPosition = actorPair.endActor.position;
-            
+
             Vector3[] points = { };
             Vector3 ul;
             Vector3 ur;

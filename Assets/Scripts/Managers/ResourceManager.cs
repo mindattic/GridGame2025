@@ -11,7 +11,7 @@ using UnityEngine;
 
 public class ResourceManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected DataManager dataManager => GameManager.instance.dataManager;
     protected LogManager logManager => GameManager.instance.logManager;
 

@@ -5,6 +5,7 @@ namespace Assets.Scripts.Actions
 {
     public class CastSpellAction : PhaseAction
     {
+       //Quick Reference Properties
         protected SpellManager spellManager => GameManager.instance.spellManager;
         private SpellSettings spell;
 

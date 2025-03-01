@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TooltipInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
 
     //Internal properties
@@ -39,7 +39,7 @@ public class TooltipInstance : MonoBehaviour
     TextMeshPro textMesh;
     Vector2 offset;
 
- 
+
     //Method which is used for initialization tasks that need to occur before the game starts 
     void Awake()
     {

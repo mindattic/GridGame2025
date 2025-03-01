@@ -1,4 +1,3 @@
-using Game.Behaviors.Actor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,12 +9,12 @@ namespace Game.Behaviors
 {
     public class Card : MonoBehaviour
     {
-        //External properties
+       //Quick Reference Properties
         protected float cardPortraitSize => GameManager.instance.cardPortraitSize;
         protected DataManager dataManager => GameManager.instance.dataManager;
         protected ResourceManager resourceManager => GameManager.instance.resourceManager;
         protected List<ActorInstance> actors => GameManager.instance.actors;
-        
+
 
 
         //Fields

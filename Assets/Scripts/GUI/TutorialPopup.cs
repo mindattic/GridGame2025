@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
-using Assets.Scripts.Models;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.GUI
 {
     public class TutorialPopup : MonoBehaviour
     {
-        //External properties
+       //Quick Reference Properties
         protected float previousGameSpeed { get => GameManager.instance.previousGameSpeed; set => GameManager.instance.previousGameSpeed = value; }
         protected ResourceManager resourceManager => GameManager.instance.resourceManager;
         protected DebugManager debugManager => GameManager.instance.debugManager;
@@ -31,7 +31,7 @@ namespace Assets.Scripts.GUI
         private void Start()
         {
             //RectTransform rect;
-            
+
             //rect = panel.GetComponent<RectTransform>();
             //rect.sizeDelta = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
@@ -57,7 +57,7 @@ namespace Assets.Scripts.GUI
             if (!debugManager.showTutorials || !hasPages) return;
 
             //Time.timeScale = 0f;
-            this.currentPage = currentPage;       
+            this.currentPage = currentPage;
             panel.SetActive(true);
             Navigate();
         }
@@ -94,7 +94,7 @@ namespace Assets.Scripts.GUI
             }
         }
 
-       
+
 
         public void Close()
         {

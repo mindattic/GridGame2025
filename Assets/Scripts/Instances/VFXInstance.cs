@@ -1,14 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class VFXInstance : MonoBehaviour
 {
 
+   //Quick Reference Properties
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected Vector3 tileScale => GameManager.instance.tileScale;
 
+
+    //Properties
     public Transform parent
     {
         get => gameObject.transform.parent;

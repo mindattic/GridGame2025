@@ -1,11 +1,9 @@
-﻿using Assets.Scripts.Behaviors.Actor;
-using Assets.Scripts.Instances.Actor;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class ActorHealthBar
 {
-    //External properties
+   //Quick Reference Properties
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
     protected ActorRenderers render => instance.render;
     protected ActorStats stats => instance.stats;
@@ -16,7 +14,7 @@ public class ActorHealthBar
     //Fields
     private ActorInstance instance;
     public bool isDraining;
-    
+
 
     public void Initialize(ActorInstance parentInstance)
     {

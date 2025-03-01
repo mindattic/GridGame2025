@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 public class BackgroundInstance : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
 
     //Fields

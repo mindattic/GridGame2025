@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class PortraitManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;

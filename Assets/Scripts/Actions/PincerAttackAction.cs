@@ -61,6 +61,7 @@ namespace Assets.Scripts.Models
             }
 
             // Wait until all dying opponents' HP bar is fully drained
+            //TODO: Add some sort of emergency release since this has a theoretical ability to fail...
             if (dyingOpponents.Any())
                 yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
 

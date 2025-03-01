@@ -1,12 +1,11 @@
-﻿using TMPro;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.GUI
 {
     public class DebugButtonPanel : MonoBehaviour
     {
-        //External properties
+       //Quick Reference Properties
         protected BoardInstance board => GameManager.instance.board;
         protected StageManager stageManager => GameManager.instance.stageManager;
         protected DebugManager debugManager => GameManager.instance.debugManager;

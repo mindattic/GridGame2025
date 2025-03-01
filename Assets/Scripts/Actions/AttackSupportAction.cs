@@ -17,9 +17,6 @@ namespace Assets.Scripts.Actions
 
         public override IEnumerator Execute()
         {
-            // Draw line from supporter to attacker
-            GameManager.instance.supportLineManager.Spawn(supporter, attacker);
-
             // If supporter is a Cleric, heal the attacker
             if (supporter.character == Character.Cleric)
             {

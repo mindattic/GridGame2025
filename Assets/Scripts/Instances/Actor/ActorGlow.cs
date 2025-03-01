@@ -5,7 +5,7 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorGlow
     {
-        //External properties
+       //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected Vector3 tileScale => GameManager.instance.tileScale;
         protected ActorRenderers render => instance.render;
@@ -14,7 +14,7 @@ namespace Assets.Scripts.Instances.Actor
         private bool isPlayer => instance.isPlayer;
         private bool isEnemy => instance.isEnemy;
         protected AnimationCurve glowCurve => instance.glowCurve;
-    
+
         //Fields
 
         private ActorInstance instance;

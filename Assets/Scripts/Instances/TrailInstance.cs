@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class TrailInstance : MonoBehaviour
 {
-
+   //Quick Reference Properties
     protected TrailManager trailManager => GameManager.instance.trailManager;
     protected Vector3 tileScale => GameManager.instance.tileScale;
 
+
+    //Properties
     public Transform parent
     {
         get => gameObject.transform.parent;
@@ -32,9 +33,6 @@ public class TrailInstance : MonoBehaviour
         get => gameObject.transform.localScale;
         set => gameObject.transform.localScale = value;
     }
-
-
-
 
     public IEnumerator Spawn(TrailResource trail, Vector3 position, Trigger trigger = default)
     {

@@ -6,7 +6,7 @@ namespace Assets.Scripts.Models
 {
     public class EnemyMoveAction : Action
     {
-        //External properties
+       //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected ActionManager actionManager => GameManager.instance.actionManager;
         protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;

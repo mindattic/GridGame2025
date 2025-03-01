@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class FootstepManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected BoardInstance board => GameManager.instance.board;

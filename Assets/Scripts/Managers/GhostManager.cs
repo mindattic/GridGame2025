@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GhostManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     protected BoardInstance board => GameManager.instance.board;
 

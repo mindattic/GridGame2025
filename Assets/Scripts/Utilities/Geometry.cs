@@ -287,6 +287,25 @@ public class Geometry
 
     }
 
+
+    public static ActorInstance GetStartActor(ActorInstance actor1, ActorInstance actor2)
+    {
+        // Determine axis based on Y position
+        Axis axis = Math.Abs(actor1.location.y - actor2.location.y) > Math.Abs(actor1.location.x - actor2.location.x)
+            ? Axis.Vertical
+            : Axis.Horizontal;
+
+        return GetStartActor(actor1, actor2, axis);
+    }
+
+    public static ActorInstance GetStartActor(ActorInstance actor1, ActorInstance actor2, Axis axis)
+    {
+        return axis == Axis.Horizontal
+            ? actor1.location.x <= actor2.location.x ? actor1 : actor2
+            : actor1.location.y >= actor2.location.y ? actor1 : actor2;
+    }
+
+
     public static Quaternion Rotation(float x, float y, float z)
     {
         return Quaternion.Euler(new Vector3(x, y, z));

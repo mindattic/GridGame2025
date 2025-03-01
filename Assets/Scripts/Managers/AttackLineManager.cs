@@ -52,15 +52,6 @@ namespace Game.Behaviors
             attackLines.Clear();
         }
 
-        public void Clear()
-        {
-            foreach (var instance in attackLines.Values)
-            {
-                Destroy(instance.gameObject);
-            }
-            attackLines.Clear();
-        }
-
         private (Vector2Int, Vector2Int) GetKey(ActorPair actorPair)
         {
             return (actorPair.startActor.location, actorPair.endActor.location);

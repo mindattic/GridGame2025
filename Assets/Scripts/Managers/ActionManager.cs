@@ -6,7 +6,7 @@ using Action = Assets.Scripts.Models.PhaseAction;
 public class ActionManager : MonoBehaviour
 {
 
-    // External properties
+   //Quick Reference Properties
     protected TurnManager turnManager => GameManager.instance.turnManager;
 
     //Fields

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class PauseManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     public bool IsPaused => Time.timeScale == 0f;

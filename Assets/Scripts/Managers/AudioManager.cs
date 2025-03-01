@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected LogManager logManager => GameManager.instance.logManager;
     protected AudioSource soundSource => GameManager.instance.soundSource;

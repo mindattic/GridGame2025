@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SelectedPlayerManager : MonoBehaviour
 {
-    // External properties
+   //Quick Reference Properties
     protected Card cardManager => GameManager.instance.cardManager;
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;

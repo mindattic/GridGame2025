@@ -30,6 +30,25 @@ public class SupportLineManager : MonoBehaviour
         instance.Spawn(actor1, actor2);
     }
 
+    public void Despawn(ActorInstance actor1, ActorInstance actor2)
+    {
+        var key = GetKey(actor1, actor2);
+        if (supportLines.TryGetValue(key, out var instance))
+        {
+            instance.TriggerDespawn();
+            supportLines.Remove(key);
+        }
+    }
+
+    public void DespawnAll()
+    {
+        foreach (var instance in supportLines.Values)
+        {
+            instance.TriggerDespawn();
+        }
+        supportLines.Clear();
+    }
+
     public void Destroy(ActorInstance actor1, ActorInstance actor2)
     {
         var key = GetKey(actor1, actor2);
@@ -38,15 +57,6 @@ public class SupportLineManager : MonoBehaviour
             instance.Destroy();
             supportLines.Remove(key);
         }
-    }
-
-    public void Clear()
-    {
-        foreach (var instance in supportLines.Values)
-        {
-            instance.Destroy();
-        }
-        supportLines.Clear();
     }
 
     private (Vector2Int, Vector2Int) GetKey(ActorInstance actor1, ActorInstance actor2)

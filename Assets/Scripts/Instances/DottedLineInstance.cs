@@ -1,46 +1,34 @@
 using Game.Behaviors;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DottedLineInstance : MonoBehaviour
 {
-
+   //Quick Reference Properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
     protected LogManager logManager => GameManager.instance.logManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
     protected bool hasSelectedPlayer => selectedPlayer != null;
-   
 
-
-
+    //Fields
     SpriteRenderer spriteRenderer;
     public Vector2Int location;
     public DottedLineSegment segment;
-    //public bool isOccupied => hasSelectedPlayer && selectedPlayer.location == currentLocation;
+    public List<Vector2Int> connectedLocations = new List<Vector2Int>();
 
+    //Properties
     public Vector2Int top => location + new Vector2Int(0, -1);
     public Vector2Int right => location + new Vector2Int(1, 0);
     public Vector2Int bottom => location + new Vector2Int(0, 1);
     public Vector2Int left => location + new Vector2Int(-1, 0);
 
-    public List<Vector2Int> connectedLocations = new List<Vector2Int>();
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-
     }
-
-    private void Start()
-    {
-
-    }
-
 
     public Transform parent
     {
@@ -60,14 +48,11 @@ public class DottedLineInstance : MonoBehaviour
         set => gameObject.transform.rotation = value;
     }
 
-
-
     public Sprite sprite
     {
         get => spriteRenderer.sprite;
         set => spriteRenderer.sprite = value;
     }
-
     public void SetColor()
     {
         spriteRenderer.color = ColorHelper.Translucent.Yellow;

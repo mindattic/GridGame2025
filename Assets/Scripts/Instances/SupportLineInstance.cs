@@ -1,11 +1,10 @@
-using Assets.Scripts.Models;
 using System;
 using System.Collections;
 using UnityEngine;
 
 public class SupportLineInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     protected BoardInstance board => GameManager.instance.board;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;

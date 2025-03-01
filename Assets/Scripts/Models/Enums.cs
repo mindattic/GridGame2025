@@ -26,9 +26,8 @@ public enum Direction
 
 public enum Axis
 {
-    None,
-    Vertical,
-    Horizontal
+    Horizontal,
+    Vertical
 }
 
 public enum TurnPhase

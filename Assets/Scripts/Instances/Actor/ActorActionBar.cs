@@ -1,11 +1,10 @@
 using Assets.Scripts.Behaviors.Actor;
-using Assets.Scripts.Instances.Actor;
 using System.Collections;
 using UnityEngine;
 
 public class ActorActionBar
 {
-    //External properties
+   //Quick Reference Properties
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected ActorFlags flags => instance.flags;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
@@ -24,7 +23,7 @@ public class ActorActionBar
         this.instance = parentInstance;
     }
 
-   
+
     private Vector3 GetScale(float value)
     {
         return new Vector3(

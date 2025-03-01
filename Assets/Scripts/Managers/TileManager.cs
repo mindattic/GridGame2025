@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected List<TileInstance> tiles => GameManager.instance.tiles;
 
     public void Reset()

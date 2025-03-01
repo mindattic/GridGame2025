@@ -3,29 +3,23 @@ using System.Linq;
 
 namespace Assets.Scripts.Models
 {
-    //public class PincerAttackParticipantCollection
-    //{
-    //    public List<ActorPair> AlignedPairs = new List<ActorPair>();
+    /// <summary>
+    /// Each pair of attackers (e.g. A and B), plus the opponents they sandwich
+    /// and any supporters for each attacker.
+    /// </summary>
+    public class PincerAttackParticipants
+    {
+        public ActorInstance attacker1;
+        public ActorInstance attacker2;
 
-    //    public List<ActorPair> AttackingPairs
-    //    {
-    //        get { return AlignedPairs.Where(pair => pair.isAttacker).ToList(); }
-    //    }
+        // Enemies (opponents) in between attacker1 and attacker2
+        public List<ActorInstance> opponents = new();
 
-    //    public List<ActorPair> SupportingPairs
-    //    {
-    //        get { return AlignedPairs.Where(pair => pair.isSupporter).ToList(); }
-    //    }
+        // Attack result data stored here, so PincerAttackAction can see it
+        public List<AttackResult> attacks = new();
 
-
-    //    public void Clear()
-    //    {
-    //        AlignedPairs.Clear();
-    //    }
-
-    //}
-
-
-
-
+        // Potential same-team supporters who have clear line of sight to each attacker
+        public List<ActorInstance> supportersOfAttacker1 = new();
+        public List<ActorInstance> supportersOfAttacker2 = new();
+    }
 }

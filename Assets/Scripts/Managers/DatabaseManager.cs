@@ -43,7 +43,7 @@
 //       }
 
 
-//       //External properties
+//       //Quick Reference Properties
 //       protected LogManager logManager => GameManager.trailInstance.logManager;
 //       #endregion
 

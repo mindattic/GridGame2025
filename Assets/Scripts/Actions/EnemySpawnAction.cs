@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Linq;
-using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
     public class EnemySpawnAction : PhaseAction
     {
+       //Quick Reference Properties
         protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
 
         public EnemySpawnAction() { }

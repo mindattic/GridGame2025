@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ActorThumbnail
 {
-    //External properties
+   //Quick Reference Properties
     protected DataManager dataManager => GameManager.instance.dataManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;

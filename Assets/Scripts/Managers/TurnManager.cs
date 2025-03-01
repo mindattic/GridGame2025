@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    // External properties
+    //Quick Reference Properties
     protected AttackLineManager attackLineManager => GameManager.instance.attackLineManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
@@ -14,12 +14,12 @@ public class TurnManager : MonoBehaviour
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected PlayerManager playerManager => GameManager.instance.playerManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
-
     protected TimerBarInstance timerBar => GameManager.instance.timerBar;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
 
+    //Properties
     public bool isPlayerTurn => currentTeam.Equals(Team.Player);
     public bool isEnemyTurn => currentTeam.Equals(Team.Enemy);
     public bool isStartPhase => currentPhase.Equals(TurnPhase.Start);
@@ -45,7 +45,7 @@ public class TurnManager : MonoBehaviour
     }
 
 
-  
+
     void Awake()
     {
         onTurnPhaseChanged += (TurnPhase turnPhase) => OnTurnPhaseChanged(turnPhase);
@@ -105,8 +105,8 @@ public class TurnManager : MonoBehaviour
     {
         // Switch team for the next turn.
         currentTeam = isPlayerTurn ? Team.Enemy : Team.Player;
-        supportLineManager.Clear();
-        attackLineManager.Clear();
+        supportLineManager.DespawnAll();
+        attackLineManager.DespawnAll();
         SetPhase(TurnPhase.Start);
     }
 

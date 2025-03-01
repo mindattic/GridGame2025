@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PortraitInstance : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
 
     public Transform parent
     {

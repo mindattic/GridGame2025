@@ -14,7 +14,7 @@ using static Unity.VisualScripting.Member;
 
 public class DebugManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected List<ActorInstance> actors => GameManager.instance.actors;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;

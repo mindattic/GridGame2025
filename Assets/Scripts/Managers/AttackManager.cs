@@ -4,27 +4,8 @@ using Assets.Scripts.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-
-/// <summary>
-/// Each pair of attackers (e.g. A and B), plus the opponents they sandwich
-/// and any supporters for each attacker.
-/// </summary>
-public class PincerAttackParticipants
-{
-    public ActorInstance attacker1;
-    public ActorInstance attacker2;
-
-    // Enemies (opponents) in between attacker1 and attacker2
-    public List<ActorInstance> opponents = new();
-
-    // Attack result data stored here, so PincerAttackAction can see it
-    public List<AttackResult> attacks = new();
-
-    // Potential same-team supporters who have clear line of sight to each attacker
-    public List<ActorInstance> supportersOfAttacker1 = new();
-    public List<ActorInstance> supportersOfAttacker2 = new();
-}
 
 /// <summary>
 /// A container with all of the "bookend pairs" found for x certain team.
@@ -40,17 +21,13 @@ public class PincerAttackParticipantCollection
 /// </summary>
 public class AttackManager : MonoBehaviour
 {
+   //Quick Reference Properties
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
     protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
-
-    // Shortcut to the global list of actors
+    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected List<ActorInstance> actors => GameManager.instance.actors;
-
-    // Quick references
-    protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
-    protected IQueryable<ActorInstance> players => GameManager.instance.players;
 
     /// <summary>
     /// Check for any pincer attacks for the player's team. If found, run them. Otherwise, next turn.
@@ -178,6 +155,9 @@ public class AttackManager : MonoBehaviour
             // attacker1's supporters
             foreach (var supporter in pair.supportersOfAttacker1)
             {
+                // Draw line from supporter to attacker
+                GameManager.instance.supportLineManager.Spawn(supporter, pair.attacker1);
+
                 // Add an action that does support logic for (attacker1, supporter)
                 actionManager.Add(new AttackSupportAction(pair.attacker1, supporter));
             }
@@ -185,6 +165,10 @@ public class AttackManager : MonoBehaviour
             // attacker2's supporters
             foreach (var supporter in pair.supportersOfAttacker2)
             {
+                // Draw line from supporter to attacker
+                GameManager.instance.supportLineManager.Spawn(supporter, pair.attacker2);
+
+                // Add an action that does support logic for (attacker2, supporter)
                 actionManager.Add(new AttackSupportAction(pair.attacker2, supporter));
             }
         }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
-
-namespace Assets.Scripts.Instances.Actor
+﻿namespace Assets.Scripts.Instances.Actor
 {
     public class ActorParallax
     {
@@ -25,7 +21,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         public void Assign(Direction attackerDirection)
-        {       
+        {
             this.attackerDirection = attackerDirection;
 
 

@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class TileInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected List<ActorInstance> actors => GameManager.instance.actors;
     public bool IsOccupied => actors.Any(x => x != null && x.isPlaying && x.location == location);

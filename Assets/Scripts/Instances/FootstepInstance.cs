@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FootstepInstance : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
 

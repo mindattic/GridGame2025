@@ -5,7 +5,7 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorActions
     {
-        //External properties
+        //Quick Reference Properties
         protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
         protected ActorRenderers render => instance.render;
         protected ActorStats stats => instance.stats;
@@ -13,19 +13,22 @@ namespace Assets.Scripts.Instances.Actor
         private bool isAlive => instance.isAlive;
         protected float percent33 => Constants.percent33;
         protected float tileSize => GameManager.instance.tileSize;
-        //private int sortingOrder { get => instance.sortingOrder; set => instance.sortingOrder = value; }
         private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
         protected Vector3 tileScale => GameManager.instance.tileScale;
 
         //Fields
-
         private ActorInstance instance;
+        private float wiggleSpeed;
+        private float wiggleAmplitude;
 
         public void Initialize(ActorInstance parentInstance)
         {
             this.instance = parentInstance;
+
+            wiggleSpeed = tileSize * 24f;
+            wiggleAmplitude = 15f; //Amplitude (difference from -45 degrees)
         }
 
         public void TriggerShake(float intensity, float duration = 0, Trigger trigger = default)
@@ -495,7 +498,7 @@ namespace Assets.Scripts.Instances.Actor
             while (instance.stats.AP == instance.stats.MaxAP)
             {
                 //Calculate rotation angle using sine wave
-                rotZ = start + Mathf.Sin(Time.time * instance.wiggleSpeed) * instance.wiggleAmplitude;
+                rotZ = start + Mathf.Sin(Time.time * wiggleSpeed) * wiggleAmplitude;
 
                 //Apply the rotation
                 render.weaponIcon.transform.rotation = Quaternion.Euler(0, 0, rotZ);
@@ -531,7 +534,6 @@ namespace Assets.Scripts.Instances.Actor
             //Before:
             float timeElapsed = 0f;
             float amplitude = 10f;
-            float speed = instance.wiggleSpeed; //Wiggle spinSpeed
             float dampingRate = 0.99f; //Factor to reduce amplitude each cycle (closer to 1 = slower decay)
             float cutoff = 0.1f;
 
@@ -541,7 +543,7 @@ namespace Assets.Scripts.Instances.Actor
             while (amplitude > cutoff)
             {
                 timeElapsed += Time.deltaTime;
-                float rotZ = Mathf.Sin(timeElapsed * speed) * amplitude;
+                float rotZ = Mathf.Sin(timeElapsed * wiggleSpeed) * amplitude;
                 render.turnDelayText.transform.rotation = Quaternion.Euler(0, 0, rotZ);
                 amplitude *= dampingRate;
 
@@ -552,7 +554,7 @@ namespace Assets.Scripts.Instances.Actor
             float currentZ = render.turnDelayText.transform.rotation.eulerAngles.z;
             while (Mathf.Abs(Mathf.DeltaAngle(currentZ, 0f)) > cutoff)
             {
-                timeElapsed += Time.deltaTime * speed;
+                timeElapsed += Time.deltaTime * wiggleSpeed;
                 currentZ = Mathf.LerpAngle(currentZ, 0f, timeElapsed);
                 render.turnDelayText.transform.rotation = Quaternion.Euler(0, 0, currentZ);
                 yield return Wait.OneTick();

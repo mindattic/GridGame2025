@@ -1,11 +1,8 @@
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class CoinInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected CoinBarInstance coinBar => GameManager.instance.coinBar;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CoinBarInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected int totalCoins => GameManager.instance.totalCoins;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BoardInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     protected ProfileManager profileManager => GameManager.instance.profileManager;
     protected StageManager stageManager => GameManager.instance.stageManager;
@@ -45,7 +45,7 @@ public class BoardInstance : MonoBehaviour
         bounds.Bottom = offset.y - (tileSize * rowCount) - tileSize / 2;
         bounds.Left = offset.x + tileSize / 2;
         center = new Vector2(
-            (bounds.Left + bounds.Right) / 2, 
+            (bounds.Left + bounds.Right) / 2,
             (bounds.Top + bounds.Bottom) / 2);
     }
 
@@ -105,7 +105,7 @@ public enum BoardPoint
     TopLeft,
     TopCenter,
     TopRight,
-    MiddleLeft, 
+    MiddleLeft,
     MiddleCenter,
     MiddleRight,
     BottomLeft,

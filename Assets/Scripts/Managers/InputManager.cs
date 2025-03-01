@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected PauseManager pauseManager => GameManager.instance.pauseManager;
     protected ActorInstance focusedActor => GameManager.instance.focusedActor;
     protected ActorInstance previousSelectedPlayer => GameManager.instance.previousSelectedPlayer;

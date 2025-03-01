@@ -1,11 +1,10 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class DamageTextInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     public Transform parent
     {
@@ -33,8 +32,6 @@ public class DamageTextInstance : MonoBehaviour
     public void Spawn(string text, Vector3 position)
     {
         textMesh.text = text;
-        //var x = boardPosition.x + -(tileSize / 12 * Random.Percent) + (tileSize / 12 * Random.Percent);
-        //var y = boardPosition.y + -(tileSize / 12 * Random.Percent) + (tileSize / 12 * Random.Percent);
         var x = position.x;
         var y = position.y + tileSize / 4;
         transform.position = new Vector3(x, y, 0);

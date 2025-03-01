@@ -6,11 +6,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class ActorInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;
     protected CoinManager coinManager => GameManager.instance.coinManager;
@@ -48,7 +47,7 @@ public class ActorInstance : MonoBehaviour
     public bool isPlaying => isActive && isAlive;
     public bool isDying => isActive && stats.HP < 1;
     public bool isDead => !isActive && !isAlive;
-    public bool isSpawnable => !hasSpawned && spawnTurn <= turnManager.currentTurn;
+    public bool isSpawnable => !flags.HasSpawned && spawnTurn <= turnManager.currentTurn;
     public bool hasMaxAP => stats.AP == stats.MaxAP;
 
     public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isPlayerInvincible);
@@ -129,46 +128,7 @@ public class ActorInstance : MonoBehaviour
     public Vector2Int location;
     public Team team = Team.Neutral;
     public int spawnTurn = 0;
-    public bool hasSpawned = false;
-    public float wiggleSpeed;
-    public float wiggleAmplitude;
-
-    public bool hasPartner => partner != null;
-
-    public bool isAttacker => hasPartner;
-    public bool isSupporter => supporting.Any();
-    public bool IsPureSupporter => !isAttacker && isSupporter;
-
-
-    public ActorInstance partner = null;
-    public List<ActorInstance> opponents = new List<ActorInstance>();
-    public List<ActorInstance> supporters = new List<ActorInstance>(); // Who supports this actor
-    public List<ActorInstance> supporting = new List<ActorInstance>(); // Who this actor is supporting
-
-
-    public void AddSupporter(ActorInstance supporter)
-    {
-        if (!supporters.Contains(supporter))
-            supporters.Add(supporter);
-
-        if (!supporter.supporting.Contains(this))
-            supporter.supporting.Add(this);
-    }
-
-    public void RemoveSupporter(ActorInstance supporter)
-    {
-        supporters.Remove(supporter);
-        supporter.supporting.Remove(this);
-    }
-
-
-
-
-
-
-
-
-
+  
     //Modules
     public ActorRenderers render = new ActorRenderers();
     public ActorStats stats = new ActorStats();
@@ -233,8 +193,7 @@ public class ActorInstance : MonoBehaviour
         parallax.Initialize(this);
         thumbnail.Initialize(this);
 
-        wiggleSpeed = tileSize * 24f;
-        wiggleAmplitude = 15f;  //Amplitude (difference from -45 degrees)
+       
 
         //Events
         onOverlapDetected += (actor) => move.OnOverlapDetected(actor);
@@ -296,7 +255,7 @@ public class ActorInstance : MonoBehaviour
         if (isSpawnable)
         {
             gameObject.SetActive(true);
-            hasSpawned = true;
+            flags.HasSpawned = true;
             action.TriggerFadeIn();
             action.TriggerSpin360();
         }

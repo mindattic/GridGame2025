@@ -1,11 +1,9 @@
-using Game.Behaviors.Actor;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GhostInstance : MonoBehaviour
 {
-    //External properties
+   //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     public Transform parent
     {

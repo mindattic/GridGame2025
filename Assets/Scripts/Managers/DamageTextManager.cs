@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DamageTextManager : MonoBehaviour
 {
-    //External properties
+    //Quick Reference Properties
     protected Canvas canvas3D => GameManager.instance.canvas3D;
 
     //Fields

@@ -7,7 +7,7 @@ public class ActorPair
 {
     public ActorInstance actor1;
     public ActorInstance actor2;
-    public Axis axis = Axis.None;
+    public Axis axis = Axis.Horizontal;
 
     public ActorPair(ActorInstance actor1, ActorInstance actor2, Axis axis)
     {
