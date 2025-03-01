@@ -46,6 +46,7 @@ public class DebugWindow : EditorWindow
     private StageManager stageManager;
     private LogManager logManager;
     private ProfileManager profileManager;
+    private SelectedPlayerManager selectedPlayerManager;
 
     private GameSpeedOption selectedGameSpeed = GameSpeedOption.Normal;
     private DebugOptions selectedOption = DebugOptions.None;
@@ -145,6 +146,7 @@ public class DebugWindow : EditorWindow
         stageManager = gameManager.stageManager;
         logManager = gameManager.logManager;
         profileManager = gameManager.profileManager;
+        selectedPlayerManager = gameManager.selectedPlayerManager;
 
         //Assign initial flags
         debugManager.showActorNameTag = false;
@@ -194,11 +196,13 @@ public class DebugWindow : EditorWindow
             || turnManager == null
             || stageManager == null
             || logManager == null
-            || profileManager == null)
+            || profileManager == null
+            || selectedPlayerManager == null)
             return;
 
         GUILayout.BeginVertical();
 
+        RenderKeyboard();
         RenderStats();
         RenderCheckboxes();
         RenderGameSpeedDropdown();
@@ -213,6 +217,35 @@ public class DebugWindow : EditorWindow
         GUILayout.EndVertical();
     }
 
+    private void RenderKeyboard()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Keyboard");
+        GUILayout.EndHorizontal();
+
+        //Row 1: "W" (Up Arrow)
+        GUILayout.BeginHorizontal();
+        GUILayout.Space(38); // Add space to center "W"
+        if (GUILayout.Button("\u2191", GUILayout.Width(32), GUILayout.Height(32)))
+            OnKeyUp();
+        GUILayout.Space(38); // Right-side space for symmetry
+        GUILayout.EndHorizontal();
+
+        //"A", "S", "D"
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("\u2190", GUILayout.Width(32), GUILayout.Height(32)))
+            OnKeyLeft();
+
+        if (GUILayout.Button("\u2193", GUILayout.Width(32), GUILayout.Height(32)))
+            OnKeyDown(); 
+
+        if (GUILayout.Button("\u2192", GUILayout.Width(32), GUILayout.Height(32)))
+            OnKeyRight();
+
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10);
+    }
 
     private void RenderStats()
     {
@@ -563,6 +596,40 @@ public class DebugWindow : EditorWindow
     {
         stageManager.Next();
     }
+
+
+    private void OnKeyUp()
+    {
+        if (!GameManager.instance.hasFocusedActor) return;
+
+        var focusedActor = GameManager.instance.focusedActor;
+        focusedActor.Teleport(focusedActor.location + Vector2Int.down);
+    }
+
+    private void OnKeyDown()
+    {
+        if (!GameManager.instance.hasFocusedActor) return;
+
+        var focusedActor = GameManager.instance.focusedActor;
+        focusedActor.Teleport(focusedActor.location + Vector2Int.up);
+    }
+
+    private void OnKeyLeft()
+    {
+        if (!GameManager.instance.hasFocusedActor) return;
+
+        var focusedActor = GameManager.instance.focusedActor;
+        focusedActor.Teleport(focusedActor.location + Vector2Int.left);
+    }
+
+    private void OnKeyRight()
+    {
+        if (!GameManager.instance.hasFocusedActor) return;
+
+        var focusedActor = GameManager.instance.focusedActor;
+        focusedActor.Teleport(focusedActor.location + Vector2Int.right);
+    }
+
 
     //private void OnEraseDatabaseClick()
     //{

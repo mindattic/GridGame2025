@@ -97,6 +97,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Fade fade;
 
 
+    public bool hasFocusedActor => focusedActor != null;
     public bool hasSelectedPlayer => selectedPlayer != null;
     public UnityEvent<Vector2Int> onSelectedPlayerLocationChanged;
 
