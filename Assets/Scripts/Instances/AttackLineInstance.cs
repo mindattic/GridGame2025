@@ -1,4 +1,3 @@
-using Assets.Scripts.Models;
 using System;
 using System.Collections;
 using UnityEngine;

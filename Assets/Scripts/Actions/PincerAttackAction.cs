@@ -1,48 +1,70 @@
-﻿using Assets.Scripts.Models;
-using Assets.Scripts.Utilities;
+﻿using Assets.Scripts.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
-
-// PhaseAction for processing a single attacking actorPair.
-public class PincerAttackAction : PhaseAction
+namespace Assets.Scripts.Models
 {
-    private ActorPair actorPair;
-    public PincerAttackAction(ActorPair pair)
+    // PhaseAction for processing a single attacking PincerAttackParticipants.
+    public class PincerAttackAction : PhaseAction
     {
-        this.actorPair = pair;
-    }
-    public override IEnumerator Execute()
-    {
-        if (actorPair.attackResults == null || !actorPair.attackResults.Any())
-            yield break;
+        private PincerAttackParticipants participants;
 
-        //GameManager.instance.attackLineManager.Spawn(actorPair);
-        yield return CoroutineHelper.WaitForAll(GameManager.instance,
-            actorPair.actor1.action.Grow(), actorPair.actor2.action.Grow());
-        yield return CoroutineHelper.WaitForAll(GameManager.instance,
-            actorPair.actor1.action.Shrink(), actorPair.actor2.action.Shrink());
-
-        List<ActorInstance> dyingOpponents = new List<ActorInstance>();
-        foreach (var attack in actorPair.attackResults)
+        // Constructor now takes PincerAttackParticipants (not ActorPair).
+        public PincerAttackAction(PincerAttackParticipants participants)
         {
-            var attacker = actorPair.actor1;
-            var direction = attacker.GetDirectionTo(attack.Opponent);
-            var trigger = new Trigger(attacker.Attack(attack));
-            yield return attacker.action.Bump(direction, trigger);
-            if (attack.Opponent.isDying)
-            {
-                dyingOpponents.Add(attack.Opponent);
-                // Call static death handler.
-                //yield return PincerAttackAction.HandleDeath(attack.Opponent);
-                attack.Opponent.TriggerDie();
-            }
+            this.participants = participants;
         }
-        if (dyingOpponents.Any())
-            yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
-        yield break;
+
+        public override IEnumerator Execute()
+        {
+            // If you track the computed AttackResults in the PincerAttackParticipants:
+            if (participants.attacks == null || !participants.attacks.Any())
+                yield break;
+
+            // Example: "grow" both attackers, then "shrink" them:
+            yield return CoroutineHelper.WaitForAll(
+                GameManager.instance,
+                participants.attacker1.action.Grow(),
+                participants.attacker2.action.Grow()
+            );
+            yield return CoroutineHelper.WaitForAll(
+                GameManager.instance,
+                participants.attacker1.action.Shrink(),
+                participants.attacker2.action.Shrink()
+            );
+
+            // Track any opponents that die so we can wait for their death animations
+            List<ActorInstance> dyingOpponents = new List<ActorInstance>();
+
+            // For each AttackResult in the participants
+            foreach (var attack in participants.attacks)
+            {
+                // In many cases you might want to choose which attacker is hitting which Opponent;
+                // for example, you might vary it between attacker1 / attacker2.
+                // For simplicity, here's an example using attacker1 each time:
+                var attacker = participants.attacker1;
+
+                var direction = attacker.GetDirectionTo(attack.Opponent);
+                var trigger = new Trigger(attacker.Attack(attack));  // executes the actual Attack enumerator
+
+                // Do the "bump" animation plus Attack
+                yield return attacker.action.Bump(direction, trigger);
+
+                // If Opponent was killed, queue up the final die steps
+                if (attack.Opponent.isDying)
+                {
+                    dyingOpponents.Add(attack.Opponent);
+                    attack.Opponent.TriggerDie();
+                }
+            }
+
+            // Wait until all dying opponents' HP bar is fully drained
+            if (dyingOpponents.Any())
+                yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
+
+            yield break;
+        }
     }
 }

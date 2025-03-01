@@ -147,12 +147,12 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\OptionsScreen.cs" />
-    <Compile Include="Assets\AttackManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
+    <Compile Include="Assets\Scripts\Managers\AttackManager.cs" />
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />

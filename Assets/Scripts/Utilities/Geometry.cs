@@ -221,6 +221,41 @@ public class Geometry
         return percentage;
     }
 
+
+
+    public static List<Vector2Int> GetLocationsBetween(Vector2Int start, Vector2Int end)
+    {
+        var result = new List<Vector2Int>();
+
+        // If same row
+        if (start.y == end.y)
+        {
+            int minX = Mathf.Min(start.x, end.x);
+            int maxX = Mathf.Max(start.x, end.x);
+
+            // Instead of for(int x=...), use Enumerable.Range
+            foreach (int x in Enumerable.Range(minX + 1, maxX - (minX + 1)))
+            {
+                result.Add(new Vector2Int(x, start.y));
+            }
+        }
+        // If same col
+        else if (start.x == end.x)
+        {
+            int minY = Mathf.Min(start.y, end.y);
+            int maxY = Mathf.Max(start.y, end.y);
+
+            foreach (int y in Enumerable.Range(minY + 1, maxY - (minY + 1)))
+            {
+                result.Add(new Vector2Int(start.x, y));
+            }
+        }
+
+        return result;
+    }
+
+
+
     ///<summary>
     ///Methods which calculate values relative to another unit
     ///(which is calculated based on currentPosition device aspect ratio, screen size, etc)

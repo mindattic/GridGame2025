@@ -1,115 +1,63 @@
-﻿using Assets.Scripts.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Assets.Scripts.Models
+﻿/// <summary>
+/// A minimal class storing two actors (actor1, actor2) plus an axis (Vertical or Horizontal).
+/// Optionally retains startActor / endActor for convenience, as well as Matches().
+/// All older "in-between" logic and lists have been removed.
+/// </summary>
+public class ActorPair
 {
-    public class ActorPair
+    public ActorInstance actor1;
+    public ActorInstance actor2;
+    public Axis axis = Axis.None;
+
+    public ActorPair(ActorInstance actor1, ActorInstance actor2, Axis axis)
     {
-        protected List<ActorInstance> actors => GameManager.instance.actors;
-        protected List<TileInstance> tiles => GameManager.instance.tiles;
+        this.actor1 = actor1;
+        this.actor2 = actor2;
+        this.axis = axis;
+    }
 
-
-        //Fields
-        public ActorInstance actor1 = null;
-        public ActorInstance actor2 = null;
-
-        public Axis axis = Axis.None;
-        public List<TileInstance> gaps = null;
-        public List<ActorInstance> opponents = null;
-        public List<ActorInstance> allies = null;
-        public List<AttackResult> attackResults;
-
-        public bool hasOpponentsBetween => opponents?.Count > 0;
-        public bool hasAlliesBetween => allies?.Count > 0;
-        public bool hasGapsBetween => gaps?.Count > 0;
-
-        public bool isAttacker => hasOpponentsBetween && !hasAlliesBetween && !hasGapsBetween;
-        public bool isSupporter => !hasOpponentsBetween && !hasAlliesBetween; // Can have gaps
-
-        ///<summary>
-        ///Property that retrieves either the top-most or right-most actor depending upon axial alignment
-        ///</summary>
-        public ActorInstance startActor
+    /// <summary>
+    /// Returns whichever actor is "top" (if vertical) or "right" (if horizontal).
+    /// This logic is often used to figure out start->end in row/column order.
+    /// </summary>
+    public ActorInstance startActor
+    {
+        get
         {
-            get
-            {
-                return (axis == Axis.Vertical)
-                    ? actor1.location.y > actor2.location.y ? actor1 : actor2
-                    : actor1.location.x > actor2.location.x ? actor1 : actor2;
-            }
-        }
-
-        ///<summary>
-        ///Property that retrieves either the bottom-most or left-most actor depending upon axial alignment
-        ///</summary>
-        public ActorInstance endActor
-        {
-            get
-            {
-                return (axis == Axis.Vertical)
-                    ? actor1.location.y < actor2.location.y ? actor1 : actor2
-                    : actor1.location.x < actor2.location.x ? actor1 : actor2;
-            }
-        }
-
-        public float start => axis == Axis.Vertical ? startActor.location.y : startActor.location.x;
-        public float end => axis == Axis.Vertical ? endActor.location.y : endActor.location.x;
-
-        public ActorPair(ActorInstance actor1, ActorInstance actor2, Axis axis)
-        {
-            this.actor1 = actor1;
-            this.actor2 = actor2;
-            this.axis = axis;
-            this.attackResults = new List<AttackResult>();
-
             if (axis == Axis.Vertical)
             {
-                opponents = GameManager.instance.actors
-                    .Where(x => x.isPlaying && x.isEnemy && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start))
-                    .OrderBy(x => x.location.y).ToList();
-
-                allies = GameManager.instance.actors
-                    .Where(x => x.isPlaying && x.isPlayer && x.IsSameColumn(actor1.location) && AlignmentHelper.IsBetween(x.location.y, end, start))
-                    .OrderBy(x => x.location.y).ToList();
-
-                gaps = tiles
-                    .Where(x => !x.IsOccupied && actor1.IsSameColumn(x.location) && AlignmentHelper.IsBetween(x.location.y, end, start))
-                    .OrderBy(x => x.location.y).ToList();
+                return (actor1.location.y > actor2.location.y) ? actor1 : actor2;
             }
-            else if (axis == Axis.Horizontal)
+            else // horizontal
             {
-                opponents = GameManager.instance.actors
-                    .Where(x => x.isPlaying && x.isEnemy && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start))
-                    .OrderBy(x => x.location.x).ToList();
-
-                allies = GameManager.instance.actors
-                    .Where(x => x.isPlaying && x.isPlayer && x.IsSameRow(actor1.location) && AlignmentHelper.IsBetween(x.location.x, end, start))
-                    .OrderBy(x => x.location.x).ToList();
-
-                gaps = tiles
-                    .Where(x => !x.IsOccupied && actor1.IsSameRow(x.location) && AlignmentHelper.IsBetween(x.location.x, end, start))
-                    .OrderBy(x => x.location.x).ToList();
+                return (actor1.location.x > actor2.location.x) ? actor1 : actor2;
             }
-
         }
+    }
 
-        public bool Matches(ActorInstance actor1, ActorInstance actor2)
+    /// <summary>
+    /// Returns whichever actor is "bottom" (if vertical) or "left" (if horizontal).
+    /// </summary>
+    public ActorInstance endActor
+    {
+        get
         {
-            return (this.actor1 == actor1 && this.actor2 == actor2) || (this.actor1 == actor2 && this.actor2 == actor1);
+            if (axis == Axis.Vertical)
+            {
+                return (actor1.location.y < actor2.location.y) ? actor1 : actor2;
+            }
+            else // horizontal
+            {
+                return (actor1.location.x < actor2.location.x) ? actor1 : actor2;
+            }
         }
+    }
 
-        public void Reset()
-        {
-            this.actor1 = null;
-            this.actor2 = null;
-            this.axis = Axis.None;
-            gaps = null;
-            opponents = null;
-            allies = null;
-        }
-
-
+    /// <summary>
+    /// Returns true if the two actors match this pair's actor1 and actor2 in either order.
+    /// </summary>
+    public bool Matches(ActorInstance a1, ActorInstance a2)
+    {
+        return (actor1 == a1 && actor2 == a2) || (actor1 == a2 && actor2 == a1);
     }
 }
