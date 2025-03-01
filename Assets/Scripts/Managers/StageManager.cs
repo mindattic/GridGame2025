@@ -28,7 +28,7 @@ public class StageManager : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
-    protected CoinBarInstance coinBar => GameManager.instance.coinBar;
+    protected CoinBar coinBar => GameManager.instance.coinBar;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected BoardInstance board => GameManager.instance.board;
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;

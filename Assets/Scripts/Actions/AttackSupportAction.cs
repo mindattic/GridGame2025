@@ -20,7 +20,7 @@ namespace Assets.Scripts.Actions
             // If supporter is a Cleric, heal the attacker
             if (supporter.character == Character.Cleric)
             {
-                GameManager.instance.spellManager.EnqueueHeal(supporter, attacker, castBeforeAttack: true);
+                GameManager.instance.spellManager.EnqueueHeal(supporter, attacker);
                 yield return null;
             }
 

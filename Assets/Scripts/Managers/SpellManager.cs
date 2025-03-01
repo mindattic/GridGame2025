@@ -40,7 +40,7 @@ public class SpellManager : MonoBehaviour
         spells.Remove(name);
     }
 
-    public void EnqueueHeal(ActorInstance source, ActorInstance target, bool castBeforeAttack = true)
+    public void EnqueueHeal(ActorInstance source, ActorInstance target)
     {
         var spell = new SpellSettings()
         {
@@ -56,9 +56,6 @@ public class SpellManager : MonoBehaviour
 
         var action = new CastSpellAction(spell);
 
-        if (castBeforeAttack)
-            actionManager.Insert(action);
-        else
             actionManager.Add(action);
     }
 

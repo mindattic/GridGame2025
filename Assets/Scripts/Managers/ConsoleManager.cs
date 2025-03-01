@@ -26,7 +26,7 @@ namespace Game.Behaviors
         private void Awake()
         {
             textMesh = GetComponent<TextMeshProUGUI>();
-            //textMesh.font = new Font("Consolas");
+            //value.font = new Font("Consolas");
         }
 
         //Method which is automatically called before the first frame update  
@@ -46,7 +46,7 @@ namespace Game.Behaviors
             //string turn = turnManager.isPlayerTurn ? "Player" : "Opponent";
             //string phase = turnManager.currentPhase.ToString();
 
-            //textMesh.text = ""
+            //value.text = ""
             //   + $"{fps} FPS" + Environment.NewLine 
             //   + $"Runtime: {Time.time}" + Environment.NewLine
             //   + $"   Turn: {turn}" + Environment.NewLine
@@ -82,7 +82,7 @@ namespace Game.Behaviors
             //string a13 = actors[13] != null ? $"{actors[13].name}: {actors[13].HP}{Environment.NewLine}" : $"{Environment.NewLine}";
 
 
-            //textMesh.text = a0 + a1+ a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10 + a11 + a12 + a13;
+            //value.text = a0 + a1+ a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10 + a11 + a12 + a13;
 
         }
     }

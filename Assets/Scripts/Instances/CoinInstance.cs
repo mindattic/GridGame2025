@@ -5,9 +5,33 @@ public class CoinInstance : MonoBehaviour
    //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected CoinBarInstance coinBar => GameManager.instance.coinBar;
+    protected CoinBar coinBar => GameManager.instance.coinBar;
     protected int totalCoins { get => GameManager.instance.totalCoins; set => GameManager.instance.totalCoins = value; }
     protected AudioManager audioManager => GameManager.instance.audioManager;
+
+
+
+    //Fields
+    [SerializeField] public AnimationCurve linearCurve;
+    [SerializeField] public AnimationCurve slopeCurve;
+    [SerializeField] public AnimationCurve sineCurve;
+    private SpriteRenderer spriteRenderer;
+    private ParticleSystem particles;
+    private float scaleMultiplier = 0.05f;
+    private float startDuration = 0.2f;
+    private float moveDuration = 0.6f;
+    private float timeElapsed = 0.0f;
+    private Vector3 start;
+    private Vector3 end;
+    private CoinState state;
+    private float t;
+    private float x;
+    private float y;
+    private float z;
+    AnimationCurve cX;
+    AnimationCurve cY;
+
+    //Properties
     public Transform parent
     {
         get => gameObject.transform.parent;
@@ -29,36 +53,12 @@ public class CoinInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    //Fields
-    public AnimationCurve linearCurve;
-    public AnimationCurve slopeCurve;
-    public AnimationCurve sineCurve;
-    private SpriteRenderer spriteRenderer;
-    private ParticleSystem particles;
-    private float scaleMultiplier = 0.05f;
-    private float startDuration = 0.2f;
-    private float moveDuration = 0.6f;
-    private float timeElapsed = 0.0f;
-    private Vector3 start;
-    private Vector3 end;
-    private CoinState state;
-    private float t;
-    private float x;
-    private float y;
-    private float z;
-    AnimationCurve cX;
-    AnimationCurve cY;
 
-    //Method which is used for initialization tasks that need to occur before the game starts 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         particles = GetComponent<ParticleSystem>();
-    }
 
-    //Method which is automatically called before the first frame update  
-    private void Start()
-    {
         transform.localScale = tileScale * scaleMultiplier;
     }
 
@@ -99,7 +99,7 @@ public class CoinInstance : MonoBehaviour
                 {
                     timeElapsed = 0;
                     start = transform.position;
-                    end = coinBar.icon.transform.position;
+                    end = coinBar.GetIconWorldPosition();
                     state = CoinState.Move;
                 }
                 break;
@@ -121,7 +121,7 @@ public class CoinInstance : MonoBehaviour
                 spriteRenderer.enabled = false;
                 particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
                 totalCoins++;
-                coinBar.textMesh.text = totalCoins.ToString("D5");
+                coinBar.value.text = totalCoins.ToString("D7");
                 audioManager.Play($"Move{Random.Int(1, 6)}");
                 state = CoinState.Destroy;
                 break;

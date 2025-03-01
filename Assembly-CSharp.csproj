@@ -86,8 +86,8 @@
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Fade.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
+    <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
     <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\CoinBarInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
@@ -144,6 +144,7 @@
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackParticipants.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
+    <Compile Include="Assets\Scripts\GUI\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\OptionsScreen.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
@@ -162,7 +163,6 @@
     <Compile Include="Assets\Scripts\GUI\TitleScreen.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
-    <Compile Include="Assets\Scripts\Models\ActionQueue.cs" />
     <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />

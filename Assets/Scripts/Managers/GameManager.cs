@@ -107,7 +107,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
     [HideInInspector] public List<SupportLineInstance> lines;
-    [HideInInspector] public CoinBarInstance coinBar;
+    [HideInInspector] public CoinBar coinBar;
 
     [HideInInspector] public IQueryable<ActorInstance> players => actors.Where(x => x.team.Equals(Team.Player)).AsQueryable();
     [HideInInspector] public IQueryable<ActorInstance> enemies => actors.Where(x => x.team.Equals(Team.Enemy)).AsQueryable();
@@ -158,7 +158,7 @@ public class GameManager : Singleton<GameManager>
         canvas2D = GameObject.Find(Constants.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
         canvas3D = GameObject.Find(Constants.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
         timerBar = GameObject.Find(Constants.TimerBar).GetComponent<TimerBar>() ?? throw new UnityException("TimerBarInstance is null");
-        coinBar = GameObject.Find(Constants.CoinBar).GetComponent<CoinBarInstance>() ?? throw new UnityException("CoinBarInstance is null");
+        coinBar = GameObject.Find(Constants.CoinBar).GetComponent<CoinBar>() ?? throw new UnityException("CoinBarInstance is null");
 
         var game = GameObject.Find(Constants.Game);
 

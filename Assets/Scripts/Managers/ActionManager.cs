@@ -10,7 +10,7 @@ public class ActionManager : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
 
     //Fields
-    private ActionQueue<Action> pendingActions = new ActionQueue<Action>();
+    private QueueCollection<Action> pendingActions = new QueueCollection<Action>();
 
     public void Add(Action action)
     {

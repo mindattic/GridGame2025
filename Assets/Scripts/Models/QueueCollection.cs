@@ -15,20 +15,20 @@ namespace Assets.Scripts.Models
         After
     }
 
-    public class ActionQueue<Action>
+    public class QueueCollection<T>
     {
         //Properties
         public int Count => queue.Count;
 
         //Fields
-        private LinkedList<Action> queue = new LinkedList<Action>();
+        private LinkedList<T> queue = new LinkedList<T>();
 
-        public void Add(Action item) => queue.AddLast(item); // Normal enqueue
+        public void Add(T item) => queue.AddLast(item); // Normal enqueue
 
-        public void Insert(Action item) => queue.AddFirst(item); // Add to top
+        public void Insert(T item) => queue.AddFirst(item); // Add to top
 
       
-        public void Insert(Action item, Action node, InsertOrder order = InsertOrder.Before)
+        public void Insert(T item, T node, InsertOrder order = InsertOrder.Before)
         {
             var nodeRef = queue.Find(node);
             if (nodeRef == null)
@@ -40,10 +40,10 @@ namespace Assets.Scripts.Models
                 queue.AddAfter(nodeRef, item);
         }
 
-        public Action Remove()
+        public T Remove()
         {
             if (queue.Count == 0) return default;
-            Action value = queue.First.Value;
+            T value = queue.First.Value;
             queue.RemoveFirst();
             return value;
         }
