@@ -223,28 +223,42 @@ public class DebugWindow : EditorWindow
         GUILayout.Label("Keyboard");
         GUILayout.EndHorizontal();
 
-        //Row 1: "W" (Up Arrow)
+        // Row 1: Up Arrow
         GUILayout.BeginHorizontal();
         GUILayout.Space(38); // Add space to center "W"
         if (GUILayout.Button("\u2191", GUILayout.Width(32), GUILayout.Height(32)))
+        {
+            Debug.Log("Up Button Pressed");
             OnKeyUp();
-        GUILayout.Space(38); // Right-side space for symmetry
+        }
+        GUILayout.Space(38);
         GUILayout.EndHorizontal();
 
-        //"A", "S", "D"
+        // Row 2: Left, Down, Right
         GUILayout.BeginHorizontal();
 
         if (GUILayout.Button("\u2190", GUILayout.Width(32), GUILayout.Height(32)))
+        {
+            Debug.Log("Left Button Pressed");
             OnKeyLeft();
+        }
 
         if (GUILayout.Button("\u2193", GUILayout.Width(32), GUILayout.Height(32)))
-            OnKeyDown(); 
+        {
+            Debug.Log("Down Button Pressed");
+            OnKeyDown();
+        }
 
         if (GUILayout.Button("\u2192", GUILayout.Width(32), GUILayout.Height(32)))
+        {
+            Debug.Log("Right Button Pressed");
             OnKeyRight();
+        }
 
         GUILayout.EndHorizontal();
+
         GUILayout.Space(10);
+        Repaint(); // Ensures UI updates
     }
 
     private void RenderStats()
@@ -600,34 +614,26 @@ public class DebugWindow : EditorWindow
 
     private void OnKeyUp()
     {
-        if (!GameManager.instance.hasFocusedActor) return;
-
         var focusedActor = GameManager.instance.focusedActor;
-        focusedActor.Teleport(focusedActor.location + Vector2Int.down);
+        focusedActor?.Teleport(focusedActor.location + Vector2Int.down);
     }
 
     private void OnKeyDown()
     {
-        if (!GameManager.instance.hasFocusedActor) return;
-
         var focusedActor = GameManager.instance.focusedActor;
-        focusedActor.Teleport(focusedActor.location + Vector2Int.up);
+        focusedActor?.Teleport(focusedActor.location + Vector2Int.up);
     }
 
     private void OnKeyLeft()
     {
-        if (!GameManager.instance.hasFocusedActor) return;
-
         var focusedActor = GameManager.instance.focusedActor;
-        focusedActor.Teleport(focusedActor.location + Vector2Int.left);
+        focusedActor?.Teleport(focusedActor.location + Vector2Int.left);
     }
 
     private void OnKeyRight()
     {
-        if (!GameManager.instance.hasFocusedActor) return;
-
         var focusedActor = GameManager.instance.focusedActor;
-        focusedActor.Teleport(focusedActor.location + Vector2Int.right);
+        focusedActor?.Teleport(focusedActor.location + Vector2Int.right);
     }
 
 

@@ -92,6 +92,12 @@ namespace Assets.Scripts.Models
                 Tile = tile;
             }
         }
+
+
+
+
+
+
     }
 
 }

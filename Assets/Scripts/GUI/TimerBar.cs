@@ -52,7 +52,7 @@ public class TimerBar : MonoBehaviour
             yield return Wait.UntilNextFrame();
         }
 
-        // When the timer expires, force drop (only once).
+        // When the timer expires, force drop
         selectedPlayerManager.Drop();
     }
 

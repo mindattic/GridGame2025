@@ -168,7 +168,7 @@ public class CanvasOverlay : MonoBehaviour
             float angle = Mathf.Lerp(startAngle, endAngle, t * rotateMultiplier);
             label.transform.eulerAngles = new Vector3(angle, 0, 0);
 
-            yield return Wait.OneTick();
+            yield return Wait.UntilNextFrame();
         }
 
         //Ensure final values

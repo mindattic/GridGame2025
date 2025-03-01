@@ -9,7 +9,7 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorMovement
     {
-       //Quick Reference Properties
+        //Quick Reference Properties
         protected float percent33 => Constants.percent33;
         protected Vector3 tileScale => GameManager.instance.tileScale;
         protected ActorInstance focusedActor => GameManager.instance.focusedActor;
@@ -64,13 +64,8 @@ namespace Assets.Scripts.Instances.Actor
                 flags.IsMoving = true;
                 instance.sortingOrder = SortingOrder.Max;
 
-                //Calculate cursor position and clamp within board bounds.
-                Vector3 cursorPosition = mousePosition3D + mouseOffset;
-                cursorPosition.x = Mathf.Clamp(cursorPosition.x, board.bounds.Left, board.bounds.Right);
-                cursorPosition.y = Mathf.Clamp(cursorPosition.y, board.bounds.Bottom, board.bounds.Top);
-
                 //Snap the actor to the cursor.
-                instance.position = cursorPosition;
+                instance.position = mousePosition3D + mouseOffset;
 
                 //Calculate velocity and apply tilt effect.
                 Vector3 velocity = instance.position - prevPosition;
@@ -98,7 +93,7 @@ namespace Assets.Scripts.Instances.Actor
             //Before: movement begins
             audioManager.Play("Slide");
             instance.sortingOrder = SortingOrder.Moving;
-            float moveSpeed = 7f;
+            float moveSpeed = tileSize * 10;
             float snapThreshold = 0.1f;
 
             //Determine the destination based on the actor's grid location.
@@ -181,31 +176,33 @@ namespace Assets.Scripts.Instances.Actor
             var closestTile = Geometry.GetClosestTile(position);
             Vector2Int closestLocation = closestTile.location;
 
-            if (location != closestLocation)
+            if (location == closestLocation) 
+                return;
+
+
+            //TriggerEnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
+            ActorInstance overlappingActor = actors.FirstOrDefault(x =>
+                x != null &&
+                x != instance &&
+                x.isActive &&
+                x.isAlive &&
+                x.location == closestLocation);
+
+            if (overlappingActor != null)
             {
-                //TriggerEnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
-                ActorInstance overlappingActor = actors.FirstOrDefault(x =>
-                    x != null &&
-                    x != instance &&
-                    x.isActive &&
-                    x.isAlive &&
-                    x.location == closestLocation);
-
-                if (overlappingActor != null)
+                //If the overlapping actor is not already swapping, trigger its overlap event.
+                if (!overlappingActor.flags.IsSwapping)
                 {
-                    //If the overlapping actor is not already swapping, trigger its overlap event.
-                    if (!overlappingActor.flags.IsSwapping)
-                    {
-                        overlappingActor.onOverlapDetected.Invoke(instance);
-                    }
-                    //Do not update location until the swap resolves.
-                    return;
+                    overlappingActor.onOverlapDetected.Invoke(instance);
                 }
-
-                //Otherwise, update the grid location.
-                previousLocation = location;
-                location = closestLocation;
+                //Do not update location until the swap resolves.
+                return;
             }
+
+            //Otherwise, update the grid location.
+            previousLocation = location;
+            location = closestLocation;
+
         }
 
         ///<summary>

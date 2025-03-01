@@ -33,6 +33,9 @@ namespace Assets.Scripts.Models
                 {
                     IEnumerator Attack()
                     {
+                        enemy.sortingOrder = SortingOrder.Attacker;
+                        player.sortingOrder = SortingOrder.Opponent;
+
                         var isHit = Formulas.IsHit(enemy, player);
                         var isCriticalHit = false;
                         var damage = Formulas.CalculateDamage(enemy, player);

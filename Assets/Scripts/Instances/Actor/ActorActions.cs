@@ -27,7 +27,7 @@ namespace Assets.Scripts.Instances.Actor
         {
             this.instance = parentInstance;
 
-            wiggleSpeed = tileSize * 24f;
+            wiggleSpeed = tileSize * 48f;
             wiggleAmplitude = 15f; //Amplitude (difference from -45 degrees)
         }
 

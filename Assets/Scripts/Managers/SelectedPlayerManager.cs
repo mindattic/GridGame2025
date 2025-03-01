@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class SelectedPlayerManager : MonoBehaviour
 {
-   //Quick Reference Properties
+    //Quick Reference Properties
     protected Card cardManager => GameManager.instance.cardManager;
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
@@ -31,7 +31,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
     }
 
-    public void Select()
+    public void Focus()
     {
         // TriggerEnqueueAttacks abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase)
@@ -63,19 +63,6 @@ public class SelectedPlayerManager : MonoBehaviour
             StartCoroutine(focusedActor.move.MoveTowardCursor());
     }
 
-    public void Deselect()
-    {
-        // If no focused actor, do nothing.
-        if (!hasFocusedActor)
-            return;
-
-        // If nothing is being moved, snap the focused actor back to its current tile.
-        if (!hasSelectedPlayer)
-            focusedActor.position = focusedActor.currentTile.position;
-
-        focusedActor = null;
-    }
-
     public void Drag()
     {
         // TriggerEnqueueAttacks abort conditions.
@@ -84,7 +71,7 @@ public class SelectedPlayerManager : MonoBehaviour
 
         // Set the selected player to be moved.
         selectedPlayer = focusedActor;
-        Deselect();
+        //Unfocus();
 
 
         // When the phase switches to Move on the player turn, start the timer and enable enemy AP checking.
@@ -102,7 +89,11 @@ public class SelectedPlayerManager : MonoBehaviour
     {
         //TriggerEnqueueAttacks abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasSelectedPlayer)
+        {
+            if (hasFocusedActor)
+                focusedActor.position = focusedActor.currentTile.position;
             return;
+        }
 
         //Snap the moving player to the closest tile.
         var closestTile = Geometry.GetClosestTile(selectedPlayer.position);
@@ -110,6 +101,7 @@ public class SelectedPlayerManager : MonoBehaviour
         selectedPlayer.position = closestTile.position;
         previousMovingPlayer = selectedPlayer;
         selectedPlayer = null;
+        focusedActor = null;
 
         //Reset UI and other elements.
         tileManager.Reset();

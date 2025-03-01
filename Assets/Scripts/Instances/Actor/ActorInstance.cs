@@ -461,7 +461,6 @@ public class ActorInstance : MonoBehaviour
 
     public void Teleport(Vector2Int location)
     {
-
         this.location = location;
         transform.position = Geometry.GetPositionByLocation(this.location);
     }

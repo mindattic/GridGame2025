@@ -89,9 +89,10 @@ public class AttackManager : MonoBehaviour
 
                 // Are there enemies in between, and is it fully occupied (no empty tile)?
                 bool anyEnemyInBetween = inBetweenActors.Any(x => x.team != team);
+                bool onlyEnemiesInBetween = inBetweenActors.All(x => x.team != team && x.isPlaying);
                 bool allNonEmpty = (between.Count == inBetweenActors.Count);
 
-                if (anyEnemyInBetween && allNonEmpty)
+                if (anyEnemyInBetween && onlyEnemiesInBetween && allNonEmpty)
                 {
                     // Build x new PincerAttackParticipants
                     var opponents = inBetweenActors
@@ -228,12 +229,13 @@ public class AttackManager : MonoBehaviour
         var results = new List<ActorInstance>();
         foreach (var p in potential)
         {
-            if (!IsActorBlocked(attacker, p))
+            if (!IsActorBlocked(attacker, p)) //Ensure no obstacles exist
                 results.Add(p);
         }
 
         return results;
     }
+
 
     /// <summary>
     /// True if there's at least one actor in between 'x' and 'b', 
@@ -241,15 +243,17 @@ public class AttackManager : MonoBehaviour
     /// </summary>
     private bool IsActorBlocked(ActorInstance a, ActorInstance b)
     {
-        bool sameRow = a.IsSameRow(b.location);
-        bool sameCol = a.IsSameColumn(b.location);
-        if (!sameRow && !sameCol) return true;
+        if (!a.IsSameRow(b.location) && !a.IsSameColumn(b.location))
+            return true; // If not aligned, support is impossible.
 
         var between = Geometry.GetLocationsBetween(a.location, b.location);
+
         return actors
-            .Where(x => x.isPlaying)
-            .Any(x => between.Contains(x.location));
+            .Where(x => x.isPlaying && between.Contains(x.location))
+            .Any(x => x.team != a.team || x == a || x == b); // Block if an enemy or another unit is in between.
     }
+
+
 
     /// <summary>
     /// Sets sorting orders for attackers, opponents, supporters so we can highlight them.

@@ -34,13 +34,13 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            selectedPlayerManager.Select();
+            selectedPlayerManager.Focus();
             isDragging = hasSelectedActor;
 
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            selectedPlayerManager.Deselect();
+            selectedPlayerManager.Unfocus();
             selectedPlayerManager.Drop();
             isDragging = false;
         }
