@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class ActorInstance : MonoBehaviour
 {
-   //Quick Reference Properties
+    //Quick Reference Properties
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;
     protected CoinManager coinManager => GameManager.instance.coinManager;
@@ -128,7 +128,7 @@ public class ActorInstance : MonoBehaviour
     public Vector2Int location;
     public Team team = Team.Neutral;
     public int spawnTurn = 0;
-  
+
     //Modules
     public ActorRenderers render = new ActorRenderers();
     public ActorStats stats = new ActorStats();
@@ -193,7 +193,7 @@ public class ActorInstance : MonoBehaviour
         parallax.Initialize(this);
         thumbnail.Initialize(this);
 
-       
+
 
         //Events
         onOverlapDetected += (actor) => move.OnOverlapDetected(actor);
@@ -204,7 +204,8 @@ public class ActorInstance : MonoBehaviour
     private void OnDestroy()
     {
         onOverlapDetected -= move.OnOverlapDetected;
-        onActorDeath -= stageManager.OnActorDeath;
+        if (stageManager != null)
+            onActorDeath -= stageManager.OnActorDeath;
     }
 
     public void Spawn(Vector2Int startLocation)
