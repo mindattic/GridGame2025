@@ -20,7 +20,7 @@ public class SelectedPlayerManager : MonoBehaviour
     protected bool hasFocusedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
     protected AudioManager audioManager => GameManager.instance.audioManager;
-    protected TimerBarInstance timerBar => GameManager.instance.timerBar;
+    protected TimerBar timerBar => GameManager.instance.timerBar;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;

@@ -102,7 +102,7 @@ public class GameManager : Singleton<GameManager>
 
 
     //Instances
-    [HideInInspector] public TimerBarInstance timerBar;
+    [HideInInspector] public TimerBar timerBar;
     [HideInInspector] public List<ActorInstance> actors;
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
@@ -157,7 +157,7 @@ public class GameManager : Singleton<GameManager>
         board = GameObject.Find(Constants.Board).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
         canvas2D = GameObject.Find(Constants.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
         canvas3D = GameObject.Find(Constants.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
-        timerBar = GameObject.Find(Constants.TimerBar).GetComponent<TimerBarInstance>() ?? throw new UnityException("TimerBarInstance is null");
+        timerBar = GameObject.Find(Constants.TimerBar).GetComponent<TimerBar>() ?? throw new UnityException("TimerBarInstance is null");
         coinBar = GameObject.Find(Constants.CoinBar).GetComponent<CoinBarInstance>() ?? throw new UnityException("CoinBarInstance is null");
 
         var game = GameObject.Find(Constants.Game);

@@ -14,7 +14,7 @@ public class TurnManager : MonoBehaviour
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected PlayerManager playerManager => GameManager.instance.playerManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
-    protected TimerBarInstance timerBar => GameManager.instance.timerBar;
+    protected TimerBar timerBar => GameManager.instance.timerBar;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;

@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimerBarInstance : MonoBehaviour
+public class TimerBar : MonoBehaviour
 {
     //Quick Reference Properties
     protected DebugManager debugManager => GameManager.instance.debugManager;
