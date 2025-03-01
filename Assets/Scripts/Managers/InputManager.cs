@@ -40,7 +40,7 @@ public class InputManager : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            selectedPlayerManager.Unfocus();
+            //selectedPlayerManager.Unfocus();
             selectedPlayerManager.Drop();
             isDragging = false;
         }

@@ -31,9 +31,10 @@ public class ActorInstance : MonoBehaviour
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
     protected bool hasFocusedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
+    protected TileMap tileMap => GameManager.instance.tileMap;
 
     //Internal properties
-    public TileInstance currentTile => board.tileMap.GetTile(location); //tiles.First(x => x.location.Equals(location));
+    public TileInstance currentTile => tileMap.GetTile(location);
     public bool isPlayer => team.Equals(Team.Player);
     public bool isEnemy => team.Equals(Team.Enemy);
     public bool isFocusedPlayer => hasFocusedActor && Equals(focusedActor);

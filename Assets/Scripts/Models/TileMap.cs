@@ -24,12 +24,12 @@ namespace Assets.Scripts.Models
 
         public Vector3 GetPosition(Vector2Int location)
         {
-            return locationToEntry.TryGetValue(location, out var entry) ? entry.Position : default;
+            return locationToEntry.TryGetValue(location, out var entry) ? entry.Position : Geometry.GetPositionByLocation(location);
         }
 
         public Vector2Int GetLocation(Vector3 position)
         {
-            return positionToEntry.TryGetValue(position, out var entry) ? entry.Location : default;
+            return positionToEntry.TryGetValue(position, out var entry) ? entry.Location : Geometry.GetLocationByPosition(position);
         }
 
         public Vector2Int GetLocation(int col, int row)
@@ -43,12 +43,12 @@ namespace Assets.Scripts.Models
 
         public TileInstance GetTile(Vector2Int location)
         {
-            return locationToEntry.TryGetValue(location, out var entry) ? entry.Tile : null;
+            return locationToEntry.TryGetValue(location, out var entry) ? entry.Tile : Geometry.GetClosestTile(location);
         }
 
         public TileInstance GetTile(Vector3 position)
         {
-            return positionToEntry.TryGetValue(position, out var entry) ? entry.Tile : null;
+            return positionToEntry.TryGetValue(position, out var entry) ? entry.Tile : Geometry.GetClosestTile(position);
         }
 
         public bool ContainsLocation(Vector2Int location)
@@ -92,11 +92,6 @@ namespace Assets.Scripts.Models
                 Tile = tile;
             }
         }
-
-
-
-
-
 
     }
 

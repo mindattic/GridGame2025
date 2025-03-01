@@ -1,4 +1,5 @@
 using Assets.Scripts.GUI;
+using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;
 using Game.Models;
@@ -101,6 +102,7 @@ public class GameManager : Singleton<GameManager>
     public bool hasSelectedPlayer => selectedPlayer != null;
     public UnityEvent<Vector2Int> onSelectedPlayerLocationChanged;
 
+    [HideInInspector] public TileMap tileMap = new TileMap();
 
     //Instances
     [HideInInspector] public TimerBar timerBar;

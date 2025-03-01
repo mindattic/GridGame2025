@@ -7,6 +7,7 @@ public class BoardInstance : MonoBehaviour
 {
    //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
+    protected TileMap tileMap => GameManager.instance.tileMap;
     protected ProfileManager profileManager => GameManager.instance.profileManager;
     protected StageManager stageManager => GameManager.instance.stageManager;
     protected BoardInstance board => GameManager.instance.board;
@@ -17,7 +18,6 @@ public class BoardInstance : MonoBehaviour
     [HideInInspector] public int rowCount = 8;
     [HideInInspector] public Vector2 offset;
     [HideInInspector] public RectFloat bounds;
-    [HideInInspector] public TileMap tileMap = new TileMap();
     [HideInInspector] public Vector2Int NowhereLocation = new Vector2Int(-1, -1);
     [HideInInspector] public Vector3 NowherePosition = new Vector3(-1000, -1000, -1000);
     [HideInInspector] public Vector2 center;
@@ -99,31 +99,6 @@ public class BoardInstance : MonoBehaviour
         //Return only the X and Y screen coordinates
         return new Vector2(screenPosition.x, screenPosition.y);
     }
-
-    public TileInstance GetClosestTileEfficient(Vector3 worldPosition)
-    {
-        // Assume gridOrigin is defined as the center of tile (1,1):
-        // gridOrigin = new Vector3(offset.x + tileSize/2, offset.y - tileSize/2, 0);
-        // Convert world position to grid coordinates (1-based indexing):
-        int col = Mathf.RoundToInt((worldPosition.x - gridOrigin.x) / tileSize) + 1;
-        int row = Mathf.RoundToInt((gridOrigin.y - worldPosition.y) / tileSize) + 1;
-
-        Vector2Int gridLocation = new Vector2Int(col, row);
-
-        if (tileMap.ContainsLocation(gridLocation))
-        {
-            return tileMap.GetTile(gridLocation);
-        }
-        else
-        {
-            // Fallback: linear search (less efficient)
-            return GameManager.instance.tiles
-                .OrderBy(x => Vector3.Distance(x.transform.position, worldPosition))
-                .First();
-        }
-    }
-
-
 }
 
 public enum BoardPoint

@@ -1,4 +1,5 @@
-﻿using Game.Behaviors;
+﻿using Assets.Scripts.Models;
+using Game.Behaviors;
 using Game.Behaviors.Actor;
 using System;
 using System.Collections.Generic;
@@ -10,21 +11,11 @@ public class Geometry
     private static BoardInstance board => GameManager.instance.board;
     private static float tileSize => GameManager.instance.tileSize;
     private static Vector3 tileScale => GameManager.instance.tileScale;
+    private static TileMap tileMap => GameManager.instance.tileMap;
     private static List<ActorInstance> actors => GameManager.instance.actors;
     private static List<TileInstance> tiles => GameManager.instance.tiles;
 
-    //private static Dictionary<Vector2Int, Vector3> boardPositions = new Dictionary<Vector2Int, Vector3>();
-    //private static Dictionary<Vector3, Vector2Int> boardLocations = new Dictionary<Vector3, Vector2Int>();
-
-
-    public Geometry()
-    {
-
-        //Assign lookup dictionaries
-        //tiles.ForEach(x => boardPositions.SpawnActor(x.boardLocation, x.boardPosition));
-        //tiles.ForEach(x => boardLocations.SpawnActor(x.boardPosition, x.boardLocation));
-    }
-
+    public Geometry() { }
 
     public static Vector3 CalculatePositionByLocation(Vector2Int location)
     {
@@ -36,26 +27,13 @@ public class Geometry
 
     public static Vector3 GetPositionByLocation(Vector2Int location)
     {
-        return board.tileMap.GetPosition(location);
+        return tileMap.GetPosition(location);
     }
 
     public static Vector2Int GetLocationByPosition(Vector3 position)
     {
-        return board.tileMap.GetLocation(position);
+        return tileMap.GetLocation(position);
     }
-    //public static Vector2Int GetLocation(int col, int row)
-    //{
-    //   col = Math.Clamp(col, 1, board.columnCount);
-    //   row = Math.Clamp(row, 1, board.rowCount);
-    //   return new Vector2Int(col, row);
-    //}
-
-    //public static Vector2Int LocationFromPosition(Vector3 boardLocation)
-    //{
-    //   int x = Mathf.FloorToInt(boardLocation.x / tileSize - board.relativeOffset.x);
-    //   int y = Mathf.FloorToInt(boardLocation.y / tileSize - board.relativeOffset.y);
-    //   return new Vector2Int(x, y);
-    //}
 
     public static TileInstance GetClosestTile(Vector3 position)
     {
@@ -199,10 +177,10 @@ public class Geometry
 
     public static bool IsInCorner(Vector2Int location)
     {
-        return location == board.tileMap.GetLocation(1, 1)  //A1
-            || location == board.tileMap.GetLocation(1, 6)  //A6
-            || location == board.tileMap.GetLocation(8, 1)  //H1
-            || location == board.tileMap.GetLocation(8, 6); //H6
+        return location == tileMap.GetLocation(1, 1)  //A1
+            || location == tileMap.GetLocation(1, 6)  //A6
+            || location == tileMap.GetLocation(8, 1)  //H1
+            || location == tileMap.GetLocation(8, 6); //H6
     }
 
 

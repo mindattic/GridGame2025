@@ -4,8 +4,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.VisualScripting.Member;
-using static UnityEngine.GraphicsBuffer;
 
 public class SpellManager : MonoBehaviour
 {
@@ -40,7 +38,7 @@ public class SpellManager : MonoBehaviour
         spells.Remove(name);
     }
 
-    public void EnqueueHeal(ActorInstance source, ActorInstance target)
+    public void EnqueueHeal(ActorInstance source, ActorInstance target, bool castBeforeAttack = true)
     {
         var spell = new SpellSettings()
         {
@@ -56,6 +54,9 @@ public class SpellManager : MonoBehaviour
 
         var action = new CastSpellAction(spell);
 
+        if (castBeforeAttack)
+            actionManager.Insert(action);
+        else
             actionManager.Add(action);
     }
 
@@ -74,7 +75,6 @@ public class SpellManager : MonoBehaviour
             trigger = new Trigger(coroutine: target.FireDamage(10), isAsync: false)
         };
 
-      
         var action = new CastSpellAction(spell);
 
         if (castBeforeAttack)

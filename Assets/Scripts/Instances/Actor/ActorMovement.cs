@@ -174,35 +174,33 @@ namespace Assets.Scripts.Instances.Actor
                 return;
 
             var closestTile = Geometry.GetClosestTile(position);
-            Vector2Int closestLocation = closestTile.location;
+            //var closestTile = board.GetClosestTileEfficient(position);
 
-            if (location == closestLocation) 
-                return;
-
-
-            //TriggerEnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
-            ActorInstance overlappingActor = actors.FirstOrDefault(x =>
-                x != null &&
-                x != instance &&
-                x.isActive &&
-                x.isAlive &&
-                x.location == closestLocation);
-
-            if (overlappingActor != null)
+            if (location != closestTile.location)
             {
-                //If the overlapping actor is not already swapping, trigger its overlap event.
-                if (!overlappingActor.flags.IsSwapping)
+                //TriggerEnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
+                ActorInstance overlappingActor = actors.FirstOrDefault(x =>
+                    x != null &&
+                    x != instance &&
+                    x.isActive &&
+                    x.isAlive &&
+                    x.location == closestTile.location);
+
+                if (overlappingActor != null)
                 {
-                    overlappingActor.onOverlapDetected.Invoke(instance);
+                    //If the overlapping actor is not already swapping, trigger its overlap event.
+                    if (!overlappingActor.flags.IsSwapping)
+                    {
+                        overlappingActor.onOverlapDetected.Invoke(instance);
+                    }
+                    //Do not update location until the swap resolves.
+                    return;
                 }
-                //Do not update location until the swap resolves.
-                return;
+
+                //Otherwise, update the grid location.
+                previousLocation = location;
+                location = closestTile.location;
             }
-
-            //Otherwise, update the grid location.
-            previousLocation = location;
-            location = closestLocation;
-
         }
 
         ///<summary>
