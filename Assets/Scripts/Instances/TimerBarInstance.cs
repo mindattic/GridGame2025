@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimerBarInstance : MonoBehaviour
 {
-   //Quick Reference Properties
+    //Quick Reference Properties
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected float tileSize => GameManager.instance.tileSize;
     protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
@@ -12,19 +13,13 @@ public class TimerBarInstance : MonoBehaviour
     // Timer settings
     private const float maxDuration = 6f;
     private float timeRemaining = maxDuration;
-    //private bool isRunning => timeRemaining < maxDuration;
 
-    // UI elements (assumed to be SpriteRenderers)
-    private SpriteRenderer back;
-    private SpriteRenderer bar;
-    private SpriteRenderer front;
+    // UI elements (assumed to be Images now)
+    private Image back;
+    private Image bar;
+    private Image front;
 
-    // Cached values for sliding and scaling
-    private Vector3 scale = Vector3.one;
-    private Vector3 initialPosition;
-    private Vector3 offscreenPosition;
-    private float slideSpeed;
-    private float width;
+    private float maxWidth;
 
     // Reference to the active countdown coroutine
     private Coroutine countdown;
@@ -32,24 +27,14 @@ public class TimerBarInstance : MonoBehaviour
     private void Awake()
     {
         // Assumes the children are ordered: 0 = back, 1 = bar, 2 = front.
-        back = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        bar = transform.GetChild(1).GetComponent<SpriteRenderer>();
-        front = transform.GetChild(2).GetComponent<SpriteRenderer>();
+        back = transform.GetChild("Back").GetComponent<Image>();
+        bar = transform.GetChild("Bar").GetComponent<Image>();
+        front = transform.GetChild("Front").GetComponent<Image>();
+
+        maxWidth = back.rectTransform.rect.width;
     }
 
-    private void Start()
-    {
-        // Initialize the bar's scale.
-        bar.transform.localScale = scale;
-        // Calculate slide speed based on tileSize.
-        slideSpeed = tileSize * 0.25f;
-        // Use the front's bounds (plus an offset) to compute the offscreen width.
-        width = front.bounds.size.x + 2.4f;
-        // Save the on-screen (initial) position.
-        initialPosition = transform.position;
-        // Compute the offscreen position by subtracting the width from the initial position.
-        offscreenPosition = initialPosition.SubtractX(width);
-    }
+  
 
     private IEnumerator Countdown()
     {
@@ -63,14 +48,20 @@ public class TimerBarInstance : MonoBehaviour
             }
 
             timeRemaining -= Time.deltaTime;
-            // Update the bar's horizontal scale to reflect the remaining time.
-            float newXScale = scale.x * (timeRemaining / maxDuration);
-            bar.transform.localScale = new Vector3(newXScale, scale.y, scale.z);
+            Set();
             yield return Wait.UntilNextFrame();
         }
 
         // When the timer expires, force drop (only once).
         selectedPlayerManager.Drop();
+    }
+
+
+    private void Set()
+    {
+        Vector2 newSize = bar.rectTransform.sizeDelta;
+        newSize.x = maxWidth * (timeRemaining / maxDuration);
+        bar.rectTransform.sizeDelta = newSize;
     }
 
     /// <summary>
@@ -79,8 +70,11 @@ public class TimerBarInstance : MonoBehaviour
     public void Play()
     {
         if (countdown != null)
+        {
             StopCoroutine(countdown);
-
+            countdown = null;
+        }
+           
         countdown = StartCoroutine(Countdown());
     }
 
@@ -92,7 +86,6 @@ public class TimerBarInstance : MonoBehaviour
         if (countdown != null)
         {
             StopCoroutine(countdown);
-            countdown = null;
         }
     }
 
@@ -103,8 +96,7 @@ public class TimerBarInstance : MonoBehaviour
         front.color = ColorHelper.Solid.White;
 
         timeRemaining = maxDuration;
-        float newXScale = scale.x;
-        bar.transform.localScale = new Vector3(newXScale, scale.y, scale.z);
+        Set();
     }
 
     public void Lock()
@@ -113,5 +105,4 @@ public class TimerBarInstance : MonoBehaviour
         bar.color = ColorHelper.Translucent.Red;
         front.color = ColorHelper.Translucent.Red;
     }
-
 }
