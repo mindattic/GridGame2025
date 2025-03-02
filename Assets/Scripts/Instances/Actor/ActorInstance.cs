@@ -204,10 +204,10 @@ public class ActorInstance : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (move != null)
-            onOverlapDetected -= move.OnOverlapDetected;
-        if (stageManager != null)
-            onActorDeath -= stageManager.OnActorDeath;
+        //if (move != null)
+        //    onOverlapDetected -= move.OnOverlapDetected;
+        //if (stageManager != null)
+        //    onActorDeath -= stageManager.OnActorDeath;
     }
 
     public void Spawn(Vector2Int startLocation)

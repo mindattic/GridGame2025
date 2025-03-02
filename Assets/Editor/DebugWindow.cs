@@ -159,7 +159,7 @@ public class DebugWindow : EditorWindow
 
         //Register update method
         EditorApplication.update += OnEditorUpdate;
-       
+
     }
 
     private void OnDisable()
@@ -203,6 +203,7 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginVertical();
 
         RenderKeyboard();
+        RenderScenes();
         RenderStats();
         RenderCheckboxes();
         RenderGameSpeedDropdown();
@@ -211,7 +212,7 @@ public class DebugWindow : EditorWindow
         RenderLevelControls();
         //RenderDataControls();
         RenderSpawnControls();
-        RenderActorStats();    
+        RenderActorStats();
         RenderLog();
 
         GUILayout.EndVertical();
@@ -223,10 +224,13 @@ public class DebugWindow : EditorWindow
         GUILayout.Label("Keyboard");
         GUILayout.EndHorizontal();
 
+        bool isClicked;
+
         // Row 1: Up Arrow
         GUILayout.BeginHorizontal();
         GUILayout.Space(38); // Add space to center "W"
-        if (GUILayout.Button("\u2191", GUILayout.Width(32), GUILayout.Height(32)))
+        isClicked = GUILayout.Button("\u2191", GUILayout.Width(32), GUILayout.Height(32));
+        if (isClicked)
         {
             Debug.Log("Up Button Pressed");
             OnKeyUp();
@@ -237,19 +241,22 @@ public class DebugWindow : EditorWindow
         // Row 2: Left, Down, Right
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("\u2190", GUILayout.Width(32), GUILayout.Height(32)))
+        isClicked = GUILayout.Button("\u2190", GUILayout.Width(32), GUILayout.Height(32));
+        if (isClicked)
         {
             Debug.Log("Left Button Pressed");
             OnKeyLeft();
         }
 
-        if (GUILayout.Button("\u2193", GUILayout.Width(32), GUILayout.Height(32)))
+        isClicked = GUILayout.Button("\u2193", GUILayout.Width(32), GUILayout.Height(32));
+        if (isClicked)
         {
             Debug.Log("Down Button Pressed");
             OnKeyDown();
         }
 
-        if (GUILayout.Button("\u2192", GUILayout.Width(32), GUILayout.Height(32)))
+        isClicked = GUILayout.Button("\u2192", GUILayout.Width(32), GUILayout.Height(32));
+        if (isClicked)
         {
             Debug.Log("Right Button Pressed");
             OnKeyRight();
@@ -259,6 +266,38 @@ public class DebugWindow : EditorWindow
 
         GUILayout.Space(10);
         Repaint(); // Ensures UI updates
+    }
+
+
+
+    private void RenderScenes()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Scenes");
+        GUILayout.EndHorizontal();
+
+        bool isClicked;
+
+        GUILayout.BeginHorizontal();
+
+        isClicked = GUILayout.Button("Splash Screen", GUILayout.Width(Screen.width * Constants.percent25));
+        if (isClicked)
+            SceneManager.LoadScene(Scene.SplashScreen);
+
+        isClicked = GUILayout.Button("Title Screen", GUILayout.Width(Screen.width * Constants.percent25));
+        if (isClicked)
+            SceneManager.LoadScene(Scene.TitleScreen);
+
+        isClicked = GUILayout.Button("Options Screen", GUILayout.Width(Screen.width * Constants.percent25));
+        if (isClicked)
+            SceneManager.LoadScene(Scene.OptionsScreen);
+
+        isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Constants.percent25));
+        if (isClicked)
+            SceneManager.LoadScene(Scene.Game);
+
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10);
     }
 
     private void RenderStats()

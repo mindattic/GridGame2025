@@ -330,53 +330,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 418514883}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebf6c1e7596c07140be1046c50db9eb0, type: 3}
+  m_Script: {fileID: 11500000, guid: 6a4457fe33571c442927e646afc59d6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imagePrefab: {fileID: 7305881818270878601, guid: dfd66e3027064c74080a03cf0a5ac39f, type: 3}
-  canvasTransform: {fileID: 418514884}
-  spawnIntervalMin: 0.05
-  spawnIntervalMax: 0.3
-  speedMin: 300
-  speedMax: 400
-  x: -10
-  yMin: -800
-  yMax: 500
-  rotationSpeedMin: 30
-  rotationSpeedMax: 90
-  fallSpeedMin: -10
-  fallSpeedMax: 60
-  scaleMin: 0.2
-  scaleMax: 0.3
-  prewarmCount: 10
-  sprites:
-  - {fileID: 3520206382811537389, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: 7370674611000671282, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: 2534767628777617093, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: 8808683870634258502, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: -7670847680485454086, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: 3576104365494426924, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: -1478081977278051734, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: -798872234386602111, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: -798872234386602111, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: 4498427950863180884, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: 7744928054176430063, guid: 8b4010e57535249489326a7f3ad1b097, type: 3}
-  - {fileID: 6964323125434852510, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: -6853439907763546000, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: 6372647871257404681, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: 967189237743919344, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: 2146484724432616701, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: 559654592048187398, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: 4802694126611512576, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: -7101058382605396622, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: -3261781506955592955, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: 2598039917348828659, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: -8363608855773241433, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: 6109728258175429272, guid: 054b1494a82c5154e845beb6291a14b1, type: 3}
-  - {fileID: 21300000, guid: cdd5a98c2f5e28d44a615fdb30a85fb2, type: 3}
-  - {fileID: -6700472185959037515, guid: ff7a4098082ed8949bf52332f3a151b4, type: 3}
-  - {fileID: 21300000, guid: 5ab985126dd54844da54897a31c0e8d6, type: 3}
-  - {fileID: 21300000, guid: 3c20082cf9fc85245ab1bf53983ddb10, type: 3}
+  imagePrefab: {fileID: 0}
+  canvasTransform: {fileID: 655101921}
+  spawnIntervalMin: 1
+  spawnIntervalMax: 3
+  speedMin: 1
+  speedMax: 3
+  x: 0
+  yMin: -4
+  yMax: 4
+  rotationSpeedMin: 0
+  rotationSpeedMax: 0
+  fallSpeedMin: 0
+  fallSpeedMax: 0
+  scaleMin: 0
+  scaleMax: 0
+  prewarmCount: 0
+  sprites: []
 --- !u!114 &418514886
 MonoBehaviour:
   m_ObjectHideFlags: 0
