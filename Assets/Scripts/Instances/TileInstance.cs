@@ -7,7 +7,10 @@ public class TileInstance : MonoBehaviour
    //Quick Reference Properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected List<ActorInstance> actors => GameManager.instance.actors;
-    public bool IsOccupied => actors.Any(x => x != null && x.isPlaying && x.location == location);
+    public bool IsOccupied => actors.Any(x => x.isPlaying && x.location == location);
+
+    public ActorInstance Occupier => actors.FirstOrDefault(x => x.location == location);
+
     public string Name
     {
         get => name;

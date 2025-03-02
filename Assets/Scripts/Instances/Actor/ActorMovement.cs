@@ -17,7 +17,7 @@ namespace Assets.Scripts.Instances.Actor
         protected AudioManager audioManager => GameManager.instance.audioManager;
         protected BoardInstance board => GameManager.instance.board;
         protected float moveSpeed => GameManager.instance.moveSpeed;
-        protected float snapDistance => GameManager.instance.snapDistance;
+        protected float snapThreshold => GameManager.instance.snapThreshold;
         protected float tileSize => GameManager.instance.tileSize;
         protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
         protected Vector3 mouseOffset => GameManager.instance.mouseOffset;
@@ -40,10 +40,19 @@ namespace Assets.Scripts.Instances.Actor
         //Fields
         private ActorInstance instance;
 
+
+        public void Start()
+        {
+        }
+
         public void Initialize(ActorInstance parentInstance)
         {
             this.instance = parentInstance;
         }
+
+
+
+
 
         ///<summary>
         ///Moves the actor toward the cursor while the actor is focused or selected.
@@ -52,6 +61,7 @@ namespace Assets.Scripts.Instances.Actor
         public IEnumerator MoveTowardCursor()
         {
             //Before: set a high sorting order.
+            flags.IsMoving = true;
             instance.sortingOrder = SortingOrder.Max;
             Vector3 prevPosition = instance.position; //Store the initial position
             float tiltFactor = 25f;   //How much tilt to apply based on movement
@@ -61,15 +71,11 @@ namespace Assets.Scripts.Instances.Actor
             //During: while the actor is focused or selected and not swapping.
             while ((instance.isFocusedPlayer || instance.isSelectedPlayer) && !flags.IsSwapping)
             {
-                flags.IsMoving = true;
-                instance.sortingOrder = SortingOrder.Max;
-
                 //Snap the actor to the cursor.
                 instance.position = mousePosition3D + mouseOffset;
 
                 //Calculate velocity and apply tilt effect.
-                Vector3 velocity = instance.position - prevPosition;
-                ApplyTilt(velocity, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
+                ApplyTilt(instance.position - prevPosition, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
 
                 //Update the previous position.
                 prevPosition = instance.position;
@@ -85,6 +91,7 @@ namespace Assets.Scripts.Instances.Actor
             instance.transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
 
+
         ///<summary>
         ///Moves the actor toward its grid destination using right-angle (non-diagonal) movement.
         ///</summary>
@@ -93,8 +100,6 @@ namespace Assets.Scripts.Instances.Actor
             //Before: movement begins
             audioManager.Play("Slide");
             instance.sortingOrder = SortingOrder.Moving;
-            float moveSpeed = tileSize * 10;
-            float snapThreshold = 0.1f;
 
             //Determine the destination based on the actor's grid location.
             Vector3 destination = Geometry.GetPositionByLocation(location);
@@ -108,7 +113,7 @@ namespace Assets.Scripts.Instances.Actor
                 {
                     flags.IsMoving = true;
                     sortingOrder = SortingOrder.Moving;
-                    position = Vector3.MoveTowards(position, horizontalTarget, moveSpeed * Time.deltaTime);
+                    position = Vector3.MoveTowards(position, horizontalTarget, moveSpeed);
 
                     if (flags.IsSwapping)
                     {
@@ -136,7 +141,7 @@ namespace Assets.Scripts.Instances.Actor
                 {
                     flags.IsMoving = true;
                     sortingOrder = SortingOrder.Moving;
-                    position = Vector3.MoveTowards(position, verticalTarget, moveSpeed * Time.deltaTime);
+                    position = Vector3.MoveTowards(position, verticalTarget, moveSpeed);
 
                     if (flags.IsSwapping)
                     {
@@ -180,43 +185,51 @@ namespace Assets.Scripts.Instances.Actor
             {
                 //TriggerEnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
                 ActorInstance overlappingActor = actors.FirstOrDefault(x =>
-                    x != null &&
                     x != instance &&
-                    x.isActive &&
-                    x.isAlive &&
+                    x.isPlaying &&
                     x.location == closestTile.location);
 
-                if (overlappingActor != null)
-                {
-                    //If the overlapping actor is not already swapping, trigger its overlap event.
-                    if (!overlappingActor.flags.IsSwapping)
-                    {
-                        overlappingActor.onOverlapDetected.Invoke(instance);
-                    }
-                    //Do not update location until the swap resolves.
-                    return;
-                }
-
-                //Otherwise, update the grid location.
+                //Update actor location
                 previousLocation = location;
                 location = closestTile.location;
+
+                //Send event to overlapping actor to move to actor's previous location
+                if (overlappingActor != null)
+                    overlappingActor.onOverlapDetected.Invoke(previousLocation);
             }
+        }
+
+        public void OnDragDetected()
+        {
+            //Check abort conditions
+            if (flags.IsMoving)
+                return;
+
+            instance.StartCoroutine(MoveTowardCursor());
         }
 
         ///<summary>
         ///Called when an overlap with another actor is detected.
         ///Initiates a swap movement if not already in progress.
         ///</summary>
-        public void OnOverlapDetected(ActorInstance other)
+        public void OnOverlapDetected(Vector2Int newLocation)
         {
-            //If already swapping, ignore additional overlap events.
             if (flags.IsSwapping)
                 return;
 
-            //Snap to the overlapping actor's location and start swapping.
-            location = other.location;
-            flags.IsSwapping = true;
-            instance.StartCoroutine(MoveTowardDestination());
+            var currentTile = GameManager.instance.tileMap.GetTile(newLocation);
+            if (currentTile.IsOccupied)
+            {
+                Debug.Log($"Tile ${currentTile.location.x}x{currentTile.location.y} is occupied.");
+               
+            }
+            else
+            {
+                flags.IsSwapping = true;
+                location = currentTile.location;
+                instance.StartCoroutine(MoveTowardDestination());
+            }
+
         }
 
         ///<summary>

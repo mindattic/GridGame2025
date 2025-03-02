@@ -86,7 +86,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public float cursorSpeed;
     [HideInInspector] public float swapSpeed;
     [HideInInspector] public float moveSpeed;
-    [HideInInspector] public float snapDistance;
+    [HideInInspector] public float snapThreshold;
     [HideInInspector] public float bumpSpeed;
 
     //Actor selection
@@ -144,7 +144,7 @@ public class GameManager : Singleton<GameManager>
         swapSpeed = tileSize * 0.1666f;
         moveSpeed = tileSize * 0.125f;
         bumpSpeed = tileSize * 0.08f;
-        snapDistance = tileSize * 0.125f;
+        snapThreshold = tileSize * 0.125f;
         ShakeIntensity.Initialize(tileSize);
 
         totalCoins = 0;

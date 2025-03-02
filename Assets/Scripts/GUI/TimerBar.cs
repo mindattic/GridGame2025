@@ -8,7 +8,7 @@ public class TimerBar : MonoBehaviour
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected float tileSize => GameManager.instance.tileSize;
     protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
-    protected float snapDistance => GameManager.instance.snapDistance;
+    protected float snapDistance => GameManager.instance.snapThreshold;
 
     // Timer settings
     private const float maxDuration = 6f;

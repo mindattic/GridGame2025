@@ -22,7 +22,7 @@ public class ActorInstance : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected float moveSpeed => GameManager.instance.moveSpeed;
-    protected float snapDistance => GameManager.instance.snapDistance;
+    protected float snapDistance => GameManager.instance.snapThreshold;
     protected float tileSize => GameManager.instance.tileSize;
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected ActorInstance focusedActor => GameManager.instance.focusedActor;
@@ -118,9 +118,10 @@ public class ActorInstance : MonoBehaviour
     }
 
     //System.Action event handlers
-    public System.Action<ActorInstance> onOverlapDetected;
+    public System.Action<Vector2Int> onOverlapDetected;
     public System.Action onActorDeath;
     public System.Action OnSortingOrderChanged;
+    public System.Action onDragDetected;
 
     //Fields
     [SerializeField] public AnimationCurve glowCurve;
@@ -197,7 +198,8 @@ public class ActorInstance : MonoBehaviour
 
 
         //Events
-        onOverlapDetected += (actor) => move.OnOverlapDetected(actor);
+        onDragDetected += move.OnDragDetected;
+        onOverlapDetected += (location) => move.OnOverlapDetected(location);
         onActorDeath += stageManager.OnActorDeath;
 
     }

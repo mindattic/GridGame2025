@@ -201,7 +201,7 @@ namespace Assets.Scripts.Instances.Actor
             var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, tileSize * percent33);
 
             //Increase sorting order to ensure this tile is on top
-            //sortingOrder = SortingOrder.Max;
+            instance.sortingOrder = SortingOrder.Max;
 
             //Phase 1: Windup (move slightly in the opposite direction)
             float elapsedTime = 0f;
