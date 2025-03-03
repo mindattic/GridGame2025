@@ -193,7 +193,7 @@ namespace Assets.Scripts.Instances.Actor
                 previousLocation = location;
                 location = closestTile.location;
 
-                //Send event to overlapping actor to move to actor's previous location
+                //Send event to overlapping actor to movement to actor's previous location
                 if (overlappingActor != null)
                     overlappingActor.onOverlapDetected.Invoke(previousLocation);
             }

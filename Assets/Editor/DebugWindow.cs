@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public static class DebugWindowTrigger
@@ -231,10 +232,7 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(38); // Add space to center "W"
         isClicked = GUILayout.Button("\u2191", GUILayout.Width(32), GUILayout.Height(32));
         if (isClicked)
-        {
-            Debug.Log("Up Button Pressed");
             OnKeyUp();
-        }
         GUILayout.Space(38);
         GUILayout.EndHorizontal();
 
@@ -243,24 +241,15 @@ public class DebugWindow : EditorWindow
 
         isClicked = GUILayout.Button("\u2190", GUILayout.Width(32), GUILayout.Height(32));
         if (isClicked)
-        {
-            Debug.Log("Left Button Pressed");
             OnKeyLeft();
-        }
 
         isClicked = GUILayout.Button("\u2193", GUILayout.Width(32), GUILayout.Height(32));
         if (isClicked)
-        {
-            Debug.Log("Down Button Pressed");
             OnKeyDown();
-        }
 
         isClicked = GUILayout.Button("\u2192", GUILayout.Width(32), GUILayout.Height(32));
         if (isClicked)
-        {
-            Debug.Log("Right Button Pressed");
             OnKeyRight();
-        }
 
         GUILayout.EndHorizontal();
 
@@ -634,65 +623,18 @@ public class DebugWindow : EditorWindow
         }
     }
 
-    //Blank click events for the buttons
-    private void OnReloadStageClick()
-    {
-        stageManager.LoadStage();
-    }
 
-    private void OnPreviousStageClick()
-    {
-        stageManager.Previous();
-    }
+    //Stage methods
+    private void OnReloadStageClick() => stageManager.LoadStage();
+    private void OnPreviousStageClick() => stageManager.Previous();
+    private void OnNextStageClick() => stageManager.Next();
 
-    private void OnNextStageClick()
-    {
-        stageManager.Next();
-    }
+    //Keyboard methods
+    private void OnKeyUp() => GameManager.instance.focusedActor?.Move(Vector2Int.down);
+    private void OnKeyDown() => GameManager.instance.focusedActor?.Move(Vector2Int.up);
+    private void OnKeyLeft() => GameManager.instance.focusedActor?.Move(Vector2Int.left);
+    private void OnKeyRight() => GameManager.instance.focusedActor?.Move(Vector2Int.right);
 
-
-    private void OnKeyUp()
-    {
-        var focusedActor = GameManager.instance.focusedActor;
-        focusedActor?.Teleport(focusedActor.location + Vector2Int.down);
-    }
-
-    private void OnKeyDown()
-    {
-        var focusedActor = GameManager.instance.focusedActor;
-        focusedActor?.Teleport(focusedActor.location + Vector2Int.up);
-    }
-
-    private void OnKeyLeft()
-    {
-        var focusedActor = GameManager.instance.focusedActor;
-        focusedActor?.Teleport(focusedActor.location + Vector2Int.left);
-    }
-
-    private void OnKeyRight()
-    {
-        var focusedActor = GameManager.instance.focusedActor;
-        focusedActor?.Teleport(focusedActor.location + Vector2Int.right);
-    }
-
-
-    //private void OnEraseDatabaseClick()
-    //{
-    //   string fullPath = Path.Combine(Application.persistentDataPath, DatabaseManager.Schema.DBName);
-
-    //   if (!File.Exists(fullPath))
-    //   {
-    //       logManager.Error($"{DatabaseManager.Schema.DBName} does not exist at the specified path.");
-    //       return;
-    //   }
-
-    //   File.Delete(fullPath);
-    //   logManager.Info($"{DatabaseManager.Schema.DBName} has been deleted.");
-    //}
-
-    //private void OnEraseProfilesClick()
-    //{
-    //   logManager.Info("Not yet implemented.");
-    //}
+ 
 
 }

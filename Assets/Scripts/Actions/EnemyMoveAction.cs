@@ -31,11 +31,11 @@ namespace Assets.Scripts.Models
                 //Wait for a predetermined waitDuration before enemy movement starts.
                 yield return Wait.For(Intermission.Before.Enemy.Move);
 
-                //For each ready enemy, calculate its attack strategy and move it to its destination.
+                //For each ready enemy, calculate its attack strategy and movement it to its destination.
                 foreach (var enemy in readyEnemies)
                 {
                     enemy.CalculateAttackStrategy();
-                    yield return enemy.move.MoveTowardDestination();
+                    yield return enemy.movement.MoveTowardDestination();
                 }
 
                 //After moving, add the enemy attack action.

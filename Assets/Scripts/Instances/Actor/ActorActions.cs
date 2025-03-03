@@ -203,7 +203,7 @@ namespace Assets.Scripts.Instances.Actor
             //Increase sorting order to ensure this tile is on top
             instance.sortingOrder = SortingOrder.Max;
 
-            //Phase 1: Windup (move slightly in the opposite direction)
+            //Phase 1: Windup (movement slightly in the opposite direction)
             float elapsedTime = 0f;
             while (elapsedTime < windupDuration)
             {
@@ -215,7 +215,7 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            //Phase 2: Bump (quickly move in the direction and rotate slightly)
+            //Phase 2: Bump (quickly movement in the direction and rotate slightly)
             elapsedTime = 0f;
             float targetRotationZ = (direction == Direction.East) ? -15f : 15f; //Opposite rotation for East
             while (elapsedTime < bumpDuration)
@@ -233,7 +233,7 @@ namespace Assets.Scripts.Instances.Actor
             trigger.SetContext(instance);
             yield return trigger.StartCoroutine();
 
-            //Phase 3: Return to Starting position (rotate back to zero and move back slowly)
+            //Phase 3: Return to Starting position (rotate back to zero and movement back slowly)
             elapsedTime = 0f;
             while (elapsedTime < returnDuration)
             {

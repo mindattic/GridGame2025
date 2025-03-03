@@ -139,7 +139,7 @@ public class ActorInstance : MonoBehaviour
     public ActorVFX vfx = new ActorVFX();
     public ActorWeapon weapon = new ActorWeapon();
     public ActorActions action = new ActorActions();
-    public ActorMovement move = new ActorMovement();
+    public ActorMovement movement = new ActorMovement();
     public ActorHealthBar healthBar = new ActorHealthBar();
     public ActorActionBar actionBar = new ActorActionBar();
     public ActorGlow glow = new ActorGlow();
@@ -188,7 +188,7 @@ public class ActorInstance : MonoBehaviour
 
         render.Initialize(this);
         action.Initialize(this);
-        move.Initialize(this);
+        movement.Initialize(this);
         healthBar.Initialize(this);
         actionBar.Initialize(this);
         glow.Initialize(this);
@@ -198,16 +198,16 @@ public class ActorInstance : MonoBehaviour
 
 
         //Events
-        onDragDetected += move.OnDragDetected;
-        onOverlapDetected += (location) => move.OnOverlapDetected(location);
+        onDragDetected += movement.OnDragDetected;
+        onOverlapDetected += (location) => movement.OnOverlapDetected(location);
         onActorDeath += stageManager.OnActorDeath;
 
     }
 
     private void OnDestroy()
     {
-        //if (move != null)
-        //    onOverlapDetected -= move.OnOverlapDetected;
+        //if (movement != null)
+        //    onOverlapDetected -= movement.OnOverlapDetected;
         //if (stageManager != null)
         //    onActorDeath -= stageManager.OnActorDeath;
     }
@@ -460,40 +460,30 @@ public class ActorInstance : MonoBehaviour
         yield return true;
     }
 
-
-
-    public void Teleport(Vector2Int location)
+    public void Teleport(Vector2Int newLocation)
     {
-        this.location = location;
+        //Check abort conditions
+        if (!board.InBounds(newLocation)) 
+            return;
+
+        this.location = newLocation;
         transform.position = Geometry.GetPositionByLocation(this.location);
     }
 
-
-    public void SetAttacking()
+    public void Move(Vector2Int direction)
     {
-        flags.IsAttacking = true;
-        sortingOrder = SortingOrder.Attacker;
+        //Check abort conditions
+        if (!board.InBounds(location + direction))
+            return;
+
+        var newLocation = location + direction;
+        Debug.Log(newLocation);
+        var tile = GameManager.instance.tileMap.GetTile(newLocation);
+        if (tile == null) return;
+        Teleport(tile.location);
     }
 
-    public void SetDefending()
-    {
-        flags.IsDefending = true;
-        sortingOrder = SortingOrder.Opponent;
-    }
 
-    public void SetSupporting()
-    {
-        flags.IsSupporting = true;
-        sortingOrder = SortingOrder.Supporter;
-    }
-
-    public void SetDefault()
-    {
-        flags.IsAttacking = false;
-        flags.IsDefending = false;
-        flags.IsSupporting = false;
-        sortingOrder = SortingOrder.Default;
-    }
 
 
     public void SetReady()
@@ -507,7 +497,5 @@ public class ActorInstance : MonoBehaviour
 
         actionBar.Update();
     }
-
-
 
 }

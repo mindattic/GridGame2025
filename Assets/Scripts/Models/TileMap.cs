@@ -43,12 +43,12 @@ namespace Assets.Scripts.Models
 
         public TileInstance GetTile(Vector2Int location)
         {
-            return locationToEntry.TryGetValue(location, out var entry) ? entry.Tile : Geometry.GetClosestTile(location);
+            return locationToEntry.TryGetValue(location, out var entry) ? entry.Tile : null;
         }
 
         public TileInstance GetTile(Vector3 position)
         {
-            return positionToEntry.TryGetValue(position, out var entry) ? entry.Tile : Geometry.GetClosestTile(position);
+            return positionToEntry.TryGetValue(position, out var entry) ? entry.Tile : null;
         }
 
         public bool ContainsLocation(Vector2Int location)

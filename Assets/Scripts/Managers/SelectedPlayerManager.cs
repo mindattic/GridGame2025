@@ -60,7 +60,7 @@ public class SelectedPlayerManager : MonoBehaviour
         cardManager.Assign(focusedActor);
 
         if (focusedActor.isPlayer)
-            //StartCoroutine(focusedActor.move.MoveTowardCursor());
+            //StartCoroutine(focusedActor.movement.MoveTowardCursor());
             focusedActor.onDragDetected?.Invoke();
 
 
@@ -83,7 +83,7 @@ public class SelectedPlayerManager : MonoBehaviour
         actorManager.CheckEnemyAP();
         if (selectedPlayer != null)
             selectedPlayer.onDragDetected?.Invoke();
-        //StartCoroutine(selectedPlayer.move.MoveTowardCursor());
+        //StartCoroutine(selectedPlayer.movement.MoveTowardCursor());
 
         // Change phase from Start to Move.
         turnManager.SetPhase(TurnPhase.Move);

@@ -8,9 +8,6 @@ public class BoardInstance : MonoBehaviour
    //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     protected TileMap tileMap => GameManager.instance.tileMap;
-    protected ProfileManager profileManager => GameManager.instance.profileManager;
-    protected StageManager stageManager => GameManager.instance.stageManager;
-    protected BoardInstance board => GameManager.instance.board;
 
     //Fields
     [SerializeField] public GameObject TilePrefab;
@@ -58,7 +55,7 @@ public class BoardInstance : MonoBehaviour
             {
                 var prefab = Instantiate(TilePrefab, Vector2.zero, Quaternion.identity);
                 var instance = prefab.GetComponent<TileInstance>();
-                instance.parent = board.transform;
+                instance.parent = transform;
                 instance.name = $"Tile_{col}x{row}";
                 instance.Initialize(col, row);
                 tileMap.Add(instance);
@@ -99,6 +96,13 @@ public class BoardInstance : MonoBehaviour
         //Return only the X and Y screen coordinates
         return new Vector2(screenPosition.x, screenPosition.y);
     }
+
+    public bool InBounds(Vector2Int location)
+    {
+        return location.x >= 1 && location.x <= columnCount 
+            && location.y >= 1 && location.y <= rowCount;
+    }
+
 }
 
 public enum BoardPoint
