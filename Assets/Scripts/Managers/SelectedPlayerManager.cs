@@ -12,7 +12,7 @@ public class SelectedPlayerManager : MonoBehaviour
     protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
     protected Vector3 mouseOffset { get => GameManager.instance.mouseOffset; set => GameManager.instance.mouseOffset = value; }
     protected ActorInstance focusedActor { get => GameManager.instance.focusedActor; set => GameManager.instance.focusedActor = value; }
-    protected ActorInstance previousMovingPlayer { get => GameManager.instance.previousSelectedPlayer; set => GameManager.instance.previousSelectedPlayer = value; }
+    protected ActorInstance previousSelectedPlayer { get => GameManager.instance.previousSelectedPlayer; set => GameManager.instance.previousSelectedPlayer = value; }
     protected ActorInstance selectedPlayer { get => GameManager.instance.selectedPlayer; set => GameManager.instance.selectedPlayer = value; }
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
@@ -68,13 +68,12 @@ public class SelectedPlayerManager : MonoBehaviour
 
     public void Drag()
     {
-        // TriggerEnqueueAttacks abort conditions.
+        //Check abort conditions
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase || !hasFocusedActor || focusedActor.isEnemy)
             return;
 
-        // Set the selected player to be moved.
+        //Set the selected player to be moved.
         selectedPlayer = focusedActor;
-        //Unfocus();
 
 
         // When the phase switches to Move on the player turn, start the timer and enable enemy AP checking.
@@ -83,7 +82,6 @@ public class SelectedPlayerManager : MonoBehaviour
         actorManager.CheckEnemyAP();
         if (selectedPlayer != null)
             selectedPlayer.onDragDetected?.Invoke();
-        //StartCoroutine(selectedPlayer.movement.MoveTowardCursor());
 
         // Change phase from Start to Move.
         turnManager.SetPhase(TurnPhase.Move);
@@ -91,8 +89,8 @@ public class SelectedPlayerManager : MonoBehaviour
 
     public void Drop()
     {
-        //TriggerEnqueueAttacks abort conditions.
-        if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasSelectedPlayer)
+        //Check abort conditions
+        if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasSelectedPlayer || !selectedPlayer.flags.IsMoving)
         {
             if (hasFocusedActor)
                 focusedActor.position = focusedActor.currentTile.position;
@@ -100,10 +98,8 @@ public class SelectedPlayerManager : MonoBehaviour
         }
 
         //Snap the moving player to the closest tile.
-        var closestTile = Geometry.GetClosestTile(selectedPlayer.position);
-        selectedPlayer.location = closestTile.location;
-        selectedPlayer.position = closestTile.position;
-        previousMovingPlayer = selectedPlayer;
+        selectedPlayer.movement.SnapToLocation();
+        previousSelectedPlayer = selectedPlayer;
         selectedPlayer = null;
         focusedActor = null;
 
@@ -112,11 +108,6 @@ public class SelectedPlayerManager : MonoBehaviour
         cardManager.Reset();
         timerBar.Pause();
 
-
         attackManager.Check();
-
-        //actionManager.Add(new PincerAttackAction());
-        //turnManager.SetPhase(TurnPhase.Attack);
-        //actionManager.TriggerExecute();
     }
 }

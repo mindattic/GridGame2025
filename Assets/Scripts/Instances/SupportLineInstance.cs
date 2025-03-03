@@ -53,8 +53,8 @@ public class SupportLineInstance : MonoBehaviour
         lineRenderer.SetPosition(1, actor2.position);
 
         // Subscribe to sorting order changes
-        actor1.OnSortingOrderChanged += UpdateSortingOrder;
-        actor2.OnSortingOrderChanged += UpdateSortingOrder;
+        actor1.onSortingOrderChanged += UpdateSortingOrder;
+        actor2.onSortingOrderChanged += UpdateSortingOrder;
 
         StartCoroutine(FadeIn());
     }
@@ -134,8 +134,8 @@ public class SupportLineInstance : MonoBehaviour
 
     public void Destroy()
     {
-        actor1.OnSortingOrderChanged -= UpdateSortingOrder;
-        actor2.OnSortingOrderChanged -= UpdateSortingOrder;
+        actor1.onSortingOrderChanged -= UpdateSortingOrder;
+        actor2.onSortingOrderChanged -= UpdateSortingOrder;
         Destroy(this.gameObject);
     }
 

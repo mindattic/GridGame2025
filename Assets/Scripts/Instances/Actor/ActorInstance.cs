@@ -113,20 +113,23 @@ public class ActorInstance : MonoBehaviour
             render.armorWest.sortingOrder = value + ActorLayer.Value.Armor.ArmorWest;
             render.overlay.sortingOrder = value + ActorLayer.Value.Overlay;
             render.selectionBox.sortingOrder = value + ActorLayer.Value.SelectionBox;
-            OnSortingOrderChanged?.Invoke();
+            onSortingOrderChanged?.Invoke();
         }
     }
 
     //System.Action event handlers
     public System.Action<Vector2Int> onOverlapDetected;
+    public System.Action<Vector2Int, Vector2Int> onLocationChanged;
     public System.Action onActorDeath;
-    public System.Action OnSortingOrderChanged;
+    public System.Action onSortingOrderChanged;
     public System.Action onDragDetected;
+   
 
     //Fields
     [SerializeField] public AnimationCurve glowCurve;
     public Character character;
     public Vector2Int previousLocation;
+    public Vector3 previousPosition;
     public Vector2Int location;
     public Team team = Team.Neutral;
     public int spawnTurn = 0;
@@ -198,8 +201,9 @@ public class ActorInstance : MonoBehaviour
 
 
         //Events
-        onDragDetected += movement.OnDragDetected;
         onOverlapDetected += (location) => movement.OnOverlapDetected(location);
+        onLocationChanged += (previousLocation, newLocation) => tileManager.OnLocationChanged(previousLocation, newLocation);
+        onDragDetected += movement.OnDragDetected;
         onActorDeath += stageManager.OnActorDeath;
 
     }
@@ -217,6 +221,7 @@ public class ActorInstance : MonoBehaviour
         location = startLocation;
         previousLocation = location;
         position = Geometry.GetPositionByLocation(location);
+        previousPosition = position;
 
         thumbnail.Generate();
 

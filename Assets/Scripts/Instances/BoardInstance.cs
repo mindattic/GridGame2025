@@ -2,12 +2,13 @@ using Assets.Scripts.Models;
 using Game.Models;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class BoardInstance : MonoBehaviour
 {
    //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
-    protected TileMap tileMap => GameManager.instance.tileMap;
+    protected TileMap tileMap { get => GameManager.instance.tileMap; set => GameManager.instance.tileMap = value; }
 
     //Fields
     [SerializeField] public GameObject TilePrefab;
@@ -18,7 +19,6 @@ public class BoardInstance : MonoBehaviour
     [HideInInspector] public Vector2Int NowhereLocation = new Vector2Int(-1, -1);
     [HideInInspector] public Vector3 NowherePosition = new Vector3(-1000, -1000, -1000);
     [HideInInspector] public Vector2 center;
-    [HideInInspector] public Vector3 gridOrigin;
 
     public void Initialize()
     {
@@ -49,6 +49,9 @@ public class BoardInstance : MonoBehaviour
 
     private void GenerateTiles()
     {
+       
+        tileMap = new TileMap();
+
         for (int col = 1; col <= columnCount; col++)
         {
             for (int row = 1; row <= rowCount; row++)
@@ -63,8 +66,8 @@ public class BoardInstance : MonoBehaviour
             }
         }
 
-        //TODO: Assign grid origin
-        gridOrigin = new Vector3(offset.x + tileSize / 2, offset.y - tileSize / 2, 0);
+        tileMap.gridOrigin = tileMap.GetTile(new Vector2Int(1, 1)).position;
+        tileMap.tileSize = tileSize;
 
 
         //Assign tiles queue

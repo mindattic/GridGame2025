@@ -102,7 +102,7 @@ public class GameManager : Singleton<GameManager>
     public bool hasSelectedPlayer => selectedPlayer != null;
     public UnityEvent<Vector2Int> onSelectedPlayerLocationChanged;
 
-    [HideInInspector] public TileMap tileMap = new TileMap();
+    [HideInInspector] public TileMap tileMap;
 
     //Instances
     [HideInInspector] public TimerBar timerBar;

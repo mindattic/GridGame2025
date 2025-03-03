@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace Assets.Scripts.Instances.Actor
 {
@@ -30,6 +32,7 @@ namespace Assets.Scripts.Instances.Actor
         private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
         protected Vector2Int previousLocation { get => instance.previousLocation; set => instance.previousLocation = value; }
         private Vector2Int location { get => instance.location; set => instance.location = value; }
+        protected Vector3 previousPosition { get => instance.previousPosition; set => instance.previousPosition = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
         protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
@@ -63,27 +66,18 @@ namespace Assets.Scripts.Instances.Actor
             //Before: set a high sorting order.
             flags.IsMoving = true;
             instance.sortingOrder = SortingOrder.Max;
-            Vector3 prevPosition = instance.position; //Store the initial position
             float tiltFactor = 25f;   //How much tilt to apply based on movement
             float rotationSpeed = 10f; //Speed at which the tilt adjusts
             float resetSpeed = 5f;     //Speed at which the rotation resets
 
             //During: while the actor is focused or selected and not swapping.
-            while ((instance.isFocusedPlayer || instance.isSelectedPlayer) && !flags.IsSwapping)
+            while (flags.IsMoving)
             {
-                //Snap the actor to the cursor.
+                previousPosition = instance.position;
                 instance.position = mousePosition3D + mouseOffset;
-
-                //Calculate velocity and apply tilt effect.
-                ApplyTilt(instance.position - prevPosition, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
-
-                //Update the previous position.
-                prevPosition = instance.position;
-
-                //Update the actor's grid location.
+                //ApplyTilt(instance.position - previousPosition, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
                 CheckLocationChanged();
-
-                yield return Wait.UntilNextFrame();
+                yield return Wait.OneTick();
             }
 
             //After: clean up.
@@ -98,6 +92,7 @@ namespace Assets.Scripts.Instances.Actor
         public IEnumerator MoveTowardDestination()
         {
             //Before: movement begins
+            flags.IsMoving = true;
             audioManager.Play("Slide");
             instance.sortingOrder = SortingOrder.Moving;
 
@@ -111,16 +106,14 @@ namespace Assets.Scripts.Instances.Actor
                 Vector3 horizontalTarget = new Vector3(destination.x, position.y, position.z);
                 while (Mathf.Abs(position.x - destination.x) > snapThreshold)
                 {
-                    flags.IsMoving = true;
-                    sortingOrder = SortingOrder.Moving;
                     position = Vector3.MoveTowards(position, horizontalTarget, moveSpeed);
 
-                    if (flags.IsSwapping)
-                    {
-                        //Apply tilt effect along the horizontal axis.
-                        Vector3 velocity = horizontalTarget - position;
-                        ApplyTilt(velocity, 25f, 10f, 5f, Vector3.zero);
-                    }
+                    //if (flags.IsSwapping)
+                    //{
+                    //    //Apply tilt effect along the horizontal axis.
+                    //    Vector3 velocity = horizontalTarget - position;
+                    //    ApplyTilt(velocity, 25f, 10f, 5f, Vector3.zero);
+                    //}
 
                     CheckLocationChanged();
                     yield return Wait.UntilNextFrame();
@@ -139,16 +132,14 @@ namespace Assets.Scripts.Instances.Actor
                 Vector3 verticalTarget = new Vector3(position.x, destination.y, position.z);
                 while (Mathf.Abs(position.y - destination.y) > snapThreshold)
                 {
-                    flags.IsMoving = true;
-                    sortingOrder = SortingOrder.Moving;
                     position = Vector3.MoveTowards(position, verticalTarget, moveSpeed);
 
-                    if (flags.IsSwapping)
-                    {
-                        //Apply tilt effect along the vertical axis.
-                        Vector3 velocity = verticalTarget - position;
-                        ApplyTilt(velocity, 25f, 10f, 5f, Vector3.zero);
-                    }
+                    //if (flags.IsSwapping)
+                    //{
+                    //    //Apply tilt effect along the vertical axis.
+                    //    Vector3 velocity = verticalTarget - position;
+                    //    ApplyTilt(velocity, 25f, 10f, 5f, Vector3.zero);
+                    //}
 
                     CheckLocationChanged();
                     yield return Wait.UntilNextFrame();
@@ -167,6 +158,15 @@ namespace Assets.Scripts.Instances.Actor
             rotation = Geometry.Rotation(0, 0, 0);
         }
 
+
+        public void SnapToLocation()
+        {
+            flags.IsMoving = false;
+            var closestTile = GameManager.instance.tileMap.GetTile(selectedPlayer.location);
+            selectedPlayer.location = closestTile.location;
+            selectedPlayer.position = closestTile.position;
+        }
+
         ///<summary>
         ///Checks if the actor's current position has moved to a new grid tile.
         ///If so, it either updates the logical location or, if the target tile is already occupied,
@@ -174,29 +174,21 @@ namespace Assets.Scripts.Instances.Actor
         ///</summary>
         private void CheckLocationChanged()
         {
+            //Check if actor has moved far enough away from tile to warrant a location check
+            if (Vector3.Distance(position, instance.currentTile.position) <= tileSize / 2)
+                return;
+
+            
+
             //Do not update the grid location if a swap is in progress.
             if (flags.IsSwapping)
                 return;
 
             var closestTile = Geometry.GetClosestTile(position);
-            //var closestTile = board.GetClosestTileEfficient(position);
+            //var closestTile = GameManager.instance.tileMap.GetClosestTileEfficient(position);
 
             if (location != closestTile.location)
-            {
-                //TriggerEnqueueAttacks if any other active and alive actor (except this one) already occupies the tile.
-                ActorInstance overlappingActor = actors.FirstOrDefault(x =>
-                    x != instance &&
-                    x.isPlaying &&
-                    x.location == closestTile.location);
-
-                //Update actor location
-                previousLocation = location;
-                location = closestTile.location;
-
-                //Send event to overlapping actor to movement to actor's previous location
-                if (overlappingActor != null)
-                    overlappingActor.onOverlapDetected.Invoke(previousLocation);
-            }
+                OnLocationChanged(closestTile.location);
         }
 
         public void OnDragDetected()
@@ -221,7 +213,7 @@ namespace Assets.Scripts.Instances.Actor
             if (currentTile.IsOccupied)
             {
                 Debug.Log($"Tile ${currentTile.location.x}x{currentTile.location.y} is occupied.");
-               
+
             }
             else
             {
@@ -230,6 +222,25 @@ namespace Assets.Scripts.Instances.Actor
                 instance.StartCoroutine(MoveTowardDestination());
             }
 
+        }
+
+        public void OnLocationChanged(Vector2Int newLocation)
+        {
+            //Update actor location
+            previousLocation = location;
+            location = newLocation;
+
+            instance.onLocationChanged?.Invoke(previousLocation, newLocation);
+
+            //Check if any other active and alive actor (except this one) already occupies the tile.
+            ActorInstance overlappingActor = actors.FirstOrDefault(x =>
+                x != instance &&
+                x.isPlaying &&
+                x.location == location);
+
+            //Send event to overlapping actor to movement to actor's previous location
+            if (overlappingActor != null)
+                overlappingActor.onOverlapDetected.Invoke(previousLocation);
         }
 
         ///<summary>

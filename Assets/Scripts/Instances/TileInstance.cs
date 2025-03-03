@@ -11,6 +11,11 @@ public class TileInstance : MonoBehaviour
 
     public ActorInstance Occupier => actors.FirstOrDefault(x => x.location == location);
 
+
+    public System.Action<Vector2Int> onSelectedPlayerLeaveLocation;
+    public System.Action<Vector2Int> onSelectedPlayerEnterLocation;
+
+
     public string Name
     {
         get => name;
@@ -67,6 +72,11 @@ public class TileInstance : MonoBehaviour
     public void Awake()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+    }
+
+    public void Start()
+    {
+        
     }
 
     public void Initialize(int col, int row)

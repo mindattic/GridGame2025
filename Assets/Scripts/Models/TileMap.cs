@@ -5,8 +5,11 @@ namespace Assets.Scripts.Models
 {
     public class TileMap
     {
+
         private Dictionary<Vector2Int, TileEntry> locationToEntry = new Dictionary<Vector2Int, TileEntry>();
         private Dictionary<Vector3, TileEntry> positionToEntry = new Dictionary<Vector3, TileEntry>();
+        public Vector3 gridOrigin;
+        public float tileSize;
 
         public void Add(Vector2Int location, Vector3 position, TileInstance tile)
         {
@@ -51,6 +54,25 @@ namespace Assets.Scripts.Models
             return positionToEntry.TryGetValue(position, out var entry) ? entry.Tile : null;
         }
 
+
+        public TileInstance GetClosestTileEfficient(Vector3 position)
+        {
+            // Convert world position to grid space
+            float relativeX = (position.x - gridOrigin.x) / tileSize;
+            float relativeY = (gridOrigin.y - position.y) / tileSize; // Inverting Y
+            int x = Mathf.RoundToInt(relativeX) + 1;
+            int y = Mathf.RoundToInt(relativeY) + 1;
+            Vector2Int tileLocation = new Vector2Int(x, y);
+
+            // Debugging output
+            Debug.Log($"World Pos: {position} → Tile Location: {tileLocation}");
+
+            return GetTile(tileLocation);
+        }
+
+
+
+
         public bool ContainsLocation(Vector2Int location)
         {
             return locationToEntry.ContainsKey(location);
@@ -92,6 +114,7 @@ namespace Assets.Scripts.Models
                 Tile = tile;
             }
         }
+
 
     }
 
