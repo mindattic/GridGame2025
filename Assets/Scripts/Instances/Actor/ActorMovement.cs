@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Behaviors.Actor;
+using Game.Behaviors;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,13 @@ namespace Assets.Scripts.Instances.Actor
         protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
         protected bool hasSelectedPlayer => GameManager.instance.hasSelectedPlayer;
         protected bool isSelectedPlayer => hasSelectedPlayer && selectedPlayer == instance;
+        protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
+        protected Card card => GameManager.instance.card;
+
+
+
         protected UnityEvent<Vector2Int> onSelectedPlayerLocationChanged => GameManager.instance.onSelectedPlayerLocationChanged;
+
 
         //Fields
         private ActorInstance instance;
@@ -170,31 +177,45 @@ namespace Assets.Scripts.Instances.Actor
         ///</summary>
         private void CheckLocationChanged()
         {
-            //Check if actor has moved far enough away from tile to warrant a location check
+            // Ignore if the change is due to selection, not movement
+            if (!flags.IsMoving)
+                return;
+
             if (Vector3.Distance(position, instance.currentTile.position) <= tileSize / 2)
                 return;
 
-            
-
-            //Do not update the grid location if a swap is in progress.
             if (flags.IsSwapping)
                 return;
 
             var closestTile = Geometry.GetClosestTile(position);
-            //var closestTile = GameManager.instance.tileMap.GetClosestTileEfficient(position);
 
-            if (location != closestTile.location)
-                OnLocationChanged(closestTile.location);
+            if (location == closestTile.location)
+                return;
+
+            Debug.Log($"OnLocationChanged triggered for {instance.name} to {closestTile.location}, isMoving: {flags.IsMoving}");
+
+            previousLocation = location;
+            location = closestTile.location;
+
+            instance.onLocationChanged?.Invoke(previousLocation, closestTile.location);
+
+            ActorInstance overlappingActor = actors.FirstOrDefault(x =>
+                x != instance &&
+                x.isPlaying &&
+                x.location == location);
+
+            if (overlappingActor != null)
+                overlappingActor.onOverlapDetected.Invoke(previousLocation);
         }
+
 
         public void OnDragDetected()
         {
-            //Check abort conditions
-            if (flags.IsMoving)
-                return;
-
             instance.StartCoroutine(MoveTowardCursor());
         }
+
+
+
 
         ///<summary>
         ///Called when an overlap with another actor is detected.
@@ -202,13 +223,14 @@ namespace Assets.Scripts.Instances.Actor
         ///</summary>
         public void OnOverlapDetected(Vector2Int newLocation)
         {
+            //Ignore this event if the actors is already in the middle of swapping
             if (flags.IsSwapping)
                 return;
 
             var currentTile = GameManager.instance.tileMap.GetTile(newLocation);
             if (currentTile.IsOccupied)
             {
-                Debug.Log($"Tile ${currentTile.location.x}x{currentTile.location.y} is occupied.");
+                //Debug.Log($"Tile ${currentTile.location.x}x{currentTile.location.y} is occupied.");
 
             }
             else
@@ -220,24 +242,6 @@ namespace Assets.Scripts.Instances.Actor
 
         }
 
-        public void OnLocationChanged(Vector2Int newLocation)
-        {
-            //Update actor location
-            previousLocation = location;
-            location = newLocation;
-
-            instance.onLocationChanged?.Invoke(previousLocation, newLocation);
-
-            //Check if any other active and alive actor (except this one) already occupies the tile.
-            ActorInstance overlappingActor = actors.FirstOrDefault(x =>
-                x != instance &&
-                x.isPlaying &&
-                x.location == location);
-
-            //Send event to overlapping actor to movement to actor's previous location
-            if (overlappingActor != null)
-                overlappingActor.onOverlapDetected.Invoke(previousLocation);
-        }
 
         ///<summary>
         ///Applies a tilt effect to the actor based on its movement velocity.

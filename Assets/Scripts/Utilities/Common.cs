@@ -14,6 +14,7 @@ public static class Constants
     public const string BoardOverlay = "BoardOverlay";
     public const string Canvas2D = "Canvas2D";
     public const string Canvas3D = "Canvas3D";
+    public const string FocusIndicator = "FocusIndicator";
     public const string Art = "Art";
     public const string CanvasOverlay = "CanvasOverlay";
     public const string Card = "Card";
@@ -56,6 +57,16 @@ public static class Constants
     //Audio sources
     public const int SoundSourceIndex = 0;
     public const int MusicSourceIndex = 1;
+}
+
+public static class Location
+{
+    public static Vector2Int Nowhere = new Vector2Int(-1, -1);
+}
+
+public static class Position
+{
+    public static Vector3 Nowhere = new Vector3(-1000, -1000, -1000);
 }
 
 public static class Tag
@@ -271,6 +282,7 @@ public static class Interval
     public static float OneTick = 0.01f;
     public static float FiveTicks = 0.05f;
     public static float TenTicks = 0.1f;
+    public static float TenthSecond = 0.1f;
     public static float QuarterSecond = 0.25f;
     public static float HalfSecond = 0.5f;
     public static float OneSecond = 1.0f;

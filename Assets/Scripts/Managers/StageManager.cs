@@ -80,14 +80,14 @@ public class StageManager : MonoBehaviour
 
     public void LoadStage()
     {
-        //Reset game elements
+        //Clear game elements
         actors.Clear();
         coinBar.Refresh();
         actorManager.Clear();
         dottedLineManager.Clear();
         turnManager.Initialize();
 
-        //canvasOverlay.Reset();
+        //canvasOverlay.Clear();
         //canvasOverlay.Show($"{currentStageName.Name}");
         //canvasOverlay.TriggerFadeOut(Interval.OneSecond);
 
@@ -147,7 +147,7 @@ public class StageManager : MonoBehaviour
         instance.spawnTurn = spawnTurn;
 
         //TODO: This should probably be cleaned up...
-        var startLocation = spawnTurn <= 1 && location != board.NowhereLocation ? location : Random.UnoccupiedLocation;
+        var startLocation = spawnTurn <= 1 && location != Location.Nowhere ? location : Random.UnoccupiedLocation;
         instance.Spawn(startLocation);
         actors.Add(instance);
     }

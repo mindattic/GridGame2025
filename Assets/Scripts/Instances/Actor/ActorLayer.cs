@@ -47,7 +47,6 @@ namespace Game.Instances.Actor
             public const string TurnDelayText = "TurnDelayText";
             public const string NameTagText = "NameTagText";
             public const string WeaponIcon = "WeaponIcon";
-            public const string SelectionBox = "SelectionBox";
 
             //Armor Sub-Objects
             public static class Armor
@@ -58,8 +57,6 @@ namespace Game.Instances.Actor
                 public const string ArmorSouth = "ArmorSouth";
                 public const string ArmorWest = "ArmorWest";
             }
-
-            public const string Overlay = "Overlay";
         }
 
         public static class Value
@@ -105,9 +102,6 @@ namespace Game.Instances.Actor
                 public const int ArmorWest = 26;
             }
 
-
-            public const int Overlay = 27;
-            public const int SelectionBox = 28;
         }
 
     }

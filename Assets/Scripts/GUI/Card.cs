@@ -14,8 +14,9 @@ namespace Game.Behaviors
         protected DataManager dataManager => GameManager.instance.dataManager;
         protected ResourceManager resourceManager => GameManager.instance.resourceManager;
         protected List<ActorInstance> actors => GameManager.instance.actors;
-
-
+        protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
+        protected bool hasFocusedActor => GameManager.instance.hasFocusedActor;
+        protected ActorInstance focusedActor => GameManager.instance.focusedActor;
 
         //Fields
         RectTransform rectTransform;
@@ -50,7 +51,7 @@ namespace Game.Behaviors
             details = GameObject.Find(Constants.CardDetails);
             detailsText = details.GetComponent<TextMeshProUGUI>();
 
-            Reset();
+            Clear();
         }
 
         //Method which is automatically called before the first frame update  
@@ -82,27 +83,30 @@ namespace Game.Behaviors
             portraitImage.rectTransform.localPosition = offscreenPosition;
         }
 
-        public void Assign(ActorInstance actor)
+        public void Assign()
         {
+            if (!hasFocusedActor)
+                return;
+
             backdropImage.enabled = true;
-            portraitImage.sprite = resourceManager.Portrait(actor.character.ToString()).Value.ToSprite();
+            portraitImage.sprite = resourceManager.Portrait(focusedActor.character.ToString()).Value.ToSprite();
             portraitImage.enabled = true;
 
-            titleText.text = actor.name.Split("_")[0];
+            titleText.text = focusedActor.name.Split("_")[0];
 
-            var hp = $"{actor.stats.HP,2}/{actor.stats.MaxHP,-3}"; //HP/MaxHP with dynamic padding
-            var str = $"{actor.stats.Strength,4}";                //Right-align Stats to 4 characters
-            var vit = $"{actor.stats.Vitality,4}";
-            var agi = $"{actor.stats.Agility,4}";
-            var spd = $"{actor.stats.Speed,4}";
-            var lck = $"{actor.stats.Luck,4}";
+            var hp = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}"; //HP/MaxHP with dynamic padding
+            var str = $"{focusedActor.stats.Strength,4}";                //Right-align Stats to 4 characters
+            var vit = $"{focusedActor.stats.Vitality,4}";
+            var agi = $"{focusedActor.stats.Agility,4}";
+            var spd = $"{focusedActor.stats.Speed,4}";
+            var lck = $"{focusedActor.stats.Luck,4}";
 
             //Create the Stats table
             var stats
                 = $"HP       STR  VIT  AGI  SPD  LCK{Environment.NewLine}"
                 + $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
-            detailsText.text = stats + dataManager.GetDetails(actor.character).Card;
+            detailsText.text = stats + dataManager.GetDetails(focusedActor.character).Card;
 
             TriggerSlideIn();
         }
@@ -132,7 +136,7 @@ namespace Game.Behaviors
             portraitImage.rectTransform.localPosition = destination;
         }
 
-        public void Reset()
+        public void Clear()
         {
             backdropImage.enabled = false;
             portraitImage.enabled = false;
@@ -140,7 +144,8 @@ namespace Game.Behaviors
             detailsText.text = "";
 
             //TriggerDespawn all selection boxes from actors
-            actors.ForEach(x => x.render.SetSelectionBoxEnabled(false));
+            //actors.ForEach(x => x.render.SetSelectionBoxEnabled(false));
+            //focusIndicator.Assign();
 
             //Initialize portrait position
             portraitImage.rectTransform.localPosition = offscreenPosition;

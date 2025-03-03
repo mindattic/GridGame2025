@@ -18,8 +18,18 @@ namespace Assets.Scripts.Models
         // Attack result data stored here, so PincerAttackAction can see it
         public List<AttackResult> attacks = new();
 
-        // Potential same-team supporters who have clear line of sight to each attacker
-        public List<ActorInstance> supportersOfAttacker1 = new();
-        public List<ActorInstance> supportersOfAttacker2 = new();
+        // Potential same-team supporters who have Clear line of sight to each attacker
+        public List<ActorInstance> supporters1 = new();
+        public List<ActorInstance> supporters2 = new();
     }
+
+    /// <summary>
+    /// A container with all of the "bookend pairs" found for x certain team.
+    /// </summary>
+    public class PincerAttackParticipantCollection
+    {
+        public List<PincerAttackParticipants> participants = new();
+        public void Clear() => participants.Clear();
+    }
+
 }

@@ -19,12 +19,12 @@ namespace Assets.Scripts.GUI
 
         private void Start()
         {
-            ////Set anchors and pivot to center
+            ////Assign anchors and pivot to center
             //PanelRect.anchorMin = new Vector2(0.5f, 0.5f);
             //PanelRect.anchorMax = new Vector2(0.5f, 0.5f);
             //PanelRect.pivot = new Vector2(0.5f, 0.5f);
 
-            ////Set the anchored position to (0, 0) for centering
+            ////Assign the anchored position to (0, 0) for centering
             //PanelRect.anchoredPosition = Vector2.zero;
 
             //Assign button click listeners

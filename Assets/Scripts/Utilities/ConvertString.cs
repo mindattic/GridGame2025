@@ -52,7 +52,7 @@ namespace Assets.Scripts.Utilities
                 return new Vector2Int(x, y);
             }
 
-            return GameManager.instance.board.NowhereLocation; //Default fallback
+            return Location.Nowhere; //Default fallback
         }
 
         public static Character ToCharacter(string value)

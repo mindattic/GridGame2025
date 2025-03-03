@@ -11,56 +11,43 @@ public class InputManager : MonoBehaviour
     protected bool hasSelectedPlayer => selectedPlayer != null;
     protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
     protected StageManager stageManager => GameManager.instance.stageManager;
-    protected float dragThreshold;
+    protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
     protected float tileSize => GameManager.instance.tileSize;
 
-    //Fields
-    private bool isDragging;
-    //public bool IsDragging => dragStart != null;
-    //public Vector3? dragStart = null;
-    //[SerializeField] public float dragThreshold = 5f;
-
-    //Method which is automatically called before the first frame update  
-    void Start()
-    {
-        dragThreshold = tileSize / 24;
-    }
+    private bool isHoldingMouse = false;
+    private Vector3 initialMousePosition;
 
     void Update()
     {
-        //TriggerEnqueueAttacks abort conditions
         if (pauseManager.IsPaused)
             return;
 
         if (Input.GetMouseButtonDown(0))
         {
             selectedPlayerManager.Focus();
-            isDragging = hasSelectedActor;
-
+            isHoldingMouse = true;
+            initialMousePosition = mousePosition3D;  // Store the initial position on click
         }
-        else if (Input.GetMouseButtonUp(0))
+
+        if (isHoldingMouse && Input.GetMouseButton(0))
         {
-            //selectedPlayerManager.Unfocus();
+            if (IsDragging())
+            {
+                selectedPlayerManager.Drag();
+                isHoldingMouse = false;  // Prevent duplicate calls
+            }
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            isHoldingMouse = false;
             selectedPlayerManager.Drop();
-            isDragging = false;
         }
-
-        CheckDragging();
     }
 
-    private void CheckDragging()
+    private bool IsDragging()
     {
-        //TriggerEnqueueAttacks abort conditions
-        if (!isDragging || !hasSelectedActor)
-            return;
-
-        var dragDistance = Vector3.Distance(focusedActor.position, focusedActor.currentTile.position);
-        if (dragDistance > dragThreshold)
-        {
-            selectedPlayerManager.Drag();
-        }
-
+        var dragThreshold = tileSize / 8;
+        return Vector3.Distance(initialMousePosition, mousePosition3D) > dragThreshold;
     }
-
-
 }

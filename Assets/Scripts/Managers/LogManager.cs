@@ -6,14 +6,25 @@ using UnityEngine;
 
 namespace Game.Behaviors
 {
+
+    public enum LogLevel
+    {
+        None = 0,
+        Info = 1,
+        Success = 2,
+        Warning = 3,
+        Error = 4,
+        Fatal = 5
+    }
+
+
     public class LogManager : MonoBehaviour
     {
         private string log;
         private List<string> messages = new List<string>();
-
+        public LogLevel logLevel = LogLevel.None;
         const int MaxMessages = 10;
 
-        #region Components
 
         public string text
         {
@@ -21,21 +32,30 @@ namespace Game.Behaviors
             set => log = value;
         }
 
-        #endregion
+
         public void Info(string message)
         {
+            if (logLevel < LogLevel.Info)
+                return;
+
             Debug.Log(message);
             messages.Add($@"<color=""white"">{message}</color>");
         }
 
         public void Success(string message)
         {
+            if (logLevel < LogLevel.Success)
+                return;
+
             Debug.Log(message);
             messages.Add($@"<color=""green"">{message}</color>");
         }
 
         public void Warning(string message)
         {
+            if (logLevel < LogLevel.Warning)
+                return;
+
             Debug.LogWarning(message);
             messages.Add($@"<color=""orange"">{message}</color>");
         }
@@ -43,6 +63,9 @@ namespace Game.Behaviors
 
         public void Error(string message)
         {
+            if (logLevel < LogLevel.Error)
+                return;
+
             Debug.LogError(message);
             messages.Add($@"<color=""red"">{message}</color>");
         }
@@ -50,17 +73,20 @@ namespace Game.Behaviors
 
         public void Exception(UnityException ex)
         {
+            if (logLevel < LogLevel.Error)
+                return;
+
             Debug.LogError(ex.Message.ToString());
             messages.Add($@"<color=""red"">{ex.Message.ToString()}</color>");
         }
 
         private void Update()
         {
-            if (messages.Count < MaxMessages)
+            if (logLevel == LogLevel.None)
                 return;
 
-            //Truncate messages
-            messages.RemoveAt(0);
+            if (messages.Count > MaxMessages)
+                messages.RemoveAt(0);
 
             //Print in descending order
             log = string.Join(Environment.NewLine, messages.OrderByDescending(x => x.ToString()));

@@ -111,8 +111,6 @@ public class ActorInstance : MonoBehaviour
             render.armorEast.sortingOrder = value + ActorLayer.Value.Armor.ArmorEast;
             render.armorSouth.sortingOrder = value + ActorLayer.Value.Armor.ArmorSouth;
             render.armorWest.sortingOrder = value + ActorLayer.Value.Armor.ArmorWest;
-            render.overlay.sortingOrder = value + ActorLayer.Value.Overlay;
-            render.selectionBox.sortingOrder = value + ActorLayer.Value.SelectionBox;
             onSortingOrderChanged?.Invoke();
         }
     }
@@ -240,7 +238,6 @@ public class ActorInstance : MonoBehaviour
             render.SetParallaxSprite(resourceManager.Seamless("WhiteFire2").Value);
             render.SetParallaxMaterial(resourceManager.Material("PlayerParallax", thumbnail.texture).Value);
             render.SetParallaxAlpha(Opacity.Percent50);
-            render.SetSelectionBoxEnabled(isEnabled: false);
             vfx.Attack = resourceManager.VisualEffect("BlueSlash1");
         }
         else if (isEnemy)
@@ -252,7 +249,6 @@ public class ActorInstance : MonoBehaviour
             render.SetParallaxMaterial(resourceManager.Material("EnemyParallax", thumbnail.texture).Value);
             render.SetParallaxAlpha(Opacity.Percent50);
             render.SetFrameColor(ColorHelper.Solid.Red);
-            render.SetSelectionBoxEnabled(isEnabled: false);
             vfx.Attack = resourceManager.VisualEffect("DoubleClaw");
         }
 
@@ -291,7 +287,7 @@ public class ActorInstance : MonoBehaviour
         var attackStrategy = Random.Strategy(ratios);
 
 
-        Vector2Int targetLocation = board.NowhereLocation;
+        Vector2Int targetLocation = Location.Nowhere;
 
         switch (attackStrategy)
         {
@@ -441,8 +437,8 @@ public class ActorInstance : MonoBehaviour
         }
 
         //After:       
-        location = board.NowhereLocation;
-        position = board.NowherePosition;
+        location = Location.Nowhere;
+        position = Position.Nowhere;
         gameObject.SetActive(false);
         onActorDeath.Invoke();
     }

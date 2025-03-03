@@ -27,7 +27,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AudioSource musicSource;
 
     //GUI
-    [HideInInspector] public Card cardManager;
+    [HideInInspector] public Card card;
     [HideInInspector] public TutorialPopup tutorialPopup;
 
     //Managers
@@ -63,10 +63,11 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public DottedLineManager dottedLineManager;
     [HideInInspector] public SpellManager spellManager;
     [HideInInspector] public ActionManager actionManager;
-    [HideInInspector] public AttackManager attackManager;
+    [HideInInspector] public PincerAttackManager pincerAttackManager;
 
     //Board
     [HideInInspector] public BoardOverlay boardOverlay;
+    [HideInInspector] public FocusIndicator focusIndicator;
 
     //Canvas
     [HideInInspector] public CanvasOverlay canvasOverlay;
@@ -154,7 +155,7 @@ public class GameManager : Singleton<GameManager>
 
         //GUI
         tutorialPopup = GameObject.Find(Constants.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
-        cardManager = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
+        card = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
         fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
 
         board = GameObject.Find(Constants.Board).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
@@ -202,10 +203,13 @@ public class GameManager : Singleton<GameManager>
         dottedLineManager = game.GetComponent<DottedLineManager>() ?? throw new UnityException("DottedLineManager is null");
         spellManager = game.GetComponent<SpellManager>() ?? throw new UnityException("SpellManager is null");
         actionManager = game.GetComponent<ActionManager>() ?? throw new UnityException("ActionManager is null");
-        attackManager = game.GetComponent<AttackManager>() ?? throw new UnityException("AttackManager is null");
+        pincerAttackManager = game.GetComponent<PincerAttackManager>() ?? throw new UnityException("PincerAttackManager is null");
 
-        //Overlay components
+        //Board
         boardOverlay = GameObject.Find(Constants.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
+        focusIndicator = GameObject.Find(Constants.FocusIndicator).GetComponent<FocusIndicator>() ?? throw new UnityException("FocusIndicator is null");
+
+        //Canvas
         canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
 
 //        #region Platform Dependent Compilation
@@ -244,6 +248,7 @@ public class GameManager : Singleton<GameManager>
         profileManager.Initialize();    //03
         board.Initialize();             //04
         stageManager.Initialize();      //05
+        focusIndicator.Initialize();    //06
     }
 
 }

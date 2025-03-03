@@ -71,7 +71,7 @@ public class TrailInstance : MonoBehaviour
         var particleSystems = new List<ParticleSystem>();
         GetRecursively(ref particleSystems, transform);
 
-        //Set the looping flag for each ParticleSystem
+        //Assign the looping flag for each ParticleSystem
         foreach (var system in particleSystems)
         {
             var main = system.main;

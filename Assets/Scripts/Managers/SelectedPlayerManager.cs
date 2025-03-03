@@ -7,7 +7,7 @@ using UnityEngine;
 public class SelectedPlayerManager : MonoBehaviour
 {
     //Quick Reference Properties
-    protected Card cardManager => GameManager.instance.cardManager;
+    protected Card cardManager => GameManager.instance.card;
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
     protected Vector3 mouseOffset { get => GameManager.instance.mouseOffset; set => GameManager.instance.mouseOffset = value; }
@@ -24,20 +24,16 @@ public class SelectedPlayerManager : MonoBehaviour
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
-    protected AttackManager attackManager => GameManager.instance.attackManager;
-
-    private void Start()
-    {
-
-    }
+    protected PincerAttackManager attackManager => GameManager.instance.pincerAttackManager;
+    protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
+    protected Card card => GameManager.instance.card;
+    protected float tileSize => GameManager.instance.tileSize;
 
     public void Focus()
     {
-        // TriggerEnqueueAttacks abort conditions.
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase)
             return;
 
-        // Find actor using collision overlap.
         var collisions = Physics2D.OverlapPointAll(mousePosition3D);
         if (collisions == null)
             return;
@@ -45,51 +41,40 @@ public class SelectedPlayerManager : MonoBehaviour
         if (collider == null)
             return;
         var actor = collider.gameObject.GetComponent<ActorInstance>();
-        if (actor == null || !actor.isActive || !actor.isAlive)
+        if (actor == null || !actor.isPlaying)
             return;
 
-        // Clear selection boxes from all actors, then select this actor.
-        actors.ForEach(x => x.render.SetSelectionBoxEnabled(isEnabled: false));
+        if (focusedActor == actor)
+            return;
+
         focusedActor = actor;
-        focusedActor.render.SetSelectionBoxEnabled(isEnabled: true);
-
-        // Calculate mouse offset.
+        focusIndicator.Assign();
         mouseOffset = focusedActor.position - mousePosition3D;
-
-        // Update the card UI.
-        cardManager.Assign(focusedActor);
-
-        if (focusedActor.isPlayer)
-            //StartCoroutine(focusedActor.movement.MoveTowardCursor());
-            focusedActor.onDragDetected?.Invoke();
-
-
+        cardManager.Assign();
     }
 
     public void Drag()
     {
-        //Check abort conditions
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase || !hasFocusedActor || focusedActor.isEnemy)
             return;
 
-        //Set the selected player to be moved.
         selectedPlayer = focusedActor;
 
+        if (selectedPlayer.flags.IsMoving)
+            return;
 
-        // When the phase switches to Move on the player turn, start the timer and enable enemy AP checking.
+        card.Clear();
+        focusIndicator.Clear();
         audioManager.Play("Load");
         timerBar.Play();
         actorManager.CheckEnemyAP();
-        if (selectedPlayer != null)
-            selectedPlayer.onDragDetected?.Invoke();
-
-        // Change phase from Start to Move.
         turnManager.SetPhase(TurnPhase.Move);
+
+        selectedPlayer.onDragDetected?.Invoke();
     }
 
     public void Drop()
     {
-        //Check abort conditions
         if (!turnManager.isPlayerTurn || !turnManager.isMovePhase || !hasSelectedPlayer || !selectedPlayer.flags.IsMoving)
         {
             if (hasFocusedActor)
@@ -97,17 +82,12 @@ public class SelectedPlayerManager : MonoBehaviour
             return;
         }
 
-        //Snap the moving player to the closest tile.
         selectedPlayer.movement.SnapToLocation();
         previousSelectedPlayer = selectedPlayer;
         selectedPlayer = null;
         focusedActor = null;
 
-        //Reset UI and other elements.
-        tileManager.Reset();
-        cardManager.Reset();
         timerBar.Pause();
-
         attackManager.Check();
     }
 }

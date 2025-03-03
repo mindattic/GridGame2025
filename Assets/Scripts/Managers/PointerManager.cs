@@ -11,7 +11,7 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
 
-
+    private Camera mainCamera;
 
     public bool IsMouseOnScreen =>
         Input.mousePosition.x >= 0
@@ -24,7 +24,7 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-
+        mainCamera = Camera.main;
     }
 
     public void OnPointerMove(PointerEventData eventData)
@@ -41,7 +41,7 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
 
         if (cubeHit)
         {
-            Debug.Log("We hit " + cubeHit.collider.name);
+            //Debug.Log("We hit " + cubeHit.collider.name);
         }
     }
 
@@ -82,8 +82,8 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
             return;
 
         GameManager.instance.mousePosition2D = Input.mousePosition;
-        if (IsMouseOnScreen)
-            GameManager.instance.mousePosition3D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (IsMouseOnScreen && mainCamera != null)
+            GameManager.instance.mousePosition3D = mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
 
 }

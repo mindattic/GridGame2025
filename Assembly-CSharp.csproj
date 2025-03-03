@@ -128,6 +128,7 @@
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
+    <Compile Include="Assets\FocusIndicator.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
@@ -152,7 +153,6 @@
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
-    <Compile Include="Assets\Scripts\Managers\AttackManager.cs" />
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\GUI\TimerBar.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
@@ -172,6 +172,7 @@
     <Compile Include="Assets\Scripts\Actions\PhaseAction.cs" />
     <Compile Include="Assets\Scripts\Managers\TooltipManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />

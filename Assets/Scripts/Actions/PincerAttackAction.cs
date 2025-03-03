@@ -10,6 +10,7 @@ namespace Assets.Scripts.Models
     public class PincerAttackAction : PhaseAction
     {
         private PincerAttackParticipants participants;
+        private List<ActorInstance> dyingOpponents = new List<ActorInstance>();
 
         // Constructor now takes PincerAttackParticipants (not ActorPair).
         public PincerAttackAction(PincerAttackParticipants participants)
@@ -19,11 +20,11 @@ namespace Assets.Scripts.Models
 
         public override IEnumerator Execute()
         {
-            // If you track the computed AttackResults in the PincerAttackParticipants:
+            // If no attacks were computed, exit early.
             if (participants.attacks == null || !participants.attacks.Any())
                 yield break;
 
-            // Example: "grow" both attackers, then "shrink" them:
+            // "Grow" both attackers, then "shrink" them:
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
                 participants.attacker1.action.Grow(),
@@ -35,24 +36,27 @@ namespace Assets.Scripts.Models
                 participants.attacker2.action.Shrink()
             );
 
-            // Track any opponents that die so we can wait for their death animations
-            List<ActorInstance> dyingOpponents = new List<ActorInstance>();
+            // Determine a bump direction based on the first opponent
+            var firstOpponent = participants.attacks.First().Opponent;
+            var bumpDirection = participants.attacker1.GetDirectionTo(firstOpponent);
 
-            // For each AttackResult in the participants
+            // Perform a single bump animation for attacker1
+            yield return participants.attacker1.action.Bump(bumpDirection);
+
+ 
+            // Process each attack in the computed attack chain with a short delay
             foreach (var attack in participants.attacks)
             {
-                // In many cases you might want to choose which attacker is hitting which Opponent;
-                // for example, you might vary it between attacker1 / attacker2.
-                // For simplicity, here's an example using attacker1 each time:
+                // Use attacker1 for each attack; adjust if needed
                 var attacker = participants.attacker1;
 
-                var direction = attacker.GetDirectionTo(attack.Opponent);
-                var trigger = new Trigger(attacker.Attack(attack));  // executes the actual Attack enumerator
+                // Execute the attack animation and damage calculation directly
+                yield return attacker.Attack(attack);
 
-                // Do the "bump" animation plus Attack
-                yield return attacker.action.Bump(direction, trigger);
+                // Short delay to create a domino effect
+                yield return Wait.For(Interval.TenthSecond);
 
-                // If Opponent was killed, queue up the final die steps
+                //If the opponent was killed, handle death animation
                 if (attack.Opponent.isDying)
                 {
                     dyingOpponents.Add(attack.Opponent);
@@ -60,12 +64,14 @@ namespace Assets.Scripts.Models
                 }
             }
 
-            // Wait until all dying opponents' HP bar is fully drained
-            //TODO: Add some sort of emergency release since this has a theoretical ability to fail...
+            // Wait until all dying opponents' HP bars are fully drained
             if (dyingOpponents.Any())
                 yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
 
             yield break;
         }
+
+
+
     }
 }

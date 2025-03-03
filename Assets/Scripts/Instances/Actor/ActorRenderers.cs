@@ -23,8 +23,6 @@ public class ActorRenderers
     public Color turnDelayColor = ColorHelper.Solid.Red;
     public Color weaponIconColor = ColorHelper.Solid.White;
     public Color armorColor = ColorHelper.Solid.White;
-    public Color overlayColor = ColorHelper.Transparent.White;
-    public Color selectionColor = ColorHelper.Solid.White;
 
     public Transform front;
     public Transform back;
@@ -57,8 +55,6 @@ public class ActorRenderers
     public SpriteRenderer armorEast;
     public SpriteRenderer armorSouth;
     public SpriteRenderer armorWest;
-    public SpriteRenderer overlay;
-    public SpriteRenderer selectionBox;
 
     private ActorInstance instance;
     public void Initialize(ActorInstance parentInstance)
@@ -93,9 +89,6 @@ public class ActorRenderers
         armorEast = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorEast).GetComponent<SpriteRenderer>();
         armorSouth = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorSouth).GetComponent<SpriteRenderer>();
         armorWest = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorWest).GetComponent<SpriteRenderer>();
-        overlay = front.GetChild(ActorLayer.Name.Overlay).GetComponent<SpriteRenderer>();
-        selectionBox = front.GetChild(ActorLayer.Name.SelectionBox).GetComponent<SpriteRenderer>();
-
         back = instance.transform.GetChild(ActorLayer.Name.Back);
     }
 
@@ -116,7 +109,6 @@ public class ActorRenderers
         SetNameTagTextAlpha(alpha);
         SetWeaponIconAlpha(alpha);
         SetArmorAlpha(alpha);
-        SetSelectionAlpha(alpha);
     }
 
     public void SetOpaqueColor(Color color)
@@ -199,7 +191,7 @@ public class ActorRenderers
             yield return Wait.OneTick(); //Custom Wait method
         }
 
-        //Set the final value to ensure precision
+        //Assign the final value to ensure precision
         parallax.material.SetFloat(scrollProperty, targetValue);
     }
 
@@ -269,18 +261,6 @@ public class ActorRenderers
     {
         frameColor = color;
         this.frame.color = frameColor;
-    }
-
-
-    public void SetSelectionBoxEnabled(bool isEnabled = true)
-    {
-        selectionBox.enabled = isEnabled;
-    }
-
-    public void SetOverlayColor(Color color)
-    {
-        overlayColor = color;
-        this.overlay.color = overlayColor;
     }
 
 
@@ -359,47 +339,39 @@ public class ActorRenderers
         armorWest.color = armorColor;
     }
 
+    //float timer = 0.0f;
+    //ActionBarColorCycle cycle = ActionBarColorCycle.Phase1;
 
-    public void SetSelectionAlpha(float alpha)
-    {
-        selectionColor = new Color(1, 1, 1, alpha);
-        selectionBox.color = new Color(1, 1, 1, alpha);
-    }
+    //public void CycleActionBarColor()
+    //{
+    //    const float duration = 0.2f;
+    //    timer += Time.deltaTime / duration;
 
+    //    switch (cycle)
+    //    {
+    //        case ActionBarColorCycle.Phase1: actionBarColor = ColorHelper.ActionBar.Yellow; break;
+    //        case ActionBarColorCycle.Phase2: actionBarColor = ColorHelper.ActionBar.Pink; break;
+    //        case ActionBarColorCycle.Phase3: actionBarColor = ColorHelper.ActionBar.White; break;
+    //        case ActionBarColorCycle.Phase4: actionBarColor = ColorHelper.ActionBar.Blue; break;
+    //    }
 
-    float timer = 0.0f;
-    ActionBarColorCycle cycle = ActionBarColorCycle.Phase1;
+    //    if (timer >= 1f)
+    //    {
+    //        timer = 0f;
+    //        cycle = cycle.Next();
+    //    }
 
-    public void CycleActionBarColor()
-    {
-        const float duration = 0.2f;
-        timer += Time.deltaTime / duration;
-
-        switch (cycle)
-        {
-            case ActionBarColorCycle.Phase1: actionBarColor = ColorHelper.ActionBar.Yellow; break;
-            case ActionBarColorCycle.Phase2: actionBarColor = ColorHelper.ActionBar.Pink; break;
-            case ActionBarColorCycle.Phase3: actionBarColor = ColorHelper.ActionBar.White; break;
-            case ActionBarColorCycle.Phase4: actionBarColor = ColorHelper.ActionBar.Blue; break;
-        }
-
-        if (timer >= 1f)
-        {
-            timer = 0f;
-            cycle = cycle.Next();
-        }
-
-        actionBarFill.color = actionBarColor;
-    }
+    //    actionBarFill.color = actionBarColor;
+    //}
 
 }
 
 
-public enum ActionBarColorCycle
-{
-    Phase1,
-    Phase2,
-    Phase3,
-    Phase4
-}
+//public enum ActionBarColorCycle
+//{
+//    Phase1,
+//    Phase2,
+//    Phase3,
+//    Phase4
+//}
 

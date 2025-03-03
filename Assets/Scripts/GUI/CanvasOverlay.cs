@@ -104,7 +104,7 @@ public class CanvasOverlay : MonoBehaviour
     {
         float elapsedTime = 0f;
 
-        //Set initial values
+        //Assign initial values
         float startAngle = -90f;
         float endAngle = 0f;
 
@@ -149,7 +149,7 @@ public class CanvasOverlay : MonoBehaviour
 
         float elapsedTime = 0f;
 
-        //Set initial values
+        //Assign initial values
         float alpha = backgroundMaxAlpha;
         float startAngle = 0f;
         float endAngle = -90f;

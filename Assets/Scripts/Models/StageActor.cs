@@ -56,7 +56,7 @@ using UnityEngine;
     //   this.idle = GameManager.db.resourceManager.ActorThumbnail(this.character.ToString());
     //   this.team = team;
     //   this.quality = quality;
-    //   this.boardLocation = boardLocation.NowhereLocation;
+    //   this.boardLocation = boardLocation.Nowhere;
     //   this.spawnTurn = spawnTurn;
     //}
 

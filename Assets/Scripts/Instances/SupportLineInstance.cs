@@ -117,7 +117,7 @@ public class SupportLineInstance : MonoBehaviour
         lineRenderer.startColor = color;
         lineRenderer.endColor = color;
 
-        Debug.Log("Fade-out complete, destroying support line");
+        //Debug.Log("Fade-out complete, destroying support line");
 
         supportLineManager.Destroy(actor1, actor2);
     }

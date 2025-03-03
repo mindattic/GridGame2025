@@ -16,8 +16,6 @@ public class BoardInstance : MonoBehaviour
     [HideInInspector] public int rowCount = 8;
     [HideInInspector] public Vector2 offset;
     [HideInInspector] public RectFloat bounds;
-    [HideInInspector] public Vector2Int NowhereLocation = new Vector2Int(-1, -1);
-    [HideInInspector] public Vector3 NowherePosition = new Vector3(-1000, -1000, -1000);
     [HideInInspector] public Vector2 center;
 
     public void Initialize()

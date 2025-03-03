@@ -65,7 +65,7 @@ namespace Assets.Scripts.Models
             Vector2Int tileLocation = new Vector2Int(x, y);
 
             // Debugging output
-            Debug.Log($"World Pos: {position} → Tile Location: {tileLocation}");
+            //Debug.Log($"World Pos: {position} → Tile Location: {tileLocation}");
 
             return GetTile(tileLocation);
         }
