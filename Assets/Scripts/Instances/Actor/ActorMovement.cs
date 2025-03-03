@@ -77,7 +77,7 @@ namespace Assets.Scripts.Instances.Actor
                 instance.position = mousePosition3D + mouseOffset;
                 //ApplyTilt(instance.position - previousPosition, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
                 CheckLocationChanged();
-                yield return Wait.OneTick();
+                yield return Wait.UntilNextFrame();
             }
 
             //After: clean up.
@@ -120,9 +120,7 @@ namespace Assets.Scripts.Instances.Actor
                 }
 
                 //Snap X coordinate into place.
-                Vector3 tempPos = position;
-                tempPos.x = destination.x;
-                position = tempPos;
+                position = new Vector3(destination.x, position.y, position.z);
             }
 
             //--- Vertical Movement ---
@@ -146,9 +144,7 @@ namespace Assets.Scripts.Instances.Actor
                 }
 
                 //Snap Y coordinate into place.
-                Vector3 tempPos = position;
-                tempPos.y = destination.y;
-                position = tempPos;
+                position = new Vector3(position.x, destination.y, position.z);
             }
 
             //After: finished moving.
