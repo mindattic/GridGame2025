@@ -99,9 +99,9 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Fade fade;
 
 
-    public bool hasFocusedActor => focusedActor != null;
-    public bool hasSelectedPlayer => selectedPlayer != null;
-    public UnityEvent<Vector2Int> onSelectedPlayerLocationChanged;
+    [HideInInspector] public bool hasFocusedActor => focusedActor != null;
+    [HideInInspector] public bool hasSelectedPlayer => selectedPlayer != null;
+    [HideInInspector] public UnityEvent<Vector2Int> onSelectedPlayerLocationChanged;
 
     [HideInInspector] public TileMap tileMap;
 
@@ -185,7 +185,6 @@ public class GameManager : Singleton<GameManager>
         damageTextManager = game.GetComponent<DamageTextManager>() ?? throw new UnityException("DamageTextManager is null");
         ghostManager = game.GetComponent<GhostManager>() ?? throw new UnityException("GhostManager is null");
         portraitManager = game.GetComponent<PortraitManager>() ?? throw new UnityException("PortraitManager is null");
-        actorManager = game.GetComponent<ActorManager>() ?? throw new UnityException("ActorManager is null");
         selectedPlayerManager = game.GetComponent<SelectedPlayerManager>() ?? throw new UnityException("SelectedPlayerManager is null");
         playerManager = game.GetComponent<PlayerManager>() ?? throw new UnityException("PlayerManager is null");
         enemyManager = game.GetComponent<EnemyManager>() ?? throw new UnityException("EnemyManager is null");
@@ -212,31 +211,31 @@ public class GameManager : Singleton<GameManager>
         //Canvas
         canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
 
-//        #region Platform Dependent Compilation
+        #region Platform Dependent Compilation
 
-//        //https://docs.unity3d.com/520/Documentation/Manual/PlatformDependentCompilation.html
-//#if UNITY_STANDALONE_WIN
-//               deviceType = "UNITY_STANDALONE_WIN";
-//#elif UNITY_STANDALONE_LINUX
-//         deviceType = "UNITY_STANDALONE_LINUX";
-//#elif UNITY_IPHONE
-//               deviceType = "UNITY_IPHONE";
-//#elif UNITY_STANDALONE_OSX
-//           deviceType = "UNITY_STANDALONE_OSX"
-//#elif UNITY_WEBPLAYER
-//         deviceType = "UNITY_WEBPLAYER";
-//#elif UNITY_WEBGL
-//         deviceType = "UNITY_WEBGL";
-//#else
-//        deviceType = "Unknown";
-//#endif
-//        Debug.Log($"Running on {deviceType}");
+        //https://docs.unity3d.com/520/Documentation/Manual/PlatformDependentCompilation.html
+#if UNITY_STANDALONE_WIN
+        deviceType = "UNITY_STANDALONE_WIN";
+#elif UNITY_STANDALONE_LINUX
+         deviceType = "UNITY_STANDALONE_LINUX";
+#elif UNITY_IPHONE
+               deviceType = "UNITY_IPHONE";
+#elif UNITY_STANDALONE_OSX
+           deviceType = "UNITY_STANDALONE_OSX"
+#elif UNITY_WEBPLAYER
+         deviceType = "UNITY_WEBPLAYER";
+#elif UNITY_WEBGL
+         deviceType = "UNITY_WEBGL";
+#else
+        deviceType = "Unknown";
+#endif
+        Debug.Log($"Running on `{deviceType}`");
 
 //#if UNITY_EDITOR
 //        Debug.Log($"Emulated on UNITY_EDITOR");
 //#endif
 
-//        #endregion
+        #endregion
     }
 
     //Method which is automatically called before the first frame update  

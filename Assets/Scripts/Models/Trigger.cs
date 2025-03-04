@@ -27,7 +27,7 @@ public class Trigger
         IsAsync = isAsync;
     }
 
-    // Assigns the MonoBehaviour participants
+    // Assigns the MonoBehaviour pair
     public void SetContext(MonoBehaviour instance)
     {
         context = instance;

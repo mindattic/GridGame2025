@@ -7,7 +7,7 @@ namespace Assets.Scripts.Models
     /// Each pair of attackers (e.g. A and B), plus the opponents they sandwich
     /// and any supporters for each attacker.
     /// </summary>
-    public class PincerAttackParticipants
+    public class PincerAttackPair
     {
         public ActorInstance attacker1;
         public ActorInstance attacker2;
@@ -26,10 +26,10 @@ namespace Assets.Scripts.Models
     /// <summary>
     /// A container with all of the "bookend pairs" found for x certain team.
     /// </summary>
-    public class PincerAttackParticipantCollection
+    public class PincerAttackParticipants
     {
-        public List<PincerAttackParticipants> participants = new();
-        public void Clear() => participants.Clear();
+        public List<PincerAttackPair> pair = new();
+        public void Clear() => pair.Clear();
     }
 
 }

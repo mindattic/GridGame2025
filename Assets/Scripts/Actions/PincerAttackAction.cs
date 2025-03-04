@@ -6,14 +6,14 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
-    // PhaseAction for processing a single attacking PincerAttackParticipants.
+    // PhaseAction for processing a single attacking PincerAttackPair.
     public class PincerAttackAction : PhaseAction
     {
-        private PincerAttackParticipants participants;
+        private PincerAttackPair participants;
         private List<ActorInstance> dyingOpponents = new List<ActorInstance>();
 
-        // Constructor now takes PincerAttackParticipants (not ActorPair).
-        public PincerAttackAction(PincerAttackParticipants participants)
+        // Constructor now takes PincerAttackPair (not ActorPair).
+        public PincerAttackAction(PincerAttackPair participants)
         {
             this.participants = participants;
         }

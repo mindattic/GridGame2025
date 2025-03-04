@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Models\DataModels.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
+    <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\ShakeIntensity.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedPlayerManager.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
@@ -143,7 +144,6 @@
     <Compile Include="Assets\Scripts\GUI\SplashScreen.cs" />
     <Compile Include="Assets\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
-    <Compile Include="Assets\Scripts\Models\PincerAttackParticipants.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\GUI\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />

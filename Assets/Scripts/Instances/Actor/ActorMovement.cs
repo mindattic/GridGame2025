@@ -192,12 +192,12 @@ namespace Assets.Scripts.Instances.Actor
             if (location == closestTile.location)
                 return;
 
-            Debug.Log($"OnLocationChanged triggered for {instance.name} to {closestTile.location}, isMoving: {flags.IsMoving}");
+            //Debug.Log($"OnSelectedPlayerLocationChanged triggered for {instance.name} to {closestTile.location}, isMoving: {flags.IsMoving}");
 
             previousLocation = location;
             location = closestTile.location;
 
-            instance.onLocationChanged?.Invoke(previousLocation, closestTile.location);
+            instance.onSelectedPlayerLocationChanged?.Invoke(previousLocation, closestTile.location);
 
             ActorInstance overlappingActor = actors.FirstOrDefault(x =>
                 x != instance &&
