@@ -1075,7 +1075,7 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 1
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -3912,13 +3912,13 @@ PrefabInstance:
       addedObject: {fileID: 1754065673}
     - targetCorrespondingSourceObject: {fileID: 7829945854487650483, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 433156302}
+    - targetCorrespondingSourceObject: {fileID: 7829945854487650483, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 2095312015}
     - targetCorrespondingSourceObject: {fileID: 7829945854487650483, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2069096083}
-    - targetCorrespondingSourceObject: {fileID: 7829945854487650483, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 433156302}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
 --- !u!1 &1512087330
@@ -5158,14 +5158,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0478287252763a488809bbb1143549e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _persistent: 1
   deviceType: 
   targetFramerate: 60
   vSyncCount: 0
   previousGameSpeed: 0
   soundSource: {fileID: 0}
   musicSource: {fileID: 0}
-  cardManager: {fileID: 0}
+  card: {fileID: 0}
   tutorialPopup: {fileID: 0}
   dataManager: {fileID: 0}
   resourceManager: {fileID: 0}
@@ -5208,21 +5207,18 @@ MonoBehaviour:
   cardPortraitSize: 0
   canvas2D: {fileID: 0}
   canvas3D: {fileID: 0}
-  mousePosition2D: {x: 0, y: 0, z: 0}
-  mousePosition3D: {x: 0, y: 0, z: 0}
-  mouseOffset: {x: 0, y: 0, z: 0}
+  touchPosition2D: {x: 0, y: 0, z: 0}
+  touchPosition3D: {x: 0, y: 0, z: 0}
+  touchOffset: {x: 0, y: 0, z: 0}
   cursorSpeed: 0
   swapSpeed: 0
   moveSpeed: 0
   snapThreshold: 0
+  dragThreshold: 0
   bumpSpeed: 0
   focusedActor: {fileID: 0}
   selectedPlayer: {fileID: 0}
-  previousSelectedPlayer: {fileID: 0}
   fade: {fileID: 0}
-  onSelectedPlayerLocationChanged:
-    m_PersistentCalls:
-      m_Calls: []
   timerBar: {fileID: 0}
   actors: []
   board: {fileID: 0}
