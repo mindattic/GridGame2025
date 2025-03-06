@@ -125,7 +125,7 @@ public class DebugWindow : EditorWindow
     {
         if (!EditorApplication.isPlaying) return;
 
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name == "Game")
+        if (SceneManager.GetActiveScene().name == "Game")
         {
             // Uncomment Debug.Log below for logging purposes.
             // Debug.Log("[DebugWindow] Game scene detected, opening Debug Window.");
@@ -322,10 +322,10 @@ public class DebugWindow : EditorWindow
     private void RenderStats()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.width * 0.25f));
+        //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Turn: {(turnManager.isPlayerTurn ? "Player" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Phase: {turnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
-        GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.width * 0.25f));
+        //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }

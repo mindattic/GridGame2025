@@ -4,26 +4,29 @@ using UnityEngine;
 
 public class FpsMonitor
 {
-    const float MeasurePeriod = 0.5f;
+    const float measurePeriod = 0.5f;
     private int i = 0;
-    private float NextPeriod = 0;
+    private float nextPeriod = 0;
     public int currentFps;
+    public bool isActive = false;
 
     //Method which is automatically called before the first frame update  
-    public void Start()
+    public void Start(bool isActive)
     {
-        NextPeriod = Time.realtimeSinceStartup + MeasurePeriod;
+        this.isActive = isActive;
+        nextPeriod = Time.realtimeSinceStartup + measurePeriod;
     }
 
     public void Update()
     {
-        i++;
-
-        if (Time.realtimeSinceStartup < NextPeriod)
+        if (!isActive) 
             return;
 
-        currentFps = (int)(i / MeasurePeriod);
-        NextPeriod += MeasurePeriod;
+        i++;
+
+        if (Time.realtimeSinceStartup < nextPeriod) return;
+        currentFps = (int)(i / measurePeriod);
+        nextPeriod += measurePeriod;
         i = 0;
     }
 }

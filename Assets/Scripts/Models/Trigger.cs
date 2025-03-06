@@ -1,84 +1,73 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class Trigger
 {
-    // Variables
-    public IEnumerator Coroutine = null;
-    public bool IsAsync = true;
-    public bool HasTriggered = false;
+    private IEnumerator routine;
+    private bool isAsync;
+    private MonoBehaviour context;
+
+    // Indicates whether the trigger has executed.
+    public bool HasTriggered { get; private set; }
+
+    // Dictionary for storing attributes.
     private Dictionary<string, object> attributes = new Dictionary<string, object>();
 
-    private MonoBehaviour context; // Stores the MonoBehaviour trailInstance
 
-    // Properties
-    public bool IsValid => Coroutine != null && !HasTriggered;
-
-    // Constructors
     public Trigger() { }
-    public Trigger(IEnumerator coroutine)
-    {
-        Coroutine = coroutine;
-    }
-    public Trigger(IEnumerator coroutine, bool isAsync)
-    {
-        Coroutine = coroutine;
-        IsAsync = isAsync;
-    }
 
-    // Assigns the MonoBehaviour pair
-    public void SetContext(MonoBehaviour instance)
+    // Constructor accepts a routine and an optional isAsync flag.
+    public Trigger(IEnumerator routine, bool isAsync = false)
     {
-        context = instance;
+        this.routine = routine;
+        this.isAsync = isAsync;
+        HasTriggered = false;
     }
 
-    public IEnumerator StartCoroutine()
+    // Sets the MonoBehaviour context for running the coroutine.
+    public void SetContext(MonoBehaviour context)
     {
-        if (!IsValid || HasTriggered)
-            yield break;
-
-        HasTriggered = true;
-
-        if (!IsAsync || context == null)
-            yield return Coroutine;
-        else
-            context.StartCoroutine(Coroutine);
+        this.context = context;
     }
 
-    public void AddAttribute(string key, object value)
+    // Sets an attribute value with a given key.
+    public void SetAttribute(string key, object value)
     {
         attributes[key] = value;
     }
 
-    public T GetAttribute<T>(string key, T defaultValue = default)
+    // Gets an attribute value by key.
+    public object GetAttribute(string key, object defaultValue)
     {
-        return attributes.TryGetValue(key, out var value) ? (T)value : defaultValue;
+        object value;
+        if (attributes.TryGetValue(key, out value))
+            return value;
+
+        return defaultValue;
     }
 
-    public bool HasAttribute(string key)
+    // Starts the routine; if isAsync is true, it doesn't wait for completion.
+    public IEnumerator StartCoroutine()
     {
-        return attributes.ContainsKey(key);
-    }
+        if (context == null)
+            yield break;
 
-    ///<summary>
-    ///Method which is used to create a deep clone of a Trigger object
-    ///</summary>
-    ///<returns></returns>
-    public Trigger Clone()
-    {
-        var clone = new Trigger
-        {
-            Coroutine = this.Coroutine,
-            IsAsync = this.IsAsync
-        };
+        if (routine == null)
+            yield break;
 
-        // Copy attributes dictionary
-        foreach (var kvp in this.attributes)
+        if (isAsync)
         {
-            clone.AddAttribute(kvp.Key, kvp.Value);
+            //Fire and Forget: Start the routine without yielding
+            context.StartCoroutine(routine);
+            HasTriggered = true;
+            yield break;
         }
-
-        return clone;
+        else
+        {
+            //Wait until the routine completes
+            yield return context.StartCoroutine(routine);
+            HasTriggered = true;
+        }
     }
 }

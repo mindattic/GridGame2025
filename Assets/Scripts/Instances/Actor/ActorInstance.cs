@@ -122,7 +122,7 @@ public class ActorInstance : MonoBehaviour
     public System.Action<Vector2Int, Vector2Int> onSelectedPlayerLocationChanged;       // Invoked when the actor changes location.
     public System.Action onActorDeath;                                                  // Invoked upon actor death.
     public System.Action onSortingOrderChanged;                                         // Invoked when the sorting order is modified.
-    public System.Action onDragDetected;                                                // Invoked when a drag operation is detected on the actor.
+    //public System.Action onDragDetected;                                                // Invoked when a drag operation is detected on the actor.
 
     // Fields: Core data fields representing character stats, state, and modules.
     [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animation behavior.
@@ -204,7 +204,7 @@ public class ActorInstance : MonoBehaviour
         // Subscribe to event handlers to link movement and stage-related updates.
         onOverlapDetected += (location) => movement.OnOverlapDetected(location);
         onSelectedPlayerLocationChanged += (previousLocation, newLocation) => tileManager.OnSelectedPlayerLocationChanged(previousLocation, newLocation);
-        onDragDetected += movement.OnDragDetected;
+        //onDragDetected += movement.TriggerMoveTowardsCursor;
         onActorDeath += stageManager.OnActorDeath;
     }
 
@@ -285,17 +285,26 @@ public class ActorInstance : MonoBehaviour
         }
     }
 
+    public void TriggerAttack(AttackResult attack)
+    {
+        StartCoroutine(Attack(attack));
+    }
+
     // Attack: Executes an attack on an opponent, displaying VFX and applying damage.
     public IEnumerator Attack(AttackResult attack)
     {
+        // Determine the hit or miss routine.
+        var hitOrMiss = attack.IsHit
+            ? attack.Opponent.TakeDamage(attack)
+            : attack.Opponent.AttackMiss();
+
+        // Create the trigger with asynchronous execution.
+        var trigger = new Trigger(hitOrMiss, isAsync: true);
+
         // Spawn the attack visual effect at the opponent's position.
-        // If the attack is a hit, trigger the opponent's damage routine; otherwise, perform a miss animation.
-        yield return vfxManager.Spawn(
-            vfx.Attack,
-            attack.Opponent.position,
-            new Trigger(coroutine: attack.IsHit ? attack.Opponent.TakeDamage(attack) : attack.Opponent.AttackMiss(),
-                        isAsync: false));
+        yield return vfxManager.Spawn(vfx.Attack, attack.Opponent.position, trigger);
     }
+
 
     // CalculateAttackStrategy: Chooses an attack strategy based on weighted randomness and sets the target location.
     public void CalculateAttackStrategy()
@@ -368,7 +377,7 @@ public class ActorInstance : MonoBehaviour
     public IEnumerator TakeDamage(AttackResult attack)
     {
         // Abort if the actor is not active or alive.
-        if (!isActive || !isAlive)
+        if (!isPlaying)
             yield break;
 
         // If the attack is critical, trigger a special VFX at the opponent's position.
@@ -412,6 +421,9 @@ public class ActorInstance : MonoBehaviour
         // After: Reset animations to normal.
         action.TriggerShrink();
         action.TriggerShake(ShakeIntensity.Stop);
+
+        if (isDying)
+            TriggerDie();
     }
 
     // AttackMiss: Coroutine to display a miss message and trigger a dodge animation.

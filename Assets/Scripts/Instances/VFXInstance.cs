@@ -35,40 +35,32 @@ public class VFXInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-
-
-
-    public IEnumerator Spawn(VFXResource vfx, Vector3 position, Trigger trigger = default)
+    public IEnumerator Spawn(VFXResource vfx, Vector3 position, Trigger trigger = null)
     {
-        if (trigger == default)
-            trigger = new Trigger();
+        if (trigger == null)
+            trigger = new Trigger(null);
 
-        //Translate, rotate, and relativeScale relative to tile dimensions (determined by device)
-        //var offset = Geometry.Tile.Relative.Translation(vfx.RelativeOffset);
-        //var scale = Geometry.Tile.Relative.Scale(vfx.RelativeScale);
-        //var rotation = Geometry.Rotation(vfx.AngularRotation);
-
-        //this.position = position + vfx.RelativeOffset;
+        // Setup the position and scale based on the VFX resource.
         this.position = position;
         this.scale = tileScale.MultiplyBy(vfx.RelativeScale);
-
         SetLooping(vfx.IsLoop);
 
-        //Wait until waitDuration is over
+        // Optionally wait for a delay before starting.
         if (vfx.Delay != 0f)
             yield return new WaitForSeconds(vfx.Delay);
 
-        //Trigger coroutine (if applicable)
+        //Execute the trigger's routine
         trigger.SetContext(this);
         yield return trigger.StartCoroutine();
 
-        //Wait until VFX duration completes
+        // Wait until the VFX duration completes.
         if (vfx.Duration != 0f)
-            yield return Wait.For(vfx.Duration);
+            yield return new WaitForSeconds(vfx.Duration);
 
-        //Destroy VFX
+        // Destroy the VFX after completion.
         Despawn(name);
     }
+
 
     private void SetLooping(bool isLoop)
     {

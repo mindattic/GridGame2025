@@ -49,7 +49,7 @@ public class SpellManager : MonoBehaviour
             controlPoints = BezierCurveHelper.Gentle(source, target),
             trailKey = "GreenSparkle",
             vfxKey = "BuffLife",
-            trigger = new Trigger(coroutine: target.Heal(10), isAsync: false)
+            trigger = new Trigger(target.Heal(10), isAsync: false)
         };
 
         var action = new CastSpellAction(spell);
@@ -72,7 +72,7 @@ public class SpellManager : MonoBehaviour
             controlPoints = BezierCurveHelper.Overshooting(source, target),
             trailKey = "Fireball",
             vfxKey = "PuffyExplosion",
-            trigger = new Trigger(coroutine: target.FireDamage(10), isAsync: false)
+            trigger = new Trigger(target.FireDamage(10), isAsync: false)
         };
 
         var action = new CastSpellAction(spell);

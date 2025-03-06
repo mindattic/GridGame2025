@@ -55,8 +55,8 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new Trigger();
             // Add intensity and duration attributes to the trigger.
-            trigger.AddAttribute("intensity", intensity);
-            trigger.AddAttribute("duration", duration);
+            trigger.SetAttribute("intensity", intensity);
+            trigger.SetAttribute("duration", duration);
 
             // Start the Shake coroutine.
             instance.StartCoroutine(Shake(trigger));
@@ -72,8 +72,8 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             // Retrieve intensity and duration from the trigger.
-            float intensity = trigger.GetAttribute("intensity", 0f);
-            float duration = trigger.GetAttribute("duration", 0f);
+            float intensity = (float)trigger.GetAttribute("intensity", 0f);
+            float duration = (float)trigger.GetAttribute("duration", 0f);
             // Store the original position of the actor's current tile.
             var originalPosition = instance.currentTile.position;
             float elapsedTime = 0f;
@@ -299,7 +299,7 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             if (maxSize != 0f)
-                trigger.AddAttribute("maxSize", maxSize);
+                trigger.SetAttribute("maxSize", maxSize);
 
             if (instance.isActive)
                 instance.StartCoroutine(Grow(trigger));
@@ -314,7 +314,7 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             // Before: determine target max size (default is 110% of tile size) and initial scale.
-            float maxSize = trigger.GetAttribute("maxSize", tileSize * 1.1f);
+            float maxSize = (float)trigger.GetAttribute("maxSize", tileSize * 1.1f);
             float minSize = scale.x;
             float increment = tileSize * 0.01f;
             float size = minSize;
@@ -346,7 +346,7 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             if (minSize != 0f)
-                trigger.AddAttribute("minSize", minSize);
+                trigger.SetAttribute("minSize", minSize);
 
             if (instance.isActive)
                 instance.StartCoroutine(Shrink(trigger));
@@ -361,7 +361,7 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             // Before: determine target minimum size (default is tileSize) and current scale.
-            float minSize = trigger.GetAttribute("minSize", tileSize);
+            float minSize = (float)trigger.GetAttribute("minSize", tileSize);
             float maxSize = scale.x;
             float increment = tileSize * 0.01f;
             float size = maxSize;
@@ -497,7 +497,7 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             if (delay != 0f)
-                trigger.AddAttribute("waitDuration", delay);
+                trigger.SetAttribute("waitDuration", delay);
 
             instance.StartCoroutine(FadeIn(trigger));
         }
@@ -511,8 +511,8 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new Trigger();
 
             // Before: Retrieve delay and increment values from trigger attributes.
-            float delay = trigger.GetAttribute("waitDuration", 0f);
-            float increment = trigger.GetAttribute("increment", 0.05f);
+            float delay = (float)trigger.GetAttribute("waitDuration", 0f);
+            float increment = (float)trigger.GetAttribute("increment", 0.05f);
             float alpha = 0;
             render.SetAlpha(alpha);
 

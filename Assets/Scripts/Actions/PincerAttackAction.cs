@@ -9,8 +9,10 @@ namespace Assets.Scripts.Models
     // PhaseAction for processing a single attacking PincerAttackPair.
     public class PincerAttackAction : PhaseAction
     {
+        protected List<ActorInstance> actors = GameManager.instance.actors;
+
+
         private PincerAttackPair participants;
-        private List<ActorInstance> dyingOpponents = new List<ActorInstance>();
 
         // Constructor now takes PincerAttackPair (not ActorPair).
         public PincerAttackAction(PincerAttackPair participants)
@@ -40,38 +42,35 @@ namespace Assets.Scripts.Models
             var firstOpponent = participants.attacks.First().Opponent;
             var bumpDirection = participants.attacker1.GetDirectionTo(firstOpponent);
 
-            // Perform a single bump animation for attacker1
-            yield return participants.attacker1.action.Bump(bumpDirection);
+            // Perform bump and execute attacks at the apex
+            var trigger = new Trigger(ProcessAttackSequence());
+            yield return participants.attacker1.action.Bump(bumpDirection, trigger);
 
- 
-            // Process each attack in the computed attack chain with a short delay
-            foreach (var attack in participants.attacks)
-            {
-                // Use attacker1 for each attack; adjust if needed
-                var attacker = participants.attacker1;
-
-                // Execute the attack animation and damage calculation directly
-                yield return attacker.Attack(attack);
-
-                // Short delay to create a domino effect
-                yield return Wait.For(Interval.TenthSecond);
-
-                //If the opponent was killed, handle death animation
-                if (attack.Opponent.isDying)
-                {
-                    dyingOpponents.Add(attack.Opponent);
-                    attack.Opponent.TriggerDie();
-                }
-            }
-
-            // Wait until all dying opponents' HP bars are fully drained
-            if (dyingOpponents.Any())
-                yield return new WaitUntil(() => dyingOpponents.All(x => x.healthBar.isEmpty));
-
-            yield break;
+            //Trigger death animations on any enemies killed in last attack sequence
+            yield return ProcessDeaths();
         }
 
+        private IEnumerator ProcessAttackSequence()
+        {
+            foreach (var attack in participants.attacks)
+            {
+                var attacker = participants.attacker1;
 
+                //Trigger the attack asynchronously (fire and forget).
+                attacker.TriggerAttack(attack);
+
+                //Short delay to create the domino effect.
+                yield return Wait.For(Interval.TenthSecond);
+            }
+        }
+
+        private IEnumerator ProcessDeaths()
+        {
+            // Wait until all dying actor's' HP bars are fully drained
+            var dyingActors = actors.Where(x => x.isDying).ToList();
+            if (dyingActors.Any())
+                yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
+        }
 
     }
 }

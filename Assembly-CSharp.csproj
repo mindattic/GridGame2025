@@ -147,6 +147,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\GUI\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
+    <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\OptionsScreen.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\SwingingWindow.cs" />

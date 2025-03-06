@@ -11,8 +11,7 @@ public class DottedLineManager : MonoBehaviour
     protected BoardInstance board => GameManager.instance.board;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
     protected bool hasSelectedPlayer => GameManager.instance.hasSelectedPlayer;
-    protected UnityEvent<Vector2Int> onSelectedPlayerLocationChanged => GameManager.instance.onSelectedPlayerLocationChanged;
-
+  
 
     //Fields
     [SerializeField] public GameObject DottedLinePrefab;
@@ -22,7 +21,7 @@ public class DottedLineManager : MonoBehaviour
     //Method which is automatically called before the first frame update  
     void Start()
     {
-        onSelectedPlayerLocationChanged?.AddListener(OnSelectedPlayerLocationChanged);
+  
     }
 
 
@@ -33,26 +32,6 @@ public class DottedLineManager : MonoBehaviour
             dottedLine.ResetColor();
         }
     }
-
-    private void OnSelectedPlayerLocationChanged(Vector2Int newLocation)
-    {
-        //ResetColors();
-
-        //var occupiedSegment = dottedLines.FirstOrDefault(x => x.location == newLocation);
-        //if (occupiedSegment == null)
-        //   return;
-
-        ////Highlight all connected lines
-        //foreach (var currentLocation in occupiedSegment.connectedLocations)
-        //{
-        //   var connectedSegment = dottedLines.FirstOrDefault(x => x.location == currentLocation);
-        //   if (connectedSegment == null)
-        //       continue;
-
-        //   connectedSegment.SetColor();
-        //}
-    }
-
 
 
     public void Spawn(DottedLineSegment segment, Vector2Int location)

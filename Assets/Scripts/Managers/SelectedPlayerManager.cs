@@ -20,12 +20,11 @@ public class SelectedPlayerManager : MonoBehaviour
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected bool hasFocusedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
-    protected ActorInstance previousSelectedPlayer { get => GameManager.instance.previousSelectedPlayer; set => GameManager.instance.previousSelectedPlayer = value; }
     protected ActorInstance selectedPlayer { get => GameManager.instance.selectedPlayer; set => GameManager.instance.selectedPlayer = value; }
     protected Card card => GameManager.instance.card;
     protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
-    protected Vector3 mouseOffset { get => GameManager.instance.mouseOffset; set => GameManager.instance.mouseOffset = value; }
-    protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
+    protected Vector3 touchOffset { get => GameManager.instance.touchOffset; set => GameManager.instance.touchOffset = value; }
+    protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
     protected float tileSize => GameManager.instance.tileSize;
     protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IQueryable<ActorInstance> players => GameManager.instance.players;
@@ -39,16 +38,13 @@ public class SelectedPlayerManager : MonoBehaviour
         if (!turnManager.isPlayerTurn || !turnManager.isStartPhase)
             return;
 
-        // Detect all colliders at the current mouse position.
-        var collisions = Physics2D.OverlapPointAll(mousePosition3D);
+        //Retrieve the ActorInstance component from the collider
+        var collisions = Physics2D.OverlapPointAll(touchPosition3D);
         if (collisions == null) return;
-
-        // Find the first collider with the "Actor" tag.
         var collider = collisions.FirstOrDefault(x => x.CompareTag(Tag.Actor));
         if (collider == null) return;
-
-        // Retrieve the ActorInstance component from the collider.
         var actor = collider.gameObject.GetComponent<ActorInstance>();
+
         // If no ActorInstance is found or the actor is not active, exit.
         if (actor == null || !actor.isPlaying) return;
 
@@ -58,10 +54,11 @@ public class SelectedPlayerManager : MonoBehaviour
 
         // Update the focused actor to the one under the mouse.
         focusedActor = actor;
-        // Calculate the offset between the actor's position and the mouse position.
-        mouseOffset = focusedActor.position - mousePosition3D;
 
-        // Update the UI elements: assign the focus indicator and update the actor card with new focus.
+        // Calculate the offset between the actor's position and the mouse position.
+        touchOffset = focusedActor.position - touchPosition3D;
+
+        // Update the UI elements
         focusIndicator.Assign();
         card.Assign();
     }
@@ -83,9 +80,10 @@ public class SelectedPlayerManager : MonoBehaviour
         if (selectedPlayer.flags.IsMoving)
             return;
 
-        // Clear UI elements (actor card and focus indicator) to prepare for movement.
+        // Clear UI elements
         card.Clear();
         focusIndicator.Clear();
+
         // Play an audio cue to indicate that the actor has been selected for movement.
         audioManager.Play("Load");
 
@@ -97,8 +95,8 @@ public class SelectedPlayerManager : MonoBehaviour
         // Switch the turn phase from Start to Move.
         turnManager.SetPhase(TurnPhase.Move);
 
-        // Invoke any events associated with detecting a drag on the selected actor.
-        selectedPlayer.onDragDetected?.Invoke();
+        //Start selected player movement
+        selectedPlayer.movement.TriggerMoveTowardsCursor();
     }
 
     /// <summary>
@@ -119,14 +117,13 @@ public class SelectedPlayerManager : MonoBehaviour
         // Snap the selected player's position to the nearest valid tile location on the grid.
         selectedPlayer.movement.SnapToLocation();
 
-        // Record the current selected player as the previous selection,
-        // then clear the current selection and focused actor references.
-        previousSelectedPlayer = selectedPlayer;
+        //Clear the current selection and focused actor references
         selectedPlayer = null;
         focusedActor = null;
 
         // Pause the movement timer, indicating that the move phase has ended.
         timerBar.Pause();
+
         // Check for any potential pincer attacks by the player's team now that movement is complete.
         attackManager.Check(Team.Player);
     }

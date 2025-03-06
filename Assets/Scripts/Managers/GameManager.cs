@@ -11,8 +11,8 @@ using UnityEngine.Events;
 public class GameManager : Singleton<GameManager>
 {
     [HideInInspector] public string deviceType;
-    [HideInInspector] public int targetFramerate = 60;
-    [HideInInspector] public int vSyncCount = 1;
+    [HideInInspector] public int targetFramerate = 60;  //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-targetFrameRate.html
+    [HideInInspector] public int vSyncCount = 2;        //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/QualitySettings-vSyncCount.html
 
     public float gameSpeed
     {
@@ -81,28 +81,25 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Canvas canvas3D;
 
     //Mouse
-    [HideInInspector] public Vector3 mousePosition2D;
-    [HideInInspector] public Vector3 mousePosition3D;
-    [HideInInspector] public Vector3 mouseOffset;
+    [HideInInspector] public Vector3 touchPosition2D;
+    [HideInInspector] public Vector3 touchPosition3D;
+    [HideInInspector] public Vector3 touchOffset;
     [HideInInspector] public float cursorSpeed;
     [HideInInspector] public float swapSpeed;
     [HideInInspector] public float moveSpeed;
     [HideInInspector] public float snapThreshold;
+    [HideInInspector] public float dragThreshold;   
     [HideInInspector] public float bumpSpeed;
 
     //Actor selection
     [HideInInspector] public ActorInstance focusedActor;
-    [HideInInspector] public ActorInstance selectedPlayer;
-    [HideInInspector] public ActorInstance previousSelectedPlayer;
-
-
+    [HideInInspector] public bool hasFocusedActor => focusedActor != null;
+   [HideInInspector] public ActorInstance selectedPlayer;
+    [HideInInspector] public bool hasSelectedPlayer => selectedPlayer != null;
+    
     [HideInInspector] public Fade fade;
 
-
-    [HideInInspector] public bool hasFocusedActor => focusedActor != null;
-    [HideInInspector] public bool hasSelectedPlayer => selectedPlayer != null;
-    [HideInInspector] public UnityEvent<Vector2Int> onSelectedPlayerLocationChanged;
-
+  
     [HideInInspector] public TileMap tileMap;
 
     //Instances
@@ -127,7 +124,7 @@ public class GameManager : Singleton<GameManager>
         Application.targetFrameRate = targetFramerate;
         QualitySettings.vSyncCount = vSyncCount;
 
-        onSelectedPlayerLocationChanged = new UnityEvent<Vector2Int>();
+
         previousGameSpeed = Time.timeScale;
 
         //DEBUG: Need to add buffer so tile doesn't align to left-most and right-most edge,
@@ -145,7 +142,8 @@ public class GameManager : Singleton<GameManager>
         swapSpeed = tileSize * 0.1666f;
         moveSpeed = tileSize * 0.125f;
         bumpSpeed = tileSize * 0.08f;
-        snapThreshold = tileSize * 0.125f;
+        snapThreshold = tileSize * 0.125f * 1.01f;
+        dragThreshold = tileSize * 0.125f;
         ShakeIntensity.Initialize(tileSize);
 
         totalCoins = 0;

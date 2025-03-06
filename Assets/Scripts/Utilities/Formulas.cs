@@ -68,7 +68,7 @@ namespace Assets.Scripts.Utilities
             var evasion = Evasion(target.stats);
             var d100 = Random.Int(1, 100);
             var isHit = accuracy - evasion >= d100;
-
+            isHit = true; //DEBUG: It's not fun to miss...
             var msg
                 = $"{attacker.name} vs {target.name}: "
                 + $@"Accuracy(<color=""yellow"">{accuracy}</color>) - "

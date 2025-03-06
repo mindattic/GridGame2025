@@ -10,7 +10,7 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
 
     private Camera mainCamera;
 
-    public bool IsMouseOnScreen =>
+    public bool IsTouchInsideScreenBounds =>
         Input.mousePosition.x >= 0
         && Input.mousePosition.x <= Screen.width
         && Input.mousePosition.y > 0
@@ -26,8 +26,8 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
 
     public void OnPointerMove(PointerEventData eventData)
     {
-        //GameManager.db.mousePosition2D = Input.mousePosition;
-        //GameManager.db.mousePosition3D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //GameManager.db.touchPosition2D = Input.mousePosition;
+        //GameManager.db.touchPosition3D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -61,7 +61,6 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
 
     public void OnDrag(PointerEventData eventData)
     {
-        //Debug.Log("OnDrag");
         rectTransform.anchoredPosition += eventData.delta / canvas.scaleFactor;
     }
 
@@ -78,9 +77,9 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
         if (Input.mousePosition == null)
             return;
 
-        GameManager.instance.mousePosition2D = Input.mousePosition;
-        if (IsMouseOnScreen && mainCamera != null)
-            GameManager.instance.mousePosition3D = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        GameManager.instance.touchPosition2D = Input.mousePosition;
+        if (IsTouchInsideScreenBounds && mainCamera != null)
+            GameManager.instance.touchPosition3D = mainCamera.ScreenToWorldPoint(Input.mousePosition);
     }
 
 }

@@ -22,8 +22,8 @@ namespace Assets.Scripts.Instances.Actor
         protected float moveSpeed => GameManager.instance.moveSpeed;
         protected float snapThreshold => GameManager.instance.snapThreshold;
         protected float tileSize => GameManager.instance.tileSize;
-        protected Vector3 mousePosition3D => GameManager.instance.mousePosition3D;
-        protected Vector3 mouseOffset => GameManager.instance.mouseOffset;
+        protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
+        protected Vector3 touchOffset => GameManager.instance.touchOffset;
         protected ActorFlags flags => instance.flags;
         protected ActorRenderers render => instance.render;
         protected ActorStats stats => instance.stats;
@@ -41,10 +41,6 @@ namespace Assets.Scripts.Instances.Actor
         protected bool isSelectedPlayer => hasSelectedPlayer && selectedPlayer == instance;
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
         protected Card card => GameManager.instance.card;
-
-
-
-        protected UnityEvent<Vector2Int> onSelectedPlayerLocationChanged => GameManager.instance.onSelectedPlayerLocationChanged;
 
 
         //Fields
@@ -81,7 +77,7 @@ namespace Assets.Scripts.Instances.Actor
             while (flags.IsMoving)
             {
                 previousPosition = instance.position;
-                instance.position = mousePosition3D + mouseOffset;
+                instance.position = touchPosition3D + touchOffset;
                 //ApplyTilt(instance.position - previousPosition, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
                 CheckLocationChanged();
                 yield return Wait.UntilNextFrame();
@@ -209,7 +205,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
 
-        public void OnDragDetected()
+        public void TriggerMoveTowardsCursor()
         {
             instance.StartCoroutine(MoveTowardCursor());
         }
