@@ -6,6 +6,7 @@ using UnityEngine;
 public class PortraitInstance : MonoBehaviour
 {
     //Quick Reference Properties
+    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
 
     public Transform parent
     {
@@ -57,7 +58,7 @@ public class PortraitInstance : MonoBehaviour
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
 
-    public IEnumerator SlideIn()
+    public IEnumerator Spawn()
     {
         Vector3 destination = new Vector3();
 

@@ -322,7 +322,7 @@ public static class Intermission
 
         public static class Enemy
         {
-            public static float Move = Interval.OneSecond;
+            public static float Move = Interval.HalfSecond;
             public static float Attack = Interval.HalfSecond;
         }
 

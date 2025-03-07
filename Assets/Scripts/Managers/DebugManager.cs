@@ -56,7 +56,7 @@ public class DebugManager : MonoBehaviour
     {
         var player = Random.Player;
         var direction = Random.Direction;
-        portraitManager.SlideIn(player, direction);
+        portraitManager.Spawn(player, direction);
     }
 
     public void DamageTextTest()

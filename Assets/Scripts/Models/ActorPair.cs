@@ -1,4 +1,5 @@
-﻿/// <summary>
+﻿using UnityEngine;
+/// <summary>
 /// A minimal class storing two actors (actor1, actor2) plus an axis (Vertical or Horizontal).
 /// Optionally retains startActor / endActor for convenience, as well as Matches().
 /// All older "in-between" logic and lists have been removed.
@@ -8,6 +9,16 @@ public class ActorPair
     public ActorInstance actor1;
     public ActorInstance actor2;
     public Axis axis = Axis.Horizontal;
+
+    public ActorPair(ActorInstance actor1, ActorInstance actor2)
+    {
+        this.actor1 = actor1;
+        this.actor2 = actor2;
+
+        float diffX = Mathf.Abs(actor1.location.x - actor2.location.x);
+        float diffY = Mathf.Abs(actor1.location.y - actor2.location.y);
+        this.axis = diffX > diffY ? Axis.Horizontal : Axis.Vertical;
+    }
 
     public ActorPair(ActorInstance actor1, ActorInstance actor2, Axis axis)
     {

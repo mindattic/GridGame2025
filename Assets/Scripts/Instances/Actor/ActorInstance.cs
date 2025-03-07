@@ -343,13 +343,13 @@ public class ActorInstance : MonoBehaviour
                 break;
         }
 
-        // Set the actor's location to the nearest valid attack location relative to the target.
+        //Set the actor's location to the nearest valid attack location relative to the target.
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
-        // Note: nextPosition is commented out and could be used for future logic.
-        // nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
+        //Note: nextPosition is commented out and could be used for future logic.
+        //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
     }
 
-    // TriggerTakeDamage: Begins the process for this actor to take damage from an attack.
+    //TriggerTakeDamage: Begins the process for this actor to take damage from an attack.
     public void TriggerTakeDamage(AttackResult attack)
     {
         // If the actor is not active or alive, abort.
@@ -359,24 +359,24 @@ public class ActorInstance : MonoBehaviour
         StartCoroutine(TakeDamage(attack));
     }
 
-    // FireDamage: Coroutine to display fire damage text and wait until the next frame.
+    //FireDamage: Coroutine to display fire damage text and wait until the next frame.
     public IEnumerator FireDamage(float amount)
     {
         damageTextManager.Spawn($"Fireball: - {amount} HP", position);
         yield return Wait.UntilNextFrame();
     }
 
-    // Heal: Coroutine to display healing text and wait until the next frame.
+    //Heal: Coroutine to display healing text and wait until the next frame.
     public IEnumerator Heal(float amount)
     {
         damageTextManager.Spawn($"Heal: +{amount} HP", position);
         yield return Wait.UntilNextFrame();
     }
 
-    // TakeDamage: Coroutine that processes damage application, triggers VFX and animations, and updates HP.
+    //TakeDamage: Coroutine that processes damage application, triggers VFX and animations, and updates HP.
     public IEnumerator TakeDamage(AttackResult attack)
     {
-        // Abort if the actor is not active or alive.
+        //Abort if the actor is not active or alive.
         if (!isPlaying)
             yield break;
 
@@ -384,14 +384,14 @@ public class ActorInstance : MonoBehaviour
         if (attack.IsCriticalHit)
             vfxManager.TriggerSpawn(resourceManager.VisualEffect("YellowHit"), attack.Opponent.position);
 
-        // Optionally trigger pre-damage effects here.
-        // yield return attack.Triggers.Before.StartCoroutine(this);
+        //Optionally trigger pre-damage effects here.
+        //yield return attack.Triggers.Before.StartCoroutine(this);
 
-        // Set up damage animation duration.
+        //Set up damage animation duration.
         float ticks = 0f;
         float duration = Interval.TenTicks;
 
-        // If the actor is not invincible, reduce HP and update the health bar.
+        //If the actor is not invincible, reduce HP and update the health bar.
         if (!isInvincible)
         {
             stats.PreviousHP = stats.HP;
@@ -400,11 +400,11 @@ public class ActorInstance : MonoBehaviour
             healthBar.Update();
         }
 
-        // Display damage text and play a random slash sound effect.
+        //Display damage text and play a random slash sound effect.
         damageTextManager.Spawn(attack.Damage.ToString(), position);
         audioManager.Play($"Slash{Random.Int(1, 7)}");
 
-        // During: Animate the damage reaction over the set duration.
+        //During: Animate the damage reaction over the set duration.
         while (ticks < duration)
         {
             action.TriggerGrow(); // Possibly makes the actor appear to flinch.
@@ -415,10 +415,10 @@ public class ActorInstance : MonoBehaviour
             yield return Wait.For(Interval.OneTick);
         }
 
-        // Optionally trigger post-damage effects here.
-        // yield return attack.Triggers.After.StartCoroutine(this);
+        //Optionally trigger post-damage effects here.
+        //yield return attack.Triggers.After.StartCoroutine(this);
 
-        // After: Reset animations to normal.
+        //After: Reset animations to normal.
         action.TriggerShrink();
         action.TriggerShake(ShakeIntensity.Stop);
 
@@ -426,41 +426,41 @@ public class ActorInstance : MonoBehaviour
             TriggerDie();
     }
 
-    // AttackMiss: Coroutine to display a miss message and trigger a dodge animation.
+    //AttackMiss: Coroutine to display a miss message and trigger a dodge animation.
     public IEnumerator AttackMiss()
     {
         damageTextManager.Spawn("Miss", position);
         yield return action.Dodge();
     }
 
-    // TriggerDie: Initiates the actor's death sequence.
+    //TriggerDie: Initiates the actor's death sequence.
     public void TriggerDie()
     {
         StartCoroutine(Die());
     }
 
-    // Die: Coroutine that handles the actor's death sequence, including fading out, spawning coins, and deactivation.
+    //Die: Coroutine that handles the actor's death sequence, including fading out, spawning coins, and deactivation.
     public IEnumerator Die()
     {
-        // Abort if the actor is not in a dying state.
+        //Abort if the actor is not in a dying state.
         if (!isDying)
             yield break;
 
-        // Before: Set actor to fully opaque.
+        //Before: Set actor to fully opaque.
         var alpha = 1f;
         render.SetAlpha(alpha);
 
-        // Wait until the health bar has finished draining.
+        //Wait until the health bar has finished draining.
         if (healthBar.isDraining)
             yield return new WaitUntil(() => healthBar.isEmpty);
 
-        // Trigger portrait dissolve effect and play death sound.
+        //Trigger portrait dissolve effect and play death sound.
         portraitManager.Dissolve(this);
         audioManager.Play("Death");
-        // Set sorting order to maximum so that the death sequence renders on top.
+        //Set sorting order to maximum so that the death sequence renders on top.
         sortingOrder = SortingOrder.Max;
 
-        // During: Gradually reduce the alpha value for a fade-out effect.
+        //During: Gradually reduce the alpha value for a fade-out effect.
         var hasSpawnedCoins = false;
         while (alpha > 0f)
         {
@@ -468,7 +468,7 @@ public class ActorInstance : MonoBehaviour
             alpha = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
             render.SetAlpha(alpha);
 
-            // Spawn coins when enemy fades below 10% opacity, if not already spawned.
+            //Spawn coins when enemy fades below 10% opacity, if not already spawned.
             if (isEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
             {
                 hasSpawnedCoins = true;
@@ -479,21 +479,21 @@ public class ActorInstance : MonoBehaviour
             yield return Wait.OneTick();
         }
 
-        // After: Reset location and position, deactivate the actor, and invoke the death event.
+        //After: Reset location and position, deactivate the actor, and invoke the death event.
         location = Location.Nowhere;
         position = Position.Nowhere;
         gameObject.SetActive(false);
         onActorDeath.Invoke();
     }
 
-    // TriggerSpawnCoins: Helper function to begin spawning coins upon enemy death.
+    //TriggerSpawnCoins: Helper function to begin spawning coins upon enemy death.
     private void TriggerSpawnCoins(int amount)
     {
         if (isPlaying)
             StartCoroutine(SpawnCoins(amount)); // TODO: Adjust coin spawning based on enemy stats if necessary.
     }
 
-    // SpawnCoins: Coroutine that spawns a specified number of coins at the actor's position.
+    //SpawnCoins: Coroutine that spawns a specified number of coins at the actor's position.
     IEnumerator SpawnCoins(int amount)
     {
         var i = 0;
@@ -506,22 +506,22 @@ public class ActorInstance : MonoBehaviour
         yield return true;
     }
 
-    // Teleport: Moves the actor instantly to a new grid location if within board bounds.
+    //Teleport: Moves the actor instantly to a new grid location if within board bounds.
     public void Teleport(Vector2Int newLocation)
     {
-        // Abort if the new location is out of bounds.
+        //Abort if the new location is out of bounds.
         if (!board.InBounds(newLocation))
             return;
 
         this.location = newLocation;
-        // Update world position based on the new grid location.
+        //Update world position based on the new grid location.
         transform.position = Geometry.GetPositionByLocation(this.location);
     }
 
-    // Move: Attempts to move the actor in the specified direction if the target location is valid.
+    //Move: Attempts to move the actor in the specified direction if the target location is valid.
     public void Move(Vector2Int direction)
     {
-        // Abort if the new location (current location + direction) is out of bounds.
+        //Abort if the new location (current location + direction) is out of bounds.
         if (!board.InBounds(location + direction))
             return;
 
@@ -533,17 +533,17 @@ public class ActorInstance : MonoBehaviour
         Teleport(tile.location);
     }
 
-    // SetReady: Resets the enemy actor's action points for a new turn.
+    //SetReady: Resets the enemy actor's action points for a new turn.
     public void SetReady()
     {
-        // Abort if the actor is not active, not alive, or not an enemy.
+        //Abort if the actor is not active, not alive, or not an enemy.
         if (!isActive || !isAlive || !isEnemy)
             return;
 
         stats.AP = stats.MaxAP;
         stats.PreviousAP = stats.MaxAP;
 
-        // Update the action bar UI to reflect the refreshed action points.
+        //Update the action bar UI to reflect the refreshed action points.
         actionBar.Update();
     }
 }

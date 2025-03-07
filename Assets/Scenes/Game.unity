@@ -1796,6 +1796,11 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &645039068 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7829945854487650484, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
+  m_PrefabInstance: {fileID: 1476864828}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &655101917
 GameObject:
   m_ObjectHideFlags: 0
@@ -2084,13 +2089,14 @@ GameObject:
   m_Component:
   - component: {fileID: 859648670}
   - component: {fileID: 859648671}
+  - component: {fileID: 859648672}
   m_Layer: 6
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &859648670
 Transform:
   m_ObjectHideFlags: 0
@@ -2101,7 +2107,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2142376700}
@@ -2150,17 +2156,29 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 65bd7c4bbe82c2f46aa6b08967b32e22, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9dd84df3b8958e5438da0b7b2972fc0c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 20.48, y: 20.48}
+  m_Size: {x: 10.24, y: 17.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &859648672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859648669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96743c99817a9bf419c9ef88923e987b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &883817230
 GameObject:
   m_ObjectHideFlags: 0
@@ -3901,7 +3919,8 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Tile
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4086587420172569240, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 7829945854487650483, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
@@ -3919,7 +3938,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7829945854487650483, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2069096083}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7829945854487650484, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2142376701}
   m_SourcePrefab: {fileID: 100100000, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
 --- !u!1 &1512087330
 GameObject:
@@ -5928,7 +5950,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1754065672}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2744c725793919148aafaf9d4f357931, type: 3}
+  m_Script: {fileID: 11500000, guid: acf9fd333f659e34ca29cc0fd6b540b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1830783914
@@ -16487,6 +16509,23 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7829945854487650483, guid: 231b405edfadab84ebe1ec2b74eeed52, type: 3}
   m_PrefabInstance: {fileID: 1476864828}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2142376701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 645039068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f140c450e4f6bbd4dbfa22846c9c11dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TilePrefab: {fileID: 7233482234801728947, guid: f420fe272613c294eb4bc531748a437e, type: 3}
+  columnCount: 6
+  rowCount: 8
+  offset: {x: 0, y: 0}
+  center: {x: 0, y: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

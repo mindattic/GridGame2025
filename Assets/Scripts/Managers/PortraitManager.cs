@@ -20,7 +20,7 @@ public class PortraitManager : MonoBehaviour
     public ActorInstance actor;
     public int sortingOrder;
 
-    public void SlideIn(ActorInstance actor, Direction direction)
+    public void Spawn(ActorInstance actor, Direction direction)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<PortraitInstance>();
@@ -34,7 +34,7 @@ public class PortraitManager : MonoBehaviour
         instance.direction = direction;
         instance.startTime = Time.time;
 
-        StartCoroutine(instance.SlideIn());
+        StartCoroutine(instance.Spawn());
     }
 
     public void TriggerDissolve()
@@ -70,8 +70,8 @@ public class PortraitManager : MonoBehaviour
         audioManager.Play("Portrait");
 
         var (direction1, direction2) = GetDirection(actorPair);
-        SlideIn(actorPair.actor1, direction1);
-        SlideIn(actorPair.actor2, direction2);
+        Spawn(actorPair.actor1, direction1);
+        Spawn(actorPair.actor2, direction2);
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
 

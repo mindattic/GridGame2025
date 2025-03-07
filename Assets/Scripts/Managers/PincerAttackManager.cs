@@ -30,7 +30,7 @@ public class PincerAttackManager : MonoBehaviour
     /// <param name="team">The team for which to check pincer attacks.</param>
     public void Check(Team team)
     {
-        // Retrieve all valid pincer attack participants (pairs of attackers with valid enemy opponents in between)
+        // Retrieve all valid pincer attack pair (pairs of attackers with valid enemy opponents in between)
         var participants = GetParticipants(team);
 
         // If no valid pairs exist, there are no pincer attacks to perform,
@@ -50,12 +50,12 @@ public class PincerAttackManager : MonoBehaviour
     /// that are aligned on the same row or column with only enemy actors (and no gaps) between them.
     /// For each valid pair, the method records the pair's opponents and any supporting actors.
     /// </summary>
-    /// <param name="team">The team to gather pincer attack participants for.</param>
+    /// <param name="team">The team to gather pincer attack pair for.</param>
     /// <returns>A PincerAttackParticipants object containing all identified valid pairs.</returns>
     public PincerAttackParticipants GetParticipants(Team team)
     {
         // Create a new container for storing valid pincer attack pairs.
-        var collection = new PincerAttackParticipants();
+        var participants = new PincerAttackParticipants();
 
         // Filter and gather all actors that are actively playing and belong to the specified team.
         var teamActors = actors
@@ -108,14 +108,14 @@ public class PincerAttackManager : MonoBehaviour
                         supporters2 = FindSupporters(attacker2)
                     };
 
-                    // Add the valid pair to the collection.
-                    collection.pair.Add(p);
+                    // Add the valid pair to the participants.
+                    participants.pair.Add(p);
                 }
             }
         }
 
         // Return all identified pincer attack pairs.
-        return collection;
+        return participants;
     }
 
     /// <summary>
@@ -175,9 +175,9 @@ public class PincerAttackManager : MonoBehaviour
     /// <summary>
     /// Enqueues both support and pincer attack actions, then executes the queued actions with visual effects.
     /// This coroutine sets up highlighting, queues up support and attack actions, executes them,
-    /// resets the board state, clears the participants, and finally advances the turn.
+    /// resets the board state, clears the pair, and finally advances the turn.
     /// </summary>
-    /// <param name="participants">The collection of valid pincer attack participants.</param>
+    /// <param name="participants">The participants of valid pincer attack pair.</param>
     private IEnumerator EnqueueAttacks(PincerAttackParticipants participants)
     {
         // Step 1: Assign visual sorting orders to attackers, opponents, and supporters
@@ -221,7 +221,7 @@ public class PincerAttackManager : MonoBehaviour
         // Fade out the board overlay after actions have completed.
         yield return boardOverlay.FadeOut();
 
-        // Step 5: Clean up by resetting sorting orders, clearing the participants,
+        // Step 5: Clean up by resetting sorting orders, clearing the pair,
         // and then advancing to the next turn.
         ResetSortingOrder();
         participants.Clear();
@@ -307,7 +307,7 @@ public class PincerAttackManager : MonoBehaviour
     /// Attackers are set to the Attacker layer, opponents to the Opponent layer, and supporters to the Supporter layer.
     /// This is used to highlight their roles on the game board.
     /// </summary>
-    /// <param name="participants">The collection of pincer attack participants to highlight.</param>
+    /// <param name="participants">The participants of pincer attack pair to highlight.</param>
     private void SetSortingOrder(PincerAttackParticipants participants)
     {
         // First, reset all actors to their default sorting order.

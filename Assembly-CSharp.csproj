@@ -64,7 +64,6 @@
     <Compile Include="Assets\Scripts\Managers\DamageTextManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ActionManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DataManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyStartAction.cs" />
     <Compile Include="Assets\Scripts\Utilities\LogWindow.cs" />
@@ -85,6 +84,7 @@
     <Compile Include="Assets\Scripts\Models\Destination.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
+    <Compile Include="Assets\Scripts\Board\FocusIndicator.cs" />
     <Compile Include="Assets\Fade.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
     <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
@@ -114,12 +114,10 @@
     <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
-    <Compile Include="Assets\Scripts\Instances\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyMoveAction.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
-    <Compile Include="Assets\Scripts\Instances\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Actions\CastSpellAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Location.cs" />
@@ -127,9 +125,9 @@
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
+    <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
-    <Compile Include="Assets\FocusIndicator.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
@@ -147,6 +145,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\GUI\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
+    <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\OptionsScreen.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
@@ -156,6 +155,7 @@
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\GUI\TimerBar.cs" />
+    <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
@@ -172,8 +172,8 @@
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Actions\PhaseAction.cs" />
     <Compile Include="Assets\Scripts\Managers\TooltipManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />

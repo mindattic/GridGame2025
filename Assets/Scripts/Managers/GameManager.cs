@@ -155,12 +155,15 @@ public class GameManager : Singleton<GameManager>
         tutorialPopup = GameObject.Find(Constants.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
         card = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
         fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
-
-        board = GameObject.Find(Constants.Board).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
         canvas2D = GameObject.Find(Constants.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
         canvas3D = GameObject.Find(Constants.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
         timerBar = GameObject.Find(Constants.TimerBar).GetComponent<TimerBar>() ?? throw new UnityException("TimerBarInstance is null");
         coinBar = GameObject.Find(Constants.CoinBar).GetComponent<CoinBar>() ?? throw new UnityException("CoinBarInstance is null");
+
+        //Board
+        board = GameObject.Find(Constants.Board).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
+        boardOverlay = GameObject.Find(Constants.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
+        focusIndicator = GameObject.Find(Constants.FocusIndicator).GetComponent<FocusIndicator>() ?? throw new UnityException("FocusIndicator is null");
 
         var game = GameObject.Find(Constants.Game);
 
@@ -202,10 +205,7 @@ public class GameManager : Singleton<GameManager>
         actionManager = game.GetComponent<ActionManager>() ?? throw new UnityException("ActionManager is null");
         pincerAttackManager = game.GetComponent<PincerAttackManager>() ?? throw new UnityException("PincerAttackManager is null");
 
-        //Board
-        boardOverlay = GameObject.Find(Constants.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
-        focusIndicator = GameObject.Find(Constants.FocusIndicator).GetComponent<FocusIndicator>() ?? throw new UnityException("FocusIndicator is null");
-
+      
         //Canvas
         canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
 
