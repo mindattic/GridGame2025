@@ -577,6 +577,7 @@ public class DebugWindow : EditorWindow
             case DebugOptions.CoinTest: debugManager.CoinTest(); break;
             case DebugOptions.PortraitTest: debugManager.PortraitTest(); break;
             case DebugOptions.DamageTextTest: debugManager.DamageTextTest(); break;
+            case DebugOptions.DamageTextBounceTest: debugManager.DamageTextBounceTest(); break;
             case DebugOptions.BumpTest: debugManager.BumpTest(); break;
             case DebugOptions.SupportLineTest: debugManager.SupportLineTest(); break;
             case DebugOptions.AttackLineTest: debugManager.AttackLineTest(); break;

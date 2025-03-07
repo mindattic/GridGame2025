@@ -12,13 +12,13 @@ public class DamageTextManager : MonoBehaviour
     //Fields
     [SerializeField] public GameObject DamageTextPrefab;
 
-    public void Spawn(string text, Vector3 position)
+    public void Spawn(string text, Vector3 position, DamageTextStyle style = DamageTextStyle.Oscillate)
     {
         var prefab = Instantiate(DamageTextPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<DamageTextInstance>();
         instance.name = $"DamageText_{Guid.NewGuid():N}";
         instance.parent = canvas3D.transform;
-        instance.Spawn(text, position);
+        instance.Spawn(text, position, style);
     }
 
     public void Clear()

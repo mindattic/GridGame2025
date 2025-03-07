@@ -153,7 +153,8 @@ public enum DebugOptions
     AlignTest,
     CoinTest,
     PortraitTest,
-    DamageTextTest,  
+    DamageTextTest,
+    DamageTextBounceTest,
     SupportLineTest,
     AttackLineTest,
     EnemyAttackTest,
@@ -229,4 +230,12 @@ public enum SpellPath
 {
     AnimationCurve,
     BezierCurve
+}
+
+public enum DamageTextStyle
+{
+    None,
+    Float,
+    Oscillate,
+    Bounce
 }

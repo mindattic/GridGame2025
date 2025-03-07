@@ -65,6 +65,12 @@ public class DebugManager : MonoBehaviour
         damageTextManager.Spawn(text, paladin.position);
     }
 
+    public void DamageTextBounceTest()
+    {
+        var text = $"{Random.Int(1, 3)}";
+        damageTextManager.Spawn(text, paladin.position, DamageTextStyle.Bounce);
+    }
+
     public void BumpTest()
     {
         var direction = Random.Direction;
