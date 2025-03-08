@@ -9,7 +9,7 @@ using System.Linq;
 using UnityEngine;
 
 // The PincerAttackManager class is responsible for managing the pincer attack mechanics.
-// It coordinates identifying valid pincer attack setups, chaining the resulting attacks, 
+// It coordinates identifying valid pincer attack setups, chaining the resulting results, 
 // supporting the attacking units, and then executing the queued actions.
 public class PincerAttackManager : MonoBehaviour
 {
@@ -27,13 +27,13 @@ public class PincerAttackManager : MonoBehaviour
     /// If any valid pairs (bookends) are found, the method starts a coroutine to process and execute them.
     /// Otherwise, it simply advances to the next turn.
     /// </summary>
-    /// <param name="team">The team for which to check pincer attacks.</param>
+    /// <param name="team">The team for which to check pincer results.</param>
     public void Check(Team team)
     {
         // Retrieve all valid pincer attack pair (pairs of attackers with valid enemy opponents in between)
         var participants = GetParticipants(team);
 
-        // If no valid pairs exist, there are no pincer attacks to perform,
+        // If no valid pairs exist, there are no pincer results to perform,
         // so we immediately move to the next turn.
         if (!participants.pair.Any())
         {
@@ -41,7 +41,7 @@ public class PincerAttackManager : MonoBehaviour
             return;
         }
 
-        // If one or more pairs exist, start a coroutine that will enqueue and process the attacks.
+        // If one or more pairs exist, start a coroutine that will enqueue and process the results.
         StartCoroutine(EnqueueAttacks(participants));
     }
 
@@ -119,13 +119,13 @@ public class PincerAttackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Recursively chains attacks starting from the specified attacker.
+    /// Recursively chains results starting from the specified attacker.
     /// For the current attacker, opponents are sorted by distance so that closer opponents are processed first.
     /// If any opponent is also found as the primary attacker (attacker1) in another valid pair, their chain is processed recursively.
     /// </summary>
     /// <param name="attacker">The starting attacker for the chain.</param>
     /// <param name="pair">List of all valid pincer attack pairs.</param>
-    /// <returns>A list of AttackResult objects representing the chain of attacks.</returns>
+    /// <returns>A list of AttackResult objects representing the chain of results.</returns>
     private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pair)
     {
         var attacks = new List<AttackResult>();
@@ -159,11 +159,11 @@ public class PincerAttackManager : MonoBehaviour
                 Damage = damage
             });
 
-            // If this opponent is also registered as an attacker in a valid pair, chain their attacks recursively.
+            // If this opponent is also registered as an attacker in a valid pair, chain their results recursively.
             var subsequentParticipants = pair.FirstOrDefault(p => p.attacker1 == opponent);
             if (subsequentParticipants != null)
             {
-                // Append the chained attacks from the subsequent attacker.
+                // Append the chained results from the subsequent attacker.
                 attacks.AddRange(ChainAttacks(opponent, pair));
             }
         }
@@ -204,11 +204,11 @@ public class PincerAttackManager : MonoBehaviour
             }
         }
 
-        // Step 3: Process the pincer attacks using the recursive chain attack logic.
-        // For each pair, compute the complete chain of attacks starting from attacker1.
+        // Step 3: Process the pincer results using the recursive chain attack logic.
+        // For each pair, compute the complete chain of results starting from attacker1.
         foreach (var pair in participants.pair)
         {
-            pair.attacks = ChainAttacks(pair.attacker1, participants.pair);
+            pair.results = ChainAttacks(pair.attacker1, participants.pair);
             // Queue the pincer attack action.
             actionManager.Add(new PincerAttackAction(pair));
         }
@@ -216,7 +216,7 @@ public class PincerAttackManager : MonoBehaviour
         // Step 4: Execute all queued actions with visual fade effects.
         // First, fade in the board overlay to signal the start of the action sequence.
         yield return boardOverlay.FadeIn();
-        // Execute the queued actions (attacks, supports, etc.).
+        // Execute the queued actions (results, supports, etc.).
         yield return actionManager.Execute();
         // Fade out the board overlay after actions have completed.
         yield return boardOverlay.FadeOut();

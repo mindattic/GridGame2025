@@ -32,8 +32,8 @@ public class StageManager : MonoBehaviour
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;      // UI overlay for stage-related transitions.
     protected BoardInstance board => GameManager.instance.board;                    // Represents the game board layout.
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;      // Displays tutorial popups.
-    protected IQueryable<ActorInstance> players => GameManager.instance.players;      // Queryable collection of player actors.
-    protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;      // Queryable collection of enemy actors.
+    protected IEnumerable<ActorInstance> players => GameManager.instance.players;      // Queryable collection of player actors.
+    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;      // Queryable collection of enemy actors.
 
     // Access the list of actors from the GameManager.
     protected List<ActorInstance> actors

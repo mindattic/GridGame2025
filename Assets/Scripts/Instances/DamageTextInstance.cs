@@ -36,7 +36,7 @@ public class DamageTextInstance : MonoBehaviour
 
     public void Spawn(string text, Vector3 position, DamageTextStyle style = DamageTextStyle.Oscillate)
     {
-        this.style= style;
+        this.style = style;
         textMesh.text = text;
         transform.position = new Vector3(position.x, position.y + tileSize / 4, 0);
 

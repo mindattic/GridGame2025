@@ -26,8 +26,8 @@ public class SelectedPlayerManager : MonoBehaviour
     protected Vector3 touchOffset { get => GameManager.instance.touchOffset; set => GameManager.instance.touchOffset = value; }
     protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
     protected float tileSize => GameManager.instance.tileSize;
-    protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
-    protected IQueryable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
+    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
 
     /// <summary>
     /// Selects an actor under the mouse cursor, updating the focus indicator and actor card UI.
@@ -100,7 +100,7 @@ public class SelectedPlayerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles dropping a dragged player, snapping them to the grid and checking for attacks.
+    /// Handles dropping a dragged player, snapping them to the grid and checking for results.
     /// </summary>
     public void Drop()
     {
@@ -124,7 +124,7 @@ public class SelectedPlayerManager : MonoBehaviour
         // Pause the movement timer, indicating that the move phase has ended.
         timerBar.Pause();
 
-        // Check for any potential pincer attacks by the player's team now that movement is complete.
+        // Check for any potential pincer results by the player's team now that movement is complete.
         attackManager.Check(Team.Player);
     }
 }

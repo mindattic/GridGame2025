@@ -12,8 +12,8 @@ namespace Assets.Scripts.Models
         //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected List<ActorInstance> actors => GameManager.instance.actors;
-        protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
-        protected IQueryable<ActorInstance> players => GameManager.instance.players;
+        protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
+        protected IEnumerable<ActorInstance> players => GameManager.instance.players;
 
         //Constructor
         public EnemyAttackAction() { }
@@ -40,6 +40,7 @@ namespace Assets.Scripts.Models
                     var direction = enemy.GetDirectionTo(player);
                     var trigger = new Trigger(ProcessAttack(enemy, player));
                     yield return enemy.action.Bump(direction, trigger);
+                    //enemy.action.Bump(direction, trigger);
                 }
 
                 enemy.actionBar.Reset();
@@ -56,26 +57,27 @@ namespace Assets.Scripts.Models
             var isHit = Formulas.IsHit(attacker, opponent);
             var isCriticalHit = Formulas.IsCriticalHit(attacker, opponent);
             var damage = Formulas.CalculateDamage(opponent, attacker);
-            var attack = new AttackResult()
+            var result = new AttackResult()
             {
-                Opponent = attacker,
+                Opponent = opponent,
                 IsHit = isHit,
                 IsCriticalHit = isCriticalHit,
                 Damage = damage
             };
-            yield return opponent.Attack(attack);
 
-            //Trigger death animations on any opponents killed in last attack
-            yield return ProcessDeaths();
+            attacker.TriggerAttack(result);
+
+            //Trigger death animations on any opponents killed in last result
+            yield return DeathHelper.Process();
         }
 
-        private IEnumerator ProcessDeaths()
-        {
-            //Wait until all dying actor's HP bars are fully drained
-            var dyingActors = actors.Where(x => x.isDying).ToList();
-            if (dyingActors.Any())
-                yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
-        }
+        //private IEnumerator ProcessDeaths()
+        //{
+        //    //Wait until all dying actor's HP bars are fully drained
+        //    var dyingActors = actors.Where(x => x.isDying).ToList();
+        //    if (dyingActors.Any())
+        //        yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
+        //}
 
     }
 }

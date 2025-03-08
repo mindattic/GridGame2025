@@ -9,8 +9,8 @@ static class Random
     [ThreadStatic] public static System.Random rng = new System.Random();
 
     //Properties
-    private static IQueryable<ActorInstance> players => GameManager.instance.players;
-    private static IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
+    private static IEnumerable<ActorInstance> players => GameManager.instance.players;
+    private static IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
     private static List<ActorInstance> actors => GameManager.instance.actors;
     private static List<TileInstance> tiles => GameManager.instance.tiles;
     private static int columnCount => GameManager.instance.board.columnCount;
@@ -71,7 +71,7 @@ static class Random
         //}
 
 
-        //TODO: SpawnActor in weighted value so some attacks are more common that others...
+        //TODO: SpawnActor in weighted value so some results are more common that others...
 
         //int result = Int(0, ratios.Sum());
 

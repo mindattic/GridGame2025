@@ -82,7 +82,7 @@ public class DataManager : MonoBehaviour
                 Details = new ActorDetails
                 {
                     Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
-                    Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy attacks",
+                    Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
                     Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                 }
             }
@@ -101,7 +101,7 @@ public class DataManager : MonoBehaviour
                 Details = new ActorDetails
                 {
                     Description = "A holy knight honor bound to defend the Lightbearer Orthodoxy.",
-                    Card = "Intermittently uses <color=#FF0000>[Taunt]</color> to force enemies to focus their attacks.",
+                    Card = "Intermittently uses <color=#FF0000>[Taunt]</color> to force enemies to focus their results.",
                     Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                 }
             }

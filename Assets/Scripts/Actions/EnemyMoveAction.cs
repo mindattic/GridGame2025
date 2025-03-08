@@ -11,7 +11,7 @@ namespace Assets.Scripts.Models
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected ActionManager actionManager => GameManager.instance.actionManager;
         protected List<ActorInstance> actors = GameManager.instance.actors;
-        protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
+        protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
         //Constructor
         public EnemyMoveAction() { }

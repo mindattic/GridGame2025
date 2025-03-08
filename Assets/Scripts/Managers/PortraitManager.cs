@@ -12,7 +12,7 @@ public class PortraitManager : MonoBehaviour
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;
-    protected IQueryable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
 
 
     //Fields

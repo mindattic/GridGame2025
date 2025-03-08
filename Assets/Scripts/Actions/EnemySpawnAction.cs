@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Assets.Scripts.Models
@@ -6,7 +7,7 @@ namespace Assets.Scripts.Models
     public class EnemySpawnAction : PhaseAction
     {
        //Quick Reference Properties
-        protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
+        protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
         public EnemySpawnAction() { }
 

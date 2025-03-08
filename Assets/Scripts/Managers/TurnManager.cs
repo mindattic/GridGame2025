@@ -16,8 +16,8 @@ public class TurnManager : MonoBehaviour
     protected ActionManager actionManager => GameManager.instance.actionManager;
     protected TimerBar timerBar => GameManager.instance.timerBar;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
-    protected IQueryable<ActorInstance> enemies => GameManager.instance.enemies;
-    protected IQueryable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
+    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
 
     //Properties
     public bool isPlayerTurn => currentTeam.Equals(Team.Player);

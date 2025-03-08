@@ -322,8 +322,8 @@ public static class Intermission
 
         public static class Enemy
         {
-            public static float Move = Interval.HalfSecond;
-            public static float Attack = Interval.HalfSecond;
+            public static float Move = 0;
+            public static float Attack = 0;
         }
 
         public static class Player
@@ -343,7 +343,7 @@ public static class Intermission
 
         public static class ActionBar
         {
-            public static float Drain = Interval.OneSecond;
+            public static float Drain = 0;
         }
 
 
@@ -353,12 +353,12 @@ public static class Intermission
     {
         public static class Player
         {
-            public static float Attack = Interval.QuarterSecond;
+            public static float Attack = 0;
         }
 
         public static class HealthBar
         {
-            public static float Empty = Interval.HalfSecond;
+            public static float Empty = 0;
         }
 
     }
@@ -742,6 +742,16 @@ public static class BezierCurveHelper
 
 }
 
+public static class DeathHelper
+{
+    public static IEnumerator Process()
+    {
+        //Wait until all dying actor's HP bars are fully drained
+        var dyingActors = GameManager.instance.actors.Where(x => x.isDying).ToList();
+        if (dyingActors.Any())
+            yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
+    }
+}
 
 public static class FolderHelper
 {

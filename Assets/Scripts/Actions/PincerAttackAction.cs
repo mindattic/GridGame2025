@@ -26,8 +26,8 @@ namespace Assets.Scripts.Models
 
         public override IEnumerator Execute()
         {
-            //If no attacks were computed, exit early.
-            if (pair.attacks == null || !pair.attacks.Any())
+            //If no results were computed, exit early.
+            if (pair.results == null || !pair.results.Any())
                 yield break;
 
             //TODO: Create a consolidated model of PincerAttackPair and ActorPair
@@ -47,38 +47,38 @@ namespace Assets.Scripts.Models
             );
 
             //Determine a bump direction based on the first opponent
-            var firstOpponent = pair.attacks.First().Opponent;
+            var firstOpponent = pair.results.First().Opponent;
             var bumpDirection = pair.attacker1.GetDirectionTo(firstOpponent);
 
-            //Perform bump and execute attacks at the apex
+            //Perform bump and execute results at the apex
             var trigger = new Trigger(ProcessAttackSequence());
             yield return pair.attacker1.action.Bump(bumpDirection, trigger);
 
             //Trigger death animations on any opponents killed in last attack sequence
-            yield return ProcessDeaths();
+            yield return DeathHelper.Process();
         }
 
         private IEnumerator ProcessAttackSequence()
         {
-            foreach (var attack in pair.attacks)
+            foreach (var result in pair.results)
             {
                 var attacker = pair.attacker1;
 
-                //Trigger the attack asynchronously (fire and forget).
-                attacker.TriggerAttack(attack);
+                //Trigger the result asynchronously (fire and forget).
+                attacker.TriggerAttack(result);
 
                 //Short delay to create the domino effect.
                 yield return Wait.For(Interval.TenthSecond);
             }
         }
 
-        private IEnumerator ProcessDeaths()
-        {
-            //Wait until all dying actor's HP bars are fully drained
-            var dyingActors = actors.Where(x => x.isDying).ToList();
-            if (dyingActors.Any())
-                yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
-        }
+        //private IEnumerator ProcessDeaths()
+        //{
+        //    //Wait until all dying actor's HP bars are fully drained
+        //    var dyingActors = actors.Where(x => x.isDying).ToList();
+        //    if (dyingActors.Any())
+        //        yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
+        //}
 
     }
 }

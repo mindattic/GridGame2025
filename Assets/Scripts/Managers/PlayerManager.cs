@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     //Quick Reference Properties
-    protected IQueryable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
 
     public void TriggerGlow()
     {

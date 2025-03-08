@@ -12,8 +12,7 @@ namespace Assets.Scripts.Utilities
 
         const float baseHitRate = 66.6666f;
         const float armorWeightPenalty = 0.1666f;
-
-        
+  
         public static float StatGrowth(int level)
         {
             return Mathf.Round(100f * (level / 100.0f) * Random.Float(0.4f, 0.8f));
@@ -62,21 +61,21 @@ namespace Assets.Scripts.Utilities
             return Mathf.Round(spd + lck - armor);
         }
 
-        public static bool IsHit(ActorInstance attacker, ActorInstance target)
+        public static bool IsHit(ActorInstance attacker, ActorInstance opponent)
         {
             var accuracy = Accuracy(attacker.stats);
-            var evasion = Evasion(target.stats);
+            var evasion = Evasion(opponent.stats);
             var d100 = Random.Int(1, 100);
             var isHit = accuracy - evasion >= d100;
             isHit = true; //DEBUG: It's not fun to miss...
-            var msg
-                = $"{attacker.name} vs {target.name}: "
-                + $@"Accuracy(<color=""yellow"">{accuracy}</color>) - "
-                + $@"Evasion(<color=""yellow"">{evasion}</color>) "
-                + $@"{(isHit ? ">" : "<")} "
-                + $@"1d100(<color=""yellow"">{d100}</color>) => "
-                + $@"{(isHit ? "Hit" : "Miss")}";
-            log.Info(msg);
+            //var msg
+            //    = $"{attacker.name} vs {opponent.name}: "
+            //    + $@"Accuracy(<color=""yellow"">{accuracy}</color>) - "
+            //    + $@"Evasion(<color=""yellow"">{evasion}</color>) "
+            //    + $@"{(isHit ? ">" : "<")} "
+            //    + $@"1d100(<color=""yellow"">{d100}</color>) => "
+            //    + $@"{(isHit ? "Hit" : "Miss")}";
+            //log.Info(msg);
             return isHit;
         }
 
@@ -112,13 +111,12 @@ namespace Assets.Scripts.Utilities
             var offense = Offense(attacker.stats);
             var defense = Defense(defender.stats);
             var damage = Math.Clamp((int)Math.Round(offense - defense), 1, 999);
-            var msg
-                = $"{attacker.name} vs {defender.name}: "
-                + $@"Offense(<color=""yellow"">{offense}</color>) "
-                + $@"- Defense(<color=""yellow"">{defense}</color>) => "
-                + $@"Damage(<color=""yellow"">{damage}</color>)";
-            log.Info(msg);
-
+            //var msg
+            //    = $"{attacker.name} vs {defender.name}: "
+            //    + $@"Offense(<color=""yellow"">{offense}</color>) "
+            //    + $@"- Defense(<color=""yellow"">{defense}</color>) => "
+            //    + $@"Damage(<color=""yellow"">{damage}</color>)";
+            //log.Info(msg);
             return damage;
         }
 

@@ -110,8 +110,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public List<SupportLineInstance> lines;
     [HideInInspector] public CoinBar coinBar;
 
-    [HideInInspector] public IQueryable<ActorInstance> players => actors.Where(x => x.team.Equals(Team.Player)).AsQueryable();
-    [HideInInspector] public IQueryable<ActorInstance> enemies => actors.Where(x => x.team.Equals(Team.Enemy)).AsQueryable();
+    [HideInInspector] public IEnumerable<ActorInstance> players => actors.Where(x => x.team.Equals(Team.Player));
+    [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team.Equals(Team.Enemy));
 
 
 

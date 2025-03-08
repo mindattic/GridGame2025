@@ -22,7 +22,7 @@ public class ActorInstance : MonoBehaviour
     protected bool hasFocusedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
     protected float moveSpeed => GameManager.instance.moveSpeed;
-    protected IQueryable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
@@ -298,7 +298,7 @@ public class ActorInstance : MonoBehaviour
             ? attack.Opponent.TakeDamage(attack)
             : attack.Opponent.AttackMiss();
 
-        // Create the trigger with asynchronous execution.
+        //Create the trigger with asynchronous execution.
         var trigger = new Trigger(hitOrMiss, isAsync: true);
 
         // Spawn the attack visual effect at the opponent's position.
@@ -376,22 +376,10 @@ public class ActorInstance : MonoBehaviour
     //TakeDamage: Coroutine that processes damage application, triggers VFX and animations, and updates HP.
     public IEnumerator TakeDamage(AttackResult attack)
     {
-        //Abort if the actor is not active or alive.
         if (!isPlaying)
             yield break;
 
-        // If the attack is critical, trigger a special VFX at the opponent's position.
-        if (attack.IsCriticalHit)
-            vfxManager.TriggerSpawn(resourceManager.VisualEffect("YellowHit"), attack.Opponent.position);
-
-        //Optionally trigger pre-damage effects here.
-        //yield return attack.Triggers.Before.StartCoroutine(this);
-
-        //Set up damage animation duration.
-        float ticks = 0f;
-        float duration = Interval.TenTicks;
-
-        //If the actor is not invincible, reduce HP and update the health bar.
+        // Immediately apply damage and update health.
         if (!isInvincible)
         {
             stats.PreviousHP = stats.HP;
@@ -400,31 +388,45 @@ public class ActorInstance : MonoBehaviour
             healthBar.Update();
         }
 
-        //Display damage text and play a random slash sound effect.
+        // Immediately display damage text and play sound.
         damageTextManager.Spawn(attack.Damage.ToString(), position);
         audioManager.Play($"Slash{Random.Int(1, 7)}");
 
-        //During: Animate the damage reaction over the set duration.
-        while (ticks < duration)
-        {
-            action.TriggerGrow(); // Possibly makes the actor appear to flinch.
-            if (attack.IsCriticalHit)
-                action.TriggerShake(ShakeIntensity.Medium); // Shake effect for critical hits.
-
-            ticks += Interval.OneTick;
-            yield return Wait.For(Interval.OneTick);
-        }
-
-        //Optionally trigger post-damage effects here.
-        //yield return attack.Triggers.After.StartCoroutine(this);
-
-        //After: Reset animations to normal.
-        action.TriggerShrink();
-        action.TriggerShake(ShakeIntensity.Stop);
-
         if (isDying)
             TriggerDie();
+
+        // Start the damage animation as a separate coroutine so it doesn't block.
+        //StartCoroutine(DamageTaken(attack));
+
+        // Return immediately.
+        yield break;
     }
+
+
+    //private IEnumerator DamageTaken(AttackResult attack)
+    //{
+    //    float ticks = 0f;
+    //    float duration = Interval.TenTicks; // For example, 1 second.
+
+    //    while (ticks < duration)
+    //    {
+    //        action.TriggerGrow(); // Flinch effect.
+    //        if (attack.IsCriticalHit)
+    //            action.TriggerShake(ShakeIntensity.Medium);
+    //        ticks += Interval.OneTick;
+    //        yield return Wait.For(Interval.OneTick);
+    //    }
+
+    //    // Reset animations.
+    //    action.TriggerShrink();
+    //    action.TriggerShake(ShakeIntensity.Stop);
+
+    //    if (isDying)
+    //        TriggerDie();
+
+    //    yield break;
+    //}
+
 
     //AttackMiss: Coroutine to display a miss message and trigger a dodge animation.
     public IEnumerator AttackMiss()
