@@ -43,7 +43,7 @@ namespace Assets.Scripts.Models
             }
 
             //After moving, add the enemy attack action.
-            actionManager.Add(new EnemyAttackAction());
+            actionManager.Add(new DirectAttackAction());
             turnManager.SetPhase(TurnPhase.Attack);
         }
     }

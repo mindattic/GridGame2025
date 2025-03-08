@@ -97,7 +97,6 @@
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
-    <Compile Include="Assets\Scripts\Actions\EnemyAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
@@ -107,6 +106,7 @@
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackAction.cs" />
     <Compile Include="Assets\Scripts\GUI\TutorialPopup.cs" />
+    <Compile Include="Assets\Scripts\Actions\DirectAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />

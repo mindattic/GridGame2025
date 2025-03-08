@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
-    public class EnemyAttackAction : PhaseAction
+    public class DirectAttackAction : PhaseAction
     {
         //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -16,7 +16,7 @@ namespace Assets.Scripts.Models
         protected IEnumerable<ActorInstance> players => GameManager.instance.players;
 
         //Constructor
-        public EnemyAttackAction() { }
+        public DirectAttackAction() { }
 
         public override IEnumerator Execute()
         {
