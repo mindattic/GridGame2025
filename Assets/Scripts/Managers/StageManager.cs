@@ -19,7 +19,7 @@ public class StageManager : MonoBehaviour
     protected Fade fade => GameManager.instance.fade;                            // Handles fade in/out effects.
     protected DataManager dataManager => GameManager.instance.dataManager;          // Manages game data (e.g., stage data).
     protected ResourceManager resourceManager => GameManager.instance.resourceManager; // Provides access to assets such as tutorials.
-    protected ProfileManager profileManager => GameManager.instance.profileManager; // Manages player profile data.
+    protected ProfileManager profileManager => GameManager.instance.profileManager;
     public int totalCoins
     {
         get => GameManager.instance.totalCoins;

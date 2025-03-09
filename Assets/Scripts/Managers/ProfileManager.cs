@@ -19,9 +19,22 @@ public class ProfileManager : MonoBehaviour
     public Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
     public Profile currentProfile = null;
 
-    public void Initialize()
+    public static ProfileManager instance { get; private set; }
+
+    private void Awake()
     {
-        var sw = Stopwatch.StartNew();
+        // If there's already an instance, destroy this one to avoid duplicates
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        // Otherwise, set the instance and mark this object to not be destroyed
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        //var sw = Stopwatch.StartNew();
 
         //Validate folder structure
         if (!HasValidFolderStructure())
@@ -37,8 +50,8 @@ public class ProfileManager : MonoBehaviour
         if (profileFolders == null || profileFolders.Count < 1)
         {
             //...create a new profile folder with associated JSON files...
-            var successful = CreateProfile();
-            if (!successful)
+            var wasSuccess = Create();
+            if (!wasSuccess)
             {
                 Debug.LogError($"Failed to create a new profile.");
                 return;
@@ -64,30 +77,31 @@ public class ProfileManager : MonoBehaviour
                 continue;
 
             //Retrieve profile from GUID
-            var profile = GetProfile(guid);
+            var profile = Load(guid);
             if (profile == null || !profile.IsValid())
                 continue;
 
             profiles.Add(guid, profile);
         }
 
+        //Validate profiles exist
         if (profiles == null || profiles.Count < 1)
         {
             Debug.LogError($"Failed to load any valid profiles.");
             return;
         }
 
-        sw.Stop();
+        //sw.Stop();
         //Debug.LogWarning($"Loaded current save file in {sw.ElapsedMilliseconds} ms.");
 
         //TODO: Have user select profile, for now just use first profile
-        Load(profiles.First().Key);       
+        Assign(profiles.First().Key);
     }
 
     ///<summary>
     ///Method which is used to create a new folder with GUID containing JSON files
     ///</summary>
-    private bool CreateProfile()
+    private bool Create()
     {
         //Generate a new GUID
         string guid;
@@ -100,9 +114,9 @@ public class ProfileManager : MonoBehaviour
         currentProfile = new Profile(guid);
 
         //Save the individual JSON files
-        bool globalSaved = Save<Global>();
-        bool stageSaved = Save<Stage>();
-        bool partySaved = Save<Party>();
+        bool globalSaved = SaveSection<Global>();
+        bool stageSaved = SaveSection<Stage>();
+        bool partySaved = SaveSection<Party>();
 
         if (!globalSaved || !stageSaved || !partySaved)
         {
@@ -117,9 +131,9 @@ public class ProfileManager : MonoBehaviour
     ///<summary>
     ///Method which is used to save individual section to separate JSON file
     ///</summary>
-    private bool Save<T>() where T : class
+    private bool SaveSection<T>() where T : class
     {
-        var sw = Stopwatch.StartNew();
+        //var sw = Stopwatch.StartNew();
 
         //Determine the file name and section based on the generic type
         string fileName = GetFileName<T>();
@@ -147,20 +161,18 @@ public class ProfileManager : MonoBehaviour
             return false;
         }
 
-        sw.Stop();
-        Debug.Log($"Saved {fileName} successfully in {sw.ElapsedMilliseconds} ms.");
+        //sw.Stop();
+        //Debug.Log($"Saved {fileName} successfully in {sw.ElapsedMilliseconds} ms.");
 
         return true;
     }
 
-
-
     ///<summary>
     ///Method which is used to load individual json file in a seperate profile section
     ///</summary>
-    private T Load<T>(string guid) where T : class
+    private T LoadSection<T>(string guid) where T : class
     {
-        var sw = Stopwatch.StartNew();
+        //var sw = Stopwatch.StartNew();
 
         if (string.IsNullOrWhiteSpace(guid))
             return null;
@@ -189,15 +201,15 @@ public class ProfileManager : MonoBehaviour
             Debug.LogError($"Failed to deserialize {fileName}.");
         }
 
-        sw.Stop();
+        //sw.Stop();
         //Debug.Log($"Loaded {fileName} successfully in {sw.ElapsedMilliseconds} ms.");
 
         return section;
     }
 
-    private bool SaveProfile()
+    public bool Save()
     {
-        var sw = Stopwatch.StartNew();
+        //var sw = Stopwatch.StartNew();
 
         if (currentProfile == null || !currentProfile.IsValid())
         {
@@ -205,11 +217,11 @@ public class ProfileManager : MonoBehaviour
             return false;
         }
 
-        bool globalSaved = Save<Global>();
-        bool stageSaved = Save<Stage>();
-        bool partySaved = Save<Party>();
+        bool globalSaved = SaveSection<Global>();
+        bool stageSaved = SaveSection<Stage>();
+        bool partySaved = SaveSection<Party>();
 
-        sw.Stop();
+        //sw.Stop();
 
         if (!globalSaved || !stageSaved || !partySaved)
         {
@@ -217,16 +229,11 @@ public class ProfileManager : MonoBehaviour
             return false;
         }
 
-        Debug.LogWarning($"Saved all components successfully in {sw.ElapsedMilliseconds} ms.");
+        //Debug.LogWarning($"Saved all components successfully in {sw.ElapsedMilliseconds} ms.");
         return true;
     }
 
-    public bool QuickSave()
-    {
-        return SaveProfile();
-    }
-
-    private Profile GetProfile(string guid)
+    private Profile Load(string guid)
     {
         if (string.IsNullOrWhiteSpace(guid))
         {
@@ -236,9 +243,9 @@ public class ProfileManager : MonoBehaviour
 
         var profile = new Profile(guid);
 
-        profile.Global = Load<Global>(guid);
-        profile.Stage = Load<Stage>(guid);
-        profile.Party = Load<Party>(guid);
+        profile.Global = LoadSection<Global>(guid);
+        profile.Stage = LoadSection<Stage>(guid);
+        profile.Party = LoadSection<Party>(guid);
 
         if (!profile.IsValid())
         {
@@ -249,8 +256,7 @@ public class ProfileManager : MonoBehaviour
         return profile;
     }
 
-
-    public void Load(string guid)
+    public void Assign(string guid)
     {
         if (!HasProfiles())
             return;

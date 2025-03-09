@@ -9,7 +9,6 @@ namespace Assets.Scripts.GUI
     public class TutorialPopup : MonoBehaviour
     {
        //Quick Reference Properties
-        protected float previousGameSpeed { get => GameManager.instance.previousGameSpeed; set => GameManager.instance.previousGameSpeed = value; }
         protected ResourceManager resourceManager => GameManager.instance.resourceManager;
         protected DebugManager debugManager => GameManager.instance.debugManager;
 

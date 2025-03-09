@@ -2,25 +2,16 @@ using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;
-using Game.Models;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class GameManager : Singleton<GameManager>
 {
+    //Device
     [HideInInspector] public string deviceType;
     [HideInInspector] public int targetFramerate = 60;  //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-targetFrameRate.html
     [HideInInspector] public int vSyncCount = 2;        //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/QualitySettings-vSyncCount.html
-
-    public float gameSpeed
-    {
-        get => Time.timeScale;
-        set => Time.timeScale = value;
-    }
-
-    public float previousGameSpeed;
 
     //Audio
     [HideInInspector] public AudioSource soundSource;
@@ -31,12 +22,10 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TutorialPopup tutorialPopup;
 
     //Managers
-    //[HideInInspector] public DatabaseManager databaseManager;
     [HideInInspector] public DataManager dataManager;
     [HideInInspector] public ResourceManager resourceManager;
     [HideInInspector] public InputManager inputManager;
     [HideInInspector] public CameraManager cameraManager;
-    [HideInInspector] public ProfileManager profileManager;
     [HideInInspector] public StageManager stageManager;
     [HideInInspector] public BoardManager boardManager;
     [HideInInspector] public TurnManager turnManager;
@@ -44,7 +33,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AttackLineManager attackLineManager;
     [HideInInspector] public DamageTextManager damageTextManager;
     [HideInInspector] public GhostManager ghostManager;
-    [HideInInspector] public PortraitManager portraitManager; 
+    [HideInInspector] public PortraitManager portraitManager;
     [HideInInspector] public ActorManager actorManager;
     [HideInInspector] public SelectedPlayerManager selectedPlayerManager;
     [HideInInspector] public PlayerManager playerManager;
@@ -71,8 +60,6 @@ public class GameManager : Singleton<GameManager>
 
     //Canvas
     [HideInInspector] public CanvasOverlay canvasOverlay;
-
-
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;
     [HideInInspector] public Vector3 tileScale;
@@ -88,35 +75,34 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public float swapSpeed;
     [HideInInspector] public float moveSpeed;
     [HideInInspector] public float snapThreshold;
-    [HideInInspector] public float dragThreshold;   
+    [HideInInspector] public float dragThreshold;
     [HideInInspector] public float bumpSpeed;
 
-    //Actor selection
+    //Actors
+    [HideInInspector] public List<ActorInstance> actors;
+    [HideInInspector] public IEnumerable<ActorInstance> players => actors.Where(x => x.team.Equals(Team.Player));
+    [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team.Equals(Team.Enemy));
     [HideInInspector] public ActorInstance focusedActor;
     [HideInInspector] public bool hasFocusedActor => focusedActor != null;
-   [HideInInspector] public ActorInstance selectedPlayer;
+    [HideInInspector] public ActorInstance selectedPlayer;
     [HideInInspector] public bool hasSelectedPlayer => selectedPlayer != null;
-    
-    [HideInInspector] public Fade fade;
-
-  
-    [HideInInspector] public TileMap tileMap;
 
     //Instances
+    [HideInInspector] public Fade fade;
+    [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TimerBar timerBar;
-    [HideInInspector] public List<ActorInstance> actors;
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
     [HideInInspector] public List<SupportLineInstance> lines;
+
+    //Coins
     [HideInInspector] public CoinBar coinBar;
-
-    [HideInInspector] public IEnumerable<ActorInstance> players => actors.Where(x => x.team.Equals(Team.Player));
-    [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team.Equals(Team.Enemy));
-
-
-
-
     [HideInInspector] public int totalCoins;
+
+    //Properties
+    public float gameSpeed { get => Time.timeScale; set => Time.timeScale = value; }
+    public float previousGameSpeed;
+    public ProfileManager profileManager => GameObject.Find(Constants.CurrentProfile).GetComponent<ProfileManager>() ?? throw new UnityException("ProfileManager is null");
 
 
     private void Awake()
@@ -175,7 +161,6 @@ public class GameManager : Singleton<GameManager>
         //databaseManager = game.GetComponent<DatabaseManager>() ?? throw new UnityException("DatabaseManager is null");
         dataManager = game.GetComponent<DataManager>() ?? throw new UnityException("DataManager is null");
         cameraManager = game.GetComponent<CameraManager>() ?? throw new UnityException("CameraManager is null");
-        profileManager = game.GetComponent<ProfileManager>() ?? throw new UnityException("ProfileManager is null");
         stageManager = game.GetComponent<StageManager>() ?? throw new UnityException("StageManager is null");
         boardManager = game.GetComponent<BoardManager>() ?? throw new UnityException("BoardManager is null");
         turnManager = game.GetComponent<TurnManager>() ?? throw new UnityException("TurnManager is null");
@@ -205,7 +190,7 @@ public class GameManager : Singleton<GameManager>
         actionManager = game.GetComponent<ActionManager>() ?? throw new UnityException("ActionManager is null");
         pincerAttackManager = game.GetComponent<PincerAttackManager>() ?? throw new UnityException("PincerAttackManager is null");
 
-      
+
         //Canvas
         canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
 
@@ -229,9 +214,9 @@ public class GameManager : Singleton<GameManager>
 #endif
         Debug.Log($"Running on `{deviceType}`");
 
-//#if UNITY_EDITOR
-//        Debug.Log($"Emulated on UNITY_EDITOR");
-//#endif
+        //#if UNITY_EDITOR
+        //        Debug.Log($"Emulated on UNITY_EDITOR");
+        //#endif
 
         #endregion
     }
@@ -242,10 +227,9 @@ public class GameManager : Singleton<GameManager>
         //Initialize in specific order:
         dataManager.Initialize();       //01
         resourceManager.Initialize();   //02
-        profileManager.Initialize();    //03
-        board.Initialize();             //04
-        stageManager.Initialize();      //05
-        focusIndicator.Initialize();    //06
+        board.Initialize();             //03
+        stageManager.Initialize();      //04
+        focusIndicator.Initialize();    //05
     }
 
 }

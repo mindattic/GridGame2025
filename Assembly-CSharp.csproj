@@ -155,6 +155,7 @@
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\GUI\TimerBar.cs" />
+    <Compile Include="Assets\LevelSelect.cs" />
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />

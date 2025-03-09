@@ -105,7 +105,7 @@
 //           Entities.Actors.Clear();
 
 //           //reader = trailInstance.GetAllData(Schema.Table.Actor);
-//           reader = trailInstance.ExecuteReader(Queries.Load.Actor.Entities);
+//           reader = trailInstance.ExecuteReader(Queries.Assign.Actor.Entities);
 //           while (reader != null && reader.Read())
 //           {
 //               var x = new ActorData()

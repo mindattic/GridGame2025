@@ -22,6 +22,7 @@ public static class Constants
     public const string CoinBar = "CoinBar";
     public const string TutorialPopup = "TutorialPopup";
     public const string Fade = "Fade";
+    public const string CurrentProfile = "CurrentProfile";
 
     //Percent
     public const float percent10 = 0.1f;
@@ -32,8 +33,6 @@ public static class Constants
     public const float percent66 = 0.666666f;
     public const float percent75 = 0.75f;
     public const float percent100 = 1.0f;
-    public const float percent333 = 3.333333f;
-    public const float percent666 = 6.666666f;
 
     //Size
     public static readonly Vector2 size10 = new Vector2(percent10, percent10);
@@ -44,8 +43,6 @@ public static class Constants
     public static readonly Vector2 size66 = new Vector2(percent66, percent66);
     public static readonly Vector2 size75 = new Vector2(percent75, percent75);
     public static readonly Vector2 size100 = new Vector2(percent100, percent100);
-    public static readonly Vector2 size333 = new Vector2(percent333, percent333);
-    public static readonly Vector2 size666 = new Vector2(percent666, percent666);
 
 
     //Card
@@ -77,7 +74,7 @@ public static class Tag
     public static string SupportLine = "SupportLine";
     public static string AttackLine = "AttackLine";
     public static string Trail = "Trail";
-    public static string Select = "Load";
+    public static string Select = "Assign";
     public static string DamageText = "DamageText";
     public static string AnnouncementText = "AnnouncementText";
     public static string Portrait = "ActorPortrait";
@@ -393,6 +390,8 @@ public static class Scene
     public static string OptionsScreen = "OptionsScreen";
     public static string TitleScreen = "TitleScreen";
     public static string SplashScreen = "SplashScreen";
+    public static string LevelSelect = "LevelSelect";
+
 
 }
 

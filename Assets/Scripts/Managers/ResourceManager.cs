@@ -414,7 +414,7 @@ public class ResourceManager : MonoBehaviour
         //try
         //{
         //    //Initialize JSON from Resources
-        //    TextAsset jsonFile = Resources.Assign<TextAsset>("Data/Tutorials");
+        //    TextAsset jsonFile = Resources.Load<TextAsset>("Data/Tutorials");
         //    if (jsonFile == null)
         //    {
         //        Debug.LogError("Tutorials.json not found in Resources/Data/");
