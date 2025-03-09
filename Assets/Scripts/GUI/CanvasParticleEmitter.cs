@@ -1,27 +1,59 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CanvasParticleEmitter : MonoBehaviour
 {
-    [SerializeField] private GameObject imagePrefab; // Prefab with an Image component
+
+    [SerializeField] public GameObject canvasParticlePrefab; // Prefab with an Image component
     [SerializeField] private RectTransform canvasTransform; // Assign the Canvas
-    [SerializeField] private float spawnIntervalMin; // Time between spawns
-    [SerializeField] private float spawnIntervalMax; // Time between spawns
-    [SerializeField] private float speedMin;
-    [SerializeField] private float speedMax;
-    [SerializeField] private float x;
-    [SerializeField] private float yMin;
-    [SerializeField] private float yMax;
-    [SerializeField] private float rotationSpeedMin; // Min rotation speed
-    [SerializeField] private float rotationSpeedMax; // Max rotation speed
-    [SerializeField] private float fallSpeedMin; // Minimum downward speed
-    [SerializeField] private float fallSpeedMax; // Maximum downward speed
-    [SerializeField] private float scaleMin; // Minimum scale
-    [SerializeField] private float scaleMax; // Maximum scale
-    [SerializeField] private int prewarmCount; // Number of particles to spawn on start
-    [SerializeField] private Sprite[] sprites; // Array of sprites from the sprite sheet
-   
+    private float spawnIntervalMin; // Time between spawns
+    private float spawnIntervalMax; // Time between spawns
+    private float speedMin;
+    private float speedMax;
+    private float rotationSpeedMin; // Min rotation speed
+    private float rotationSpeedMax; // Max rotation speed
+    private float fallSpeedMin; // Minimum downward speed
+    private float fallSpeedMax; // Maximum downward speed
+    private float scaleMin; // Minimum scale
+    private float scaleMax; // Maximum scale
+    private int prewarmCount; // Number of particles to spawn on start
+    private Sprite[] sprites; // Array of sprites from the sprite sheet
+    private float xMin;
+    private float xMax;
+    private float yMin;
+    private float yMax;
+
+    private void Awake()
+    {
+        xMin = -Screen.width;
+        xMax = Screen.width;
+        yMin = -500;
+        yMax = 500;
+        spawnIntervalMin = 0.1f;
+        spawnIntervalMax = 0.5f;
+        speedMin = 300;
+        speedMax = 600;
+        yMin = -1000;
+        yMax = 1000;
+        rotationSpeedMin = 70;
+        rotationSpeedMax = 100;
+        fallSpeedMin = 40;
+        fallSpeedMax = 100;
+        scaleMin = 0.3f;
+        scaleMax = 0.4f;
+        prewarmCount = Random.Int(10, 20);
+
+        sprites = new Sprite[]
+        {
+            Resources.Load<Sprite>("Sprites/Leaves/Leaf1"),
+            Resources.Load<Sprite>("Sprites/Leaves/Leaf2"),
+            Resources.Load<Sprite>("Sprites/Leaves/MapleLeaf1"),
+            Resources.Load<Sprite>("Sprites/Leaves/MapleLeaf2"),
+        };
+
+    }
 
     void Start()
     {
@@ -33,7 +65,7 @@ public class CanvasParticleEmitter : MonoBehaviour
     {
         for (int i = 0; i < prewarmCount; i++)
         {
-            SpawnImage(prewarm: true);
+            SpawnImage(preheat: true);
         }
     }
 
@@ -47,30 +79,32 @@ public class CanvasParticleEmitter : MonoBehaviour
         }
     }
 
-    private void SpawnImage(bool prewarm = false)
+    private void SpawnImage(bool preheat = false)
     {
-        GameObject newImage = Instantiate(imagePrefab, canvasTransform);
-        RectTransform imageRect = newImage.GetComponent<RectTransform>();
-        Image imageComponent = newImage.GetComponent<Image>();
-        if (imageRect == null || imageComponent == null) return;
+        GameObject newImage = Instantiate(canvasParticlePrefab, canvasTransform);
+        RectTransform rect = newImage.GetComponent<RectTransform>();
+        Image image = newImage.GetComponent<Image>();
+        if (rect == null || image == null)
+            return;
 
         // Assign a random sprite from the sprite sheet
-        if (sprites.Length > 0)
-        {
-            imageComponent.sprite = sprites[Random.Int(0, sprites.Length - 1)];
-        }
+        image.sprite = sprites.ShuffleFirst();
 
         // Assign start position
-        float startX = prewarm ? Random.Float(-Screen.width / 2, Screen.width) : -Screen.width / 2; // Prewarm particles start mid-flight
+        float startX = preheat ? Random.Float(xMin, xMax) : xMin; // Prewarm particles start mid-flight
         float startY = Random.Float(yMin, yMax);
-        imageRect.anchoredPosition = new Vector2(startX, startY);
+        rect.anchoredPosition = new Vector2(startX, startY);
 
         // Assign random rotation speed, movement, and scale
-        float rotationSpeed = Random.Float(rotationSpeedMin, rotationSpeedMax);
+        float rotRange = Random.Float(rotationSpeedMin, rotationSpeedMax);
+        float rotWildcard = Random.Int(1, 3) == 1 ? Random.Float(1, 3f) : 1f;
+        float rotDirection = Random.Boolean ? -1f : 1f;
+
+        float rotationSpeed = rotRange * rotWildcard * rotDirection;
         float horizontalSpeed = Random.Float(speedMin, speedMax);
         float fallSpeed = Random.Float(fallSpeedMin, fallSpeedMax);
         float scale = Random.Float(scaleMin, scaleMax);
-        imageRect.localScale = new Vector3(scale, scale, 1f);
+        rect.localScale = new Vector3(scale, scale, 1f);
 
         CanvasParticleInstance instance = newImage.AddComponent<CanvasParticleInstance>();
         instance.Initialize(rotationSpeed, horizontalSpeed, fallSpeed);

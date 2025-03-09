@@ -72,11 +72,29 @@ public static class IEnumerableExtensions
     }
 }
 
+public static class ArrayExtensions
+{
+    public static T[] Shuffle<T>(this T[] array)
+    {
+        return array.OrderBy(x => Guid.NewGuid()).ToArray();
+    }
+
+    public static T ShuffleFirst<T>(this T[] array)
+    {
+        return array.OrderBy(x => Guid.NewGuid()).First();
+    }
+}
+
 public static class ListExtensions
 {
     public static List<T> Shuffle<T>(this List<T> list)
     {
         return list.OrderBy(x => Guid.NewGuid()).ToList();
+    }
+
+    public static T ShuffleFirst<T>(this List<T> list)
+    {
+        return list.OrderBy(x => Guid.NewGuid()).First();
     }
 
     public static void Set<T>(this List<T> list, T item)
