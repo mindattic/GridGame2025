@@ -40,7 +40,7 @@ public class SupportLineManager : MonoBehaviour
         }
     }
 
-    public void DespawnAll()
+    public void Clear()
     {
         foreach (var instance in supportLines.Values)
         {

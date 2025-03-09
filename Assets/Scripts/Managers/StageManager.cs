@@ -15,25 +15,30 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     // Quick Reference Properties:
-    // These properties provide direct access to various core systems managed by the GameManager singleton.
-    protected Fade fade => GameManager.instance.fade;                            // Handles fade in/out effects.
-    protected DataManager dataManager => GameManager.instance.dataManager;          // Manages game data (e.g., stage data).
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager; // Provides access to assets such as tutorials.
+    protected Fade fade => GameManager.instance.fade;                         
+    protected DataManager dataManager => GameManager.instance.dataManager;         
+    protected ResourceManager resourceManager => GameManager.instance.resourceManager; 
     protected ProfileManager profileManager => GameManager.instance.profileManager;
     public int totalCoins
     {
         get => GameManager.instance.totalCoins;
         set => GameManager.instance.totalCoins = value;
     }
-    protected TurnManager turnManager => GameManager.instance.turnManager;          // Manages turn order and phase transitions.
-    protected ActorManager actorManager => GameManager.instance.actorManager;       // Manages actor-specific logic.
-    protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager; // Handles dotted line rendering (e.g., movement paths).
-    protected CoinBar coinBar => GameManager.instance.coinBar;                      // UI element displaying coin count.
-    protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;      // UI overlay for stage-related transitions.
-    protected BoardInstance board => GameManager.instance.board;                    // Represents the game board layout.
-    protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;      // Displays tutorial popups.
-    protected IEnumerable<ActorInstance> players => GameManager.instance.players;      // Queryable collection of player actors.
-    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;      // Queryable collection of enemy actors.
+    protected TurnManager turnManager => GameManager.instance.turnManager;          
+    protected ActorManager actorManager => GameManager.instance.actorManager;       
+    protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
+    protected CoinBar coinBar => GameManager.instance.coinBar;                
+    protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;    
+    protected BoardInstance board => GameManager.instance.board;                  
+    protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;    
+    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
+    protected TileManager tileManager => GameManager.instance.tileManager;
+
+    protected IEnumerable<ActorInstance> players => GameManager.instance.players;     
+    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;     
+
+
+
 
     // Access the list of actors from the GameManager.
     protected List<ActorInstance> actors
@@ -106,11 +111,13 @@ public class StageManager : MonoBehaviour
         coinBar.Refresh();
         actorManager.Clear();
         dottedLineManager.Clear();
+        supportLineManager.Clear();
+        tileManager.Reset();
         turnManager.Initialize();
 
         // The following canvasOverlay code is commented out but could be used for UI transitions.
-        //canvasOverlay.Clear();
-        //canvasOverlay.Show($"{currentStageName.Name}");
+        //canvasOverlay.Reset();
+        //canvasOverlay.Show($"{currentStage.Name}");
         //canvasOverlay.TriggerFadeOut(Interval.OneSecond);
 
         // Spawn actors defined in the stage data.

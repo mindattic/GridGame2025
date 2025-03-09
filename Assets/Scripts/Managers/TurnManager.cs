@@ -105,7 +105,7 @@ public class TurnManager : MonoBehaviour
     {
         // Switch team for the next turn.
         currentTeam = isPlayerTurn ? Team.Enemy : Team.Player;
-        supportLineManager.DespawnAll();
+        supportLineManager.Clear();
         attackLineManager.DespawnAll();
         SetPhase(TurnPhase.Start);
     }

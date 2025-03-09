@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Behaviors.Actor;
+using Assets.Scripts.Models;
 using Game.Behaviors;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,6 +42,9 @@ namespace Assets.Scripts.Instances.Actor
         protected bool isSelectedPlayer => hasSelectedPlayer && selectedPlayer == instance;
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
         protected Card card => GameManager.instance.card;
+        protected TileMap tileMap => GameManager.instance.tileMap;
+
+
 
 
         //Fields
@@ -204,14 +208,10 @@ namespace Assets.Scripts.Instances.Actor
                 overlappingActor.onOverlapDetected.Invoke(previousLocation);
         }
 
-
         public void TriggerMoveTowardsCursor()
         {
             instance.StartCoroutine(MoveTowardCursor());
         }
-
-
-
 
         ///<summary>
         ///Called when an overlap with another actor is detected.
@@ -223,7 +223,7 @@ namespace Assets.Scripts.Instances.Actor
             if (flags.IsSwapping)
                 return;
 
-            var currentTile = GameManager.instance.tileMap.GetTile(newLocation);
+            var currentTile = tileMap.GetTile(newLocation);
             if (currentTile.IsOccupied)
             {
                 //Debug.Log($"Tile ${currentTile.location.x}x{currentTile.location.y} is occupied.");
