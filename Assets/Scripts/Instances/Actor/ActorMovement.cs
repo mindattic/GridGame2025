@@ -193,7 +193,7 @@ namespace Assets.Scripts.Instances.Actor
             previousLocation = location;
             location = closestTile.location;
 
-            instance.onSelectedPlayerLocationChanged?.Invoke(previousLocation, closestTile.location);
+            instance.onSelectedPlayerLocationChanged?.Invoke(previousLocation, location);
 
             ActorInstance overlappingActor = actors.FirstOrDefault(x =>
                 x != instance &&

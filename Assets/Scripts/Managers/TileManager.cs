@@ -50,7 +50,7 @@ public class TileManager : MonoBehaviour
         foreach (var tile in tiles)
         {
             // Reset each tile's sprite color to a translucent white.
-            tile.spriteRenderer.color = ColorHelper.Translucent.White;
+            tile.spriteRenderer.color = ColorHelper.Tile.White;
         }
     }
 
@@ -64,8 +64,8 @@ public class TileManager : MonoBehaviour
     public void OnSelectedPlayerLocationChanged(Vector2Int previousLocation, Vector2Int newLocation)
     {
         // Set the previous tile's color back to white.
-        tileMap.GetTile(previousLocation).color = ColorHelper.Translucent.White;
+        tileMap.GetTile(previousLocation).color = ColorHelper.Tile.White;
         // Highlight the new tile by setting its color to yellow.
-        tileMap.GetTile(newLocation).color = ColorHelper.Translucent.Yellow;
+        tileMap.GetTile(newLocation).color = ColorHelper.Tile.Yellow;
     }
 }

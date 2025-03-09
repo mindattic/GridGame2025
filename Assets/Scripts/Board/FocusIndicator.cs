@@ -83,9 +83,9 @@ public class FocusIndicator : MonoBehaviour
     {
         // Enable the sprite only if there is a focused actor.
         spriteRenderer.enabled = hasFocusedActor;
-        // Position the indicator on the focused actor's position if available;
+        // PositionHelper the indicator on the focused actor's position if available;
         // otherwise, place it at a designated 'Nowhere' location.
-        position = hasFocusedActor ? focusedActor.position : Position.Nowhere;
+        position = hasFocusedActor ? focusedActor.position : PositionHelper.Nowhere;
     }
 
     // Clear deactivates the FocusIndicator and moves it off-screen.
@@ -94,6 +94,6 @@ public class FocusIndicator : MonoBehaviour
         // Disable the indicator's sprite.
         spriteRenderer.enabled = false;
         // Set its position to 'Nowhere', effectively removing it from the board.
-        position = Position.Nowhere;
+        position = PositionHelper.Nowhere;
     }
 }

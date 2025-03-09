@@ -313,7 +313,7 @@ public class ActorInstance : MonoBehaviour
         int[] ratios = { 50, 20, 15, 10, 5 };
         var attackStrategy = Random.Strategy(ratios);
 
-        Vector2Int targetLocation = Location.Nowhere;
+        Vector2Int targetLocation = LocationHelper.Nowhere;
 
         // Select target based on strategy.
         switch (attackStrategy)
@@ -482,8 +482,8 @@ public class ActorInstance : MonoBehaviour
         }
 
         //After: Reset location and position, deactivate the actor, and invoke the death event.
-        location = Location.Nowhere;
-        position = Position.Nowhere;
+        location = LocationHelper.Nowhere;
+        position = PositionHelper.Nowhere;
         gameObject.SetActive(false);
         onActorDeath.Invoke();
     }

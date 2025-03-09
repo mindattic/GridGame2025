@@ -56,16 +56,6 @@ public static class Constants
     public const int MusicSourceIndex = 1;
 }
 
-public static class Location
-{
-    public static Vector2Int Nowhere = new Vector2Int(-1, -1);
-}
-
-public static class Position
-{
-    public static Vector3 Nowhere = new Vector3(-1000, -1000, -1000);
-}
-
 public static class Tag
 {
     public static string Board = "Board";
@@ -84,6 +74,16 @@ public static class Tag
     public static string Tooltip = "Tooltip";
     public static string VFX = "VFX";
     public static string DottedLine = "DottedLine";
+}
+
+public static class LocationHelper
+{
+    public static Vector2Int Nowhere = new Vector2Int(-1, -1);
+}
+
+public static class PositionHelper
+{
+    public static Vector3 Nowhere = new Vector3(-1000, -1000, -1000);
 }
 
 public static class ScreenHelper
@@ -228,6 +228,12 @@ public static class ColorHelper
     {
         public static Color White = RGBA(255, 255, 255, 0);
         public static Color Red = RGBA(255, 0, 0, 0);
+    }
+
+    public static class Tile
+    {
+        public static Color White = RGBA(255, 255, 255, 96);
+        public static Color Yellow = RGBA(255, 255, 0, 96);
     }
 }
 

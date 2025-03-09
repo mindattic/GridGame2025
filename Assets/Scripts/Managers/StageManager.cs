@@ -187,7 +187,7 @@ public class StageManager : MonoBehaviour
         // Determine the start location:
         // If spawnTurn is 1 or lower and a valid location is provided, use it.
         // Otherwise, assign a random unoccupied location.
-        var startLocation = spawnTurn <= 1 && location != Location.Nowhere ? location : Random.UnoccupiedLocation;
+        var startLocation = spawnTurn <= 1 && location != LocationHelper.Nowhere ? location : Random.UnoccupiedLocation;
         instance.Spawn(startLocation);
         // Add the new actor instance to the global actors list.
         actors.Add(instance);

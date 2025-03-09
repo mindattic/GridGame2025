@@ -127,7 +127,7 @@ namespace Assets.Scripts.Models
             Vector2Int tileLocation = new Vector2Int(x, y);
 
             // Optional: Debug output to verify conversion.
-            // Debug.Log($"World Pos: {position} → Tile Location: {tileLocation}");
+            // Debug.Log($"World Pos: {position} → Tile LocationHelper: {tileLocation}");
 
             return GetTile(tileLocation);
         }

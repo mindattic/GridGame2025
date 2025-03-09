@@ -52,7 +52,7 @@ namespace Assets.Scripts.Utilities
                 return new Vector2Int(x, y);
             }
 
-            return Location.Nowhere; //Default fallback
+            return LocationHelper.Nowhere; //Default fallback
         }
 
         public static Character ToCharacter(string value)
