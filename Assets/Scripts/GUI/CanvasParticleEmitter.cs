@@ -61,7 +61,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         }
 
         // Assign start position
-        float startX = prewarm ? Random.Float(-50, Screen.width) : -50; // Prewarm particles start mid-flight
+        float startX = prewarm ? Random.Float(-Screen.width / 2, Screen.width) : -Screen.width / 2; // Prewarm particles start mid-flight
         float startY = Random.Float(yMin, yMax);
         imageRect.anchoredPosition = new Vector2(startX, startY);
 

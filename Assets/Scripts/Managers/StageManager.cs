@@ -123,19 +123,19 @@ public class StageManager : MonoBehaviour
         // Spawn actors defined in the stage data.
         foreach (var stageActor in currentStage.Actors)
         {
-            // Convert string values from stage data into their respective types.
-            var character = ConvertString.ToCharacter(stageActor.Character);
-            var team = ConvertString.ToTeam(stageActor.Team);
+            //Convert string values from stage data into their respective types.
+            var character = stageActor.Character;
+            var team = stageActor.Team;
             var spawnTurn = stageActor.SpawnTurn;
-            var location = ConvertString.ToVector2Int(stageActor.Location);
+            var location = stageActor.Location;
             SpawnActor(character, team, spawnTurn, location);
         }
 
         // Spawn dotted lines if specified in the stage data.
         foreach (var stageDottedLine in currentStage.DottedLines)
         {
-            var segment = ConvertString.ToDottedLineSegment(stageDottedLine.Segment);
-            var location = ConvertString.ToVector2Int(stageDottedLine.Location);
+            var segment = stageDottedLine.Segment;
+            var location = stageDottedLine.Location;
             dottedLineManager.Spawn(segment, location);
         }
 

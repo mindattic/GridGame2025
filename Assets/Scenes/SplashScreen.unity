@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4457fe33571c442927e646afc59d6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imagePrefab: {fileID: 0}
+  imagePrefab: {fileID: 8124169446587185457, guid: 15d13bce45274264d8bb8581b897d639, type: 3}
   canvasTransform: {fileID: 655101921}
   spawnIntervalMin: 1
   spawnIntervalMax: 3

@@ -69,7 +69,8 @@ public class LevelSelectUI : MonoBehaviour
     void OnStageSelected(string stageKey)
     {
         Debug.Log("Selected stage: " + stageKey);
-
-        //SceneManager.LoadScene("Game");
+        var profileManager = GameObject.Find(Constants.CurrentProfile).GetComponent<ProfileManager>();
+        profileManager.currentProfile.Stage.CurrentStageName= stageKey;
+        SceneManager.LoadScene("Game");
     }
 }

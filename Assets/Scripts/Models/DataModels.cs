@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
@@ -110,10 +111,10 @@ namespace Assets.Scripts.Models
             Location = other.Location;
         }
 
-        public string Character;
-        public string Team;
+        public Character Character;
+        public Team Team;
         public int SpawnTurn;
-        public string Location;
+        public Vector2Int Location;
     }
 
     [Serializable]
@@ -127,7 +128,7 @@ namespace Assets.Scripts.Models
             Location = other.Location;
         }
 
-        public string Segment;
-        public string Location;
+        public DottedLineSegment Segment;
+        public Vector2Int Location;
     }
 }
