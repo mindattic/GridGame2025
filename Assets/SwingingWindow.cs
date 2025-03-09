@@ -4,31 +4,49 @@ using System.Collections.Generic;
 
 public class SwingingWindow : MonoBehaviour
 {
-    [SerializeField] private float minAngle;
-    [SerializeField] private float maxAngle;
-    [SerializeField] private float windSpeedMultiplier;
-    [SerializeField] private float accelerationFactor;
-    [SerializeField] private float noiseScale;
-    [SerializeField] private float maxAcceleration;
-    [SerializeField] private float minAcceleration;
-    [SerializeField] private float snapThreshold;
-    [SerializeField] private float variationMin;
-    [SerializeField] private float variationMax;
-    [SerializeField] private float windShiftChance;
-    [SerializeField] private float waitTimeMin;
-    [SerializeField] private float waitTimeMax;
-    [SerializeField] private float wiggleIntensity;
-    [SerializeField] private float wiggleFrequency;
-
+    private float minAngle;
+    private float maxAngle;
+    private float windSpeedMultiplier;
+    private float accelerationFactor;
+    private float noiseScale;
+    private float maxAcceleration;
+    private float minAcceleration;
+    private float snapThreshold;
+    private float variationMin;
+    private float variationMax;
+    private float windShiftChance;
+    private float waitTimeMin;
+    private float waitTimeMax;
+    private float wiggleIntensity;
+    private float wiggleFrequency;
     private float noiseOffset;
     private float currentYRotation;
     private float currentVelocity = 0f;
     private Queue<float> targetRotations = new Queue<float>();
 
-    void Start()
+    private void Awake()
     {
+        minAngle = -90f;
+        maxAngle = 90f;
+        windSpeedMultiplier = 10f;
+        accelerationFactor = 10f;
+        noiseScale = 0.2f;
+        maxAcceleration = 5f;
+        minAcceleration = 1f;
+        snapThreshold = 1f;
+        variationMin = 5f;
+        variationMax = 60f;
+        windShiftChance = 0.1f;
+        waitTimeMin = 0.05f;
+        waitTimeMax = 0.5f;
+        wiggleIntensity = 1f;
+        wiggleFrequency = 10f;
         noiseOffset = Random.Float(0f, 100f);
         currentYRotation = 0f;
+    }
+
+    void Start()
+    {
         GenerateRotationBuffer();
         StartCoroutine(SwingWindow());
     }
