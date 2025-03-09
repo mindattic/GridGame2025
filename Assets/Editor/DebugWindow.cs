@@ -176,7 +176,7 @@ public class DebugWindow : EditorWindow
         turnManager = gameManager.turnManager;
         stageManager = gameManager.stageManager;
         logManager = gameManager.logManager;
-        profileManager = gameManager.profileManager;
+        profileManager = GameObject.Find(Constants.ProfileManager).GetComponent<ProfileManager>();
         selectedPlayerManager = gameManager.selectedPlayerManager;
 
         // Set initial debug flag values.
@@ -300,19 +300,19 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
         isClicked = GUILayout.Button("Splash Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneManager.LoadScene(Scene.SplashScreen);
+            SceneManager.LoadScene(SceneHelper.Splash);
 
         isClicked = GUILayout.Button("Title Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneManager.LoadScene(Scene.TitleScreen);
+            SceneManager.LoadScene(SceneHelper.Title);
 
         isClicked = GUILayout.Button("Options Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneManager.LoadScene(Scene.OptionsScreen);
+            SceneManager.LoadScene(SceneHelper.Settings);
 
         isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneManager.LoadScene(Scene.Game);
+            SceneManager.LoadScene(SceneHelper.Game);
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);

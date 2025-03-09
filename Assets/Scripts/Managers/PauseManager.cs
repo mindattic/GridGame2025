@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -6,29 +7,34 @@ public class PauseManager : MonoBehaviour
 {
     //Quick Reference Properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
-    protected ProfileManager profileManager => GameManager.instance.profileManager;
+    protected ProfileManager profileManager => GameObject.Find(Constants.ProfileManager).GetComponent<ProfileManager>();
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     public bool IsPaused => Time.timeScale == 0f;
 
     //Fields
-
-    private Image buttonImage;
+    private GameObject pauseButton;
+    private Image pauseButtonImage;
     private Sprite pause;
     private Sprite paused;
     private GameObject pauseMenu;
+    private Button[] buttons;
+    private Fade fade;
 
     void Awake()
     {
-        GameObject pauseButton = GameObject.Find("PauseButton");
-        buttonImage = pauseButton.GetComponent<Image>();
-        pauseMenu = GameObject.Find("PauseMenu").gameObject;
+        pauseButton = GameObject.Find(ComponentHelper.Game.PauseButton) ?? throw new UnityException("PauseButton is null");
+        pauseButtonImage = pauseButton.GetComponent<Image>() ?? throw new UnityException("PauseButtonImage is null");
+        pauseMenu = GameObject.Find(ComponentHelper.Game.PauseMenu).gameObject ?? throw new UnityException("ComponentHelper is null");
+        fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        buttons = GameObject.Find(ComponentHelper.Game.PauseMenu).GetComponentsInChildren<Button>() ?? throw new UnityException("PauseMenu buttons are null");
+        MenuHelper.SetPosition(buttons);
     }
 
     private void Start()
     {
         pause = resourceManager.Sprite("Pause").Value;
         paused = resourceManager.Sprite("Paused").Value;
-        buttonImage.sprite = pause;
+        pauseButtonImage.sprite = pause;
         canvasOverlay.Reset();
         pauseMenu.SetActive(false);
     }
@@ -36,44 +42,60 @@ public class PauseManager : MonoBehaviour
     public void Toggle()
     {
         if (IsPaused)
-            Resume();
+            OnResumeButtonClicked();
         else
-            Pause();
+            OnPauseButtonClicked();
     }
 
-    public void Pause()
+    public void OnResumeButtonClicked()
     {
-        buttonImage.sprite = paused;
+        pauseButtonImage.sprite = pause;
+        canvasOverlay.Reset();
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+    }
+
+    public void OnPauseButtonClicked()
+    {
+        pauseButtonImage.sprite = paused;
         canvasOverlay.Show("Paused");
         pauseMenu.SetActive(true);
         Time.timeScale = 0f;
     }
 
-    public void Resume()
+    public void OnSettingsButtonClicked()
     {
-        buttonImage.sprite = pause;
-        canvasOverlay.Reset();
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
-    }
-    public void GotoOptionsScreen()
-    {
-        SceneManager.LoadScene(Scene.OptionsScreen);
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Settings)));
     }
 
-    public void GotoLevelSelect()
+    public void OnStageSelectButtonClicked()
     {
-        SceneManager.LoadScene(Scene.LevelSelect);
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.StageSelect)));   
     }
 
-    public void GotoTitleScreen()
+    public void OnQuitButtonClicked()
     {
-        SceneManager.LoadScene(Scene.TitleScreen);
+        profileManager.Save();
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Title)));
     }
 
     public void Save()
     {
         profileManager.Save();
     }
+
+    private IEnumerator LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+        yield break;
+    }
+
+    //private void DisableButtons()
+    //{
+    //    foreach (var button in buttons)
+    //    {
+    //        button.interactable = false;
+    //    }
+    //}
 
 }

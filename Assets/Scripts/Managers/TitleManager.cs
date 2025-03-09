@@ -5,7 +5,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
-public class TitleScreen : MonoBehaviour
+public class TitleManager : MonoBehaviour
 {
     //Fields
     private Fade fade;
@@ -13,33 +13,35 @@ public class TitleScreen : MonoBehaviour
 
     private void Awake()
     {
-        fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
-        buttons = GameObject.Find("Panel").GetComponentsInChildren<Button>();
+        fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        buttons = GameObject.Find(ComponentHelper.Title.MainMenu).GetComponentsInChildren<Button>();
+        MenuHelper.SetPosition(buttons);
     }
 
-    void Start()
-    {  
+    private void Start()
+    {
+        
         StartCoroutine(fade.FadeIn());
     }
 
     public void OnContinueClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(Scene.Game)));
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 
     public void OnNewGameClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(Scene.Game)));
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 
     public void OnLoadGameClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(Scene.Game)));
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 
-    public void OnOptionsClicked()
+    public void OnSettingsClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(Scene.OptionsScreen)));
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Settings)));
     }
 
     public void OnQuitClicked()
@@ -51,14 +53,14 @@ public class TitleScreen : MonoBehaviour
     {
         DisableButtons();
         SceneManager.LoadScene(sceneName);
-        yield return Wait.UntilNextFrame();
+        yield break;
     }
 
     private IEnumerator Quit()
     {
         DisableButtons();
         Application.Quit();
-        yield return Wait.UntilNextFrame();
+        yield break;
     }
 
     private void DisableButtons()

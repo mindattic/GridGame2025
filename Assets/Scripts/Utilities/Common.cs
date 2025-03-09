@@ -4,6 +4,68 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+
+public static class SceneHelper
+{
+    public static string Splash = "Splash";
+    public static string Title = "Title";
+    public static string Settings = "Settings";
+    public static string StageSelect = "StageSelect";
+    public static string Game = "Game";
+}
+
+public static class ComponentHelper
+{
+    public static class Splash
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Fade = "Canvas2D/Fade";
+    }
+
+    public static class Title
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Fade = "Canvas2D/Fade";
+        public static string MainMenu = "Canvas2D/MainMenu";
+        public static string ProfileManager = "ProfileManager";
+    }
+
+    public static class Settings
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Fade = "Canvas2D/Fade";
+        public static string ProfileManager = "ProfileManager";
+    }
+
+    public static class ProfileSelect
+    {
+
+        public static string Canvas2D = "Canvas2D";
+        public static string Fade = "Canvas2D/Fade";
+        public static string Content = "Canvas2D/ScrollView/Viewport/Content";       
+        public static string ProfileManager = "ProfileManager";
+    }
+
+    public static class StageSelect
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Fade = "Canvas2D/Fade";
+        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public static string DataManager = "DataManager";
+        public static string ProfileManager = "ProfileManager";
+    }
+
+    public static class Game
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Canvas3D = "Canvas3D";
+        public static string Fade = "Canvas2D/Fade";
+        public static string PauseButton = "Canvas2D/PauseButton";
+        public static string PauseMenu = "Canvas2D/PauseMenu";
+        public static string ProfileManager = "ProfileManager";
+    }
+}
 
 public static class Constants
 {
@@ -12,8 +74,6 @@ public static class Constants
     public const string Resources = "Resources";
     public const string Board = "Board";
     public const string BoardOverlay = "BoardOverlay";
-    public const string Canvas2D = "Canvas2D";
-    public const string Canvas3D = "Canvas3D";
     public const string FocusIndicator = "FocusIndicator";
     public const string Art = "Art";
     public const string CanvasOverlay = "CanvasOverlay";
@@ -21,8 +81,7 @@ public static class Constants
     public const string TimerBar = "TimerBar";
     public const string CoinBar = "CoinBar";
     public const string TutorialPopup = "TutorialPopup";
-    public const string Fade = "Fade";
-    public const string CurrentProfile = "CurrentProfile";
+    public const string ProfileManager = "ProfileManager";
 
     //Percent
     public const float percent10 = 0.1f;
@@ -390,16 +449,6 @@ public static class SortingOrder
     public const int Max = 999;
 }
 
-public static class Scene
-{
-    public static string Game = "Game";
-    public static string OptionsScreen = "OptionsScreen";
-    public static string TitleScreen = "TitleScreen";
-    public static string SplashScreen = "SplashScreen";
-    public static string LevelSelect = "LevelSelect";
-
-
-}
 
 public static class AnimationCurveHelper
 {
@@ -755,6 +804,34 @@ public static class DeathHelper
         var dyingActors = GameManager.instance.actors.Where(x => x.isDying).ToList();
         if (dyingActors.Any())
             yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
+    }
+}
+
+public static class MenuHelper
+{
+    public static void SetPosition(Button[] buttons)
+    {
+        RectTransform parentRect = buttons[0].transform.parent as RectTransform;
+        float parentWidth = parentRect.rect.width;
+        float parentHeight = parentRect.rect.height;
+
+        float buttonWidth = 0.9f * parentWidth;    
+        float buttonHeight = parentHeight / 16f;    
+        float spacing = 0.01f * parentHeight;
+
+        float totalButtonHeight = buttonHeight * buttons.Length;
+        float totalHeight = totalButtonHeight + spacing * (buttons.Length - 1);
+
+        float startY = totalHeight / 2f; // We'll subtract from this for each button.
+
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            RectTransform rt = buttons[i].GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+            rt.anchoredPosition = new Vector2(0, startY - buttonHeight / 2f);
+
+            startY -= (buttonHeight + spacing);
+        }
     }
 }
 

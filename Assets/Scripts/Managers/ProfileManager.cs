@@ -16,11 +16,10 @@ using Stage = Game.Models.ProfileStageSection;
 public class ProfileManager : MonoBehaviour
 {
     //Fields
+    public static ProfileManager instance { get; private set; }
     public Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
     public Profile currentProfile = null;
-
-    public static ProfileManager instance { get; private set; }
-
+   
     private void Awake()
     {
         // If there's already an instance, destroy this one to avoid duplicates

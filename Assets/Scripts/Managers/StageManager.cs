@@ -18,7 +18,7 @@ public class StageManager : MonoBehaviour
     protected Fade fade => GameManager.instance.fade;                         
     protected DataManager dataManager => GameManager.instance.dataManager;         
     protected ResourceManager resourceManager => GameManager.instance.resourceManager; 
-    protected ProfileManager profileManager => GameManager.instance.profileManager;
+    protected ProfileManager profileManager => GameObject.Find(Constants.ProfileManager).GetComponent<ProfileManager>();
     public int totalCoins
     {
         get => GameManager.instance.totalCoins;

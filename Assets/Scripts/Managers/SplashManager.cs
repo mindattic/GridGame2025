@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SplashScreen : MonoBehaviour
+public class SplashManager : MonoBehaviour
 {
     //Fields
     private Fade fade;
@@ -10,7 +10,7 @@ public class SplashScreen : MonoBehaviour
 
     private void Awake()
     {
-        fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        fade = GameObject.Find(ComponentHelper.Splash.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
     }
 
     void Start()
@@ -34,6 +34,6 @@ public class SplashScreen : MonoBehaviour
     private IEnumerator LoadScene()
     {
         yield return fade.FadeOut();
-        SceneManager.LoadScene(Scene.TitleScreen);
+        SceneManager.LoadScene(SceneHelper.Title);
     }
 }

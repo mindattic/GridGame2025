@@ -121,7 +121,7 @@ public class SelectedPlayerManager : MonoBehaviour
         selectedPlayer = null;
         focusedActor = null;
 
-        // Pause the movement timer, indicating that the move phase has ended.
+        // OnPauseButtonClicked the movement timer, indicating that the move phase has ended.
         timerBar.Pause();
 
         // Check for any potential pincer results by the player's team now that movement is complete.

@@ -102,9 +102,7 @@ public class GameManager : Singleton<GameManager>
     //Properties
     public float gameSpeed { get => Time.timeScale; set => Time.timeScale = value; }
     public float previousGameSpeed;
-    public ProfileManager profileManager => GameObject.Find(Constants.CurrentProfile).GetComponent<ProfileManager>() ?? throw new UnityException("ProfileManager is null");
-
-
+  
     private void Awake()
     {
         Application.targetFrameRate = targetFramerate;
@@ -140,9 +138,9 @@ public class GameManager : Singleton<GameManager>
         //GUI
         tutorialPopup = GameObject.Find(Constants.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
         card = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
-        fade = GameObject.Find(Constants.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
-        canvas2D = GameObject.Find(Constants.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
-        canvas3D = GameObject.Find(Constants.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
+        fade = GameObject.Find(ComponentHelper.Game.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        canvas2D = GameObject.Find(ComponentHelper.Game.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
+        canvas3D = GameObject.Find(ComponentHelper.Game.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
         timerBar = GameObject.Find(Constants.TimerBar).GetComponent<TimerBar>() ?? throw new UnityException("TimerBarInstance is null");
         coinBar = GameObject.Find(Constants.CoinBar).GetComponent<CoinBar>() ?? throw new UnityException("CoinBarInstance is null");
 

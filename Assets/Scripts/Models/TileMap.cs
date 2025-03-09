@@ -55,9 +55,9 @@ namespace Assets.Scripts.Models
         /// <returns>The corresponding world position.</returns>
         public Vector3 GetPosition(Vector2Int location)
         {
-            return locationToEntry.TryGetValue(location, out var entry)
-                ? entry.Position
-                : Geometry.GetPositionByLocation(location);
+            Debug.Log(System.Environment.StackTrace);
+            locationToEntry.TryGetValue(location, out TileEntry entry);
+            return entry != null ? entry.Position : PositionHelper.Nowhere;
         }
 
         /// <summary>
@@ -68,9 +68,9 @@ namespace Assets.Scripts.Models
         /// <returns>The corresponding grid coordinates.</returns>
         public Vector2Int GetLocation(Vector3 position)
         {
-            return positionToEntry.TryGetValue(position, out var entry)
-                ? entry.Location
-                : Geometry.GetLocationByPosition(position);
+            Debug.Log(System.Environment.StackTrace);
+            positionToEntry.TryGetValue(position, out TileEntry entry);
+            return entry != null ? entry.Location : LocationHelper.Nowhere;
         }
 
         /// <summary>
