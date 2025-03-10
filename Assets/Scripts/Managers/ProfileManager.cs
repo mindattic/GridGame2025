@@ -8,10 +8,10 @@ using System.Linq;
 
 using UnityEngine;
 using Debug = UnityEngine.Debug;
-using Global = Game.Models.ProfileGlobalSection;
-using Party = Game.Models.ProfilePartySection;
-using Section = Game.Models.ProfileSection;
-using Stage = Game.Models.ProfileStageSection;
+using GlobalSection = Game.Models.ProfileGlobalSection;
+using SettingsSection = Game.Models.ProfileSettingsSection;
+using PartySection = Game.Models.ProfilePartySection;
+using StageSection = Game.Models.ProfileStageSection;
 
 public class ProfileManager : MonoBehaviour
 {
@@ -113,11 +113,12 @@ public class ProfileManager : MonoBehaviour
         currentProfile = new Profile(guid);
 
         //Save the individual JSON files
-        bool globalSaved = SaveSection<Global>();
-        bool stageSaved = SaveSection<Stage>();
-        bool partySaved = SaveSection<Party>();
+        bool globalSaved = SaveSection<GlobalSection>();
+        bool settingsSaved = SaveSection<SettingsSection>();
+        bool stageSaved = SaveSection<StageSection>();
+        bool partySaved = SaveSection<PartySection>();
 
-        if (!globalSaved || !stageSaved || !partySaved)
+        if (!globalSaved || !settingsSaved || !stageSaved || !partySaved)
         {
             Debug.LogError($"Failed to create new profile with GUID: {guid}");
             return false;
@@ -136,7 +137,7 @@ public class ProfileManager : MonoBehaviour
 
         //Determine the file name and section based on the generic type
         string fileName = GetFileName<T>();
-        Section section = GetSection<T>();
+        ProfileSection section = GetSection<T>();
 
         var filePath = Path.Combine(currentProfile.Folder, fileName);
         if (string.IsNullOrWhiteSpace(filePath))
@@ -178,17 +179,20 @@ public class ProfileManager : MonoBehaviour
 
         //Determine the file name based on the generic type
         string fileName = null;
-        if (typeof(T) == typeof(Global))
+        if (typeof(T) == typeof(GlobalSection))
             fileName = "global.json";
-        else if (typeof(T) == typeof(Stage))
+        else if (typeof(T) == typeof(SettingsSection))
+            fileName = "settings.json";
+        else if (typeof(T) == typeof(StageSection))
             fileName = "stage.json";
-        else if (typeof(T) == typeof(Party))
+        else if (typeof(T) == typeof(PartySection))
             fileName = "party.json";
 
         var folder = Path.Combine(FolderHelper.Folders.Profiles, guid);
         var filePath = Path.Combine(folder, fileName);
         if (!File.Exists(filePath))
         {
+            //TODO: Emergency rescue the .json here by writing from defaults...
             Debug.LogError($"{filePath} does not exist.");
             return null;
         }
@@ -216,13 +220,14 @@ public class ProfileManager : MonoBehaviour
             return false;
         }
 
-        bool globalSaved = SaveSection<Global>();
-        bool stageSaved = SaveSection<Stage>();
-        bool partySaved = SaveSection<Party>();
+        bool globalSaved = SaveSection<GlobalSection>();
+        bool settingsSaved = SaveSection<SettingsSection>();
+        bool stageSaved = SaveSection<StageSection>();
+        bool partySaved = SaveSection<PartySection>();
 
         //sw.Stop();
 
-        if (!globalSaved || !stageSaved || !partySaved)
+        if (!globalSaved || !settingsSaved || !stageSaved || !partySaved)
         {
             Debug.LogError($"Failed to save one or more components.");
             return false;
@@ -242,9 +247,10 @@ public class ProfileManager : MonoBehaviour
 
         var profile = new Profile(guid);
 
-        profile.Global = LoadSection<Global>(guid);
-        profile.Stage = LoadSection<Stage>(guid);
-        profile.Party = LoadSection<Party>(guid);
+        profile.Global = LoadSection<GlobalSection>(guid);
+        profile.Settings = LoadSection<SettingsSection>(guid);
+        profile.Stage = LoadSection<StageSection>(guid);
+        profile.Party = LoadSection<PartySection>(guid);
 
         if (!profile.IsValid())
         {
@@ -290,27 +296,33 @@ public class ProfileManager : MonoBehaviour
 
     private string GetFileName<T>() where T : class
     {
-        if (typeof(T) == typeof(Global))
+        if (typeof(T) == typeof(GlobalSection))
             return "global.json";
 
-        if (typeof(T) == typeof(Stage))
+        if (typeof(T) == typeof(SettingsSection))
+            return "settings.json";
+
+        if (typeof(T) == typeof(StageSection))
             return "stage.json";
 
-        if (typeof(T) == typeof(Party))
+        if (typeof(T) == typeof(PartySection))
             return "party.json";
 
         return null;
     }
 
-    private Section GetSection<T>() where T : class
+    private ProfileSection GetSection<T>() where T : class
     {
-        if (typeof(T) == typeof(Global))
+        if (typeof(T) == typeof(GlobalSection))
             return currentProfile.Global;
 
-        if (typeof(T) == typeof(Stage))
+        if (typeof(T) == typeof(SettingsSection))
+            return currentProfile.Settings;
+
+        if (typeof(T) == typeof(StageSection))
             return currentProfile.Stage;
 
-        if (typeof(T) == typeof(Party))
+        if (typeof(T) == typeof(PartySection))
             return currentProfile.Party;
 
         return null;

@@ -49,39 +49,38 @@ public class PauseManager : MonoBehaviour
 
     public void OnResumeButtonClicked()
     {
+        Time.timeScale = 1f;
         pauseButtonImage.sprite = pause;
         canvasOverlay.Reset();
         pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
+      
     }
 
     public void OnPauseButtonClicked()
     {
+        Time.timeScale = 0f;
         pauseButtonImage.sprite = paused;
         canvasOverlay.Show("Paused");
-        pauseMenu.SetActive(true);
-        Time.timeScale = 0f;
+        pauseMenu.SetActive(true);     
     }
 
     public void OnSettingsButtonClicked()
     {
+        Time.timeScale = 1f;
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Settings)));
     }
 
     public void OnStageSelectButtonClicked()
     {
+        Time.timeScale = 1f;
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.StageSelect)));   
     }
 
     public void OnQuitButtonClicked()
     {
+        Time.timeScale = 1f;
         profileManager.Save();
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Title)));
-    }
-
-    public void Save()
-    {
-        profileManager.Save();
     }
 
     private IEnumerator LoadScene(string sceneName)

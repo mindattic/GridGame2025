@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using static FolderHelper;
-using Global = Game.Models.ProfileGlobalSection;
-using Party = Game.Models.ProfilePartySection;
-using Stage = Game.Models.ProfileStageSection;
+using GlobalSection = Game.Models.ProfileGlobalSection;
+using SettingsSection = Game.Models.ProfileSettingsSection;
+using PartySection = Game.Models.ProfilePartySection;
+using StageSection = Game.Models.ProfileStageSection;
 
 namespace Game.Models
 {
@@ -13,9 +14,10 @@ namespace Game.Models
         public string Guid;
         public string Folder;
 
-        public Global Global { get; set; }
-        public Stage Stage { get; set; }
-        public Party Party { get; set; }
+        public GlobalSection Global { get; set; }
+        public SettingsSection Settings { get; set; }
+        public StageSection Stage { get; set; }
+        public PartySection Party { get; set; }
 
         public Profile() { }
 
@@ -25,17 +27,25 @@ namespace Game.Models
 
             Folder = CreateFolder(Folders.Profiles, Guid);
 
-            Global = new Global
+            Global = new GlobalSection
             {
-                TotalCoins = 0
+                TotalCoins = 0,
+                PreviousSceneName = "Title"
             };
 
-            Stage = new Stage
+            Settings = new SettingsSection
             {
-                CurrentStageName = "Stage 1"
+
+                GameSpeed = 1.0f
             };
 
-            Party = new Party();
+
+            Stage = new StageSection
+            {
+                CurrentStageName = "StageSection 1"
+            };
+
+            Party = new PartySection();
         }
 
         public bool IsValid()
@@ -59,10 +69,23 @@ namespace Game.Models
     public class ProfileGlobalSection : ProfileSection
     {
         public int TotalCoins;
+        public string PreviousSceneName;
 
         public ProfileGlobalSection()
         {
             TotalCoins = 0;
+            PreviousSceneName = "Title";
+        }
+    }
+
+    [Serializable]
+    public class ProfileSettingsSection : ProfileSection
+    {
+        public float GameSpeed;
+
+        public ProfileSettingsSection()
+        {
+            GameSpeed = 1.0f;
         }
     }
 
