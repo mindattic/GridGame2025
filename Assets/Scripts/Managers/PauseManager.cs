@@ -7,7 +7,6 @@ public class PauseManager : MonoBehaviour
 {
     //Quick Reference Properties
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
-    protected ProfileManager profileManager => GameObject.Find(Constants.ProfileManager).GetComponent<ProfileManager>();
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     public bool IsPaused => Time.timeScale == 0f;
 
@@ -79,7 +78,7 @@ public class PauseManager : MonoBehaviour
     public void OnQuitButtonClicked()
     {
         Time.timeScale = 1f;
-        profileManager.Save();
+        ProfileManager.Save();
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Title)));
     }
 

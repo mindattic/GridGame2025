@@ -13,26 +13,15 @@ using SettingsSection = Game.Models.ProfileSettingsSection;
 using PartySection = Game.Models.ProfilePartySection;
 using StageSection = Game.Models.ProfileStageSection;
 
-public class ProfileManager : MonoBehaviour
+public static class ProfileManager
 {
     //Fields
-    public static ProfileManager instance { get; private set; }
-    public Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
-    public Profile currentProfile = null;
+
+    public static Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
+    public static Profile currentProfile = null;
    
-    private void Awake()
+    static ProfileManager()
     {
-        // If there's already an instance, destroy this one to avoid duplicates
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        // Otherwise, set the instance and mark this object to not be destroyed
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-
         //var sw = Stopwatch.StartNew();
 
         //Validate folder structure
@@ -100,7 +89,7 @@ public class ProfileManager : MonoBehaviour
     ///<summary>
     ///Method which is used to create a new folder with GUID containing JSON files
     ///</summary>
-    private bool Create()
+    private static bool Create()
     {
         //Generate a new GUID
         string guid;
@@ -131,7 +120,7 @@ public class ProfileManager : MonoBehaviour
     ///<summary>
     ///Method which is used to save individual section to separate JSON file
     ///</summary>
-    private bool SaveSection<T>() where T : class
+    private static bool SaveSection<T>() where T : class
     {
         //var sw = Stopwatch.StartNew();
 
@@ -170,7 +159,7 @@ public class ProfileManager : MonoBehaviour
     ///<summary>
     ///Method which is used to load individual json file in a seperate profile section
     ///</summary>
-    private T LoadSection<T>(string guid) where T : class
+    private static T LoadSection<T>(string guid) where T : class
     {
         //var sw = Stopwatch.StartNew();
 
@@ -210,7 +199,7 @@ public class ProfileManager : MonoBehaviour
         return section;
     }
 
-    public bool Save()
+    public static bool Save()
     {
         //var sw = Stopwatch.StartNew();
 
@@ -237,7 +226,7 @@ public class ProfileManager : MonoBehaviour
         return true;
     }
 
-    private Profile Load(string guid)
+    private static Profile Load(string guid)
     {
         if (string.IsNullOrWhiteSpace(guid))
         {
@@ -261,7 +250,7 @@ public class ProfileManager : MonoBehaviour
         return profile;
     }
 
-    public void Assign(string guid)
+    public static void Assign(string guid)
     {
         if (!HasProfiles())
             return;
@@ -272,12 +261,12 @@ public class ProfileManager : MonoBehaviour
         currentProfile = profile;
     }
 
-    public bool HasProfiles()
+    public static bool HasProfiles()
     {
         return profiles != null && profiles.Count > 0;
     }
 
-    private bool HasValidFolderStructure()
+    private static bool HasValidFolderStructure()
     {
         //Verify profiles folder can be created
         if (string.IsNullOrWhiteSpace(FolderHelper.Folders.Profiles))
@@ -294,7 +283,7 @@ public class ProfileManager : MonoBehaviour
     }
 
 
-    private string GetFileName<T>() where T : class
+    private static string GetFileName<T>() where T : class
     {
         if (typeof(T) == typeof(GlobalSection))
             return "global.json";
@@ -311,7 +300,7 @@ public class ProfileManager : MonoBehaviour
         return null;
     }
 
-    private ProfileSection GetSection<T>() where T : class
+    private static ProfileSection GetSection<T>() where T : class
     {
         if (typeof(T) == typeof(GlobalSection))
             return currentProfile.Global;

@@ -13,7 +13,6 @@ public class ProfileSelectManager : MonoBehaviour
     [SerializeField] public GameObject buttonPrefab;
     private RectTransform canvas2D;
     private Transform content;
-    private ProfileManager profileManager;
     private VerticalLayoutGroup verticalLayoutGroup;
     private float screenWidth;
     private float screenHeight;
@@ -26,7 +25,6 @@ public class ProfileSelectManager : MonoBehaviour
     {
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
         content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
-        profileManager = GameObject.Find(ComponentHelper.ProfileSelect.ProfileManager).GetComponent<ProfileManager>() ?? throw new UnityException("ProfileManager is null");
         fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
 
@@ -42,7 +40,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var profile in profileManager.profiles)
+        foreach (var profile in ProfileManager.profiles)
         {
             AddButton(profile.Key);
         }
@@ -70,7 +68,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void OnProfileButtonClicked(string profileName)
     {
-        profileManager.currentProfile = profileManager.profiles[profileName];
+        ProfileManager.currentProfile = ProfileManager.profiles[profileName];
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 

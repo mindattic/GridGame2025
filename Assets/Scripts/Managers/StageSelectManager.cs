@@ -68,8 +68,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void OnStageSelectButtonClicked(string stageName)
     {
-        var profileManager = GameObject.Find(Constants.ProfileManager).GetComponent<ProfileManager>();
-        profileManager.currentProfile.Stage.CurrentStageName = stageName;
+        ProfileManager.currentProfile.Stage.CurrentStageName = stageName;
         SceneManager.LoadScene(SceneHelper.Game);
     }
 

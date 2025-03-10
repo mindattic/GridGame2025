@@ -17,7 +17,6 @@ public class StageManager : MonoBehaviour
     // Quick Reference Properties:
     protected Fade fade => GameManager.instance.fade;                            
     protected ResourceManager resourceManager => GameManager.instance.resourceManager; 
-    protected ProfileManager profileManager => GameObject.Find(Constants.ProfileManager).GetComponent<ProfileManager>();
     public int totalCoins
     {
         get => GameManager.instance.totalCoins;
@@ -60,7 +59,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var stageName = profileManager.currentProfile.Stage.CurrentStageName;
+        var stageName = ProfileManager.currentProfile.Stage.CurrentStageName;
         currentStage = DataManager.GetStage(stageName);
         LoadStage();
     }

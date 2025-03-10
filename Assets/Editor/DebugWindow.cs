@@ -61,7 +61,6 @@ public class DebugWindow : EditorWindow
     private TurnManager turnManager;
     private StageManager stageManager;
     private LogManager logManager;
-    private ProfileManager profileManager;
     private SelectedPlayerManager selectedPlayerManager;
 
     // Debug window UI selections for game speed, debug options, and VFX testing.
@@ -176,7 +175,6 @@ public class DebugWindow : EditorWindow
         turnManager = gameManager.turnManager;
         stageManager = gameManager.stageManager;
         logManager = gameManager.logManager;
-        profileManager = GameObject.Find(Constants.ProfileManager).GetComponent<ProfileManager>();
         selectedPlayerManager = gameManager.selectedPlayerManager;
 
         // Set initial debug flag values.
@@ -226,7 +224,6 @@ public class DebugWindow : EditorWindow
             || turnManager == null
             || stageManager == null
             || logManager == null
-            || profileManager == null
             || selectedPlayerManager == null)
             return;
 
