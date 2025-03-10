@@ -27,7 +27,7 @@ public class PauseManager : MonoBehaviour
         pauseMenu = GameObject.Find(ComponentHelper.Game.PauseMenu).gameObject ?? throw new UnityException("ComponentHelper is null");
         fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
         buttons = GameObject.Find(ComponentHelper.Game.PauseMenu).GetComponentsInChildren<Button>() ?? throw new UnityException("PauseMenu buttons are null");
-        MenuHelper.SetPosition(buttons);
+        MenuHelper.Align(buttons);
     }
 
     private void Start()

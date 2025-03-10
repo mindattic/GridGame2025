@@ -15,36 +15,40 @@ public class TitleManager : MonoBehaviour
     {
         fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
         buttons = GameObject.Find(ComponentHelper.Title.MainMenu).GetComponentsInChildren<Button>();
-        MenuHelper.SetPosition(buttons);
+        MenuHelper.Align(buttons);
     }
 
     private void Start()
-    {
-        
+    {    
         StartCoroutine(fade.FadeIn());
     }
 
-    public void OnContinueClicked()
+    public void OnContinueButtonClicked()
     {
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 
-    public void OnNewGameClicked()
+    public void OnNewGameButtonClicked()
     {
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 
-    public void OnLoadGameClicked()
+    public void OnLoadGameButtonClicked()
     {
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 
-    public void OnSettingsClicked()
+    public void OnSettingsButtonClicked()
     {
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Settings)));
     }
 
-    public void OnQuitClicked()
+    public void OnCreditsButtonClicked()
+    {
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Credits)));
+    }
+
+    public void OnQuitButtonClicked()
     {     
         StartCoroutine(fade.FadeOut(Quit()));
     }

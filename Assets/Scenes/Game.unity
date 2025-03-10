@@ -895,7 +895,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1751276310}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: OnQuitClicked
+        m_MethodName: OnQuitButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1220,7 +1220,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: db4607861d407d5468b4f340d41cdd4d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 10b607c4c4d23e44f90211b58b72878c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1247,10 +1247,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 377173715}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fddb098a36a5e746a8c2a42c96f3c39, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e088d82d58f6a040bb24efe328ddec6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 377173717}
 --- !u!1 &433156301
 GameObject:
   m_ObjectHideFlags: 0
@@ -2382,11 +2381,11 @@ RectTransform:
   - {fileID: 570420154}
   - {fileID: 1964631040}
   - {fileID: 196576095}
-  - {fileID: 377173716}
   - {fileID: 1700541649}
   - {fileID: 252075013}
   - {fileID: 890377526}
   - {fileID: 962657116}
+  - {fileID: 377173716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4017,7 +4016,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1751276310}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: OnLevelSelectClicked
+        m_MethodName: OnStageSelectButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6662,7 +6661,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1751276310}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: OnResumeClicked
+        m_MethodName: OnResumeButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6795,7 +6794,7 @@ SpriteRenderer:
   m_Size: {x: 0.01, y: 0.01}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &1754065675
@@ -6867,7 +6866,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Level Select
+  m_text: Stage Select
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
   m_sharedMaterial: {fileID: 9208542116982176056, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
@@ -7161,7 +7160,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1751276310}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: OnSettingsClicked
+        m_MethodName: OnSettingsButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17796,12 +17795,12 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 608292895}
-  - {fileID: 1463557012}
   - {fileID: 1907110556}
+  - {fileID: 655101921}
+  - {fileID: 1463557012}
   - {fileID: 480705960}
   - {fileID: 61697121}
   - {fileID: 1476864828}
-  - {fileID: 655101921}
   - {fileID: 1526808600}
   - {fileID: 1751276276}
   - {fileID: 988052023}

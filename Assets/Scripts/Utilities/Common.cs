@@ -11,6 +11,7 @@ public static class SceneHelper
     public static string Splash = "Splash";
     public static string Title = "Title";
     public static string Settings = "Settings";
+    public static string Credits = "Credits";
     public static string StageSelect = "StageSelect";
     public static string Game = "Game";
 }
@@ -35,6 +36,15 @@ public static class ComponentHelper
     {
         public static string Canvas2D = "Canvas2D";
         public static string Fade = "Canvas2D/Fade";
+        public static string Credits = "Canvas2D/ScrollView/Viewport/Content/Credits";
+        public static string ProfileManager = "ProfileManager";
+    }
+
+    public static class Credits
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Fade = "Canvas2D/Fade";
+        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
         public static string ProfileManager = "ProfileManager";
     }
 
@@ -809,7 +819,7 @@ public static class DeathHelper
 
 public static class MenuHelper
 {
-    public static void SetPosition(Button[] buttons)
+    public static void Align(Button[] buttons)
     {
         RectTransform parentRect = buttons[0].transform.parent as RectTransform;
         float parentWidth = parentRect.rect.width;

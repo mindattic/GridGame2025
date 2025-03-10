@@ -5,12 +5,21 @@ using System.Collections;
 
 public class CanvasParticleInstance : MonoBehaviour
 {
+    //Fields
     private float xRotationSpeed;
     private float yRotationSpeed;
     private float zRotationSpeed;
     private float horizontalSpeed;
     private float fallSpeed;
     private RectTransform rectTransform;
+
+    //Properties
+    public Transform parent
+    {
+        get => gameObject.transform.parent;
+        set => gameObject.transform.SetParent(value, true);
+    }
+
 
     public void Initialize(float rotationSpeed, float horizontalSpeed, float fallSpeed)
     {

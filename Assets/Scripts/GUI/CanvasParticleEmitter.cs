@@ -29,10 +29,10 @@ public class CanvasParticleEmitter : MonoBehaviour
     {
         xMin = -Screen.width;
         xMax = Screen.width;
-        yMin = -500;
-        yMax = 500;
+        yMin = -200;
+        yMax = 200;
         spawnIntervalMin = 0.1f;
-        spawnIntervalMax = 0.5f;
+        spawnIntervalMax = 0.25f;
         speedMin = 300;
         speedMax = 600;
         yMin = -1000;
@@ -43,7 +43,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         fallSpeedMax = 100;
         scaleMin = 0.3f;
         scaleMax = 0.4f;
-        prewarmCount = Random.Int(10, 20);
+        prewarmCount = 20;
 
         sprites = new Sprite[]
         {
@@ -107,6 +107,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         rect.localScale = new Vector3(scale, scale, 1f);
 
         CanvasParticleInstance instance = newImage.AddComponent<CanvasParticleInstance>();
+        instance.parent = transform;
         instance.Initialize(rotationSpeed, horizontalSpeed, fallSpeed);
     }
 }

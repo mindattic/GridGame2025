@@ -85,7 +85,6 @@
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Board\FocusIndicator.cs" />
-    <Compile Include="Assets\Fade.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
     <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
     <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
@@ -100,6 +99,7 @@
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackAction.cs" />
     <Compile Include="Assets\Scripts\GUI\TutorialPopup.cs" />
+    <Compile Include="Assets\Scripts\GUI\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Actions\DirectAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
@@ -123,9 +124,11 @@
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Actions\CastSpellAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
+    <Compile Include="Assets\Scripts\GUI\CityScroll.cs" />
     <Compile Include="Assets\Scripts\Models\Location.cs" />
     <Compile Include="Assets\Scripts\Models\VFXResource.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
+    <Compile Include="Assets\Scripts\GUI\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
@@ -138,12 +141,11 @@
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasParticleInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Trigger.cs" />
-    <Compile Include="Assets\CityScroll.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceModels.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
+    <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
-    <Compile Include="Assets\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\GUI\CoinBar.cs" />
@@ -151,9 +153,9 @@
     <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
-    <Compile Include="Assets\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
+    <Compile Include="Assets\Scripts\GUI\Fade.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\GUI\TimerBar.cs" />
@@ -163,7 +165,6 @@
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
-    <Compile Include="Assets\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />

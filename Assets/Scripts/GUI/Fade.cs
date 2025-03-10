@@ -4,8 +4,16 @@ using UnityEngine.UI;
 
 public class Fade : MonoBehaviour
 {
-    [SerializeField] public Image image;
+    private Image image;
     private float fadeDuration = 0.5f;
+
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+        if (image.sprite == null)
+            image.sprite = Resources.Load<Sprite>("Sprites/Black16x16");
+        image.color = new Color(0, 0, 0, 1);
+    }
 
     public IEnumerator FadeIn(IEnumerator coroutine = null)
     {
