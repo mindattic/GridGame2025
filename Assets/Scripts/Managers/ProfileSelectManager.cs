@@ -69,7 +69,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void OnProfileButtonClicked(string profileName)
     {
-        ProfileHub.currentProfile = ProfileHub.profiles[profileName];
+        ProfileHub.Current = ProfileHub.profiles[profileName];
         StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Game)));
     }
 

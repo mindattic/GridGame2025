@@ -18,7 +18,7 @@ public static class ProfileHub
     //Fields
 
     public static Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
-    public static Profile currentProfile = null;
+    public static Profile Current = null;
    
     static ProfileHub()
     {
@@ -99,7 +99,7 @@ public static class ProfileHub
         while (Directory.Exists(Path.Combine(FolderHelper.Folders.Profiles, guid)));
 
         //Instantiate current profile with the generated GUID; create folder
-        currentProfile = new Profile(guid);
+        Current = new Profile(guid);
 
         //Save the individual JSON files
         bool globalSaved = SaveSection<GlobalSection>();
@@ -128,7 +128,7 @@ public static class ProfileHub
         string fileName = GetFileName<T>();
         ProfileSection section = GetSection<T>();
 
-        var filePath = Path.Combine(currentProfile.Folder, fileName);
+        var filePath = Path.Combine(Current.Folder, fileName);
         if (string.IsNullOrWhiteSpace(filePath))
         {
             Debug.LogError($"Invalid file path for: {filePath}");
@@ -203,7 +203,7 @@ public static class ProfileHub
     {
         //var sw = Stopwatch.StartNew();
 
-        if (currentProfile == null || !currentProfile.IsValid())
+        if (Current == null || !Current.IsValid())
         {
             Debug.LogError($"An invalid save file was specified.");
             return false;
@@ -258,7 +258,7 @@ public static class ProfileHub
         if (!profiles.TryGetValue(guid, out Profile profile))
             return;
 
-        currentProfile = profile;
+        Current = profile;
     }
 
     public static bool HasProfiles()
@@ -303,16 +303,16 @@ public static class ProfileHub
     private static ProfileSection GetSection<T>() where T : class
     {
         if (typeof(T) == typeof(GlobalSection))
-            return currentProfile.Global;
+            return Current.Global;
 
         if (typeof(T) == typeof(SettingsSection))
-            return currentProfile.Settings;
+            return Current.Settings;
 
         if (typeof(T) == typeof(StageSection))
-            return currentProfile.Stage;
+            return Current.Stage;
 
         if (typeof(T) == typeof(PartySection))
-            return currentProfile.Party;
+            return Current.Party;
 
         return null;
     }

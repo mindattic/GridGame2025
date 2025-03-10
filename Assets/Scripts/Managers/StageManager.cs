@@ -59,7 +59,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var stageName = ProfileHub.currentProfile.Stage.CurrentStageName;
+        var stageName = ProfileHub.Current.Stage.CurrentStageName;
         currentStage = DataHub.GetStage(stageName);
         LoadStage();
     }
