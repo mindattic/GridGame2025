@@ -54,19 +54,6 @@ public class TitleManager : MonoBehaviour
         StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Credits)));
     }
 
-    public void OnQuitButtonClicked()
-    {
-        DisableButtons();
-        StartCoroutine(fade.FadeOut(Quit()));
-    }
-
-
-    private IEnumerator Quit()
-    {
-        Application.Quit();
-        yield break;
-    }
-
     private void DisableButtons()
     {
         foreach (var button in buttons)

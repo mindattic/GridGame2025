@@ -101,9 +101,7 @@ namespace Assets.Scripts.Models
     [Serializable]
     public class StageActor
     {
-        public StageActor() {
-            Location = Random.UnoccupiedLocation;
-        }
+        public StageActor() {}
 
 
         public StageActor(StageActor other)

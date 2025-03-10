@@ -124,8 +124,50 @@ public static class Vector2IntExtensions
         v.y += y;
     }
 
+    public static Vector2Int SetX(this Vector2Int v, int x)
+    {
+        return new Vector2Int(x, v.y);
+    }
+
+    public static Vector2Int AddX(this Vector2Int v, int x)
+    {
+        return new Vector2Int(v.x + x, v.y);
+    }
+
+    public static Vector2Int SetY(this Vector2Int v, int y)
+    {
+        return new Vector2Int(v.x, y);
+    }
+
+    public static Vector2Int AddY(this Vector2Int v, int y)
+    {
+        return new Vector2Int(v.x, v.y + y);
+    }
 }
 
+
+public static class Vector2Extensions
+{
+    public static Vector2 SetX(this Vector2 v, float x)
+    {
+        return new Vector2(x, v.y);
+    }
+
+    public static Vector2 AddX(this Vector2 v, float x)
+    {
+        return new Vector2(v.x + x, v.y);
+    }
+
+    public static Vector2 SetY(this Vector2 v, float y)
+    {
+        return new Vector2(v.x, y);
+    }
+
+    public static Vector2 AddY(this Vector2 v, float y)
+    {
+        return new Vector2(v.x, v.y + y);
+    }
+}
 
 public static class Vector3Extensions
 {
@@ -139,11 +181,6 @@ public static class Vector3Extensions
         return new Vector3(v.x + x, v.y, v.z);
     }
 
-    public static Vector3 SubtractX(this Vector3 v, float x)
-    {
-        return new Vector3(v.x - x, v.y, v.z);
-    }
-
     public static Vector3 SetY(this Vector3 v, float y)
     {
         return new Vector3(v.x, y, v.z);
@@ -154,11 +191,6 @@ public static class Vector3Extensions
         return new Vector3(v.x, v.y + y, v.z);
     }
 
-    public static Vector3 SubtractY(this Vector3 v, float y)
-    {
-        return new Vector3(v.x, v.y - y, v.z);
-    }
-
     public static Vector3 SetZ(this Vector3 v, float z)
     {
         return new Vector3(v.x, v.y, z);
@@ -167,11 +199,6 @@ public static class Vector3Extensions
     public static Vector3 AddZ(this Vector3 v, float z)
     {
         return new Vector3(v.x, v.y, v.z + z);
-    }
-
-    public static Vector3 SubtractZ(this Vector3 v, float z)
-    {
-        return new Vector3(v.x, v.y, v.z - z);
     }
 
     public static bool HasNaN(this Vector3 v)

@@ -16,6 +16,18 @@ static class Random
     private static int columnCount => GameManager.instance.board.columnCount;
     private static int rowCount => GameManager.instance.board.rowCount;
 
+    public static ActorInstance Player => players.Where(x => x.isPlaying).Shuffle().First();
+
+    public static ActorInstance Enemy => enemies.Where(x => x.isPlaying).Shuffle().First();
+
+    public static TileInstance Tile => tiles.Shuffle().First();
+
+    public static TileInstance UnoccupiedTile => tiles.Where(x => !x.IsOccupied).Shuffle().First();
+
+    public static Vector2Int Location => new Vector2Int(Int(1, columnCount), Int(1, rowCount));
+
+    public static Vector2Int UnoccupiedLocation => UnoccupiedTile.location;
+
     public static int Int(int min, int max) => rng.Next(min, max + 1);
 
     public static float Float(float min = 0f, float max = 1f) => (float)rng.NextDouble() * (max - min) + min;
@@ -122,23 +134,6 @@ static class Random
         };
 
     }
-
-
-
-
-
-    public static ActorInstance Player => players.Where(x => x.isPlaying).Shuffle().First();
-
-    public static ActorInstance Enemy => enemies.Where(x => x.isPlaying).Shuffle().First();
-
-    public static TileInstance Tile => tiles.Shuffle().First();
-
-    public static TileInstance UnoccupiedTile => tiles.Where(x => !x.IsOccupied).Shuffle().First();
-
-    public static Vector2Int Location => new Vector2Int(Int(1, columnCount), Int(1, rowCount));
-
-    public static Vector2Int UnoccupiedLocation => UnoccupiedTile.location;
-
 
     public static T EnumValue<T>() where T : Enum
     {

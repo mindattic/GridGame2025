@@ -10,8 +10,8 @@ namespace Assets.Scripts.Store
 {
     public static class SceneHub
     {
-        public static string PreviousScene;
-        public static string CurrentScene;
+        public static string PreviousScene = "Title";
+        public static string CurrentScene = "Title";
 
         public static IEnumerator LoadScene(string sceneName)
         {

@@ -25,7 +25,6 @@ public static class ComponentHelper
         public static string Canvas2D = "Canvas2D";
         public static string Fade = "Canvas2D/Fade";
         public static string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public static string ProfileManager = "ProfileManager";
     }
 
     public static class Game
@@ -35,15 +34,15 @@ public static class ComponentHelper
         public static string Fade = "Canvas2D/Fade";
         public static string PauseButton = "Canvas2D/PauseButton";
         public static string PauseMenu = "Canvas2D/PauseMenu";
-        public static string ProfileManager = "ProfileManager";
     }
 
     public static class ProfileSelect
     {
         public static string Canvas2D = "Canvas2D";
-        public static string Fade = "Canvas2D/Fade";
+        public static string Header = "Canvas2D/Header";
+        public static string ScrollView = "Canvas2D/ScrollView";
         public static string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public static string ProfileManager = "ProfileManager";
+        public static string Fade = "Canvas2D/Fade";
     }
 
     public static class Splash
@@ -56,6 +55,9 @@ public static class ComponentHelper
     public static class Settings
     {
         public static string Canvas2D = "Canvas2D";
+        public static string Header = "Canvas2D/Header";
+        public static string ScrollView = "Canvas2D/ScrollView";
+        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
         public static string Fade = "Canvas2D/Fade";
         public static string Credits = "Canvas2D/ScrollView/Viewport/Content/Credits";
         public static string ProfileManager = "ProfileManager";
@@ -64,10 +66,10 @@ public static class ComponentHelper
     public static class StageSelect
     {
         public static string Canvas2D = "Canvas2D";
-        public static string Fade = "Canvas2D/Fade";
+        public static string Header = "Canvas2D/Header";
+        public static string ScrollView = "Canvas2D/ScrollView";
         public static string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public static string DataManager = "DataManager";
-        public static string ProfileManager = "ProfileManager";
+        public static string Fade = "Canvas2D/Fade";
     }
 
     public static class Title
