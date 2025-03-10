@@ -25,44 +25,48 @@ public class TitleManager : MonoBehaviour
 
     public void OnContinueButtonClicked()
     {
+        DisableButtons();
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 
     public void OnNewGameButtonClicked()
     {
+        DisableButtons();
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
     }
 
     public void OnLoadGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
+        DisableButtons();
+        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.ProfileSelect)));
     }
 
     public void OnSettingsButtonClicked()
     {
+        DisableButtons();
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Settings)));
     }
 
     public void OnCreditsButtonClicked()
     {
+        DisableButtons();
         StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Credits)));
     }
 
     public void OnQuitButtonClicked()
-    {     
+    {
+        DisableButtons();
         StartCoroutine(fade.FadeOut(Quit()));
     }
 
     private IEnumerator LoadScene(string sceneName)
     {
-        DisableButtons();
         SceneManager.LoadScene(sceneName);
         yield break;
     }
 
     private IEnumerator Quit()
     {
-        DisableButtons();
         Application.Quit();
         yield break;
     }

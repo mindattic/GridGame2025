@@ -8,38 +8,17 @@ using UnityEngine.UI;
 
 public static class SceneHelper
 {
-    public static string Splash = "Splash";
-    public static string Title = "Title";
-    public static string Settings = "Settings";
     public static string Credits = "Credits";
-    public static string StageSelect = "StageSelect";
     public static string Game = "Game";
+    public static string ProfileSelect = "ProfileSelect";
+    public static string Splash = "Splash";
+    public static string Settings = "Settings";
+    public static string StageSelect = "StageSelect";
+    public static string Title = "Title";
 }
 
 public static class ComponentHelper
 {
-    public static class Splash
-    {
-        public static string Canvas2D = "Canvas2D";
-        public static string Fade = "Canvas2D/Fade";
-    }
-
-    public static class Title
-    {
-        public static string Canvas2D = "Canvas2D";
-        public static string Fade = "Canvas2D/Fade";
-        public static string MainMenu = "Canvas2D/MainMenu";
-        public static string ProfileManager = "ProfileManager";
-    }
-
-    public static class Settings
-    {
-        public static string Canvas2D = "Canvas2D";
-        public static string Fade = "Canvas2D/Fade";
-        public static string Credits = "Canvas2D/ScrollView/Viewport/Content/Credits";
-        public static string ProfileManager = "ProfileManager";
-    }
-
     public static class Credits
     {
         public static string Canvas2D = "Canvas2D";
@@ -48,12 +27,36 @@ public static class ComponentHelper
         public static string ProfileManager = "ProfileManager";
     }
 
+    public static class Game
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Canvas3D = "Canvas3D";
+        public static string Fade = "Canvas2D/Fade";
+        public static string PauseButton = "Canvas2D/PauseButton";
+        public static string PauseMenu = "Canvas2D/PauseMenu";
+        public static string ProfileManager = "ProfileManager";
+    }
+
     public static class ProfileSelect
     {
-
         public static string Canvas2D = "Canvas2D";
         public static string Fade = "Canvas2D/Fade";
-        public static string Content = "Canvas2D/ScrollView/Viewport/Content";       
+        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public static string ProfileManager = "ProfileManager";
+    }
+
+    public static class Splash
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Fade = "Canvas2D/Fade";
+    }
+
+
+    public static class Settings
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Fade = "Canvas2D/Fade";
+        public static string Credits = "Canvas2D/ScrollView/Viewport/Content/Credits";
         public static string ProfileManager = "ProfileManager";
     }
 
@@ -66,13 +69,11 @@ public static class ComponentHelper
         public static string ProfileManager = "ProfileManager";
     }
 
-    public static class Game
+    public static class Title
     {
         public static string Canvas2D = "Canvas2D";
-        public static string Canvas3D = "Canvas3D";
         public static string Fade = "Canvas2D/Fade";
-        public static string PauseButton = "Canvas2D/PauseButton";
-        public static string PauseMenu = "Canvas2D/PauseMenu";
+        public static string MainMenu = "Canvas2D/MainMenu";
         public static string ProfileManager = "ProfileManager";
     }
 }
