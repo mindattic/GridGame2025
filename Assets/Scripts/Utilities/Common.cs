@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -820,14 +821,14 @@ public static class DeathHelper
 
 public static class MenuHelper
 {
-    public static void Align(Button[] buttons)
+    public static void Initialize(Button[] buttons)
     {
         RectTransform parentRect = buttons[0].transform.parent as RectTransform;
         float parentWidth = parentRect.rect.width;
         float parentHeight = parentRect.rect.height;
 
-        float buttonWidth = 0.9f * parentWidth;    
-        float buttonHeight = parentHeight / 16f;    
+        float buttonWidth = 0.9f * parentWidth;
+        float buttonHeight = parentHeight * 0.0625f;
         float spacing = 0.01f * parentHeight;
 
         float totalButtonHeight = buttonHeight * buttons.Length;
@@ -835,14 +836,17 @@ public static class MenuHelper
 
         float startY = totalHeight / 2f; // We'll subtract from this for each button.
 
-        for (int i = 0; i < buttons.Length; i++)
+        foreach (var button in buttons)
         {
-            RectTransform rt = buttons[i].GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-            rt.anchoredPosition = new Vector2(0, startY - buttonHeight / 2f);
+            RectTransform rectTransform = button.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+            rectTransform.anchoredPosition = new Vector2(0, startY - buttonHeight / 2f);
+            TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>();
+            label.fontSize = buttonHeight / 2f;
 
             startY -= (buttonHeight + spacing);
         }
+
     }
 }
 

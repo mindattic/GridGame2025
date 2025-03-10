@@ -22,7 +22,6 @@ public class DebugManager : MonoBehaviour
     protected AttackLineManager attackLineManager => GameManager.instance.attackLineManager;
     protected CoinManager coinManager => GameManager.instance.coinManager;
     protected DamageTextManager damageTextManager => GameManager.instance.damageTextManager;
-    protected DataManager dataManager => GameManager.instance.dataManager;
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected StageManager stageManager => GameManager.instance.stageManager;

@@ -55,7 +55,7 @@ namespace Assets.Scripts.Models
         /// <returns>The corresponding world position.</returns>
         public Vector3 GetPosition(Vector2Int location)
         {
-            Debug.Log(System.Environment.StackTrace);
+            //Debug.Log(System.Environment.StackTrace);
             locationToEntry.TryGetValue(location, out TileEntry entry);
             return entry != null ? entry.Position : PositionHelper.Nowhere;
         }
@@ -68,7 +68,7 @@ namespace Assets.Scripts.Models
         /// <returns>The corresponding grid coordinates.</returns>
         public Vector2Int GetLocation(Vector3 position)
         {
-            Debug.Log(System.Environment.StackTrace);
+            //Debug.Log(System.Environment.StackTrace);
             positionToEntry.TryGetValue(position, out TileEntry entry);
             return entry != null ? entry.Location : LocationHelper.Nowhere;
         }

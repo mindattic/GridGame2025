@@ -15,7 +15,7 @@ public class TitleManager : MonoBehaviour
     {
         fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
         buttons = GameObject.Find(ComponentHelper.Title.MainMenu).GetComponentsInChildren<Button>();
-        MenuHelper.Align(buttons);
+        MenuHelper.Initialize(buttons);
     }
 
     private void Start()

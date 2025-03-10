@@ -27,7 +27,7 @@ namespace Assets.Scripts.Models
             Details = other.Details != null ? new ActorDetails(other.Details) : new ActorDetails();
         }
 
-        public string Character;
+        public Character Character;
         public string Description;
         public ActorStats Stats;
         public ThumbnailSettings ThumbnailSettings;
@@ -101,20 +101,31 @@ namespace Assets.Scripts.Models
     [Serializable]
     public class StageActor
     {
-        public StageActor() { }
+        public StageActor() {
+            Location = Random.UnoccupiedLocation;
+        }
+
 
         public StageActor(StageActor other)
         {
             Character = other.Character;
             Team = other.Team;
             SpawnTurn = other.SpawnTurn;
-            Location = other.Location;
+            Location = other.Location.HasValue ? other.Location : Random.UnoccupiedLocation;
+        }
+
+        public StageActor(Character character, Team team)
+        {
+            Character = character;
+            Team = team;
+            SpawnTurn = 0;
+            Location = Random.UnoccupiedLocation;
         }
 
         public Character Character;
         public Team Team;
         public int SpawnTurn;
-        public Vector2Int Location;
+        public Vector2Int? Location;
     }
 
     [Serializable]

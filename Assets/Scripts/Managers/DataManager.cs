@@ -1,19 +1,14 @@
 using Assets.Scripts.Models;
-using Game.Behaviors;
-using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    protected LogManager logManager => GameManager.instance.logManager;
-
-    public readonly Dictionary<string, ActorData> Actors = new Dictionary<string, ActorData>
+    public static Dictionary<string, ActorData> Actors = new Dictionary<string, ActorData>
     {
         { "Barbarian", new ActorData
             {
-                Character = "Barbarian",
+                Character = Character.Barbarian,
                 Description = "A warrior driven by rage.",
                 Stats = new ActorStats
                 {
@@ -32,7 +27,7 @@ public class DataManager : MonoBehaviour
         },
         { "Bat", new ActorData
             {
-                Character = "Bat",
+                Character = Character.Bat,
                 Description = "A flying menace.",
                 Stats = new ActorStats
                 {
@@ -51,7 +46,7 @@ public class DataManager : MonoBehaviour
         },
         { "Cleric", new ActorData
             {
-                Character = "Cleric",
+                Character = Character.Cleric,
                 Description = "A strict adherent to the church.",
                 Stats = new ActorStats
                 {
@@ -70,7 +65,7 @@ public class DataManager : MonoBehaviour
         },
         { "Ninja", new ActorData
             {
-                Character = "Ninja",
+                Character = Character.Ninja,
                 Description = "A stealthy assassin.",
                 Stats = new ActorStats
                 {
@@ -89,7 +84,7 @@ public class DataManager : MonoBehaviour
         },
         { "Paladin", new ActorData
             {
-                Character = "Paladin",
+                Character = Character.Paladin,
                 Description = "A holy knight.",
                 Stats = new ActorStats
                 {
@@ -108,7 +103,7 @@ public class DataManager : MonoBehaviour
         },
         { "Scorpion", new ActorData
             {
-                Character = "Scorpion",
+                Character = Character.Scorpion,
                 Description = "A poisonous insectile predator.",
                 Stats = new ActorStats
                 {
@@ -127,7 +122,7 @@ public class DataManager : MonoBehaviour
         },
         { "Slime", new ActorData
             {
-                Character = "Slime",
+                Character = Character.Slime,
                 Description = "A weak and squishy creature.",
                 Stats = new ActorStats
                 {
@@ -146,7 +141,7 @@ public class DataManager : MonoBehaviour
         },
         { "Yeti", new ActorData
             {
-                Character = "Yeti",
+                Character = Character.Yeti,
                 Description = "A large humanoid underdweller.",
                 Stats = new ActorStats
                 {
@@ -165,9 +160,9 @@ public class DataManager : MonoBehaviour
         }
     };
 
-    public readonly Dictionary<string, StageData> Stages = new Dictionary<string, StageData>
+    public static Dictionary<string, StageData> Stages = new Dictionary<string, StageData>
     {
-       { "Stage 1", new StageData
+    { "Stage 1", new StageData
         {
             Name = "Stage 1",
             Description = "Intro Battle",
@@ -733,7 +728,7 @@ public class DataManager : MonoBehaviour
     },
 };
 
-    public readonly Dictionary<string, TrailResource> TrailEffects = new Dictionary<string, TrailResource>
+    public static Dictionary<string, TrailResource> TrailEffects = new Dictionary<string, TrailResource>
     {
         { "BlueGlow", new TrailResource
             {
@@ -869,7 +864,7 @@ public class DataManager : MonoBehaviour
         }
     };
 
-    public readonly Dictionary<string, Tutorial> Tutorials = new Dictionary<string, Tutorial>
+    public static Dictionary<string, Tutorial> Tutorials = new Dictionary<string, Tutorial>
     {
         { "Tutorial1", new Tutorial
             {
@@ -884,7 +879,7 @@ public class DataManager : MonoBehaviour
         }
     };
 
-    public readonly Dictionary<string, VFXData> VisualEffects = new Dictionary<string, VFXData>
+    public static Dictionary<string, VFXData> VisualEffects = new Dictionary<string, VFXData>
     {
         { "AcidSplash", new VFXData { Name = "AcidSplash", RelativeOffset = "(0, 0.01, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.1, 0.1, 0.1)", Delay = 0f, Duration = 2f, IsLoop = false } },
         { "AirSlash", new VFXData { Name = "AirSlash", RelativeOffset = "(0.01, -0.15, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.15, 0.15, 0.15)", Delay = 0f, Duration = 2f, IsLoop = false } },
@@ -918,82 +913,56 @@ public class DataManager : MonoBehaviour
         { "YellowHit", new VFXData { Name = "YellowHit", RelativeOffset = "(-0.02, 0, 0)", AngularRotation = "(0, 0, 0)", RelativeScale = "(0.2, 0.2, 0)", Delay = 0f, Duration = 2f, IsLoop = false } }
     };
 
-    //public List<T> ParseJson<T>(string resource)
-    //{
-    //    string filePath = $"Data/{resource}";
-    //    //Debug.Log(filePath);
-    //    TextAsset jsonFile = Resources.Assign<TextAsset>(filePath);
-
-    //    if (jsonFile == null)
-    //    {
-    //        logManager.Error($"File {filePath} not found in Resources.");
-    //        return null;
-    //    }
-
-    //    var collection = JsonConvert.DeserializeObject<JsonWrapper<T>>(jsonFile.text);
-    //    return collection.Items;
-    //}
-
-    public void Initialize()
-    {
-        //Actors = ParseJson<ActorData>(Resource.Actors);
-        //Stages = ParseJson<StageData>(Resource.Stages);
-        //TrailEffects = ParseJson<TrailData>(Resource.TrailEffects);
-        //VisualEffects = ParseJson<VFXData>(Resource.VisualEffects);
-    }
-
-    public ActorStats GetStats(Character character)
+    public static ActorStats GetStats(Character character)
     {
         var data = Actors[character.ToString()].Stats;
         if (data == null)
-            logManager.Error($"Unable to retrieve actor stats for `{character}`");
-
+            Debug.LogError($"Unable to retrieve actor stats for `{character}`");
 
         return new ActorStats(data); //Return a new copy instead of a shared reference
-        //return data;
     }
 
-    public ThumbnailSettings GetThumbnailSetting(Character character)
+    public static ThumbnailSettings GetThumbnailSetting(Character character)
     {
         var data = Actors[character.ToString()].ThumbnailSettings;
         if (data == null)
-            logManager.Error($"Unable to retrieve thumnail settings for `{name}`");
+            Debug.LogError($"Unable to retrieve thumnail settings for `{character}`");
 
         return new ThumbnailSettings(data); //Return a new copy instead of a shared reference
-        //return data;
     }
 
-    public ActorDetails GetDetails(Character character)
+    public static ActorDetails GetDetails(Character character)
     {
         var data = Actors[character.ToString()].Details;
         if (data == null)
-            logManager.Error($"Unable to retrieve actor details for `{character}`");
+            Debug.LogError($"Unable to retrieve actor details for `{character}`");
 
         return new ActorDetails(data); //Return a new copy instead of a shared reference
     }
 
-    public StageData GetStage(string name)
+    public static StageData GetStage(string name)
     {
         var data = Stages[name];
         if (data == null)
-            logManager.Error($"Unable to retrieve stage for `{name}`");
+            Debug.LogError($"Unable to retrieve stage for `{name}`");
 
         return new StageData(data); //Return a new copy instead of a shared reference
     }
-    public TrailResource GetTrailEffect(string name)
+
+    public static TrailResource GetTrailEffect(string name)
     {
         var data = TrailEffects[name];
         if (data == null)
-            logManager.Error($"Unable to retrieve trailInstance effect for `{name}`");
+            Debug.LogError($"Unable to retrieve trailInstance effect for `{name}`");
 
         return new TrailResource(data); //Return a new copy instead of a shared reference
     }
 
-    public VFXData GetVisualEffect(string name)
+    public static VFXData GetVisualEffect(string name)
     {
         var data = VisualEffects[name];
         if (data == null)
-            logManager.Error($"Unable to retrieve visual effect for `{name}`");
+            Debug.LogError($"Unable to retrieve visual effect for `{name}`");
 
         return new VFXData(data); //Return a new copy instead of a shared reference
     }

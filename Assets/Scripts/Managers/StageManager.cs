@@ -15,8 +15,7 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     // Quick Reference Properties:
-    protected Fade fade => GameManager.instance.fade;                         
-    protected DataManager dataManager => GameManager.instance.dataManager;         
+    protected Fade fade => GameManager.instance.fade;                            
     protected ResourceManager resourceManager => GameManager.instance.resourceManager; 
     protected ProfileManager profileManager => GameObject.Find(Constants.ProfileManager).GetComponent<ProfileManager>();
     public int totalCoins
@@ -62,7 +61,7 @@ public class StageManager : MonoBehaviour
     public void Initialize()
     {
         var stageName = profileManager.currentProfile.Stage.CurrentStageName;
-        currentStage = dataManager.GetStage(stageName);
+        currentStage = DataManager.GetStage(stageName);
         LoadStage();
     }
 
@@ -72,7 +71,7 @@ public class StageManager : MonoBehaviour
     public void Previous()
     {
         // Iterate over all available stages.
-        foreach (var stage in dataManager.Stages.Values)
+        foreach (var stage in DataManager.Stages.Values)
         {
             // Identify the stage that lists the current stage as its next stage.
             if (stage.NextStage == currentStage.Name)
@@ -90,9 +89,9 @@ public class StageManager : MonoBehaviour
     public void Next()
     {
         // Ensure that a valid next stage exists.
-        if (!string.IsNullOrEmpty(currentStage.NextStage) && dataManager.Stages.ContainsKey(currentStage.NextStage))
+        if (!string.IsNullOrEmpty(currentStage.NextStage) && DataManager.Stages.ContainsKey(currentStage.NextStage))
         {
-            currentStage = dataManager.Stages[currentStage.NextStage];
+            currentStage = DataManager.Stages[currentStage.NextStage];
             LoadStage();
         }
     }
@@ -106,12 +105,11 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void LoadStage()
     {
-        // Clear existing elements to prepare for a new stage.
-        actors.Clear();
-        coinBar.Refresh();
+        // Clear existing elements to prepare for a new stage.      
         actorManager.Clear();
         dottedLineManager.Clear();
         supportLineManager.Clear();
+        coinBar.Refresh();
         tileManager.Reset();
         turnManager.Initialize();
 
@@ -123,12 +121,7 @@ public class StageManager : MonoBehaviour
         // Spawn actors defined in the stage data.
         foreach (var stageActor in currentStage.Actors)
         {
-            //Convert string values from stage data into their respective types.
-            var character = stageActor.Character;
-            var team = stageActor.Team;
-            var spawnTurn = stageActor.SpawnTurn;
-            var location = stageActor.Location;
-            SpawnActor(character, team, spawnTurn, location);
+            SpawnActor(new StageActor(stageActor));
         }
 
         // Spawn dotted lines if specified in the stage data.
@@ -149,54 +142,30 @@ public class StageManager : MonoBehaviour
         }
 
         // Start a fade-in effect, and once the fade completes, display the tutorial.
-        StartCoroutine(fade.FadeIn(showTutorial()));
+        //StartCoroutine(fade.FadeIn(showTutorial()));
+        StartCoroutine(fade.FadeIn());
     }
 
-    /*
-    // The following Update method is commented out.
-    // It could be used to check if the stage is complete and log a message.
-    private void Update()
-    {
-       if (currentStageName != null && currentStageName.IsStageComplete(this))
-       {
-           Debug.Log($"StageData '{currentStageName.Name}' Complete!");
-       }
-    }
-    */
-
+ 
     /// <summary>
     /// Spawns a new actor by instantiating the actor prefab and initializing its properties
     /// based on the provided parameters. The actor is then added to the global actors list.
     /// </summary>
-    /// <param name="character">Character type for the actor.</param>
-    /// <param name="team">Team to which the actor belongs.</param>
-    /// <param name="spawnTurn">Turn number at which the actor should spawn.</param>
-    /// <param name="location">Initial grid location for the actor.</param>
-    public void SpawnActor(
-        Character character,
-        Team team,
-        int spawnTurn,
-        Vector2Int location)
+    public void SpawnActor(StageActor stageActor)
     {
-        // Instantiate the actor prefab at (0,0) with no rotation.
         var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<ActorInstance>();
-        // Set the parent to the board to keep the actor within the game area.
         instance.transform.parent = board.transform;
-        // Initialize actor properties.
-        instance.character = character;
-        instance.name = $"{character}_{Guid.NewGuid():N}"; // Ensure unique name.
-        instance.team = team;
-        instance.stats = dataManager.GetStats(character);
+        instance.character = stageActor.Character;
+        instance.friendlyName = instance.character.ToString().Split("_")[0];
+        instance.name = $"{stageActor.Character}_{Guid.NewGuid():N}";
+        instance.team = stageActor.Team;
+        instance.stats = DataManager.GetStats(stageActor.Character);
         instance.transform.localScale = GameManager.instance.tileScale;
-        instance.spawnTurn = spawnTurn;
+        instance.spawnTurn = stageActor.SpawnTurn;
+        instance.Spawn(stageActor.Location.Value);
 
-        // Determine the start location:
-        // If spawnTurn is 1 or lower and a valid location is provided, use it.
-        // Otherwise, assign a random unoccupied location.
-        var startLocation = spawnTurn <= 1 && location != LocationHelper.Nowhere ? location : Random.UnoccupiedLocation;
-        instance.Spawn(startLocation);
-        // Add the new actor instance to the global actors list.
+        //Add the new actor instance to the global actors list.
         actors.Add(instance);
     }
 
@@ -206,7 +175,7 @@ public class StageManager : MonoBehaviour
     /// <param name="character">Character type for the enemy.</param>
     public void AddEnemy(Character character)
     {
-        SpawnActor(character, Team.Enemy, 0, Random.UnoccupiedLocation);
+        SpawnActor(new StageActor(character, Team.Enemy));
     }
 
     /// <summary>
@@ -233,7 +202,7 @@ public class StageManager : MonoBehaviour
         IEnumerator loadNextStage()
         {
             var stageName = currentStage.NextStage;
-            currentStage = dataManager.GetStage(stageName);
+            currentStage = DataManager.GetStage(stageName);
             LoadStage();
             yield return null;
         }

@@ -42,7 +42,7 @@ namespace Game.Models
 
             Stage = new StageSection
             {
-                CurrentStageName = "StageSection 1"
+                CurrentStageName = "Stage 1"
             };
 
             Party = new PartySection();

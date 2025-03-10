@@ -12,7 +12,6 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     //Quick Reference Properties
-    protected DataManager dataManager => GameManager.instance.dataManager;
     protected LogManager logManager => GameManager.instance.logManager;
 
     //Fields
@@ -323,7 +322,7 @@ public class ResourceManager : MonoBehaviour
             foreach (var key in keys)
             {
                 //DEBUG: Should the JSON parsing be here in the Resource Manager? Or depend on OOO?...
-                var data = dataManager.GetTrailEffect(key);
+                var data = DataManager.GetTrailEffect(key);
                 if (data == null)
                 {
                     logManager.Error($"Trail Effect Entry `{key}` is null");
@@ -369,7 +368,7 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var key in keys)
             {
-                var data = dataManager.GetVisualEffect(key);
+                var data = DataManager.GetVisualEffect(key);
                 if (data == null)
                 {
                     logManager.Error($"Visual Effect Entry `{key}` is null");
@@ -437,7 +436,7 @@ public class ResourceManager : MonoBehaviour
 
         //return entries;
 
-        return dataManager.Tutorials;
+        return DataManager.Tutorials;
     }
 
 

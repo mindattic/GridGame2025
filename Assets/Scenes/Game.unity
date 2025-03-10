@@ -5854,7 +5854,6 @@ GameObject:
   - component: {fileID: 1751276276}
   - component: {fileID: 1751276293}
   - component: {fileID: 1751276292}
-  - component: {fileID: 1751276313}
   - component: {fileID: 1751276301}
   - component: {fileID: 1751276282}
   - component: {fileID: 1751276277}
@@ -6515,18 +6514,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DottedLinePrefab: {fileID: 1386232852907994317, guid: dcd92126d8247e749a49508f9e424e1c, type: 3}
   dottedLines: []
---- !u!114 &1751276313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751276275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac4cf3ce71caa6b46aed25bf5e9181b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1751276314
 MonoBehaviour:
   m_ObjectHideFlags: 0

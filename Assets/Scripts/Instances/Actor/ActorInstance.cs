@@ -126,6 +126,7 @@ public class ActorInstance : MonoBehaviour
 
     // Fields: Core data fields representing character stats, state, and modules.
     [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animation behavior.
+    public string friendlyName;
     public Character character;                         // Character data for this actor.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
     public Vector3 previousPosition;                    // World position before the last movement.
@@ -223,6 +224,7 @@ public class ActorInstance : MonoBehaviour
         // Set current and previous locations.
         location = startLocation;
         previousLocation = location;
+
         // Update world position based on grid location.
         position = Geometry.GetPositionByLocation(location);
         previousPosition = position;
@@ -263,7 +265,7 @@ public class ActorInstance : MonoBehaviour
         }
 
         // Set name tag text and toggle its visibility based on debug settings.
-        render.SetNameTagText(name);
+        render.SetNameTagText(friendlyName);
         render.SetNameTagEnabled(isEnabled: debugManager.showActorNameTag);
 
         // Update health and action bars.

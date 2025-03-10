@@ -4,7 +4,6 @@ using UnityEngine;
 public class ActorThumbnail
 {
    //Quick Reference Properties
-    protected DataManager dataManager => GameManager.instance.dataManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
     protected ActorRenderers render => instance.render;
@@ -27,7 +26,7 @@ public class ActorThumbnail
         texture = resourceManager.Portrait(instance.character.ToString()).Value;
 
         //Retrieve thumnail settings from entity
-        ThumbnailSettings settings = dataManager.GetThumbnailSetting(instance.character);
+        ThumbnailSettings settings = DataManager.GetThumbnailSetting(instance.character);
 
         Vector2Int offset = new Vector2Int();
         offset.x = (texture.width - settings.Width) / 2;

@@ -22,7 +22,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TutorialPopup tutorialPopup;
 
     //Managers
-    [HideInInspector] public DataManager dataManager;
     [HideInInspector] public ResourceManager resourceManager;
     [HideInInspector] public InputManager inputManager;
     [HideInInspector] public CameraManager cameraManager;
@@ -102,7 +101,7 @@ public class GameManager : Singleton<GameManager>
     //Properties
     public float gameSpeed { get => Time.timeScale; set => Time.timeScale = value; }
     public float previousGameSpeed;
-  
+
     private void Awake()
     {
         Application.targetFrameRate = targetFramerate;
@@ -157,7 +156,6 @@ public class GameManager : Singleton<GameManager>
 
         //Managers
         //databaseManager = game.GetComponent<DatabaseManager>() ?? throw new UnityException("DatabaseManager is null");
-        dataManager = game.GetComponent<DataManager>() ?? throw new UnityException("DataManager is null");
         cameraManager = game.GetComponent<CameraManager>() ?? throw new UnityException("CameraManager is null");
         stageManager = game.GetComponent<StageManager>() ?? throw new UnityException("StageManager is null");
         boardManager = game.GetComponent<BoardManager>() ?? throw new UnityException("BoardManager is null");
@@ -223,11 +221,10 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         //Initialize in specific order:
-        dataManager.Initialize();       //01
-        resourceManager.Initialize();   //02
-        board.Initialize();             //03
-        stageManager.Initialize();      //04
-        focusIndicator.Initialize();    //05
+        board.Initialize();             //01
+        resourceManager.Initialize();   //02    
+        stageManager.Initialize();      //03
+        focusIndicator.Initialize();    //04
     }
 
 }

@@ -19,8 +19,14 @@ namespace Game.Manager
 
         public void Clear()
         {
-            GameObject.FindGameObjectsWithTag(Tag.Actor).ToList().ForEach(x => Destroy(x));
-            actors.Clear();
+            if (actors != null && actors.Count > 0)
+            {
+                foreach (var actor in actors)
+                {
+                    Destroy(actor.gameObject);
+                }
+                actors.Clear();
+            }
         }
 
     }

@@ -12,7 +12,6 @@ public class StageSelectManager : MonoBehaviour
     [SerializeField] public GameObject buttonPrefab;
     private RectTransform canvas2D;
     private Transform content;
-    private DataManager dataManager;
     private VerticalLayoutGroup verticalLayoutGroup;
     private float screenWidth;
     private float screenHeight;
@@ -26,7 +25,6 @@ public class StageSelectManager : MonoBehaviour
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
         content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
         fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
-        dataManager = GameObject.Find(ComponentHelper.StageSelect.DataManager).GetComponent<DataManager>() ?? throw new UnityException("DataManager is null");
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
 
         screenWidth = canvas2D.rect.width;
@@ -42,7 +40,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var stage in dataManager.Stages)
+        foreach (var stage in DataManager.Stages)
         {
             AddButton(stage.Value.Name);
         }

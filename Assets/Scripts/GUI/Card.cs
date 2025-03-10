@@ -15,7 +15,6 @@ namespace Game.Behaviors
         // Quick Reference Properties:
         // These properties provide shortcuts to access global settings and data from GameManager.
         protected float cardPortraitSize => GameManager.instance.cardPortraitSize; // Desired size for the card's portrait.
-        protected DataManager dataManager => GameManager.instance.dataManager;       // Data manager for retrieving additional character details.
         protected ResourceManager resourceManager => GameManager.instance.resourceManager; // Resource manager to load assets like sprites.
         protected List<ActorInstance> actors => GameManager.instance.actors;         // List of all actor instances in the game.
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator; // UI element to highlight the focused actor.
@@ -111,7 +110,7 @@ namespace Game.Behaviors
             portraitImage.enabled = true;
 
             // Extract the actor's name (splitting at underscore to simplify if needed).
-            titleText.text = focusedActor.name.Split("_")[0];
+            titleText.text = focusedActor.friendlyName;
 
             // Format the actor's stats for display:
             var hp = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}"; // HP/MaxHP with proper spacing.
@@ -127,7 +126,7 @@ namespace Game.Behaviors
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
             // Set the details text combining the stats table with extra details from DataManager.
-            detailsText.text = stats + dataManager.GetDetails(focusedActor.character).Card;
+            detailsText.text = stats + DataManager.GetDetails(focusedActor.character).Card;
 
             // Begin the slide-in animation for the portrait.
             TriggerSlideIn();
