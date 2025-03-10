@@ -1,3 +1,4 @@
+using Assets.Scripts.Store;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -66,34 +67,21 @@ public class PauseManager : MonoBehaviour
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.StageSelect)));   
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.StageSelect)));   
     }
 
     public void OnQuitButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileManager.Save();
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Title)));
+        ProfileHub.Save();
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Title)));
     }
 
-    private IEnumerator LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-        yield break;
-    }
-
-    //private void DisableButtons()
-    //{
-    //    foreach (var button in buttons)
-    //    {
-    //        button.interactable = false;
-    //    }
-    //}
 
 }

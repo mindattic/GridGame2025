@@ -59,8 +59,8 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var stageName = ProfileManager.currentProfile.Stage.CurrentStageName;
-        currentStage = DataManager.GetStage(stageName);
+        var stageName = ProfileHub.currentProfile.Stage.CurrentStageName;
+        currentStage = DataHub.GetStage(stageName);
         LoadStage();
     }
 
@@ -70,7 +70,7 @@ public class StageManager : MonoBehaviour
     public void Previous()
     {
         // Iterate over all available stages.
-        foreach (var stage in DataManager.Stages.Values)
+        foreach (var stage in DataHub.Stages.Values)
         {
             // Identify the stage that lists the current stage as its next stage.
             if (stage.NextStage == currentStage.Name)
@@ -88,9 +88,9 @@ public class StageManager : MonoBehaviour
     public void Next()
     {
         // Ensure that a valid next stage exists.
-        if (!string.IsNullOrEmpty(currentStage.NextStage) && DataManager.Stages.ContainsKey(currentStage.NextStage))
+        if (!string.IsNullOrEmpty(currentStage.NextStage) && DataHub.Stages.ContainsKey(currentStage.NextStage))
         {
-            currentStage = DataManager.Stages[currentStage.NextStage];
+            currentStage = DataHub.Stages[currentStage.NextStage];
             LoadStage();
         }
     }
@@ -159,7 +159,7 @@ public class StageManager : MonoBehaviour
         instance.friendlyName = instance.character.ToString().Split("_")[0];
         instance.name = $"{stageActor.Character}_{Guid.NewGuid():N}";
         instance.team = stageActor.Team;
-        instance.stats = DataManager.GetStats(stageActor.Character);
+        instance.stats = DataHub.GetStats(stageActor.Character);
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
         instance.Spawn(stageActor.Location.Value);
@@ -201,7 +201,7 @@ public class StageManager : MonoBehaviour
         IEnumerator loadNextStage()
         {
             var stageName = currentStage.NextStage;
-            currentStage = DataManager.GetStage(stageName);
+            currentStage = DataHub.GetStage(stageName);
             LoadStage();
             yield return null;
         }

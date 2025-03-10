@@ -1,3 +1,4 @@
+using Assets.Scripts.Store;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -38,12 +39,8 @@ public class CreditsManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadPreviousScene()));
     }
 
-    private IEnumerator LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-        yield break;
-    }
+  
 }

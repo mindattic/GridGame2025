@@ -1,3 +1,4 @@
+using Assets.Scripts.Store;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,7 +7,7 @@ public class SplashManager : MonoBehaviour
 {
     //Fields
     private Fade fade;
-    private float waitDuration = float.MaxValue;
+    private float waitDuration = 30;
 
     private void Awake()
     {
@@ -21,19 +22,14 @@ public class SplashManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            StartCoroutine(LoadScene());
+            StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Title)));
     }
 
     private IEnumerator Startup()
     {
         yield return fade.FadeIn();
         yield return new WaitForSeconds(waitDuration);
-        StartCoroutine(LoadScene());
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Title)));
     }
 
-    private IEnumerator LoadScene()
-    {
-        yield return fade.FadeOut();
-        SceneManager.LoadScene(SceneHelper.Title);
-    }
 }

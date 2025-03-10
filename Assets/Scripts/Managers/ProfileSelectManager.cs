@@ -1,4 +1,5 @@
 using Assets.Scripts.Models;
+using Assets.Scripts.Store;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -40,7 +41,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var profile in ProfileManager.profiles)
+        foreach (var profile in ProfileHub.profiles)
         {
             AddButton(profile.Key);
         }
@@ -68,19 +69,15 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void OnProfileButtonClicked(string profileName)
     {
-        ProfileManager.currentProfile = ProfileManager.profiles[profileName];
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
+        ProfileHub.currentProfile = ProfileHub.profiles[profileName];
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Game)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Title)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadPreviousScene()));
     }
 
-    private IEnumerator LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-        yield break;
-    }
+    
 
 }

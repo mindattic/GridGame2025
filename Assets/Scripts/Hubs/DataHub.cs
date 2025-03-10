@@ -2,7 +2,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DataManager : MonoBehaviour
+public static class DataHub
 {
     public static Dictionary<string, ActorData> Actors = new Dictionary<string, ActorData>
     {

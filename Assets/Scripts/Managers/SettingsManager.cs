@@ -1,3 +1,4 @@
+using Assets.Scripts.Store;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,13 +21,6 @@ public class SettingsManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadPreviousScene()));
     }
-
-    private IEnumerator LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-        yield break;
-    }
-
 }

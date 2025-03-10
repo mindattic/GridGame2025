@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using Assets.Scripts.Store;
 
 public class TitleManager : MonoBehaviour
 {
@@ -26,31 +27,31 @@ public class TitleManager : MonoBehaviour
     public void OnContinueButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Game)));
     }
 
     public void OnNewGameButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Game)));
     }
 
     public void OnLoadGameButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.ProfileSelect)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.ProfileSelect)));
     }
 
     public void OnSettingsButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnCreditsButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Credits)));
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Credits)));
     }
 
     public void OnQuitButtonClicked()
@@ -59,11 +60,6 @@ public class TitleManager : MonoBehaviour
         StartCoroutine(fade.FadeOut(Quit()));
     }
 
-    private IEnumerator LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-        yield break;
-    }
 
     private IEnumerator Quit()
     {

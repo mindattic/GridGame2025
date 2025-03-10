@@ -1,4 +1,5 @@
 using Assets.Scripts.Models;
+using Assets.Scripts.Store;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -40,7 +41,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var stage in DataManager.Stages)
+        foreach (var stage in DataHub.Stages)
         {
             AddButton(stage.Value.Name);
         }
@@ -68,19 +69,13 @@ public class StageSelectManager : MonoBehaviour
 
     private void OnStageSelectButtonClicked(string stageName)
     {
-        ProfileManager.currentProfile.Stage.CurrentStageName = stageName;
-        SceneManager.LoadScene(SceneHelper.Game);
+        ProfileHub.currentProfile.Stage.CurrentStageName = stageName;
+        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.StageSelect)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(LoadScene(SceneHelper.Game)));
-    }
-
-    private IEnumerator LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-        yield break;
+        StartCoroutine(fade.FadeOut(SceneHub.LoadPreviousScene()));
     }
 
 }

@@ -13,14 +13,14 @@ using SettingsSection = Game.Models.ProfileSettingsSection;
 using PartySection = Game.Models.ProfilePartySection;
 using StageSection = Game.Models.ProfileStageSection;
 
-public static class ProfileManager
+public static class ProfileHub
 {
     //Fields
 
     public static Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
     public static Profile currentProfile = null;
    
-    static ProfileManager()
+    static ProfileHub()
     {
         //var sw = Stopwatch.StartNew();
 

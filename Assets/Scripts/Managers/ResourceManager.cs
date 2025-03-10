@@ -322,7 +322,7 @@ public class ResourceManager : MonoBehaviour
             foreach (var key in keys)
             {
                 //DEBUG: Should the JSON parsing be here in the Resource Manager? Or depend on OOO?...
-                var data = DataManager.GetTrailEffect(key);
+                var data = DataHub.GetTrailEffect(key);
                 if (data == null)
                 {
                     logManager.Error($"Trail Effect Entry `{key}` is null");
@@ -368,7 +368,7 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var key in keys)
             {
-                var data = DataManager.GetVisualEffect(key);
+                var data = DataHub.GetVisualEffect(key);
                 if (data == null)
                 {
                     logManager.Error($"Visual Effect Entry `{key}` is null");
@@ -436,7 +436,7 @@ public class ResourceManager : MonoBehaviour
 
         //return entries;
 
-        return DataManager.Tutorials;
+        return DataHub.Tutorials;
     }
 
 
