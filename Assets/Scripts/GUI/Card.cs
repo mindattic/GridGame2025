@@ -97,7 +97,7 @@ namespace Game.Behaviors
             portraitImage.rectTransform.localPosition = offscreenPosition;
         }
 
-        // Assign populates the card with data from the currently focused actor.
+        // Select populates the card with data from the currently focused actor.
         public void Assign()
         {
             // If no actor is focused, exit without making changes.
@@ -120,7 +120,7 @@ namespace Game.Behaviors
             var spd = $"{focusedActor.stats.Speed,4}";                   // Right-align Speed.
             var lck = $"{focusedActor.stats.Luck,4}";                    // Right-align Luck.
 
-            // Create a formatted stats table string.
+            // Insert a formatted stats table string.
             var stats =
                 $"HP       STR  VIT  AGI  SPD  LCK{Environment.NewLine}" +
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
@@ -172,7 +172,7 @@ namespace Game.Behaviors
 
             // Optionally, disable selection boxes on all actors or update the focus indicator.
             // actors.ForEach(x => x.render.SetSelectionBoxEnabled(false));
-            // focusIndicator.Assign();
+            // focusIndicator.Select();
 
             // Reset the portrait's position to the offscreen starting position.
             portraitImage.rectTransform.localPosition = offscreenPosition;

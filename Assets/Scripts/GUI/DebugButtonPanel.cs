@@ -19,15 +19,15 @@ namespace Assets.Scripts.GUI
 
         private void Start()
         {
-            ////Assign anchors and pivot to center
+            ////Select anchors and pivot to center
             //PanelRect.anchorMin = new Vector2(0.5f, 0.5f);
             //PanelRect.anchorMax = new Vector2(0.5f, 0.5f);
             //PanelRect.pivot = new Vector2(0.5f, 0.5f);
 
-            ////Assign the anchored position to (0, 0) for centering
+            ////Select the anchored position to (0, 0) for centering
             //PanelRect.anchoredPosition = Vector2.zero;
 
-            //Assign button click listeners
+            //Select button click listeners
             ReloadStageButton.onClick.AddListener(OnReloadStageButtonClicked);
             PreviousStageButton.onClick.AddListener(OnPreviousStageButtonClicked);
             NextStageButton.onClick.AddListener(OnNextStageButtonClicked);

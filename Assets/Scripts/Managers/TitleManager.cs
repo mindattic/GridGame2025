@@ -33,6 +33,8 @@ public class TitleManager : MonoBehaviour
     public void OnNewGameButtonClicked()
     {
         DisableButtons();
+        ProfileStore.instance.Create();
+        ProfileStore.instance.Load();
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 

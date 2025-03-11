@@ -151,8 +151,8 @@ public class StageManager : MonoBehaviour
         var instance = prefab.GetComponent<ActorInstance>();
         instance.transform.parent = board.transform;
         instance.character = stageActor.Character;
-        instance.friendlyName = instance.character.ToString().Split("_")[0];
-        instance.name = $"{stageActor.Character}_{Guid.NewGuid():N}";
+        instance.friendlyName = instance.character.ToString().Split("_instance")[0];
+        instance.name = $"{stageActor.Character}_instance{Guid.NewGuid():N}";
         instance.team = stageActor.Team;
         instance.stats = DataStore.instance.GetStats(stageActor.Character);
         instance.transform.localScale = GameManager.instance.tileScale;

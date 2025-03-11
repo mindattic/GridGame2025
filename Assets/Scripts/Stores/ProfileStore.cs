@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.WSA;
 using Debug = UnityEngine.Debug;
 using GlobalSection = Game.Models.ProfileGlobalSection;
 using PartySection = Game.Models.ProfilePartySection;
@@ -15,9 +17,8 @@ using StageSection = Game.Models.ProfileStageSection;
 [CreateAssetMenu(fileName = "ProfileStore", menuName = "Stores/ProfileStore")]
 public class ProfileStore : ScriptableObject
 {
-    //Singleton
+    // Singleton instance
     private static ProfileStore _instance;
-
     public static ProfileStore instance
     {
         get
@@ -28,7 +29,7 @@ public class ProfileStore : ScriptableObject
         }
     }
 
-    //Initialize
+    // Auto-initialize the ProfileStore before the scene loads.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {
@@ -37,176 +38,321 @@ public class ProfileStore : ScriptableObject
             _instance = Resources.Load<ProfileStore>("Stores/ProfileStore");
             if (_instance == null)
                 Debug.LogError("ProfileStore asset not found in Resources/Stores/ProfileStore");
-
         }
     }
 
-    //Fields
+    //Serialized fields
     [SerializeField] public Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
-    [SerializeField] public Profile current = null;
+    [SerializeField] public Profile current;
 
+
+    // Property to check if any profiles exist
+    public bool HasProfiles => profiles != null && profiles.Count > 0;
+
+    //Property to validate the folder structure
+    private bool HasValidFolderStructure
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(FolderHelper.Folders.Profiles))
+            {
+                Debug.LogError("FolderHelper.Folders.Profiles is null or whitespace.");
+                return false;
+            }
+            if (!Directory.Exists(FolderHelper.Folders.Profiles))
+                Directory.CreateDirectory(FolderHelper.Folders.Profiles);
+            return Directory.Exists(FolderHelper.Folders.Profiles);
+        }
+    }
+
+    // Called when the ScriptableObject is enabled.
     private void OnEnable()
     {
-        //var sw = Stopwatch.StartNew();
+        Load();
 
-        //Validate folder structure
-        if (!HasValidFolderStructure())
+        if (!HasProfiles)
         {
-            Debug.LogError($"Folder structure is invalid.");
+            Debug.LogError($"Failed to retrieve any valid profile");
             return;
         }
 
-        //Retrieve existing profile profileFolders
-        var profileFolders = Directory.GetDirectories(FolderHelper.Folders.Profiles).ToList();
+        //TODO: Allow user to select a profile. For now, select the first valid profile.
+        Select(profiles.First().Key);
+    }
 
-        //If no profile profileFolders found...
-        if (profileFolders == null || profileFolders.Count < 1)
+    /// <summary>
+    /// Loads all profiles from the profiles folder.
+    /// </summary>
+    public void Load()
+    {
+        if (!HasValidFolderStructure)
         {
-            //...create a new profile folder with associated JSON files...
-            var wasSuccess = Create();
-            if (!wasSuccess)
+            Debug.LogError("Folder structure is invalid.");
+            return;
+        }
+
+        //Retrieve profile folder; create new profile if none exist
+        List<string> folders = Directory.GetDirectories(FolderHelper.Folders.Profiles).ToList();
+        if (!folders?.Any() == null)
+        {
+            string guid = Create();
+            if (string.IsNullOrWhiteSpace(guid))
             {
-                Debug.LogError($"Failed to create a new profile.");
+                Debug.LogError($"Failed to create new profile");
                 return;
             }
-
-            //Retrieve newly created profile profileFolders
-            profileFolders = Directory.GetDirectories(FolderHelper.Folders.Profiles).ToList();
+            Load();
         }
 
-        //Validate profile profileFolders exist
-        if (profileFolders == null || profileFolders.Count < 1)
+        //Valdiate at least one profile folder exists
+        if (!folders?.Any() == null)
         {
-            Debug.LogError($"Failed to retrieve any profile profileFolders from: {FolderHelper.Folders.Profiles}");
+            Debug.LogError($"Failed to retrieve any profile directories from `{FolderHelper.Folders.Profiles}`");
             return;
         }
 
-        //Retrive each profile object
-        foreach (var folder in profileFolders)
+        //Clear profile collection and iterate across folders to generate list of profiles
+        profiles.Clear();
+        foreach (var folder in folders)
         {
-            //Retrieve GUID from folder name
             string guid = new DirectoryInfo(folder).Name;
             if (string.IsNullOrWhiteSpace(guid))
                 continue;
 
-            //Retrieve profile from GUID
-            var profile = Load(guid);
+            var profile = Get(guid);
             if (profile == null || !profile.IsValid())
                 continue;
 
             profiles.Add(guid, profile);
         }
 
-        //Validate profiles exist
-        if (profiles == null || profiles.Count < 1)
+        if (!profiles.Any())
         {
-            Debug.LogError($"Failed to load any valid profiles.");
+            Debug.LogError("Failed to load any valid profiles.");
             return;
         }
-
-        //sw.Stop();
-        //Debug.LogWarning($"Loaded current save file in {sw.ElapsedMilliseconds} ms.");
-
-        //TODO: Have user select profile, for now just use first profile
-        Assign(profiles.First().Key);
     }
 
-    ///<summary>
-    ///Method which is used to create a new folder with GUID containing JSON files
-    ///</summary>
-    private bool Create()
+    /// <summary>
+    /// Creates a new profile folder and initializes its JSON files.
+    /// </summary>
+    /// <returns>The GUID of the new profile, or null if creation failed.</returns>
+    public string Create()
     {
-        //Generate a new GUID
+        //Generate a unique GUID
         string guid;
-
-        //Ensure the generated GUID is unique in profileFolders
-        do guid = Guid.NewGuid().ToString("N");
-        while (Directory.Exists(Path.Combine(FolderHelper.Folders.Profiles, guid)));
-
-        //Instantiate current profile with the generated GUID; create folder
-        current = new Profile(guid);
-
-        //Save the individual JSON files
-        bool globalSaved = SaveSection<GlobalSection>();
-        bool settingsSaved = SaveSection<SettingsSection>();
-        bool stageSaved = SaveSection<StageSection>();
-        bool partySaved = SaveSection<PartySection>();
-
-        if (!globalSaved || !settingsSaved || !stageSaved || !partySaved)
+        do
         {
-            Debug.LogError($"Failed to create new profile with GUID: {guid}");
+            guid = Guid.NewGuid().ToString("N");
+        } while (Directory.Exists(Path.Combine(FolderHelper.Folders.Profiles, guid)));
+
+        //Create the profile folder
+        string folder = Path.Combine(FolderHelper.Folders.Profiles, guid);
+        Directory.CreateDirectory(folder);
+
+        if (!Directory.Exists(folder))
+        {
+            Debug.LogError($"Failed to create folder `{folder}`");
+            return null;
+        }
+
+        // Create a new Profile instance and assign its folder.
+        current = new Profile(guid)
+        {
+            Folder = folder
+        };
+
+        // Save default sections.
+        bool savedGlobal = SaveSection<GlobalSection>();
+        bool savedSettings = SaveSection<SettingsSection>();
+        bool savedStage = SaveSection<StageSection>();
+        bool savedParty = SaveSection<PartySection>();
+
+        if (!savedGlobal || !savedSettings || !savedStage || !savedParty)
+        {
+            Debug.LogError($"Failed to create new profile with guid `{guid}`");
+            return null;
+        }
+
+        return guid;
+    }
+
+    /// <summary>
+    /// Saves all sections of the current profile.
+    /// </summary>
+    /// <returns>True if the update was successful; otherwise, false.</returns>
+    public bool Update()
+    {
+        if (current == null || !current.IsValid())
+        {
+            Debug.LogError("An invalid save file was specified.");
             return false;
         }
 
-        Debug.Log($"Created new profile with GUID: {guid}");
+        bool savedGlobal = SaveSection<GlobalSection>();
+        bool savedSettings = SaveSection<SettingsSection>();
+        bool savedStage = SaveSection<StageSection>();
+        bool savedParty = SaveSection<PartySection>();
+
+        if (!savedGlobal || !savedSettings || !savedStage || !savedParty)
+        {
+            Debug.LogError("Failed to save one or more components.");
+            return false;
+        }
+
         return true;
     }
 
-    ///<summary>
-    ///Method which is used to save individual section to separate JSON file
-    ///</summary>
+    /// <summary>
+    /// Loads a profile from the specified GUID.
+    /// </summary>
+    /// <param name="guid">The GUID of the profile to load.</param>
+    /// <returns>The loaded Profile, or null if loading failed.</returns>
+    public Profile Get(string guid)
+    {
+        if (string.IsNullOrWhiteSpace(guid))
+        {
+            Debug.LogError($"An invalid guid was specified `{guid}`");
+            return null;
+        }
+
+        var profile = new Profile(guid)
+        {
+            Global = LoadSection<GlobalSection>(guid),
+            Settings = LoadSection<SettingsSection>(guid),
+            Stage = LoadSection<StageSection>(guid),
+            Party = LoadSection<PartySection>(guid)
+        };
+
+        if (!profile.IsValid())
+        {
+            Debug.LogError($"Failed to instantiate profile `{guid}`");
+            return null;
+        }
+
+        return profile;
+    }
+
+    // TODO: Implement deletion logic for profile directories.
+    public bool Delete(string guid)
+    {
+        if (string.IsNullOrWhiteSpace(guid))
+        {
+            Debug.LogError($"An invalid guid was specified `{guid}`");
+            return false;
+        }
+
+        // Delete profile directory logic should be implemented here.
+        string folder = Path.Combine(FolderHelper.Folders.Profiles, guid);
+        Directory.Delete(folder);
+
+        //Validate folder was deleted
+        if (Directory.Exists(folder))
+        {
+            Debug.LogError($"Failed to delete folder `{folder}`");
+            return false;
+        }
+
+        //Reload all profiles
+        Load();
+
+        if (!HasProfiles)
+        {
+            Debug.LogError($"Failed to retrieve any valid profile");
+            return false;
+        }
+
+        //Reassign current if it was the deleted profile
+        if (current.Guid == guid)
+            Select(profiles.First().Key);
+
+        return !Directory.Exists(folder);
+    }
+
+    /// <summary>
+    /// Selects the profile with the specified GUID as the current profile.
+    /// </summary>
+    /// <param name="guid">The GUID of the profile to select.</param>
+    public bool Select(string guid)
+    {
+        if (string.IsNullOrWhiteSpace(guid))
+        {
+            Debug.LogError($"An invalid GUID was specified: {guid}");
+            return false;
+        }
+
+        if (!HasProfiles)
+        {
+            Debug.LogError($"Failed to retrieve any valid profile");
+            return false;
+        }
+
+        if (!profiles.TryGetValue(guid, out Profile profile))
+        {
+            Debug.LogError($"Failed to retrieve specified profile from guid `{guid}`");
+            return false;
+        }
+
+        current = profile;
+        return true;
+    }
+
+    /// <summary>
+    /// Saves an individual profile section to its JSON file.
+    /// </summary>
+    /// <typeparam name="T">The type of the profile section to save.</typeparam>
+    /// <returns>True if the save was successful; otherwise, false.</returns>
     private bool SaveSection<T>() where T : class
     {
-        //var sw = Stopwatch.StartNew();
-
-        //Determine the file name and section based on the generic type
         string fileName = GetFileName<T>();
         ProfileSection section = GetSection<T>();
 
-        var filePath = Path.Combine(current.Folder, fileName);
+        if (current == null || string.IsNullOrWhiteSpace(current.Folder))
+        {
+            Debug.LogError("Current profile folder is invalid.");
+            return false;
+        }
+
+        string filePath = Path.Combine(current.Folder, fileName);
         if (string.IsNullOrWhiteSpace(filePath))
         {
-            Debug.LogError($"Invalid file path for: {filePath}");
+            Debug.LogError($"Invalid file path for `{fileName}`");
             return false;
         }
 
         string json = JsonConvert.SerializeObject(section);
         if (string.IsNullOrWhiteSpace(json) || json == "{}")
         {
-            Debug.LogError($"Failed to serialize {json}.");
+            Debug.LogError($"Failed to serialize section `{fileName}`");
             return false;
         }
 
         File.WriteAllText(filePath, json);
-
         if (!File.Exists(filePath))
         {
             Debug.LogError($"{filePath} does not exist after saving.");
             return false;
         }
-
-        //sw.Stop();
-        //Debug.Log($"Saved {fileName} successfully in {sw.ElapsedMilliseconds} ms.");
-
         return true;
     }
 
-    ///<summary>
-    ///Method which is used to load individual json file in a seperate profile section
-    ///</summary>
+    /// <summary>
+    /// Loads an individual profile section from its JSON file.
+    /// </summary>
+    /// <typeparam name="T">The type of the profile section to load.</typeparam>
+    /// <param name="guid">The GUID of the profile.</param>
+    /// <returns>The loaded section, or null if loading failed.</returns>
     private T LoadSection<T>(string guid) where T : class
     {
-        //var sw = Stopwatch.StartNew();
-
         if (string.IsNullOrWhiteSpace(guid))
             return null;
 
-        //Determine the file name based on the generic type
-        string fileName = null;
-        if (typeof(T) == typeof(GlobalSection))
-            fileName = "global.json";
-        else if (typeof(T) == typeof(SettingsSection))
-            fileName = "settings.json";
-        else if (typeof(T) == typeof(StageSection))
-            fileName = "stage.json";
-        else if (typeof(T) == typeof(PartySection))
-            fileName = "party.json";
+        string fileName = GetFileName<T>();
+        string folder = Path.Combine(FolderHelper.Folders.Profiles, guid);
+        string filePath = Path.Combine(folder, fileName);
 
-        var folder = Path.Combine(FolderHelper.Folders.Profiles, guid);
-        var filePath = Path.Combine(folder, fileName);
         if (!File.Exists(filePath))
         {
-            //TODO: Emergency rescue the .json here by writing from defaults...
             Debug.LogError($"{filePath} does not exist.");
             return null;
         }
@@ -217,130 +363,38 @@ public class ProfileStore : ScriptableObject
         {
             Debug.LogError($"Failed to deserialize {fileName}.");
         }
-
-        //sw.Stop();
-        //Debug.Log($"Loaded {fileName} successfully in {sw.ElapsedMilliseconds} ms.");
-
         return section;
     }
 
-    public bool Save()
-    {
-        //var sw = Stopwatch.StartNew();
-
-        if (current == null || !current.IsValid())
-        {
-            Debug.LogError($"An invalid save file was specified.");
-            return false;
-        }
-
-        bool globalSaved = SaveSection<GlobalSection>();
-        bool settingsSaved = SaveSection<SettingsSection>();
-        bool stageSaved = SaveSection<StageSection>();
-        bool partySaved = SaveSection<PartySection>();
-
-        //sw.Stop();
-
-        if (!globalSaved || !settingsSaved || !stageSaved || !partySaved)
-        {
-            Debug.LogError($"Failed to save one or more components.");
-            return false;
-        }
-
-        //Debug.LogWarning($"Saved all components successfully in {sw.ElapsedMilliseconds} ms.");
-        return true;
-    }
-
-    private Profile Load(string guid)
-    {
-        if (string.IsNullOrWhiteSpace(guid))
-        {
-            Debug.LogError($"An invalid GUID was specified: {guid}");
-            return null;
-        }
-
-        var profile = new Profile(guid);
-
-        profile.Global = LoadSection<GlobalSection>(guid);
-        profile.Settings = LoadSection<SettingsSection>(guid);
-        profile.Stage = LoadSection<StageSection>(guid);
-        profile.Party = LoadSection<PartySection>(guid);
-
-        if (!profile.IsValid())
-        {
-            Debug.LogError($"Failed to instantiate profile: {guid}");
-            return null;
-        }
-
-        return profile;
-    }
-
-    public void Assign(string guid)
-    {
-        if (!HasProfiles())
-            return;
-
-        if (!profiles.TryGetValue(guid, out Profile profile))
-            return;
-
-        current = profile;
-    }
-
-    public bool HasProfiles()
-    {
-        return profiles != null && profiles.Count > 0;
-    }
-
-    private bool HasValidFolderStructure()
-    {
-        //Verify profiles folder can be created
-        if (string.IsNullOrWhiteSpace(FolderHelper.Folders.Profiles))
-        {
-            Debug.LogError($"FolderHelper.Folders.Profiles is null or whitespace.");
-            return false;
-        }
-
-        //Create profiles folder (if applicable)
-        if (!Directory.Exists(FolderHelper.Folders.Profiles))
-            Directory.CreateDirectory(FolderHelper.Folders.Profiles);
-
-        return Directory.Exists(FolderHelper.Folders.Profiles);
-    }
-
-
+    /// <summary>
+    /// Determines the file name for the given profile section type.
+    /// </summary>
     private string GetFileName<T>() where T : class
     {
         if (typeof(T) == typeof(GlobalSection))
             return "global.json";
-
         if (typeof(T) == typeof(SettingsSection))
             return "settings.json";
-
         if (typeof(T) == typeof(StageSection))
             return "stage.json";
-
         if (typeof(T) == typeof(PartySection))
             return "party.json";
-
         return null;
     }
 
+    /// <summary>
+    /// Retrieves the corresponding profile section from the current profile.
+    /// </summary>
     private ProfileSection GetSection<T>() where T : class
     {
         if (typeof(T) == typeof(GlobalSection))
             return current.Global;
-
         if (typeof(T) == typeof(SettingsSection))
             return current.Settings;
-
         if (typeof(T) == typeof(StageSection))
             return current.Stage;
-
         if (typeof(T) == typeof(PartySection))
             return current.Party;
-
         return null;
     }
-
-
 }

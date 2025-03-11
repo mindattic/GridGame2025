@@ -25,7 +25,7 @@
 
 //       public static class Queries
 //       {
-//           public static class Load
+//           public static class Get
 //           {
 //               public static class Actor
 //               {
@@ -105,7 +105,7 @@
 //           Entities.Actors.Clear();
 
 //           //reader = trailInstance.GetAllData(Schema.Table.Actor);
-//           reader = trailInstance.ExecuteReader(Queries.Assign.Actor.Entities);
+//           reader = trailInstance.ExecuteReader(Queries.Select.Actor.Entities);
 //           while (reader != null && reader.Read())
 //           {
 //               var x = new ActorData()

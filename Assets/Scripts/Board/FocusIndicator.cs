@@ -78,7 +78,7 @@ public class FocusIndicator : MonoBehaviour
     {
     }
 
-    // Assign activates and positions the FocusIndicator based on whether a focused actor exists.
+    // Select activates and positions the FocusIndicator based on whether a focused actor exists.
     public void Assign()
     {
         // Enable the sprite only if there is a focused actor.

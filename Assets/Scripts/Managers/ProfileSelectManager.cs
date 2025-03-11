@@ -1,4 +1,5 @@
 using Assets.Scripts.Store;
+using Game.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,18 +46,18 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var profile in ProfileStore.instance.profiles)
+        foreach (var entry in ProfileStore.instance.profiles)
         {
-            AddButton(profile.Key);
+            AddButton(entry.Value);
         }
         StartCoroutine(fade.FadeIn());
     }
 
-    public void AddButton(string profileKey)
+    public void AddButton(Profile profile)
     {
         // Instantiate the prefab as a child of the content
         GameObject instance = Instantiate(buttonPrefab, content);
-        instance.name = $"Profile_{profileKey}";
+        instance.name = $"Profile_{profile.Guid}";
 
         // Set the button size: 90% of width, 1/16th of height
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
@@ -64,16 +65,16 @@ public class ProfileSelectManager : MonoBehaviour
 
         // Set the button's click event
         Button button = instance.GetComponent<Button>();
-        button.onClick.AddListener(() => OnProfileButtonClicked(profileKey));
+        button.onClick.AddListener(() => OnProfileButtonClicked(profile.Guid));
 
         // Set the button text
         Label label = instance.GetComponentInChildren<Label>();
-        label.text = profileKey;
+        label.text = profile.Guid;
     }
 
-    private void OnProfileButtonClicked(string profileName)
+    private void OnProfileButtonClicked(string guid)
     {
-        ProfileStore.instance.current = ProfileStore.instance.profiles[profileName];
+        ProfileStore.instance.Select(guid);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 

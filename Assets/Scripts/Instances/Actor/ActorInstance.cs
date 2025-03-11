@@ -300,7 +300,7 @@ public class ActorInstance : MonoBehaviour
             ? attack.Opponent.TakeDamage(attack)
             : attack.Opponent.AttackMiss();
 
-        //Create the trigger with asynchronous execution.
+        //Insert the trigger with asynchronous execution.
         var trigger = new Trigger(hitOrMiss, isAsync: true);
 
         // Spawn the attack visual effect at the opponent's position.

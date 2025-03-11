@@ -67,7 +67,7 @@ public class VFXInstance : MonoBehaviour
         var particleSystems = new List<ParticleSystem>();
         GetRecursively(ref particleSystems, transform);
 
-        //Assign the looping flag for each ParticleSystem
+        //Select the looping flag for each ParticleSystem
         foreach (var system in particleSystems)
         {
             var main = system.main;

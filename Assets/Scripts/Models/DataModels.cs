@@ -49,9 +49,9 @@ namespace Assets.Scripts.Models
         }
 
         public string Name;
-        public string RelativeOffset;
-        public string AngularRotation;
-        public string RelativeScale;
+        public Vector3 RelativeOffset;
+        public Vector3 AngularRotation;
+        public Vector3 RelativeScale;
         public float Delay;
         public float Duration;
         public bool IsLoop;

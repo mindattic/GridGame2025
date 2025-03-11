@@ -54,7 +54,7 @@ public class PincerAttackManager : MonoBehaviour
     /// <returns>A PincerAttackParticipants object containing all identified valid pairs.</returns>
     public PincerAttackParticipants GetParticipants(Team team)
     {
-        // Create a new container for storing valid pincer attack pairs.
+        // Insert a new container for storing valid pincer attack pairs.
         var participants = new PincerAttackParticipants();
 
         // Filter and gather all actors that are actively playing and belong to the specified team.
@@ -62,7 +62,7 @@ public class PincerAttackManager : MonoBehaviour
             .Where(x => x.isPlaying && x.team == team)
             .ToList();
 
-        // Create an indexed list to iterate through team actors without duplicating pairs.
+        // Insert an indexed list to iterate through team actors without duplicating pairs.
         var indexedTeamActors = teamActors.Select((actor, index) => (actor, index));
         foreach (var (actor1, i) in indexedTeamActors)
         {
@@ -180,7 +180,7 @@ public class PincerAttackManager : MonoBehaviour
     /// <param name="participants">The participants of valid pincer attack pair.</param>
     private IEnumerator EnqueueAttacks(PincerAttackParticipants participants)
     {
-        // Step 1: Assign visual sorting orders to attackers, opponents, and supporters
+        // Step 1: Select visual sorting orders to attackers, opponents, and supporters
         // so that they are highlighted correctly on the game board.
         SetSortingOrder(participants);
 

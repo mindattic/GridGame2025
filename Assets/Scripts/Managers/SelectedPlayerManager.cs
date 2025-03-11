@@ -85,7 +85,7 @@ public class SelectedPlayerManager : MonoBehaviour
         focusIndicator.Clear();
 
         // Play an audio cue to indicate that the actor has been selected for movement.
-        audioManager.Play("Load");
+        audioManager.Play("Get");
 
         // Start the movement phase:
         // - Play the timer bar animation.

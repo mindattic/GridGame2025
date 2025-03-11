@@ -35,8 +35,8 @@ namespace Assets.Scripts.Store
         }
 
         //Fields
-        [SerializeField] public string PreviousScene = "Title";
-        [SerializeField] public string CurrentScene = "Title";
+        [SerializeField] public string previousScene = "Title";
+        [SerializeField] public string currentScene = "Title";
 
         public IEnumerator LoadScene(string sceneName)
         {
@@ -46,26 +46,26 @@ namespace Assets.Scripts.Store
                 yield break;
             }
 
-            PreviousScene = SceneManager.GetActiveScene().name;
-            CurrentScene = sceneName;
+            previousScene = SceneManager.GetActiveScene().name;
+            currentScene = sceneName;
 
             // Use async loading for smoother transitions
-            yield return SceneManager.LoadSceneAsync(CurrentScene);
+            yield return SceneManager.LoadSceneAsync(currentScene);
         }
 
         public IEnumerator LoadPreviousScene()
         {
-            if (string.IsNullOrWhiteSpace(PreviousScene))
+            if (string.IsNullOrWhiteSpace(previousScene))
             {
-                Debug.LogError("PreviousScene is not set.");
+                Debug.LogError("previousScene is not set.");
                 yield break;
             }
 
-            CurrentScene = PreviousScene;
-            PreviousScene = SceneManager.GetActiveScene().name;
+            currentScene = previousScene;
+            previousScene = SceneManager.GetActiveScene().name;
 
             // Use async loading for smoother transitions
-            yield return SceneManager.LoadSceneAsync(CurrentScene);
+            yield return SceneManager.LoadSceneAsync(currentScene);
         }
     }
 }

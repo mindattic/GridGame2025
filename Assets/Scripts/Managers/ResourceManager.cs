@@ -28,7 +28,7 @@ public class ResourceManager : MonoBehaviour
     [SerializeField] public Dictionary<string, TrailResource> trailEffects = new Dictionary<string, TrailResource>();
     [SerializeField] public Dictionary<string, Tutorial> tutorials = new Dictionary<string, Tutorial>();
     [SerializeField] public Dictionary<string, VFXResource> visualEffects = new Dictionary<string, VFXResource>();
- 
+
     public void Awake()
     {
     }
@@ -50,7 +50,7 @@ public class ResourceManager : MonoBehaviour
         //Sound Effects
         keys.SetRange(
             "Death", "Move1", "Move2", "Move3", "Move4", "Move5", "Move6", "NextTurn", "PlayerGlow", "Portrait", "Rumble",
-            "Load", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
+            "Get", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
         soundEffects = LoadResources<AudioClip>(ResourceFolder.SoundEffects, keys);
 
         //Music Tracks
@@ -107,7 +107,7 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Sprite> Background(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (backgrounds.TryGetValue(key, out var entry))
@@ -119,7 +119,7 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Texture2D> Portrait(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (portraits.TryGetValue(key, out var entry))
@@ -131,7 +131,7 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<AudioClip> SoundEffect(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (soundEffects.TryGetValue(key, out var entry))
@@ -143,7 +143,7 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<AudioClip> MusicTrack(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (musicTracks.TryGetValue(key, out var entry))
@@ -174,7 +174,7 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Sprite> Seamless(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (seamless.TryGetValue(key, out var entry))
@@ -186,7 +186,7 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Sprite> Sprite(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (sprites.TryGetValue(key, out var entry))
@@ -198,7 +198,7 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Sprite> WeaponType(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (weaponTypes.TryGetValue(key, out var entry))
@@ -210,7 +210,7 @@ public class ResourceManager : MonoBehaviour
 
     public ResourceItem<Texture2D> Texture(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (textures.TryGetValue(key, out var entry))
@@ -222,7 +222,7 @@ public class ResourceManager : MonoBehaviour
 
     public Tutorial Tutorial(string key)
     {
-        if (string.IsNullOrWhiteSpace(key)) 
+        if (string.IsNullOrWhiteSpace(key))
             return null;
 
         if (tutorials.TryGetValue(key, out var entry))
@@ -343,7 +343,7 @@ public class ResourceManager : MonoBehaviour
                     Name = key,
                     Prefab = prefab,
                     RelativeOffset = data.RelativeOffset,
-                    AngularRotation =data.AngularRotation,
+                    AngularRotation = data.AngularRotation,
                     RelativeScale = data.RelativeScale,
                     Delay = data.Delay,
                     Duration = data.Duration,
@@ -388,9 +388,9 @@ public class ResourceManager : MonoBehaviour
                 {
                     Name = key,
                     Prefab = prefab,
-                    RelativeOffset = ConvertString.ToVector3(data.RelativeOffset),
-                    AngularRotation = ConvertString.ToVector3(data.AngularRotation),
-                    RelativeScale = ConvertString.ToVector3(data.RelativeScale),
+                    RelativeOffset = data.RelativeOffset,
+                    AngularRotation = data.AngularRotation,
+                    RelativeScale = data.RelativeScale,
                     Delay = data.Delay,
                     Duration = data.Duration,
                     IsLoop = data.IsLoop,
@@ -414,7 +414,7 @@ public class ResourceManager : MonoBehaviour
         //try
         //{
         //    //Initialize JSON from Resources
-        //    TextAsset jsonFile = Resources.Load<TextAsset>("Data/Tutorials");
+        //    TextAsset jsonFile = Resources.Get<TextAsset>("Data/Tutorials");
         //    if (jsonFile == null)
         //    {
         //        Debug.LogError("Tutorials.json not found in Resources/Data/");

@@ -79,7 +79,7 @@ public class PauseManager : MonoBehaviour
     public void OnQuitButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileStore.instance.Save();
+        ProfileStore.instance.Update();
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
     }
 
