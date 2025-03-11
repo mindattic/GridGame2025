@@ -51,6 +51,6 @@ public class SettingsManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneHub.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
     }
 }

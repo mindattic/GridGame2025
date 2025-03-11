@@ -1,3 +1,4 @@
+using Assets.Scripts.Store;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,13 +14,12 @@ namespace Game.Behaviors
     public class Card : MonoBehaviour
     {
         // Quick Reference Properties:
-        // These properties provide shortcuts to access global settings and data from GameManager.
-        protected float cardPortraitSize => GameManager.instance.cardPortraitSize; // Desired size for the card's portrait.
-        protected ResourceManager resourceManager => GameManager.instance.resourceManager; // Resource manager to load assets like sprites.
-        protected List<ActorInstance> actors => GameManager.instance.actors;         // List of all actor instances in the game.
-        protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator; // UI element to highlight the focused actor.
-        protected bool hasFocusedActor => GameManager.instance.hasFocusedActor;      // Check if an actor is currently focused.
-        protected ActorInstance focusedActor => GameManager.instance.focusedActor;   // The currently focused actor.
+        protected float cardPortraitSize => GameManager.instance.cardPortraitSize;
+        protected ResourceManager resourceManager => GameManager.instance.resourceManager;
+        protected List<ActorInstance> actors => GameManager.instance.actors;
+        protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
+        protected bool hasFocusedActor => GameManager.instance.hasFocusedActor;
+        protected ActorInstance focusedActor => GameManager.instance.focusedActor;
 
         // Fields for UI elements and animation settings.
         RectTransform rectTransform;     // The RectTransform of this card, used for layout and positioning.
@@ -36,7 +36,7 @@ namespace Game.Behaviors
         AnimationCurve slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // Easing curve for slide-in animation.
         float slideDuration = 0.5f;      // Duration of the slide-in animation in seconds.
 
-        // Awake is called when the script instance is loaded.
+        // Awake is called when the script _instance is loaded.
         // This method initializes references to UI elements by finding them in the scene.
         private void Awake()
         {
@@ -126,7 +126,7 @@ namespace Game.Behaviors
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
             // Set the details text combining the stats table with extra details from DataManager.
-            detailsText.text = stats + DataHub.GetDetails(focusedActor.character).Card;
+            detailsText.text = stats + DataStore.instance.GetDetails(focusedActor.character).Card;
 
             // Begin the slide-in animation for the portrait.
             TriggerSlideIn();

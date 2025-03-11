@@ -45,7 +45,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var stage in DataHub.Stages)
+        foreach (var stage in DataStore.instance.Stages)
         {
             AddButton(stage.Value.Name);
         }
@@ -73,13 +73,13 @@ public class StageSelectManager : MonoBehaviour
 
     private void OnStageSelectButtonClicked(string stageName)
     {
-        ProfileHub.Current.Stage.CurrentStageName = stageName;
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Game)));
+        ProfileStore.instance.current.Stage.CurrentStageName = stageName;
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneHub.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
     }
 
 }

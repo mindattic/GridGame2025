@@ -82,7 +82,7 @@ namespace Assets.Scripts.Instances.Actor
             {
                 previousPosition = instance.position;
                 instance.position = touchPosition3D + touchOffset;
-                //ApplyTilt(instance.position - previousPosition, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
+                //ApplyTilt(_instance.position - previousPosition, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
                 CheckLocationChanged();
                 yield return Wait.UntilNextFrame();
             }
@@ -192,7 +192,7 @@ namespace Assets.Scripts.Instances.Actor
             if (location == closestTile.location)
                 return;
 
-            //Debug.Log($"OnSelectedPlayerLocationChanged triggered for {instance.name} to {closestTile.location}, isMoving: {flags.IsMoving}");
+            //Debug.Log($"OnSelectedPlayerLocationChanged triggered for {_instance.name} to {closestTile.location}, isMoving: {flags.IsMoving}");
 
             previousLocation = location;
             location = closestTile.location;

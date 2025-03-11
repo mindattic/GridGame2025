@@ -27,31 +27,31 @@ public class TitleManager : MonoBehaviour
     public void OnContinueButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 
     public void OnNewGameButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 
     public void OnLoadGameButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.ProfileSelect)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.ProfileSelect)));
     }
 
     public void OnSettingsButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnCreditsButtonClicked()
     {
         DisableButtons();
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Credits)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Credits)));
     }
 
     private void DisableButtons()

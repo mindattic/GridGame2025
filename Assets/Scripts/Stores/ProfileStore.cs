@@ -1,26 +1,51 @@
+using Assets.Scripts.Store;
 using Game.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using GlobalSection = Game.Models.ProfileGlobalSection;
-using SettingsSection = Game.Models.ProfileSettingsSection;
 using PartySection = Game.Models.ProfilePartySection;
+using SettingsSection = Game.Models.ProfileSettingsSection;
 using StageSection = Game.Models.ProfileStageSection;
 
-public static class ProfileHub
+[CreateAssetMenu(fileName = "ProfileStore", menuName = "Stores/ProfileStore")]
+public class ProfileStore : ScriptableObject
 {
-    //Fields
+    //Singleton
+    private static ProfileStore _instance;
 
-    public static Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
-    public static Profile Current = null;
-   
-    static ProfileHub()
+    public static ProfileStore instance
+    {
+        get
+        {
+            if (_instance == null)
+                Debug.LogError("ProfileStore accessed before being initialized! Ensure it's assigned in Awake().");
+            return _instance;
+        }
+    }
+
+    //Initialize
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void AutoInitialize()
+    {
+        if (_instance == null)
+        {
+            _instance = Resources.Load<ProfileStore>("Stores/ProfileStore");
+            if (_instance == null)
+                Debug.LogError("ProfileStore asset not found in Resources/Stores/ProfileStore");
+
+        }
+    }
+
+    //Fields
+    [SerializeField] public Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
+    [SerializeField] public Profile current = null;
+
+    private void OnEnable()
     {
         //var sw = Stopwatch.StartNew();
 
@@ -89,7 +114,7 @@ public static class ProfileHub
     ///<summary>
     ///Method which is used to create a new folder with GUID containing JSON files
     ///</summary>
-    private static bool Create()
+    private bool Create()
     {
         //Generate a new GUID
         string guid;
@@ -99,7 +124,7 @@ public static class ProfileHub
         while (Directory.Exists(Path.Combine(FolderHelper.Folders.Profiles, guid)));
 
         //Instantiate current profile with the generated GUID; create folder
-        Current = new Profile(guid);
+        current = new Profile(guid);
 
         //Save the individual JSON files
         bool globalSaved = SaveSection<GlobalSection>();
@@ -120,7 +145,7 @@ public static class ProfileHub
     ///<summary>
     ///Method which is used to save individual section to separate JSON file
     ///</summary>
-    private static bool SaveSection<T>() where T : class
+    private bool SaveSection<T>() where T : class
     {
         //var sw = Stopwatch.StartNew();
 
@@ -128,7 +153,7 @@ public static class ProfileHub
         string fileName = GetFileName<T>();
         ProfileSection section = GetSection<T>();
 
-        var filePath = Path.Combine(Current.Folder, fileName);
+        var filePath = Path.Combine(current.Folder, fileName);
         if (string.IsNullOrWhiteSpace(filePath))
         {
             Debug.LogError($"Invalid file path for: {filePath}");
@@ -159,7 +184,7 @@ public static class ProfileHub
     ///<summary>
     ///Method which is used to load individual json file in a seperate profile section
     ///</summary>
-    private static T LoadSection<T>(string guid) where T : class
+    private T LoadSection<T>(string guid) where T : class
     {
         //var sw = Stopwatch.StartNew();
 
@@ -199,11 +224,11 @@ public static class ProfileHub
         return section;
     }
 
-    public static bool Save()
+    public bool Save()
     {
         //var sw = Stopwatch.StartNew();
 
-        if (Current == null || !Current.IsValid())
+        if (current == null || !current.IsValid())
         {
             Debug.LogError($"An invalid save file was specified.");
             return false;
@@ -226,7 +251,7 @@ public static class ProfileHub
         return true;
     }
 
-    private static Profile Load(string guid)
+    private Profile Load(string guid)
     {
         if (string.IsNullOrWhiteSpace(guid))
         {
@@ -250,7 +275,7 @@ public static class ProfileHub
         return profile;
     }
 
-    public static void Assign(string guid)
+    public void Assign(string guid)
     {
         if (!HasProfiles())
             return;
@@ -258,15 +283,15 @@ public static class ProfileHub
         if (!profiles.TryGetValue(guid, out Profile profile))
             return;
 
-        Current = profile;
+        current = profile;
     }
 
-    public static bool HasProfiles()
+    public bool HasProfiles()
     {
         return profiles != null && profiles.Count > 0;
     }
 
-    private static bool HasValidFolderStructure()
+    private bool HasValidFolderStructure()
     {
         //Verify profiles folder can be created
         if (string.IsNullOrWhiteSpace(FolderHelper.Folders.Profiles))
@@ -283,7 +308,7 @@ public static class ProfileHub
     }
 
 
-    private static string GetFileName<T>() where T : class
+    private string GetFileName<T>() where T : class
     {
         if (typeof(T) == typeof(GlobalSection))
             return "global.json";
@@ -300,19 +325,19 @@ public static class ProfileHub
         return null;
     }
 
-    private static ProfileSection GetSection<T>() where T : class
+    private ProfileSection GetSection<T>() where T : class
     {
         if (typeof(T) == typeof(GlobalSection))
-            return Current.Global;
+            return current.Global;
 
         if (typeof(T) == typeof(SettingsSection))
-            return Current.Settings;
+            return current.Settings;
 
         if (typeof(T) == typeof(StageSection))
-            return Current.Stage;
+            return current.Stage;
 
         if (typeof(T) == typeof(PartySection))
-            return Current.Party;
+            return current.Party;
 
         return null;
     }

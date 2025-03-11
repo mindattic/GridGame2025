@@ -1,39 +1,34 @@
 using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
-using Assets.Scripts.Utilities;
-using Game.Behaviors;
 using Game.Manager;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
 {
     // Quick Reference Properties:
-    protected Fade fade => GameManager.instance.fade;                            
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager; 
+    protected Fade fade => GameManager.instance.fade;
+    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     public int totalCoins
     {
         get => GameManager.instance.totalCoins;
         set => GameManager.instance.totalCoins = value;
     }
-    protected TurnManager turnManager => GameManager.instance.turnManager;          
-    protected ActorManager actorManager => GameManager.instance.actorManager;       
+    protected TurnManager turnManager => GameManager.instance.turnManager;
+    protected ActorManager actorManager => GameManager.instance.actorManager;
     protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
-    protected CoinBar coinBar => GameManager.instance.coinBar;                
-    protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;    
-    protected BoardInstance board => GameManager.instance.board;                  
-    protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;    
+    protected CoinBar coinBar => GameManager.instance.coinBar;
+    protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
+    protected BoardInstance board => GameManager.instance.board;
+    protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
 
-    protected IEnumerable<ActorInstance> players => GameManager.instance.players;     
-    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;     
+    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
 
 
@@ -59,8 +54,8 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var stageName = ProfileHub.Current.Stage.CurrentStageName;
-        currentStage = DataHub.GetStage(stageName);
+        var stageName = ProfileStore.instance.current.Stage.CurrentStageName;
+        currentStage = DataStore.instance.GetStage(stageName);
         LoadStage();
     }
 
@@ -70,7 +65,7 @@ public class StageManager : MonoBehaviour
     public void Previous()
     {
         // Iterate over all available stages.
-        foreach (var stage in DataHub.Stages.Values)
+        foreach (var stage in DataStore.instance.Stages.Values)
         {
             // Identify the stage that lists the current stage as its next stage.
             if (stage.NextStage == currentStage.Name)
@@ -88,9 +83,9 @@ public class StageManager : MonoBehaviour
     public void Next()
     {
         // Ensure that a valid next stage exists.
-        if (!string.IsNullOrEmpty(currentStage.NextStage) && DataHub.Stages.ContainsKey(currentStage.NextStage))
+        if (!string.IsNullOrEmpty(currentStage.NextStage) && DataStore.instance.Stages.ContainsKey(currentStage.NextStage))
         {
-            currentStage = DataHub.Stages[currentStage.NextStage];
+            currentStage = DataStore.instance.Stages[currentStage.NextStage];
             LoadStage();
         }
     }
@@ -145,7 +140,7 @@ public class StageManager : MonoBehaviour
         StartCoroutine(fade.FadeIn());
     }
 
- 
+
     /// <summary>
     /// Spawns a new actor by instantiating the actor prefab and initializing its properties
     /// based on the provided parameters. The actor is then added to the global actors list.
@@ -159,12 +154,12 @@ public class StageManager : MonoBehaviour
         instance.friendlyName = instance.character.ToString().Split("_")[0];
         instance.name = $"{stageActor.Character}_{Guid.NewGuid():N}";
         instance.team = stageActor.Team;
-        instance.stats = DataHub.GetStats(stageActor.Character);
+        instance.stats = DataStore.instance.GetStats(stageActor.Character);
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
         instance.Spawn(stageActor.Location.Value);
 
-        //Add the new actor instance to the global actors list.
+        //Add the new actor _instance to the global actors list.
         actors.Add(instance);
     }
 
@@ -201,7 +196,7 @@ public class StageManager : MonoBehaviour
         IEnumerator loadNextStage()
         {
             var stageName = currentStage.NextStage;
-            currentStage = DataHub.GetStage(stageName);
+            currentStage = DataStore.instance.GetStage(stageName);
             LoadStage();
             yield return null;
         }

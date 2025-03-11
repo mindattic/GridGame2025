@@ -45,7 +45,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var profile in ProfileHub.profiles)
+        foreach (var profile in ProfileStore.instance.profiles)
         {
             AddButton(profile.Key);
         }
@@ -73,13 +73,13 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void OnProfileButtonClicked(string profileName)
     {
-        ProfileHub.Current = ProfileHub.profiles[profileName];
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Game)));
+        ProfileStore.instance.current = ProfileStore.instance.profiles[profileName];
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneHub.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
     }
 
 

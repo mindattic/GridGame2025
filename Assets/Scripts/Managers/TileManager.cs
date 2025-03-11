@@ -24,7 +24,7 @@ public class TileManager : MonoBehaviour
     protected TileMap tileMap => GameManager.instance.tileMap;
 
     /// <summary>
-    /// Awake is called when the script instance is being loaded.
+    /// Awake is called when the script _instance is being loaded.
     /// It is currently empty but can be used for early initialization if needed.
     /// </summary>
     public void Awake()

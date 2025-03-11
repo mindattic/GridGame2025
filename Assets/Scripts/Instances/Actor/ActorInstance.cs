@@ -130,7 +130,7 @@ public class ActorInstance : MonoBehaviour
     public Character character;                         // Character data for this actor.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
     public Vector3 previousPosition;                    // World position before the last movement.
-    public Vector2Int location;                         // Current grid location.
+    public Vector2Int location;                         // current grid location.
     public Team team = Team.Neutral;                    // Actor's team affiliation.
     public int spawnTurn = 0;                           // Turn number when the actor is eligible to spawn.
 
@@ -189,10 +189,10 @@ public class ActorInstance : MonoBehaviour
         return Direction.None;
     }
 
-    // Awake: Initialization of the actor instance. Sets up modules and subscribes to events.
+    // Awake: Initialization of the actor _instance. Sets up modules and subscribes to events.
     private void Awake()
     {
-        // Initialize modules with this actor instance context.
+        // Initialize modules with this actor _instance context.
         render.Initialize(this);
         action.Initialize(this);
         movement.Initialize(this);

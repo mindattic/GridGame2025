@@ -71,7 +71,7 @@ public class CreditsManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneHub.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
     }
 
   

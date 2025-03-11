@@ -89,7 +89,6 @@
     <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
     <Compile Include="Assets\Scripts\Managers\StageSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Hubs\DataHub.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DatabaseManager.cs" />
@@ -118,6 +117,7 @@
     <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
+    <Compile Include="Assets\Scripts\Stores\DataStore.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyMoveAction.cs" />
@@ -135,13 +135,13 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
-    <Compile Include="Assets\Scripts\Hubs\ProfileHub.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasParticleInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Trigger.cs" />
+    <Compile Include="Assets\Scripts\Stores\ProfileStore.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceModels.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
@@ -150,10 +150,10 @@
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\GUI\CoinBar.cs" />
-    <Compile Include="Assets\Scripts\Hubs\SceneHub.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
+    <Compile Include="Assets\Scripts\Stores\SceneStore.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />

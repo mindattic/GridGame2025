@@ -67,20 +67,20 @@ public class PauseManager : MonoBehaviour
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.StageSelect)));   
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.StageSelect)));   
     }
 
     public void OnQuitButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileHub.Save();
-        StartCoroutine(fade.FadeOut(SceneHub.LoadScene(SceneHelper.Title)));
+        ProfileStore.instance.Save();
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
     }
 
 

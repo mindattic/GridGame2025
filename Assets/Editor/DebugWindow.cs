@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEditor;
-using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
+﻿using Assets.Scripts.Store;
 using Game.Behaviors;
+using System;
 using System.Linq;
-using Assets.Scripts.Store;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // This static class is responsible for triggering the debug window when the Game scene loads.
 // It uses a runtime initialization attribute to automatically run after the scene loads.
@@ -298,19 +293,19 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
         isClicked = GUILayout.Button("Splash Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneHub.LoadScene(SceneHelper.Splash);
+            SceneStore.instance.LoadScene(SceneHelper.Splash);
 
         isClicked = GUILayout.Button("Title Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneHub.LoadScene(SceneHelper.Title);
+            SceneStore.instance.LoadScene(SceneHelper.Title);
 
         isClicked = GUILayout.Button("Options Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneHub.LoadScene(SceneHelper.Settings);
+            SceneStore.instance.LoadScene(SceneHelper.Settings);
 
         isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneHub.LoadScene(SceneHelper.Game);
+            SceneStore.instance.LoadScene(SceneHelper.Game);
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);

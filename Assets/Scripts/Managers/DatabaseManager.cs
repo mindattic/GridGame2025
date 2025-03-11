@@ -49,7 +49,7 @@
 
 //       //Fields
 //       public const bool autoOverwrite = true; //Used to reinstall app every load...
-//       private SQLiteDB trailInstance = SQLiteDB.Instance;
+//       private SQLiteDB trailInstance = SQLiteDB.instance;
 
 
 //       void OnEnable()

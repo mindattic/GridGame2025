@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Models
@@ -60,7 +57,7 @@ namespace Assets.Scripts.Models
         public bool IsLoop;
     }
 
-   
+
 
     [Serializable]
     public enum StageCompletionCondition
@@ -101,7 +98,7 @@ namespace Assets.Scripts.Models
     [Serializable]
     public class StageActor
     {
-        public StageActor() {}
+        public StageActor() { }
 
 
         public StageActor(StageActor other)

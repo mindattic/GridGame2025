@@ -1,4 +1,5 @@
 using Assets.Scripts.Models;
+using Assets.Scripts.Store;
 using Assets.Scripts.Utilities;
 using Game.Behaviors;
 using Newtonsoft.Json;
@@ -322,7 +323,7 @@ public class ResourceManager : MonoBehaviour
             foreach (var key in keys)
             {
                 //DEBUG: Should the JSON parsing be here in the Resource Manager? Or depend on OOO?...
-                var data = DataHub.GetTrailEffect(key);
+                var data = DataStore.instance.GetTrailEffect(key);
                 if (data == null)
                 {
                     logManager.Error($"Trail Effect Entry `{key}` is null");
@@ -368,7 +369,7 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var key in keys)
             {
-                var data = DataHub.GetVisualEffect(key);
+                var data = DataStore.instance.GetVisualEffect(key);
                 if (data == null)
                 {
                     logManager.Error($"Visual Effect Entry `{key}` is null");
@@ -436,7 +437,7 @@ public class ResourceManager : MonoBehaviour
 
         //return entries;
 
-        return DataHub.Tutorials;
+        return DataStore.instance.Tutorials;
     }
 
 
