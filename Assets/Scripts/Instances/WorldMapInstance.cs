@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 public class WorldMapInstance : MonoBehaviour
 {
-    //Start is called once before the first execution of Update after the MonoBehaviour is created
+    //Start is called once before the first execution of Save after the MonoBehaviour is created
     void Start()
     {
         
@@ -12,7 +12,7 @@ public class WorldMapInstance : MonoBehaviour
 
     //float y = -10f;
 
-    //Update is called once per frame
+    //Save is called once per frame
     void Update()
     {
         //y -= 0.01f;

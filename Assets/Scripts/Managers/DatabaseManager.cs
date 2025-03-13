@@ -78,7 +78,7 @@
 //           trailInstance.DBLocation = Application.persistentDataPath;
 //           trailInstance.DBName = Schema.DBName;
 
-//           //Update if this is the first load of the application
+//           //Save if this is the first load of the application
 //           if (autoOverwrite || !trailInstance.Exists)
 //               trailInstance.CreateDatabase(trailInstance.DBName, isOverWrite: true);
 
@@ -87,7 +87,7 @@
 //           if (!isConnected)
 //               throw new UnityException($"Failed to connect to database: {trailInstance.DBName}");
 
-//           Initialize(); //TODO: Initialize data based on current stage???...
+//           Initialize(); //TODO: Initialize data based on selectedProfile stage???...
 //       }
 
 

@@ -77,7 +77,7 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     private void GenerateTiles()
     {
-        // Insert a new TileMap to store the board's tiles.
+        // Create a new TileMap to store the board's tiles.
         tileMap = new TileMap();
 
         // Loop over each column and row to generate tiles.

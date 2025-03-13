@@ -52,13 +52,13 @@ public class SelectedPlayerManager : MonoBehaviour
         if (focusedActor == actor)
             return;
 
-        // Update the focused actor to the one under the mouse.
+        // Save the focused actor to the one under the mouse.
         focusedActor = actor;
 
         // Calculate the offset between the actor's position and the mouse position.
         touchOffset = focusedActor.position - touchPosition3D;
 
-        // Update the UI elements
+        // Save the UI elements
         focusIndicator.Assign();
         card.Assign();
     }
@@ -85,7 +85,7 @@ public class SelectedPlayerManager : MonoBehaviour
         focusIndicator.Clear();
 
         // Play an audio cue to indicate that the actor has been selected for movement.
-        audioManager.Play("Get");
+        audioManager.Play("Click");
 
         // Start the movement phase:
         // - Play the timer bar animation.
@@ -117,7 +117,7 @@ public class SelectedPlayerManager : MonoBehaviour
         // Snap the selected player's position to the nearest valid tile location on the grid.
         selectedPlayer.movement.SnapToLocation();
 
-        //Clear the current selection and focused actor references
+        //Clear the selectedProfile selection and focused actor references
         selectedPlayer = null;
         focusedActor = null;
 

@@ -65,7 +65,7 @@ namespace Game.Behaviors
         private void Start()
         {
             // The following commented code shows an example of configuring anchors and size,
-            // but is not used in the current implementation.
+            // but is not used in the selectedProfile implementation.
             /*
             RectTransform rect;
             rect = backdrop.GetComponent<RectTransform>();
@@ -120,7 +120,7 @@ namespace Game.Behaviors
             var spd = $"{focusedActor.stats.Speed,4}";                   // Right-align Speed.
             var lck = $"{focusedActor.stats.Luck,4}";                    // Right-align Luck.
 
-            // Insert a formatted stats table string.
+            // Create a formatted stats table string.
             var stats =
                 $"HP       STR  VIT  AGI  SPD  LCK{Environment.NewLine}" +
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";

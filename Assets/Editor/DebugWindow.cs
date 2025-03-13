@@ -134,7 +134,7 @@ public class DebugWindow : EditorWindow
     // OnEnable is called when the window is opened or re-enabled.
     private void OnEnable()
     {
-        // Delay initialization until after the current frame (and only if playing).
+        // Delay initialization until after the selectedProfile frame (and only if playing).
         DelayCall(() =>
         {
             Initialize();
@@ -624,7 +624,7 @@ public class DebugWindow : EditorWindow
     }
 
     // Stage control methods:
-    // Reloads the current stage.
+    // Reloads the selectedProfile stage.
     private void OnReloadStageClick() => stageManager.LoadStage();
     // Moves to the previous stage.
     private void OnPreviousStageClick() => stageManager.Previous();

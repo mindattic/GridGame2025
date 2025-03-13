@@ -26,7 +26,7 @@ namespace Assets.Scripts.Models
         /// <param name="tile">The TileInstance component associated with the tile.</param>
         public void Add(Vector2Int location, Vector3 position, TileInstance tile)
         {
-            // Insert a new TileEntry to hold the mapping information.
+            // Create a new TileEntry to hold the mapping information.
             var entry = new TileEntry(location, position, tile);
             // Map the grid location to this tile entry.
             locationToEntry[location] = entry;

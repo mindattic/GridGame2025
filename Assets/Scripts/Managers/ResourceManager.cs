@@ -49,8 +49,8 @@ public class ResourceManager : MonoBehaviour
 
         //Sound Effects
         keys.SetRange(
-            "Death", "Move1", "Move2", "Move3", "Move4", "Move5", "Move6", "NextTurn", "PlayerGlow", "Portrait", "Rumble",
-            "Get", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
+            "Click", "Death", "Move1", "Move2", "Move3", "Move4", "Move5", "Move6", "NextTurn", "PlayerGlow", "Portrait", 
+            "Rumble", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
         soundEffects = LoadResources<AudioClip>(ResourceFolder.SoundEffects, keys);
 
         //Music Tracks

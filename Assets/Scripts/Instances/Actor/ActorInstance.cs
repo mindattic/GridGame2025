@@ -130,7 +130,7 @@ public class ActorInstance : MonoBehaviour
     public Character character;                         // Character data for this actor.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
     public Vector3 previousPosition;                    // World position before the last movement.
-    public Vector2Int location;                         // current grid location.
+    public Vector2Int location;                         // selectedProfile grid location.
     public Team team = Team.Neutral;                    // Actor's team affiliation.
     public int spawnTurn = 0;                           // Turn number when the actor is eligible to spawn.
 
@@ -221,11 +221,11 @@ public class ActorInstance : MonoBehaviour
     // Spawn: Initializes and spawns the actor at the specified start location.
     public void Spawn(Vector2Int startLocation)
     {
-        // Set current and previous locations.
+        // Set selectedProfile and previous locations.
         location = startLocation;
         previousLocation = location;
 
-        // Update world position based on grid location.
+        // Save world position based on grid location.
         position = Geometry.GetPositionByLocation(location);
         previousPosition = position;
 
@@ -268,7 +268,7 @@ public class ActorInstance : MonoBehaviour
         render.SetNameTagText(friendlyName);
         render.SetNameTagEnabled(isEnabled: debugManager.showActorNameTag);
 
-        // Update health and action bars.
+        // Save health and action bars.
         healthBar.Update();
         actionBar.Reset();
 
@@ -300,7 +300,7 @@ public class ActorInstance : MonoBehaviour
             ? attack.Opponent.TakeDamage(attack)
             : attack.Opponent.AttackMiss();
 
-        //Insert the trigger with asynchronous execution.
+        //Create the trigger with asynchronous execution.
         var trigger = new Trigger(hitOrMiss, isAsync: true);
 
         // Spawn the attack visual effect at the opponent's position.
@@ -518,14 +518,14 @@ public class ActorInstance : MonoBehaviour
             return;
 
         this.location = newLocation;
-        //Update world position based on the new grid location.
+        //Save world position based on the new grid location.
         transform.position = Geometry.GetPositionByLocation(this.location);
     }
 
     //Move: Attempts to move the actor in the specified direction if the target location is valid.
     public void Move(Vector2Int direction)
     {
-        //Abort if the new location (current location + direction) is out of bounds.
+        //Abort if the new location (selectedProfile location + direction) is out of bounds.
         if (!board.InBounds(location + direction))
             return;
 
@@ -547,7 +547,7 @@ public class ActorInstance : MonoBehaviour
         stats.AP = stats.MaxAP;
         stats.PreviousAP = stats.MaxAP;
 
-        //Update the action bar UI to reflect the refreshed action points.
+        //Save the action bar UI to reflect the refreshed action points.
         actionBar.Update();
     }
 }

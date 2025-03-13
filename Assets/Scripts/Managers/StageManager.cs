@@ -46,7 +46,7 @@ public class StageManager : MonoBehaviour
 
     // Fields:
     [SerializeField] public GameObject actorPrefab;  // Prefab used for instantiating actor objects.
-    public StageData currentStage;                    // Data for the current stage.
+    public StageData currentStage;                    // Data for the selectedProfile stage.
 
     /// <summary>
     /// Initializes the StageManager by retrieving the stage name from the player's profile,
@@ -54,20 +54,20 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var stageName = ProfileStore.instance.current.Stage.CurrentStageName;
+        var stageName = ProfileStore.instance.selectedProfile.Stage.CurrentStageName;
         currentStage = DataStore.instance.GetStage(stageName);
         LoadStage();
     }
 
     /// <summary>
-    /// Loads the previous stage by iterating over all stages to find one whose NextStage property equals the current stage name.
+    /// Loads the previous stage by iterating over all stages to find one whose NextStage property equals the selectedProfile stage name.
     /// </summary>
     public void Previous()
     {
         // Iterate over all available stages.
         foreach (var stage in DataStore.instance.Stages.Values)
         {
-            // Identify the stage that lists the current stage as its next stage.
+            // Identify the stage that lists the selectedProfile stage as its next stage.
             if (stage.NextStage == currentStage.Name)
             {
                 currentStage = stage;
@@ -78,7 +78,7 @@ public class StageManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Loads the next stage if available by checking the current stage's NextStage property.
+    /// Loads the next stage if available by checking the selectedProfile stage's NextStage property.
     /// </summary>
     public void Next()
     {
@@ -91,7 +91,7 @@ public class StageManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Loads the current stage by:
+    /// Loads the selectedProfile stage by:
     /// - Clearing previous game elements (actors, coin bar, dotted lines, etc.)
     /// - Initializing the turn manager.
     /// - Spawning actors and dotted lines as defined in the stage data.
@@ -207,7 +207,7 @@ public class StageManager : MonoBehaviour
 
     /// <summary>
     /// Checks whether the game is over by verifying that all player actors have spawned and are dead.
-    /// If the game is over, initiates a fade-out transition and reloads the current stage.
+    /// If the game is over, initiates a fade-out transition and reloads the selectedProfile stage.
     /// </summary>
     private void CheckGameOver()
     {

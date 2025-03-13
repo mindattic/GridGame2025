@@ -74,7 +74,7 @@ namespace Assets.Scripts.Instances.Actor
             // Retrieve intensity and duration from the trigger.
             float intensity = (float)trigger.GetAttribute("intensity", 0f);
             float duration = (float)trigger.GetAttribute("duration", 0f);
-            // Store the original position of the actor's current tile.
+            // Store the original position of the actor's selectedProfile tile.
             var originalPosition = instance.currentTile.position;
             float elapsedTime = 0f;
 
@@ -167,7 +167,7 @@ namespace Assets.Scripts.Instances.Actor
                 float scaleFactor = scaleCurve.Evaluate(progress);
                 scale = tileScale * scaleFactor;
 
-                // Update the actor's rotation based on the computed rotation vector.
+                // Save the actor's rotation based on the computed rotation vector.
                 rotation = Geometry.Rotation(currentRotation);
 
                 yield return Wait.OneTick();
@@ -232,7 +232,7 @@ namespace Assets.Scripts.Instances.Actor
             var windupDuration = 0.15f;
             var bumpDuration = 0.1f;
             var returnDuration = 0.3f;
-            // Get the actor's current position.
+            // Get the actor's selectedProfile position.
             var startPosition = instance.currentTile.position;
             // Calculate positions for windup (backward) and bump (forward) movements.
             var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), tileSize * percent33);
@@ -360,7 +360,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new Trigger();
 
-            // Before: determine target minimum size (default is tileSize) and current scale.
+            // Before: determine target minimum size (default is tileSize) and selectedProfile scale.
             float minSize = (float)trigger.GetAttribute("minSize", tileSize);
             float maxSize = scale.x;
             float increment = tileSize * 0.01f;
@@ -568,7 +568,7 @@ namespace Assets.Scripts.Instances.Actor
             // During: While the actor's AP remains at maximum, wiggle the weapon icon.
             while (instance.stats.AP == instance.stats.MaxAP)
             {
-                // Calculate the current rotation offset using a sine function.
+                // Calculate the selectedProfile rotation offset using a sine function.
                 rotZ = start + Mathf.Sin(Time.time * wiggleSpeed) * wiggleAmplitude;
                 render.weaponIcon.transform.rotation = Quaternion.Euler(0, 0, rotZ);
                 yield return Wait.OneTick();

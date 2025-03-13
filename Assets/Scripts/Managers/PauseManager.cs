@@ -52,8 +52,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
         pauseButtonImage.sprite = pause;
         canvasOverlay.Reset();
-        pauseMenu.SetActive(false);
-      
+        pauseMenu.SetActive(false);    
     }
 
     public void OnPauseButtonClicked()
@@ -67,19 +66,22 @@ public class PauseManager : MonoBehaviour
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
+        MenuHelper.DisableButtons(buttons);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
+        MenuHelper.DisableButtons(buttons);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.StageSelect)));   
     }
 
     public void OnQuitButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileStore.instance.Update();
+        MenuHelper.DisableButtons(buttons);
+        ProfileStore.instance.Save();
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
     }
 

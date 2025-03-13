@@ -845,24 +845,32 @@ public static class MenuHelper
             rectTransform.anchoredPosition = new Vector2(0, startY - buttonHeight / 2f);
             TextMeshProUGUI label = button.GetComponentInChildren<TextMeshProUGUI>();
             label.fontSize = buttonHeight / 2f;
+            button.interactable = true;
 
             startY -= (buttonHeight + spacing);
         }
 
     }
+
+    public static void DisableButtons(Button[] buttons)
+    {
+        foreach (var button in buttons)
+        {
+            button.interactable = false;
+        }
+    }
+
 }
 
 public static class FolderHelper
 {
-    public static class Folders
+    public static class Folder
     {
-        //Windows: persistentDataPath == C:\Users\<YourUsername>\AppData\LocalLow\<CompanyName>\<ProductName>\
-
         public static string Profiles;
 
-        static Folders()
+        static Folder()
         {
-            if (string.IsNullOrWhiteSpace(Application.persistentDataPath))
+            if (!System.IO.Directory.Exists(Application.persistentDataPath))
             {
                 Debug.LogError("Application.persistentDataPath is null or whitespace.");
                 return;
@@ -872,18 +880,18 @@ public static class FolderHelper
         }
     }
 
-    public static string CreateFolder(string basePath, string folderName)
+    public static string Create(string basePath, string folderName)
     {
         var path = Path.Combine(basePath, folderName);
-        if (!Directory.Exists(path))
-            Directory.CreateDirectory(path);
+        if (!System.IO.Directory.Exists(path))
+            System.IO.Directory.CreateDirectory(path);
 
         return path;
     }
 
-    public static List<string> GetFolders(string basePath)
+    public static List<string> Get(string basePath)
     {
-        return Directory.GetDirectories(basePath).ToList();
+        return System.IO.Directory.GetDirectories(basePath).ToList();
     }
 }
 

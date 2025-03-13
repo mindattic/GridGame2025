@@ -54,7 +54,7 @@ public class PincerAttackManager : MonoBehaviour
     /// <returns>A PincerAttackParticipants object containing all identified valid pairs.</returns>
     public PincerAttackParticipants GetParticipants(Team team)
     {
-        // Insert a new container for storing valid pincer attack pairs.
+        // Create a new container for storing valid pincer attack pairs.
         var participants = new PincerAttackParticipants();
 
         // Filter and gather all actors that are actively playing and belong to the specified team.
@@ -62,11 +62,11 @@ public class PincerAttackManager : MonoBehaviour
             .Where(x => x.isPlaying && x.team == team)
             .ToList();
 
-        // Insert an indexed list to iterate through team actors without duplicating pairs.
+        // Create an indexed list to iterate through team actors without duplicating pairs.
         var indexedTeamActors = teamActors.Select((actor, index) => (actor, index));
         foreach (var (actor1, i) in indexedTeamActors)
         {
-            // Skip all actors before or at the current index to avoid double-checking pairs.
+            // Skip all actors before or at the selectedProfile index to avoid double-checking pairs.
             var remainingTeamActors = teamActors.Skip(i + 1);
             foreach (var actor2 in remainingTeamActors)
             {
@@ -120,7 +120,7 @@ public class PincerAttackManager : MonoBehaviour
 
     /// <summary>
     /// Recursively chains results starting from the specified attacker.
-    /// For the current attacker, opponents are sorted by distance so that closer opponents are processed first.
+    /// For the selectedProfile attacker, opponents are sorted by distance so that closer opponents are processed first.
     /// If any opponent is also found as the primary attacker (attacker1) in another valid pair, their chain is processed recursively.
     /// </summary>
     /// <param name="attacker">The starting attacker for the chain.</param>
@@ -130,12 +130,12 @@ public class PincerAttackManager : MonoBehaviour
     {
         var attacks = new List<AttackResult>();
 
-        // Identify the pincer attack pair where the current actor serves as the primary attacker.
+        // Identify the pincer attack pair where the selectedProfile actor serves as the primary attacker.
         var p = pair.FirstOrDefault(p => p.attacker1 == attacker);
         if (p == null)
             return attacks; // No chain can be made if the actor is not found as attacker1.
 
-        // Sort the opponents by their distance from the current attacker to process closer enemies first.
+        // Sort the opponents by their distance from the selectedProfile attacker to process closer enemies first.
         var sortedOpponents = p.opponents
             .OrderBy(x => Vector2.Distance(attacker.location, x.location))
             .ToList();

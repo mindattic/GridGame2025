@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using static FolderHelper;
-using GlobalSection = Game.Models.ProfileGlobalSection;
-using SettingsSection = Game.Models.ProfileSettingsSection;
-using PartySection = Game.Models.ProfilePartySection;
-using StageSection = Game.Models.ProfileStageSection;
 
 namespace Game.Models
 {
     [Serializable]
     public class Profile
     {
-        public string Guid;
+        public string Key;
         public string Folder;
 
         public GlobalSection Global { get; set; }
@@ -21,92 +16,63 @@ namespace Game.Models
 
         public Profile() { }
 
-        public Profile(string guid)
+        public Profile(string key)
         {
-            Guid = guid;
-
-            Folder = CreateFolder(Folders.Profiles, Guid);
-
-            Global = new GlobalSection
-            {
-                TotalCoins = 0,
-                PreviousSceneName = "Title"
-            };
-
-            Settings = new SettingsSection
-            {
-
-                GameSpeed = 1.0f
-            };
-
-
-            Stage = new StageSection
-            {
-                CurrentStageName = "Stage 1"
-            };
-
+            Key = key;
+            // Folder will be set later by ProfileStore when the folder is created
+            Global = new GlobalSection();
+            Settings = new SettingsSection();
+            Stage = new StageSection();
             Party = new PartySection();
         }
-
-        public bool IsValid()
-        {
-            if (string.IsNullOrWhiteSpace(Guid) || string.IsNullOrWhiteSpace(Folder))
-                return false;
-
-            if (Global == null || Stage == null || Party == null)
-                return false;
-
-            return true;
-        }
-
     }
-
 
     [Serializable]
     public class ProfileSection { }
 
     [Serializable]
-    public class ProfileGlobalSection : ProfileSection
+    public class GlobalSection : ProfileSection
     {
         public int TotalCoins;
         public string PreviousSceneName;
+        public DateTime DateCreated;
 
-        public ProfileGlobalSection()
+        public GlobalSection()
         {
             TotalCoins = 0;
             PreviousSceneName = "Title";
+            DateCreated = DateTime.UtcNow;
         }
     }
 
     [Serializable]
-    public class ProfileSettingsSection : ProfileSection
+    public class SettingsSection : ProfileSection
     {
         public float GameSpeed;
 
-        public ProfileSettingsSection()
+        public SettingsSection()
         {
             GameSpeed = 1.0f;
         }
     }
 
     [Serializable]
-    public class ProfileStageSection : ProfileSection
+    public class StageSection : ProfileSection
     {
         public string CurrentStageName;
 
-        public ProfileStageSection()
+        public StageSection()
         {
             CurrentStageName = "Stage 1";
         }
     }
 
     [Serializable]
-    public class ProfilePartySection : ProfileSection
+    public class PartySection : ProfileSection
     {
         public List<Member> Members = new List<Member>();
 
-        public ProfilePartySection() { }
-
+        public PartySection() { }
     }
 
     [Serializable]

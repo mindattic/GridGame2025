@@ -6,7 +6,7 @@ using UnityEngine;
 public class FocusIndicator : MonoBehaviour
 {
     // Quick reference properties accessing global game settings through the GameManager singleton.
-    // These properties provide shortcuts to important values such as the tile scale and the current focused actor.
+    // These properties provide shortcuts to important values such as the tile scale and the selectedProfile focused actor.
 
     // Retrieves the global tile scale used in the game.
     protected Vector3 tileScale => GameManager.instance.tileScale;
@@ -57,7 +57,7 @@ public class FocusIndicator : MonoBehaviour
     }
 
     // Start is called before the first frame update.
-    // This is reserved for initialization logic that might be needed before the Update loop.
+    // This is reserved for initialization logic that might be needed before the Save loop.
     void Start()
     {
         // Currently no initialization is needed at start.
@@ -72,7 +72,7 @@ public class FocusIndicator : MonoBehaviour
         spriteRenderer.enabled = false;
     }
 
-    // Update is called once per frame.
+    // Save is called once per frame.
     // Currently, no per-frame logic is required for the FocusIndicator.
     void Update()
     {

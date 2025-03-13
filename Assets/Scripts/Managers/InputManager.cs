@@ -26,7 +26,7 @@ public class InputManager : MonoBehaviour
     public bool IsDragging => isTouching && Vector3.Distance(initialTouchPosition, touchPosition3D) > dragThreshold;
 
 
-    // Update is called once per frame to process player input.
+    // Save is called once per frame to process player input.
     void Update()
     {
         // Do not process input if the game is paused.

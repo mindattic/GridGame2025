@@ -43,7 +43,7 @@ public class SettingsManager : MonoBehaviour
         verticalLayoutGroup.spacing = spacing;
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Start is called once before the first execution of Save after the MonoBehaviour is created
     private void Start()
     {
         StartCoroutine(fade.FadeIn());

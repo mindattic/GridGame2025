@@ -26,13 +26,13 @@ public class TitleManager : MonoBehaviour
 
     public void OnContinueButtonClicked()
     {
-        DisableButtons();
+        MenuHelper.DisableButtons(buttons);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 
     public void OnNewGameButtonClicked()
     {
-        DisableButtons();
+        MenuHelper.DisableButtons(buttons);
         ProfileStore.instance.Create();
         ProfileStore.instance.Load();
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
@@ -40,19 +40,19 @@ public class TitleManager : MonoBehaviour
 
     public void OnLoadGameButtonClicked()
     {
-        DisableButtons();
+        MenuHelper.DisableButtons(buttons);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.ProfileSelect)));
     }
 
     public void OnSettingsButtonClicked()
     {
-        DisableButtons();
+        MenuHelper.DisableButtons(buttons);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnCreditsButtonClicked()
     {
-        DisableButtons();
+        MenuHelper.DisableButtons(buttons);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Credits)));
     }
 

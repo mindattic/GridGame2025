@@ -24,7 +24,7 @@ public class BackgroundInstance : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    //Start is called once before the first execution of Update after the MonoBehaviour is created
+    //Start is called once before the first execution of Save after the MonoBehaviour is created
     void Start()
     {
         initialPosition = transform.position; //Store the starting position

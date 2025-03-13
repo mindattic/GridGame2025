@@ -119,12 +119,12 @@ public class CanvasOverlay : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
 
-            //Update background alpha
+            //Save background alpha
             var alpha = Mathf.Lerp(backgroundMinAlpha, backgroundMaxAlpha, t);
             backgroundColor.a = alpha;
             backgroundImage.color = backgroundColor;
 
-            //Update label rotation (rotate faster)
+            //Save label rotation (rotate faster)
             float angle = Mathf.Lerp(startAngle, endAngle, t * rotateMultiplier);
             label.transform.eulerAngles = new Vector3(angle, 0, 0);
 
@@ -159,12 +159,12 @@ public class CanvasOverlay : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float t = Mathf.Clamp01(elapsedTime / duration);
 
-            //Update background alpha
+            //Save background alpha
             alpha = Mathf.Lerp(backgroundMaxAlpha, backgroundMinAlpha, t);
             backgroundColor.a = alpha;
             backgroundImage.color = backgroundColor;
 
-            //Update label rotation (rotate faster)
+            //Save label rotation (rotate faster)
             float angle = Mathf.Lerp(startAngle, endAngle, t * rotateMultiplier);
             label.transform.eulerAngles = new Vector3(angle, 0, 0);
 

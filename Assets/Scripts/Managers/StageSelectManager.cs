@@ -73,7 +73,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void OnStageSelectButtonClicked(string stageName)
     {
-        ProfileStore.instance.current.Stage.CurrentStageName = stageName;
+        ProfileStore.instance.selectedProfile.Stage.CurrentStageName = stageName;
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 

@@ -50,7 +50,7 @@ public class CreditsManager : MonoBehaviour
        
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Start is called once before the first execution of Save after the MonoBehaviour is created
     private void Start()
     {
         const string NL = "\r\n";

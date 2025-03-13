@@ -57,7 +57,7 @@ public class ProfileSelectManager : MonoBehaviour
     {
         // Instantiate the prefab as a child of the content
         GameObject instance = Instantiate(buttonPrefab, content);
-        instance.name = $"Profile_{profile.Guid}";
+        instance.name = $"Profile_{profile.Key}";
 
         // Set the button size: 90% of width, 1/16th of height
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
@@ -65,16 +65,16 @@ public class ProfileSelectManager : MonoBehaviour
 
         // Set the button's click event
         Button button = instance.GetComponent<Button>();
-        button.onClick.AddListener(() => OnProfileButtonClicked(profile.Guid));
+        button.onClick.AddListener(() => OnProfileButtonClicked(profile.Key));
 
         // Set the button text
         Label label = instance.GetComponentInChildren<Label>();
-        label.text = profile.Guid;
+        label.text = profile.Key;
     }
 
-    private void OnProfileButtonClicked(string guid)
+    private void OnProfileButtonClicked(string key)
     {
-        ProfileStore.instance.Select(guid);
+        ProfileStore.instance.Select(key);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 

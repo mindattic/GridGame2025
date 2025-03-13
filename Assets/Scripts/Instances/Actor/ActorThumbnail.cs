@@ -40,7 +40,7 @@ public class ActorThumbnail
         //Define the portion to cut out
         Rect rect = new Rect(offset.x, offset.y, settings.Width, settings.Height);
 
-        //Insert a sprite from the selected portion of the texture
+        //Create a sprite from the selected portion of the texture
         var pivot = new Vector2(0.5f, 0.5f);
         sprite = Sprite.Create(texture, rect, pivot, 100f);
 
