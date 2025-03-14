@@ -36,6 +36,17 @@ public static class ComponentHelper
         public static string PauseMenu = "Canvas2D/PauseMenu";
     }
 
+    public static class Overworld
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Header = "Canvas2D/Header";
+        public static string ScrollView = "Canvas2D/ScrollView";
+        public static string Viewport = "Canvas2D/ScrollView/Viewport";
+        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public static string Map = "Canvas2D/ScrollView/Viewport/Content/Map";
+        public static string Fade = "Canvas2D/Fade";
+    }
+
     public static class ProfileSelect
     {
         public static string Canvas2D = "Canvas2D";
