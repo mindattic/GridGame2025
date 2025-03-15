@@ -1,4 +1,5 @@
 using Assets.Scripts.Store;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ using Label = TMPro.TextMeshProUGUI;
 public class OverworldManager : MonoBehaviour
 {
     //Fields
-    private Label header;
+    private Label title;
     private RectTransform canvas2D;
     private RectTransform scrollView;
     private ScrollRect scrollRect;
@@ -28,7 +29,7 @@ public class OverworldManager : MonoBehaviour
 
     private void Awake()
     {
-        header = GameObject.Find(ComponentHelper.Overworld.Header).GetComponent<Label>() ?? throw new UnityException("Label is null");
+        title = GameObject.Find(ComponentHelper.Overworld.Title).GetComponent<Label>() ?? throw new UnityException("Label is null");
 
         canvas2D = GameObject.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
         scrollView = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
@@ -46,7 +47,7 @@ public class OverworldManager : MonoBehaviour
         buttonWidth = 64;
         buttonHeight = 32;
 
-        header.fontSize = screenHeight / 16f / 2;
+        title.fontSize = screenHeight / 16f / 2;
         scrollView.sizeDelta = new Vector2(screenWidth, screenHeight);
 
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
@@ -74,7 +75,7 @@ public class OverworldManager : MonoBehaviour
     private void Start()
     {
         //AddStageIcon(new Vector2(1280, -2840), "Stage 1");
-        CenterOnPosition(new Vector2(1280, -2840));
+        OnCenterOnPlayerClicked();
 
         StartCoroutine(fade.FadeIn());
     }
@@ -111,21 +112,97 @@ public class OverworldManager : MonoBehaviour
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
     }
 
-
-    public void CenterOnPosition(Vector2 targetLocalPosition)
+    public void OnCenterOnPlayerClicked()
     {
+        CenterOnPosition(player.transform.localPosition, 5f, 0.001f);
+    }
 
-        // Convert local position into normalized position
+    public void CenterOnPosition(Vector2 targetLocalPosition, float speed, float snapThreshold)
+    {
+        StartCoroutine(SmoothCentering(targetLocalPosition, speed, snapThreshold));
+    }
+
+    private IEnumerator SmoothCentering(Vector2 targetLocalPosition, float speed, float snapThreshold)
+    {
+        // Get viewport and content sizes
         Vector2 viewportSize = viewport.rect.size;
         Vector2 contentSize = content.rect.size;
 
-        // Normalize position (0 = top/left, 1 = bottom/right)
-        float normalizedX = Mathf.Clamp01((targetLocalPosition.x - viewportSize.x / 2) / (contentSize.x - viewportSize.x));
-        float normalizedY = Mathf.Clamp01((targetLocalPosition.y - viewportSize.y / 2) / (contentSize.y - viewportSize.y));
+        // Compute offsets dynamically
+        float offsetX = -viewportSize.x;
+        float offsetY = viewportSize.y * 3.33333f;
 
-        // Apply the new scroll position
-        scrollRect.normalizedPosition = new Vector2(normalizedX, 1 - normalizedY);
+        // Adjust target position by applying calculated offsets
+        float adjustedX = targetLocalPosition.x + offsetX + viewportSize.x / 2;
+        float adjustedY = targetLocalPosition.y + offsetY - viewportSize.y / 2; // Negative Y adjustment due to UI axis
+
+        // Normalize values (0 = left/top, 1 = right/bottom)
+        float targetX = Mathf.Clamp01(adjustedX / (contentSize.x - viewportSize.x));
+        float targetY = Mathf.Clamp01(1 - (adjustedY / (contentSize.y - viewportSize.y))); // Inverting for UI coordinate system
+
+        Vector2 targetPosition = new Vector2(targetX, targetY);
+
+        // Smooth movement loop
+        while (Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > snapThreshold)
+        {
+            scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * speed);
+            yield return null; // Wait for next frame
+        }
+
+        // Snap to final position
+        scrollRect.normalizedPosition = targetPosition;
     }
+
+
+    //public void CenterOnPosition(Vector2 targetLocalPosition, float speed = 2f, float snapThreshold = 0.001f)
+    //{
+    //    StartCoroutine(SmoothCentering(targetLocalPosition, speed, snapThreshold));
+    //}
+
+    //private IEnumerator SmoothCentering(Vector2 targetLocalPosition, float speed, float snapThreshold)
+    //{
+    //    // Get viewport and content sizes
+    //    Vector2 viewportSize = viewport.rect.size;
+    //    Vector2 contentSize = content.rect.size;
+
+    //    // Compute offsets dynamically
+    //    float offsetX = -viewportSize.x;
+    //    float offsetY = viewportSize.y * 3.33333f;
+
+    //    // Adjust target position by applying calculated offsets
+    //    float adjustedX = targetLocalPosition.x + offsetX + viewportSize.x / 2;
+    //    float adjustedY = targetLocalPosition.y + offsetY - viewportSize.y / 2; // Negative Y adjustment due to UI axis
+
+    //    // Normalize values (0 = left/top, 1 = right/bottom)
+    //    float targetX = Mathf.Clamp01(adjustedX / (contentSize.x - viewportSize.x));
+    //    float targetY = Mathf.Clamp01(1 - (adjustedY / (contentSize.y - viewportSize.y))); // Inverting for UI coordinate system
+
+    //    Vector2 targetPosition = new Vector2(targetX, targetY);
+
+    //    // Smooth movement loop
+    //    float progress = 0f;
+    //    Vector2 startPosition = scrollRect.normalizedPosition;
+
+    //    while (progress < 1f)
+    //    {
+    //        progress += Time.deltaTime * speed;
+    //        float smoothProgress = Mathf.SmoothStep(0, 1, progress); // Smooth transition
+
+    //        scrollRect.normalizedPosition = Vector2.Lerp(startPosition, targetPosition, smoothProgress);
+
+    //        // If close enough, reduce speed dynamically
+    //        if (Vector2.Distance(scrollRect.normalizedPosition, targetPosition) < snapThreshold)
+    //        {
+    //            break;
+    //        }
+
+    //        yield return null; // Wait for next frame
+    //    }
+
+    //    // Smooth final snap
+    //    scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, 0.2f);
+    //}
+
 
 
 }

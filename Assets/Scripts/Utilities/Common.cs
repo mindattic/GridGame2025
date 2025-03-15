@@ -40,7 +40,7 @@ public static class ComponentHelper
     public static class Overworld
     {
         public static string Canvas2D = "Canvas2D";
-        public static string Header = "Canvas2D/Header";
+        public static string Title = "Canvas2D/Title";
         public static string ScrollView = "Canvas2D/ScrollView";
         public static string Viewport = "Canvas2D/ScrollView/Viewport";
         public static string Content = "Canvas2D/ScrollView/Viewport/Content";
