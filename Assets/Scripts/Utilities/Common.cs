@@ -11,6 +11,7 @@ public static class SceneHelper
 {
     public static string Credits = "Credits";
     public static string Game = "Game";
+    public static string Overworld = "Overworld";
     public static string ProfileSelect = "ProfileSelect";
     public static string Splash = "Splash";
     public static string Settings = "Settings";
@@ -44,6 +45,7 @@ public static class ComponentHelper
         public static string Viewport = "Canvas2D/ScrollView/Viewport";
         public static string Content = "Canvas2D/ScrollView/Viewport/Content";
         public static string Map = "Canvas2D/ScrollView/Viewport/Content/Map";
+        public static string Player = "Canvas2D/ScrollView/Viewport/Content/Player";
         public static string Fade = "Canvas2D/Fade";
     }
 

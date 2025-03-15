@@ -23,6 +23,7 @@ TagManager:
   - VFX
   - Powerup
   - DottedLine
+  - StageButton
   layers:
   - Default
   - TransparentFX
