@@ -114,8 +114,6 @@ public static class Constants
     public const string ProfileManager = "ProfileManager";
     public const string WaveAnnouncement = "WaveAnnouncement";
 
-
-
     //Percent
     public const float percent10 = 0.1f;
     public const float percent16 = 0.166666f;
