@@ -4,13 +4,13 @@ using UnityEngine;
 
 // ActorActionBar is responsible for managing and updating the visual representation 
 // of an actor's action points (AP) in the UI. It handles the fill and drain animations 
-// for the action bar based on the actor's selectedProfile and maximum AP.
+// for the action bar based on the actor's CurrentProfile and maximum AP.
 public class ActorActionBar
 {
     // Quick Reference Properties:
-    // These properties provide direct access to relevant game managers and the selectedProfile actor's modules.
+    // These properties provide direct access to relevant game managers and the CurrentProfile actor's modules.
     protected DebugManager debugManager => GameManager.instance.debugManager;
-    // Retrieves the flags module from the selectedProfile actor _instance to check various state flags.
+    // Retrieves the flags module from the CurrentProfile actor _instance to check various state flags.
     protected ActorFlags flags => instance.flags;
     // Provides access to the currently selected player (if any) from the GameManager.
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
@@ -44,7 +44,7 @@ public class ActorActionBar
             initialScale.z);
     }
 
-    // Save refreshes the action bar UI to reflect the actor's selectedProfile AP values.
+    // Save refreshes the action bar UI to reflect the actor's CurrentProfile AP values.
     // It adjusts the fill and drain bar scales, updates the text display, triggers a weapon wiggle animation,
     // and initiates the drain animation.
     public void Update()
@@ -67,12 +67,12 @@ public class ActorActionBar
             instance.StartCoroutine(Drain());
     }
 
-    // Drain is a coroutine that gradually reduces the displayed AP on the drain bar until it matches the selectedProfile AP.
+    // Drain is a coroutine that gradually reduces the displayed AP on the drain bar until it matches the CurrentProfile AP.
     // It waits for a brief interval before starting, then decreases stats.PreviousAP in increments,
     // updating the scale of the drain bar each tick.
     private IEnumerator Drain()
     {
-        // Abort if no drain is required (i.e., selectedProfile AP equals previous AP).
+        // Abort if no drain is required (i.e., CurrentProfile AP equals previous AP).
         if (stats.PreviousAP == stats.AP)
             yield break;
 
@@ -82,7 +82,7 @@ public class ActorActionBar
         // Wait for a pre-defined delay before beginning the drain animation.
         yield return Wait.For(Intermission.Before.ActionBar.Drain);
 
-        // Gradually decrease PreviousAP until it matches the selectedProfile AP.
+        // Gradually decrease PreviousAP until it matches the CurrentProfile AP.
         while (stats.AP < stats.PreviousAP)
         {
             stats.PreviousAP -= Increment.ActionBar.Drain;
@@ -91,7 +91,7 @@ public class ActorActionBar
             yield return Wait.OneTick();
         }
 
-        // After draining, synchronize PreviousAP with the selectedProfile AP and update the health bar drain element.
+        // After draining, synchronize PreviousAP with the CurrentProfile AP and update the health bar drain element.
         stats.PreviousAP = stats.AP;
         scale = GetScale(stats.PreviousAP);
         render.healthBarDrain.transform.localScale = scale;

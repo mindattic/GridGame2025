@@ -177,7 +177,7 @@ public class ActorRenderers
 
     private IEnumerator UpdateParallaxSpeed(string scrollProperty, float targetValue)
     {
-        //Fetch the selectedProfile value once at the start
+        //Fetch the CurrentProfile value once at the start
         float currentValue = parallax.material.GetFloat(scrollProperty);
         float duration = 1f; //Adjust the duration for the transition
         float elapsed = 0f;

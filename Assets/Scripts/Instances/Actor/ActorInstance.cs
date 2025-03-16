@@ -130,7 +130,7 @@ public class ActorInstance : MonoBehaviour
     public Character character;                         // Character data for this actor.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
     public Vector3 previousPosition;                    // World position before the last movement.
-    public Vector2Int location;                         // selectedProfile grid location.
+    public Vector2Int location;                         // CurrentProfile grid location.
     public Team team = Team.Neutral;                    // Actor's team affiliation.
     public int spawnTurn = 0;                           // Turn number when the actor is eligible to spawn.
 
@@ -221,7 +221,7 @@ public class ActorInstance : MonoBehaviour
     // Spawn: Initializes and spawns the actor at the specified start location.
     public void Spawn(Vector2Int startLocation)
     {
-        // Set selectedProfile and previous locations.
+        // Set CurrentProfile and previous locations.
         location = startLocation;
         previousLocation = location;
 
@@ -525,7 +525,7 @@ public class ActorInstance : MonoBehaviour
     //Move: Attempts to move the actor in the specified direction if the target location is valid.
     public void Move(Vector2Int direction)
     {
-        //Abort if the new location (selectedProfile location + direction) is out of bounds.
+        //Abort if the new location (CurrentProfile location + direction) is out of bounds.
         if (!board.InBounds(location + direction))
             return;
 

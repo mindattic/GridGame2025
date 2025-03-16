@@ -46,18 +46,32 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var entry in ProfileStore.instance.profiles)
-        {
-            AddButton(entry.Value);
-        }
+        Reload(); 
         StartCoroutine(fade.FadeIn());
     }
 
-    public void AddButton(Profile profile)
+    private void Reload()
+    {
+        //Clear existing content
+        foreach (Transform child in content)
+        {
+            Destroy(child.gameObject);
+        }
+
+        AddCreateNewProfileButton();
+
+        //Add each profile as a button
+        foreach (var entry in ProfileStore.instance.profiles)
+        {
+            AddProfileSelectButton(entry.Value);
+        }
+    }
+
+    public void AddCreateNewProfileButton()
     {
         // Instantiate the prefab as a child of the content
         GameObject instance = Instantiate(buttonPrefab, content);
-        instance.name = $"Profile_{profile.Key}";
+        instance.name = "CreateNewProfile";
 
         // Set the button size: 90% of width, 1/16th of height
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
@@ -65,22 +79,50 @@ public class ProfileSelectManager : MonoBehaviour
 
         // Set the button's click event
         Button button = instance.GetComponent<Button>();
-        button.onClick.AddListener(() => OnProfileButtonClicked(profile.Key));
+        button.onClick.AddListener(() => OnCreateNewProfileButtonClicked());
 
         // Set the button text
         Label label = instance.GetComponentInChildren<Label>();
-        label.text = profile.Key;
+        label.text = "Create New Profile";
     }
 
-    private void OnProfileButtonClicked(string key)
+
+    public void AddProfileSelectButton(Profile profile)
     {
-        ProfileStore.instance.Select(key);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
+        // Instantiate the prefab as a child of the content
+        GameObject instance = Instantiate(buttonPrefab, content);
+        instance.name = $"Profile_{profile.Name}";
+
+        // Set the button size: 90% of width, 1/16th of height
+        RectTransform buttonRect = instance.GetComponent<RectTransform>();
+        buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+
+        // Set the button's click event
+        Button button = instance.GetComponent<Button>();
+        button.onClick.AddListener(() => OnProfileButtonClicked(profile.Name));
+
+        // Set the button text
+        Label label = instance.GetComponentInChildren<Label>();
+        label.text = profile.Name;
     }
+
+
+    private void OnProfileButtonClicked(string name)
+    {
+        ProfileStore.instance.Select(name);
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
+    }
+    private void OnCreateNewProfileButtonClicked()
+    {
+        ProfileStore.instance.Create();
+        ProfileStore.instance.Load();
+        Reload();
+    }
+
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
     }
 
 

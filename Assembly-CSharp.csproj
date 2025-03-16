@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Models\DataModels.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
+    <Compile Include="Assets\Scripts\Models\StageWave.cs" />
     <Compile Include="Assets\Scripts\Models\ShakeIntensity.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedPlayerManager.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
+    <Compile Include="Assets\Scripts\GUI\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
@@ -117,14 +119,13 @@
     <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
-    <Compile Include="Assets\Scripts\Models\StageWaveData.cs" />
-    <Compile Include="Assets\Scripts\Models\StageData.cs" />
     <Compile Include="Assets\Scripts\Stores\DataStore.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyMoveAction.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Actions\CastSpellAction.cs" />
+    <Compile Include="Assets\Scripts\GUI\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\GUI\CityScroll.cs" />
     <Compile Include="Assets\Scripts\Models\Location.cs" />
@@ -137,7 +138,6 @@
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
-    <Compile Include="Assets\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasParticleEmitter.cs" />
@@ -153,10 +153,10 @@
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
-    <Compile Include="Assets\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\GUI\CoinBar.cs" />
-    <Compile Include="Assets\OverworldManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\OverworldManager.cs" />
     <Compile Include="Assets\Scripts\Models\CanvasLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
@@ -169,6 +169,7 @@
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\GUI\TimerBar.cs" />
+    <Compile Include="Assets\Scripts\Models\Stage.cs" />
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Assets\Scripts\Actions\AttackSupportAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SpellInstance.cs" />
+    <Compile Include="Assets\Scripts\Models\SaveFile.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorMovement.cs" />
     <Compile Include="Assets\Scripts\Instances\CoinInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\StageManager.cs" />

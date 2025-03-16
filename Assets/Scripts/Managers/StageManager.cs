@@ -43,16 +43,16 @@ public class StageManager : MonoBehaviour
 
     // Fields:
     [SerializeField] public GameObject actorPrefab;
-    public StageData currentStage;
+    public Stage currentStage;
     private int currentWaveIndex = 0; // Track the current wave
 
     /// <summary>
     /// Initializes the StageManager by retrieving the stage name from the player's profile,
-    /// loading the corresponding StageData, and then loading the stage.
+    /// loading the corresponding Stage, and then loading the stage.
     /// </summary>
     public void Initialize()
     {
-        var stageName = ProfileStore.instance.selectedProfile.Stage.CurrentStageName;
+        var stageName = ProfileStore.instance.CurrentProfile.LatestSave.Stage.CurrentStageName;
         currentStage = DataStore.instance.GetStage(stageName);
         currentWaveIndex = 0;
         LoadStage();
@@ -105,7 +105,7 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        StageWaveData wave = currentStage.Waves[waveIndex];
+        StageWave wave = currentStage.Waves[waveIndex];
 
         // Spawn actors for this wave
         foreach (var stageActor in wave.Actors)

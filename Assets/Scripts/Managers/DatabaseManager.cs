@@ -87,7 +87,7 @@
 //           if (!isConnected)
 //               throw new UnityException($"Failed to connect to database: {trailInstance.DBName}");
 
-//           Initialize(); //TODO: Initialize data based on selectedProfile stage???...
+//           Initialize(); //TODO: Initialize data based on CurrentProfile stage???...
 //       }
 
 
@@ -95,7 +95,7 @@
 //       //Come up with a way to retrieve records piecemeal so
 //       //that entire database tables don't have to be
 //       //downloaded for a small subset of data, e.g:
-//       //StageData 05: ["Slime", "Scorpion", "Bat", "Yeti"]
+//       //Stage 05: ["Slime", "Scorpion", "Bat", "Yeti"]
 
 
 //       void Initialize()

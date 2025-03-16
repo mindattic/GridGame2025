@@ -6,7 +6,7 @@ using UnityEngine;
 public class FocusIndicator : MonoBehaviour
 {
     // Quick reference properties accessing global game settings through the GameManager singleton.
-    // These properties provide shortcuts to important values such as the tile scale and the selectedProfile focused actor.
+    // These properties provide shortcuts to important values such as the tile scale and the CurrentProfile focused actor.
 
     // Retrieves the global tile scale used in the game.
     protected Vector3 tileScale => GameManager.instance.tileScale;

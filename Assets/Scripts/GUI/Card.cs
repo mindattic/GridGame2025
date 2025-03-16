@@ -65,7 +65,7 @@ namespace Game.Behaviors
         private void Start()
         {
             // The following commented code shows an example of configuring anchors and size,
-            // but is not used in the selectedProfile implementation.
+            // but is not used in the CurrentProfile implementation.
             /*
             RectTransform rect;
             rect = backdrop.GetComponent<RectTransform>();

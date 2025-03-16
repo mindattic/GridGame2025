@@ -66,7 +66,7 @@ public class PincerAttackManager : MonoBehaviour
         var indexedTeamActors = teamActors.Select((actor, index) => (actor, index));
         foreach (var (actor1, i) in indexedTeamActors)
         {
-            // Skip all actors before or at the selectedProfile index to avoid double-checking pairs.
+            // Skip all actors before or at the CurrentProfile index to avoid double-checking pairs.
             var remainingTeamActors = teamActors.Skip(i + 1);
             foreach (var actor2 in remainingTeamActors)
             {
@@ -120,7 +120,7 @@ public class PincerAttackManager : MonoBehaviour
 
     /// <summary>
     /// Recursively chains results starting from the specified attacker.
-    /// For the selectedProfile attacker, opponents are sorted by distance so that closer opponents are processed first.
+    /// For the CurrentProfile attacker, opponents are sorted by distance so that closer opponents are processed first.
     /// If any opponent is also found as the primary attacker (attacker1) in another valid pair, their chain is processed recursively.
     /// </summary>
     /// <param name="attacker">The starting attacker for the chain.</param>
@@ -130,12 +130,12 @@ public class PincerAttackManager : MonoBehaviour
     {
         var attacks = new List<AttackResult>();
 
-        // Identify the pincer attack pair where the selectedProfile actor serves as the primary attacker.
+        // Identify the pincer attack pair where the CurrentProfile actor serves as the primary attacker.
         var p = pair.FirstOrDefault(p => p.attacker1 == attacker);
         if (p == null)
             return attacks; // No chain can be made if the actor is not found as attacker1.
 
-        // Sort the opponents by their distance from the selectedProfile attacker to process closer enemies first.
+        // Sort the opponents by their distance from the CurrentProfile attacker to process closer enemies first.
         var sortedOpponents = p.opponents
             .OrderBy(x => Vector2.Distance(attacker.location, x.location))
             .ToList();
@@ -143,11 +143,8 @@ public class PincerAttackManager : MonoBehaviour
         // Iterate through each opponent and compute the attack result.
         foreach (var opponent in sortedOpponents)
         {
-            // Determine whether the attack hits using pre-defined formulas.
             bool isHit = Formulas.IsHit(attacker, opponent);
-            // Check if the hit qualifies as a critical hit.
             bool isCritical = Formulas.IsCriticalHit(attacker, opponent);
-            // Calculate the damage if the attack is a hit; otherwise, damage is zero.
             int damage = isHit ? Formulas.CalculateDamage(attacker, opponent) : 0;
 
             // Record the result of this attack.
@@ -190,9 +187,7 @@ public class PincerAttackManager : MonoBehaviour
             // For attacker1, iterate over its supporters and create support actions.
             foreach (var supporter in pair.supporters1)
             {
-                // Visualize the support line between the supporter and the attacker.
                 supportLineManager.Spawn(supporter, pair.attacker1);
-                // Queue the support action.
                 actionManager.Add(new AttackSupportAction(pair.attacker1, supporter));
             }
 
@@ -204,25 +199,19 @@ public class PincerAttackManager : MonoBehaviour
             }
         }
 
-        // Step 3: Process the pincer results using the recursive chain attack logic.
-        // For each pair, compute the complete chain of results starting from attacker1.
+        // Step 3: Process the pincer results using the recursive chain attack logic
         foreach (var pair in participants.pair)
         {
             pair.results = ChainAttacks(pair.attacker1, participants.pair);
-            // Queue the pincer attack action.
             actionManager.Add(new PincerAttackAction(pair));
         }
 
         // Step 4: Execute all queued actions with visual fade effects.
-        // First, fade in the board overlay to signal the start of the action sequence.
         yield return boardOverlay.FadeIn();
-        // Execute the queued actions (results, supports, etc.).
         yield return actionManager.Execute();
-        // Fade out the board overlay after actions have completed.
         yield return boardOverlay.FadeOut();
 
-        // Step 5: Clean up by resetting sorting orders, clearing the pair,
-        // and then advancing to the next turn.
+        // Step 5: Clean up
         ResetSortingOrder();
         participants.Clear();
         turnManager.NextTurn();

@@ -32,7 +32,7 @@ public class DataStore : ScriptableObject
 
     //Serialized fields
     [SerializeField] public Dictionary<string, ActorData> Actors;
-    [SerializeField] public Dictionary<string, StageData> Stages;
+    [SerializeField] public Dictionary<string, Stage> Stages;
     [SerializeField] public Dictionary<string, TrailResource> TrailEffects;
     [SerializeField] public Dictionary<string, Tutorial> Tutorials;
     [SerializeField] public Dictionary<string, VFXData> VisualEffects;
@@ -207,19 +207,69 @@ public class DataStore : ScriptableObject
 
     private void LoadStages()
     {
-        Stages = new Dictionary<string, StageData>
+        Stages = new Dictionary<string, Stage>
     {
-        { "Stage 1", new StageData
+        { "Stage 1", new Stage
             {
                 Name = "Stage 1",
                 Description = "Intro Battle",
                 CompletionCondition = "DefeatAllEnemies",
                 CompletionValue = 0,
                 NextStage = "Stage 2",
-                Waves = GenerateWaves(3, new List<Character> { Character.Slime, Character.Bat })
+                //Tutorials = new List<string> { "Tutorial1" },
+                Waves = new List<StageWave>()
+                {
+                    new StageWave()
+                    {
+                        Actors = new List<StageActor>()
+                        {
+                            new StageActor { Character = Character.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) }
+                        },
+                        DottedLines = new List<StageDottedLine>
+                        {
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 3) },
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 4) },
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 5) },
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 6) },
+                            new StageDottedLine { Segment = DottedLineSegment.TurnBottomRight, Location = new Vector2Int(2, 2) },
+                            new StageDottedLine { Segment = DottedLineSegment.Horizontal, Location = new Vector2Int(3, 2) },
+                            new StageDottedLine { Segment = DottedLineSegment.Horizontal, Location = new Vector2Int(4, 2) },
+                            new StageDottedLine { Segment = DottedLineSegment.TurnBottomLeft, Location = new Vector2Int(5, 2) },
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(5, 3) },
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(5, 4) },
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(5, 5) },
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(5, 6) },
+                            new StageDottedLine { Segment = DottedLineSegment.TurnTopRight, Location = new Vector2Int(5, 7) },
+                            new StageDottedLine { Segment = DottedLineSegment.TurnTopLeft, Location = new Vector2Int(6, 7) },
+                            new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(6, 6) },
+                            new StageDottedLine { Segment = DottedLineSegment.ArrowUp, Location = new Vector2Int(6, 5) }
+                        },
+                    },
+                    new StageWave()
+                    {
+                        Actors = new List<StageActor>()
+                        {
+                            new StageActor { Character = Character.Slime, Team = Team.Enemy },
+                            new StageActor { Character = Character.Slime, Team = Team.Enemy },
+                            new StageActor { Character = Character.Slime, Team = Team.Enemy }
+                        },
+                    },
+                    new StageWave()
+                    {
+                        Actors = new List<StageActor>()
+                        {
+                            new StageActor { Character = Character.Slime, Team = Team.Enemy },
+                            new StageActor { Character = Character.Bat, Team = Team.Enemy },
+                            new StageActor { Character = Character.Bat, Team = Team.Enemy },
+                            new StageActor { Character = Character.Bat, Team = Team.Enemy, SpawnTurn = 2 },
+                            new StageActor { Character = Character.Bat, Team = Team.Enemy, SpawnTurn = 3 },
+                            new StageActor { Character = Character.Bat, Team = Team.Enemy, SpawnTurn = 4 },
+                        },
+                    },
+                }
             }
         },
-        { "Stage 2", new StageData
+        { "Stage 2", new Stage
             {
                 Name = "Stage 2",
                 Description = "DefeatAllEnemies",
@@ -229,7 +279,7 @@ public class DataStore : ScriptableObject
                 Waves = GenerateWaves(4, new List<Character> { Character.Slime, Character.Scorpion, Character.Bat })
             }
         },
-        { "Stage 3", new StageData
+        { "Stage 3", new Stage
             {
                 Name = "Stage 3",
                 Description = "DefeatAllEnemies",
@@ -239,7 +289,7 @@ public class DataStore : ScriptableObject
                 Waves = GenerateWaves(5, new List<Character> { Character.Slime, Character.Yeti, Character.Scorpion, Character.Bat })
             }
         },
-        { "Stage 4", new StageData
+        { "Stage 4", new Stage
             {
                 Name = "Stage 4",
                 Description = "DefeatAllEnemies",
@@ -249,7 +299,7 @@ public class DataStore : ScriptableObject
                 Waves = GenerateWaves(3, new List<Character> { Character.Yeti, Character.Slime, Character.Bat, Character.Scorpion })
             }
         },
-        { "Stage 5", new StageData
+        { "Stage 5", new Stage
             {
                 Name = "Stage 5",
                 Description = "DefeatAllEnemies",
@@ -267,20 +317,20 @@ public class DataStore : ScriptableObject
     /// </summary>
     /// <param name="waveCount">Number of waves.</param>
     /// <param name="possibleEnemies">List of enemy types to use in waves.</param>
-    /// <returns>A list of StageWaveData.</returns>
-    private List<StageWaveData> GenerateWaves(int waveCount, List<Character> possibleEnemies)
+    /// <returns>A list of StageWave.</returns>
+    private List<StageWave> GenerateWaves(int waveCount, List<Character> possibleEnemies)
     {
         //DEBUG: Manually enter heros in here for now, should be stored in ProfileStore
 
 
 
 
-        List<StageWaveData> waves = new List<StageWaveData>();
+        List<StageWave> waves = new List<StageWave>();
         System.Random rng = new System.Random();
 
         for (int i = 0; i < waveCount; i++)
         {
-            StageWaveData wave = new StageWaveData
+            StageWave wave = new StageWave
             {
                 WaveID = i + 1,
                 Actors = new List<StageActor>(),
@@ -829,13 +879,13 @@ public class DataStore : ScriptableObject
         return new ActorDetails(data); //Return a new copy instead of a shared reference
     }
 
-    public StageData GetStage(string name)
+    public Stage GetStage(string name)
     {
         var data = Stages[name];
         if (data == null)
             Debug.LogError($"Unable to retrieve stage for `{name}`");
 
-        return new StageData(data); //Return a new copy instead of a shared reference
+        return new Stage(data); //Return a new copy instead of a shared reference
     }
 
     public TrailResource GetTrailEffect(string name)

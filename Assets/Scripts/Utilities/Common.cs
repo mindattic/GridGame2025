@@ -13,6 +13,7 @@ public static class SceneHelper
     public static string Game = "Game";
     public static string Overworld = "Overworld";
     public static string ProfileSelect = "ProfileSelect";
+    public static string SaveFileSelect = "SaveFileSelect";
     public static string Splash = "Splash";
     public static string Settings = "Settings";
     public static string StageSelect = "StageSelect";
@@ -90,7 +91,9 @@ public static class ComponentHelper
         public static string Canvas2D = "Canvas2D";
         public static string Fade = "Canvas2D/Fade";
         public static string MainMenu = "Canvas2D/MainMenu";
-        public static string ProfileManager = "ProfileManager";
+        public static string ChangeProfileButton = "Canvas2D/ChangeProfileButton";
+        public static string ChangeProfileButtonLabel = "Canvas2D/ChangeProfileButton/Label";
+
     }
 }
 

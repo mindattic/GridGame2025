@@ -117,7 +117,7 @@ public class SelectedPlayerManager : MonoBehaviour
         // Snap the selected player's position to the nearest valid tile location on the grid.
         selectedPlayer.movement.SnapToLocation();
 
-        //Clear the selectedProfile selection and focused actor references
+        //Clear the CurrentProfile selection and focused actor references
         selectedPlayer = null;
         focusedActor = null;
 

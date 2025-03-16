@@ -1,25 +1,30 @@
 ﻿using Assets.Scripts.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Scripts.Models
 {
     [Serializable]
-    public class StageData
+    public class Stage
     {
-        public StageData() { }
+        public Stage() { }
 
-        public StageData(StageData other)
+        public Stage(Stage other)
         {
             Name = other.Name;
             Description = other.Description;
             CompletionCondition = other.CompletionCondition;
             CompletionValue = other.CompletionValue;
             NextStage = other.NextStage;
-
             Tutorials = other.Tutorials != null ? new List<string>(other.Tutorials) : new List<string>();
-            Waves = other.Waves != null ? new List<StageWaveData>(other.Waves) : new List<StageWaveData>(); // Now contains waves
+
+            // Deep copy each StageWave using its copy constructor
+            Waves = other.Waves != null
+                ? new List<StageWave>(other.Waves.Select(wave => new StageWave(wave)))
+                : new List<StageWave>();
         }
+
 
         public string Name;
         public string Description;
@@ -27,7 +32,7 @@ namespace Assets.Scripts.Models
         public int CompletionValue;
         public string NextStage = "Stage 2";
         public List<string> Tutorials;
-        public List<StageWaveData> Waves; // Replacing Actors and DottedLines with waves
+        public List<StageWave> Waves; // Replacing Actors and DottedLines with waves
     }
 
 }

@@ -218,7 +218,7 @@ public class Geometry
     {
         // Calculate the vector representing the entire line segment (AB).
         Vector3 AB = endPosition - startPosition;
-        // Calculate the vector from the start to the selectedProfile position (AC).
+        // Calculate the vector from the start to the CurrentProfile position (AC).
         Vector3 AC = currentPosition - startPosition;
 
         // Prevent division by zero if the segment length is zero.

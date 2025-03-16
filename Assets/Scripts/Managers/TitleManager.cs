@@ -1,10 +1,7 @@
+using Assets.Scripts.Store;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System.Collections;
-using System;
-using System.Collections.Generic;
-using Assets.Scripts.Store;
+using Label = TMPro.TextMeshProUGUI;
 
 public class TitleManager : MonoBehaviour
 {
@@ -12,21 +9,27 @@ public class TitleManager : MonoBehaviour
     private Fade fade;
     private Button[] buttons;
 
+    private Label currentProfileLabel;
+
     private void Awake()
     {
         fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
         buttons = GameObject.Find(ComponentHelper.Title.MainMenu).GetComponentsInChildren<Button>();
         MenuHelper.Initialize(buttons);
+        currentProfileLabel = GameObject.Find(ComponentHelper.Title.ChangeProfileButtonLabel).GetComponent<Label>();
+        currentProfileLabel.text = ProfileStore.instance.CurrentProfile.Name;
     }
 
     private void Start()
-    {    
+    {
         StartCoroutine(fade.FadeIn());
     }
 
     public void OnContinueButtonClicked()
     {
         MenuHelper.DisableButtons(buttons);
+
+        ProfileStore.instance.CurrentProfile.CurrentSave = ProfileStore.instance.CurrentProfile.LatestSave;
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
     }
 
@@ -41,7 +44,7 @@ public class TitleManager : MonoBehaviour
     public void OnLoadGameButtonClicked()
     {
         MenuHelper.DisableButtons(buttons);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.ProfileSelect)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.SaveFileSelect)));
     }
 
     public void OnSettingsButtonClicked()
@@ -56,11 +59,9 @@ public class TitleManager : MonoBehaviour
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Credits)));
     }
 
-    private void DisableButtons()
+    public void OnChangeProfileButtonClicked()
     {
-        foreach (var button in buttons)
-        {
-            button.interactable = false;
-        }
+        MenuHelper.DisableButtons(buttons);
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.ProfileSelect)));
     }
 }
