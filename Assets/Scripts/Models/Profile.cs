@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Assets.Scripts.Models;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Game.Models
 {
@@ -8,6 +10,8 @@ namespace Game.Models
     {
         public string Key;
         public string Folder;
+
+
 
         public GlobalSection Global { get; set; }
         public SettingsSection Settings { get; set; }
@@ -70,9 +74,13 @@ namespace Game.Models
     [Serializable]
     public class PartySection : ProfileSection
     {
-        public List<Member> Members = new List<Member>();
-
-        public PartySection() { }
+        public List<StageActor> PlayerActors = new List<StageActor>
+        {
+            new StageActor { Character = Character.Paladin, Team = Team.Player },
+            new StageActor { Character = Character.Barbarian, Team = Team.Player },
+            new StageActor { Character = Character.Cleric, Team = Team.Player },
+            new StageActor { Character = Character.Ninja, Team = Team.Player }
+        };
     }
 
     [Serializable]

@@ -67,74 +67,7 @@ namespace Assets.Scripts.Models
         SurviveTurns
     }
 
-    [Serializable]
-    public class StageData
-    {
-        public StageData() { }
-
-        public StageData(StageData other)
-        {
-            Name = other.Name;
-            Description = other.Description;
-            CompletionCondition = other.CompletionCondition;
-            CompletionValue = other.CompletionValue;
-            Actors = other.Actors != null ? new List<StageActor>(other.Actors) : new List<StageActor>();
-            DottedLines = other.DottedLines != null ? new List<StageDottedLine>(other.DottedLines) : new List<StageDottedLine>();
-            Tutorials = other.Tutorials != null ? new List<string>(other.Tutorials) : new List<string>();
-        }
-
-        public string Name;
-        public string Description;
-        public string CompletionCondition;
-        public int CompletionValue;
-        public string NextStage = "Stage 2";
-        public List<StageActor> Actors;
-        public List<StageDottedLine> DottedLines;
-        public List<string> Tutorials;
-
-    }
 
 
-    [Serializable]
-    public class StageActor
-    {
-        public StageActor() { }
-
-
-        public StageActor(StageActor other)
-        {
-            Character = other.Character;
-            Team = other.Team;
-            SpawnTurn = other.SpawnTurn;
-            Location = other.Location.HasValue ? other.Location : Random.UnoccupiedLocation;
-        }
-
-        public StageActor(Character character, Team team)
-        {
-            Character = character;
-            Team = team;
-            SpawnTurn = 0;
-            Location = Random.UnoccupiedLocation;
-        }
-
-        public Character Character;
-        public Team Team;
-        public int SpawnTurn;
-        public Vector2Int? Location;
-    }
-
-    [Serializable]
-    public class StageDottedLine
-    {
-        public StageDottedLine() { }
-
-        public StageDottedLine(StageDottedLine other)
-        {
-            Segment = other.Segment;
-            Location = other.Location;
-        }
-
-        public DottedLineSegment Segment;
-        public Vector2Int Location;
-    }
+  
 }

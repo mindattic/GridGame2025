@@ -109,6 +109,9 @@ public static class Constants
     public const string CoinBar = "CoinBar";
     public const string TutorialPopup = "TutorialPopup";
     public const string ProfileManager = "ProfileManager";
+    public const string WaveAnnouncement = "WaveAnnouncement";
+
+
 
     //Percent
     public const float percent10 = 0.1f;

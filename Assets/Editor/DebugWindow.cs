@@ -428,11 +428,11 @@ public class DebugWindow : EditorWindow
         if (GUILayout.Button("Reload", GUILayout.Width(Screen.width * Constants.percent33)))
             OnReloadStageClick();
 
-        if (GUILayout.Button("< Previous", GUILayout.Width(Screen.width * Constants.percent33)))
-            OnPreviousStageClick();
+        //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.width * Constants.percent33)))
+        //    OnPreviousStageClick();
 
-        if (GUILayout.Button("Next >", GUILayout.Width(Screen.width * Constants.percent33)))
-            OnNextStageClick();
+        //if (GUILayout.Button("Next >", GUILayout.Width(Screen.width * Constants.percent33)))
+        //    OnNextStageClick();
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
@@ -627,9 +627,9 @@ public class DebugWindow : EditorWindow
     // Reloads the selectedProfile stage.
     private void OnReloadStageClick() => stageManager.LoadStage();
     // Moves to the previous stage.
-    private void OnPreviousStageClick() => stageManager.Previous();
+    //private void OnPreviousStageClick() => stageManager.Previous();
     // Moves to the next stage.
-    private void OnNextStageClick() => stageManager.Next();
+    //private void OnNextStageClick() => stageManager.Next();
 
     // Keyboard control methods for actor movement.
     private void OnKeyUp() => GameManager.instance.focusedActor?.Move(Vector2Int.down);

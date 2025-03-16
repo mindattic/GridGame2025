@@ -1,81 +1,92 @@
 using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// Handles fade-in and fade-out of the BoardOverlay using a SpriteRenderer.
+/// </summary>
+[RequireComponent(typeof(SpriteRenderer))]
 public class BoardOverlay : MonoBehaviour
 {
-    SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;
+    private Coroutine fadeCoroutine;
 
-    float alpha = 0;
-    float minAlpha = Opacity.Transparent;
-    float maxAlpha = Opacity.Percent70;
-    Color color = ColorHelper.Translucent.DarkBlack;
-    float increment = Increment.TwoPercent;
+    [SerializeField] private float fadeDuration = 1.0f; // Duration of fade effect
+    [SerializeField] private float minAlpha = Opacity.Transparent; // Fully transparent
+    [SerializeField] private float maxAlpha = Opacity.Percent70; // Maximum opacity
+    [SerializeField] private Color overlayColor = ColorHelper.Translucent.DarkBlack; // Default color
 
-    //Method which is used for initialization tasks that need to occur before the game starts 
     private void Awake()
     {
-        spriteRenderer = this.gameObject.GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sortingOrder = SortingOrder.BoardOverlay;
+        spriteRenderer.enabled = false;
+        SetAlpha(minAlpha);
+    }
+
+    /// <summary>
+    /// Instantly hides the overlay (fully transparent).
+    /// </summary>
+    public void Hide()
+    {
+        SetAlpha(minAlpha);
         spriteRenderer.enabled = false;
     }
 
-    public void TriggerFadeIn()
+    /// <summary>
+    /// Instantly shows the overlay (fully visible).
+    /// </summary>
+    public void Show()
     {
-        StartCoroutine(FadeIn());
+        SetAlpha(maxAlpha);
+        spriteRenderer.enabled = true;
     }
 
     public IEnumerator FadeIn()
     {
-        //Before:
-        alpha = minAlpha;
-        color.a = alpha;
-        spriteRenderer.color = color;
-        spriteRenderer.enabled = true;
-
-        //During:
-        while (alpha < maxAlpha)
-        {
-            alpha += increment;
-            alpha = Mathf.Clamp(alpha, minAlpha, maxAlpha);
-            color.a = alpha;
-            spriteRenderer.color = color;
-            yield return Wait.OneTick();
-        }
-
-        //After:
-        alpha = maxAlpha;
-        color.a = alpha;
-        spriteRenderer.color = color;
-    }
-
-
-    public void TriggerFadeOut()
-    {
-        StartCoroutine(FadeOut());
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+        yield return fadeCoroutine = StartCoroutine(Fade(maxAlpha, true));
     }
 
     public IEnumerator FadeOut()
     {
-        //Before:
-        alpha = maxAlpha;
-        color.a = alpha;
-        spriteRenderer.color = color;
-
-        //During:
-        while (alpha > minAlpha)
-        {
-            alpha -= increment;
-            alpha = Mathf.Clamp(alpha, minAlpha, maxAlpha);
-            color.a = alpha;
-            spriteRenderer.color = color;
-            yield return Wait.OneTick();
-        }
-
-        //After:
-        alpha = minAlpha;
-        color.a = alpha;
-        spriteRenderer.color = color;
-        spriteRenderer.enabled = false;
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+        yield return fadeCoroutine = StartCoroutine(Fade(minAlpha, false));
     }
 
+
+    /// <summary>
+    /// Handles the fade transition over time.
+    /// </summary>
+    private IEnumerator Fade(float targetAlpha, bool enableOnStart)
+    {
+        if (enableOnStart)
+            spriteRenderer.enabled = true;
+
+        float startAlpha = spriteRenderer.color.a;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+            SetAlpha(newAlpha);
+            yield return null;
+        }
+
+        SetAlpha(targetAlpha);
+
+        if (!enableOnStart)
+            spriteRenderer.enabled = false;
+    }
+
+    /// <summary>
+    /// Sets the alpha of the overlay instantly.
+    /// </summary>
+    private void SetAlpha(float alpha)
+    {
+        overlayColor.a = alpha;
+        spriteRenderer.color = overlayColor;
+    }
 }

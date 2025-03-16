@@ -26,12 +26,10 @@ public class StageManager : MonoBehaviour
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
+    protected WaveAnnouncement waveAnnouncement => GameManager.instance.waveAnnouncement;
 
     protected IEnumerable<ActorInstance> players => GameManager.instance.players;
     protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-
-
-
 
     // Access the list of actors from the GameManager.
     protected List<ActorInstance> actors
@@ -41,12 +39,12 @@ public class StageManager : MonoBehaviour
     }
 
     // Internal property:
-    // Gets the number of enemy actors currently managed.
     public int enemyCount => actors.FindAll(x => x.isEnemy).Count;
 
     // Fields:
-    [SerializeField] public GameObject actorPrefab;  // Prefab used for instantiating actor objects.
-    public StageData currentStage;                    // Data for the selectedProfile stage.
+    [SerializeField] public GameObject actorPrefab;
+    public StageData currentStage;
+    private int currentWaveIndex = 0; // Track the current wave
 
     /// <summary>
     /// Initializes the StageManager by retrieving the stage name from the player's profile,
@@ -56,50 +54,16 @@ public class StageManager : MonoBehaviour
     {
         var stageName = ProfileStore.instance.selectedProfile.Stage.CurrentStageName;
         currentStage = DataStore.instance.GetStage(stageName);
+        currentWaveIndex = 0;
         LoadStage();
     }
 
     /// <summary>
-    /// Loads the previous stage by iterating over all stages to find one whose NextStage property equals the selectedProfile stage name.
-    /// </summary>
-    public void Previous()
-    {
-        // Iterate over all available stages.
-        foreach (var stage in DataStore.instance.Stages.Values)
-        {
-            // Identify the stage that lists the selectedProfile stage as its next stage.
-            if (stage.NextStage == currentStage.Name)
-            {
-                currentStage = stage;
-                LoadStage();
-                return;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Loads the next stage if available by checking the selectedProfile stage's NextStage property.
-    /// </summary>
-    public void Next()
-    {
-        // Ensure that a valid next stage exists.
-        if (!string.IsNullOrEmpty(currentStage.NextStage) && DataStore.instance.Stages.ContainsKey(currentStage.NextStage))
-        {
-            currentStage = DataStore.instance.Stages[currentStage.NextStage];
-            LoadStage();
-        }
-    }
-
-    /// <summary>
-    /// Loads the selectedProfile stage by:
-    /// - Clearing previous game elements (actors, coin bar, dotted lines, etc.)
-    /// - Initializing the turn manager.
-    /// - Spawning actors and dotted lines as defined in the stage data.
-    /// - Displaying any relevant tutorial.
+    /// Loads the selected stage and initializes the first wave.
     /// </summary>
     public void LoadStage()
     {
-        // Clear existing elements to prepare for a new stage.      
+        // Reset everything for a new stage.
         actorManager.Clear();
         dottedLineManager.Clear();
         supportLineManager.Clear();
@@ -107,43 +71,62 @@ public class StageManager : MonoBehaviour
         tileManager.Reset();
         turnManager.Initialize();
 
-        // The following canvasOverlay code is commented out but could be used for UI transitions.
-        //canvasOverlay.Reset();
-        //canvasOverlay.Show($"{currentStage.Name}");
-        //canvasOverlay.TriggerFadeOut(Interval.OneSecond);
+        currentWaveIndex = 0;
 
-        // Spawn actors defined in the stage data.
-        foreach (var stageActor in currentStage.Actors)
+        // Spawn persistent player actors from ProfileStore
+        foreach (var playerActor in ProfileStore.instance.PlayerActors)
+        {
+            SpawnActor(new StageActor(playerActor));
+        }
+
+
+        // Load the first wave
+        if (currentStage.Waves.Count > 0)
+        {
+            LoadWave(currentWaveIndex);
+        }
+        else
+        {
+            Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
+        }
+
+        // Start fade-in effect
+        StartCoroutine(fade.FadeIn());
+    }
+
+    /// <summary>
+    /// Loads the given wave index.
+    /// </summary>
+    private void LoadWave(int waveIndex)
+    {
+        if (waveIndex >= currentStage.Waves.Count)
+        {
+            Debug.LogError($"Wave index {waveIndex} is out of bounds for stage {currentStage.Name}.");
+            return;
+        }
+
+        StageWaveData wave = currentStage.Waves[waveIndex];
+
+        // Spawn actors for this wave
+        foreach (var stageActor in wave.Actors)
         {
             SpawnActor(new StageActor(stageActor));
         }
 
-        // Spawn dotted lines if specified in the stage data.
-        foreach (var stageDottedLine in currentStage.DottedLines)
+        // Spawn dotted lines for this wave
+        foreach (var stageDottedLine in wave.DottedLines)
         {
             var segment = stageDottedLine.Segment;
             var location = stageDottedLine.Location;
             dottedLineManager.Spawn(segment, location);
         }
 
-        // Show the first tutorial for the stage if available.
-        IEnumerator showTutorial()
-        {
-            var tutorialKey = currentStage.Tutorials.FirstOrDefault();
-            var tutorial = resourceManager.Tutorial(tutorialKey);
-            tutorialPopup.Load(tutorial);
-            yield return null;
-        }
-
-        // Start a fade-in effect, and once the fade completes, display the tutorial.
-        //StartCoroutine(fade.FadeIn(showTutorial()));
-        StartCoroutine(fade.FadeIn());
+        waveAnnouncement.ShowWave(waveIndex + 1, currentStage.Waves.Count);
+        Debug.Log($"Wave {waveIndex + 1} of {currentStage.Waves.Count} loaded.");
     }
 
-
     /// <summary>
-    /// Spawns a new actor by instantiating the actor prefab and initializing its properties
-    /// based on the provided parameters. The actor is then added to the global actors list.
+    /// Spawns a new actor in the scene.
     /// </summary>
     public void SpawnActor(StageActor stageActor)
     {
@@ -159,9 +142,75 @@ public class StageManager : MonoBehaviour
         instance.spawnTurn = stageActor.SpawnTurn;
         instance.Spawn(stageActor.Location.Value);
 
-        //Add the new actor _instance to the global actors list.
         actors.Add(instance);
     }
+
+    /// <summary>
+    /// Called when an actor dies. Triggers checks for game over or stage completion.
+    /// </summary>
+    public void OnActorDeath()
+    {
+        CheckGameOver();
+        CheckWaveCompletion();
+    }
+
+    /// <summary>
+    /// Checks if the current wave is complete and moves to the next wave or completes the stage.
+    /// </summary>
+    private void CheckWaveCompletion()
+    {
+        bool allEnemiesDead = enemies.All(x => x.flags.HasSpawned && x.isDead);
+        if (!allEnemiesDead)
+            return;
+
+        currentWaveIndex++;
+
+        if (currentWaveIndex < currentStage.Waves.Count)
+        {
+            Debug.Log($"All enemies defeated. Loading next wave: {currentWaveIndex + 1}");
+            LoadWave(currentWaveIndex);
+        }
+        else
+        {
+            Debug.Log("All waves completed. Stage is complete.");
+            OnStageComplete();
+        }
+    }
+
+    /// <summary>
+    /// Handles what happens when all waves of a stage are completed.
+    /// </summary>
+    private void OnStageComplete()
+    {
+        IEnumerator loadNextStage()
+        {
+            var stageName = currentStage.NextStage;
+            currentStage = DataStore.instance.GetStage(stageName);
+            LoadStage();
+            yield return null;
+        }
+
+        StartCoroutine(fade.FadeOut(loadNextStage()));
+    }
+
+    /// <summary>
+    /// Checks whether the game is over.
+    /// </summary>
+    private void CheckGameOver()
+    {
+        bool allPlayersDead = players.All(x => x.flags.HasSpawned && x.isDead);
+        if (!allPlayersDead)
+            return;
+
+        IEnumerator reloadStage()
+        {
+            LoadStage();
+            yield return null;
+        }
+
+        StartCoroutine(fade.FadeOut(reloadStage()));
+    }
+
 
     /// <summary>
     /// Convenience method for adding a new enemy actor.
@@ -172,57 +221,4 @@ public class StageManager : MonoBehaviour
         SpawnActor(new StageActor(character, Team.Enemy));
     }
 
-    /// <summary>
-    /// Called when an actor dies. Triggers checks for game over or stage completion.
-    /// </summary>
-    public void OnActorDeath()
-    {
-        CheckGameOver();
-        CheckStageCompletion();
-    }
-
-    /// <summary>
-    /// Checks whether the stage is complete by ensuring all enemy actors have spawned and are dead.
-    /// If the stage is complete, initiates a fade-out transition and loads the next stage.
-    /// </summary>
-    private void CheckStageCompletion()
-    {
-        // Verify that all enemy actors (that have spawned) are dead.
-        bool allEnemiesDead = enemies.All(x => x.flags.HasSpawned && x.isDead);
-        if (!allEnemiesDead)
-            return;
-
-        // Coroutine to load the next stage.
-        IEnumerator loadNextStage()
-        {
-            var stageName = currentStage.NextStage;
-            currentStage = DataStore.instance.GetStage(stageName);
-            LoadStage();
-            yield return null;
-        }
-
-        // Start a fade-out effect before loading the next stage.
-        StartCoroutine(fade.FadeOut(loadNextStage()));
-    }
-
-    /// <summary>
-    /// Checks whether the game is over by verifying that all player actors have spawned and are dead.
-    /// If the game is over, initiates a fade-out transition and reloads the selectedProfile stage.
-    /// </summary>
-    private void CheckGameOver()
-    {
-        bool allPlayersDead = players.All(x => x.flags.HasSpawned && x.isDead);
-        if (!allPlayersDead)
-            return;
-
-        // Coroutine to reload the stage.
-        IEnumerator reloadStage()
-        {
-            LoadStage();
-            yield return null;
-        }
-
-        // Start a fade-out effect before reloading the stage.
-        StartCoroutine(fade.FadeOut(reloadStage()));
-    }
 }

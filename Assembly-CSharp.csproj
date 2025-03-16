@@ -117,6 +117,8 @@
     <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
+    <Compile Include="Assets\Scripts\Models\StageWaveData.cs" />
+    <Compile Include="Assets\Scripts\Models\StageData.cs" />
     <Compile Include="Assets\Scripts\Stores\DataStore.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
@@ -127,6 +129,7 @@
     <Compile Include="Assets\Scripts\GUI\CityScroll.cs" />
     <Compile Include="Assets\Scripts\Models\Location.cs" />
     <Compile Include="Assets\Scripts\Models\VFXResource.cs" />
+    <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\GUI\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
@@ -134,6 +137,7 @@
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
+    <Compile Include="Assets\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasParticleEmitter.cs" />

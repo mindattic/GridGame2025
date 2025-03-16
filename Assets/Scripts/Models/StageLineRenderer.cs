@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class StageLineRenderer : CanvasLineRenderer
+namespace Assets.Scripts.Models
 {
-    [SerializeField] private Button startButton;
-    [SerializeField] private Button endButton;
-
-    private void Update()
+    public class StageLineRenderer : CanvasLineRenderer
     {
-        if (startButton != null && endButton != null)
+        [SerializeField] private Button startButton;
+        [SerializeField] private Button endButton;
+
+        private void Update()
         {
-            UpdateLine(startButton, endButton);
+            if (startButton != null && endButton != null)
+            {
+                UpdateLine(startButton, endButton);
+            }
         }
     }
 }

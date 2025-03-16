@@ -29,8 +29,8 @@ namespace Assets.Scripts.GUI
 
             //Select button click listeners
             ReloadStageButton.onClick.AddListener(OnReloadStageButtonClicked);
-            PreviousStageButton.onClick.AddListener(OnPreviousStageButtonClicked);
-            NextStageButton.onClick.AddListener(OnNextStageButtonClicked);
+            //PreviousStageButton.onClick.AddListener(OnPreviousStageButtonClicked);
+            //NextStageButton.onClick.AddListener(OnNextStageButtonClicked);
             SpawnRandomEnemyButton.onClick.AddListener(OnSpawnRandomEnemyButtonClicked);
         }
 
@@ -40,15 +40,15 @@ namespace Assets.Scripts.GUI
             stageManager.LoadStage();
         }
 
-        private void OnPreviousStageButtonClicked()
-        {
-            stageManager.Previous();
-        }
+        //private void OnPreviousStageButtonClicked()
+        //{
+        //    stageManager.Previous();
+        //}
 
-        private void OnNextStageButtonClicked()
-        {
-            stageManager.Next();
-        }
+        //private void OnNextStageButtonClicked()
+        //{
+        //    stageManager.Next();
+        //}
 
         private void OnSpawnRandomEnemyButtonClicked()
         {

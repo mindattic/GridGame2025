@@ -208,572 +208,102 @@ public class DataStore : ScriptableObject
     private void LoadStages()
     {
         Stages = new Dictionary<string, StageData>
+    {
+        { "Stage 1", new StageData
+            {
+                Name = "Stage 1",
+                Description = "Intro Battle",
+                CompletionCondition = "DefeatAllEnemies",
+                CompletionValue = 0,
+                NextStage = "Stage 2",
+                Waves = GenerateWaves(3, new List<Character> { Character.Slime, Character.Bat })
+            }
+        },
+        { "Stage 2", new StageData
+            {
+                Name = "Stage 2",
+                Description = "DefeatAllEnemies",
+                CompletionCondition = "DefeatAllEnemies",
+                CompletionValue = 0,
+                NextStage = "Stage 3",
+                Waves = GenerateWaves(4, new List<Character> { Character.Slime, Character.Scorpion, Character.Bat })
+            }
+        },
+        { "Stage 3", new StageData
+            {
+                Name = "Stage 3",
+                Description = "DefeatAllEnemies",
+                CompletionCondition = "DefeatAllEnemies",
+                CompletionValue = 0,
+                NextStage = "Stage 4",
+                Waves = GenerateWaves(5, new List<Character> { Character.Slime, Character.Yeti, Character.Scorpion, Character.Bat })
+            }
+        },
+        { "Stage 4", new StageData
+            {
+                Name = "Stage 4",
+                Description = "DefeatAllEnemies",
+                CompletionCondition = "DefeatAllEnemies",
+                CompletionValue = 0,
+                NextStage = "Stage 5",
+                Waves = GenerateWaves(3, new List<Character> { Character.Yeti, Character.Slime, Character.Bat, Character.Scorpion })
+            }
+        },
+        { "Stage 5", new StageData
+            {
+                Name = "Stage 5",
+                Description = "DefeatAllEnemies",
+                CompletionCondition = "DefeatAllEnemies",
+                CompletionValue = 0,
+                NextStage = "Stage 6",
+                Waves = GenerateWaves(5, new List<Character> { Character.Yeti, Character.Slime, Character.Scorpion, Character.Bat })
+            }
+        }
+    };
+    }
+
+    /// <summary>
+    /// Generates random waves of enemies for a stage.
+    /// </summary>
+    /// <param name="waveCount">Number of waves.</param>
+    /// <param name="possibleEnemies">List of enemy types to use in waves.</param>
+    /// <returns>A list of StageWaveData.</returns>
+    private List<StageWaveData> GenerateWaves(int waveCount, List<Character> possibleEnemies)
+    {
+        //DEBUG: Manually enter heros in here for now, should be stored in ProfileStore
+
+
+
+
+        List<StageWaveData> waves = new List<StageWaveData>();
+        System.Random rng = new System.Random();
+
+        for (int i = 0; i < waveCount; i++)
         {
-            { "Stage 1", new StageData
+            StageWaveData wave = new StageWaveData
+            {
+                WaveID = i + 1,
+                Actors = new List<StageActor>(),
+                DottedLines = new List<StageDottedLine>()
+            };
+
+            // Generate 2-5 random enemies per wave
+            int enemyCount = rng.Next(2, 6);
+            for (int j = 0; j < enemyCount; j++)
+            {
+                Character randomEnemy = possibleEnemies[rng.Next(possibleEnemies.Count)];
+                wave.Actors.Add(new StageActor
                 {
-                    Name = "Stage 1",
-                    Description = "Intro Battle",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 2",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player, Location = new Vector2Int(2, 7) },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player, Location = new Vector2Int(4, 5) }
-                    },
-                    DottedLines = new List<StageDottedLine>
-                    {
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 3) },
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 4) },
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 5) },
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 6) },
-                        new StageDottedLine { Segment = DottedLineSegment.TurnBottomRight, Location = new Vector2Int(2, 2) },
-                        new StageDottedLine { Segment = DottedLineSegment.Horizontal, Location = new Vector2Int(3, 2) },
-                        new StageDottedLine { Segment = DottedLineSegment.Horizontal, Location = new Vector2Int(4, 2) },
-                        new StageDottedLine { Segment = DottedLineSegment.TurnBottomLeft, Location = new Vector2Int(5, 2) },
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(5, 3) },
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(5, 4) },
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(5, 5) },
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(5, 6) },
-                        new StageDottedLine { Segment = DottedLineSegment.TurnTopRight, Location = new Vector2Int(5, 7) },
-                        new StageDottedLine { Segment = DottedLineSegment.TurnTopLeft, Location = new Vector2Int(6, 7) },
-                        new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(6, 6) },
-                        new StageDottedLine { Segment = DottedLineSegment.ArrowUp, Location = new Vector2Int(6, 5) }
-                    },
-                    Tutorials = new List<string> { "Tutorial1" }
-                }
-            },
-            { "Stage 2", new StageData
-                {
-                    Name = "Stage 2",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 3",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 2 },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 3 },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 4 },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 6 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 3", new StageData
-                {
-                    Name = "Stage 3",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 4",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Scorpion, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 4", new StageData
-                {
-                    Name = "Stage 4",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 5",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 5", new StageData
-                {
-                    Name = "Stage 5",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 6",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 6", new StageData
-                {
-                    Name = "Stage 6",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 7",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 7", new StageData
-                {
-                    Name = "Stage 7",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 8",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 8", new StageData
-                {
-                    Name = "Stage 8",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 9",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 9", new StageData
-                {
-                    Name = "Stage 9",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 10",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 10", new StageData
-                {
-                    Name = "Stage 10",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 11",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 11", new StageData
-                {
-                    Name = "Stage 11",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 12",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 12", new StageData
-                {
-                    Name = "Stage 12",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 13",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 13", new StageData
-                {
-                    Name = "Stage 13",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 14",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 14", new StageData
-                {
-                    Name = "Stage 14",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 15",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 15", new StageData
-                {
-                    Name = "Stage 15",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 16",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 16", new StageData
-                {
-                    Name = "Stage 16",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 17",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 17", new StageData
-                {
-                    Name = "Stage 17",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 18",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 18", new StageData
-                {
-                    Name = "Stage 18",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 19",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 19", new StageData
-                {
-                    Name = "Stage 19",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 20",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 20", new StageData
-                {
-                    Name = "Stage 20",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 21",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 21", new StageData
-                {
-                    Name = "Stage 21",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 22",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 22", new StageData
-                {
-                    Name = "Stage 22",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 23",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 23", new StageData
-                {
-                    Name = "Stage 23",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 24",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 24", new StageData
-                {
-                    Name = "Stage 24",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 25",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-            { "Stage 25", new StageData
-                {
-                    Name = "Stage 25",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 1",
-                    Actors = new List<StageActor>
-                    {
-                        new StageActor { Character = Character.Paladin, Team = Team.Player },
-                        new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                        new StageActor { Character = Character.Cleric, Team = Team.Player },
-                        new StageActor { Character = Character.Ninja, Team = Team.Player },
-                        new StageActor { Character = Character.Yeti, Team = Team.Enemy },
-                        new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                        new StageActor { Character = Character.Slime, Team = Team.Enemy, SpawnTurn = 5 }
-                    },
-                    DottedLines = new List<StageDottedLine>(),
-                    Tutorials = new List<string>()
-                }
-            },
-        };
+                    Character = randomEnemy,
+                    Team = Team.Enemy,
+                    Location = new Vector2Int(rng.Next(1, 6), rng.Next(1, 6))
+                });
+            }
+
+            waves.Add(wave);
+        }
+
+        return waves;
     }
 
     private void LoadTrailEffects()

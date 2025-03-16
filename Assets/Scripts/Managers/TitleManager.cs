@@ -35,7 +35,7 @@ public class TitleManager : MonoBehaviour
         MenuHelper.DisableButtons(buttons);
         ProfileStore.instance.Create();
         ProfileStore.instance.Load();
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Overworld)));
     }
 
     public void OnLoadGameButtonClicked()

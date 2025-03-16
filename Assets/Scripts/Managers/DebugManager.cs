@@ -225,8 +225,8 @@ public class DebugManager : MonoBehaviour
     public void TitleTest()
     {
         var text = DateTime.UtcNow.Ticks.ToString();
-        canvasOverlay.TriggerFadeIn(text);
-        canvasOverlay.TriggerFadeOut(Interval.ThreeSeconds);
+        canvasOverlay.FadeIn();
+        canvasOverlay.FadeOut();
 
     }
 

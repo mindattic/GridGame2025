@@ -1,3 +1,4 @@
+using Assets.Scripts.Models;
 using Assets.Scripts.Store;
 using Game.Models;
 using Newtonsoft.Json;
@@ -35,6 +36,12 @@ public class ProfileStore : ScriptableObject
         }
     }
 
+    public List<StageActor> PlayerActors
+    {
+        get => selectedProfile?.Party.PlayerActors ?? new List<StageActor>();
+    }
+
+
     // Serialized fields
     public Dictionary<string, Profile> profiles;
     public string selectedKey;
@@ -46,6 +53,7 @@ public class ProfileStore : ScriptableObject
     public bool HasSelectedKey => !string.IsNullOrWhiteSpace(selectedKey);
     public bool HasSelectedProfile => HasProfiles && HasSelectedKey && profiles.ContainsKey(selectedKey);
     public Profile selectedProfile => HasSelectedProfile ? profiles[selectedKey] : null;
+
 
     // Startup
     private void OnEnable()
