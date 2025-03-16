@@ -136,20 +136,20 @@ public class GameManager : Singleton<GameManager>
         resourceManager = GameObject.Find(Constants.Resources).GetComponent<ResourceManager>() ?? throw new UnityException("ResourceManager is null");
 
         //Canvas
-        tutorialPopup = GameObject.Find(Constants.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
-        card = GameObject.Find(Constants.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
+        tutorialPopup = GameObject.Find(ComponentHelper.Game.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
+        card = GameObject.Find(ComponentHelper.Game.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
         fade = GameObject.Find(ComponentHelper.Game.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
         canvas2D = GameObject.Find(ComponentHelper.Game.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
         canvas3D = GameObject.Find(ComponentHelper.Game.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
-        timerBar = GameObject.Find(Constants.TimerBar).GetComponent<TimerBar>() ?? throw new UnityException("TimerBarInstance is null");
-        coinBar = GameObject.Find(Constants.CoinBar).GetComponent<CoinBar>() ?? throw new UnityException("CoinBarInstance is null");
-        waveAnnouncement = GameObject.Find(Constants.WaveAnnouncement).GetComponent<WaveAnnouncement>() ?? throw new UnityException("WaveAnnouncement is null");
-        canvasOverlay = GameObject.Find(Constants.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
+        timerBar = GameObject.Find(ComponentHelper.Game.TimerBar).GetComponent<TimerBar>() ?? throw new UnityException("TimerBarInstance is null");
+        coinBar = GameObject.Find(ComponentHelper.Game.CoinBar).GetComponent<CoinBar>() ?? throw new UnityException("CoinBarInstance is null");
+        waveAnnouncement = GameObject.Find(ComponentHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>() ?? throw new UnityException("WaveAnnouncement is null");
+        canvasOverlay = GameObject.Find(ComponentHelper.Game.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
 
         //Board
-        board = GameObject.Find(Constants.Board).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
-        boardOverlay = GameObject.Find(Constants.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
-        focusIndicator = GameObject.Find(Constants.FocusIndicator).GetComponent<FocusIndicator>() ?? throw new UnityException("FocusIndicator is null");
+        board = GameObject.Find(ComponentHelper.Game.Board.Root).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
+        boardOverlay = GameObject.Find(ComponentHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
+        focusIndicator = GameObject.Find(ComponentHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>() ?? throw new UnityException("FocusIndicator is null");
 
         var game = GameObject.Find(Constants.Game);
 

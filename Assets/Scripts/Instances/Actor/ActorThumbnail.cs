@@ -26,7 +26,7 @@ public class ActorThumbnail
         texture = resourceManager.Portrait(instance.character.ToString()).Value;
 
         //Retrieve thumnail settings from entity
-        ThumbnailSettings settings = DataStore.instance.GetThumbnailSetting(instance.character);
+        ThumbnailSettings settings = ActorStore.instance.GetThumbnailSetting(instance.character);
 
         Vector2Int offset = new Vector2Int();
         offset.x = (texture.width - settings.Width) / 2;

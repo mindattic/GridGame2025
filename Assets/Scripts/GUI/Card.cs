@@ -126,7 +126,7 @@ namespace Game.Behaviors
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
             // Set the details text combining the stats table with extra details from DataManager.
-            detailsText.text = stats + DataStore.instance.GetDetails(focusedActor.character).Card;
+            detailsText.text = stats + ActorStore.instance.GetDetails(focusedActor.character).Card;
 
             // Begin the slide-in animation for the portrait.
             TriggerSlideIn();

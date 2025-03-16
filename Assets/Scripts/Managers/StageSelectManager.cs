@@ -45,7 +45,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var stage in DataStore.instance.Stages)
+        foreach (var stage in StageStore.instance.Stages)
         {
             AddButton(stage.Value.Name);
         }

@@ -101,6 +101,7 @@
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
     <Compile Include="Assets\Scripts\GUI\PlayerStageMover.cs" />
+    <Compile Include="Assets\Scripts\Stores\ActorStore.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
@@ -194,6 +195,7 @@
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
     <Compile Include="Assets\Scripts\Utilities\ConvertString.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
+    <Compile Include="Assets\Scripts\Stores\StageStore.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackSupportAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SpellInstance.cs" />

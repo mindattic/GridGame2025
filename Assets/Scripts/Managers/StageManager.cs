@@ -53,7 +53,7 @@ public class StageManager : MonoBehaviour
     public void Initialize()
     {
         var stageName = ProfileStore.instance.CurrentProfile.LatestSave.Stage.CurrentStageName;
-        currentStage = DataStore.instance.GetStage(stageName);
+        currentStage = StageStore.instance.GetStage(stageName);
         currentWaveIndex = 0;
         LoadStage();
     }
@@ -137,7 +137,7 @@ public class StageManager : MonoBehaviour
         instance.friendlyName = instance.character.ToString().Split("_instance")[0];
         instance.name = $"{stageActor.Character}_instance{Guid.NewGuid():N}";
         instance.team = stageActor.Team;
-        instance.stats = DataStore.instance.GetStats(stageActor.Character);
+        instance.stats = ActorStore.instance.GetStats(stageActor.Character);
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
         instance.Spawn(stageActor.Location.Value);
@@ -185,7 +185,7 @@ public class StageManager : MonoBehaviour
         IEnumerator loadNextStage()
         {
             var stageName = currentStage.NextStage;
-            currentStage = DataStore.instance.GetStage(stageName);
+            currentStage = StageStore.instance.GetStage(stageName);
             LoadStage();
             yield return null;
         }

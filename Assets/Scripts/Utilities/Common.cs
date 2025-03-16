@@ -36,6 +36,20 @@ public static class ComponentHelper
         public static string Fade = "Canvas2D/Fade";
         public static string PauseButton = "Canvas2D/PauseButton";
         public static string PauseMenu = "Canvas2D/PauseMenu";
+        public static string WaveAnnouncement = "Canvas2D/WaveAnnouncement";
+        public const string CanvasOverlay = "Canvas2D/CanvasOverlay";
+        public const string Card = "Canvas2D/Card";
+        public const string TimerBar = "Canvas2D/TimerBar";
+        public const string CoinBar = "Canvas2D/CoinBar";
+        public const string TutorialPopup = "Canvas2D/TutorialPopup";
+
+        public static class Board
+        {
+            public const string Root = "Board";
+            public const string BoardOverlay = "BoardOverlay";
+            public const string FocusIndicator = "FocusIndicator";
+        }
+
     }
 
     public static class Overworld
@@ -102,17 +116,9 @@ public static class Constants
     public const string Global = "Global";
     public const string Game = "Game";
     public const string Resources = "Resources";
-    public const string Board = "Board";
-    public const string BoardOverlay = "BoardOverlay";
-    public const string FocusIndicator = "FocusIndicator";
+ 
     public const string Art = "Art";
-    public const string CanvasOverlay = "CanvasOverlay";
-    public const string Card = "Card";
-    public const string TimerBar = "TimerBar";
-    public const string CoinBar = "CoinBar";
-    public const string TutorialPopup = "TutorialPopup";
-    public const string ProfileManager = "ProfileManager";
-    public const string WaveAnnouncement = "WaveAnnouncement";
+ 
 
     //Percent
     public const float percent10 = 0.1f;
