@@ -78,6 +78,7 @@ public class StageManager : MonoBehaviour
         {
             SpawnActor(new StageActor(playerActor));
         }
+        actors.ForEach(x => x.flags.HasSpawned = true); //HACK: Fix issue where newly spawned actors are not registering as spawned before enemies are loaded...
 
 
         // Load the first wave
@@ -121,7 +122,7 @@ public class StageManager : MonoBehaviour
             dottedLineManager.Spawn(segment, location);
         }
 
-        waveAnnouncement.ShowWave(waveIndex + 1, currentStage.Waves.Count);
+        waveAnnouncement.Show(waveIndex + 1, currentStage.Waves.Count);
         Debug.Log($"Wave {waveIndex + 1} of {currentStage.Waves.Count} loaded.");
     }
 

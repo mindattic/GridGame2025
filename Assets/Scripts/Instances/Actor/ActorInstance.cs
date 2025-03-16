@@ -518,7 +518,6 @@ public class ActorInstance : MonoBehaviour
             return;
 
         this.location = newLocation;
-        //Save world position based on the new grid location.
         transform.position = Geometry.GetPositionByLocation(this.location);
     }
 
@@ -530,7 +529,6 @@ public class ActorInstance : MonoBehaviour
             return;
 
         var newLocation = location + direction;
-        Debug.Log(newLocation);
         var tile = GameManager.instance.tileMap.GetTile(newLocation);
         if (tile == null) return;
         // Teleport to the new tile's location.

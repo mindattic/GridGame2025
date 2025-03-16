@@ -1534,8 +1534,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ProfileSelectManager, Assembly-CSharp
+      - m_Target: {fileID: 893145708}
+        m_TargetAssemblyTypeName: SaveFileSelectManager, Assembly-CSharp
         m_MethodName: OnBackButtonClicked
         m_Mode: 1
         m_Arguments:

@@ -9,7 +9,7 @@ using Label = TMPro.TextMeshProUGUI;
 public class OverworldManager : MonoBehaviour
 {
     //Fields
-    private Label title;
+    private Label header;
     private RectTransform canvas2D;
     private RectTransform scrollView;
     private ScrollRect scrollRect;
@@ -29,7 +29,7 @@ public class OverworldManager : MonoBehaviour
 
     private void Awake()
     {
-        title = GameObject.Find(ComponentHelper.Overworld.Title).GetComponent<Label>() ?? throw new UnityException("Label is null");
+        header = GameObject.Find(ComponentHelper.Overworld.Header).GetComponent<Label>() ?? throw new UnityException("Label is null");
 
         canvas2D = GameObject.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
         scrollView = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
@@ -47,7 +47,7 @@ public class OverworldManager : MonoBehaviour
         buttonWidth = 64;
         buttonHeight = 32;
 
-        title.fontSize = screenHeight / 16f / 2;
+        header.fontSize = screenHeight / 16f / 2;
         scrollView.sizeDelta = new Vector2(screenWidth, screenHeight);
 
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);

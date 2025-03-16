@@ -100,8 +100,9 @@ public class SaveFileSelectManager : MonoBehaviour
         button.onClick.AddListener(() => OnLoadSaveFileButtonClicked(fileName));
 
         //Set the button text
+        var utcTimestamp = DateTimeHelper.ParseUtcTimestamp(saveName);
         Label label = instance.GetComponentInChildren<Label>();
-        label.text = saveName;
+        label.text = DateTimeHelper.ParseTimeElapsed(utcTimestamp);
     }
 
     private void OnLoadSaveFileButtonClicked(string filePath)
@@ -131,8 +132,8 @@ public class SaveFileSelectManager : MonoBehaviour
         }
     }
 
-    private void OnBackButtonClicked()
+    public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
+        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
     }
 }

@@ -26,7 +26,7 @@ public class WaveAnnouncement : MonoBehaviour
     /// <summary>
     /// Displays the wave announcement with an animated entrance and exit.
     /// </summary>
-    public void ShowWave(int currentWave, int totalWaves)
+    public void Show(int currentWave, int totalWaves)
     {
         gameObject.SetActive(true);
         label.text = $"Wave {currentWave}/{totalWaves}";
