@@ -33,9 +33,7 @@ namespace Assets.Scripts.Models
     public class GlobalSection
     {
         public int TotalCoins;
-        public GlobalSection()
-        {
-        }
+        public GlobalSection() { }
     }
 
     [Serializable]
@@ -43,29 +41,26 @@ namespace Assets.Scripts.Models
     {
         public float GameSpeed;
 
-        public SettingsSection()
-        {
-        }
+        public SettingsSection() { }
     }
 
     [Serializable]
     public class StageSection 
     {
-        public string CurrentStageName;
+        public string CurrentStage;
+        public int CurrentWave; 
 
-        public StageSection()
-        {
-        }
+        public StageSection() { }
     }
 
     [Serializable]
     public class PartySection
     {
-        public List<StageActor> PlayerActors;
+        public List<StageActor> PlayerActors = new List<StageActor>();
 
         public PartySection()
         {
-            PlayerActors = new List<StageActor>();
+
         }
     }
 

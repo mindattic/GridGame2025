@@ -44,7 +44,7 @@ public class StageManager : MonoBehaviour
     // Fields:
     [SerializeField] public GameObject actorPrefab;
     public Stage currentStage;
-    private int currentWaveIndex = 0; // Track the current wave
+    private int currentWave = 0; // Track the current wave
 
     /// <summary>
     /// Initializes the StageManager by retrieving the stage name from the player's profile,
@@ -52,11 +52,17 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var stageName = ProfileStore.instance.CurrentProfile.LatestSave.Stage.CurrentStageName;
-        currentStage = StageStore.instance.GetStage(stageName);
-        currentWaveIndex = 0;
+        var latestSave = ProfileStore.instance.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
+        if (latestSave == null)
+        {
+            Debug.LogError("No saved game state found.");
+            return;
+        }
+        currentStage = StageStore.instance.Get(latestSave.Stage.CurrentStage);
+        currentWave = latestSave.Stage.CurrentWave;  // Resume from the saved wave index.
         LoadStage();
     }
+
 
     /// <summary>
     /// Loads the selected stage and initializes the first wave.
@@ -71,29 +77,26 @@ public class StageManager : MonoBehaviour
         tileManager.Reset();
         turnManager.Initialize();
 
-        currentWaveIndex = 0;
-
         // Spawn persistent player actors from ProfileStore
         foreach (var playerActor in ProfileStore.instance.PlayerActors)
         {
             SpawnActor(new StageActor(playerActor));
         }
-        actors.ForEach(x => x.flags.HasSpawned = true); //HACK: Fix issue where newly spawned actors are not registering as spawned before enemies are loaded...
+        actors.ForEach(x => x.flags.HasSpawned = true);
 
-
-        // Load the first wave
+        // Load the wave based on currentWave.
         if (currentStage.Waves.Count > 0)
         {
-            LoadWave(currentWaveIndex);
+            LoadWave(currentWave);
         }
         else
         {
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
 
-        // Start fade-in effect
         StartCoroutine(fade.FadeIn());
     }
+
 
     /// <summary>
     /// Loads the given wave index.
@@ -164,12 +167,12 @@ public class StageManager : MonoBehaviour
         if (!allEnemiesDead)
             return;
 
-        currentWaveIndex++;
+        currentWave++;
 
-        if (currentWaveIndex < currentStage.Waves.Count)
+        if (currentWave < currentStage.Waves.Count)
         {
-            Debug.Log($"All enemies defeated. Loading next wave: {currentWaveIndex + 1}");
-            LoadWave(currentWaveIndex);
+            Debug.Log($"All enemies defeated. Loading next wave: {currentWave + 1}");
+            LoadWave(currentWave);
         }
         else
         {
@@ -186,7 +189,7 @@ public class StageManager : MonoBehaviour
         IEnumerator loadNextStage()
         {
             var stageName = currentStage.NextStage;
-            currentStage = StageStore.instance.GetStage(stageName);
+            currentStage = StageStore.instance.Get(stageName);
             LoadStage();
             yield return null;
         }

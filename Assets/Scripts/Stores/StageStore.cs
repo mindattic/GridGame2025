@@ -193,7 +193,7 @@ public class StageStore : ScriptableObject
 
   
 
-    public Stage GetStage(string name)
+    public Stage Get(string name)
     {
         var data = Stages[name];
         if (data == null)

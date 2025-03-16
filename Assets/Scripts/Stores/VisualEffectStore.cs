@@ -2,18 +2,18 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DataStore", menuName = "Stores/DataStore")]
-public class DataStore : ScriptableObject
+[CreateAssetMenu(fileName = "VisualEffectStore", menuName = "Stores/VisualEffectStore")]
+public class VisualEffectStore : ScriptableObject
 {
     //Singleton
-    private static DataStore _instance;
+    private static VisualEffectStore _instance;
 
-    public static DataStore instance
+    public static VisualEffectStore instance
     {
         get
         {
             if (_instance == null)
-                Debug.LogError("DataStore accessed before being initialized! Ensure it's assigned in Awake().");
+                Debug.LogError("VisualEffectStore accessed before being initialized! Ensure it's assigned in Awake().");
             return _instance;
         }
     }
@@ -24,229 +24,21 @@ public class DataStore : ScriptableObject
     {
         if (_instance == null)
         {
-            _instance = Resources.Load<DataStore>("Stores/DataStore");
+            _instance = Resources.Load<VisualEffectStore>("Stores/VisualEffectStore");
             if (_instance == null)
-                Debug.LogError("DataStore asset not found in Resources/Stores/DataStore");
+                Debug.LogError("VisualEffectStore asset not found in Resources/Stores/VisualEffectStore");
         }
     }
 
     //Serialized fields
-    [SerializeField] public Dictionary<string, TrailResource> TrailEffects;
-    [SerializeField] public Dictionary<string, Tutorial> Tutorials;
     [SerializeField] public Dictionary<string, VFXData> VisualEffects;
 
     private void OnEnable()
     {
-    
-        LoadTrailEffects();
-        LoadTutorials();
-        LoadVisualEffects();
+        Load();
     }
 
-    /// <summary>
-    /// Generates random waves of enemies for a stage.
-    /// </summary>
-    /// <param name="waveCount">Number of waves.</param>
-    /// <param name="possibleEnemies">List of enemy types to use in waves.</param>
-    /// <returns>A list of StageWave.</returns>
-    private List<StageWave> GenerateWaves(int waveCount, List<Character> possibleEnemies)
-    {
-        //DEBUG: Manually enter heros in here for now, should be stored in ProfileStore
-
-
-
-
-        List<StageWave> waves = new List<StageWave>();
-        System.Random rng = new System.Random();
-
-        for (int i = 0; i < waveCount; i++)
-        {
-            StageWave wave = new StageWave
-            {
-                WaveID = i + 1,
-                Actors = new List<StageActor>(),
-                DottedLines = new List<StageDottedLine>()
-            };
-
-            // Generate 2-5 random enemies per wave
-            int enemyCount = rng.Next(2, 6);
-            for (int j = 0; j < enemyCount; j++)
-            {
-                Character randomEnemy = possibleEnemies[rng.Next(possibleEnemies.Count)];
-                wave.Actors.Add(new StageActor
-                {
-                    Character = randomEnemy,
-                    Team = Team.Enemy,
-                    Location = new Vector2Int(rng.Next(1, 6), rng.Next(1, 6))
-                });
-            }
-
-            waves.Add(wave);
-        }
-
-        return waves;
-    }
-
-    private void LoadTrailEffects()
-    {
-        TrailEffects = new Dictionary<string, TrailResource>
-    {
-        { "BlueGlow", new TrailResource
-            {
-                Name = "BlueGlow",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "Bubble", new TrailResource
-            {
-                Name = "Bubble",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "Feather", new TrailResource
-            {
-                Name = "Feather",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "Fireball", new TrailResource
-            {
-                Name = "Fireball",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.5f, 0.5f, 0.5f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "Flame", new TrailResource
-            {
-                Name = "Flame",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "GoldSparkle", new TrailResource
-            {
-                Name = "GoldSparkle",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "GreenSparkle", new TrailResource
-            {
-                Name = "GreenSparkle",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "IceSparkle", new TrailResource
-            {
-                Name = "IceSparkle",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "PinkDust", new TrailResource
-            {
-                Name = "PinkDust",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "RosePetal", new TrailResource
-            {
-                Name = "RosePetal",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "StarSparkle", new TrailResource
-            {
-                Name = "StarSparkle",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        }
-    };
-
-    }
-
-    private void LoadTutorials()
-    {
-        Tutorials = new Dictionary<string, Tutorial>
-    {
-        { "Tutorial1", new Tutorial
-            {
-                Key = "Tutorial1",
-                Pages = new List<TutorialPage>
-                {
-                    new TutorialPage { TextureKey = "Tutorial.1-1", Title = "Tutorial 1-1", Content = "This is the first page of the tutorial." },
-                    new TutorialPage { TextureKey = "Tutorial.1-2", Title = "Tutorial 1-2", Content = "This is the second page of the tutorial." },
-                    new TutorialPage { TextureKey = "Tutorial.1-3", Title = "Tutorial 1-3", Content = "This is the third page of the tutorial." }
-                }
-            }
-        }
-    };
-
-    }
-
-    private void LoadVisualEffects()
+    private void Load()
     {
         VisualEffects = new Dictionary<string, VFXData>
         {
@@ -583,17 +375,7 @@ public class DataStore : ScriptableObject
         };
     }
 
-
-    public TrailResource GetTrailEffect(string name)
-    {
-        var data = TrailEffects[name];
-        if (data == null)
-            Debug.LogError($"Unable to retrieve trailInstance effect for `{name}`");
-
-        return new TrailResource(data); //Return a new copy instead of a shared reference
-    }
-
-    public VFXData GetVisualEffect(string name)
+    public VFXData Get(string name)
     {
         var data = VisualEffects[name];
         if (data == null)

@@ -82,7 +82,7 @@ public class PlayerStageMover : MonoBehaviour
             yield break;
 
         // Update player profile stage
-        ProfileStore.instance.CurrentProfile.LatestSave.Stage.CurrentStageName = targetStageName;
+        ProfileStore.instance.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
         // Fade out & load next scene
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));

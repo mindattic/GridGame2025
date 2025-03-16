@@ -154,15 +154,18 @@ public class ProfileStore : ScriptableObject
         };
 
         // Create the initial game state for a new game.
-        GlobalSection initialGlobal = new GlobalSection() {
+        GlobalSection initialGlobal = new GlobalSection()
+        {
             TotalCoins = 0
         };
         SettingsSection initialSettings = new SettingsSection()
         {
             GameSpeed = 1.0f
         };
-        StageSection initialStage = new StageSection() {
-            CurrentStageName = "Stage 1"
+        StageSection initialStage = new StageSection()
+        {
+            CurrentStage = "Stage 1",
+            CurrentWave = 0
         };
         PartySection initialParty = new PartySection()
         {
@@ -211,7 +214,8 @@ public class ProfileStore : ScriptableObject
             return false;
         }
 
-        if (!SaveProfile(CurrentProfile))
+        bool wasSuccessful = SaveProfile(CurrentProfile);
+        if (!wasSuccessful)
         {
             Debug.LogError("Failed to save profile.");
             return false;
@@ -252,9 +256,16 @@ public class ProfileStore : ScriptableObject
         else
         {
             // Use defaults if no save exists.
-            currentGlobal = new GlobalSection();
+            currentGlobal = new GlobalSection()
+            {
+                TotalCoins = 0
+            };
             currentSettings = new SettingsSection();
-            currentStage = new StageSection();
+            currentStage = new StageSection()
+            {
+                CurrentStage = "Stage 1",
+                CurrentWave = 0
+            };
             currentParty = new PartySection()
             {
                 PlayerActors = new List<StageActor>

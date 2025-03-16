@@ -36,11 +36,10 @@ public class ActorStore : ScriptableObject
 
     private void OnEnable()
     {
-        LoadActors();
-
+        Load();
     }
 
-    private void LoadActors()
+    private void Load()
     {
         Actors = new Dictionary<string, ActorData>
         {
