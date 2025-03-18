@@ -41,141 +41,140 @@ public class TrailEffectStore : ScriptableObject
     private void Load()
     {
         TrailEffects = new Dictionary<string, TrailResource>
-    {
-        { "BlueGlow", new TrailResource
-            {
-                Name = "BlueGlow",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
+        {
+            { "BlueGlow", new TrailResource
+                {
+                    Name = "BlueGlow",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "Bubble", new TrailResource
+                {
+                    Name = "Bubble",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "Feather", new TrailResource
+                {
+                    Name = "Feather",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "Fireball", new TrailResource
+                {
+                    Name = "Fireball",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.5f, 0.5f, 0.5f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "Flame", new TrailResource
+                {
+                    Name = "Flame",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "GoldSparkle", new TrailResource
+                {
+                    Name = "GoldSparkle",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "GreenSparkle", new TrailResource
+                {
+                    Name = "GreenSparkle",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "IceSparkle", new TrailResource
+                {
+                    Name = "IceSparkle",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "PinkDust", new TrailResource
+                {
+                    Name = "PinkDust",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "RosePetal", new TrailResource
+                {
+                    Name = "RosePetal",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
+            },
+            { "StarSparkle", new TrailResource
+                {
+                    Name = "StarSparkle",
+                    Prefab = null,
+                    RelativeOffset = new Vector3(0, 0, 0),
+                    AngularRotation = new Vector3(0, 0, 0),
+                    RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                    Delay = 0f,
+                    Duration = 2f,
+                    IsLoop = true
+                }
             }
-        },
-        { "Bubble", new TrailResource
-            {
-                Name = "Bubble",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "Feather", new TrailResource
-            {
-                Name = "Feather",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "Fireball", new TrailResource
-            {
-                Name = "Fireball",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.5f, 0.5f, 0.5f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "Flame", new TrailResource
-            {
-                Name = "Flame",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "GoldSparkle", new TrailResource
-            {
-                Name = "GoldSparkle",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "GreenSparkle", new TrailResource
-            {
-                Name = "GreenSparkle",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "IceSparkle", new TrailResource
-            {
-                Name = "IceSparkle",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "PinkDust", new TrailResource
-            {
-                Name = "PinkDust",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "RosePetal", new TrailResource
-            {
-                Name = "RosePetal",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        },
-        { "StarSparkle", new TrailResource
-            {
-                Name = "StarSparkle",
-                Prefab = null,
-                RelativeOffset = new Vector3(0, 0, 0),
-                AngularRotation = new Vector3(0, 0, 0),
-                RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                Delay = 0f,
-                Duration = 2f,
-                IsLoop = true
-            }
-        }
-    };
-
+        };
     }
 
     public TrailResource Get(string name)

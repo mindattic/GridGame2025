@@ -27,6 +27,7 @@ public class SaveFileSelectManager : MonoBehaviour
     private float buttonHeight;
     private float spacing;
     private Fade fade;
+    private int saveFileCount;
 
     private void Awake()
     {
@@ -75,21 +76,24 @@ public class SaveFileSelectManager : MonoBehaviour
 
         //Retrieve all save files in profile folder
         var saveFiles = Directory.GetFiles(currentProfile.Folder, "*.json").OrderByDescending(x => x).ToList();
+        saveFileCount = saveFiles.Count();
 
         //Add each save fileName as a button 
+        int i = saveFileCount;
         foreach (var fileName in saveFiles)
         {
-            AddLoadSaveFileButton(fileName);
+            AddLoadSaveFileButton(fileName, i--);
         }
     }
 
-    public void AddLoadSaveFileButton(string fileName)
+    public void AddLoadSaveFileButton(string fileName, int saveNumber)
     {
         var saveName = Path.GetFileNameWithoutExtension(fileName);
 
         //Instantiate the prefab as a child of `content`
         GameObject instance = Instantiate(buttonPrefab, content);
         instance.name = $"SaveFile_{saveName}";
+
 
         //Set the button size: 90% of width, 1/16th of height
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
@@ -101,8 +105,10 @@ public class SaveFileSelectManager : MonoBehaviour
 
         //Set the button text
         var utcTimestamp = DateTimeHelper.ParseUtcTimestamp(saveName);
-        Label label = instance.GetComponentInChildren<Label>();
-        label.text = DateTimeHelper.ParseTimeElapsed(utcTimestamp);
+
+        //Apply text to labels
+        instance.transform.Find("SaveNumber").GetComponent<Label>().text = $"Save {saveNumber:D3}";
+        instance.transform.Find("Timestamp").GetComponent<Label>().text = DateTimeHelper.ParseTimeElapsed(utcTimestamp);
     }
 
     private void OnLoadSaveFileButtonClicked(string filePath)

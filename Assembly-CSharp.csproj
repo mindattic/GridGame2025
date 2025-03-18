@@ -89,6 +89,7 @@
     <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
     <Compile Include="Assets\Scripts\Managers\StageSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\CanvasKeyboard.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
     <Compile Include="Assets\Scripts\Stores\VisualEffectStore.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Stores\TutorialStore.cs" />
+    <Compile Include="Assets\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\GUI\Fade.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />

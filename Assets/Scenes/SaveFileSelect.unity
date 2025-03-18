@@ -731,7 +731,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f80cb6a4f39f8b45940bf8836c80111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonPrefab: {fileID: 1089019312047219162, guid: 272c21994119e6f46be8d6131b08c15d, type: 3}
+  buttonPrefab: {fileID: 4897121260404211813, guid: 1b96e40a88c8fba41b23a5717b9099cc, type: 3}
 --- !u!1 &1088900460
 GameObject:
   m_ObjectHideFlags: 0

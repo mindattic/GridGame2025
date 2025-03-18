@@ -74,7 +74,6 @@ public class OverworldManager : MonoBehaviour
 
     private void Start()
     {
-        //AddStageIcon(new Vector2(1280, -2840), "Stage 1");
         OnCenterOnPlayerClicked();
 
         StartCoroutine(fade.FadeIn());

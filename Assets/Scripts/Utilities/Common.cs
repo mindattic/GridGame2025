@@ -111,6 +111,74 @@ public static class ComponentHelper
         public static string ChangeProfileButtonLabel = "Canvas2D/ChangeProfileButton/Label";
 
     }
+
+    public static class CanvasKeyboard
+    {
+        public static string Canvas2D = "Canvas2D";
+        public static string Keyboard = "Canvas2D/Keyboard";
+        public static string Panel = $"{Keyboard}/Panel";
+        public static string Instructions = $"{Panel}/Instructions";
+        public static string InputField = $"{Panel}/InputField";
+        public static string SubmitButton = $"{Panel}/SubmitButton";
+        public static string KeysContainer = $"{Panel}/KeysContainer";
+
+        // Row 1: digits
+        public static string Row1 = $"{KeysContainer}/Row1";
+        public static string Key1 = $"{Row1}/Key1";
+        public static string Key2 = $"{Row1}/Key2";
+        public static string Key3 = $"{Row1}/Key3";
+        public static string Key4 = $"{Row1}/Key4";
+        public static string Key5 = $"{Row1}/Key5";
+        public static string Key6 = $"{Row1}/Key6";
+        public static string Key7 = $"{Row1}/Key7";
+        public static string Key8 = $"{Row1}/Key8";
+        public static string Key9 = $"{Row1}/Key9";
+        public static string Key0 = $"{Row1}/Key0";
+       
+
+        // Row 2: Q–P
+        public static string Row2 = $"{KeysContainer}/Row2";
+        public static string KeyQ = $"{Row2}/KeyQ";
+        public static string KeyW = $"{Row2}/KeyW";
+        public static string KeyE = $"{Row2}/KeyE";
+        public static string KeyR = $"{Row2}/KeyR";
+        public static string KeyT = $"{Row2}/KeyT";
+        public static string KeyY = $"{Row2}/KeyY";
+        public static string KeyU = $"{Row2}/KeyU";
+        public static string KeyI = $"{Row2}/KeyI";
+        public static string KeyO = $"{Row2}/KeyO";
+        public static string KeyP = $"{Row2}/KeyP";
+
+        // Row 3: A–L
+        public static string Row3 = $"{KeysContainer}/Row3";
+        public static string KeyA = $"{Row3}/KeyA";
+        public static string KeyS = $"{Row3}/KeyS";
+        public static string KeyD = $"{Row3}/KeyD";
+        public static string KeyF = $"{Row3}/KeyF";
+        public static string KeyG = $"{Row3}/KeyG";
+        public static string KeyH = $"{Row3}/KeyH";
+        public static string KeyJ = $"{Row3}/KeyJ";
+        public static string KeyK = $"{Row3}/KeyK";
+        public static string KeyL = $"{Row3}/KeyL";
+
+        // Row 4: Z–M
+        public static string Row4 = $"{KeysContainer}/Row4";
+        public static string KeyZ = $"{Row4}/KeyZ";
+        public static string KeyX = $"{Row4}/KeyX";
+        public static string KeyC = $"{Row4}/KeyC";
+        public static string KeyV = $"{Row4}/KeyV";
+        public static string KeyB = $"{Row4}/KeyB";
+        public static string KeyN = $"{Row4}/KeyN";
+        public static string KeyM = $"{Row4}/KeyM";
+
+        // Row 5: CapsLock, Spacebar, Backspace
+        public static string Row5 = $"{KeysContainer}/Row5";
+        public static string KeyCapsLock = $"{Row5}/KeyCapsLock";
+        public static string KeySpace = $"{Row5}/KeySpace";
+        public static string KeyBackspace = $"{Row5}/KeyBackspace";
+    }
+
+
 }
 
 public static class Constants

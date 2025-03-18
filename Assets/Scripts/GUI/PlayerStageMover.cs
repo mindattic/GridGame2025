@@ -55,7 +55,7 @@ public class PlayerStageMover : MonoBehaviour
         isMoving = true;
 
         // Calculate direction again to ensure animation is correct
-        Vector2 direction = (targetPosition - (Vector2)player.anchoredPosition).normalized;
+        Vector2 direction = (targetPosition - player.anchoredPosition).normalized;
         SetAnimation(direction); // Ensure animation is set before moving
 
         float snapThreshold = 0.24f;
@@ -75,11 +75,10 @@ public class PlayerStageMover : MonoBehaviour
         isMoving = false;
         animator.SetInteger("MoveDirection", (int)MoveDirection.Idle);
 
-        yield return Wait.For(Interval.HalfSecond);
-
-
         if (string.IsNullOrWhiteSpace(targetStageName))
             yield break;
+
+        yield return Wait.For(Interval.HalfSecond);
 
         // Update player profile stage
         ProfileStore.instance.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;

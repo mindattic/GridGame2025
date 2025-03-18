@@ -41,20 +41,19 @@ public class TutorialStore : ScriptableObject
     private void Load()
     {
         Tutorials = new Dictionary<string, Tutorial>
-    {
-        { "Tutorial1", new Tutorial
-            {
-                Key = "Tutorial1",
-                Pages = new List<TutorialPage>
+        {
+            { "Tutorial1", new Tutorial
                 {
-                    new TutorialPage { TextureKey = "Tutorial.1-1", Title = "Tutorial 1-1", Content = "This is the first page of the tutorial." },
-                    new TutorialPage { TextureKey = "Tutorial.1-2", Title = "Tutorial 1-2", Content = "This is the second page of the tutorial." },
-                    new TutorialPage { TextureKey = "Tutorial.1-3", Title = "Tutorial 1-3", Content = "This is the third page of the tutorial." }
+                    Key = "Tutorial1",
+                    Pages = new List<TutorialPage>
+                    {
+                        new TutorialPage { TextureKey = "Tutorial.1-1", Title = "Tutorial 1-1", Content = "This is the first page of the tutorial." },
+                        new TutorialPage { TextureKey = "Tutorial.1-2", Title = "Tutorial 1-2", Content = "This is the second page of the tutorial." },
+                        new TutorialPage { TextureKey = "Tutorial.1-3", Title = "Tutorial 1-3", Content = "This is the third page of the tutorial." }
+                    }
                 }
             }
-        }
-    };
-
+        };
     }
 
 }
