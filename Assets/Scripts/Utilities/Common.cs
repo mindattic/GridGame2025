@@ -182,7 +182,7 @@ public static class ComponentHelper
 
 
         public static string ConfirmationContainer = $"{Panel}/ConfirmationContainer";
-        public static string AreYouSure = $"{ConfirmationContainer}/AreYouSure";
+        public static string Confirmation = $"{ConfirmationContainer}/Confirmation";
         public static string ButtonYes = $"{ConfirmationContainer}/ButtonYes";
         public static string ButtonNo = $"{ConfirmationContainer}/ButtonNo";
 
@@ -197,7 +197,7 @@ public static class Constants
     public const string Global = "Global";
     public const string Game = "Game";
     public const string Resources = "Resources";
- 
+    public const string Canvas2D = "Canvas2D";
     public const string Art = "Art";
  
 
@@ -1059,3 +1059,59 @@ public static class DateTimeHelper
 
 }
 
+public static class ResourceFolderHelper
+{
+    public static string Backgrounds = "Backgrounds";
+    public static string Portraits = "Portraits";
+    public static string SoundEffects = "SoundEffects";
+    public static string MusicTracks = "MusicTracks";
+    public static string Materials = "Materials";
+    public static string Seamless = "Seamless";
+    public static string Sprites = "Sprites";
+    public static string Textures = "Textures";
+    public static string TrailEffects = "TrailEffects";
+    public static string WeaponTypes = "Sprites/WeaponTypes";
+    public static string VisualEffects = "VisualEffects";
+    public static string Prefabs = "Prefabs";
+}
+
+public static class CanvasKeyboardHelper
+{
+    public static CanvasKeyboard Spawn(
+        string promptText,
+        string confirmText = "Are you sure?",
+        string initialText = "",
+        int minLength = 3,
+        int maxLength = 32,
+        Action<string> onSubmit = default)
+    {
+        // 1. Load prefab from Resources
+        var prefabPath = $"{ResourceFolderHelper.Prefabs}/CanvasKeyboard";
+        var prefab = Resources.Load<GameObject>(prefabPath);
+        if (prefab == null)
+            throw new UnityException($"Prefab `{prefabPath}` not found");
+
+        // 2. Find a parent canvas in the scene
+        var canvas = GameObject.Find(Constants.Canvas2D)?.transform;
+        if (canvas == null)
+            throw new UnityException("Canvas not found");
+
+        // 3. Instantiate prefab as a child of the canvas
+        GameObject go = GameObject.Instantiate(prefab, canvas);
+        if (go == null)
+            throw new UnityException("Failed to instantiate prefab");
+
+        // 4. Rename the instance for clarity
+        go.name = $"Keyboard";
+
+        // 5. Get the CanvasKeyboard component and initialize
+        CanvasKeyboard instance = go.GetComponent<CanvasKeyboard>();
+        if (instance == null)
+            throw new UnityException("CanvasKeyboard component not found on the prefab");
+
+        instance.Initialize(promptText, confirmText, initialText, minLength, maxLength, onSubmit);
+
+        // 6. Return the instance if you want to keep a reference
+        return instance;
+    }
+}

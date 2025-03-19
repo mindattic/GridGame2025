@@ -18,7 +18,7 @@ public class ActorStore : ScriptableObject
         }
     }
 
-    //Initialize
+    //Spawn
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {

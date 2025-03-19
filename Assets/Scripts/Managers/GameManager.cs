@@ -220,7 +220,7 @@ public class GameManager : Singleton<GameManager>
     //Method which is automatically called before the first frame update  
     void Start()
     {
-        //Initialize in specific order:
+        //Spawn in specific order:
         board.Initialize();             //01
         resourceManager.Initialize();   //02    
         stageManager.Initialize();      //03

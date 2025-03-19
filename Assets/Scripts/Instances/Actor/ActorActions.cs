@@ -31,7 +31,7 @@ namespace Assets.Scripts.Instances.Actor
         private float wiggleAmplitude;
 
         /// <summary>
-        /// Initialize sets up this actions module with its parent actor _instance and calculates
+        /// Spawn sets up this actions module with its parent actor _instance and calculates
         /// initial parameters for animations.
         /// </summary>
         public void Initialize(ActorInstance parentInstance)
@@ -406,7 +406,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new Trigger();
 
-            // Before: Initialize variables for rotation.
+            // Before: Spawn variables for rotation.
             bool isDone = false;
             var rotY = 0f;
             var spinSpeed = tileSize * 24f;
@@ -458,7 +458,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new Trigger();
 
-            // Before: Initialize rotation variables.
+            // Before: Spawn rotation variables.
             bool isDone = false;
             var rotY = 0f;
             var speed = tileSize * 24f;
@@ -606,7 +606,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new Trigger();
 
-            // Before: Initialize variables for oscillation.
+            // Before: Spawn variables for oscillation.
             float timeElapsed = 0f;
             float amplitude = 10f;
             float dampingRate = 0.99f; // Controls how quickly the wiggle decays.

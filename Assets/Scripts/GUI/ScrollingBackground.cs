@@ -16,7 +16,7 @@ public class ScrollingBackground : MonoBehaviour
             Debug.LogError("ScrollingUITexture: No RawImage component found!");
         }
 
-        // Initialize uvRect
+        // Spawn uvRect
         uvRect = rawImage.uvRect;
         uvRect.y = Random.Float();
     }

@@ -87,7 +87,7 @@
 //           if (!isConnected)
 //               throw new UnityException($"Failed to connect to database: {trailInstance.DBName}");
 
-//           Initialize(); //TODO: Initialize data based on CurrentProfile stage???...
+//           Spawn(); //TODO: Spawn data based on CurrentProfile stage???...
 //       }
 
 
@@ -98,7 +98,7 @@
 //       //Stage 05: ["Slime", "Scorpion", "Bat", "Yeti"]
 
 
-//       void Initialize()
+//       void Spawn()
 //       {
 //           DBReader reader;
 

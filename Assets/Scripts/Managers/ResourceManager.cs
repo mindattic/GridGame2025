@@ -40,49 +40,49 @@ public class ResourceManager : MonoBehaviour
         //Backgrounds
         keys.SetRange(
             "CandleLitPath");
-        backgrounds = LoadResources<Sprite>(ResourceFolder.Backgrounds, keys);
+        backgrounds = LoadResources<Sprite>(ResourceFolderHelper.Backgrounds, keys);
 
         //Portraits
         keys.SetRange(
             "Barbarian", "Bat", "Cleric", "Ninja", "Paladin", "PandaGirl", "Scorpion", "Sentinel", "Slime", "Yeti");
-        portraits = LoadResources<Texture2D>(ResourceFolder.Portraits, keys);
+        portraits = LoadResources<Texture2D>(ResourceFolderHelper.Portraits, keys);
 
         //Sound Effects
         keys.SetRange(
             "Click", "Death", "Move1", "Move2", "Move3", "Move4", "Move5", "Move6", "NextTurn", "PlayerGlow", "Portrait", 
             "Rumble", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
-        soundEffects = LoadResources<AudioClip>(ResourceFolder.SoundEffects, keys);
+        soundEffects = LoadResources<AudioClip>(ResourceFolderHelper.SoundEffects, keys);
 
         //Music Tracks
         keys.SetRange(
             "MelancholyLull");
-        musicTracks = LoadResources<AudioClip>(ResourceFolder.MusicTracks, keys);
+        musicTracks = LoadResources<AudioClip>(ResourceFolderHelper.MusicTracks, keys);
 
         //Materials
         keys.SetRange(
             "EnemyParallax", "PlayerParallax");
-        materials = LoadResources<Material>(ResourceFolder.Materials, keys);
+        materials = LoadResources<Material>(ResourceFolderHelper.Materials, keys);
 
         //Seamless Sprites
         keys.SetRange(
             "BlackFire1", "BlackFire2", "Fire1", "RedFire1", "Swords1", "Swords2", "WhiteFire1", "WhiteFire2");
-        seamless = LoadResources<Sprite>(ResourceFolder.Seamless, keys);
+        seamless = LoadResources<Sprite>(ResourceFolderHelper.Seamless, keys);
 
         //Sprites
         keys.SetRange(
             "DottedLine", "DottedLineArrow", "DottedLineTurn", "Footstep", "Pause", "Paused");
-        sprites = LoadResources<Sprite>(ResourceFolder.Sprites, keys);
+        sprites = LoadResources<Sprite>(ResourceFolderHelper.Sprites, keys);
 
         //Weapon Types
         keys.SetRange(
             "Bow", "Claw", "Crossbow", "Dagger", "Grenade", "Hammer", "Katana", "Mace", "Pistol", "Polearm", "Potion",
             "Scythe", "Shield", "Shuriken", "Spear", "Staff", "Sword", "Wand");
-        weaponTypes = LoadResources<Sprite>(ResourceFolder.WeaponTypes, keys);
+        weaponTypes = LoadResources<Sprite>(ResourceFolderHelper.WeaponTypes, keys);
 
         //Textures
         keys.SetRange(
             "Tutorial.1-1", "Tutorial.1-2", "Tutorial.1-3");
-        textures = LoadResources<Texture2D>(ResourceFolder.Textures, keys);
+        textures = LoadResources<Texture2D>(ResourceFolderHelper.Textures, keys);
 
         //Trail Effects
         keys.SetRange(
@@ -274,7 +274,7 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var key in keys)
             {
-                //Initialize the sprite
+                //Spawn the sprite
                 T value = Resources.Load<T>($"{resourcePath}/{key}");
                 if (value == null)
                 {
@@ -282,7 +282,7 @@ public class ResourceManager : MonoBehaviour
                     continue;
                 }
 
-                //Initialize the matching JSON file for parameters
+                //Spawn the matching JSON file for parameters
                 List<ResourceParameter> parameters = LoadResourceParameters(resourcePath, key);
 
                 entries.Add(key, new ResourceItem<T>
@@ -301,7 +301,7 @@ public class ResourceManager : MonoBehaviour
     }
 
     ///<summary>
-    ///Initialize parameters from a JSON file matching the resource name.
+    ///Spawn parameters from a JSON file matching the resource name.
     ///</summary>
     private List<ResourceParameter> LoadResourceParameters(string folderPath, string resourceName)
     {
@@ -330,7 +330,7 @@ public class ResourceManager : MonoBehaviour
                     continue;
                 }
 
-                var resourcePath = ResourceFolder.TrailEffects.ToString();
+                var resourcePath = ResourceFolderHelper.TrailEffects.ToString();
                 var prefab = Resources.Load<GameObject>($"{resourcePath}/{key}");
                 if (prefab == null)
                 {
@@ -376,7 +376,7 @@ public class ResourceManager : MonoBehaviour
                     continue;
                 }
 
-                var resourcePath = ResourceFolder.VisualEffects.ToString();
+                var resourcePath = ResourceFolderHelper.VisualEffects.ToString();
                 var prefab = Resources.Load<GameObject>($"{resourcePath}/{key}");
                 if (prefab == null)
                 {
@@ -413,7 +413,7 @@ public class ResourceManager : MonoBehaviour
 
         //try
         //{
-        //    //Initialize JSON from Resources
+        //    //Spawn JSON from Resources
         //    TextAsset jsonFile = Resources.Get<TextAsset>("Data/Tutorials");
         //    if (jsonFile == null)
         //    {
