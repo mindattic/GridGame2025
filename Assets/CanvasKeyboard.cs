@@ -67,23 +67,25 @@ public class CanvasKeyboard : MonoBehaviour
     public RectTransform keySpace;
     public RectTransform keyEnter;
 
+    //Confirmation
     public RectTransform confirmationContainer;
     public RectTransform areYouSure;
     public RectTransform buttonYes;
     public RectTransform buttonNo;
 
-
-
-
     private float screenWidth;
     private float screenHeight;
     private float inputWidth;
     private float inputHeight;
-
     private float buttonWidth;
     private float buttonHeight;
+    private bool isCapsOn = true;
 
-    public bool IsSubmitted { get; private set; } = false;
+    public string InputText
+    {
+        get => inputLabel.GetComponent<Label>().text;
+        set => inputLabel.GetComponent<Label>().text = value;
+    }
 
     private void Awake()
     {
@@ -93,7 +95,7 @@ public class CanvasKeyboard : MonoBehaviour
         inputBackdrop = GameObject.Find(ComponentHelper.CanvasKeyboard.InputLabel).GetComponent<RectTransform>() ?? throw new UnityException("InputLabel is null");
         inputLabel = GameObject.Find(ComponentHelper.CanvasKeyboard.InputLabel).GetComponent<RectTransform>() ?? throw new UnityException("InputLabel is null");
         keysContainer = GameObject.Find(ComponentHelper.CanvasKeyboard.KeysContainer).GetComponent<RectTransform>() ?? throw new UnityException("KeysContainer is null");
-       
+
         //Row1
         row1 = GameObject.Find(ComponentHelper.CanvasKeyboard.Row1).GetComponent<RectTransform>() ?? throw new UnityException("Row1 is null");
         key1 = GameObject.Find(ComponentHelper.CanvasKeyboard.Key1).GetComponent<RectTransform>();
@@ -154,9 +156,7 @@ public class CanvasKeyboard : MonoBehaviour
         buttonYes = GameObject.Find(ComponentHelper.CanvasKeyboard.ButtonYes).GetComponent<RectTransform>() ?? throw new UnityException("ButtonYes is null");
         buttonNo = GameObject.Find(ComponentHelper.CanvasKeyboard.ButtonNo).GetComponent<RectTransform>() ?? throw new UnityException("buttonNo is null");
 
-
-
-
+        ToggleCapsLock();
         ResizeUI();
         BindAllKeys();
     }
@@ -166,7 +166,7 @@ public class CanvasKeyboard : MonoBehaviour
         // Screen dimension references
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
-     
+
         float keySpacing = screenWidth * 0.0025f;
         float rowSpacing = screenWidth * 0.0025f;
 
@@ -206,7 +206,7 @@ public class CanvasKeyboard : MonoBehaviour
         //Row3 (A-L), shifted slightly more
         row3.sizeDelta = new Vector2(guideRowWidth, keyHeight);
         row3.anchoredPosition = new Vector2(0, currentY);
-        PositionRowKeys(row3, new RectTransform[] { keyA, keyS, keyD, keyF, keyG, keyH, keyJ, keyK, keyL }, keyWidth, keyHeight, keySpacing,0);
+        PositionRowKeys(row3, new RectTransform[] { keyA, keyS, keyD, keyF, keyG, keyH, keyJ, keyK, keyL }, keyWidth, keyHeight, keySpacing, 0);
         currentY -= (keyHeight + rowSpacing);
 
         //Row4 (Z-M), shifted one full key width
@@ -245,7 +245,7 @@ public class CanvasKeyboard : MonoBehaviour
         }
     }
 
-    private bool isCapsOn = false;
+
 
     private void BindAllKeys()
     {
@@ -297,12 +297,12 @@ public class CanvasKeyboard : MonoBehaviour
 
         //Row5: Space, Enter
         keySpace.GetComponent<Button>().onClick.AddListener(() => Append(' '));
-        keyEnter.GetComponent<Button>().onClick.AddListener(() => ShowConfirmation());
+        keyEnter.GetComponent<Button>().onClick.AddListener(() => ToggleConfirmation());
 
 
         //Confirmation 
         buttonYes.GetComponent<Button>().onClick.AddListener(() => Submit());
-        buttonNo.GetComponent<Button>().onClick.AddListener(() => HideConfirmation());
+        buttonNo.GetComponent<Button>().onClick.AddListener(() => ToggleConfirmation());
     }
 
     private void ToggleCapsLock()
@@ -345,37 +345,41 @@ public class CanvasKeyboard : MonoBehaviour
     void Append(char c)
     {
         var character = isCapsOn && char.IsLetter(c) ? char.ToUpper(c) : char.ToLower(c);
-        inputLabel.GetComponent<Label>().text += character;
+        InputText += character;
+
+        if(isCapsOn && InputText.Length == 1)
+        {
+            ToggleCapsLock();
+        }
+
     }
 
     void Backspace()
     {
-        var text = inputLabel.GetComponent<Label>().text;
-        if (text.Length > 0)
-            inputLabel.GetComponent<Label>().text = text.Substring(0, text.Length - 1);
+        if (InputText.Length > 0)
+            InputText = InputText.Substring(0, InputText.Length - 1);
     }
+
+    void ToggleConfirmation()
+    {
+        if (InputText.Length < 1)
+            return;
+
+        var isShowing = confirmationContainer.gameObject.activeSelf;
+        var show = !isShowing;
+        keysContainer.gameObject.SetActive(!show);
+        confirmationContainer.gameObject.SetActive(show);
+    }
+
 
     void Submit()
     {
-        var text = inputLabel.GetComponent<Label>().text;
-        Debug.Log(text);
-    }
-
-    void ShowConfirmation()
-    {
-        keysContainer.gameObject.SetActive(false);
-        confirmationContainer.gameObject.SetActive(true);
-    }
-
-    void HideConfirmation()
-    {
-        keysContainer.gameObject.SetActive(true);
-        confirmationContainer.gameObject.SetActive(false);
+        Debug.Log(InputText);
     }
 
     public string GetSanitizedInput()
     {
-        return SanitizeInput(inputLabel.GetComponent<Label>().text);
+        return SanitizeInput(InputText);
     }
 
     private string SanitizeInput(string input)
