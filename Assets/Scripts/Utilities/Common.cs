@@ -119,7 +119,6 @@ public static class ComponentHelper
         public static string Panel = $"{Keyboard}/Panel";
         public static string Instructions = $"{Panel}/Instructions";
         public static string InputField = $"{Panel}/InputField";
-        public static string SubmitButton = $"{Panel}/SubmitButton";
         public static string KeysContainer = $"{Panel}/KeysContainer";
 
         // Row 1: digits
@@ -162,7 +161,7 @@ public static class ComponentHelper
         public static string KeyL = $"{Row3}/KeyL";
 
         // Row 4: Z–M
-        public static string Row4 = $"{KeysContainer}/Row4";
+        public static string Row4 = $"{KeysContainer}/Row4"; 
         public static string KeyZ = $"{Row4}/KeyZ";
         public static string KeyX = $"{Row4}/KeyX";
         public static string KeyC = $"{Row4}/KeyC";
@@ -170,12 +169,14 @@ public static class ComponentHelper
         public static string KeyB = $"{Row4}/KeyB";
         public static string KeyN = $"{Row4}/KeyN";
         public static string KeyM = $"{Row4}/KeyM";
+      
 
         // Row 5: CapsLock, Spacebar, Backspace
         public static string Row5 = $"{KeysContainer}/Row5";
         public static string KeyCapsLock = $"{Row5}/KeyCapsLock";
         public static string KeySpace = $"{Row5}/KeySpace";
         public static string KeyBackspace = $"{Row5}/KeyBackspace";
+        public static string KeyEnter = $"{Row5}/KeyEnter";
     }
 
 

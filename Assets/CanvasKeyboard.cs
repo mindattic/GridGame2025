@@ -11,7 +11,7 @@ public class CanvasKeyboard : MonoBehaviour
     private RectTransform panel;
     private RectTransform instructions;
     private RectTransform inputField;
-    [Header("Submit Button")] public RectTransform submitButton;
+
     private RectTransform keysContainer;
 
     // Row 1
@@ -54,6 +54,7 @@ public class CanvasKeyboard : MonoBehaviour
 
     // Row 4
     private RectTransform row4;
+    public RectTransform keyCapsLock;
     public RectTransform keyZ;
     public RectTransform keyX;
     public RectTransform keyC;
@@ -61,12 +62,12 @@ public class CanvasKeyboard : MonoBehaviour
     public RectTransform keyB;
     public RectTransform keyN;
     public RectTransform keyM;
+    public RectTransform keyBackspace;
 
     //Row 5
     private RectTransform row5;
-    public RectTransform keyCapsLock;
     public RectTransform keySpace;
-    public RectTransform keyBackspace;
+    public RectTransform keyEnter;
 
     private float screenWidth;
     private float screenHeight;
@@ -84,7 +85,7 @@ public class CanvasKeyboard : MonoBehaviour
         panel = GameObject.Find(ComponentHelper.CanvasKeyboard.Panel).GetComponent<RectTransform>() ?? throw new UnityException("Panel is null");
         instructions = GameObject.Find(ComponentHelper.CanvasKeyboard.Instructions).GetComponent<RectTransform>() ?? throw new UnityException("Instructions is null");
         inputField = GameObject.Find(ComponentHelper.CanvasKeyboard.InputField).GetComponent<RectTransform>() ?? throw new UnityException("InputField is null");
-        submitButton = GameObject.Find(ComponentHelper.CanvasKeyboard.SubmitButton).GetComponent<RectTransform>() ?? throw new UnityException("SubmitButton is null");
+
         keysContainer = GameObject.Find(ComponentHelper.CanvasKeyboard.KeysContainer).GetComponent<RectTransform>() ?? throw new UnityException("KeysContainer is null");
 
         //Row1
@@ -127,6 +128,7 @@ public class CanvasKeyboard : MonoBehaviour
 
         //Row4
         row4 = GameObject.Find(ComponentHelper.CanvasKeyboard.Row4).GetComponent<RectTransform>() ?? throw new UnityException("Row4 is null");
+        keyCapsLock = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyCapsLock).GetComponent<RectTransform>();
         keyZ = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyZ).GetComponent<RectTransform>();
         keyX = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyX).GetComponent<RectTransform>();
         keyC = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyC).GetComponent<RectTransform>();
@@ -134,14 +136,12 @@ public class CanvasKeyboard : MonoBehaviour
         keyB = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyB).GetComponent<RectTransform>();
         keyN = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyN).GetComponent<RectTransform>();
         keyM = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyM).GetComponent<RectTransform>();
+        keyBackspace = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyBackspace).GetComponent<RectTransform>();
 
         //Row5
         row5 = GameObject.Find(ComponentHelper.CanvasKeyboard.Row5).GetComponent<RectTransform>() ?? throw new UnityException("Row5 is null");
-        keyCapsLock = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyCapsLock).GetComponent<RectTransform>();
         keySpace = GameObject.Find(ComponentHelper.CanvasKeyboard.KeySpace).GetComponent<RectTransform>();
-        keyBackspace = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyBackspace).GetComponent<RectTransform>();
-
-   
+        keyEnter = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyEnter).GetComponent<RectTransform>() ?? throw new UnityException("KeyEnter is null");
 
         ResizeUI();
 
@@ -155,99 +155,77 @@ public class CanvasKeyboard : MonoBehaviour
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
 
-      
-        panel.anchorMin = new Vector2(0.5f, 0.5f);
-        panel.anchorMax = new Vector2(0.5f, 0.5f);
-        panel.pivot = new Vector2(0.5f, 0.5f);
-        panel.anchoredPosition = Vector2.zero;
-
-        float keySpacing = 0;
-        float rowSpacing = 0;
+       
+        float keySpacing = screenWidth * 0.0025f;
+        float rowSpacing = screenWidth * 0.0025f;
 
         int guideRowKeyCount = 10;
         float keyWidth = screenWidth * 0.9f / guideRowKeyCount;
         float keyHeight = keyWidth;
-        float guideRowWidth = (keyWidth * guideRowKeyCount);
+        float guideRowWidth = (keyWidth * guideRowKeyCount) + (keySpacing * (guideRowKeyCount - 1));
 
-        inputWidth = screenWidth * 0.9f;
-        buttonWidth = inputWidth / guideRowKeyCount - (keySpacing * guideRowKeyCount - 1);
-        buttonHeight = buttonWidth;
+        panel.sizeDelta = new Vector2(screenWidth, screenHeight);
+        panel.anchoredPosition = new Vector2(0, 0);
 
-        inputField.sizeDelta = new Vector2(inputWidth, keyHeight);
+        instructions.sizeDelta = new Vector2(keyWidth * guideRowKeyCount, keyHeight);
+        instructions.anchoredPosition = new Vector2(0, keyHeight * 3);
 
+        inputField.sizeDelta = new Vector2(guideRowWidth, keyHeight);
+        inputField.anchoredPosition = new Vector2(0, keyHeight * 2);
 
         keysContainer.anchorMin = new Vector2(0.5f, 0.5f);
         keysContainer.anchorMax = new Vector2(0.5f, 0.5f);
         keysContainer.pivot = new Vector2(0.5f, 0.5f);
-        keysContainer.anchoredPosition = new Vector2(-guideRowWidth/2, 0);
+        keysContainer.anchoredPosition = new Vector2(-guideRowWidth / 2, keyHeight);
 
-        // Place Row1 near the top-left of keysContainer
-        float topPadding = 0f;
-        float row1Y = -topPadding;  // pivot(0.5,0.5) => negative means going downward
+        float currentY = 0f;
+
+        //Row1 (Numbers)
         row1.sizeDelta = new Vector2(guideRowWidth, keyHeight);
-        row1.anchoredPosition = new Vector2(0f, row1Y);
-
-        RectTransform[] row1Keys = { key1, key2, key3, key4, key5, key6, key7, key8, key9, key0 };
-        PositionRowKeys(row1, row1Keys, keyWidth, keyHeight, keySpacing);
-
-        float currentY = row1Y;
-
-        // Row2
+        row1.anchoredPosition = new Vector2(0f, currentY);
+        PositionRowKeys(row1, new RectTransform[] { key1, key2, key3, key4, key5, key6, key7, key8, key9, key0 }, keyWidth, keyHeight, keySpacing, 0);
         currentY -= (keyHeight + rowSpacing);
+
+        //Row2 (Q-P), shifted right by half key width
         row2.sizeDelta = new Vector2(guideRowWidth, keyHeight);
-        row2.anchoredPosition = new Vector2(0f, currentY);
-        RectTransform[] row2Keys = { keyQ, keyW, keyE, keyR, keyT, keyY, keyU, keyI, keyO, keyP };
-        PositionRowKeys(row2, row2Keys, keyWidth, keyHeight, keySpacing);
-
-        // Row3
+        row2.anchoredPosition = new Vector2(0, currentY);
+        PositionRowKeys(row2, new RectTransform[] { keyQ, keyW, keyE, keyR, keyT, keyY, keyU, keyI, keyO, keyP }, keyWidth, keyHeight, keySpacing, 0);
         currentY -= (keyHeight + rowSpacing);
+
+        //Row3 (A-L), shifted slightly more
         row3.sizeDelta = new Vector2(guideRowWidth, keyHeight);
-        row3.anchoredPosition = new Vector2(0f, currentY);
-        RectTransform[] row3Keys = { keyA, keyS, keyD, keyF, keyG, keyH, keyJ, keyK, keyL };
-        PositionRowKeys(row3, row3Keys, keyWidth, keyHeight, keySpacing);
-
-        // Row4
+        row3.anchoredPosition = new Vector2(0, currentY);
+        PositionRowKeys(row3, new RectTransform[] { keyA, keyS, keyD, keyF, keyG, keyH, keyJ, keyK, keyL }, keyWidth, keyHeight, keySpacing,0);
         currentY -= (keyHeight + rowSpacing);
+
+        //Row4 (Z-M), shifted one full key width
         row4.sizeDelta = new Vector2(guideRowWidth, keyHeight);
-        row4.anchoredPosition = new Vector2(0f, currentY);
-        RectTransform[] row4Keys = { keyZ, keyX, keyC, keyV, keyB, keyN, keyM };
-        PositionRowKeys(row4, row4Keys, keyWidth, keyHeight, keySpacing);
-
-        // Row5
+        row4.anchoredPosition = new Vector2(0, currentY);
+        PositionRowKeys(row4, new RectTransform[] { keyZ, keyX, keyC, keyV, keyB, keyN, keyM }, keyWidth, keyHeight, keySpacing, 0);
         currentY -= (keyHeight + rowSpacing);
+
+        //Row5: CapsLock, Space, Backspace, Enter
         row5.sizeDelta = new Vector2(guideRowWidth, keyHeight);
-        row5.anchoredPosition = new Vector2(0f, currentY);
+        row5.anchoredPosition = new Vector2(0, currentY);
 
-        float totalRatio = 0.33f + 0.66f + 0.33f;
-        float leftoverWidth = guideRowWidth - 2 * keySpacing;
-        if (leftoverWidth < 0) leftoverWidth = 0;
+        keyCapsLock.sizeDelta = new Vector2(keyWidth * 2 + keySpacing, keyHeight);
+        keyCapsLock.anchoredPosition = new Vector2(0, 0);
 
-        float capsLockW = (0.33f / totalRatio) * leftoverWidth;
-        float spaceW = (0.66f / totalRatio) * leftoverWidth;
-        float backspaceW = (0.33f / totalRatio) * leftoverWidth;
+        keySpace.sizeDelta = new Vector2(keyWidth * 4 + keySpacing * 3, keyHeight);
+        keySpace.anchoredPosition = new Vector2(keyCapsLock.anchoredPosition.x + keyCapsLock.sizeDelta.x + keySpacing, 0);
 
-        float currentX = 0f;
-        keyCapsLock.sizeDelta = new Vector2(capsLockW, keyHeight);
-        keyCapsLock.anchoredPosition = new Vector2(currentX, 0f);
-        currentX += capsLockW + keySpacing;
+        keyBackspace.sizeDelta = new Vector2(keyWidth * 2 + keySpacing, keyHeight);
+        keyBackspace.anchoredPosition = new Vector2(keySpace.anchoredPosition.x + keySpace.sizeDelta.x + keySpacing, 0);
 
-        keySpace.sizeDelta = new Vector2(spaceW, keyHeight);
-        keySpace.anchoredPosition = new Vector2(currentX, 0f);
-        currentX += spaceW + keySpacing;
+        keyEnter.sizeDelta = new Vector2(keyWidth * 2 + keySpacing, keyHeight);
+        keyEnter.anchoredPosition = new Vector2(keyBackspace.anchoredPosition.x + keyBackspace.sizeDelta.x + keySpacing, 0);
 
-        keyBackspace.sizeDelta = new Vector2(backspaceW, keyHeight);
-        keyBackspace.anchoredPosition = new Vector2(currentX, 0f);
+
     }
 
-    private void PositionRowKeys(
-        RectTransform row,
-        RectTransform[] keys,
-        float keyW,
-        float keyH,
-        float spacingBetweenKeys
-    )
+    private void PositionRowKeys(RectTransform row, RectTransform[] keys, float keyW, float keyH, float spacingBetweenKeys, float offsetX)
     {
-        float currentX = 0f;
+        float currentX = offsetX;
         foreach (var key in keys)
         {
             key.sizeDelta = new Vector2(keyW, keyH);
@@ -260,7 +238,7 @@ public class CanvasKeyboard : MonoBehaviour
 
     private void BindAllKeys()
     {
-        submitButton.GetComponent<Button>().onClick.AddListener(OnSubmitClicked);
+        keyEnter.GetComponent<Button>().onClick.AddListener(OnSubmitClicked);
 
         //Row1: digits
         key1.GetComponent<Button>().onClick.AddListener(() => Append('1'));
@@ -297,7 +275,8 @@ public class CanvasKeyboard : MonoBehaviour
         keyK.GetComponent<Button>().onClick.AddListener(() => Append('K'));
         keyL.GetComponent<Button>().onClick.AddListener(() => Append('L'));
 
-        //Row4: Z–M
+        //Row4: CapsLock, Z–M, Backspace
+        keyCapsLock.GetComponent<Button>().onClick.AddListener(ToggleCapsLock);
         keyZ.GetComponent<Button>().onClick.AddListener(() => Append('Z'));
         keyX.GetComponent<Button>().onClick.AddListener(() => Append('X'));
         keyC.GetComponent<Button>().onClick.AddListener(() => Append('C'));
@@ -305,11 +284,11 @@ public class CanvasKeyboard : MonoBehaviour
         keyB.GetComponent<Button>().onClick.AddListener(() => Append('B'));
         keyN.GetComponent<Button>().onClick.AddListener(() => Append('N'));
         keyM.GetComponent<Button>().onClick.AddListener(() => Append('M'));
-
-        //Row5: CapsLock, Space, Backspace
-        keyCapsLock.GetComponent<Button>().onClick.AddListener(ToggleCapsLock);
-        keySpace.GetComponent<Button>().onClick.AddListener(() => Append(' '));
         keyBackspace.GetComponent<Button>().onClick.AddListener(() => Backspace());
+
+        //Row5: Space, Enter
+        keySpace.GetComponent<Button>().onClick.AddListener(() => Append(' '));
+
     }
 
     private void ToggleCapsLock()
@@ -378,4 +357,11 @@ public class CanvasKeyboard : MonoBehaviour
         // Remove HTML-like tags to avoid markup injection
         return System.Text.RegularExpressions.Regex.Replace(input, "<.*?>", string.Empty);
     }
+
+
+    private void FixedUpdate()
+    {
+        ResizeUI();
+    }
+
 }
