@@ -470,7 +470,7 @@ public class DebugManager : MonoBehaviour
 
     public void AlignTest()
     {
-        //Spawn exactly nine slimes
+        //Assign exactly nine slimes
         for (int i = 0; i < 9; i++)
             SpawnSlime();
 

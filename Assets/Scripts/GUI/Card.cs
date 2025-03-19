@@ -138,7 +138,7 @@ namespace Game.Behaviors
             StartCoroutine(SlideIn());
         }
 
-        // Spawn smoothly animates the portrait image from an offscreen position to its destination.
+        // Assign smoothly animates the portrait image from an offscreen position to its destination.
         private IEnumerator SlideIn()
         {
             float elapsedTime = 0f;

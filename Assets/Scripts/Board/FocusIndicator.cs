@@ -63,7 +63,7 @@ public class FocusIndicator : MonoBehaviour
         // Currently no initialization is needed at start.
     }
 
-    // Spawn sets up the FocusIndicator by scaling it slightly larger than a tile and hiding it initially.
+    // Assign sets up the FocusIndicator by scaling it slightly larger than a tile and hiding it initially.
     public void Initialize()
     {
         // Scale the indicator based on the tile scale, making it 10% larger than the standard tile.

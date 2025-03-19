@@ -274,7 +274,7 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var key in keys)
             {
-                //Spawn the sprite
+                //Assign the sprite
                 T value = Resources.Load<T>($"{resourcePath}/{key}");
                 if (value == null)
                 {
@@ -282,7 +282,7 @@ public class ResourceManager : MonoBehaviour
                     continue;
                 }
 
-                //Spawn the matching JSON file for parameters
+                //Assign the matching JSON file for parameters
                 List<ResourceParameter> parameters = LoadResourceParameters(resourcePath, key);
 
                 entries.Add(key, new ResourceItem<T>
@@ -301,7 +301,7 @@ public class ResourceManager : MonoBehaviour
     }
 
     ///<summary>
-    ///Spawn parameters from a JSON file matching the resource name.
+    ///Assign parameters from a JSON file matching the resource name.
     ///</summary>
     private List<ResourceParameter> LoadResourceParameters(string folderPath, string resourceName)
     {
@@ -413,7 +413,7 @@ public class ResourceManager : MonoBehaviour
 
         //try
         //{
-        //    //Spawn JSON from Resources
+        //    //Assign JSON from Resources
         //    TextAsset jsonFile = Resources.Get<TextAsset>("Data/Tutorials");
         //    if (jsonFile == null)
         //    {

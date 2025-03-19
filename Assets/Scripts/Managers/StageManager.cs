@@ -77,7 +77,7 @@ public class StageManager : MonoBehaviour
         tileManager.Reset();
         turnManager.Initialize();
 
-        // Spawn persistent player actors from ProfileStore
+        // Assign persistent player actors from ProfileStore
         foreach (var playerActor in ProfileStore.instance.PlayerActors)
         {
             SpawnActor(new StageActor(playerActor));
@@ -111,13 +111,13 @@ public class StageManager : MonoBehaviour
 
         StageWave wave = currentStage.Waves[waveIndex];
 
-        // Spawn actors for this wave
+        // Assign actors for this wave
         foreach (var stageActor in wave.Actors)
         {
             SpawnActor(new StageActor(stageActor));
         }
 
-        // Spawn dotted lines for this wave
+        // Assign dotted lines for this wave
         foreach (var stageDottedLine in wave.DottedLines)
         {
             var segment = stageDottedLine.Segment;

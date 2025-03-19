@@ -23,7 +23,7 @@ public class BoardInstance : MonoBehaviour
     [HideInInspector] public Vector2 center;           // Center point of the board bounds.
 
     /// <summary>
-    /// Spawn is called to set up the board by calculating its offset, bounds, and generating the tiles.
+    /// Assign is called to set up the board by calculating its offset, bounds, and generating the tiles.
     /// </summary>
     public void Initialize()
     {
@@ -93,7 +93,7 @@ public class BoardInstance : MonoBehaviour
                 instance.parent = transform;
                 // Name the tile based on its grid coordinates.
                 instance.name = $"Tile_{col}x{row}";
-                // Spawn the tile with its column and row positions.
+                // Assign the tile with its column and row positions.
                 instance.Initialize(col, row);
                 // Add the tile to the TileMap.
                 tileMap.Add(instance);

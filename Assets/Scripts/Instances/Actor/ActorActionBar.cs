@@ -28,7 +28,7 @@ public class ActorActionBar
     // Field to store the parent actor _instance that this action bar is associated with.
     private ActorInstance instance;
 
-    // Spawn sets up the ActionBar by linking it to its parent ActorInstance.
+    // Assign sets up the ActionBar by linking it to its parent ActorInstance.
     public void Initialize(ActorInstance parentInstance)
     {
         this.instance = parentInstance;

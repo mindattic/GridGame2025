@@ -192,7 +192,7 @@ public class ActorInstance : MonoBehaviour
     // Awake: Initialization of the actor _instance. Sets up modules and subscribes to events.
     private void Awake()
     {
-        // Spawn modules with this actor _instance context.
+        // Assign modules with this actor _instance context.
         render.Initialize(this);
         action.Initialize(this);
         movement.Initialize(this);
@@ -218,7 +218,7 @@ public class ActorInstance : MonoBehaviour
         //     onActorDeath -= stageManager.OnActorDeath;
     }
 
-    // Spawn: Initializes and spawns the actor at the specified start location.
+    // Assign: Initializes and spawns the actor at the specified start location.
     public void Spawn(Vector2Int startLocation)
     {
         // Set CurrentProfile and previous locations.
@@ -303,7 +303,7 @@ public class ActorInstance : MonoBehaviour
         //Create the trigger with asynchronous execution.
         var trigger = new Trigger(hitOrMiss, isAsync: true);
 
-        // Spawn the attack visual effect at the opponent's position.
+        // Assign the attack visual effect at the opponent's position.
         yield return vfxManager.Spawn(vfx.Attack, attack.Opponent.position, trigger);
     }
 
@@ -472,7 +472,7 @@ public class ActorInstance : MonoBehaviour
             alpha = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
             render.SetAlpha(alpha);
 
-            //Spawn coins when enemy fades below 10% opacity, if not already spawned.
+            //Assign coins when enemy fades below 10% opacity, if not already spawned.
             if (isEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
             {
                 hasSpawnedCoins = true;

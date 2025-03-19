@@ -18,7 +18,7 @@ public class TutorialStore : ScriptableObject
         }
     }
 
-    //Spawn
+    //Assign
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {

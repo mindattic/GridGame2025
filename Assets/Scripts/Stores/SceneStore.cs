@@ -22,7 +22,7 @@ namespace Assets.Scripts.Store
             }
         }
 
-        //Spawn
+        //Assign
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void AutoInitialize()
         {

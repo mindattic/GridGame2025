@@ -70,7 +70,7 @@ public class DottedLineInstance : MonoBehaviour
         this.position = Geometry.GetPositionByLocation(this.location);
         this.transform.localScale = tileScale;
 
-        //Spawn resources
+        //Assign resources
         var line = resourceManager.Sprite("DottedLine").Value;
         var turn = resourceManager.Sprite("DottedLineTurn").Value;
         var arrow = resourceManager.Sprite("DottedLineArrow").Value;

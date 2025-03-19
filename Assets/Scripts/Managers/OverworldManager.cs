@@ -53,7 +53,7 @@ public class OverworldManager : MonoBehaviour
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         FindStageButtons();
 
-        CanvasKeyboardHelper.Spawn("What is your name?", onSubmit: (inputText) =>
+        VirtualKeyboard.Show(canvas2D, "What is your name?", onSubmit: (inputText) =>
         {
             Debug.Log("User entered: " + inputText);
         });

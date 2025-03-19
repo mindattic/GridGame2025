@@ -1075,9 +1075,10 @@ public static class ResourceFolderHelper
     public static string Prefabs = "Prefabs";
 }
 
-public static class CanvasKeyboardHelper
+public static class VirtualKeyboard
 {
-    public static CanvasKeyboard Spawn(
+    public static CanvasKeyboard Show(
+        RectTransform canvas,
         string promptText,
         string confirmText = "Are you sure?",
         string initialText = "",
@@ -1085,33 +1086,31 @@ public static class CanvasKeyboardHelper
         int maxLength = 32,
         Action<string> onSubmit = default)
     {
-        // 1. Load prefab from Resources
+        //Load prefab from Resources
         var prefabPath = $"{ResourceFolderHelper.Prefabs}/CanvasKeyboard";
         var prefab = Resources.Load<GameObject>(prefabPath);
         if (prefab == null)
             throw new UnityException($"Prefab `{prefabPath}` not found");
 
-        // 2. Find a parent canvas in the scene
-        var canvas = GameObject.Find(Constants.Canvas2D)?.transform;
+        //Find a parent canvas
         if (canvas == null)
             throw new UnityException("Canvas not found");
 
-        // 3. Instantiate prefab as a child of the canvas
+        //Instantiate prefab
         GameObject go = GameObject.Instantiate(prefab, canvas);
         if (go == null)
             throw new UnityException("Failed to instantiate prefab");
-
-        // 4. Rename the instance for clarity
         go.name = $"Keyboard";
 
-        // 5. Get the CanvasKeyboard component and initialize
+        //Get the CanvasKeyboard instance
         CanvasKeyboard instance = go.GetComponent<CanvasKeyboard>();
         if (instance == null)
-            throw new UnityException("CanvasKeyboard component not found on the prefab");
+            throw new UnityException("CanvasKeyboard component not found on the game object");
 
-        instance.Initialize(promptText, confirmText, initialText, minLength, maxLength, onSubmit);
+        //Assign properties
+        instance.Assign(promptText, confirmText, initialText, minLength, maxLength, onSubmit);
 
-        // 6. Return the instance if you want to keep a reference
+        //Return the instance
         return instance;
     }
 }

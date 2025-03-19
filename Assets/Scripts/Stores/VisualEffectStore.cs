@@ -18,7 +18,7 @@ public class VisualEffectStore : ScriptableObject
         }
     }
 
-    //Spawn
+    //Assign
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {

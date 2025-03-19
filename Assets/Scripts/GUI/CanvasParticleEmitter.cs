@@ -57,7 +57,7 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     void Start()
     {
-        PrewarmParticles();  // Spawn initial particles
+        PrewarmParticles();  // Assign initial particles
         StartCoroutine(SpawnImages());
     }
 

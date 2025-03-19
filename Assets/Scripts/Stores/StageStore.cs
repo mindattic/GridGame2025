@@ -18,7 +18,7 @@ public class StageStore : ScriptableObject
         }
     }
 
-    //Spawn
+    //Assign
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {

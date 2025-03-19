@@ -153,7 +153,7 @@ public class DebugWindow : EditorWindow
         };
     }
 
-    // Spawn sets up references to game systems from the GameManager.
+    // Assign sets up references to game systems from the GameManager.
     private void Initialize()
     {
         // If GameManager hasn't been initialized, do not proceed.
