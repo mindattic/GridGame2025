@@ -117,10 +117,11 @@ public static class ComponentHelper
         public static string Canvas2D = "Canvas2D";
         public static string Keyboard = "Canvas2D/Keyboard";
         public static string Panel = $"{Keyboard}/Panel";
-        public static string Instructions = $"{Panel}/Instructions";
-        public static string InputField = $"{Panel}/InputField";
+        public static string Prompt = $"{Panel}/Prompt";
+        public static string InputBackdrop = $"{Panel}/InputBackdrop";
+        public static string InputLabel = $"{Panel}/InputLabel";
         public static string KeysContainer = $"{Panel}/KeysContainer";
-
+        
         // Row 1: digits
         public static string Row1 = $"{KeysContainer}/Row1";
         public static string Key1 = $"{Row1}/Key1";
@@ -177,6 +178,15 @@ public static class ComponentHelper
         public static string KeySpace = $"{Row5}/KeySpace";
         public static string KeyBackspace = $"{Row5}/KeyBackspace";
         public static string KeyEnter = $"{Row5}/KeyEnter";
+
+
+
+        public static string ConfirmationContainer = $"{Panel}/ConfirmationContainer";
+        public static string AreYouSure = $"{ConfirmationContainer}/AreYouSure";
+        public static string ButtonYes = $"{ConfirmationContainer}/ButtonYes";
+        public static string ButtonNo = $"{ConfirmationContainer}/ButtonNo";
+
+
     }
 
 

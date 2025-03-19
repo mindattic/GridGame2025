@@ -2,16 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Label = TMPro.TextMeshProUGUI;
-using Textbox = TMPro.TMP_InputField;
-using UnityEditor.Experimental.GraphView;
 
 public class CanvasKeyboard : MonoBehaviour
 {
     private RectTransform canvas2D;
     private RectTransform panel;
-    private RectTransform instructions;
-    private RectTransform inputField;
-
+    private RectTransform prompt;
+    private RectTransform inputBackdrop;
+    private RectTransform inputLabel;
     private RectTransform keysContainer;
 
     // Row 1
@@ -69,6 +67,14 @@ public class CanvasKeyboard : MonoBehaviour
     public RectTransform keySpace;
     public RectTransform keyEnter;
 
+    public RectTransform confirmationContainer;
+    public RectTransform areYouSure;
+    public RectTransform buttonYes;
+    public RectTransform buttonNo;
+
+
+
+
     private float screenWidth;
     private float screenHeight;
     private float inputWidth;
@@ -83,11 +89,11 @@ public class CanvasKeyboard : MonoBehaviour
     {
         canvas2D = GameObject.Find(ComponentHelper.CanvasKeyboard.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
         panel = GameObject.Find(ComponentHelper.CanvasKeyboard.Panel).GetComponent<RectTransform>() ?? throw new UnityException("Panel is null");
-        instructions = GameObject.Find(ComponentHelper.CanvasKeyboard.Instructions).GetComponent<RectTransform>() ?? throw new UnityException("Instructions is null");
-        inputField = GameObject.Find(ComponentHelper.CanvasKeyboard.InputField).GetComponent<RectTransform>() ?? throw new UnityException("InputField is null");
-
+        prompt = GameObject.Find(ComponentHelper.CanvasKeyboard.Prompt).GetComponent<RectTransform>() ?? throw new UnityException("Prompt is null");
+        inputBackdrop = GameObject.Find(ComponentHelper.CanvasKeyboard.InputLabel).GetComponent<RectTransform>() ?? throw new UnityException("InputLabel is null");
+        inputLabel = GameObject.Find(ComponentHelper.CanvasKeyboard.InputLabel).GetComponent<RectTransform>() ?? throw new UnityException("InputLabel is null");
         keysContainer = GameObject.Find(ComponentHelper.CanvasKeyboard.KeysContainer).GetComponent<RectTransform>() ?? throw new UnityException("KeysContainer is null");
-
+       
         //Row1
         row1 = GameObject.Find(ComponentHelper.CanvasKeyboard.Row1).GetComponent<RectTransform>() ?? throw new UnityException("Row1 is null");
         key1 = GameObject.Find(ComponentHelper.CanvasKeyboard.Key1).GetComponent<RectTransform>();
@@ -143,9 +149,15 @@ public class CanvasKeyboard : MonoBehaviour
         keySpace = GameObject.Find(ComponentHelper.CanvasKeyboard.KeySpace).GetComponent<RectTransform>();
         keyEnter = GameObject.Find(ComponentHelper.CanvasKeyboard.KeyEnter).GetComponent<RectTransform>() ?? throw new UnityException("KeyEnter is null");
 
-        ResizeUI();
+        confirmationContainer = GameObject.Find(ComponentHelper.CanvasKeyboard.ConfirmationContainer).GetComponent<RectTransform>() ?? throw new UnityException("ConfirmationContainer is null");
+        areYouSure = GameObject.Find(ComponentHelper.CanvasKeyboard.AreYouSure).GetComponent<RectTransform>() ?? throw new UnityException("AreYouSure is null");
+        buttonYes = GameObject.Find(ComponentHelper.CanvasKeyboard.ButtonYes).GetComponent<RectTransform>() ?? throw new UnityException("ButtonYes is null");
+        buttonNo = GameObject.Find(ComponentHelper.CanvasKeyboard.ButtonNo).GetComponent<RectTransform>() ?? throw new UnityException("buttonNo is null");
 
-        // Hook up the onClick events for each key
+
+
+
+        ResizeUI();
         BindAllKeys();
     }
 
@@ -154,8 +166,7 @@ public class CanvasKeyboard : MonoBehaviour
         // Screen dimension references
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
-
-       
+     
         float keySpacing = screenWidth * 0.0025f;
         float rowSpacing = screenWidth * 0.0025f;
 
@@ -167,11 +178,11 @@ public class CanvasKeyboard : MonoBehaviour
         panel.sizeDelta = new Vector2(screenWidth, screenHeight);
         panel.anchoredPosition = new Vector2(0, 0);
 
-        instructions.sizeDelta = new Vector2(keyWidth * guideRowKeyCount, keyHeight);
-        instructions.anchoredPosition = new Vector2(0, keyHeight * 3);
+        prompt.sizeDelta = new Vector2(keyWidth * guideRowKeyCount, keyHeight);
+        prompt.anchoredPosition = new Vector2(0, keyHeight * 3);
 
-        inputField.sizeDelta = new Vector2(guideRowWidth, keyHeight);
-        inputField.anchoredPosition = new Vector2(0, keyHeight * 2);
+        inputLabel.sizeDelta = new Vector2(guideRowWidth, keyHeight);
+        inputLabel.anchoredPosition = new Vector2(0, keyHeight * 2);
 
         keysContainer.anchorMin = new Vector2(0.5f, 0.5f);
         keysContainer.anchorMax = new Vector2(0.5f, 0.5f);
@@ -238,8 +249,6 @@ public class CanvasKeyboard : MonoBehaviour
 
     private void BindAllKeys()
     {
-        keyEnter.GetComponent<Button>().onClick.AddListener(OnSubmitClicked);
-
         //Row1: digits
         key1.GetComponent<Button>().onClick.AddListener(() => Append('1'));
         key2.GetComponent<Button>().onClick.AddListener(() => Append('2'));
@@ -288,7 +297,12 @@ public class CanvasKeyboard : MonoBehaviour
 
         //Row5: Space, Enter
         keySpace.GetComponent<Button>().onClick.AddListener(() => Append(' '));
+        keyEnter.GetComponent<Button>().onClick.AddListener(() => ShowConfirmation());
 
+
+        //Confirmation 
+        buttonYes.GetComponent<Button>().onClick.AddListener(() => Submit());
+        buttonNo.GetComponent<Button>().onClick.AddListener(() => HideConfirmation());
     }
 
     private void ToggleCapsLock()
@@ -331,25 +345,37 @@ public class CanvasKeyboard : MonoBehaviour
     void Append(char c)
     {
         var character = isCapsOn && char.IsLetter(c) ? char.ToUpper(c) : char.ToLower(c);
-        inputField.GetComponent<Textbox>().text += character;
+        inputLabel.GetComponent<Label>().text += character;
     }
 
     void Backspace()
     {
-        var text = inputField.GetComponent<Textbox>().text;
+        var text = inputLabel.GetComponent<Label>().text;
         if (text.Length > 0)
-            inputField.GetComponent<Textbox>().text = text.Substring(0, text.Length - 1);
+            inputLabel.GetComponent<Label>().text = text.Substring(0, text.Length - 1);
     }
 
-    void OnSubmitClicked()
+    void Submit()
     {
-        IsSubmitted = true;
-        Debug.Log("Input submitted: " + inputField.GetComponent<Textbox>().text);
+        var text = inputLabel.GetComponent<Label>().text;
+        Debug.Log(text);
+    }
+
+    void ShowConfirmation()
+    {
+        keysContainer.gameObject.SetActive(false);
+        confirmationContainer.gameObject.SetActive(true);
+    }
+
+    void HideConfirmation()
+    {
+        keysContainer.gameObject.SetActive(true);
+        confirmationContainer.gameObject.SetActive(false);
     }
 
     public string GetSanitizedInput()
     {
-        return SanitizeInput(inputField.GetComponent<Textbox>().text);
+        return SanitizeInput(inputLabel.GetComponent<Label>().text);
     }
 
     private string SanitizeInput(string input)
