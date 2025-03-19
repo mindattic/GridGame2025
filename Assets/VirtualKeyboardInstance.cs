@@ -5,7 +5,7 @@ using Label = TMPro.TextMeshProUGUI;
 using System.Linq;
 using System;
 
-public class CanvasKeyboard : MonoBehaviour
+public class VirtualKeyboardInstance : MonoBehaviour
 {
     private RectTransform canvas2D;
     private RectTransform panel;
@@ -89,7 +89,7 @@ public class CanvasKeyboard : MonoBehaviour
         'Z', 'X', 'C', 'V', 'B', 'N', 'M',
         'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
         'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l',
-        'z', 'x', 'c', 'v', 'b', 'n', 'm'
+        'z', 'x', 'c', 'v', 'b', 'n', 'm', ' '
     };
 
     //Properties
@@ -318,7 +318,7 @@ public class CanvasKeyboard : MonoBehaviour
         keyL.GetComponent<Button>().onClick.AddListener(() => Append('L'));
 
         //Row4: Z–M, 
-        keyCapsLock.GetComponent<Button>().onClick.AddListener(ToggleCapsLock);
+    
         keyZ.GetComponent<Button>().onClick.AddListener(() => Append('Z'));
         keyX.GetComponent<Button>().onClick.AddListener(() => Append('X'));
         keyC.GetComponent<Button>().onClick.AddListener(() => Append('C'));
@@ -326,10 +326,12 @@ public class CanvasKeyboard : MonoBehaviour
         keyB.GetComponent<Button>().onClick.AddListener(() => Append('B'));
         keyN.GetComponent<Button>().onClick.AddListener(() => Append('N'));
         keyM.GetComponent<Button>().onClick.AddListener(() => Append('M'));
-        keyBackspace.GetComponent<Button>().onClick.AddListener(() => Backspace());
+     
 
         //Row5: Shift, Space, Backspace, Enter
+        keyCapsLock.GetComponent<Button>().onClick.AddListener(ToggleCapsLock);
         keySpace.GetComponent<Button>().onClick.AddListener(() => Append(' '));
+        keyBackspace.GetComponent<Button>().onClick.AddListener(() => Backspace());
         keyEnter.GetComponent<Button>().onClick.AddListener(() => ToggleConfirmation());
 
         //Confirmation 

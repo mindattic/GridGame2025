@@ -1077,7 +1077,7 @@ public static class ResourceFolderHelper
 
 public static class VirtualKeyboard
 {
-    public static CanvasKeyboard Show(
+    public static VirtualKeyboardInstance Show(
         RectTransform canvas,
         string promptText,
         string confirmText = "Are you sure?",
@@ -1087,7 +1087,7 @@ public static class VirtualKeyboard
         Action<string> onSubmit = default)
     {
         //Load prefab from Resources
-        var prefabPath = $"{ResourceFolderHelper.Prefabs}/CanvasKeyboard";
+        var prefabPath = $"{ResourceFolderHelper.Prefabs}/VirtualKeyboard";
         var prefab = Resources.Load<GameObject>(prefabPath);
         if (prefab == null)
             throw new UnityException($"Prefab `{prefabPath}` not found");
@@ -1102,10 +1102,10 @@ public static class VirtualKeyboard
             throw new UnityException("Failed to instantiate prefab");
         go.name = $"Keyboard";
 
-        //Get the CanvasKeyboard instance
-        CanvasKeyboard instance = go.GetComponent<CanvasKeyboard>();
+        //Get the Virtual Keyboard instance
+        VirtualKeyboardInstance instance = go.GetComponent<VirtualKeyboardInstance>();
         if (instance == null)
-            throw new UnityException("CanvasKeyboard component not found on the game object");
+            throw new UnityException("VirtualKeyboardInstance component not found on the game object");
 
         //Assign properties
         instance.Assign(promptText, confirmText, initialText, minLength, maxLength, onSubmit);

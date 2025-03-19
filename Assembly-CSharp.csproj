@@ -89,7 +89,6 @@
     <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
     <Compile Include="Assets\Scripts\Managers\StageSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
-    <Compile Include="Assets\CanvasKeyboard.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
     <Compile Include="Assets\Scripts\Stores\VisualEffectStore.cs" />
@@ -98,6 +97,7 @@
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\GUI\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
+    <Compile Include="Assets\VirtualKeyboardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
