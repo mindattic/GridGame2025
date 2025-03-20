@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\Random.cs" />
+    <Compile Include="Assets\Scripts\Models\SpritePan.cs" />
     <Compile Include="Assets\Scripts\Models\Destination.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
@@ -225,6 +226,7 @@
     <None Include="Assets\Shader\ParticleAdd_UV 1.shader" />
     <None Include="Assets\Shader\Add_DisUV.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+    <None Include="Assets\Resources\Shaders\SpritePan.shader" />
     <None Include="Assets\Shader\SraeWaveAlphaBlended02.shader" />
     <None Include="Assets\Shader\MaskUV.shader" />
     <None Include="Assets\Shader\Particle AddSmooth.shader" />

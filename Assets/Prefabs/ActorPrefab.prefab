@@ -923,6 +923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8656072942626124404}
   - component: {fileID: 1955594638554881738}
+  - component: {fileID: 980785301762307535}
   m_Layer: 8
   m_Name: Thumbnail
   m_TagString: Untagged
@@ -968,7 +969,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: c1bc727c006ee1747a2d035b6ef7f78b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1000,6 +1001,28 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 1
   m_SpriteSortPoint: 0
+--- !u!114 &980785301762307535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2371143165001473200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caade8a2c399a1a46970ade46353d862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texture: {fileID: 0}
+  sprite: {fileID: 0}
+  extraRangeX: 44
+  extraRangeY: 44
+  panSpeed: 1
+  wobbleAmplitudeFactorX: 0.5
+  wobbleAmplitudeFactorY: 0.5
+  nextPauseInterval: 5
+  pauseDuration: 2
+  pauseRampDuration: 0.5
 --- !u!1 &2515449591533831471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1580,6 +1603,7 @@ MonoBehaviour:
     m_PreInfinity: 0
     m_PostInfinity: 0
     m_RotationOrder: 4
+  friendlyName: 
   character: 0
   previousLocation: {x: 0, y: 0}
   previousPosition: {x: 0, y: 0, z: 0}
@@ -1599,6 +1623,7 @@ MonoBehaviour:
     Agility: 0
     Speed: 0
     Luck: 0
+  thumbnail: {fileID: 0}
 --- !u!1 &4211350667117699209
 GameObject:
   m_ObjectHideFlags: 0

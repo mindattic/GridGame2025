@@ -61,12 +61,15 @@ public class ActorInstance : MonoBehaviour
         get => gameObject.transform.position;
         set => gameObject.transform.position = value;
     }
+
+
     // Accessor for the position of the "Thumbnail" child object.
     public Vector3 thumbnailPosition
     {
         get => gameObject.transform.GetChild("Thumbnail").gameObject.transform.position;
         set => gameObject.transform.GetChild("Thumbnail").gameObject.transform.position = value;
     }
+
     public Quaternion rotation
     {
         get => gameObject.transform.rotation;
@@ -147,7 +150,7 @@ public class ActorInstance : MonoBehaviour
     public ActorActionBar actionBar = new ActorActionBar();
     public ActorGlow glow = new ActorGlow();
     public ActorParallax parallax = new ActorParallax();
-    public ActorThumbnail thumbnail = new ActorThumbnail();
+    public ActorThumbnail thumbnail;
 
     // Methods for checking spatial relationships between this actor and others:
 
@@ -200,7 +203,8 @@ public class ActorInstance : MonoBehaviour
         actionBar.Initialize(this);
         glow.Initialize(this);
         parallax.Initialize(this);
-        thumbnail.Initialize(this);
+        thumbnail = this.transform.Find(ComponentHelper.Actor.Front.Thumbnail).GetComponent<ActorThumbnail>();
+  
 
         // Subscribe to event handlers to link movement and stage-related updates.
         onOverlapDetected += (location) => movement.OnOverlapDetected(location);
@@ -230,7 +234,7 @@ public class ActorInstance : MonoBehaviour
         previousPosition = position;
 
         // Generate the thumbnail for UI/display purposes.
-        thumbnail.Generate();
+        thumbnail.Initialize(this);
 
         // Randomly assign weapon type and attributes.
         // TODO: Equip actor at stage manager load based on save file: party.json

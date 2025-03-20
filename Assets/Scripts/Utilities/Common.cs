@@ -24,21 +24,61 @@ public static class SceneHelper
 
 public static class ComponentHelper
 {
+    public static class Actor
+    {
+        public static class Front
+        {
+            public const string Root = "Front";
+            public const string Opaque = Root + "/Opaque";
+            public const string Quality = Root + "/Quality";
+            public const string Glow = Root + "/Glow";
+            public const string Parallax = Root + "/Parallax";
+            public const string Thumbnail = Root + "/Thumbnail";
+            public const string Frame = Root + "/Frame";
+            public const string StatusIcon = Root + "/StatusIcon";
+            public const string NameTagText = Root + "/NameTagText";
+            public const string WeaponIcon = Root + "/WeaponIcon";
+
+            public static class HealthBar
+            {
+                public const string Root = Front.Root + "/HealthBar";
+                public const string Back = Root + "/HealthBarBack";
+                public const string Drain = Root + "/HealthBarDrain";
+                public const string Fill = Root + "/HealthBarFill";
+                public const string Text = Root + "/HealthBarText";
+            }
+
+            public static class ActionBar
+            {
+                public const string Root = Front.Root + "/ActionBar";
+                public const string Mask = Root + "/Mask";
+                public const string RadialBack = Root + "/RadialBack";
+                public const string RadialFill = Root + "/RadialFill";
+                public const string RadialText = Root + "/RadialText";
+                public const string TurnDelayText = Root + "/TurnDelayText";
+            }
+        }
+
+        // Sibling objects (not under Front)
+        public const string Armor = "Armor";
+        public const string Back = "Back";
+    }
+
     public static class Credits
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Fade = "Canvas2D/Fade";
-        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
+        public const string Content = "Canvas2D/ScrollView/Viewport/Content";
     }
 
     public static class Game
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Canvas3D = "Canvas3D";
-        public static string Fade = "Canvas2D/Fade";
-        public static string PauseButton = "Canvas2D/PauseButton";
-        public static string PauseMenu = "Canvas2D/PauseMenu";
-        public static string WaveAnnouncement = "Canvas2D/WaveAnnouncement";
+        public const string Canvas2D = "Canvas2D";
+        public const string Canvas3D = "Canvas3D";
+        public const string Fade = "Canvas2D/Fade";
+        public const string PauseButton = "Canvas2D/PauseButton";
+        public const string PauseMenu = "Canvas2D/PauseMenu";
+        public const string WaveAnnouncement = "Canvas2D/WaveAnnouncement";
         public const string CanvasOverlay = "Canvas2D/CanvasOverlay";
         public const string Card = "Canvas2D/Card";
         public const string TimerBar = "Canvas2D/TimerBar";
@@ -51,145 +91,134 @@ public static class ComponentHelper
             public const string BoardOverlay = "BoardOverlay";
             public const string FocusIndicator = "FocusIndicator";
         }
-
     }
 
     public static class Overworld
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Header = "Canvas2D/Header";
-        public static string ScrollView = "Canvas2D/ScrollView";
-        public static string Viewport = "Canvas2D/ScrollView/Viewport";
-        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public static string Map = "Canvas2D/ScrollView/Viewport/Content/Map";
-        public static string Player = "Canvas2D/ScrollView/Viewport/Content/Player";
-        public static string Fade = "Canvas2D/Fade";
+        public const string Canvas2D = "Canvas2D";
+        public const string Header = "Canvas2D/Header";
+        public const string ScrollView = "Canvas2D/ScrollView";
+        public const string Viewport = "Canvas2D/ScrollView/Viewport";
+        public const string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public const string Map = "Canvas2D/ScrollView/Viewport/Content/Map";
+        public const string Player = "Canvas2D/ScrollView/Viewport/Content/Player";
+        public const string Fade = "Canvas2D/Fade";
     }
 
     public static class ProfileSelect
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Header = "Canvas2D/Header";
-        public static string ScrollView = "Canvas2D/ScrollView";
-        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public static string Fade = "Canvas2D/Fade";
+        public const string Canvas2D = "Canvas2D";
+        public const string Header = "Canvas2D/Header";
+        public const string ScrollView = "Canvas2D/ScrollView";
+        public const string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public const string Fade = "Canvas2D/Fade";
     }
 
     public static class Splash
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Fade = "Canvas2D/Fade";
+        public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
     }
-
 
     public static class Settings
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Header = "Canvas2D/Header";
-        public static string ScrollView = "Canvas2D/ScrollView";
-        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public static string Fade = "Canvas2D/Fade";
-        public static string Credits = "Canvas2D/ScrollView/Viewport/Content/Credits";
-        public static string ProfileManager = "ProfileManager";
+        public const string Canvas2D = "Canvas2D";
+        public const string Header = "Canvas2D/Header";
+        public const string ScrollView = "Canvas2D/ScrollView";
+        public const string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public const string Fade = "Canvas2D/Fade";
+        public const string Credits = "Canvas2D/ScrollView/Viewport/Content/Credits";
+        public const string ProfileManager = "ProfileManager";
     }
 
     public static class StageSelect
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Header = "Canvas2D/Header";
-        public static string ScrollView = "Canvas2D/ScrollView";
-        public static string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public static string Fade = "Canvas2D/Fade";
+        public const string Canvas2D = "Canvas2D";
+        public const string Header = "Canvas2D/Header";
+        public const string ScrollView = "Canvas2D/ScrollView";
+        public const string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public const string Fade = "Canvas2D/Fade";
     }
 
     public static class Title
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Fade = "Canvas2D/Fade";
-        public static string MainMenu = "Canvas2D/MainMenu";
-        public static string ChangeProfileButton = "Canvas2D/ChangeProfileButton";
-        public static string ChangeProfileButtonLabel = "Canvas2D/ChangeProfileButton/Label";
-
+        public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
+        public const string MainMenu = "Canvas2D/MainMenu";
+        public const string ChangeProfileButton = "Canvas2D/ChangeProfileButton";
+        public const string ChangeProfileButtonLabel = "Canvas2D/ChangeProfileButton/Label";
     }
 
-    public static class CanvasKeyboard
+    public static class VirtualKeyboard
     {
-        public static string Canvas2D = "Canvas2D";
-        public static string Keyboard = "Canvas2D/Keyboard";
-        public static string Panel = $"{Keyboard}/Panel";
-        public static string Prompt = $"{Panel}/Prompt";
-        public static string InputBackdrop = $"{Panel}/InputBackdrop";
-        public static string InputLabel = $"{Panel}/InputLabel";
-        public static string KeysContainer = $"{Panel}/KeysContainer";
-        
+        public const string Canvas2D = "Canvas2D";
+        public const string Keyboard = "Canvas2D/Keyboard";
+        public const string Panel = Keyboard + "/Panel";
+        public const string Prompt = Panel + "/Prompt";
+        public const string InputBackdrop = Panel + "/InputBackdrop";
+        public const string InputLabel = Panel + "/InputLabel";
+        public const string KeysContainer = Panel + "/KeysContainer";
+
         // Row 1: digits
-        public static string Row1 = $"{KeysContainer}/Row1";
-        public static string Key1 = $"{Row1}/Key1";
-        public static string Key2 = $"{Row1}/Key2";
-        public static string Key3 = $"{Row1}/Key3";
-        public static string Key4 = $"{Row1}/Key4";
-        public static string Key5 = $"{Row1}/Key5";
-        public static string Key6 = $"{Row1}/Key6";
-        public static string Key7 = $"{Row1}/Key7";
-        public static string Key8 = $"{Row1}/Key8";
-        public static string Key9 = $"{Row1}/Key9";
-        public static string Key0 = $"{Row1}/Key0";
-       
+        public const string Row1 = KeysContainer + "/Row1";
+        public const string Key1 = Row1 + "/Key1";
+        public const string Key2 = Row1 + "/Key2";
+        public const string Key3 = Row1 + "/Key3";
+        public const string Key4 = Row1 + "/Key4";
+        public const string Key5 = Row1 + "/Key5";
+        public const string Key6 = Row1 + "/Key6";
+        public const string Key7 = Row1 + "/Key7";
+        public const string Key8 = Row1 + "/Key8";
+        public const string Key9 = Row1 + "/Key9";
+        public const string Key0 = Row1 + "/Key0";
 
         // Row 2: Q–P
-        public static string Row2 = $"{KeysContainer}/Row2";
-        public static string KeyQ = $"{Row2}/KeyQ";
-        public static string KeyW = $"{Row2}/KeyW";
-        public static string KeyE = $"{Row2}/KeyE";
-        public static string KeyR = $"{Row2}/KeyR";
-        public static string KeyT = $"{Row2}/KeyT";
-        public static string KeyY = $"{Row2}/KeyY";
-        public static string KeyU = $"{Row2}/KeyU";
-        public static string KeyI = $"{Row2}/KeyI";
-        public static string KeyO = $"{Row2}/KeyO";
-        public static string KeyP = $"{Row2}/KeyP";
+        public const string Row2 = KeysContainer + "/Row2";
+        public const string KeyQ = Row2 + "/KeyQ";
+        public const string KeyW = Row2 + "/KeyW";
+        public const string KeyE = Row2 + "/KeyE";
+        public const string KeyR = Row2 + "/KeyR";
+        public const string KeyT = Row2 + "/KeyT";
+        public const string KeyY = Row2 + "/KeyY";
+        public const string KeyU = Row2 + "/KeyU";
+        public const string KeyI = Row2 + "/KeyI";
+        public const string KeyO = Row2 + "/KeyO";
+        public const string KeyP = Row2 + "/KeyP";
 
         // Row 3: A–L
-        public static string Row3 = $"{KeysContainer}/Row3";
-        public static string KeyA = $"{Row3}/KeyA";
-        public static string KeyS = $"{Row3}/KeyS";
-        public static string KeyD = $"{Row3}/KeyD";
-        public static string KeyF = $"{Row3}/KeyF";
-        public static string KeyG = $"{Row3}/KeyG";
-        public static string KeyH = $"{Row3}/KeyH";
-        public static string KeyJ = $"{Row3}/KeyJ";
-        public static string KeyK = $"{Row3}/KeyK";
-        public static string KeyL = $"{Row3}/KeyL";
+        public const string Row3 = KeysContainer + "/Row3";
+        public const string KeyA = Row3 + "/KeyA";
+        public const string KeyS = Row3 + "/KeyS";
+        public const string KeyD = Row3 + "/KeyD";
+        public const string KeyF = Row3 + "/KeyF";
+        public const string KeyG = Row3 + "/KeyG";
+        public const string KeyH = Row3 + "/KeyH";
+        public const string KeyJ = Row3 + "/KeyJ";
+        public const string KeyK = Row3 + "/KeyK";
+        public const string KeyL = Row3 + "/KeyL";
 
         // Row 4: Z–M
-        public static string Row4 = $"{KeysContainer}/Row4"; 
-        public static string KeyZ = $"{Row4}/KeyZ";
-        public static string KeyX = $"{Row4}/KeyX";
-        public static string KeyC = $"{Row4}/KeyC";
-        public static string KeyV = $"{Row4}/KeyV";
-        public static string KeyB = $"{Row4}/KeyB";
-        public static string KeyN = $"{Row4}/KeyN";
-        public static string KeyM = $"{Row4}/KeyM";
-      
+        public const string Row4 = KeysContainer + "/Row4";
+        public const string KeyZ = Row4 + "/KeyZ";
+        public const string KeyX = Row4 + "/KeyX";
+        public const string KeyC = Row4 + "/KeyC";
+        public const string KeyV = Row4 + "/KeyV";
+        public const string KeyB = Row4 + "/KeyB";
+        public const string KeyN = Row4 + "/KeyN";
+        public const string KeyM = Row4 + "/KeyM";
 
-        // Row 5: CapsLock, Spacebar, Backspace
-        public static string Row5 = $"{KeysContainer}/Row5";
-        public static string KeyCapsLock = $"{Row5}/KeyCapsLock";
-        public static string KeySpace = $"{Row5}/KeySpace";
-        public static string KeyBackspace = $"{Row5}/KeyBackspace";
-        public static string KeyEnter = $"{Row5}/KeyEnter";
+        // Row 5: CapsLock, Spacebar, Backspace, Enter
+        public const string Row5 = KeysContainer + "/Row5";
+        public const string KeyCapsLock = Row5 + "/KeyCapsLock";
+        public const string KeySpace = Row5 + "/KeySpace";
+        public const string KeyBackspace = Row5 + "/KeyBackspace";
+        public const string KeyEnter = Row5 + "/KeyEnter";
 
-
-
-        public static string ConfirmationContainer = $"{Panel}/ConfirmationContainer";
-        public static string Confirmation = $"{ConfirmationContainer}/Confirmation";
-        public static string ButtonYes = $"{ConfirmationContainer}/ButtonYes";
-        public static string ButtonNo = $"{ConfirmationContainer}/ButtonNo";
-
-
+        public const string ConfirmationContainer = Panel + "/ConfirmationContainer";
+        public const string Confirmation = ConfirmationContainer + "/Confirmation";
+        public const string ButtonYes = ConfirmationContainer + "/ButtonYes";
+        public const string ButtonNo = ConfirmationContainer + "/ButtonNo";
     }
-
-
 }
 
 public static class Constants
@@ -199,7 +228,7 @@ public static class Constants
     public const string Resources = "Resources";
     public const string Canvas2D = "Canvas2D";
     public const string Art = "Art";
- 
+
 
     //Percent
     public const float percent10 = 0.1f;

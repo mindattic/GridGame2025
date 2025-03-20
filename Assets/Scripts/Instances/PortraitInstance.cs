@@ -70,57 +70,56 @@ public class PortraitInstance : MonoBehaviour
 
     public IEnumerator SlideIn()
     {
-        // Calculate the start and destination positions.
-        Vector3 startPos = position;
-        Vector3 destination = Vector3.zero;
+        Vector3 destination = new Vector3();
+
         switch (direction)
         {
             case Direction.North:
-                startPos = new Vector3(1, -10, 1);
+                this.position = new Vector3(1, -10, 1);
                 destination = new Vector3(1, 10, 1);
                 break;
+
             case Direction.East:
-                startPos = new Vector3(-10, 1, 1);
+                this.position = new Vector3(-10, 1, 1);
                 destination = new Vector3(10, 1, 1);
                 break;
+
             case Direction.South:
-                startPos = new Vector3(-1, 10, 1);
+                this.position = new Vector3(-1, 10, 1);
                 destination = new Vector3(-1, -10, 1);
                 break;
+
             case Direction.West:
-                startPos = new Vector3(10, -1, 1);
+                this.position = new Vector3(10, -1, 1);
                 destination = new Vector3(-10, -1, 1);
                 break;
         }
 
-        // Set the initial position.
-        position = startPos;
 
-        // Duration of the slide (in seconds)
-        float duration = slide.length; // or set a fixed value like 1f
-        float elapsed = 0f;
-
-        // Animate over the duration using the AnimationCurve to smooth the interpolation.
-        while (elapsed < duration)
+        while (!position.Equals(destination))
         {
-            // Normalized progress between 0 and 1.
-            float t = elapsed / duration;
-            // Evaluate t on the curve.
-            float curveT = slide.Evaluate(t);
-            // Lerp between start and destination.
-            position = Vector3.Lerp(startPos, destination, curveT);
+            switch (direction)
+            {
+                case Direction.North:
+                case Direction.South:
+                    this.position = new Vector3(
+                        destination.x,
+                        destination.y * slide.Evaluate((Time.time - startTime) % slide.length),
+                        destination.z);
+                    break;
 
-            elapsed += Time.deltaTime;
-            yield return null;
+                case Direction.East:
+                case Direction.West:
+                    this.position = new Vector3(
+                          destination.x * slide.Evaluate((Time.time - startTime) % slide.length),
+                          destination.y,
+                          destination.z);
+                    break;
+            }
+
+            yield return Wait.OneTick();
         }
 
-        // Ensure we reach the destination.
-        position = destination;
-        slideFinished = true;
-
-        // Optionally, delay a frame before destroying if you need to see the final position.
-        yield return null;
-        Destroy(this.gameObject);
     }
 
 
