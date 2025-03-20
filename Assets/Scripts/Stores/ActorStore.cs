@@ -53,7 +53,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 9, Vitality = 6, Agility = 4, Speed = 5, Luck = 5
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = -60, OffsetY = -80, Width = 256, Height = 256 },
+                ThumbnailSettings = new ThumbnailSettings { OffsetX = 70, OffsetY = 0, Width = 256, Height = 256 },
                 Details = new ActorDetails
                 {
                     Description = "A warrior driven by rage.",
