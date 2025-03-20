@@ -10,18 +10,25 @@ namespace Assets.Scripts.Models
     public class ThumbnailSettings
     {
         //Fields
-        public int Width;
-        public int Height;
         public int OffsetX;
         public int OffsetY;
-
+        public int Width;
+        public int Height;
+      
         public ThumbnailSettings() { }
 
+        public ThumbnailSettings(int offsetX, int offsetY, int width, int height) {
+            OffsetX = offsetX;
+            OffsetY = offsetY;
+            Width = width;
+            Height = height;
+        }
+
         public ThumbnailSettings(ThumbnailSettings other) {
-            Width = other.Width;
-            Height = other.Height;
             OffsetX = other.OffsetX;
             OffsetY = other.OffsetY;
+            Width = other.Width;
+            Height = other.Height;
         }
     }
 }

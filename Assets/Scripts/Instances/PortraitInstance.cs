@@ -1,7 +1,9 @@
 using Game.Behaviors.Actor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static ComponentHelper.Game;
 
 public class PortraitInstance : MonoBehaviour
 {
@@ -64,60 +66,62 @@ public class PortraitInstance : MonoBehaviour
         screenHalfWidth = screenHalfHeight * Camera.main.aspect;
     }
 
-    public IEnumerator Spawn()
+    public bool slideFinished = false;
+
+    public IEnumerator SlideIn()
     {
-        if (spriteRenderer == null)
-            spriteRenderer = GetComponent<SpriteRenderer>();
-
-        Vector2 spriteSize = spriteRenderer.bounds.size; // Get sprite's world size
-        Vector3 startPos = Vector3.zero;
-        Vector3 endPos = Vector3.zero;
-
-        // Calculate spawn positions (off-screen) and destinations (on-screen)
+        // Calculate the start and destination positions.
+        Vector3 startPos = position;
+        Vector3 destination = Vector3.zero;
         switch (direction)
         {
             case Direction.North:
-                startPos = new Vector3(0, -(screenHalfHeight + spriteSize.y), 1);
-                endPos = new Vector3(0, screenHalfHeight - spriteSize.y, 1);
+                startPos = new Vector3(1, -10, 1);
+                destination = new Vector3(1, 10, 1);
                 break;
-
             case Direction.East:
-                startPos = new Vector3(-(screenHalfWidth + spriteSize.x), 0, 1);
-                endPos = new Vector3(screenHalfWidth - spriteSize.x, 0, 1);
+                startPos = new Vector3(-10, 1, 1);
+                destination = new Vector3(10, 1, 1);
                 break;
-
             case Direction.South:
-                startPos = new Vector3(0, screenHalfHeight + spriteSize.y, 1);
-                endPos = new Vector3(0, -(screenHalfHeight - spriteSize.y), 1);
+                startPos = new Vector3(-1, 10, 1);
+                destination = new Vector3(-1, -10, 1);
                 break;
-
             case Direction.West:
-                startPos = new Vector3(screenHalfWidth + spriteSize.x, 0, 1);
-                endPos = new Vector3(-(screenHalfWidth - spriteSize.x), 0, 1);
+                startPos = new Vector3(10, -1, 1);
+                destination = new Vector3(-10, -1, 1);
                 break;
         }
 
-        // Set starting position
-        this.position = startPos;
+        // Set the initial position.
+        position = startPos;
 
-        // Slide animation using the curve
-        float elapsedTime = 0f;
-        float duration = slide.keys[slide.length - 1].time; // Get animation curve duration
+        // Duration of the slide (in seconds)
+        float duration = slide.length; // or set a fixed value like 1f
+        float elapsed = 0f;
 
-        while (elapsedTime < duration)
+        // Animate over the duration using the AnimationCurve to smooth the interpolation.
+        while (elapsed < duration)
         {
-            float progress = slide.Evaluate(elapsedTime / duration); // Get curve value
-            this.position = Vector3.Lerp(startPos, endPos, progress);
+            // Normalized progress between 0 and 1.
+            float t = elapsed / duration;
+            // Evaluate t on the curve.
+            float curveT = slide.Evaluate(t);
+            // Lerp between start and destination.
+            position = Vector3.Lerp(startPos, destination, curveT);
 
-            elapsedTime += Time.deltaTime;
-            yield return null; // Wait for the next frame
+            elapsed += Time.deltaTime;
+            yield return null;
         }
 
-        this.position = endPos; // Ensure final position is exact
+        // Ensure we reach the destination.
+        position = destination;
+        slideFinished = true;
 
-        Destroy(this.gameObject); // Cleanup after animation
+        // Optionally, delay a frame before destroying if you need to see the final position.
+        yield return null;
+        Destroy(this.gameObject);
     }
-
 
 
     public IEnumerator Dissolve()

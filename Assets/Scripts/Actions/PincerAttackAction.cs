@@ -30,7 +30,6 @@ namespace Assets.Scripts.Models
             if (pair.results == null || !pair.results.Any())
                 yield break;
 
-            //TODO: Create a consolidated model of PincerAttackPair and ActorPair
             var actorPair = new ActorPair(pair.attacker1, pair.attacker2);
             yield return portraitManager.Play(actorPair);
 

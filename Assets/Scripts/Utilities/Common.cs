@@ -513,7 +513,7 @@ public static class Intermission
 
         public static class Portrait
         {
-            public static float SlideIn = Interval.TwoSeconds;
+            public static float SlideIn = 0;
         }
 
         public static class HealthBar

@@ -20,31 +20,38 @@ public class ActorThumbnail
         this.instance = parentInstance;
     }
 
-    public void Generate()
+    public void Generate(ThumbnailSettings other = null)
     {
-        //Get the full texture from the resource manager
+        // Get the full texture from the resource manager.
         texture = resourceManager.Portrait(instance.character.ToString()).Value;
 
-        //Retrieve thumnail settings from entity
-        ThumbnailSettings settings = ActorStore.instance.GetThumbnailSetting(instance.character);
+        // Retrieve thumbnail settings from entity.
+        ThumbnailSettings settings;
+        if (other == null)
+            settings = ActorStore.instance.GetThumbnailSetting(instance.character);
+        else
+            settings = new ThumbnailSettings(other);
 
+        // Calculate an initial centered offset.
         Vector2Int offset = new Vector2Int();
         offset.x = (texture.width - settings.Width) / 2;
-        offset.y = texture.height - settings.Height;
+        offset.y = (texture.height - settings.Height) / 2;
+
+        // Apply the user-defined shift.
         offset.Shift(settings.OffsetX, settings.OffsetY);
 
-        //Clamp values to ensure the Rect doesn't go out of bounds
+        // Clamp values to ensure the Rect doesn't go out of bounds.
         offset.x = Mathf.Clamp(offset.x, 0, texture.width - settings.Width);
         offset.y = Mathf.Clamp(offset.y, 0, texture.height - settings.Height);
 
-        //Define the portion to cut out
+        // Define the portion to cut out.
         Rect rect = new Rect(offset.x, offset.y, settings.Width, settings.Height);
 
-        //Create a sprite from the selected portion of the texture
+        // Create a sprite from the selected portion of the texture.
         var pivot = new Vector2(0.5f, 0.5f);
         sprite = Sprite.Create(texture, rect, pivot, 100f);
 
-        //Select the sprite to the SpriteRenderer
+        // Select the sprite for the SpriteRenderer.
         render.thumbnail.sprite = sprite;
     }
 

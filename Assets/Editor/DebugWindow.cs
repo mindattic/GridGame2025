@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Store;
+﻿using Assets.Scripts.Models;
+using Assets.Scripts.Store;
 using Game.Behaviors;
 using System;
 using System.Linq;
@@ -209,21 +210,29 @@ public class DebugWindow : EditorWindow
         }
     }
 
-    // OnGUI is called to draw the UI of the debug window.
     private void OnGUI()
     {
-        // Abort if not playing or if any essential game system references are missing.
-        if (!EditorApplication.isPlaying
-            || gameManager == null
-            || debugManager == null
-            || consoleManager == null
-            || turnManager == null
-            || stageManager == null
-            || logManager == null
-            || selectedPlayerManager == null)
+        // If not playing or missing essential references, exit.
+        if (!EditorApplication.isPlaying ||
+            gameManager == null ||
+            debugManager == null ||
+            consoleManager == null ||
+            turnManager == null ||
+            stageManager == null ||
+            logManager == null ||
+            selectedPlayerManager == null)
             return;
 
-        // Begin a vertical layout for the entire debug window UI.
+        // Wrap all content inside a scroll view.
+        scrollPosition = GUILayout.BeginScrollView(
+            scrollPosition,
+            /* alwaysShowHorizontal */ false,
+            /* alwaysShowVertical */ false,
+            GUILayout.Width(position.width),
+            GUILayout.Height(position.height)
+        );
+
+        // Begin a vertical layout for the entire Debug Window UI.
         GUILayout.BeginVertical();
 
         // Render individual UI sections.
@@ -235,17 +244,18 @@ public class DebugWindow : EditorWindow
         RenderDebugOptionsDropdown();
         RenderVFXDropdown();
         RenderLevelControls();
-        // RenderDataControls() is commented out; uncomment if needed.
+        RenderThumbnailSettings();
         RenderSpawnControls();
         RenderActorStats();
-        RenderLog();
 
         GUILayout.EndVertical();
+        GUILayout.EndScrollView();
     }
 
     // RenderKeyboard draws UI buttons that simulate keyboard arrow keys.
     private void RenderKeyboard()
     {
+        GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.Label("Keyboard");
         GUILayout.EndHorizontal();
@@ -276,6 +286,7 @@ public class DebugWindow : EditorWindow
             OnKeyRight();
 
         GUILayout.EndHorizontal();
+        GUILayout.EndVertical();
 
         GUILayout.Space(10);
         Repaint(); // Force a UI update.
@@ -315,10 +326,10 @@ public class DebugWindow : EditorWindow
     private void RenderStats()
     {
         GUILayout.BeginHorizontal();
-        //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.width * 0.25f));
+        //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailWidth * 0.25f));
         GUILayout.Label($"Turn: {(turnManager.isPlayerTurn ? "Player" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Phase: {turnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
-        //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.width * 0.25f));
+        //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailWidth * 0.25f));
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
@@ -428,15 +439,61 @@ public class DebugWindow : EditorWindow
         if (GUILayout.Button("Reload", GUILayout.Width(Screen.width * Constants.percent33)))
             OnReloadStageClick();
 
-        //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.width * Constants.percent33)))
+        //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.thumbnailWidth * Constants.percent33)))
         //    OnPreviousStageClick();
 
-        //if (GUILayout.Button("Next >", GUILayout.Width(Screen.width * Constants.percent33)))
+        //if (GUILayout.Button("Next >", GUILayout.Width(Screen.thumbnailWidth * Constants.percent33)))
         //    OnNextStageClick();
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
+
+    // Class-level fields
+    private string thumbnailOffsetX = "0";
+    private string thumbnailOffsetY = "0";
+    private string thumbnailWidth = "256";
+    private string thumbnailHeight = "256";
+
+    private void RenderThumbnailSettings()
+    {
+        // First horizontal row: the header label.
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Thumbnail Settings", GUILayout.Width(Screen.width));
+        GUILayout.EndHorizontal();
+
+        // Second horizontal row: the controls.
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("X:", GUILayout.Width(20));
+        thumbnailOffsetX = GUILayout.TextField(thumbnailOffsetX, GUILayout.Width(64));
+        GUILayout.Label("Y:", GUILayout.Width(20));
+        thumbnailOffsetY = GUILayout.TextField(thumbnailOffsetY, GUILayout.Width(64));
+        GUILayout.Label("Width:", GUILayout.Width(50));
+        thumbnailWidth = GUILayout.TextField(thumbnailWidth, GUILayout.Width(64));
+        GUILayout.Label("Height:", GUILayout.Width(50));
+        thumbnailHeight = GUILayout.TextField(thumbnailHeight, GUILayout.Width(64));
+
+        // Generate button.
+        if (GUILayout.Button("Generate", GUILayout.Width(64)))
+        {
+            // Try parsing the inputs to integers.
+            if (int.TryParse(thumbnailOffsetX, out int x) &&
+                int.TryParse(thumbnailOffsetY, out int y) &&
+                int.TryParse(thumbnailWidth, out int w) &&
+                int.TryParse(thumbnailHeight, out int h))
+            {
+                var settings = new ThumbnailSettings(x, y, w, h);
+                GameManager.instance.focusedActor.thumbnail.Generate(settings);
+            }
+            else
+            {
+                Debug.Log("Invalid input! Please enter valid integer values.");
+            }
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10);
+    }
+
 
     // RenderSpawnControls renders buttons to spawn various enemy types.
     private void RenderSpawnControls()
@@ -498,39 +555,6 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    // RenderLog displays a scrollable log area with the log text from LogManager.
-    private void RenderLog()
-    {
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Log", GUILayout.Width(Screen.width));
-        GUILayout.EndHorizontal();
-
-        // Set up background color and style for the log.
-        var backgroundColor = new Color(0.5f, 0.15f, 0.15f);
-        var style = new GUIStyle { richText = true, padding = new RectOffset(10, 10, 10, 10) };
-
-        // Calculate the height for the log area.
-        float logHeight = position.height - 170;
-        Rect backgroundRect = new Rect(0, GUILayoutUtility.GetLastRect().yMax, Screen.width, logHeight);
-
-        // Draw the background box.
-        Color originalColor = GUI.color;
-        GUI.color = backgroundColor;
-        GUI.Box(backgroundRect, GUIContent.none);
-        GUI.color = originalColor;
-
-        // Create a scrollable area for the log.
-        scrollPosition = GUILayout.BeginScrollView(
-            scrollPosition,
-            GUILayout.Height(logHeight),
-            GUILayout.ExpandHeight(true));
-
-        // Display the log text.
-        GUILayout.Label(logManager.text, style);
-
-        GUILayout.EndScrollView();
-        GUILayout.Space(10);
-    }
 
     // OnGameSpeedChange adjusts the game speed based on the selected option.
     private void OnGameSpeedChange()

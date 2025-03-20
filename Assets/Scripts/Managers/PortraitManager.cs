@@ -20,7 +20,13 @@ public class PortraitManager : MonoBehaviour
     public ActorInstance actor;
     public int sortingOrder;
 
-    public void Spawn(ActorInstance actor, Direction direction)
+
+    public void TriggerSlideIn(ActorInstance actor, Direction direction)
+    {
+        StartCoroutine(SlideIn(actor, direction));
+    }
+
+    public IEnumerator SlideIn(ActorInstance actor, Direction direction)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<PortraitInstance>();
@@ -34,8 +40,9 @@ public class PortraitManager : MonoBehaviour
         instance.direction = direction;
         instance.startTime = Time.time;
 
-        StartCoroutine(instance.Spawn());
+        yield return instance.SlideIn();
     }
+
 
     public void TriggerDissolve()
     {
@@ -60,23 +67,25 @@ public class PortraitManager : MonoBehaviour
         StartCoroutine(instance.Dissolve());
     }
 
-
     public IEnumerator Play(ActorPair actorPair)
     {
         sortingOrder = SortingOrder.Max;
-
         yield return Wait.For(Intermission.Before.Player.Attack);
 
         audioManager.Play("Portrait");
 
         var (direction1, direction2) = GetDirection(actorPair);
-        Spawn(actorPair.actor1, direction1);
-        Spawn(actorPair.actor2, direction2);
+
+        // Start both slide animations concurrently and wait for both to finish.
+        yield return CoroutineHelper.WaitForAll(this,
+            SlideIn(actorPair.actor1, direction1),
+            SlideIn(actorPair.actor2, direction2)
+        );
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
-
         sortingOrder = SortingOrder.Max;
     }
+
 
 
     private (Direction, Direction) GetDirection(ActorPair actorPair)
