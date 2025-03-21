@@ -4,25 +4,25 @@
     public class ThumbnailSettings
     {
         //Fields
-        public int OffsetX;
-        public int OffsetY;
+        public int X;
+        public int Y;
         public int Width;
         public int Height;
 
         public ThumbnailSettings() { }
 
-        public ThumbnailSettings(int offsetX, int offsetY, int width, int height)
+        public ThumbnailSettings(int x, int y, int width, int height)
         {
-            OffsetX = offsetX;
-            OffsetY = offsetY;
+            X = x;
+            Y = y;
             Width = width;
             Height = height;
         }
 
         public ThumbnailSettings(ThumbnailSettings other)
         {
-            OffsetX = other.OffsetX;
-            OffsetY = other.OffsetY;
+            X = other.X;
+            Y = other.Y;
             Width = other.Width;
             Height = other.Height;
         }

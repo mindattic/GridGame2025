@@ -53,7 +53,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 9, Vitality = 6, Agility = 4, Speed = 5, Luck = 5
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = 0, OffsetY = 350, Width = 300, Height = 300 },
+                ThumbnailSettings = new ThumbnailSettings { X = 350, Y = 120, Width = 300, Height = 300 },
                 Details = new ActorDetails
                 {
                     Description = "A warrior driven by rage.",
@@ -72,7 +72,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 2, Vitality = 4, Agility = 1, Speed = 1, Luck = 6
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = 0, OffsetY = 512, Width = 1024, Height = 1024 },
+                ThumbnailSettings = new ThumbnailSettings { X = 200, Y = 380, Width = 512, Height = 512 },
                 Details = new ActorDetails
                 {
                     Description = "A warrior driven by rage.",
@@ -91,7 +91,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 2, Vitality = 5, Agility = 3, Speed = 3, Luck = 9
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = 0, OffsetY = 512, Width = 326, Height = 316 },
+                ThumbnailSettings = new ThumbnailSettings { X = 300, Y = 150, Width = 256, Height = 256 },
                 Details = new ActorDetails
                 {
                     Description = "An adherent to the Lightbearer Orthodoxy.",
@@ -110,7 +110,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 4, Vitality = 4, Agility = 10, Speed = 10, Luck = 5
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = 0, OffsetY = 512, Width = 196, Height = 196 },
+                ThumbnailSettings = new ThumbnailSettings { X = 330, Y = 110, Width = 196, Height = 196 },
                 Details = new ActorDetails
                 {
                     Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
@@ -129,7 +129,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 6, Vitality = 8, Agility = 3, Speed = 3, Luck = 6
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = 20, OffsetY = 512, Width = 196, Height = 196 },
+                ThumbnailSettings = new ThumbnailSettings { X = 350, Y = 200, Width = 128, Height = 128 },
                 Details = new ActorDetails
                 {
                     Description = "A holy knight honor bound to defend the Lightbearer Orthodoxy.",
@@ -148,7 +148,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 4, Vitality = 2, Agility = 1, Speed = 4, Luck = 2
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = -100, OffsetY = 100, Width = 512, Height = 512 },
+                ThumbnailSettings = new ThumbnailSettings { X = 200, Y = 380, Width = 256, Height = 256 },
                 Details = new ActorDetails
                 {
                     Description = "A poisonous insectile predator.",
@@ -167,7 +167,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 1, Vitality = 1, Agility = 1, Speed = 1, Luck = 1
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = -150, OffsetY = 0, Width = 512, Height = 512 },
+                ThumbnailSettings = new ThumbnailSettings { X = 100, Y = 300, Width = 512, Height = 512 },
                 Details = new ActorDetails
                 {
                     Description = "A weak and squishy creature.",
@@ -186,7 +186,7 @@ public class ActorStore : ScriptableObject
                     PreviousAP = 0, AP = 0, MaxAP = 100,
                     Strength = 4, Vitality = 10, Agility = 1, Speed = 1, Luck = 5
                 },
-                ThumbnailSettings = new ThumbnailSettings { OffsetX = -150, OffsetY = 300, Width = 196, Height = 196 },
+                ThumbnailSettings = new ThumbnailSettings { X = 200, Y = 150, Width = 256, Height = 256 },
                 Details = new ActorDetails
                 {
                     Description = "A large humanoid underdweller.",

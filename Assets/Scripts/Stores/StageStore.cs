@@ -58,6 +58,7 @@ public class StageStore : ScriptableObject
                     {
                         Actors = new List<StageActor>()
                         {
+                            new StageActor { Character = Character.Ninja, Team = Team.Player },
                             new StageActor { Character = Character.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) }
                         },
                         DottedLines = new List<StageDottedLine>

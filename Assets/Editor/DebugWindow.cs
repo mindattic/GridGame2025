@@ -450,8 +450,8 @@ public class DebugWindow : EditorWindow
     }
 
     // Class-level fields
-    private string thumbnailOffsetX = "0";
-    private string thumbnailOffsetY = "0";
+    private string thumbnailX = "0";
+    private string thumbnailY = "0";
     private string thumbnailWidth = "256";
     private string thumbnailHeight = "256";
 
@@ -465,9 +465,9 @@ public class DebugWindow : EditorWindow
         // Second horizontal row: the controls.
         GUILayout.BeginHorizontal();
         GUILayout.Label("X:", GUILayout.Width(20));
-        thumbnailOffsetX = GUILayout.TextField(thumbnailOffsetX, GUILayout.Width(64));
+        thumbnailX = GUILayout.TextField(thumbnailX, GUILayout.Width(64));
         GUILayout.Label("Y:", GUILayout.Width(20));
-        thumbnailOffsetY = GUILayout.TextField(thumbnailOffsetY, GUILayout.Width(64));
+        thumbnailY = GUILayout.TextField(thumbnailY, GUILayout.Width(64));
         GUILayout.Label("Width:", GUILayout.Width(50));
         thumbnailWidth = GUILayout.TextField(thumbnailWidth, GUILayout.Width(64));
         GUILayout.Label("Height:", GUILayout.Width(50));
@@ -477,8 +477,8 @@ public class DebugWindow : EditorWindow
         if (GUILayout.Button("Generate", GUILayout.Width(64)))
         {
             // Try parsing the inputs to integers.
-            if (int.TryParse(thumbnailOffsetX, out int x) &&
-                int.TryParse(thumbnailOffsetY, out int y) &&
+            if (int.TryParse(thumbnailX, out int x) &&
+                int.TryParse(thumbnailY, out int y) &&
                 int.TryParse(thumbnailWidth, out int w) &&
                 int.TryParse(thumbnailHeight, out int h))
             {

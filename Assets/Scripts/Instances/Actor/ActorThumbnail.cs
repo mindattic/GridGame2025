@@ -4,6 +4,8 @@ using Assets.Scripts.Models; // for ThumbnailSettings, etc.
 [RequireComponent(typeof(SpriteRenderer))]
 public class ActorThumbnail : MonoBehaviour
 {
+    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
+
     // Reference to the actor this thumbnail represents.
     private ActorInstance instance;
 
@@ -17,26 +19,19 @@ public class ActorThumbnail : MonoBehaviour
     // Reference to the SpriteRenderer on this object.
     private SpriteRenderer spriteRenderer;
 
-    // Cropping parameters for panning.
-    // "Perfect" frame dimensions come from ThumbnailSettings.
-    private float sizeX = 256f;
-    private float sizeY = 256f;
-    // Extra panning range (in pixels) beyond the perfect frame.
-    [SerializeField] private float extraRangeX = 44f;
-    [SerializeField] private float extraRangeY = 44f;
     // Internal panning values derived from extraRange.
-    private float rangeX = 44f;
-    private float rangeY = 44f;
+    public float rangeX = 44f;
+    public float rangeY = 44f;
 
     // Pan speed and wobble factors.
-    [SerializeField] private float panSpeed = 1f;
-    [SerializeField] private float wobbleAmplitudeFactorX = 0.5f;
-    [SerializeField] private float wobbleAmplitudeFactorY = 0.5f;
+    public float panSpeed = 1f;
+    public float wobbleAmplitudeFactorX = 0.5f;
+    public float wobbleAmplitudeFactorY = 0.5f;
 
     // Pause cycle variables.
-    [SerializeField] private float nextPauseInterval = 5f; // How long to move before pausing.
-    [SerializeField] private float pauseDuration = 2f;       // How long to hold a pause.
-    [SerializeField] private float pauseRampDuration = 0.5f;   // Easing time for ramping down/up.
+    public float nextPauseInterval = 5f; // How long to move before pausing.
+    public float pauseDuration = 2f;       // How long to hold a pause.
+    public float pauseRampDuration = 0.5f;   // Easing time for ramping down/up.
     private float effectiveNoiseTime = 0f;
     private float cycleTime = 0f;
     private float cyclePeriod;
@@ -74,8 +69,9 @@ public class ActorThumbnail : MonoBehaviour
 
     /// <summary>
     /// Generates the thumbnail sprite using ThumbnailSettings.
-    /// The perfect frame dimensions (sizeX/sizeY) are taken from the settings,
-    /// and extra panning range is provided via extraRangeX/extraRangeY.
+    /// The perfect frame is defined by a top‑left coordinate (X, Y) and Width/Height.
+    /// Extra panning range is provided via extraRangeX/extraRangeY. Since Sprite.Create
+    /// requires a bottom‑left origin, we convert the perfect frame's top‑left to bottom‑left.
     /// </summary>
     public void Generate(ThumbnailSettings other = null)
     {
@@ -86,39 +82,36 @@ public class ActorThumbnail : MonoBehaviour
         if (other == null)
             thumbnailSettings = ActorStore.instance.GetThumbnailSetting(instance.character);
         else
-            thumbnailSettings = new ThumbnailSettings(other);
+            thumbnailSettings = new ThumbnailSettings(other); 
 
-        // Use the perfect framing dimensions from the settings.
-        sizeX = thumbnailSettings.Width;
-        sizeY = thumbnailSettings.Height;
+        // In ThumbnailSettings, X and Y represent the top‑left coordinate of the perfect frame.
+        // Convert to bottom‑left coordinate for Sprite.Create:
+        int perfectTopLeftX = thumbnailSettings.X;
+        int perfectTopLeftY = thumbnailSettings.Y;
+        int perfectBLX = perfectTopLeftX;
+        int perfectBLY = texture.height - perfectTopLeftY - thumbnailSettings.Height;
 
-        // Set the extra panning range from our extraRange variables.
-        rangeX = extraRangeX;
-        rangeY = extraRangeY;
+        // Calculate the desired extended cropping rectangle.
+        int desiredWidth = thumbnailSettings.Width + (int)rangeX;
+        int desiredHeight = thumbnailSettings.Height + (int)rangeY;
+        // Ensure the desired dimensions do not exceed the texture size.
+        int rectWidth = Mathf.Min(desiredWidth, texture.width);
+        int rectHeight = Mathf.Min(desiredHeight, texture.height);
 
-        // Calculate the centered offset for the perfect frame.
-        // Start by centering the perfect frame within the texture,
-        // then apply the user-defined shift.
-        int perfectOffsetX = (texture.width - thumbnailSettings.Width) / 2 + thumbnailSettings.OffsetX;
-        int perfectOffsetY = (texture.height - thumbnailSettings.Height) / 2 + thumbnailSettings.OffsetY;
+        // We want the perfect frame to remain centered in the extended region.
+        // Subtract half of the extra range from the perfect frame's bottom‑left coordinate.
+        int rectX = perfectBLX - (int)(rangeX / 2);
+        int rectY = perfectBLY - (int)(rangeY / 2);
 
-        // Now, extend the cropping rectangle to include extra pixels on all sides.
-        // Subtract half of the extra range from the perfect offset,
-        // and increase the width and height by the full extra range.
-        int rectX = perfectOffsetX - (int)(rangeX / 2);
-        int rectY = perfectOffsetY - (int)(rangeY / 2);
-        int rectWidth = thumbnailSettings.Width + (int)rangeX;
-        int rectHeight = thumbnailSettings.Height + (int)rangeY;
-
-        // Clamp the cropping rect so it stays within the texture bounds.
+        // Clamp the cropping rectangle so it remains within the texture bounds.
         rectX = Mathf.Clamp(rectX, 0, texture.width - rectWidth);
         rectY = Mathf.Clamp(rectY, 0, texture.height - rectHeight);
 
         Rect rect = new Rect(rectX, rectY, rectWidth, rectHeight);
 
         // Create a sprite from the extended cropped region.
+        // The pivot is set to (0.5, 0.5) so that panning (via UV offsets) remains centered.
         sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 100f);
-        // Assign the sprite to the SpriteRenderer.
         spriteRenderer.sprite = sprite;
     }
 
@@ -127,8 +120,8 @@ public class ActorThumbnail : MonoBehaviour
     {
         // --- Panning Code ---
         // Calculate the full dimensions of the cropping region.
-        float fullWidth = sizeX + rangeX;
-        float fullHeight = sizeY + rangeY;
+        float fullWidth = thumbnailSettings.Width + rangeX;
+        float fullHeight = thumbnailSettings.Height + rangeY;
 
         // Maximum normalized offset (in UV space).
         float maxOffsetX = rangeX / fullWidth;
@@ -188,7 +181,6 @@ public class ActorThumbnail : MonoBehaviour
         float offsetY = baseOffsetY + wobbleY;
         offsetX = Mathf.Clamp(offsetX, 0, maxOffsetX);
         offsetY = Mathf.Clamp(offsetY, 0, maxOffsetY);
-
         Vector4 newOffset = new Vector4(offsetX, offsetY, 0, 0);
 
         // Update the shader's custom offset property.
