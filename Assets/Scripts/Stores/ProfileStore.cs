@@ -179,7 +179,7 @@ public class ProfileStore : ScriptableObject
 
         // Create the initial SaveFile.
         var utcNow = DateTime.UtcNow;
-        string fileName = utcNow.ToString("yyyy.MM.dd.HH.mm.ss") + ".json";
+        string fileName = $"{utcNow.ToString(Constants.dateFormat)}.json";
         SaveFile initialSave = new SaveFile(fileName, utcNow, initialGlobal, initialSettings, initialStage, initialParty);
         newProfile.SaveFiles.Add(initialSave);
 
@@ -234,7 +234,7 @@ public class ProfileStore : ScriptableObject
         // Generate a new filename based on the current UTC time.
 
         DateTime utcNow = DateTime.UtcNow;
-        string fileName = utcNow.ToString("yyyy.MM.dd.HH.mm.ss") + ".json";
+        string fileName = $"{utcNow.ToString(Constants.dateFormat)}.json";
         string filePath = Path.Combine(profile.Folder, fileName);
 
         // In a real game you would capture the actual current game state.

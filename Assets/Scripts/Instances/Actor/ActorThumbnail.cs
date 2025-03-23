@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Assets.Scripts.Models; // for ThumbnailSettings, etc.
+﻿using Assets.Scripts.Models; // for ThumbnailSettings, etc.
+using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ActorThumbnail : MonoBehaviour
@@ -20,40 +20,47 @@ public class ActorThumbnail : MonoBehaviour
     private SpriteRenderer spriteRenderer;
 
     // Internal panning values derived from extraRange.
-    public float rangeX = 44f;
-    public float rangeY = 44f;
+    //public float range.x = 44f;
+    //public float range.y = 44f;
+    public float rangeMultiplier;
+    public Vector2 range;
 
     // Pan speed and wobble factors.
-    public float panSpeed = 1f;
-    public float wobbleAmplitudeFactorX = 0.5f;
-    public float wobbleAmplitudeFactorY = 0.5f;
+    public float panSpeed;
+    public float wobbleAmplitudeFactorX;
+    public float wobbleAmplitudeFactorY;
 
     // Pause cycle variables.
-    public float nextPauseInterval = 5f; // How long to move before pausing.
-    public float pauseDuration = 2f;       // How long to hold a pause.
-    public float pauseRampDuration = 0.5f;   // Easing time for ramping down/up.
-    private float effectiveNoiseTime = 0f;
-    private float cycleTime = 0f;
+    public float nextPauseInterval;
+    public float pauseDuration;
+    public float pauseRampDuration;
+    private float effectiveNoiseTime;
+    private float cycleTime;
     private float cyclePeriod;
 
     // We'll slow the overall movement by a factor (400% slower = divide by 4).
     private float slowSpeed;
 
     // Random seeds for Perlin noise so each instance moves uniquely.
-    private float noiseSeedX;
-    private float noiseSeedY;
+
+    private Vector2 noiseSeed;
 
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        // Generate random seeds.
-        noiseSeedX = Random.Float(0f, 100f);
-        noiseSeedY = Random.Float(0f, 100f);
-        // Optionally randomize pause intervals.
-        nextPauseInterval = Random.Float(3f, 10f);
-        pauseDuration = Random.Float(1f, 3f);
+
+        noiseSeed = new Vector2(Random.Float(0f, 100f), Random.Float(0f, 100f));
+        rangeMultiplier = 0.05f;
+        panSpeed = 1f;
+        wobbleAmplitudeFactorX = 0.5f;
+        wobbleAmplitudeFactorY = 0.5f;
+        nextPauseInterval = Random.Float(3f, 7f);
+        pauseDuration = Random.Float(2f, 5f);
         cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
         slowSpeed = panSpeed / 4f;
+        nextPauseInterval = 5f;                 // How long to move before pausing.
+        pauseDuration = 2f;                     // How long to hold a pause.
+        pauseRampDuration = 0.5f;               // Easing time for ramping down/up.
         effectiveNoiseTime = 0f;
         cycleTime = 0f;
     }
@@ -70,7 +77,7 @@ public class ActorThumbnail : MonoBehaviour
     /// <summary>
     /// Generates the thumbnail sprite using ThumbnailSettings.
     /// The perfect frame is defined by a top‑left coordinate (X, Y) and Width/Height.
-    /// Extra panning range is provided via extraRangeX/extraRangeY. Since Sprite.Create
+    /// Extra panning range is provided via extrarange.x/extrarange.y. Since Sprite.Create
     /// requires a bottom‑left origin, we convert the perfect frame's top‑left to bottom‑left.
     /// </summary>
     public void Generate(ThumbnailSettings other = null)
@@ -82,26 +89,33 @@ public class ActorThumbnail : MonoBehaviour
         if (other == null)
             thumbnailSettings = ActorStore.instance.GetThumbnailSetting(instance.character);
         else
-            thumbnailSettings = new ThumbnailSettings(other); 
+            thumbnailSettings = new ThumbnailSettings(other);
+
+        range = new Vector2(
+            thumbnailSettings.Width * rangeMultiplier,
+            thumbnailSettings.Height * rangeMultiplier);
 
         // In ThumbnailSettings, X and Y represent the top‑left coordinate of the perfect frame.
         // Convert to bottom‑left coordinate for Sprite.Create:
-        int perfectTopLeftX = thumbnailSettings.X;
-        int perfectTopLeftY = thumbnailSettings.Y;
-        int perfectBLX = perfectTopLeftX;
-        int perfectBLY = texture.height - perfectTopLeftY - thumbnailSettings.Height;
+
+        var topLeft = new Vector2Int(thumbnailSettings.X, thumbnailSettings.Y);
+
+
+        int perfectBLX = topLeft.x;
+        int perfectBLY = texture.height - topLeft.y - thumbnailSettings.Height;
 
         // Calculate the desired extended cropping rectangle.
-        int desiredWidth = thumbnailSettings.Width + (int)rangeX;
-        int desiredHeight = thumbnailSettings.Height + (int)rangeY;
+        int desiredWidth = thumbnailSettings.Width + (int)range.x;
+        int desiredHeight = thumbnailSettings.Height + (int)range.y;
+
         // Ensure the desired dimensions do not exceed the texture size.
         int rectWidth = Mathf.Min(desiredWidth, texture.width);
         int rectHeight = Mathf.Min(desiredHeight, texture.height);
 
         // We want the perfect frame to remain centered in the extended region.
         // Subtract half of the extra range from the perfect frame's bottom‑left coordinate.
-        int rectX = perfectBLX - (int)(rangeX / 2);
-        int rectY = perfectBLY - (int)(rangeY / 2);
+        int rectX = perfectBLX - (int)(range.x / 2);
+        int rectY = perfectBLY - (int)(range.y / 2);
 
         // Clamp the cropping rectangle so it remains within the texture bounds.
         rectX = Mathf.Clamp(rectX, 0, texture.width - rectWidth);
@@ -120,12 +134,11 @@ public class ActorThumbnail : MonoBehaviour
     {
         // --- Panning Code ---
         // Calculate the full dimensions of the cropping region.
-        float fullWidth = thumbnailSettings.Width + rangeX;
-        float fullHeight = thumbnailSettings.Height + rangeY;
+        float fullWidth = thumbnailSettings.Width + range.x;
+        float fullHeight = thumbnailSettings.Height + range.y;
 
         // Maximum normalized offset (in UV space).
-        float maxOffsetX = rangeX / fullWidth;
-        float maxOffsetY = rangeY / fullHeight;
+        var maxOffset = new Vector2(range.x / fullWidth, range.y / fullHeight);
 
         // Update our cycle timer.
         cycleTime += Time.deltaTime;
@@ -161,26 +174,26 @@ public class ActorThumbnail : MonoBehaviour
         effectiveNoiseTime += Time.deltaTime * multiplier * slowSpeed;
 
         // Generate smooth Perlin noise values.
-        float noiseX = Mathf.PerlinNoise(effectiveNoiseTime, noiseSeedX);
-        float noiseY = Mathf.PerlinNoise(effectiveNoiseTime, noiseSeedY);
+        float noiseX = Mathf.PerlinNoise(effectiveNoiseTime, noiseSeed.x);
+        float noiseY = Mathf.PerlinNoise(effectiveNoiseTime, noiseSeed.y);
 
         // Center the noise around 0.
         float centeredNoiseX = noiseX - 0.5f;
         float centeredNoiseY = noiseY - 0.5f;
 
         // Calculate wobble offsets. (Multiplying by 0.5 to reduce the movement amplitude.)
-        float wobbleX = centeredNoiseX * maxOffsetX * wobbleAmplitudeFactorX * 0.5f;
-        float wobbleY = centeredNoiseY * maxOffsetY * wobbleAmplitudeFactorY * 0.5f;
+        float wobbleX = centeredNoiseX * maxOffset.x * wobbleAmplitudeFactorX * 0.5f;
+        float wobbleY = centeredNoiseY * maxOffset.y * wobbleAmplitudeFactorY * 0.5f;
 
         // Base offset centers the cropping window.
-        float baseOffsetX = maxOffsetX * 0.5f;
-        float baseOffsetY = maxOffsetY * 0.5f;
+        float baseOffsetX = maxOffset.x * 0.5f;
+        float baseOffsetY = maxOffset.y * 0.5f;
 
         // Final computed UV offset.
         float offsetX = baseOffsetX + wobbleX;
         float offsetY = baseOffsetY + wobbleY;
-        offsetX = Mathf.Clamp(offsetX, 0, maxOffsetX);
-        offsetY = Mathf.Clamp(offsetY, 0, maxOffsetY);
+        offsetX = Mathf.Clamp(offsetX, 0, maxOffset.x);
+        offsetY = Mathf.Clamp(offsetY, 0, maxOffset.y);
         Vector4 newOffset = new Vector4(offsetX, offsetY, 0, 0);
 
         // Update the shader's custom offset property.

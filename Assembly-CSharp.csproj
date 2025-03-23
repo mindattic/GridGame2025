@@ -9,7 +9,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -80,7 +81,6 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\Random.cs" />
-    <Compile Include="Assets\Scripts\Models\SpritePan.cs" />
     <Compile Include="Assets\Scripts\Models\Destination.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
@@ -96,29 +96,29 @@
     <Compile Include="Assets\Scripts\Managers\DatabaseManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
-    <Compile Include="Assets\Scripts\GUI\CanvasOverlay.cs" />
+    <Compile Include="Assets\Scripts\Canvas\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\VirtualKeyboardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
-    <Compile Include="Assets\Scripts\GUI\PlayerStageMover.cs" />
+    <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Stores\ActorStore.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackAction.cs" />
-    <Compile Include="Assets\Scripts\GUI\TutorialPopup.cs" />
-    <Compile Include="Assets\Scripts\GUI\SwingingWindow.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
+    <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Actions\DirectAttackAction.cs" />
     <Compile Include="Assets\Scripts\Models\AnimatedImage.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SplashManager.cs" />
-    <Compile Include="Assets\Scripts\GUI\Card.cs" />
+    <Compile Include="Assets\Scripts\Canvas\Card.cs" />
     <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
@@ -128,14 +128,14 @@
     <Compile Include="Assets\Scripts\Actions\EnemyMoveAction.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Actions\CastSpellAction.cs" />
-    <Compile Include="Assets\Scripts\GUI\WaveAnnouncement.cs" />
+    <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
-    <Compile Include="Assets\Scripts\GUI\CityScroll.cs" />
+    <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
     <Compile Include="Assets\Scripts\Models\Location.cs" />
     <Compile Include="Assets\Scripts\Models\VFXResource.cs" />
     <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
-    <Compile Include="Assets\Scripts\GUI\SwingingLogo.cs" />
+    <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
@@ -143,10 +143,10 @@
     <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
-    <Compile Include="Assets\Scripts\GUI\CanvasParticleEmitter.cs" />
+    <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
-    <Compile Include="Assets\Scripts\GUI\CanvasParticleInstance.cs" />
+    <Compile Include="Assets\Scripts\Canvas\CanvasParticleInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Trigger.cs" />
     <Compile Include="Assets\Scripts\Stores\ProfileStore.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceModels.cs" />
@@ -157,7 +157,7 @@
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
-    <Compile Include="Assets\Scripts\GUI\CoinBar.cs" />
+    <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\OverworldManager.cs" />
     <Compile Include="Assets\Scripts\Models\CanvasLineRenderer.cs" />
@@ -171,10 +171,10 @@
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Stores\TutorialStore.cs" />
     <Compile Include="Assets\StageButtonInstance.cs" />
-    <Compile Include="Assets\Scripts\GUI\Fade.cs" />
+    <Compile Include="Assets\Scripts\Canvas\Fade.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
-    <Compile Include="Assets\Scripts\GUI\DebugButtonPanel.cs" />
-    <Compile Include="Assets\Scripts\GUI\TimerBar.cs" />
+    <Compile Include="Assets\Scripts\Canvas\DebugButtonPanel.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TimerBar.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
@@ -188,7 +188,7 @@
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\PortraitInstance.cs" />
-    <Compile Include="Assets\Scripts\GUI\ScrollingBackground.cs" />
+    <Compile Include="Assets\Scripts\Canvas\ScrollingBackground.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Actions\PhaseAction.cs" />
     <Compile Include="Assets\Scripts\Managers\TooltipManager.cs" />

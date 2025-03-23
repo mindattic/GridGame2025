@@ -46,6 +46,7 @@ public class StageManager : MonoBehaviour
     public Stage currentStage;
     private int currentWave = 0; // Track the current wave
 
+
     /// <summary>
     /// Initializes the StageManager by retrieving the stage name from the player's profile,
     /// loading the corresponding Stage, and then loading the stage.
@@ -59,17 +60,18 @@ public class StageManager : MonoBehaviour
             return;
         }
         currentStage = StageStore.instance.Get(latestSave.Stage.CurrentStage);
-        currentWave = latestSave.Stage.CurrentWave;  // Resume from the saved wave index.
-        LoadStage();
+        RestartStage();
     }
 
 
     /// <summary>
     /// Loads the selected stage and initializes the first wave.
     /// </summary>
-    public void LoadStage()
+    public void RestartStage()
     {
         // Reset everything for a new stage.
+        var latestSave = ProfileStore.instance.CurrentProfile.LatestSave;
+        currentWave = latestSave.Stage.CurrentWave;
         actorManager.Clear();
         dottedLineManager.Clear();
         supportLineManager.Clear();
@@ -82,6 +84,8 @@ public class StageManager : MonoBehaviour
         {
             SpawnActor(new StageActor(playerActor));
         }
+
+        //Hack: For some reason enemies might spawn on top of actos because they aren't loaded at same time...
         actors.ForEach(x => x.flags.HasSpawned = true);
 
         // Load the wave based on currentWave.
@@ -190,7 +194,7 @@ public class StageManager : MonoBehaviour
         {
             var stageName = currentStage.NextStage;
             currentStage = StageStore.instance.Get(stageName);
-            LoadStage();
+            RestartStage();
             yield return null;
         }
 
@@ -208,7 +212,7 @@ public class StageManager : MonoBehaviour
 
         IEnumerator reloadStage()
         {
-            LoadStage();
+            RestartStage();
             yield return null;
         }
 

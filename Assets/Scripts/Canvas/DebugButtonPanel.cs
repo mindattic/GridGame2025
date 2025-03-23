@@ -37,7 +37,7 @@ namespace Assets.Scripts.GUI
 
         private void OnReloadStageButtonClicked()
         {
-            stageManager.LoadStage();
+            stageManager.RestartStage();
         }
 
         //private void OnPreviousStageButtonClicked()

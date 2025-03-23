@@ -229,6 +229,8 @@ public static class Constants
     public const string Canvas2D = "Canvas2D";
     public const string Art = "Art";
 
+    //Date formats
+    public const string dateFormat = "yyyy.MM.dd.HH.mm.ss";
 
     //Percent
     public const float percent10 = 0.1f;
@@ -1035,7 +1037,7 @@ public static class DateTimeHelper
     {
         return DateTime.ParseExact(
             timestamp,
-            "yyyy.MM.dd.HH.mm.ss",
+            Constants.dateFormat,
             CultureInfo.InvariantCulture,
             DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
         );

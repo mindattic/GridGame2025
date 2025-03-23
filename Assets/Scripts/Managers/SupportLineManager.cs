@@ -1,13 +1,9 @@
-using Assets.Scripts.Models;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class SupportLineManager : MonoBehaviour
 {
-    //Variables
+    //Fields
     [SerializeField] public GameObject supportLinePrefab;
     public Dictionary<(Vector2Int, Vector2Int), SupportLineInstance> supportLines = new Dictionary<(Vector2Int, Vector2Int), SupportLineInstance>();
 

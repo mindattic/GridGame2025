@@ -72,7 +72,8 @@ public class PortraitManager : MonoBehaviour
         sortingOrder = SortingOrder.Max;
         yield return Wait.For(Intermission.Before.Player.Attack);
 
-        audioManager.Play("Portrait");
+        //audioManager.Play("Portrait");
+        audioManager.Play("Click");
 
         var (direction1, direction2) = GetDirection(actorPair);
 

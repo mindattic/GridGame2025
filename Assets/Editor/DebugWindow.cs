@@ -649,7 +649,7 @@ public class DebugWindow : EditorWindow
 
     // Stage control methods:
     // Reloads the CurrentProfile stage.
-    private void OnReloadStageClick() => stageManager.LoadStage();
+    private void OnReloadStageClick() => stageManager.RestartStage();
     // Moves to the previous stage.
     //private void OnPreviousStageClick() => stageManager.Previous();
     // Moves to the next stage.
