@@ -1,12 +1,9 @@
-using Assets.Scripts.Models;
-using Assets.Scripts.Store;
-using Game.Models;
+using Game.Models.Profile;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ProfileStore", menuName = "Stores/ProfileStore")]
@@ -30,166 +27,116 @@ public class ProfileStore : ScriptableObject
     {
         if (_instance == null)
         {
-            _instance = Resources.Load<ProfileStore>("Stores/ProfileStore");
+            _instance = Resources.Load<ProfileStore>(StoreHelper.ProfileStore);
             if (_instance == null)
-                Debug.LogError("ProfileStore asset not found in Resources/Stores/ProfileStore");
+                Debug.LogError($"{StoreHelper.ProfileStore} asset not found.");
         }
     }
 
-    // When accessing PlayerActors, we use the latest save file in the currently selected profile.
-    public List<StageActor> PlayerActors
-    {
-        get
-        {
-            if (CurrentProfile != null &&
-                CurrentProfile.SaveFiles != null &&
-                CurrentProfile.SaveFiles.Count > 0)
-            {
-                var latestSave = CurrentProfile.SaveFiles.OrderBy(s => s.Timestamp).Last();
-                return latestSave.Party.PlayerActors;
-            }
-            return new List<StageActor>();
-        }
-    }
+    // Fields
+    private List<string> folders = new List<string>();
+    public Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
+    public string currentProfileKey;
 
-    public Dictionary<string, Profile> profiles;
-    public string selectedKey;
-    private List<string> folders;
+    // Properties
+    public bool HasFolders => folders.Any();
+    public bool HasProfiles => profiles.Any();
+    public bool HasCurrentProfile => HasProfiles && !string.IsNullOrWhiteSpace(currentProfileKey) && profiles.ContainsKey(currentProfileKey);
+    public bool HasCurrentSave => HasCurrentProfile && CurrentProfile.HasSaves && CurrentProfile.CurrentSave != null;
+    public Profile CurrentProfile => HasCurrentProfile ? profiles[currentProfileKey] : null;
 
-    public bool HasFolders => folders != null && folders.Count > 0;
-    public bool HasProfiles => profiles != null && profiles.Count > 0;
-    public bool HasSelectedKey => !string.IsNullOrWhiteSpace(selectedKey);
-    public bool HasSelectedProfile => HasProfiles && HasSelectedKey && profiles.ContainsKey(selectedKey);
-    public Profile CurrentProfile => HasSelectedProfile ? profiles[selectedKey] : null;
-
+    // Constructor
     private void OnEnable()
     {
-        Load();
+        Reload();
     }
 
-    /// <summary>
-    /// Loads all profiles from the profiles folder.
-    /// </summary>
-    public bool Load()
+    public bool Reload()
     {
-        if (!HasValidFolderStructure)
+        // Create profiles folder (if applicable)
+        if (!Directory.Exists(FolderHelper.Folder.Profiles))
+            Directory.CreateDirectory(FolderHelper.Folder.Profiles);
+        if (!Directory.Exists(FolderHelper.Folder.Profiles))
         {
             Debug.LogError($"Folder structure is invalid `{FolderHelper.Folder.Profiles}`");
             return false;
         }
 
-        GetFolders();
+        // Retrieve all folders in profile directory
+        folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
         if (!HasFolders)
+        {
+            // Create a new profile folder if none exist.
+            CreateProfile();
+            folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
+        }
+        if (!folders.Any())
         {
             Debug.LogError("No folders found");
             return false;
         }
 
-        PopulateProfiles();
-        if (!HasProfiles)
+        // Populate profile list
+        profiles = new Dictionary<string, Profile>();
+        foreach (var folder in folders)
+        {
+            string key = new DirectoryInfo(folder).Name;
+            var profile = GetProfile(key);
+            if (profile != null)
+                profiles.Add(key, profile);
+        }
+        if (!profiles.Any())
         {
             Debug.LogError("No profiles found");
             return false;
         }
 
         // Auto-select a profile if one is not already selected.
-        var success = HasSelectedKey ? Select(selectedKey) : Select(profiles.Keys.First());
+        var success = !string.IsNullOrWhiteSpace(currentProfileKey)
+            ? SelectProfile(currentProfileKey)
+            : SelectProfile(profiles.Keys.First());
+
         return success;
     }
 
-    private bool HasValidFolderStructure
+    public string CreateProfile()
     {
-        get
-        {
-            if (!Directory.Exists(FolderHelper.Folder.Profiles))
-                Directory.CreateDirectory(FolderHelper.Folder.Profiles);
-            return Directory.Exists(FolderHelper.Folder.Profiles);
-        }
-    }
-
-    private void GetFolders()
-    {
-        folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
-        if (folders == null || folders.Count < 1)
-        {
-            // Create a new profile if none exist.
-            Create();
-            folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
-        }
-    }
-
-    public void PopulateProfiles()
-    {
-        profiles = new Dictionary<string, Profile>();
-        foreach (var folder in folders)
-        {
-            string key = new DirectoryInfo(folder).Name;
-            var profile = Get(key);
-            if (profile != null)
-                profiles.Add(key, profile);
-        }
-    }
-
-    /// <summary>
-    /// Creates a new profile folder and initializes it with an initial SaveFile.
-    /// </summary>
-    public string Create()
-    {
-        // Generate a unique key and folder path.
+        //Generate a unique key and create profile folder
         string key;
         string folder;
         do
         {
-            key = Guid.NewGuid().ToString("N");
+            key = $"{Guid.NewGuid():N}";
             folder = Path.Combine(FolderHelper.Folder.Profiles, key);
         } while (Directory.Exists(folder));
-
         Directory.CreateDirectory(folder);
 
-        // Create a new profile (with no game state directly on the profile).
-        Profile newProfile = new Profile(key)
+        // Create a new profile object
+        Profile newProfile = new Profile()
         {
+            Key = key,
             Folder = folder,
-            SaveFiles = new List<SaveFile>()
+            SaveStates = new List<SaveState>()
         };
 
-        // Create the initial game state for a new game.
-        GlobalSection initialGlobal = new GlobalSection()
-        {
-            TotalCoins = 0
-        };
-        SettingsSection initialSettings = new SettingsSection()
-        {
-            GameSpeed = 1.0f
-        };
-        StageSection initialStage = new StageSection()
-        {
-            CurrentStage = "Stage 1",
-            CurrentWave = 0
-        };
-        PartySection initialParty = new PartySection()
-        {
-            PlayerActors = new List<StageActor>
-            {
-                new StageActor { Character = Character.Paladin, Team = Team.Player },
-                new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                new StageActor { Character = Character.Cleric, Team = Team.Player },
-            }
-        };
+        // Create the initial SaveState and append to new profile object
+        SaveState newSave = new SaveState(
+            1,
+            DateTime.UtcNow,
+            new GlobalSaveData(ProfileHelper.DefaultGlobal),
+            new StageSaveData(ProfileHelper.DefaultStage),
+            new PartySaveData(ProfileHelper.DefaultParty));
+        newProfile.SaveStates.Add(newSave);
 
-        // Create the initial SaveFile.
-        var utcNow = DateTime.UtcNow;
-        string fileName = $"{utcNow.ToString(Constants.dateFormat)}.json";
-        SaveFile initialSave = new SaveFile(fileName, utcNow, initialGlobal, initialSettings, initialStage, initialParty);
-        newProfile.SaveFiles.Add(initialSave);
-
-        profiles ??= new Dictionary<string, Profile>();
+        // Append profile and set as current
         profiles.Add(key, newProfile);
-        selectedKey = key;
+        currentProfileKey = key;
 
-        //Write the initial SaveFile
-        string filePath = Path.Combine(newProfile.Folder, fileName);
-        string json = JsonConvert.SerializeObject(initialSave, Formatting.Indented);
+        // Write the initial SaveState to disk
+        string savesFolder = Path.Combine(newProfile.Folder, "Saves");
+        Directory.CreateDirectory(savesFolder);
+        string filePath = Path.Combine(savesFolder, newSave.FileName);
+        string json = JsonConvert.SerializeObject(newSave, Formatting.Indented);
         try
         {
             File.WriteAllText(filePath, json);
@@ -200,117 +147,62 @@ public class ProfileStore : ScriptableObject
             return null;
         }
 
+        // Initialize settings in a separate file.
+        newProfile.Settings = LoadSettings(newProfile);
+
         return key;
     }
 
-    /// <summary>
-    /// Saves the current game state as a new SaveFile within the selected profile.
-    /// </summary>
-    public bool Save()
-    {
-        if (!HasSelectedProfile)
-        {
-            Debug.LogError("No valid profile selected for saving.");
-            return false;
-        }
-
-        bool wasSuccessful = SaveProfile(CurrentProfile);
-        if (!wasSuccessful)
-        {
-            Debug.LogError("Failed to save profile.");
-            return false;
-        }
-        return true;
-    }
-
-    // Creates a new SaveFile from the current game state and writes it to disk.
-    private bool SaveProfile(Profile profile)
-    {
-        if (profile == null)
-        {
-            Debug.LogError("Profile is null.");
-            return false;
-        }
-        // Generate a new filename based on the current UTC time.
-
-        DateTime utcNow = DateTime.UtcNow;
-        string fileName = $"{utcNow.ToString(Constants.dateFormat)}.json";
-        string filePath = Path.Combine(profile.Folder, fileName);
-
-        // In a real game you would capture the actual current game state.
-        // For this example, we simulate it by reusing the state from the latest save (or default values if none exist).
-        GlobalSection currentGlobal;
-        SettingsSection currentSettings;
-        StageSection currentStage;
-        PartySection currentParty;
-
-        if (profile.SaveFiles != null && profile.SaveFiles.Count > 0)
-        {
-            // For demonstration, copy the state from the latest save.
-            var latestSave = profile.SaveFiles.OrderBy(x => x.Timestamp).Last();
-            currentGlobal = latestSave.Global;
-            currentSettings = latestSave.Settings;
-            currentStage = latestSave.Stage;
-            currentParty = latestSave.Party;
-        }
-        else
-        {
-            // Use defaults if no save exists.
-            currentGlobal = new GlobalSection()
-            {
-                TotalCoins = 0
-            };
-            currentSettings = new SettingsSection();
-            currentStage = new StageSection()
-            {
-                CurrentStage = "Stage 1",
-                CurrentWave = 0
-            };
-            currentParty = new PartySection()
-            {
-                PlayerActors = new List<StageActor>
-                {
-                    new StageActor { Character = Character.Paladin, Team = Team.Player },
-                    new StageActor { Character = Character.Barbarian, Team = Team.Player },
-                    new StageActor { Character = Character.Cleric, Team = Team.Player },
-                    new StageActor { Character = Character.Ninja, Team = Team.Player }
-                }
-            };
-        }
-
-        // Create a new SaveFile capturing the current state.
-        SaveFile newSave = new SaveFile(fileName, utcNow, currentGlobal, currentSettings, currentStage, currentParty);
-
-        string json = JsonConvert.SerializeObject(newSave, Formatting.Indented);
-        try
-        {
-            File.WriteAllText(filePath, json);
-            if (profile.SaveFiles == null)
-                profile.SaveFiles = new List<SaveFile>();
-            profile.SaveFiles.Add(newSave);
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError($"Error writing file {filePath}: {ex.Message}");
-            return false;
-        }
-        return true;
-    }
-
-    /// <summary>
-    /// Loads a profile by reading the newest JSON save file in its folder.
-    /// </summary>
-    public Profile Get(string key)
+    public Profile GetProfile(string key)
     {
         if (string.IsNullOrWhiteSpace(key))
         {
             Debug.LogError($"Invalid key specified: {key}");
             return null;
         }
-        return LoadProfile(key);
+
+        string folder = Path.Combine(FolderHelper.Folder.Profiles, key);
+
+        //Reconstruct profile
+        Profile profile = new Profile()
+        {
+            Key = key,
+            Folder = folder,
+            SaveStates = new List<SaveState>()
+        };
+
+        //Retrieve save files by profile
+        string savesFolder = Path.Combine(folder, "Saves");
+        var saveFiles = Directory.GetFiles(savesFolder, "*.json").ToArray();
+        foreach (var file in saveFiles)
+        {
+            try
+            {
+                string json = File.ReadAllText(file);
+                SaveState save = JsonConvert.DeserializeObject<SaveState>(json);
+                if (save != null)
+                    profile.SaveStates.Add(save);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error reading file {file}: {ex.Message}");
+            }
+        }
+
+        //Sort the SaveStates list by timestamp
+        profile.SaveStates = profile.SaveStates.OrderByDescending(x => x.Timestamp).ToList();
+
+        // Load settings from the separate settings file.
+        profile.Settings = LoadSettings(profile);
+
+        // Automatically select latest save as current save when retrieving profile.
+        if (profile.HasSaves && profile.CurrentSave == null)
+            profile.CurrentSave = profile.LatestSave;
+
+        return profile;
     }
 
-    public bool Delete(string key)
+    public bool DeleteProfile(string key)
     {
         if (string.IsNullOrWhiteSpace(key))
         {
@@ -322,60 +214,162 @@ public class ProfileStore : ScriptableObject
         {
             Directory.Delete(folder, true);
         }
-        Load();
+        Reload();
         return true;
     }
 
-    public bool Select(string name)
+    public bool SelectProfile(string key)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrWhiteSpace(key))
         {
-            Debug.LogError($"Invalid key specified: {name}");
+            Debug.LogError($"Invalid key specified: {key}");
             return false;
         }
-        if (!profiles.ContainsKey(name))
+        if (!profiles.ContainsKey(key))
         {
-            Debug.LogError($"No profile matches key: {name}");
+            Debug.LogError($"No profile matches key: {key}");
             return false;
         }
-        selectedKey = name;
+        currentProfileKey = key;
         return true;
     }
 
-    // Loads a Profile by scanning its folder for JSON save files.
-    // We sort the filenames (which are timestamps) in descending order and load only the newest one.
-    private Profile LoadProfile(string name)
+    // Loads settings from a separate settings.json file in the profile folder.
+    private ProfileSettings LoadSettings(Profile profile)
     {
-        string folder = Path.Combine(FolderHelper.Folder.Profiles, name);
-        var jsonFiles = Directory.GetFiles(folder, "*.json");
-
-        // Create a new profile instance.
-        Profile profile = new Profile(name) { Folder = folder, SaveFiles = new List<SaveFile>() };
-
-        if (jsonFiles == null || jsonFiles.Length == 0)
+        string settingsPath = Path.Combine(profile.Folder, ProfileHelper.SettingsFileName);
+        if (File.Exists(settingsPath))
         {
-            // No save files exist – create an initial save.
-            SaveProfile(profile);
-            jsonFiles = Directory.GetFiles(folder, "*.json");
+            try
+            {
+                string json = File.ReadAllText(settingsPath);
+                var settings = JsonConvert.DeserializeObject<ProfileSettings>(json);
+                return settings;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error reading settings file {settingsPath}: {ex.Message}");
+            }
         }
 
-        // Sort the files descending based on filename and pick the first one (newest).
-        string latestFile = jsonFiles.OrderByDescending(f => f).First();
+        //If the file doesn't exist or an error occurs, create one with the default settings.
+        SaveSettings(profile, ProfileHelper.DefaultSettings);
+        return ProfileHelper.DefaultSettings;
+    }
 
+    //Writes the given settings to settings.json in the profile folder.
+    private void SaveSettings(Profile profile, ProfileSettings settings)
+    {
+        string settingsPath = Path.Combine(profile.Folder, ProfileHelper.SettingsFileName);
         try
         {
-            string json = File.ReadAllText(latestFile);
-            SaveFile latestSave = JsonConvert.DeserializeObject<SaveFile>(json);
-            if (latestSave != null)
-            {
-                profile.SaveFiles.Add(latestSave);
-            }
-            return profile;
+            string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
+            File.WriteAllText(settingsPath, json);
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Error reading file {latestFile}: {ex.Message}");
-            return null;
+            Debug.LogError($"Error writing settings file {settingsPath}: {ex.Message}");
         }
+    }
+
+    //Public Save method – pass true to overwrite current save, false to create new.
+    public bool Save(bool overwrite = false)
+    {
+        bool success = !overwrite ? CreateSave() : OverwriteSave();
+        if (!success)
+        {
+            Debug.LogError($"Failed to {(!overwrite ? "create new" : "overwrite existing")} save file.");
+            return false;
+        }
+        return true;
+    }
+
+    private bool HasValidCurrentSave()
+    {
+        if (!HasCurrentProfile)
+        {
+            Debug.LogError("Profile is null.");
+            return false;
+        }
+        if (!CurrentProfile.HasSaves)
+        {
+            Debug.LogError("Profile has no save states.");
+            return false;
+        }
+        if (!CurrentProfile.HasCurrentSave)
+        {
+            Debug.LogError("Profile has no current save.");
+            return false;
+        }
+        return true;
+    }
+
+    //Creates a new SaveState from the current game state.
+    private bool CreateSave()
+    {
+        if (!HasValidCurrentSave())
+            return false;
+
+        SaveState newSave = new SaveState(
+            CurrentProfile.SaveStates.Count,
+            DateTime.UtcNow,
+            CurrentProfile.CurrentSave.Global,
+            CurrentProfile.CurrentSave.Stage,
+            CurrentProfile.CurrentSave.Party);
+
+        string savesFolder = Path.Combine(CurrentProfile.Folder, "Saves");
+        string filePath = Path.Combine(savesFolder, newSave.FileName);
+        string json = JsonConvert.SerializeObject(newSave, Formatting.Indented);
+        try
+        {
+            File.WriteAllText(filePath, json);
+            CurrentProfile.SaveStates.Add(newSave);
+            CurrentProfile.CurrentSave = newSave; // update active save
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error writing file {filePath}: {ex.Message}");
+            return false;
+        }
+
+        //Sort the SaveStates list by timestamp
+        CurrentProfile.SaveStates = CurrentProfile.SaveStates.OrderByDescending(x => x.Timestamp).ToList();
+
+        return true;
+    }
+
+    // Overwrites the current SaveState with the current game state.
+    private bool OverwriteSave()
+    {
+        if (!HasValidCurrentSave())
+            return false;
+
+        var existingSave = new SaveState(CurrentProfile.CurrentSave);
+        if (existingSave == null)
+        {
+            Debug.LogError("Failed to retrieve existing save.");
+            return false;
+        }
+
+        string savesFolder = Path.Combine(CurrentProfile.Folder, "Saves");
+        string filePath = Path.Combine(savesFolder, existingSave.FileName);
+        string json = JsonConvert.SerializeObject(existingSave, Formatting.Indented);
+        try
+        {
+            File.WriteAllText(filePath, json);
+            CurrentProfile.SaveStates.Remove(CurrentProfile.CurrentSave);
+            CurrentProfile.SaveStates.Insert(0, existingSave);
+            CurrentProfile.CurrentSave = existingSave; // update active save
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error overwriting file {filePath}: {ex.Message}");
+            return false;
+        }
+
+        //Sort the SaveStates list by timestamp
+        CurrentProfile.SaveStates = CurrentProfile.SaveStates.OrderByDescending(x => x.Timestamp).ToList();
+
+        return true;
     }
 }

@@ -24,17 +24,17 @@ public class CreditsManager : MonoBehaviour
     private float buttonHeight;
     private float spacing;
     private Fade fade;
-    private Label credits;
+    private Label text;
 
     private void Awake()
     {
-        canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
-        header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>() ?? throw new UnityException("Label is null");
-        scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
-        content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
+        canvas2D = GameObject.Find(ComponentHelper.Credits.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
+        header = GameObject.Find(ComponentHelper.Credits.Header).GetComponent<Label>() ?? throw new UnityException("Label is null");
+        scrollView = GameObject.Find(ComponentHelper.Credits.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
+        content = GameObject.Find(ComponentHelper.Credits.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
-        credits = GameObject.Find(ComponentHelper.Settings.Credits).GetComponent<Label>() ?? throw new UnityException("Credits is null");
-        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        text = GameObject.Find(ComponentHelper.Credits.Text).GetComponent<Label>() ?? throw new UnityException("Credits is null");
+        fade = GameObject.Find(ComponentHelper.Credits.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
@@ -64,7 +64,7 @@ public class CreditsManager : MonoBehaviour
             + $"<size=80%>Visual Effects</size>{NL}" 
             + $"<size=150%>Eric Wang</size>{NL}" + 
             "";
-        credits.text = text;
+        this.text.text = text;
 
         StartCoroutine(fade.FadeIn());
     }

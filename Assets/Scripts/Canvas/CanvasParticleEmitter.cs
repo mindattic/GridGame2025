@@ -7,7 +7,7 @@ public class CanvasParticleEmitter : MonoBehaviour
 {
 
     [SerializeField] public GameObject canvasParticlePrefab; // Prefab with an Image component
-    [SerializeField] private RectTransform canvasTransform; // Select the Canvas
+    [SerializeField] private RectTransform canvasTransform; // SelectProfile the Canvas
     private float spawnIntervalMin; // Time between spawns
     private float spawnIntervalMax; // Time between spawns
     private float speedMin;
@@ -18,7 +18,7 @@ public class CanvasParticleEmitter : MonoBehaviour
     private float fallSpeedMax; // Maximum downward speed
     private float scaleMin; // Minimum scale
     private float scaleMax; // Maximum scale
-    private int prewarmCount; // Number of particles to spawn on start
+    private int prewarmCount; // Index of particles to spawn on start
     private Sprite[] sprites; // Array of sprites from the sprite sheet
     private float xMin;
     private float xMax;
@@ -87,15 +87,15 @@ public class CanvasParticleEmitter : MonoBehaviour
         if (rect == null || image == null)
             return;
 
-        // Select a random sprite from the sprite sheet
+        // SelectProfile a random sprite from the sprite sheet
         image.sprite = sprites.ShuffleFirst();
 
-        // Select start position
+        // SelectProfile start position
         float startX = preheat ? Random.Float(xMin, xMax) : xMin; // Prewarm particles start mid-flight
         float startY = Random.Float(yMin, yMax);
         rect.anchoredPosition = new Vector2(startX, startY);
 
-        // Select random rotation speed, movement, and scale
+        // SelectProfile random rotation speed, movement, and scale
         float rotRange = Random.Float(rotationSpeedMin, rotationSpeedMax);
         float rotWildcard = Random.Int(1, 3) == 1 ? Random.Float(1, 3f) : 1f;
         float rotDirection = Random.Boolean ? -1f : 1f;

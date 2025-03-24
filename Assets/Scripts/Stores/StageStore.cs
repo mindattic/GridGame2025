@@ -151,7 +151,7 @@ public class StageStore : ScriptableObject
     /// <summary>
     /// Generates random waves of enemies for a stage.
     /// </summary>
-    /// <param name="waveCount">Number of waves.</param>
+    /// <param name="waveCount">Index of waves.</param>
     /// <param name="possibleEnemies">List of enemy types to use in waves.</param>
     /// <returns>A list of StageWave.</returns>
     private List<StageWave> GenerateWaves(int waveCount, List<Character> possibleEnemies)

@@ -474,7 +474,7 @@ public class DebugManager : MonoBehaviour
         for (int i = 0; i < 9; i++)
             SpawnSlime();
 
-        //Select specific enemies for teleportation
+        //SelectProfile specific enemies for teleportation
         var enemy1 = enemies.ElementAtOrDefault(0);
         var enemy2 = enemies.ElementAtOrDefault(1);
         var enemy3 = enemies.ElementAtOrDefault(2);

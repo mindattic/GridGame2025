@@ -191,7 +191,7 @@ public class ActorRenderers
             yield return Wait.OneTick(); //Custom Wait method
         }
 
-        //Select the final value to ensure precision
+        //SelectProfile the final value to ensure precision
         parallax.material.SetFloat(scrollProperty, targetValue);
     }
 

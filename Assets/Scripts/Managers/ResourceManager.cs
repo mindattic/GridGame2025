@@ -414,7 +414,7 @@ public class ResourceManager : MonoBehaviour
         //try
         //{
         //    //Assign JSON from Resources
-        //    TextAsset jsonFile = Resources.Get<TextAsset>("Data/Tutorials");
+        //    TextAsset jsonFile = Resources.GetProfile<TextAsset>("Data/Tutorials");
         //    if (jsonFile == null)
         //    {
         //        Debug.LogError("Tutorials.json not found in Resources/Data/");
@@ -426,7 +426,7 @@ public class ResourceManager : MonoBehaviour
 
         //    foreach (var key in keys)
         //    {
-        //        var tutorial = tutorials.Items.FirstOrDefault(x => x.Name == key);
+        //        var tutorial = tutorials.Items.FirstOrDefault(x => x.Key == key);
         //        entries.Add(key, tutorial);
         //    }
         //}

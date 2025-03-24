@@ -82,7 +82,11 @@ public class ActorThumbnail : MonoBehaviour
     /// </summary>
     public void Generate(ThumbnailSettings other = null)
     {
-        // Get the full texture from the resource manager.
+        //Retrieve applicable settings
+        rangeMultiplier = ProfileStore.instance.CurrentProfile.Settings.ActorPanMultiplier;
+
+
+        // GetProfile the full texture from the resource manager.
         texture = GameManager.instance.resourceManager.Portrait(instance.character.ToString()).Value;
 
         // Retrieve the thumbnail settings.

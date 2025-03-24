@@ -17,7 +17,7 @@ public class TitleManager : MonoBehaviour
         buttons = GameObject.Find(ComponentHelper.Title.MainMenu).GetComponentsInChildren<Button>();
         MenuHelper.Initialize(buttons);
         currentProfileLabel = GameObject.Find(ComponentHelper.Title.ChangeProfileButtonLabel).GetComponent<Label>();
-        currentProfileLabel.text = ProfileStore.instance.CurrentProfile.Name;
+        currentProfileLabel.text = ProfileStore.instance.CurrentProfile.Key;
     }
 
     private void Start()
@@ -36,8 +36,8 @@ public class TitleManager : MonoBehaviour
     public void OnNewGameButtonClicked()
     {
         MenuHelper.DisableButtons(buttons);
-        ProfileStore.instance.Create();
-        ProfileStore.instance.Load();
+        ProfileStore.instance.CreateProfile();
+        ProfileStore.instance.Reload();
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Overworld)));
     }
 

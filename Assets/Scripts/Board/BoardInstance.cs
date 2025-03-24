@@ -16,8 +16,8 @@ public class BoardInstance : MonoBehaviour
 
     // Fields:
     [SerializeField] public GameObject TilePrefab; // Prefab used to instantiate individual tiles.
-    [HideInInspector] public int columnCount = 6;      // Number of columns on the board.
-    [HideInInspector] public int rowCount = 8;         // Number of rows on the board.
+    [HideInInspector] public int columnCount = 6;      // Index of columns on the board.
+    [HideInInspector] public int rowCount = 8;         // Index of rows on the board.
     [HideInInspector] public Vector2 offset;           // Board offset (used to position the board in world space).
     [HideInInspector] public RectFloat bounds;         // Bounds of the board, calculated from the offset and dimensions.
     [HideInInspector] public Vector2 center;           // Center point of the board bounds.
@@ -87,11 +87,11 @@ public class BoardInstance : MonoBehaviour
             {
                 // Instantiate a tile prefab at the origin with no rotation.
                 var prefab = Instantiate(TilePrefab, Vector2.zero, Quaternion.identity);
-                // Get the TileInstance component from the instantiated prefab.
+                // GetProfile the TileInstance component from the instantiated prefab.
                 var instance = prefab.GetComponent<TileInstance>();
                 // Set the parent of the tile to be this board, so they are organized under the board.
                 instance.parent = transform;
-                // Name the tile based on its grid coordinates.
+                // Key the tile based on its grid coordinates.
                 instance.name = $"Tile_{col}x{row}";
                 // Assign the tile with its column and row positions.
                 instance.Initialize(col, row);

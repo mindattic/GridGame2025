@@ -80,7 +80,7 @@ public class StageManager : MonoBehaviour
         turnManager.Initialize();
 
         // Assign persistent player actors from ProfileStore
-        foreach (var playerActor in ProfileStore.instance.PlayerActors)
+        foreach (var playerActor in ProfileStore.instance.CurrentProfile.CurrentSave.Party.PlayerActors)
         {
             SpawnActor(new StageActor(playerActor));
         }
@@ -88,7 +88,7 @@ public class StageManager : MonoBehaviour
         //Hack: For some reason enemies might spawn on top of actos because they aren't loaded at same time...
         actors.ForEach(x => x.flags.HasSpawned = true);
 
-        // Load the wave based on currentWave.
+        // Reload the wave based on currentWave.
         if (currentStage.Waves.Count > 0)
         {
             LoadWave(currentWave);

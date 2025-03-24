@@ -40,7 +40,7 @@ namespace Game.Behaviors
         // This method initializes references to UI elements by finding them in the scene.
         private void Awake()
         {
-            // Get the RectTransform component of the card.
+            // GetProfile the RectTransform component of the card.
             rectTransform = GetComponent<RectTransform>();
 
             // Find and assign UI GameObjects using predefined constant names.
@@ -97,7 +97,7 @@ namespace Game.Behaviors
             portraitImage.rectTransform.localPosition = offscreenPosition;
         }
 
-        // Select populates the card with data from the currently focused actor.
+        // SelectProfile populates the card with data from the currently focused actor.
         public void Assign()
         {
             // If no actor is focused, exit without making changes.
@@ -172,7 +172,7 @@ namespace Game.Behaviors
 
             // Optionally, disable selection boxes on all actors or update the focus indicator.
             // actors.ForEach(x => x.render.SetSelectionBoxEnabled(false));
-            // focusIndicator.Select();
+            // focusIndicator.SelectProfile();
 
             // Reset the portrait's position to the offscreen starting position.
             portraitImage.rectTransform.localPosition = offscreenPosition;

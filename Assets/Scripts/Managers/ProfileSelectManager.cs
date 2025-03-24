@@ -1,5 +1,5 @@
 using Assets.Scripts.Store;
-using Game.Models;
+using Game.Models.Profile;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +8,6 @@ using Label = TMPro.TextMeshProUGUI;
 
 public class ProfileSelectManager : MonoBehaviour
 {
-    //Fields
     [SerializeField] public GameObject buttonPrefab;
     private RectTransform canvas2D;
     private Label header;
@@ -27,13 +26,13 @@ public class ProfileSelectManager : MonoBehaviour
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
         header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>() ?? throw new UnityException("Label is null");
         scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
-        content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");    
+        content = GameObject.Find(ComponentHelper.StageSelect.Content).transform ?? throw new UnityException("Content is null");
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
         fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
-    
+
         buttonWidth = 0.9f * screenWidth;
         buttonHeight = screenHeight / 16f;
 
@@ -46,13 +45,13 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Start()
     {
-        Reload(); 
+        Reload();
         StartCoroutine(fade.FadeIn());
     }
 
     private void Reload()
     {
-        //Clear existing content
+        // Clear existing content
         foreach (Transform child in content)
         {
             Destroy(child.gameObject);
@@ -60,71 +59,58 @@ public class ProfileSelectManager : MonoBehaviour
 
         AddCreateNewProfileButton();
 
-        //Add each profile as a button
-        foreach (var entry in ProfileStore.instance.profiles)
+        // Add each profile as a button
+        foreach (var entry in ProfileStore.instance.profiles.Values)
         {
-            AddProfileSelectButton(entry.Value);
+            AddProfileSelectButton(entry);
         }
     }
 
     public void AddCreateNewProfileButton()
     {
-        // Instantiate the prefab as a child of the content
         GameObject instance = Instantiate(buttonPrefab, content);
         instance.name = "CreateNewProfile";
 
-        // Set the button size: 90% of width, 1/16th of height
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
         buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
-        // Set the button's click event
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnCreateNewProfileButtonClicked());
 
-        // Set the button text
         Label label = instance.GetComponentInChildren<Label>();
         label.text = "Create New Profile";
     }
 
-
     public void AddProfileSelectButton(Profile profile)
     {
-        // Instantiate the prefab as a child of the content
         GameObject instance = Instantiate(buttonPrefab, content);
-        instance.name = $"Profile_{profile.Name}";
+        instance.name = $"Profile_{profile.Key}";
 
-        // Set the button size: 90% of width, 1/16th of height
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
         buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
-        // Set the button's click event
         Button button = instance.GetComponent<Button>();
-        button.onClick.AddListener(() => OnProfileButtonClicked(profile.Name));
+        button.onClick.AddListener(() => OnProfileButtonClicked(profile.Key));
 
-        // Set the button text
         Label label = instance.GetComponentInChildren<Label>();
-        label.text = profile.Name;
+        label.text = profile.Key;
     }
 
-
-    private void OnProfileButtonClicked(string name)
+    private void OnProfileButtonClicked(string key)
     {
-        ProfileStore.instance.Select(name);
+        ProfileStore.instance.SelectProfile(key);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
     }
+
     private void OnCreateNewProfileButtonClicked()
     {
-        ProfileStore.instance.Create();
-        ProfileStore.instance.Load();
+        ProfileStore.instance.CreateProfile();
+        ProfileStore.instance.Reload();
         Reload();
     }
-
 
     public void OnBackButtonClicked()
     {
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
     }
-
-
-
 }

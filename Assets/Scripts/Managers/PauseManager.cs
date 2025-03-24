@@ -81,7 +81,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         MenuHelper.DisableButtons(buttons);
-        ProfileStore.instance.Save();
+        ProfileStore.instance.Save(overwrite: true);
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
     }
 

@@ -342,7 +342,7 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
 
         // Toggle to show or hide actor name tags.
-        onCheckChanged = EditorGUILayout.Toggle("Show Actor Name Tags?", debugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Show Actor Key Tags?", debugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.showActorNameTag != onCheckChanged)
         {
             debugManager.showActorNameTag = onCheckChanged;

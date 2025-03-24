@@ -232,7 +232,7 @@ namespace Assets.Scripts.Instances.Actor
             var windupDuration = 0.15f;
             var bumpDuration = 0.1f;
             var returnDuration = 0.3f;
-            // Get the actor's CurrentProfile position.
+            // GetProfile the actor's CurrentProfile position.
             var startPosition = instance.currentTile.position;
             // Calculate positions for windup (backward) and bump (forward) movements.
             var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), tileSize * percent33);

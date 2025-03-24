@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class CityScroll : MonoBehaviour
 {
-    public RawImage rawImage; // Select the RawImage in the inspector
+    public RawImage rawImage; // SelectProfile the RawImage in the inspector
     public float scrollSpeed = 0.1f; // Speed of scrolling
 
     private void Start()

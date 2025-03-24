@@ -38,7 +38,7 @@ public class PlayerStageMover : MonoBehaviour
         TextMeshProUGUI label = stageButton.GetComponentInChildren<TextMeshProUGUI>();
         targetStageName = label.text; // Store stage name
 
-        // Get target position
+        // GetProfile target position
         RectTransform targetTransform = stageButton.GetComponent<RectTransform>();
         targetPosition = ConvertToLocalSpace(targetTransform);
 

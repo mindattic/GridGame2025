@@ -128,7 +128,7 @@ public class OverworldManager : MonoBehaviour
 
     private IEnumerator SmoothCentering(Vector2 targetLocalPosition, float speed, float snapThreshold)
     {
-        // Get viewport and content sizes
+        // GetProfile viewport and content sizes
         Vector2 viewportSize = viewport.rect.size;
         Vector2 contentSize = content.rect.size;
 
@@ -165,7 +165,7 @@ public class OverworldManager : MonoBehaviour
 
     //private IEnumerator SmoothCentering(Vector2 targetLocalPosition, float speed, float snapThreshold)
     //{
-    //    // Get viewport and content sizes
+    //    // GetProfile viewport and content sizes
     //    Vector2 viewportSize = viewport.rect.size;
     //    Vector2 contentSize = content.rect.size;
 

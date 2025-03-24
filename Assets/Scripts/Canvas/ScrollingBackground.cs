@@ -9,7 +9,7 @@ public class ScrollingBackground : MonoBehaviour
 
     void Start()
     {
-        // Get the RawImage component
+        // GetProfile the RawImage component
         rawImage = GetComponent<RawImage>();
         if (rawImage == null)
         {

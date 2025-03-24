@@ -177,7 +177,7 @@ public class PincerAttackManager : MonoBehaviour
     /// <param name="participants">The participants of valid pincer attack pair.</param>
     private IEnumerator EnqueueAttacks(PincerAttackParticipants participants)
     {
-        // Step 1: Select visual sorting orders to attackers, opponents, and supporters
+        // Step 1: SelectProfile visual sorting orders to attackers, opponents, and supporters
         // so that they are highlighted correctly on the game board.
         SetSortingOrder(participants);
 
@@ -283,7 +283,7 @@ public class PincerAttackManager : MonoBehaviour
         if (!a.IsSameRow(b.location) && !a.IsSameColumn(b.location))
             return true;
 
-        // Get all locations between the two actors.
+        // GetProfile all locations between the two actors.
         var between = Geometry.GetLocationsBetween(a.location, b.location);
         // Check if any playing actor occupies a location in between that is either an enemy or coincides with one of the endpoints.
         return actors

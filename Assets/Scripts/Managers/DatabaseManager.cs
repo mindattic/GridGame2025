@@ -25,11 +25,11 @@
 
 //       public static class Queries
 //       {
-//           public static class Get
+//           public static class GetProfile
 //           {
 //               public static class Actor
 //               {
-//                   public static string Entities = " SELECT a.Name, a.Description, s.Level, s.MaxHp, s.Strength, s.Vitality, s.Agility, s.Speed, s.Luck, t.Width AS ThumbnailWidth, t.Width AS ThumbnailHeight, t.X AS ThumbnailX, t.Y AS ThumbnailY FROM Actor a INNER JOIN ActorStats a_s ON (a.ActorId = a_s.ActorId) INNER JOIN Stats s ON (a_s.StatsId = s.StatsId) INNER JOIN ActorThumbnail a_t ON (a.ActorId = a_t.ActorId) INNER JOIN Thumbnail t ON (t.ThumbnailId = a_t.ThumbnailId)";
+//                   public static string Entities = " SELECT a.Key, a.Description, s.Level, s.MaxHp, s.Strength, s.Vitality, s.Agility, s.Speed, s.Luck, t.Width AS ThumbnailWidth, t.Width AS ThumbnailHeight, t.X AS ThumbnailX, t.Y AS ThumbnailY FROM Actor a INNER JOIN ActorStats a_s ON (a.ActorId = a_s.ActorId) INNER JOIN Stats s ON (a_s.StatsId = s.StatsId) INNER JOIN ActorThumbnail a_t ON (a.ActorId = a_t.ActorId) INNER JOIN Thumbnail t ON (t.ThumbnailId = a_t.ThumbnailId)";
 
 
 
@@ -105,12 +105,12 @@
 //           Entities.Actors.Clear();
 
 //           //reader = trailInstance.GetAllData(Schema.Table.Actor);
-//           reader = trailInstance.ExecuteReader(Queries.Select.Actor.Entities);
+//           reader = trailInstance.ExecuteReader(Queries.SelectProfile.Actor.Entities);
 //           while (reader != null && reader.Read())
 //           {
 //               var x = new ActorData()
 //               {
-//                   Name = reader.GetStringValue("Name"),
+//                   Key = reader.GetStringValue("Key"),
 //                   Description = reader.GetStringValue("Description"),
 //               };
 
@@ -135,7 +135,7 @@
 
 //               //x.Rarity = new Rarity()
 //               //{
-//               //   Name = reader.GetStringValue("RarityName"),
+//               //   Key = reader.GetStringValue("RarityName"),
 //               //   Color = ColorHelper.Solid.White,
 //               //};
 
@@ -147,13 +147,13 @@
 
 //       public ActorStats GetStats(string name)
 //       {
-//           return Entities.Actors.Where(x => x.Name == name).FirstOrDefault().Stats;
+//           return Entities.Actors.Where(x => x.Key == name).FirstOrDefault().Stats;
 //       }
 
 
 //       public ThumbnailSettings GetThumbnailSetting(string name)
 //       {
-//           return Entities.Actors.Where(x => x.Name == name).FirstOrDefault().thumbnailSettings;
+//           return Entities.Actors.Where(x => x.Key == name).FirstOrDefault().thumbnailSettings;
 //       }
 
 //   }

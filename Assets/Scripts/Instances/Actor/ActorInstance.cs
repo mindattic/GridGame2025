@@ -321,7 +321,7 @@ public class ActorInstance : MonoBehaviour
 
         Vector2Int targetLocation = LocationHelper.Nowhere;
 
-        // Select target based on strategy.
+        // SelectProfile target based on strategy.
         switch (attackStrategy)
         {
             case AttackStrategy.AttackClosest:

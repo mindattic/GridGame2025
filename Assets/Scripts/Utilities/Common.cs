@@ -1,4 +1,5 @@
 ﻿using Game.Models;
+using Game.Models.Profile;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,14 +69,18 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
+        public const string Header = "Canvas2D/Header";
+        public const string ScrollView = "Canvas2D/ScrollView";
+        public const string Viewport = "Canvas2D/ScrollView/Viewport";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
+        public const string Text = "Canvas2D/ScrollView/Viewport/Content/Credits";
     }
 
     public static class Game
     {
         public const string Canvas2D = "Canvas2D";
-        public const string Canvas3D = "Canvas3D";
         public const string Fade = "Canvas2D/Fade";
+        public const string Canvas3D = "Canvas3D";
         public const string PauseButton = "Canvas2D/PauseButton";
         public const string PauseMenu = "Canvas2D/PauseMenu";
         public const string WaveAnnouncement = "Canvas2D/WaveAnnouncement";
@@ -96,22 +101,24 @@ public static class ComponentHelper
     public static class Overworld
     {
         public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
         public const string Header = "Canvas2D/Header";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Viewport = "Canvas2D/ScrollView/Viewport";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
         public const string Map = "Canvas2D/ScrollView/Viewport/Content/Map";
         public const string Player = "Canvas2D/ScrollView/Viewport/Content/Player";
-        public const string Fade = "Canvas2D/Fade";
+        
     }
 
     public static class ProfileSelect
     {
         public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
         public const string Header = "Canvas2D/Header";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public const string Fade = "Canvas2D/Fade";
+       
     }
 
     public static class Splash
@@ -123,21 +130,20 @@ public static class ComponentHelper
     public static class Settings
     {
         public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
         public const string Header = "Canvas2D/Header";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public const string Fade = "Canvas2D/Fade";
-        public const string Credits = "Canvas2D/ScrollView/Viewport/Content/Credits";
-        public const string ProfileManager = "ProfileManager";
+        public const string ActorPanMultiplier = "Canvas2D/ScrollView/Viewport/Content/ActorPanMultiplier";
     }
 
     public static class StageSelect
     {
         public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
         public const string Header = "Canvas2D/Header";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public const string Fade = "Canvas2D/Fade";
     }
 
     public static class Title
@@ -272,7 +278,7 @@ public static class Tag
     public static string SupportLine = "SupportLine";
     public static string AttackLine = "AttackLine";
     public static string Trail = "Trail";
-    public static string Select = "Select";
+    public static string Select = "SelectProfile";
     public static string DamageText = "DamageText";
     public static string AnnouncementText = "AnnouncementText";
     public static string Portrait = "ActorPortrait";
@@ -1117,7 +1123,7 @@ public static class VirtualKeyboard
         int maxLength = 32,
         Action<string> onSubmit = default)
     {
-        //Load prefab from Resources
+        //Reload prefab from Resources
         var prefabPath = $"{ResourceFolderHelper.Prefabs}/VirtualKeyboard";
         var prefab = Resources.Load<GameObject>(prefabPath);
         if (prefab == null)
@@ -1133,7 +1139,7 @@ public static class VirtualKeyboard
             throw new UnityException("Failed to instantiate prefab");
         go.name = $"Keyboard";
 
-        //Get the Virtual Keyboard instance
+        //GetProfile the Virtual Keyboard instance
         VirtualKeyboardInstance instance = go.GetComponent<VirtualKeyboardInstance>();
         if (instance == null)
             throw new UnityException("VirtualKeyboardInstance component not found on the game object");
@@ -1144,4 +1150,43 @@ public static class VirtualKeyboard
         //Return the instance
         return instance;
     }
+}
+
+
+public static class StoreHelper
+{
+    public const string ProfileStore = "Stores/ProfileStore";
+} 
+
+public static class ProfileHelper
+{
+    public const string SettingsFileName = "settings.json";
+
+    public static ProfileSettings DefaultSettings = new ProfileSettings()
+    {
+        ActorPanMultiplier = 0.05f,
+        GameSpeed = 1.0f,
+    };
+
+    public static GlobalSaveData DefaultGlobal = new GlobalSaveData()
+    {
+        TotalCoins = 0,
+    };
+
+    public static StageSaveData DefaultStage = new StageSaveData()
+    {
+        CurrentStage = "Stage 1",
+        CurrentWave = 0,
+    };
+
+    public static PartySaveData DefaultParty = new PartySaveData()
+    {
+        PlayerActors = new List<StageActor>
+        {
+            new StageActor { Character = Character.Paladin, Team = Team.Player },
+            new StageActor { Character = Character.Barbarian, Team = Team.Player },
+            new StageActor { Character = Character.Cleric, Team = Team.Player },
+        }
+    };
+
 }

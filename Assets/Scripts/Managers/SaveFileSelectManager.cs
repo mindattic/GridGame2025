@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using Assets.Scripts.Store;
 using Game.Models;
+using Game.Models.Profile;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -27,8 +28,7 @@ public class SaveFileSelectManager : MonoBehaviour
     private float buttonHeight;
     private float spacing;
     private Fade fade;
-    private int saveFileCount;
-
+ 
     private void Awake()
     {
         // Use appropriate ComponentHelper names or adjust as needed
@@ -67,33 +67,31 @@ public class SaveFileSelectManager : MonoBehaviour
         }
 
         //Validate a current profile exists
-        Profile currentProfile = ProfileStore.instance.CurrentProfile;
-        if (currentProfile == null)
+        if (!ProfileStore.instance.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
             return;
         }
 
         //Retrieve all save files in profile folder
-        var saveFiles = Directory.GetFiles(currentProfile.Folder, "*.json").OrderByDescending(x => x).ToList();
-        saveFileCount = saveFiles.Count();
-
-        //Add each save fileName as a button 
-        int i = saveFileCount;
-        foreach (var fileName in saveFiles)
+        string savesFolder = Path.Combine(ProfileStore.instance.CurrentProfile.Folder, "Saves");
+        var saveFiles = Directory.GetFiles(savesFolder, "*.json").ToArray();
+ 
+        //TODO: Need to retrieve and parse all save files so that save data is available to populate button
+        foreach(var saveState in ProfileStore.instance.CurrentProfile.SaveStates)
         {
-            AddLoadSaveFileButton(fileName, i--);
+            AddLoadSaveFileButton(saveState);
         }
     }
 
-    public void AddLoadSaveFileButton(string fileName, int saveNumber)
+    public void AddLoadSaveFileButton(SaveState saveState)
     {
-        var saveName = Path.GetFileNameWithoutExtension(fileName);
+        string savesFolder = Path.Combine(ProfileStore.instance.CurrentProfile.Folder, "Saves");
+        string filePath = Path.Combine(savesFolder, saveState.FileName);
 
         //Instantiate the prefab as a child of `content`
         GameObject instance = Instantiate(buttonPrefab, content);
-        instance.name = $"SaveFile_{saveName}";
-
+        instance.name = $"Button_{Path.GetFileNameWithoutExtension(saveState.FileName)}";
 
         //Set the button size: 90% of width, 1/16th of height
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
@@ -101,42 +99,38 @@ public class SaveFileSelectManager : MonoBehaviour
 
         //Set the button click event
         Button button = instance.GetComponent<Button>();
-        button.onClick.AddListener(() => OnLoadSaveFileButtonClicked(fileName));
-
-        //Set the button text
-        var utcTimestamp = DateTimeHelper.ParseUtcTimestamp(saveName);
+        button.onClick.AddListener(() => OnLoadSaveFileButtonClicked(filePath));
 
         //Apply text to labels
-        instance.transform.Find("SaveNumber").GetComponent<Label>().text = $"Save {saveNumber:D3}";
-        instance.transform.Find("Timestamp").GetComponent<Label>().text = DateTimeHelper.ParseTimeElapsed(utcTimestamp);
+        instance.transform.Find("SaveNumber").GetComponent<Label>().text = $"Save {saveState.Index:D3}";
+        instance.transform.Find("Timestamp").GetComponent<Label>().text = DateTimeHelper.ParseTimeElapsed(saveState.Timestamp);
     }
 
     private void OnLoadSaveFileButtonClicked(string filePath)
     {
         try
         {
-            // Read and deserialize the selected save fileName
+            // Read and deserialize the selected save file.
             string json = File.ReadAllText(filePath);
-            SaveFile selectedSave = JsonConvert.DeserializeObject<SaveFile>(json);
+            SaveState selectedSave = JsonConvert.DeserializeObject<SaveState>(json);
             if (selectedSave != null)
             {
-                // Set the selected save as the active game state.
-                // Here we simply replace the current SaveFiles with the selected one.
                 ProfileStore.instance.CurrentProfile.CurrentSave = selectedSave;
 
-                // Proceed to load the game scene using the selected save.
+                // Proceed to load the game scene using the active save.
                 StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
             }
             else
             {
-                Debug.LogError("Failed to deserialize the selected save fileName.");
+                Debug.LogError("Failed to deserialize the selected save file.");
             }
         }
         catch (Exception ex)
         {
-            Debug.LogError($"Error loading save fileName {filePath}: {ex.Message}");
+            Debug.LogError($"Error loading save file {filePath}: {ex.Message}");
         }
     }
+
 
     public void OnBackButtonClicked()
     {

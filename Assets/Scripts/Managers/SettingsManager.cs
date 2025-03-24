@@ -12,7 +12,7 @@ public class SettingsManager : MonoBehaviour
     private RectTransform canvas2D;
     private Label header;
     private RectTransform scrollView;
-    private Transform content;
+    private RectTransform content;
     private VerticalLayoutGroup verticalLayoutGroup;
     private float screenWidth;
     private float screenHeight;
@@ -21,14 +21,20 @@ public class SettingsManager : MonoBehaviour
     private float spacing;
     private Fade fade;
 
+
+    private RectTransform actorPanMultiplier;
+
     private void Awake()
     {
-        canvas2D = GameObject.Find(ComponentHelper.Settings.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
-        header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>() ?? throw new UnityException("Label is null");
-        scrollView = GameObject.Find(ComponentHelper.Settings.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
-        content = GameObject.Find(ComponentHelper.Settings.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
-        verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
-        fade = GameObject.Find(ComponentHelper.Settings.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        canvas2D = GameObject.Find(ComponentHelper.Settings.Canvas2D).GetComponent<RectTransform>();
+        header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>();
+        scrollView = GameObject.Find(ComponentHelper.Settings.ScrollView).GetComponent<RectTransform>();
+        content = GameObject.Find(ComponentHelper.Settings.Content).GetComponent<RectTransform>();
+        verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
+        fade = GameObject.Find(ComponentHelper.Settings.Fade).GetComponent<Fade>();
+        actorPanMultiplier = GameObject.Find(ComponentHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
+
+
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
@@ -41,6 +47,11 @@ public class SettingsManager : MonoBehaviour
 
         spacing = 0.01f * screenHeight;
         verticalLayoutGroup.spacing = spacing;
+
+
+        actorPanMultiplier.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+
+
     }
 
     // Start is called once before the first execution of Save after the MonoBehaviour is created
@@ -52,5 +63,13 @@ public class SettingsManager : MonoBehaviour
     public void OnBackButtonClicked()
     {
         StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
+    }
+
+
+
+    public void UpdateActorPanMultiplier()
+    {
+        var slider = actorPanMultiplier.GetComponent<Slider>();
+        ProfileStore.instance.CurrentProfile.Settings.ActorPanMultiplier = slider.value;
     }
 }
