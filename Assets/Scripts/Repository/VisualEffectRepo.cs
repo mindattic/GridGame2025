@@ -2,19 +2,19 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "VisualEffectStore", menuName = "Stores/VisualEffectStore")]
-public class VisualEffectStore : ScriptableObject
+[CreateAssetMenu(fileName = "VisualEffectRepo", menuName = "Repositories/VisualEffectRepo")]
+public class VisualEffectRepo : ScriptableObject
 {
     //Singleton
-    private static VisualEffectStore _instance;
+    private static VisualEffectRepo Instance;
 
-    public static VisualEffectStore instance
+    public static VisualEffectRepo instance
     {
         get
         {
-            if (_instance == null)
-                Debug.LogError("VisualEffectStore accessed before being initialized! Ensure it's assigned in Awake().");
-            return _instance;
+            if (Instance == null)
+                Debug.LogError("VisualEffectRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            return Instance;
         }
     }
 
@@ -22,11 +22,11 @@ public class VisualEffectStore : ScriptableObject
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = Resources.Load<VisualEffectStore>("Stores/VisualEffectStore");
-            if (_instance == null)
-                Debug.LogError("VisualEffectStore asset not found in Resources/Stores/VisualEffectStore");
+            Instance = Resources.Load<VisualEffectRepo>("Repositories/VisualEffectRepo");
+            if (Instance == null)
+                Debug.LogError("VisualEffectRepo asset not found in Resources/Repositories/VisualEffectRepo");
         }
     }
 

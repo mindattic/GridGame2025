@@ -1,4 +1,4 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -62,7 +62,7 @@ public class SettingsManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
     }
 
 
@@ -70,6 +70,6 @@ public class SettingsManager : MonoBehaviour
     public void UpdateActorPanMultiplier()
     {
         var slider = actorPanMultiplier.GetComponent<Slider>();
-        ProfileStore.instance.CurrentProfile.Settings.ActorPanMultiplier = slider.value;
+        ProfileRepo.instance.CurrentProfile.Settings.ActorPanMultiplier = slider.value;
     }
 }

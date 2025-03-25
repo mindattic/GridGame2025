@@ -1,4 +1,4 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,11 +36,11 @@ namespace Game.Behaviors
         AnimationCurve slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // Easing curve for slide-in animation.
         float slideDuration = 0.5f;      // Duration of the slide-in animation in seconds.
 
-        // Awake is called when the script _instance is loaded.
+        // Awake is called when the script Instance is loaded.
         // This method initializes references to UI elements by finding them in the scene.
         private void Awake()
         {
-            // GetProfile the RectTransform component of the card.
+            //Get the RectTransform component of the card.
             rectTransform = GetComponent<RectTransform>();
 
             // Find and assign UI GameObjects using predefined constant names.
@@ -126,7 +126,7 @@ namespace Game.Behaviors
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
             // Set the details text combining the stats table with extra details from DataManager.
-            detailsText.text = stats + ActorStore.instance.GetDetails(focusedActor.character).Card;
+            detailsText.text = stats + ActorRepo.instance.GetDetails(focusedActor.character).Card;
 
             // Begin the slide-in animation for the portrait.
             TriggerSlideIn();

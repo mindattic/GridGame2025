@@ -60,4 +60,14 @@ public class Fade : MonoBehaviour
         if (coroutine != null)
             yield return coroutine;
     }
+
+    public void Show()
+    {
+        image.color = new Color(0, 0, 0, 0);
+    }
+
+    public void Hide()
+    {
+        image.color = new Color(0, 0, 0, 1);
+    }
 }

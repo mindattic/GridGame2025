@@ -2,19 +2,19 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TutorialStore", menuName = "Stores/TutorialStore")]
-public class TutorialStore : ScriptableObject
+[CreateAssetMenu(fileName = "TutorialRepo", menuName = "Repositories/TutorialRepo")]
+public class TutorialRepo : ScriptableObject
 {
     //Singleton
-    private static TutorialStore _instance;
+    private static TutorialRepo Instance;
 
-    public static TutorialStore instance
+    public static TutorialRepo instance
     {
         get
         {
-            if (_instance == null)
-                Debug.LogError("TutorialStore accessed before being initialized! Ensure it's assigned in Awake().");
-            return _instance;
+            if (Instance == null)
+                Debug.LogError("TutorialRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            return Instance;
         }
     }
 
@@ -22,11 +22,11 @@ public class TutorialStore : ScriptableObject
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = Resources.Load<TutorialStore>("Stores/TutorialStore");
-            if (_instance == null)
-                Debug.LogError("TutorialStore asset not found in Resources/Stores/TutorialStore");
+            Instance = Resources.Load<TutorialRepo>("Repositories/TutorialRepo");
+            if (Instance == null)
+                Debug.LogError("TutorialRepo asset not found in Resources/Repositories/TutorialRepo");
         }
     }
 

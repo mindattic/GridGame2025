@@ -2,19 +2,19 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "StageStore", menuName = "Stores/StageStore")]
-public class StageStore : ScriptableObject
+[CreateAssetMenu(fileName = "StageRepo", menuName = "Repositories/StageRepo")]
+public class StageRepo : ScriptableObject
 {
     //Singleton
-    private static StageStore _instance;
+    private static StageRepo Instance;
 
-    public static StageStore instance
+    public static StageRepo instance
     {
         get
         {
-            if (_instance == null)
-                Debug.LogError("StageStore accessed before being initialized! Ensure it's assigned in Awake().");
-            return _instance;
+            if (Instance == null)
+                Debug.LogError("StageRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            return Instance;
         }
     }
 
@@ -22,11 +22,11 @@ public class StageStore : ScriptableObject
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = Resources.Load<StageStore>("Stores/StageStore");
-            if (_instance == null)
-                Debug.LogError("StageStore asset not found in Resources/Stores/StageStore");
+            Instance = Resources.Load<StageRepo>("Repositories/StageRepo");
+            if (Instance == null)
+                Debug.LogError("StageRepo asset not found in Resources/Repositories/StageRepo");
         }
     }
 
@@ -156,7 +156,7 @@ public class StageStore : ScriptableObject
     /// <returns>A list of StageWave.</returns>
     private List<StageWave> GenerateWaves(int waveCount, List<Character> possibleEnemies)
     {
-        //DEBUG: Manually enter heros in here for now, should be stored in ProfileStore
+        //DEBUG: Manually enter heros in here for now, should be stored in ProfileRepo
 
 
 

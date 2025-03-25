@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Models;
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using Game.Models;
 using Game.Models.Profile;
 using Newtonsoft.Json;
@@ -28,7 +28,7 @@ public class SaveFileSelectManager : MonoBehaviour
     private float buttonHeight;
     private float spacing;
     private Fade fade;
- 
+
     private void Awake()
     {
         // Use appropriate ComponentHelper names or adjust as needed
@@ -38,7 +38,7 @@ public class SaveFileSelectManager : MonoBehaviour
         content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
         fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
-
+  
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
 
@@ -67,18 +67,18 @@ public class SaveFileSelectManager : MonoBehaviour
         }
 
         //Validate a current profile exists
-        if (!ProfileStore.instance.HasCurrentProfile)
+        if (!ProfileRepo.instance.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
             return;
         }
 
         //Retrieve all save files in profile folder
-        string savesFolder = Path.Combine(ProfileStore.instance.CurrentProfile.Folder, "Saves");
+        string savesFolder = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
         var saveFiles = Directory.GetFiles(savesFolder, "*.json").ToArray();
  
         //TODO: Need to retrieve and parse all save files so that save data is available to populate button
-        foreach(var saveState in ProfileStore.instance.CurrentProfile.SaveStates)
+        foreach(var saveState in ProfileRepo.instance.CurrentProfile.SaveStates)
         {
             AddLoadSaveFileButton(saveState);
         }
@@ -86,7 +86,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void AddLoadSaveFileButton(SaveState saveState)
     {
-        string savesFolder = Path.Combine(ProfileStore.instance.CurrentProfile.Folder, "Saves");
+        string savesFolder = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
         string filePath = Path.Combine(savesFolder, saveState.FileName);
 
         //Instantiate the prefab as a child of `content`
@@ -115,10 +115,10 @@ public class SaveFileSelectManager : MonoBehaviour
             SaveState selectedSave = JsonConvert.DeserializeObject<SaveState>(json);
             if (selectedSave != null)
             {
-                ProfileStore.instance.CurrentProfile.CurrentSave = selectedSave;
+                ProfileRepo.instance.CurrentProfile.CurrentSave = selectedSave;
 
                 // Proceed to load the game scene using the active save.
-                StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
+                StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
             }
             else
             {
@@ -134,6 +134,6 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
     }
 }

@@ -10,7 +10,7 @@ public class ActorActionBar
     // Quick Reference Properties:
     // These properties provide direct access to relevant game managers and the CurrentProfile actor's modules.
     protected DebugManager debugManager => GameManager.instance.debugManager;
-    // Retrieves the flags module from the CurrentProfile actor _instance to check various state flags.
+    // Retrieves the flags module from the CurrentProfile actor Instance to check various state flags.
     protected ActorFlags flags => instance.flags;
     // Provides access to the currently selected player (if any) from the GameManager.
     protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
@@ -25,7 +25,7 @@ public class ActorActionBar
     // Cache the initial scale of the action bar's background element, used for calculating fill/drain scale.
     private Vector3 initialScale => render.actionBarBack.transform.localScale;
 
-    // Field to store the parent actor _instance that this action bar is associated with.
+    // Field to store the parent actor Instance that this action bar is associated with.
     private ActorInstance instance;
 
     // Assign sets up the ActionBar by linking it to its parent ActorInstance.
@@ -60,7 +60,7 @@ public class ActorActionBar
     }
 
     // TriggerDrain starts the drain coroutine to animate the reduction of the drain bar,
-    // but only if the actor _instance is active.
+    // but only if the actor Instance is active.
     private void TriggerDrain()
     {
         if (instance.isActive)

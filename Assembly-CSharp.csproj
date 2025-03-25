@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Managers\DamageTextManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ActionManager.cs" />
+    <Compile Include="Assets\Scripts\Instances\VirtualKeyboardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyStartAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Board\FocusIndicator.cs" />
+    <Compile Include="Assets\Scripts\Repository\TrailEffectRepo.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
     <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
     <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
@@ -93,17 +95,14 @@
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
-    <Compile Include="Assets\Scripts\Stores\VisualEffectStore.cs" />
     <Compile Include="Assets\Scripts\Managers\DatabaseManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
-    <Compile Include="Assets\VirtualKeyboardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
-    <Compile Include="Assets\Scripts\Stores\ActorStore.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Canvas\Fade.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
@@ -111,6 +110,7 @@
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackAction.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
+    <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
     <Compile Include="Assets\Scripts\Actions\DirectAttackAction.cs" />
     <Compile Include="Assets\Scripts\Models\AnimatedImage.cs" />
@@ -123,9 +123,12 @@
     <Compile Include="Assets\Scripts\Managers\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
+    <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
+    <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
+    <Compile Include="Assets\Scripts\Repository\ProfileRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyMoveAction.cs" />
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
@@ -148,9 +151,9 @@
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\Trigger.cs" />
-    <Compile Include="Assets\Scripts\Stores\ProfileStore.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceModels.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
+    <Compile Include="Assets\Scripts\Repository\TutorialRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
@@ -164,13 +167,10 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
-    <Compile Include="Assets\Scripts\Stores\SceneStore.cs" />
+    <Compile Include="Assets\Scripts\Repository\SceneRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
-    <Compile Include="Assets\Scripts\Stores\TrailEffectStore.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
-    <Compile Include="Assets\Scripts\Stores\TutorialStore.cs" />
-    <Compile Include="Assets\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
@@ -182,6 +182,7 @@
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
+    <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
@@ -197,9 +198,9 @@
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
+    <Compile Include="Assets\Scripts\Repository\VisualEffectRepo.cs" />
     <Compile Include="Assets\Scripts\Utilities\ConvertString.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
-    <Compile Include="Assets\Scripts\Stores\StageStore.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackSupportAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SpellInstance.cs" />

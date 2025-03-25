@@ -2,23 +2,23 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Store
+namespace Assets.Scripts.Repositories
 {
-    [CreateAssetMenu(fileName = "SceneStore", menuName = "Stores/SceneStore")]
-    public class SceneStore : ScriptableObject
+    [CreateAssetMenu(fileName = "SceneRepo", menuName = "Repositories/SceneRepo")]
+    public class SceneRepo : ScriptableObject
     {
         // Singleton reference
-        private static SceneStore _instance;
+        private static SceneRepo Instance;
 
-        public static SceneStore instance
+        public static SceneRepo instance
         {
             get
             {
-                if (_instance == null)
+                if (Instance == null)
                 {
-                    Debug.LogError("SceneStore accessed before being initialized!");
+                    Debug.LogError("SceneRepo accessed before being initialized!");
                 }
-                return _instance;
+                return Instance;
             }
         }
 
@@ -26,11 +26,11 @@ namespace Assets.Scripts.Store
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void AutoInitialize()
         {
-            if (_instance == null)
+            if (Instance == null)
             {
-                _instance = Resources.Load<SceneStore>("Stores/SceneStore");
-                if (_instance == null)
-                    Debug.LogError("SceneStore asset not found in Resources/Stores/SceneStore");
+                Instance = Resources.Load<SceneRepo>("Repositories/SceneRepo");
+                if (Instance == null)
+                    Debug.LogError("SceneRepo asset not found in Resources/Repositories/SceneRepo");
             }
         }
 

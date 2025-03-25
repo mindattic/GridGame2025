@@ -53,13 +53,13 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var latestSave = ProfileStore.instance.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
+        var latestSave = ProfileRepo.instance.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
         if (latestSave == null)
         {
             Debug.LogError("No saved game state found.");
             return;
         }
-        currentStage = StageStore.instance.Get(latestSave.Stage.CurrentStage);
+        currentStage = StageRepo.instance.Get(latestSave.Stage.CurrentStage);
         RestartStage();
     }
 
@@ -70,7 +70,7 @@ public class StageManager : MonoBehaviour
     public void RestartStage()
     {
         // Reset everything for a new stage.
-        var latestSave = ProfileStore.instance.CurrentProfile.LatestSave;
+        var latestSave = ProfileRepo.instance.CurrentProfile.LatestSave;
         currentWave = latestSave.Stage.CurrentWave;
         actorManager.Clear();
         dottedLineManager.Clear();
@@ -79,8 +79,8 @@ public class StageManager : MonoBehaviour
         tileManager.Reset();
         turnManager.Initialize();
 
-        // Assign persistent player actors from ProfileStore
-        foreach (var playerActor in ProfileStore.instance.CurrentProfile.CurrentSave.Party.PlayerActors)
+        // Assign persistent player actors from ProfileRepo
+        foreach (var playerActor in ProfileRepo.instance.CurrentProfile.CurrentSave.Party.PlayerActors)
         {
             SpawnActor(new StageActor(playerActor));
         }
@@ -142,10 +142,10 @@ public class StageManager : MonoBehaviour
         var instance = prefab.GetComponent<ActorInstance>();
         instance.transform.parent = board.transform;
         instance.character = stageActor.Character;
-        instance.friendlyName = instance.character.ToString().Split("_instance")[0];
-        instance.name = $"{stageActor.Character}_instance{Guid.NewGuid():N}";
+        instance.friendlyName = instance.character.ToString().Split("Instance")[0];
+        instance.name = $"{stageActor.Character}Instance{Guid.NewGuid():N}";
         instance.team = stageActor.Team;
-        instance.stats = ActorStore.instance.GetStats(stageActor.Character);
+        instance.stats = ActorRepo.instance.GetStats(stageActor.Character);
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
         instance.Spawn(stageActor.Location.Value);
@@ -193,7 +193,7 @@ public class StageManager : MonoBehaviour
         IEnumerator loadNextStage()
         {
             var stageName = currentStage.NextStage;
-            currentStage = StageStore.instance.Get(stageName);
+            currentStage = StageRepo.instance.Get(stageName);
             RestartStage();
             yield return null;
         }

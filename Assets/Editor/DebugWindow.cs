@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Models;
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using Game.Behaviors;
 using System;
 using System.Linq;
@@ -304,19 +304,19 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
         isClicked = GUILayout.Button("Splash Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneStore.instance.LoadScene(SceneHelper.Splash);
+            SceneRepo.instance.LoadScene(SceneHelper.Splash);
 
         isClicked = GUILayout.Button("Title Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneStore.instance.LoadScene(SceneHelper.Title);
+            SceneRepo.instance.LoadScene(SceneHelper.Title);
 
         isClicked = GUILayout.Button("Options Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneStore.instance.LoadScene(SceneHelper.Settings);
+            SceneRepo.instance.LoadScene(SceneHelper.Settings);
 
         isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneStore.instance.LoadScene(SceneHelper.Game);
+            SceneRepo.instance.LoadScene(SceneHelper.Game);
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);

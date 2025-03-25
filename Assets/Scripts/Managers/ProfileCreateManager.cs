@@ -1,0 +1,43 @@
+using Assets.Scripts.Repositories;
+using System.Collections;
+using UnityEngine;
+
+public class ProfileCreateManager : MonoBehaviour
+{
+    //Fields
+    private RectTransform canvas2D;
+    private RectTransform background;
+    private Fade fade;
+    private float screenWidth;
+    private float screenHeight;
+
+    private void Awake()
+    {
+        canvas2D = GameObject.Find(ComponentHelper.ProfileCreate.Canvas2D).GetComponent<RectTransform>();
+        background = GameObject.Find(ComponentHelper.ProfileCreate.Background).GetComponent<RectTransform>();
+        fade = GameObject.Find(ComponentHelper.ProfileCreate.Fade).GetComponent<Fade>();
+
+        screenWidth = canvas2D.rect.width;
+        screenHeight = canvas2D.rect.height;
+
+        background.sizeDelta = new Vector2(screenWidth, screenHeight);
+    }
+
+
+    private IEnumerator ShowKeyboard()
+    {
+        VirtualKeyboard.Show(canvas2D, "Who are you?", onSubmit: (input) =>
+        {
+            ProfileRepo.instance.CreateProfile(input);
+            StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
+        });
+
+        yield return null;
+    }
+
+
+    private void Start()
+    {
+        StartCoroutine(fade.FadeIn(ShowKeyboard()));
+    }
+}

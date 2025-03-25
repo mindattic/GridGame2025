@@ -1,23 +1,41 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
 
 public class TitleManager : MonoBehaviour
 {
     //Fields
+    private RectTransform canvas2D;
+    private RectTransform mainMenu;
+    private RectTransform continueButton;
+    private RectTransform loadGameButton;
     private Fade fade;
-    private Button[] buttons;
 
     private Label currentProfileLabel;
 
     private void Awake()
     {
-        fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
-        buttons = GameObject.Find(ComponentHelper.Title.MainMenu).GetComponentsInChildren<Button>();
-        MenuHelper.Initialize(buttons);
+        canvas2D = GameObject.Find(ComponentHelper.Title.Canvas2D).GetComponent<RectTransform>();
+        mainMenu = GameObject.Find(ComponentHelper.Title.MainMenu).GetComponent<RectTransform>();
+        continueButton = GameObject.Find(ComponentHelper.Title.ContinueButton).GetComponent<RectTransform>();
+        loadGameButton = GameObject.Find(ComponentHelper.Title.LoadGameButton).GetComponent<RectTransform>();
+        fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>();
+
+        if (!ProfileRepo.instance.HasProfiles)
+        {
+            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+            //fade.Show();
+            //continueButton.gameObject.SetActive(false);
+            //loadGameButton.gameObject.SetActive(false);
+
+            //StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.ProfileCreate)));
+            return;
+        }
+
         currentProfileLabel = GameObject.Find(ComponentHelper.Title.ChangeProfileButtonLabel).GetComponent<Label>();
-        currentProfileLabel.text = ProfileStore.instance.CurrentProfile.Key;
+        currentProfileLabel.text = ProfileRepo.instance.CurrentProfile.Key;
     }
 
     private void Start()
@@ -27,41 +45,32 @@ public class TitleManager : MonoBehaviour
 
     public void OnContinueButtonClicked()
     {
-        MenuHelper.DisableButtons(buttons);
-
-        ProfileStore.instance.CurrentProfile.CurrentSave = ProfileStore.instance.CurrentProfile.LatestSave;
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
-    }
-
-    public void OnNewGameButtonClicked()
-    {
-        MenuHelper.DisableButtons(buttons);
-        ProfileStore.instance.CreateProfile();
-        ProfileStore.instance.Reload();
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Overworld)));
+        ProfileRepo.instance.CurrentProfile.CurrentSave = ProfileRepo.instance.CurrentProfile.LatestSave;
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
     }
 
     public void OnLoadGameButtonClicked()
     {
-        MenuHelper.DisableButtons(buttons);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.SaveFileSelect)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.SaveFileSelect)));
+    }
+
+    public void OnNewGameButtonClicked()
+    {
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.ProfileCreate)));
     }
 
     public void OnSettingsButtonClicked()
     {
-        MenuHelper.DisableButtons(buttons);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnCreditsButtonClicked()
     {
-        MenuHelper.DisableButtons(buttons);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Credits)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Credits)));
     }
 
     public void OnChangeProfileButtonClicked()
     {
-        MenuHelper.DisableButtons(buttons);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.ProfileSelect)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.ProfileSelect)));
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Instances.Actor
 {
-    // ActorActions encapsulates a collection of animated actions for an actor _instance,
+    // ActorActions encapsulates a collection of animated actions for an actor Instance,
     // such as shaking, dodging, bumping, growing, spinning, fading in, and weapon wiggle.
     // These actions are implemented using coroutines that interpolate values over time.
     public class ActorActions
@@ -24,14 +24,14 @@ namespace Assets.Scripts.Instances.Actor
         protected Vector3 tileScale => GameManager.instance.tileScale;
 
         // Fields:
-        // The parent actor _instance this actions module is controlling.
+        // The parent actor Instance this actions module is controlling.
         private ActorInstance instance;
         // Parameters for the weapon wiggle animation.
         private float wiggleSpeed;
         private float wiggleAmplitude;
 
         /// <summary>
-        /// Assign sets up this actions module with its parent actor _instance and calculates
+        /// Assign sets up this actions module with its parent actor Instance and calculates
         /// initial parameters for animations.
         /// </summary>
         public void Initialize(ActorInstance parentInstance)
@@ -74,7 +74,7 @@ namespace Assets.Scripts.Instances.Actor
             // Retrieve intensity and duration from the trigger.
             float intensity = (float)trigger.GetAttribute("intensity", 0f);
             float duration = (float)trigger.GetAttribute("duration", 0f);
-            // Store the original position of the actor's CurrentProfile tile.
+            // Repositories the original position of the actor's CurrentProfile tile.
             var originalPosition = instance.currentTile.position;
             float elapsedTime = 0f;
 
@@ -232,7 +232,7 @@ namespace Assets.Scripts.Instances.Actor
             var windupDuration = 0.15f;
             var bumpDuration = 0.1f;
             var returnDuration = 0.3f;
-            // GetProfile the actor's CurrentProfile position.
+            //Get the actor's CurrentProfile position.
             var startPosition = instance.currentTile.position;
             // Calculate positions for windup (backward) and bump (forward) movements.
             var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), tileSize * percent33);

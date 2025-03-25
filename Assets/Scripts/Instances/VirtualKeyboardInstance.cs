@@ -379,11 +379,9 @@ public class VirtualKeyboardInstance : MonoBehaviour
         var character = isCapsLockOn && char.IsLetter(c) ? char.ToUpper(c) : char.ToLower(c);
         InputText += character;
 
-        //Toggle off caps lock on first key press
-        if (isCapsLockOn && InputText.Length == 1)
-        {
+        //Toggle off caps lock off after every keypress
+        if (isCapsLockOn)
             ToggleCapsLock();
-        }
     }
 
     private void Backspace()

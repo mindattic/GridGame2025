@@ -1,4 +1,4 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -67,22 +67,22 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         MenuHelper.DisableButtons(buttons);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
         MenuHelper.DisableButtons(buttons);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.StageSelect)));   
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.StageSelect)));   
     }
 
     public void OnQuitButtonClicked()
     {
         Time.timeScale = 1f;
         MenuHelper.DisableButtons(buttons);
-        ProfileStore.instance.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
+        ProfileRepo.instance.Save(overwrite: true);
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
     }
 
 

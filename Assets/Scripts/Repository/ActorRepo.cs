@@ -2,19 +2,19 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ActorStore", menuName = "Stores/ActorStore")]
-public class ActorStore : ScriptableObject
+[CreateAssetMenu(fileName = "ActorRepo", menuName = "Repositories/ActorRepo")]
+public class ActorRepo : ScriptableObject
 {
     //Singleton
-    private static ActorStore _instance;
+    private static ActorRepo Instance;
 
-    public static ActorStore instance
+    public static ActorRepo instance
     {
         get
         {
-            if (_instance == null)
-                Debug.LogError("ActorStore accessed before being initialized! Ensure it's assigned in Awake().");
-            return _instance;
+            if (Instance == null)
+                Debug.LogError("ActorRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            return Instance;
         }
     }
 
@@ -22,11 +22,11 @@ public class ActorStore : ScriptableObject
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = Resources.Load<ActorStore>("Stores/ActorStore");
-            if (_instance == null)
-                Debug.LogError("ActorStore asset not found in Resources/Stores/ActorStore");
+            Instance = Resources.Load<ActorRepo>("Repositories/ActorRepo");
+            if (Instance == null)
+                Debug.LogError("ActorRepo asset not found in Resources/Repositories/ActorRepo");
         }
     }
 

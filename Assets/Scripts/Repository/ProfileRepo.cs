@@ -5,19 +5,20 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[CreateAssetMenu(fileName = "ProfileStore", menuName = "Stores/ProfileStore")]
-public class ProfileStore : ScriptableObject
+[CreateAssetMenu(fileName = "ProfileRepo", menuName = "Repositories/ProfileRepo")]
+public class ProfileRepo : ScriptableObject
 {
     // Singleton instance
-    private static ProfileStore _instance;
-    public static ProfileStore instance
+    private static ProfileRepo Instance;
+    public static ProfileRepo instance
     {
         get
         {
-            if (_instance == null)
-                Debug.LogError("ProfileStore accessed before being initialized! Ensure it's assigned in Awake().");
-            return _instance;
+            if (Instance == null)
+                Debug.LogError("ProfileRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            return Instance;
         }
     }
 
@@ -25,11 +26,11 @@ public class ProfileStore : ScriptableObject
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = Resources.Load<ProfileStore>(StoreHelper.ProfileStore);
-            if (_instance == null)
-                Debug.LogError($"{StoreHelper.ProfileStore} asset not found.");
+            Instance = Resources.Load<ProfileRepo>(RepositoryHelper.ProfileRepo);
+            if (Instance == null)
+                Debug.LogError($"{RepositoryHelper.ProfileRepo} asset not found.");
         }
     }
 
@@ -66,17 +67,19 @@ public class ProfileStore : ScriptableObject
         folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
         if (!HasFolders)
         {
-            // Create a new profile folder if none exist.
-            CreateProfile();
-            folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
+            //TODO: Somehow fix this so that monobehavior calls this and creates a profile when none is available...
+            //SceneManager.LoadSceneAsync(SceneHelper.ProfileCreate);
+            return false;
         }
+
+        folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
         if (!folders.Any())
         {
             Debug.LogError("No folders found");
             return false;
         }
 
-        // Populate profile list
+        //Populate profile list
         profiles = new Dictionary<string, Profile>();
         foreach (var folder in folders)
         {
@@ -99,14 +102,14 @@ public class ProfileStore : ScriptableObject
         return success;
     }
 
-    public string CreateProfile()
+    public string CreateProfile(string input)
     {
         //Generate a unique key and create profile folder
         string key;
         string folder;
         do
         {
-            key = $"{Guid.NewGuid():N}";
+            key = !string.IsNullOrWhiteSpace(input) ? input : $"{Guid.NewGuid():N}";
             folder = Path.Combine(FolderHelper.Folder.Profiles, key);
         } while (Directory.Exists(folder));
         Directory.CreateDirectory(folder);

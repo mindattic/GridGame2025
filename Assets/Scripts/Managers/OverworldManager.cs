@@ -1,4 +1,4 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,17 +29,15 @@ public class OverworldManager : MonoBehaviour
 
     private void Awake()
     {
-        header = GameObject.Find(ComponentHelper.Overworld.Header).GetComponent<Label>() ?? throw new UnityException("Label is null");
-
-        canvas2D = GameObject.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
-        scrollView = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
-        scrollRect = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<ScrollRect>() ?? throw new UnityException("ScrollRect is null");
-        viewport = GameObject.Find(ComponentHelper.Overworld.Viewport).GetComponent<RectTransform>() ?? throw new UnityException("Viewport is null");
-        content = GameObject.Find(ComponentHelper.Overworld.Content).GetComponent<RectTransform>() ?? throw new UnityException("Content is null");
-        map = GameObject.Find(ComponentHelper.Overworld.Map).GetComponent<RectTransform>() ?? throw new UnityException("Map is null");
-        player = GameObject.Find(ComponentHelper.Overworld.Player).GetComponent<PlayerStageMover>() ?? throw new UnityException("Player is null");
-
-        fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        header = GameObject.Find(ComponentHelper.Overworld.Header).GetComponent<Label>();
+        canvas2D = GameObject.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>();
+        scrollView = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>();
+        scrollRect = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<ScrollRect>();
+        viewport = GameObject.Find(ComponentHelper.Overworld.Viewport).GetComponent<RectTransform>();
+        content = GameObject.Find(ComponentHelper.Overworld.Content).GetComponent<RectTransform>();
+        map = GameObject.Find(ComponentHelper.Overworld.Map).GetComponent<RectTransform>();
+        player = GameObject.Find(ComponentHelper.Overworld.Player).GetComponent<PlayerStageMover>();
+        fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<Fade>();
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
@@ -52,12 +50,6 @@ public class OverworldManager : MonoBehaviour
 
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         FindStageButtons();
-
-        VirtualKeyboard.Show(canvas2D, "What is your name?", onSubmit: (inputText) =>
-        {
-            Debug.Log("User entered: " + inputText);
-        });
-
     }
 
 
@@ -113,7 +105,7 @@ public class OverworldManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
     }
 
     public void OnCenterOnPlayerClicked()

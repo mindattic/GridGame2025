@@ -192,10 +192,10 @@ public class ActorInstance : MonoBehaviour
         return Direction.None;
     }
 
-    // Awake: Initialization of the actor _instance. Sets up modules and subscribes to events.
+    // Awake: Initialization of the actor Instance. Sets up modules and subscribes to events.
     private void Awake()
     {
-        // Assign modules with this actor _instance context.
+        // Assign modules with this actor Instance context.
         render.Initialize(this);
         action.Initialize(this);
         movement.Initialize(this);

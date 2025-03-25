@@ -283,7 +283,7 @@ public class PincerAttackManager : MonoBehaviour
         if (!a.IsSameRow(b.location) && !a.IsSameColumn(b.location))
             return true;
 
-        // GetProfile all locations between the two actors.
+        //Get all locations between the two actors.
         var between = Geometry.GetLocationsBetween(a.location, b.location);
         // Check if any playing actor occupies a location in between that is either an enemy or coincides with one of the endpoints.
         return actors

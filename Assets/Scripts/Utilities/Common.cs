@@ -15,6 +15,7 @@ public static class SceneHelper
     public static string Credits = "Credits";
     public static string Game = "Game";
     public static string Overworld = "Overworld";
+    public static string ProfileCreate = "ProfileCreate";
     public static string ProfileSelect = "ProfileSelect";
     public static string SaveFileSelect = "SaveFileSelect";
     public static string Splash = "Splash";
@@ -111,6 +112,16 @@ public static class ComponentHelper
         
     }
 
+    public static class ProfileCreate
+    {
+        public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
+        public const string Header = "Canvas2D/Header";
+        public const string Background = "Canvas2D/Background";
+
+    }
+
+
     public static class ProfileSelect
     {
         public const string Canvas2D = "Canvas2D";
@@ -151,6 +162,8 @@ public static class ComponentHelper
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
         public const string MainMenu = "Canvas2D/MainMenu";
+        public const string ContinueButton = "Canvas2D/MainMenu/ContinueButton";
+        public const string LoadGameButton = "Canvas2D/MainMenu/LoadGameButton";
         public const string ChangeProfileButton = "Canvas2D/ChangeProfileButton";
         public const string ChangeProfileButtonLabel = "Canvas2D/ChangeProfileButton/Label";
     }
@@ -1115,7 +1128,7 @@ public static class ResourceFolderHelper
 public static class VirtualKeyboard
 {
     public static VirtualKeyboardInstance Show(
-        RectTransform canvas,
+        RectTransform canvas2D,
         string promptText,
         string confirmText = "Are you sure?",
         string initialText = "",
@@ -1129,17 +1142,17 @@ public static class VirtualKeyboard
         if (prefab == null)
             throw new UnityException($"Prefab `{prefabPath}` not found");
 
-        //Find a parent canvas
-        if (canvas == null)
-            throw new UnityException("Canvas not found");
+        //Find a parent canvas2D
+        if (canvas2D == null)
+            throw new UnityException("Canvas2D not found");
 
         //Instantiate prefab
-        GameObject go = GameObject.Instantiate(prefab, canvas);
+        GameObject go = GameObject.Instantiate(prefab, canvas2D);
         if (go == null)
             throw new UnityException("Failed to instantiate prefab");
         go.name = $"Keyboard";
 
-        //GetProfile the Virtual Keyboard instance
+        //Get the Virtual Keyboard instance
         VirtualKeyboardInstance instance = go.GetComponent<VirtualKeyboardInstance>();
         if (instance == null)
             throw new UnityException("VirtualKeyboardInstance component not found on the game object");
@@ -1153,14 +1166,14 @@ public static class VirtualKeyboard
 }
 
 
-public static class StoreHelper
+public static class RepositoryHelper
 {
-    public const string ProfileStore = "Stores/ProfileStore";
+    public const string ProfileRepo = "Repositories/ProfileRepo";
 } 
 
 public static class ProfileHelper
 {
-    public const string SettingsFileName = "settings.json";
+    public const string SettingsFileName = "Settings.json";
 
     public static ProfileSettings DefaultSettings = new ProfileSettings()
     {

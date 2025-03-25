@@ -1,5 +1,5 @@
 using Assets.Scripts.Models;
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using Assets.Scripts.Utilities;
 using Game.Behaviors;
 using Newtonsoft.Json;
@@ -323,7 +323,7 @@ public class ResourceManager : MonoBehaviour
             foreach (var key in keys)
             {
                 //DEBUG: Should the JSON parsing be here in the Resource Manager? Or depend on OOO?...
-                var data = TrailEffectStore.instance.Get(key);
+                var data = TrailEffectRepo.instance.Get(key);
                 if (data == null)
                 {
                     logManager.Error($"Trail Effect Entry `{key}` is null");
@@ -369,7 +369,7 @@ public class ResourceManager : MonoBehaviour
         {
             foreach (var key in keys)
             {
-                var data = VisualEffectStore.instance.Get(key);
+                var data = VisualEffectRepo.instance.Get(key);
                 if (data == null)
                 {
                     logManager.Error($"Visual Effect Entry `{key}` is null");
@@ -414,7 +414,7 @@ public class ResourceManager : MonoBehaviour
         //try
         //{
         //    //Assign JSON from Resources
-        //    TextAsset jsonFile = Resources.GetProfile<TextAsset>("Data/Tutorials");
+        //    TextAsset jsonFile = Resources.Get<TextAsset>("Data/Tutorials");
         //    if (jsonFile == null)
         //    {
         //        Debug.LogError("Tutorials.json not found in Resources/Data/");
@@ -437,7 +437,7 @@ public class ResourceManager : MonoBehaviour
 
         //return entries;
 
-        return TutorialStore.instance.Tutorials;
+        return TutorialRepo.instance.Tutorials;
     }
 
 

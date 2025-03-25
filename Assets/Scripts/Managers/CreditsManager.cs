@@ -1,4 +1,4 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using System.Collections;
 using System.Text;
 using TMPro;
@@ -71,7 +71,7 @@ public class CreditsManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
     }
 
   

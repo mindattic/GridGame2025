@@ -25,7 +25,7 @@
 
 //       public static class Queries
 //       {
-//           public static class GetProfile
+//           public static class Get
 //           {
 //               public static class Actor
 //               {

@@ -1,4 +1,4 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +45,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var stage in StageStore.instance.Stages)
+        foreach (var stage in StageRepo.instance.Stages)
         {
             AddButton(stage.Value.Name);
         }
@@ -73,13 +73,13 @@ public class StageSelectManager : MonoBehaviour
 
     private void OnStageSelectButtonClicked(string stageName)
     {
-        ProfileStore.instance.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
+        ProfileRepo.instance.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
     }
 
 }

@@ -9,9 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90dd63d40e76f2948b234e5b2121b82f, type: 3}
-  m_Name: ProfileStore
+  m_Script: {fileID: 11500000, guid: 3f523b09dd2c6be48afde3db2643a487, type: 3}
+  m_Name: VisualEffectRepo
   m_EditorClassIdentifier: 
-  current:
-    Guid: 
-    Folder: 

@@ -2,19 +2,19 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TrailEffectStore", menuName = "Stores/TrailEffectStore")]
-public class TrailEffectStore : ScriptableObject
+[CreateAssetMenu(fileName = "TrailEffectRepo", menuName = "Repositories/TrailEffectRepo")]
+public class TrailEffectRepo : ScriptableObject
 {
     //Singleton
-    private static TrailEffectStore _instance;
+    private static TrailEffectRepo Instance;
 
-    public static TrailEffectStore instance
+    public static TrailEffectRepo instance
     {
         get
         {
-            if (_instance == null)
-                Debug.LogError("TrailEffectStore accessed before being initialized! Ensure it's assigned in Awake().");
-            return _instance;
+            if (Instance == null)
+                Debug.LogError("TrailEffectRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            return Instance;
         }
     }
 
@@ -22,11 +22,11 @@ public class TrailEffectStore : ScriptableObject
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void AutoInitialize()
     {
-        if (_instance == null)
+        if (Instance == null)
         {
-            _instance = Resources.Load<TrailEffectStore>("Stores/TrailEffectStore");
-            if (_instance == null)
-                Debug.LogError("TrailEffectStore asset not found in Resources/Stores/TrailEffectStore");
+            Instance = Resources.Load<TrailEffectRepo>("Repositories/TrailEffectRepo");
+            if (Instance == null)
+                Debug.LogError("TrailEffectRepo asset not found in Resources/Repositories/TrailEffectRepo");
         }
     }
 

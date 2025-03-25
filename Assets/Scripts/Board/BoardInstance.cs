@@ -87,7 +87,7 @@ public class BoardInstance : MonoBehaviour
             {
                 // Instantiate a tile prefab at the origin with no rotation.
                 var prefab = Instantiate(TilePrefab, Vector2.zero, Quaternion.identity);
-                // GetProfile the TileInstance component from the instantiated prefab.
+                // Get the TileInstance component from the instantiated prefab.
                 var instance = prefab.GetComponent<TileInstance>();
                 // Set the parent of the tile to be this board, so they are organized under the board.
                 instance.parent = transform;

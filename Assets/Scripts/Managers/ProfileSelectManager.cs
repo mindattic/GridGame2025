@@ -1,4 +1,4 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using Game.Models.Profile;
 using TMPro;
 using UnityEngine;
@@ -20,6 +20,7 @@ public class ProfileSelectManager : MonoBehaviour
     private float buttonHeight;
     private float spacing;
     private Fade fade;
+   
 
     private void Awake()
     {
@@ -60,7 +61,7 @@ public class ProfileSelectManager : MonoBehaviour
         AddCreateNewProfileButton();
 
         // Add each profile as a button
-        foreach (var entry in ProfileStore.instance.profiles.Values)
+        foreach (var entry in ProfileRepo.instance.profiles.Values)
         {
             AddProfileSelectButton(entry);
         }
@@ -98,19 +99,17 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void OnProfileButtonClicked(string key)
     {
-        ProfileStore.instance.SelectProfile(key);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
+        ProfileRepo.instance.SelectProfile(key);
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
     }
 
     private void OnCreateNewProfileButtonClicked()
     {
-        ProfileStore.instance.CreateProfile();
-        ProfileStore.instance.Reload();
-        Reload();
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.ProfileCreate)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
     }
 }

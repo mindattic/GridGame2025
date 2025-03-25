@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using TMPro;
 using UnityEngine.EventSystems;
 
@@ -36,9 +36,9 @@ public class PlayerStageMover : MonoBehaviour
             return;
 
         TextMeshProUGUI label = stageButton.GetComponentInChildren<TextMeshProUGUI>();
-        targetStageName = label.text; // Store stage name
+        targetStageName = label.text; // Repositories stage name
 
-        // GetProfile target position
+        //Get target position
         RectTransform targetTransform = stageButton.GetComponent<RectTransform>();
         targetPosition = ConvertToLocalSpace(targetTransform);
 
@@ -81,10 +81,10 @@ public class PlayerStageMover : MonoBehaviour
         yield return Wait.For(Interval.HalfSecond);
 
         // Update player profile stage
-        ProfileStore.instance.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
+        ProfileRepo.instance.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
         // Fade out & load next scene
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
     }
 
     private void SetAnimation(Vector2 direction)

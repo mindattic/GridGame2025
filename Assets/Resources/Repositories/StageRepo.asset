@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64b508b2a9d805c48b750fdb8d0383ed, type: 3}
-  m_Name: SceneStore
+  m_Script: {fileID: 11500000, guid: 05b0bd49daca11b42bbf239e3fc3877a, type: 3}
+  m_Name: StageRepo
   m_EditorClassIdentifier: 
-  PreviousScene: Title
-  CurrentScene: Title

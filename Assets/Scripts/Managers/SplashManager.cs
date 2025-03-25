@@ -1,4 +1,4 @@
-using Assets.Scripts.Store;
+using Assets.Scripts.Repositories;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,14 +22,14 @@ public class SplashManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
+            StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
     }
 
     private IEnumerator Startup()
     {
         yield return fade.FadeIn();
         yield return new WaitForSeconds(waitDuration);
-        StartCoroutine(fade.FadeOut(SceneStore.instance.LoadScene(SceneHelper.Title)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
     }
 
 }
