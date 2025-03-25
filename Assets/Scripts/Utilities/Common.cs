@@ -1,4 +1,5 @@
-﻿using Game.Models;
+﻿using Assets.Scripts.Repositories;
+using Game.Models;
 using Game.Models.Profile;
 using System;
 using System.Collections;
@@ -8,6 +9,7 @@ using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public static class SceneHelper
@@ -18,10 +20,10 @@ public static class SceneHelper
     public static string ProfileCreate = "ProfileCreate";
     public static string ProfileSelect = "ProfileSelect";
     public static string SaveFileSelect = "SaveFileSelect";
-    public static string Splash = "Splash";
+    public static string SplashScreen = "SplashScreen";
     public static string Settings = "Settings";
     public static string StageSelect = "StageSelect";
-    public static string Title = "Title";
+    public static string TitleScreen = "TitleScreen";
 }
 
 public static class ComponentHelper
@@ -109,7 +111,7 @@ public static class ComponentHelper
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
         public const string Map = "Canvas2D/ScrollView/Viewport/Content/Map";
         public const string Player = "Canvas2D/ScrollView/Viewport/Content/Hero";
-        
+
     }
 
     public static class ProfileCreate
@@ -129,7 +131,7 @@ public static class ComponentHelper
         public const string Header = "Canvas2D/Header";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
-       
+
     }
 
     public static class Splash
@@ -168,7 +170,17 @@ public static class ComponentHelper
         public const string ChangeProfileButtonLabel = "Canvas2D/ChangeProfileButton/Label";
     }
 
-    public static class VirtualKeyboard
+    public static class ConfirmationDialog
+    {
+        public const string Canvas2D = "Canvas2D";
+        public const string ConfirmDialog = "Canvas2D/ConfirmationDialog";
+        public const string Panel = ConfirmDialog + "/Panel";
+        public const string Prompt = Panel + "/Prompt";
+        public const string ButtonYes = Panel + "/ButtonYes";
+        public const string ButtonNo = Panel + "/ButtonNo";
+    }
+
+    public static class KeyboardDialog
     {
         public const string Canvas2D = "Canvas2D";
         public const string Keyboard = "Canvas2D/Keyboard";
@@ -1125,51 +1137,15 @@ public static class ResourceFolderHelper
     public static string Prefabs = "Prefabs";
 }
 
-public static class VirtualKeyboard
-{
-    public static VirtualKeyboardInstance Show(
-        RectTransform canvas2D,
-        string promptText,
-        string confirmText = "Are you sure?",
-        string initialText = "",
-        int minLength = 3,
-        int maxLength = 32,
-        Action<string> onSubmit = default)
-    {
-        //Reload prefab from Resources
-        var prefabPath = $"{ResourceFolderHelper.Prefabs}/VirtualKeyboard";
-        var prefab = Resources.Load<GameObject>(prefabPath);
-        if (prefab == null)
-            throw new UnityException($"Prefab `{prefabPath}` not found");
 
-        //Find a parent canvas2D
-        if (canvas2D == null)
-            throw new UnityException("Canvas2D not found");
 
-        //Instantiate prefab
-        GameObject go = GameObject.Instantiate(prefab, canvas2D);
-        if (go == null)
-            throw new UnityException("Failed to instantiate prefab");
-        go.name = $"Keyboard";
 
-        //Get the Virtual Keyboard instance
-        VirtualKeyboardInstance instance = go.GetComponent<VirtualKeyboardInstance>();
-        if (instance == null)
-            throw new UnityException("VirtualKeyboardInstance component not found on the game object");
-
-        //Assign properties
-        instance.Assign(promptText, confirmText, initialText, minLength, maxLength, onSubmit);
-
-        //Return the instance
-        return instance;
-    }
-}
 
 
 public static class RepositoryHelper
 {
     public const string ProfileRepo = "Repositories/ProfileRepo";
-} 
+}
 
 public static class ProfileHelper
 {

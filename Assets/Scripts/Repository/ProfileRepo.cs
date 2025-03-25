@@ -92,16 +92,16 @@ public class ProfileRepo : ScriptableObject
         return success;
     }
 
-    public string CreateProfile(string input)
+    public string CreateProfile(string value)
     {
         //Generate a unique key and create profile folder
-        string key = !string.IsNullOrWhiteSpace(input) ? input : $"{Guid.NewGuid():N}";
+        string key = !string.IsNullOrWhiteSpace(value) ? value : $"{Guid.NewGuid():N}";
         string folder = Path.Combine(FolderHelper.Folder.Profiles, key);
 
         int i = 1;
         while (Directory.Exists(folder))
         {
-            key = $"{input}{i:D3}";
+            key = $"{value}{i:D3}";
             folder = Path.Combine(FolderHelper.Folder.Profiles, key);
             i++;
         }

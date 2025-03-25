@@ -50,8 +50,6 @@ public class SettingsManager : MonoBehaviour
 
 
         actorPanMultiplier.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-
-
     }
 
     // Start is called once before the first execution of Save after the MonoBehaviour is created
@@ -62,7 +60,22 @@ public class SettingsManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
+        IEnumerator showConfirm()
+        {
+            ConfirmationDialog.Show(canvas2D, "Save changes?", onSubmit: (value) =>
+            {
+                if (value)
+                {
+                    Debug.Log("User said: " + value);
+
+                    StartCoroutine(fade.Hide(SceneRepo.instance.LoadPreviousScene()));
+                }
+            });
+
+            yield return null;
+        }
+
+        StartCoroutine(fade.Show(showConfirm()));
     }
 
 

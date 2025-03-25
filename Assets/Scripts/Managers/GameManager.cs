@@ -106,6 +106,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
+        //Verify that game is ready to run
         if (!ProfileRepo.instance.HasProfiles)
         {
             SceneManager.LoadScene(SceneHelper.ProfileCreate);
@@ -114,7 +115,6 @@ public class GameManager : Singleton<GameManager>
 
         Application.targetFrameRate = targetFramerate;
         QualitySettings.vSyncCount = vSyncCount;
-
 
         previousGameSpeed = Time.timeScale;
 
@@ -227,6 +227,10 @@ public class GameManager : Singleton<GameManager>
     //Method which is automatically called before the first frame update  
     void Start()
     {
+        //Verify that game is ready to run
+        if (!ProfileRepo.instance.HasProfiles)
+            return;
+      
         //Assign in specific order:
         board.Initialize();             //01
         resourceManager.Initialize();   //02    

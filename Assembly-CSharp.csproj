@@ -63,7 +63,6 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Managers\DamageTextManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ActionManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\VirtualKeyboardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyStartAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
@@ -92,6 +91,7 @@
     <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
     <Compile Include="Assets\Scripts\Managers\StageSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
@@ -119,11 +119,11 @@
     <Compile Include="Assets\Scripts\Canvas\ScrollingBackground.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\SplashManager.cs" />
     <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
+    <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
@@ -143,13 +143,13 @@
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
-    <Compile Include="Assets\Scripts\Managers\TitleManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Canvas\TimerBar.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\Trigger.cs" />
+    <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ResourceModels.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Repository\TutorialRepo.cs" />
@@ -212,6 +212,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAbilities.cs" />
     <Compile Include="Assets\Scripts\Instances\Canvas2DInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
+    <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\WallManager.cs" />
   </ItemGroup>

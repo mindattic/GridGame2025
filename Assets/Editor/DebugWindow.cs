@@ -304,15 +304,34 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
         isClicked = GUILayout.Button("Splash Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneRepo.instance.LoadScene(SceneHelper.Splash);
+            SceneRepo.instance.LoadScene(SceneHelper.SplashScreen);
 
         isClicked = GUILayout.Button("Title Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
-            SceneRepo.instance.LoadScene(SceneHelper.Title);
+            SceneRepo.instance.LoadScene(SceneHelper.TitleScreen);
 
-        isClicked = GUILayout.Button("Options Screen", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Settings", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
             SceneRepo.instance.LoadScene(SceneHelper.Settings);
+
+        isClicked = GUILayout.Button("Stage Select", GUILayout.Width(Screen.width * Constants.percent25));
+        if (isClicked)
+            SceneRepo.instance.LoadScene(SceneHelper.StageSelect);
+
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+
+        isClicked = GUILayout.Button("Load Profile", GUILayout.Width(Screen.width * Constants.percent25));
+        if (isClicked)
+            SceneRepo.instance.LoadScene(SceneHelper.ProfileSelect);
+
+        isClicked = GUILayout.Button("Load Save", GUILayout.Width(Screen.width * Constants.percent25));
+        if (isClicked)
+            SceneRepo.instance.LoadScene(SceneHelper.SaveFileSelect);
+
+        isClicked = GUILayout.Button("Overworld", GUILayout.Width(Screen.width * Constants.percent25));
+        if (isClicked)
+            SceneRepo.instance.LoadScene(SceneHelper.Overworld);
 
         isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
@@ -342,7 +361,7 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
 
         // Toggle to show or hide actor name tags.
-        onCheckChanged = EditorGUILayout.Toggle("Show Actor Key Tags?", debugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Show Actor Name?", debugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.showActorNameTag != onCheckChanged)
         {
             debugManager.showActorNameTag = onCheckChanged;
@@ -379,12 +398,12 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
 
         // Toggle for infinite timer.
-        onCheckChanged = EditorGUILayout.Toggle("Matches Timer Infinite?", debugManager.isTimerInfinite, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Is Timer Infinite?", debugManager.isTimerInfinite, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.isTimerInfinite != onCheckChanged)
             debugManager.isTimerInfinite = onCheckChanged;
 
         // Toggle for enemy stunned state.
-        onCheckChanged = EditorGUILayout.Toggle("Matches Opponent Stunned?", debugManager.isEnemyStunned, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Is Opponent Stunned?", debugManager.isEnemyStunned, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.isEnemyStunned != onCheckChanged)
             debugManager.isEnemyStunned = onCheckChanged;
 

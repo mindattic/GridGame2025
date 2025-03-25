@@ -61,13 +61,21 @@ public class Fade : MonoBehaviour
             yield return coroutine;
     }
 
-    public void Show()
+    public IEnumerator Show(IEnumerator coroutine = null)
     {
         image.color = new Color(0, 0, 0, 0);
+
+        //Triggered: Run additional coroutine if provided
+        if (coroutine != null)
+            yield return coroutine;
     }
 
-    public void Hide()
+    public IEnumerator Hide(IEnumerator coroutine = null)
     {
         image.color = new Color(0, 0, 0, 1);
+
+        //Triggered: Run additional coroutine if provided
+        if (coroutine != null)
+            yield return coroutine;
     }
 }

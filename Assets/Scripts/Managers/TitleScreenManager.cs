@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
 
-public class TitleManager : MonoBehaviour
+public class TitleScreenManager : MonoBehaviour
 {
     //Fields
     private RectTransform canvas2D;
@@ -17,6 +17,7 @@ public class TitleManager : MonoBehaviour
 
     private void Awake()
     {
+        //Verify that game is ready to run
         if (!ProfileRepo.instance.HasProfiles)
         {
             SceneManager.LoadScene(SceneHelper.ProfileCreate);
@@ -30,7 +31,6 @@ public class TitleManager : MonoBehaviour
         fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>();
         currentProfileLabel = GameObject.Find(ComponentHelper.Title.ChangeProfileButtonLabel).GetComponent<Label>();
         currentProfileLabel.text = ProfileRepo.instance.CurrentProfile.Key;
-
         StartCoroutine(fade.FadeIn());
     }
 

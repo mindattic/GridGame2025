@@ -1628,7 +1628,7 @@ GameObject:
   - component: {fileID: 6004171229573750662}
   - component: {fileID: 2461489140882191237}
   m_Layer: 5
-  m_Name: VirtualKeyboard
+  m_Name: KeyboardDialog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1671,7 +1671,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1299750403897943099}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eae6aae8c7b67bc44afc4f4bce053bd3, type: 3}
+  m_Script: {fileID: 11500000, guid: 76fae59bbc206924e82c66788e38dc42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   minLength: 3

@@ -82,7 +82,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
         MenuHelper.DisableButtons(buttons);
         ProfileRepo.instance.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
     }
 
 

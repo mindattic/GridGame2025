@@ -21,23 +21,19 @@ public class ProfileCreateManager : MonoBehaviour
         screenHeight = canvas2D.rect.height;
 
         background.sizeDelta = new Vector2(screenWidth, screenHeight);
-    }
 
-
-    private IEnumerator ShowKeyboard()
-    {
-        VirtualKeyboard.Show(canvas2D, "Who are you?", onSubmit: (input) =>
+        IEnumerator showKeyboard()
         {
-            ProfileRepo.instance.CreateProfile(input);
-            StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
-        });
+            KeyboardDialog.Show(canvas2D, "Who are you?", onSubmit: (value) =>
+            {
+                ProfileRepo.instance.CreateProfile(value);
+                StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
+            });
 
-        yield return null;
+            yield return null;
+        }
+
+        StartCoroutine(fade.FadeIn(showKeyboard()));
     }
 
-
-    private void Start()
-    {
-        StartCoroutine(fade.FadeIn(ShowKeyboard()));
-    }
 }

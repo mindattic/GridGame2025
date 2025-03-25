@@ -2,6 +2,7 @@ using Assets.Scripts.Repositories;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
@@ -29,6 +30,13 @@ public class OverworldManager : MonoBehaviour
 
     private void Awake()
     {
+        //Verify that game is ready to run
+        if (!ProfileRepo.instance.HasProfiles)
+        {
+            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+            return;
+        }
+
         header = GameObject.Find(ComponentHelper.Overworld.Header).GetComponent<Label>();
         canvas2D = GameObject.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>();
         scrollView = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>();
@@ -50,6 +58,9 @@ public class OverworldManager : MonoBehaviour
 
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         FindStageButtons();
+        OnCenterOnHeroClicked();
+
+        StartCoroutine(fade.FadeIn());
     }
 
 
@@ -67,13 +78,6 @@ public class OverworldManager : MonoBehaviour
         }
 
         Debug.Log($"Found {stageButtons.Count} stage buttons.");
-    }
-
-    private void Start()
-    {
-        OnCenterOnPlayerClicked();
-
-        StartCoroutine(fade.FadeIn());
     }
 
 
@@ -108,7 +112,7 @@ public class OverworldManager : MonoBehaviour
         StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
     }
 
-    public void OnCenterOnPlayerClicked()
+    public void OnCenterOnHeroClicked()
     {
         CenterOnPosition(hero.transform.localPosition, 5f, 0.001f);
     }

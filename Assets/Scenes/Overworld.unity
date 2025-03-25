@@ -504,7 +504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a187de531caf76438d5e5d00e68ee2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 163499840}
+  hero: {fileID: 0}
   animator: {fileID: 163499844}
   moveSpeed: 250
 --- !u!95 &163499844
@@ -887,7 +887,7 @@ GameObject:
   - component: {fileID: 553248452}
   - component: {fileID: 553248451}
   m_Layer: 5
-  m_Name: CenterOnPlayer
+  m_Name: CenterOnHeroButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

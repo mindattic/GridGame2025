@@ -1,9 +1,8 @@
 using Assets.Scripts.Repositories;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class SplashManager : MonoBehaviour
+public class SplashScreenManager : MonoBehaviour
 {
     //Fields
     private Fade fade;
@@ -11,7 +10,7 @@ public class SplashManager : MonoBehaviour
 
     private void Awake()
     {
-        fade = GameObject.Find(ComponentHelper.Splash.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        fade = GameObject.Find(ComponentHelper.Splash.Fade).GetComponent<Fade>();
     }
 
     void Start()
@@ -22,14 +21,15 @@ public class SplashManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
+            StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
     }
 
     private IEnumerator Startup()
     {
         yield return fade.FadeIn();
         yield return new WaitForSeconds(waitDuration);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
     }
+
 
 }

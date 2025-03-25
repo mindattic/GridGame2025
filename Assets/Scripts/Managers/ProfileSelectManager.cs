@@ -100,7 +100,7 @@ public class ProfileSelectManager : MonoBehaviour
     private void OnProfileButtonClicked(string key)
     {
         ProfileRepo.instance.SelectProfile(key);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Title)));
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
     }
 
     private void OnCreateNewProfileButtonClicked()
