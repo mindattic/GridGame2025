@@ -110,7 +110,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         Initialize();
         UpdateKeyLabels();
         ResizeUI();
-        BindAllKeys();
+        BindEvents();
 
         prompt.GetComponent<Label>().text = promptText;
         confirmation.GetComponent<Label>().text = confirmText;
@@ -280,7 +280,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         }
     }
 
-    private void BindAllKeys()
+    private void BindEvents()
     {
         //Row1: Numbers
         key1.GetComponent<Button>().onClick.AddListener(() => Append('1'));

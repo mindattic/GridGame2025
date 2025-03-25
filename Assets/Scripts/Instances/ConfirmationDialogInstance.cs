@@ -11,12 +11,16 @@ public class ConfirmationDialogInstance : MonoBehaviour
     private RectTransform prompt;
     private RectTransform buttonYes;
     private RectTransform buttonNo;
+    private float screenWidth;
+    private float screenHeight;
     public Action<bool> onSubmitClicked;
 
     public void Assign(string text, Action<bool> onSubmit = default)
     {
         Initialize();
         ResizeUI();
+        BindEvents();
+
         prompt.GetComponent<Label>().text = text;
         onSubmitClicked = onSubmit;
     }
@@ -33,10 +37,6 @@ public class ConfirmationDialogInstance : MonoBehaviour
         prompt = GameObject.Find(ComponentHelper.ConfirmationDialog.Prompt).GetComponent<RectTransform>();
         buttonYes = GameObject.Find(ComponentHelper.ConfirmationDialog.ButtonYes).GetComponent<RectTransform>();
         buttonNo = GameObject.Find(ComponentHelper.ConfirmationDialog.ButtonNo).GetComponent<RectTransform>();
-
-        //Bind event listeners
-        buttonYes.GetComponent<Button>().onClick.AddListener(() => Submit(true));
-        buttonNo.GetComponent<Button>().onClick.AddListener(() => Submit(false));
     }
 
     /// <summary>
@@ -44,8 +44,28 @@ public class ConfirmationDialogInstance : MonoBehaviour
     /// </summary>
     private void ResizeUI()
     {
-        panel.sizeDelta = new Vector2(canvas2D.rect.width, canvas2D.rect.height);
-        panel.anchoredPosition = Vector2.zero;
+        //Screen dimension references
+        screenWidth = canvas2D.rect.width;
+        screenHeight = canvas2D.rect.height;
+        //float keySpacing = screenWidth * 0.0025f;
+        float keyWidth = screenWidth * 0.9f / 10;
+        float keyHeight = keyWidth;
+
+        panel.sizeDelta = new Vector2(screenWidth, screenHeight);
+        panel.anchoredPosition = new Vector2(0, 0);
+
+        //Confirmation
+        buttonYes.sizeDelta = new Vector2(keyWidth * 2, keyHeight);
+        //buttonYes.anchoredPosition = new Vector2(keyWidth / 2 - keySpacing, -keyHeight);
+
+        buttonNo.sizeDelta = new Vector2(keyWidth * 2, keyHeight);
+        //buttonNo.anchoredPosition = new Vector2(keyWidth / 2 + keySpacing, -keyHeight);
+    }
+
+    private void BindEvents()
+    {
+        buttonYes.GetComponent<Button>().onClick.AddListener(() => Submit(true));
+        buttonNo.GetComponent<Button>().onClick.AddListener(() => Submit(false));
     }
 
     /// <summary>
