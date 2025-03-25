@@ -9,7 +9,7 @@ public class DottedLineInstance : MonoBehaviour
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
     protected LogManager logManager => GameManager.instance.logManager;
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
+    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     protected bool hasSelectedPlayer => selectedPlayer != null;
 
     //Fields

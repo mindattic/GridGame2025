@@ -28,7 +28,7 @@ public class StageManager : MonoBehaviour
     protected TileManager tileManager => GameManager.instance.tileManager;
     protected WaveAnnouncement waveAnnouncement => GameManager.instance.waveAnnouncement;
 
-    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
     protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
     // Access the list of actors from the GameManager.
@@ -48,7 +48,7 @@ public class StageManager : MonoBehaviour
 
 
     /// <summary>
-    /// Initializes the StageManager by retrieving the stage name from the player's profile,
+    /// Initializes the StageManager by retrieving the stage name from the hero's profile,
     /// loading the corresponding Stage, and then loading the stage.
     /// </summary>
     public void Initialize()
@@ -79,10 +79,10 @@ public class StageManager : MonoBehaviour
         tileManager.Reset();
         turnManager.Initialize();
 
-        // Assign persistent player actors from ProfileRepo
-        foreach (var playerActor in ProfileRepo.instance.CurrentProfile.CurrentSave.Party.PlayerActors)
+        // Assign persistent hero actors from ProfileRepo
+        foreach (var heroActor in ProfileRepo.instance.CurrentProfile.CurrentSave.Party.HeroActors)
         {
-            SpawnActor(new StageActor(playerActor));
+            SpawnActor(new StageActor(heroActor));
         }
 
         //Hack: For some reason enemies might spawn on top of actos because they aren't loaded at same time...
@@ -206,7 +206,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void CheckGameOver()
     {
-        bool allPlayersDead = players.All(x => x.flags.HasSpawned && x.isDead);
+        bool allPlayersDead = heroes.All(x => x.flags.HasSpawned && x.isDead);
         if (!allPlayersDead)
             return;
 

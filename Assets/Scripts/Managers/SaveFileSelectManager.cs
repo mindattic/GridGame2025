@@ -74,8 +74,8 @@ public class SaveFileSelectManager : MonoBehaviour
         }
 
         //Retrieve all save files in profile folder
-        string savesFolder = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
-        var saveFiles = Directory.GetFiles(savesFolder, "*.json").ToArray();
+        string savesPath = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
+        var saveFiles = Directory.GetFiles(savesPath, "*.json").ToArray();
  
         //TODO: Need to retrieve and parse all save files so that save data is available to populate button
         foreach(var saveState in ProfileRepo.instance.CurrentProfile.SaveStates)
@@ -86,8 +86,8 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void AddLoadSaveFileButton(SaveState saveState)
     {
-        string savesFolder = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
-        string filePath = Path.Combine(savesFolder, saveState.FileName);
+        string savesPath = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
+        string filePath = Path.Combine(savesPath, saveState.FileName);
 
         //Instantiate the prefab as a child of `content`
         GameObject instance = Instantiate(buttonPrefab, content);

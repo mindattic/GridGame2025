@@ -108,7 +108,7 @@ public static class ComponentHelper
         public const string Viewport = "Canvas2D/ScrollView/Viewport";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
         public const string Map = "Canvas2D/ScrollView/Viewport/Content/Map";
-        public const string Player = "Canvas2D/ScrollView/Viewport/Content/Player";
+        public const string Player = "Canvas2D/ScrollView/Viewport/Content/Hero";
         
     }
 
@@ -1194,11 +1194,11 @@ public static class ProfileHelper
 
     public static PartySaveData DefaultParty = new PartySaveData()
     {
-        PlayerActors = new List<StageActor>
+        HeroActors = new List<StageActor>
         {
-            new StageActor { Character = Character.Paladin, Team = Team.Player },
-            new StageActor { Character = Character.Barbarian, Team = Team.Player },
-            new StageActor { Character = Character.Cleric, Team = Team.Player },
+            new StageActor { Character = Character.Paladin, Team = Team.Hero },
+            new StageActor { Character = Character.Barbarian, Team = Team.Hero },
+            new StageActor { Character = Character.Cleric, Team = Team.Hero },
         }
     };
 

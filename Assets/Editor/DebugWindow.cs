@@ -58,7 +58,7 @@ public class DebugWindow : EditorWindow
     private TurnManager turnManager;
     private StageManager stageManager;
     private LogManager logManager;
-    private SelectedPlayerManager selectedPlayerManager;
+    private SelectedHeroManager selectedHeroManager;
 
     // Debug window UI selections for game speed, debug options, and VFX testing.
     private GameSpeedOption selectedGameSpeed = GameSpeedOption.Normal;
@@ -172,13 +172,13 @@ public class DebugWindow : EditorWindow
         turnManager = gameManager.turnManager;
         stageManager = gameManager.stageManager;
         logManager = gameManager.logManager;
-        selectedPlayerManager = gameManager.selectedPlayerManager;
+        selectedHeroManager = gameManager.selectedHeroManager;
 
         // Set initial debug flag values.
         debugManager.showActorNameTag = false;
         debugManager.showActorFrame = false;
         debugManager.showTutorials = false;
-        debugManager.isPlayerInvincible = false;
+        debugManager.isHeroInvincible = false;
         debugManager.isEnemyInvincible = false;
         debugManager.isTimerInfinite = false;
         debugManager.isEnemyStunned = false;
@@ -220,7 +220,7 @@ public class DebugWindow : EditorWindow
             turnManager == null ||
             stageManager == null ||
             logManager == null ||
-            selectedPlayerManager == null)
+            selectedHeroManager == null)
             return;
 
         // Wrap all content inside a scroll view.
@@ -327,7 +327,7 @@ public class DebugWindow : EditorWindow
     {
         GUILayout.BeginHorizontal();
         //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailWidth * 0.25f));
-        GUILayout.Label($"Turn: {(turnManager.isPlayerTurn ? "Player" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label($"Turn: {(turnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Phase: {turnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
         //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailWidth * 0.25f));
         GUILayout.EndHorizontal();
@@ -365,10 +365,10 @@ public class DebugWindow : EditorWindow
             gameManager.tutorialPopup.gameObject.SetActive(debugManager.showTutorials);
         }
 
-        // Toggle for player invincibility.
-        onCheckChanged = EditorGUILayout.Toggle("Are Players Invincible?", debugManager.isPlayerInvincible, GUILayout.Width(Screen.width * 0.25f));
-        if (debugManager.isPlayerInvincible != onCheckChanged)
-            debugManager.isPlayerInvincible = onCheckChanged;
+        // Toggle for hero invincibility.
+        onCheckChanged = EditorGUILayout.Toggle("Are Heroes Invincible?", debugManager.isHeroInvincible, GUILayout.Width(Screen.width * 0.25f));
+        if (debugManager.isHeroInvincible != onCheckChanged)
+            debugManager.isHeroInvincible = onCheckChanged;
 
         // Toggle for enemy invincibility.
         onCheckChanged = EditorGUILayout.Toggle("Are Enemies Invincible?", debugManager.isEnemyInvincible, GUILayout.Width(Screen.width * 0.25f));
@@ -525,15 +525,15 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    // RenderActorStats displays a list of all player and enemy actors with basic status info.
+    // RenderActorStats displays a list of all hero and enemy actors with basic status info.
     private void RenderActorStats()
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Actors", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
 
-        // Display player stats sorted by name.
-        foreach (var x in gameManager.players.OrderBy(x => x.name))
+        // Display hero stats sorted by name.
+        foreach (var x in gameManager.heroes.OrderBy(x => x.name))
         {
             GUILayout.BeginHorizontal();
             string stats = $"{x.name}, IsAlive? {x.isAlive}, IsActive? {x.isActive}";

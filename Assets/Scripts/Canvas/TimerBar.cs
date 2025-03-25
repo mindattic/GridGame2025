@@ -7,7 +7,7 @@ public class TimerBar : MonoBehaviour
     //Quick Reference Properties for accessing game systems
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected float tileSize => GameManager.instance.tileSize;
-    protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
+    protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
     protected float snapDistance => GameManager.instance.snapThreshold;
 
     //Timer settings
@@ -56,8 +56,8 @@ public class TimerBar : MonoBehaviour
             yield return Wait.UntilNextFrame();
         }
 
-        //When the timer expires, force drop the selected player
-        selectedPlayerManager.Drop();
+        //When the timer expires, force drop the selected hero
+        selectedHeroManager.Drop();
     }
 
     /// <summary>

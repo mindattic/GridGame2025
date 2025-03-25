@@ -17,29 +17,20 @@ public class TitleManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!ProfileRepo.instance.HasProfiles)
+        {
+            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+            return;
+        }
+
         canvas2D = GameObject.Find(ComponentHelper.Title.Canvas2D).GetComponent<RectTransform>();
         mainMenu = GameObject.Find(ComponentHelper.Title.MainMenu).GetComponent<RectTransform>();
         continueButton = GameObject.Find(ComponentHelper.Title.ContinueButton).GetComponent<RectTransform>();
         loadGameButton = GameObject.Find(ComponentHelper.Title.LoadGameButton).GetComponent<RectTransform>();
         fade = GameObject.Find(ComponentHelper.Title.Fade).GetComponent<Fade>();
-
-        if (!ProfileRepo.instance.HasProfiles)
-        {
-            SceneManager.LoadScene(SceneHelper.ProfileCreate);
-            //fade.Show();
-            //continueButton.gameObject.SetActive(false);
-            //loadGameButton.gameObject.SetActive(false);
-
-            //StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.ProfileCreate)));
-            return;
-        }
-
         currentProfileLabel = GameObject.Find(ComponentHelper.Title.ChangeProfileButtonLabel).GetComponent<Label>();
         currentProfileLabel.text = ProfileRepo.instance.CurrentProfile.Key;
-    }
 
-    private void Start()
-    {
         StartCoroutine(fade.FadeIn());
     }
 

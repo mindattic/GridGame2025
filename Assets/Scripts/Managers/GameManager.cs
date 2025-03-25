@@ -5,6 +5,7 @@ using Game.Manager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -34,8 +35,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public GhostManager ghostManager;
     [HideInInspector] public PortraitManager portraitManager;
     [HideInInspector] public ActorManager actorManager;
-    [HideInInspector] public SelectedPlayerManager selectedPlayerManager;
-    [HideInInspector] public PlayerManager playerManager;
+    [HideInInspector] public SelectedHeroManager selectedHeroManager;
+    [HideInInspector] public HeroManager heroManager;
     [HideInInspector] public EnemyManager enemyManager;
     [HideInInspector] public TileManager tileManager;
     [HideInInspector] public FootstepManager footstepManager;
@@ -80,12 +81,12 @@ public class GameManager : Singleton<GameManager>
 
     //Actors
     [HideInInspector] public List<ActorInstance> actors;
-    [HideInInspector] public IEnumerable<ActorInstance> players => actors.Where(x => x.team.Equals(Team.Player));
+    [HideInInspector] public IEnumerable<ActorInstance> heroes => actors.Where(x => x.team.Equals(Team.Hero));
     [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team.Equals(Team.Enemy));
     [HideInInspector] public ActorInstance focusedActor;
     [HideInInspector] public bool hasFocusedActor => focusedActor != null;
-    [HideInInspector] public ActorInstance selectedPlayer;
-    [HideInInspector] public bool hasSelectedPlayer => selectedPlayer != null;
+    [HideInInspector] public ActorInstance selectedHero;
+    [HideInInspector] public bool hasSelectedPlayer => selectedHero != null;
 
     //Instances
     [HideInInspector] public Fade fade;
@@ -105,6 +106,12 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
+        if (!ProfileRepo.instance.HasProfiles)
+        {
+            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+            return;
+        }
+
         Application.targetFrameRate = targetFramerate;
         QualitySettings.vSyncCount = vSyncCount;
 
@@ -170,8 +177,8 @@ public class GameManager : Singleton<GameManager>
         damageTextManager = game.GetComponent<DamageTextManager>() ?? throw new UnityException("DamageTextManager is null");
         ghostManager = game.GetComponent<GhostManager>() ?? throw new UnityException("GhostManager is null");
         portraitManager = game.GetComponent<PortraitManager>() ?? throw new UnityException("PortraitManager is null");
-        selectedPlayerManager = game.GetComponent<SelectedPlayerManager>() ?? throw new UnityException("SelectedPlayerManager is null");
-        playerManager = game.GetComponent<PlayerManager>() ?? throw new UnityException("PlayerManager is null");
+        selectedHeroManager = game.GetComponent<SelectedHeroManager>() ?? throw new UnityException("SelectedPlayerManager is null");
+        heroManager = game.GetComponent<HeroManager>() ?? throw new UnityException("PlayerManager is null");
         enemyManager = game.GetComponent<EnemyManager>() ?? throw new UnityException("EnemyManager is null");
         tileManager = game.GetComponent<TileManager>() ?? throw new UnityException("TileManager is null");
         footstepManager = game.GetComponent<FootstepManager>() ?? throw new UnityException("FootstepManager is null");

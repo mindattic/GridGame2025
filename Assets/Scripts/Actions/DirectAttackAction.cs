@@ -13,7 +13,7 @@ namespace Assets.Scripts.Models
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected List<ActorInstance> actors => GameManager.instance.actors;
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-        protected IEnumerable<ActorInstance> players => GameManager.instance.players;
+        protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
 
         //Constructor
         public DirectAttackAction() { }
@@ -31,14 +31,14 @@ namespace Assets.Scripts.Models
 
             foreach (var enemy in attackingEnemies)
             {
-                var defendingPlayers = players.ToList().Where(x => x.isPlaying && x.IsAdjacentTo(enemy.location)).ToList();
-                if (defendingPlayers.Count < 1)
+                var defendingHeroes = heroes.ToList().Where(x => x.isPlaying && x.IsAdjacentTo(enemy.location)).ToList();
+                if (defendingHeroes.Count < 1)
                     continue;
 
-                foreach (var player in defendingPlayers)
+                foreach (var hero in defendingHeroes)
                 {
-                    var direction = enemy.GetDirectionTo(player);
-                    var trigger = new Trigger(ProcessAttack(enemy, player));
+                    var direction = enemy.GetDirectionTo(hero);
+                    var trigger = new Trigger(ProcessAttack(enemy, hero));
                     yield return enemy.action.Bump(direction, trigger);
                     //enemy.action.Bump(direction, trigger);
                 }

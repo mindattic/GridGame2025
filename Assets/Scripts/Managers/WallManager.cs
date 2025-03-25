@@ -10,11 +10,11 @@ public class WallManager : MonoBehaviour
     {
         //if (other.collider.prefab.CompareTag(Tag.Actor))
         //{
-        //   var player = other.collider.prefab;
+        //   var hero = other.collider.prefab;
 
-        //   player.transform.boardPosition = new Vector3(transform.boardPosition.x - tileSize,
-        //                                           player.transform.boardPosition.y,
-        //                                           player.transform.boardPosition.z);
+        //   hero.transform.boardPosition = new Vector3(transform.boardPosition.x - tileSize,
+        //                                           hero.transform.boardPosition.y,
+        //                                           hero.transform.boardPosition.z);
 
 
         //}

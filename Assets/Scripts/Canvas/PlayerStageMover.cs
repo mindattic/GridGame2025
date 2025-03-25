@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 public class PlayerStageMover : MonoBehaviour
 {
-    public RectTransform player;  // Reference to the player's RectTransform
+    public RectTransform hero;  // Reference to the hero's RectTransform
     public Animator animator;     // Reference to the Animator
     public float moveSpeed = 30f; // Speed of movement
 
@@ -43,35 +43,35 @@ public class PlayerStageMover : MonoBehaviour
         targetPosition = ConvertToLocalSpace(targetTransform);
 
         // Determine direction and set animation
-        Vector2 direction = (targetPosition - (Vector2)player.anchoredPosition).normalized;
+        Vector2 direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;
         SetAnimation(direction);
 
-        // Start moving the player
-        StartCoroutine(MovePlayer());
+        // Start moving the hero
+        StartCoroutine(MoveHero());
     }
 
-    private IEnumerator MovePlayer()
+    private IEnumerator MoveHero()
     {
         isMoving = true;
 
         // Calculate direction again to ensure animation is correct
-        Vector2 direction = (targetPosition - player.anchoredPosition).normalized;
+        Vector2 direction = (targetPosition - hero.anchoredPosition).normalized;
         SetAnimation(direction); // Ensure animation is set before moving
 
         float snapThreshold = 0.24f;
 
-        while (Vector2.Distance(player.anchoredPosition, targetPosition) > snapThreshold)
+        while (Vector2.Distance(hero.anchoredPosition, targetPosition) > snapThreshold)
         {
-            player.anchoredPosition = Vector2.MoveTowards(player.anchoredPosition, targetPosition, moveSpeed * Time.deltaTime);
+            hero.anchoredPosition = Vector2.MoveTowards(hero.anchoredPosition, targetPosition, moveSpeed * Time.deltaTime);
 
             // Continuously update animation while moving
-            direction = (targetPosition - (Vector2)player.anchoredPosition).normalized;
+            direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;
             SetAnimation(direction);
 
             yield return null;
         }
 
-        player.anchoredPosition = targetPosition;
+        hero.anchoredPosition = targetPosition;
         isMoving = false;
         animator.SetInteger("MoveDirection", (int)MoveDirection.Idle);
 
@@ -80,7 +80,7 @@ public class PlayerStageMover : MonoBehaviour
 
         yield return Wait.For(Interval.HalfSecond);
 
-        // Update player profile stage
+        // Update hero profile stage
         ProfileRepo.instance.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
         // Fade out & load next scene
@@ -115,7 +115,7 @@ public class PlayerStageMover : MonoBehaviour
         Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(null, buttonTransform.position);
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            player.parent as RectTransform, screenPos, null, out localPoint
+            hero.parent as RectTransform, screenPos, null, out localPoint
         );
 
         return localPoint;

@@ -37,7 +37,7 @@ namespace Assets.Scripts.Instances.Actor
         protected Vector3 previousPosition { get => instance.previousPosition; set => instance.previousPosition = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
-        protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
+        protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
         protected bool hasSelectedPlayer => GameManager.instance.hasSelectedPlayer;
         protected bool isSelectedPlayer => hasSelectedPlayer && selectedPlayer == instance;
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;

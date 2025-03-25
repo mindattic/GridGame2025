@@ -16,7 +16,7 @@ public class OverworldManager : MonoBehaviour
     private RectTransform viewport;
     private RectTransform content;
     private RectTransform map;
-    private PlayerStageMover player;
+    private PlayerStageMover hero;
     private float screenWidth;
     private float screenHeight;
     private float buttonWidth;
@@ -36,7 +36,7 @@ public class OverworldManager : MonoBehaviour
         viewport = GameObject.Find(ComponentHelper.Overworld.Viewport).GetComponent<RectTransform>();
         content = GameObject.Find(ComponentHelper.Overworld.Content).GetComponent<RectTransform>();
         map = GameObject.Find(ComponentHelper.Overworld.Map).GetComponent<RectTransform>();
-        player = GameObject.Find(ComponentHelper.Overworld.Player).GetComponent<PlayerStageMover>();
+        hero = GameObject.Find(ComponentHelper.Overworld.Player).GetComponent<PlayerStageMover>();
         fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<Fade>();
 
         screenWidth = canvas2D.rect.width;
@@ -99,7 +99,7 @@ public class OverworldManager : MonoBehaviour
 
     public void OnStageSelectButtonClicked(Button stageButton)
     {
-        player.MoveToStage(stageButton);
+        hero.MoveToStage(stageButton);
     }
 
 
@@ -110,7 +110,7 @@ public class OverworldManager : MonoBehaviour
 
     public void OnCenterOnPlayerClicked()
     {
-        CenterOnPosition(player.transform.localPosition, 5f, 0.001f);
+        CenterOnPosition(hero.transform.localPosition, 5f, 0.001f);
     }
 
     public void CenterOnPosition(Vector2 targetLocalPosition, float speed, float snapThreshold)

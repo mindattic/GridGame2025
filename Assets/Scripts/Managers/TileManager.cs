@@ -55,7 +55,7 @@ public class TileManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Updates the tile colors when the selected player's location changes.
+    /// Updates the tile colors when the selected hero's location changes.
     /// It sets the color of the tile at the previous location to white and
     /// the new location tile to yellow, providing visual feedback.
     /// </summary>

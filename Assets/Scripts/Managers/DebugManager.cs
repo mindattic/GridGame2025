@@ -16,7 +16,7 @@ public class DebugManager : MonoBehaviour
 {
     //Quick Reference Properties
     protected List<ActorInstance> actors => GameManager.instance.actors;
-    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
     protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected AttackLineManager attackLineManager => GameManager.instance.attackLineManager;
@@ -35,17 +35,17 @@ public class DebugManager : MonoBehaviour
     protected ActionManager actionManager => GameManager.instance.actionManager;
 
     //Internal properties
-    ActorInstance paladin => players.First(x => x.name.StartsWith("Paladin"));
-    ActorInstance barbarian => players.First(x => x.name.StartsWith("Barbarian"));
-    ActorInstance cleric => players.First(x => x.name.StartsWith("Cleric"));
-    ActorInstance ninja => players.First(x => x.name.StartsWith("Ninja"));
+    ActorInstance paladin => heroes.First(x => x.name.StartsWith("Paladin"));
+    ActorInstance barbarian => heroes.First(x => x.name.StartsWith("Barbarian"));
+    ActorInstance cleric => heroes.First(x => x.name.StartsWith("Cleric"));
+    ActorInstance ninja => heroes.First(x => x.name.StartsWith("Ninja"));
 
     //Fields
     [SerializeField] private TMP_Dropdown Dropdown;
     public bool showActorNameTag = false;
     public bool showActorFrame = false;
     public bool showTutorials = false;
-    public bool isPlayerInvincible = false;
+    public bool isHeroInvincible = false;
     public bool isEnemyInvincible = false;
     public bool isTimerInfinite = false;
     public bool isEnemyStunned = false;
@@ -53,9 +53,9 @@ public class DebugManager : MonoBehaviour
 
     public void PortraitTest()
     {
-        var player = Random.Player;
+        var hero = Random.Hero;
         var direction = Random.Direction;
-        portraitManager.TriggerSlideIn(player, direction);
+        portraitManager.TriggerSlideIn(hero, direction);
     }
 
     public void DamageTextTest()
@@ -96,9 +96,9 @@ public class DebugManager : MonoBehaviour
     public void SupportLineTest()
     {
         var alignedPairs = new HashSet<ActorPair>();
-        foreach (var actor1 in players)
+        foreach (var actor1 in heroes)
         {
-            foreach (var actor2 in players)
+            foreach (var actor2 in heroes)
             {
                 if (actor1 == null || actor2 == null || actor1.Equals(actor2) || !actor1.isActive || !actor1.isAlive || !actor2.isActive || !actor2.isAlive)
                     continue;
@@ -168,9 +168,9 @@ public class DebugManager : MonoBehaviour
 
 
         var alignedPairs = new HashSet<ActorPair>();
-        foreach (var actor1 in players)
+        foreach (var actor1 in heroes)
         {
-            foreach (var actor2 in players)
+            foreach (var actor2 in heroes)
             {
                 if (actor1 == null || actor2 == null
                     || actor1.Equals(actor2)
@@ -217,7 +217,7 @@ public class DebugManager : MonoBehaviour
         var attackingEnemies = enemies.Where(x => x.isPlaying).ToList();
         attackingEnemies.ForEach(x => x.SetReady());
 
-        if (turnManager.isPlayerTurn)
+        if (turnManager.isHeroTurn)
             turnManager.NextTurn();
 
     }
@@ -233,7 +233,7 @@ public class DebugManager : MonoBehaviour
     public void TooltipTest()
     {
         var text = $"Test {Random.Int(1000, 9999)}";
-        var position = Random.Player.currentTile.position;
+        var position = Random.Hero.currentTile.position;
         tooltipManager.Spawn(text, position);
     }
 

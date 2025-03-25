@@ -66,18 +66,11 @@ public class ProfileRepo : ScriptableObject
         // Retrieve all folders in profile directory
         folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
         if (!HasFolders)
-        {
-            //TODO: Somehow fix this so that monobehavior calls this and creates a profile when none is available...
-            //SceneManager.LoadSceneAsync(SceneHelper.ProfileCreate);
             return false;
-        }
 
         folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
         if (!folders.Any())
-        {
-            Debug.LogError("No folders found");
             return false;
-        }
 
         //Populate profile list
         profiles = new Dictionary<string, Profile>();
@@ -89,10 +82,7 @@ public class ProfileRepo : ScriptableObject
                 profiles.Add(key, profile);
         }
         if (!profiles.Any())
-        {
-            Debug.LogError("No profiles found");
             return false;
-        }
 
         // Auto-select a profile if one is not already selected.
         var success = !string.IsNullOrWhiteSpace(currentProfileKey)
@@ -105,13 +95,17 @@ public class ProfileRepo : ScriptableObject
     public string CreateProfile(string input)
     {
         //Generate a unique key and create profile folder
-        string key;
-        string folder;
-        do
+        string key = !string.IsNullOrWhiteSpace(input) ? input : $"{Guid.NewGuid():N}";
+        string folder = Path.Combine(FolderHelper.Folder.Profiles, key);
+
+        int i = 1;
+        while (Directory.Exists(folder))
         {
-            key = !string.IsNullOrWhiteSpace(input) ? input : $"{Guid.NewGuid():N}";
+            key = $"{input}{i:D3}";
             folder = Path.Combine(FolderHelper.Folder.Profiles, key);
-        } while (Directory.Exists(folder));
+            i++;
+        }
+
         Directory.CreateDirectory(folder);
 
         // Create a new profile object
@@ -136,9 +130,9 @@ public class ProfileRepo : ScriptableObject
         currentProfileKey = key;
 
         // Write the initial SaveState to disk
-        string savesFolder = Path.Combine(newProfile.Folder, "Saves");
-        Directory.CreateDirectory(savesFolder);
-        string filePath = Path.Combine(savesFolder, newSave.FileName);
+        string savesPath = Path.Combine(newProfile.Folder, "Saves");
+        Directory.CreateDirectory(savesPath);
+        string filePath = Path.Combine(savesPath, newSave.FileName);
         string json = JsonConvert.SerializeObject(newSave, Formatting.Indented);
         try
         {
@@ -165,6 +159,8 @@ public class ProfileRepo : ScriptableObject
         }
 
         string folder = Path.Combine(FolderHelper.Folder.Profiles, key);
+        if (!Directory.Exists(folder)) 
+            return null;
 
         //Reconstruct profile
         Profile profile = new Profile()
@@ -175,8 +171,11 @@ public class ProfileRepo : ScriptableObject
         };
 
         //Retrieve save files by profile
-        string savesFolder = Path.Combine(folder, "Saves");
-        var saveFiles = Directory.GetFiles(savesFolder, "*.json").ToArray();
+        string savesPath = Path.Combine(folder, "Saves");
+        if (!Directory.Exists(savesPath))
+            return null;
+
+        var saveFiles = Directory.GetFiles(savesPath, "*.json").ToArray();
         foreach (var file in saveFiles)
         {
             try
@@ -320,8 +319,8 @@ public class ProfileRepo : ScriptableObject
             CurrentProfile.CurrentSave.Stage,
             CurrentProfile.CurrentSave.Party);
 
-        string savesFolder = Path.Combine(CurrentProfile.Folder, "Saves");
-        string filePath = Path.Combine(savesFolder, newSave.FileName);
+        string savesPath = Path.Combine(CurrentProfile.Folder, "Saves");
+        string filePath = Path.Combine(savesPath, newSave.FileName);
         string json = JsonConvert.SerializeObject(newSave, Formatting.Indented);
         try
         {
@@ -354,8 +353,8 @@ public class ProfileRepo : ScriptableObject
             return false;
         }
 
-        string savesFolder = Path.Combine(CurrentProfile.Folder, "Saves");
-        string filePath = Path.Combine(savesFolder, existingSave.FileName);
+        string savesPath = Path.Combine(CurrentProfile.Folder, "Saves");
+        string filePath = Path.Combine(savesPath, existingSave.FileName);
         string json = JsonConvert.SerializeObject(existingSave, Formatting.Indented);
         try
         {

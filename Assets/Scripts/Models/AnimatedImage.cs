@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class AnimatedImage : MonoBehaviour
 {
-    public Image image; // Drag and drop Player Image component in Inspector
+    public Image image; // Drag and drop Hero Image component in Inspector
 
     public void SetSprite(Sprite newSprite)
     {

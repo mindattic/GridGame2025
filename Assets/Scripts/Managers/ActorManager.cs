@@ -8,7 +8,7 @@ namespace Game.Manager
     {
         //Quick Reference Properties
         protected List<ActorInstance> actors => GameManager.instance.actors;
-        protected IEnumerable<ActorInstance> players => GameManager.instance.players;
+        protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
         public void CheckEnemyAP()

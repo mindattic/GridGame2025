@@ -9,8 +9,8 @@ namespace Assets.Scripts.Instances.Actor
     public class ActorActions
     {
         // Quick Reference Properties:
-        // Provides convenient access to the selected player, rendering module, actor stats, and more.
-        protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
+        // Provides convenient access to the selected hero, rendering module, actor stats, and more.
+        protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
         protected ActorRenderers render => instance.render;
         protected ActorStats stats => instance.stats;
         private bool isActive => instance.isActive;

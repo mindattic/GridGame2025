@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 public enum Team
 {
-    Player,
+    Hero,
     Enemy,
     Neutral
 }

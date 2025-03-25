@@ -12,15 +12,15 @@ public class TurnManager : MonoBehaviour
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
-    protected PlayerManager playerManager => GameManager.instance.playerManager;
+    protected HeroManager heroManager => GameManager.instance.heroManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
     protected TimerBar timerBar => GameManager.instance.timerBar;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
 
     //Properties
-    public bool isPlayerTurn => currentTeam.Equals(Team.Player);
+    public bool isHeroTurn => currentTeam.Equals(Team.Hero);
     public bool isEnemyTurn => currentTeam.Equals(Team.Enemy);
     public bool isStartPhase => currentPhase.Equals(TurnPhase.Start);
     public bool isMovePhase => currentPhase.Equals(TurnPhase.Move);
@@ -35,7 +35,7 @@ public class TurnManager : MonoBehaviour
 
     //Fields
     public int currentTurn = 0;
-    public Team currentTeam = Team.Player;
+    public Team currentTeam = Team.Hero;
     public TurnPhase currentPhase = TurnPhase.Start;
 
     public void SetPhase(TurnPhase turnPhase)
@@ -56,14 +56,14 @@ public class TurnManager : MonoBehaviour
     {
         currentPhase = turnPhase;
 
-        if (isPlayerTurn)
+        if (isHeroTurn)
         {
             switch (currentPhase)
             {
                 case TurnPhase.Start:
                     currentTurn++;
                     timerBar.Refill();
-                    playerManager.TriggerGlow();
+                    heroManager.TriggerGlow();
                     break;
             }
         }
@@ -96,15 +96,15 @@ public class TurnManager : MonoBehaviour
     public void Initialize()
     {
         currentTurn = 0;
-        currentTeam = Team.Player;
-        playerManager.TriggerGlow();
+        currentTeam = Team.Hero;
+        heroManager.TriggerGlow();
         SetPhase(TurnPhase.Start);
     }
 
     public void NextTurn()
     {
         // Switch team for the next turn.
-        currentTeam = isPlayerTurn ? Team.Enemy : Team.Player;
+        currentTeam = isHeroTurn ? Team.Enemy : Team.Hero;
         supportLineManager.Clear();
         attackLineManager.DespawnAll();
         SetPhase(TurnPhase.Start);

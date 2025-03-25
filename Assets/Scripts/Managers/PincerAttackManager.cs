@@ -18,7 +18,7 @@ public class PincerAttackManager : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
-    protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
+    protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected List<ActorInstance> actors => GameManager.instance.actors;
 

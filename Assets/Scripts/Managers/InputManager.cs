@@ -1,16 +1,16 @@
 using UnityEngine;
 
-// InputManager handles player touch input and delegates focus, drag, and drop actions
+// InputManager handles hero touch input and delegates focus, drag, and drop actions
 // to the SelectedPlayerManager, while also considering the game's paused state.
 public class InputManager : MonoBehaviour
 {
     // Quick reference properties that retrieve core game systems and actor information from GameManager.
     protected PauseManager pauseManager => GameManager.instance.pauseManager;
     protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
+    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     protected bool hasSelectedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
-    protected SelectedPlayerManager selectedPlayerManager => GameManager.instance.selectedPlayerManager;
+    protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
     protected StageManager stageManager => GameManager.instance.stageManager;
     // Assuming GameManager handles conversion from input (mouse or touch) to a 3D world position.
     protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
@@ -26,7 +26,7 @@ public class InputManager : MonoBehaviour
     public bool IsDragging => isTouching && Vector3.Distance(initialTouchPosition, touchPosition3D) > dragThreshold;
 
 
-    // Save is called once per frame to process player input.
+    // Save is called once per frame to process hero input.
     void Update()
     {
         // Do not process input if the game is paused.
@@ -42,7 +42,7 @@ public class InputManager : MonoBehaviour
                 case TouchPhase.Began:
 
                     // Attempt to focus on an actor under the touch.
-                    selectedPlayerManager.Focus();
+                    selectedHeroManager.Focus();
 
                     // Begin tracking the touch
                     isTouching = true;
@@ -53,7 +53,7 @@ public class InputManager : MonoBehaviour
                 case TouchPhase.Moved:
                     if (IsDragging)
                     {
-                        selectedPlayerManager.Drag();
+                        selectedHeroManager.Drag();
                         isTouching = false;  // Prevent duplicate drag calls.
                     }
                     break;
@@ -61,7 +61,7 @@ public class InputManager : MonoBehaviour
                 case TouchPhase.Ended:
                 case TouchPhase.Canceled:
                     // Touch has ended, trigger drop logic.
-                    selectedPlayerManager.Drop();
+                    selectedHeroManager.Drop();
                     isTouching = false;
                     break;
             }

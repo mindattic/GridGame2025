@@ -32,7 +32,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
 
-        private bool IsGlowing => instance.isPlaying && turnManager.isStartPhase && (turnManager.isPlayerTurn && isPlayer) || (turnManager.isEnemyTurn && isEnemy);
+        private bool IsGlowing => instance.isPlaying && turnManager.isStartPhase && (turnManager.isHeroTurn && isPlayer) || (turnManager.isEnemyTurn && isEnemy);
 
 
         public void TriggerGlow()

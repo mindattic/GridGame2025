@@ -9,14 +9,14 @@ static class Random
     [ThreadStatic] public static System.Random rng = new System.Random();
 
     //Properties
-    private static IEnumerable<ActorInstance> players => GameManager.instance.players;
+    private static IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
     private static IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
     private static List<ActorInstance> actors => GameManager.instance.actors;
     private static List<TileInstance> tiles => GameManager.instance.tiles;
     private static int columnCount => GameManager.instance.board.columnCount;
     private static int rowCount => GameManager.instance.board.rowCount;
 
-    public static ActorInstance Player => players.Where(x => x.isPlaying).Shuffle().First();
+    public static ActorInstance Hero => heroes.Where(x => x.isPlaying).Shuffle().First();
 
     public static ActorInstance Enemy => enemies.Where(x => x.isPlaying).Shuffle().First();
 

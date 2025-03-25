@@ -12,13 +12,13 @@ public class ActorActionBar
     protected DebugManager debugManager => GameManager.instance.debugManager;
     // Retrieves the flags module from the CurrentProfile actor Instance to check various state flags.
     protected ActorFlags flags => instance.flags;
-    // Provides access to the currently selected player (if any) from the GameManager.
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
+    // Provides access to the currently selected hero (if any) from the GameManager.
+    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     // Retrieves the rendering module, which manages all UI elements related to the actor.
     protected ActorRenderers render => instance.render;
     // Retrieves the stats module that stores the actor's AP, MaxAP, Speed, etc.
     protected ActorStats stats => instance.stats;
-    // Indicates whether a player is selected.
+    // Indicates whether a hero is selected.
     protected bool hasSelectedPlayer => selectedPlayer != null;
 
     // Internal property:
@@ -110,7 +110,7 @@ public class ActorActionBar
     {
         // Abort the fill process if:
         // - The enemy is stunned,
-        // - No player is selected,
+        // - No hero is selected,
         // - The actor is not an enemy,
         // - The actor is not playing,
         // - The actor already has max AP, or

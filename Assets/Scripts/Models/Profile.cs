@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 
@@ -41,40 +42,38 @@ namespace Game.Models.Profile
     [Serializable]
     public class SaveState
     {
-        // Optional: The folder where this save resides.
-        public string Folder;
-        // FileName generated based on the index.
+        //public string Folder;
         public string FileName;
         public DateTime Timestamp;
         public int Index;
         public GlobalSaveData Global;
         public StageSaveData Stage;
         public PartySaveData Party;
+        
+        public SaveState() { }
 
-        // Parameterized constructor used in code.
         public SaveState(int index, DateTime timestamp, GlobalSaveData global, StageSaveData stage, PartySaveData party)
         {
             Index = index;
             Timestamp = timestamp;
+            //Folder = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
             FileName = $"Save{index:D3}.json";
             Global = global;
             Stage = stage;
             Party = party;
         }
 
-        // Copy constructor.
+        //Copy constructor
         public SaveState(SaveState other)
         {
             this.Index = other.Index;
             this.Timestamp = other.Timestamp;
+            //this.Folder = other.Folder;
             this.FileName = other.FileName;
             this.Global = new GlobalSaveData(other.Global);
             this.Stage = new StageSaveData(other.Stage);
             this.Party = new PartySaveData(other.Party);
         }
-
-        // Default parameterless constructor required for JSON deserialization.
-        public SaveState() { }
     }
 
     [Serializable]
@@ -106,12 +105,12 @@ namespace Game.Models.Profile
     [Serializable]
     public class PartySaveData
     {
-        public List<StageActor> PlayerActors = new List<StageActor>();
+        public List<StageActor> HeroActors = new List<StageActor>();
 
         public PartySaveData() { }
         public PartySaveData(PartySaveData other)
         {
-            this.PlayerActors = other.PlayerActors;
+            this.HeroActors = other.HeroActors;
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// ActorInstance represents a game character (either player or enemy) and encapsulates
+// ActorInstance represents a game character (either hero or enemy) and encapsulates
 // its state, behaviors, rendering, movement, and interactions with game systems.
 public class ActorInstance : MonoBehaviour
 {
@@ -22,10 +22,10 @@ public class ActorInstance : MonoBehaviour
     protected bool hasFocusedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
     protected float moveSpeed => GameManager.instance.moveSpeed;
-    protected IEnumerable<ActorInstance> players => GameManager.instance.players;
+    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
+    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     protected float snapDistance => GameManager.instance.snapThreshold;
     protected StageManager stageManager => GameManager.instance.stageManager;
     protected TileMap tileMap => GameManager.instance.tileMap;
@@ -37,7 +37,7 @@ public class ActorInstance : MonoBehaviour
 
     // Internal Properties: Provide information about the actor's state and position.
     public TileInstance currentTile => tileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
-    public bool isPlayer => team.Equals(Team.Player);              // Determines if this actor belongs to the player's team.
+    public bool isPlayer => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
     public bool isEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an enemy.
     public bool isActive => isActiveAndEnabled;                   // Checks if the GameObject is active.
     public bool isAlive => stats.HP > 0;                          // Actor is alive if HP is above zero.
@@ -48,7 +48,7 @@ public class ActorInstance : MonoBehaviour
     public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum action points.
 
     // Determines if the actor is invincible based on team-specific debug settings.
-    public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isPlayerInvincible);
+    public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isHeroInvincible);
 
     // Transform-related properties for position, rotation, scale and parent management.
     public Transform parent
@@ -325,23 +325,23 @@ public class ActorInstance : MonoBehaviour
         switch (attackStrategy)
         {
             case AttackStrategy.AttackClosest:
-                // Choose the closest player.
-                var targetPlayer = players.Where(x => x.isPlaying).OrderBy(x => Vector3.Distance(x.position, position)).FirstOrDefault();
+                // Choose the closest hero.
+                var targetPlayer = heroes.Where(x => x.isPlaying).OrderBy(x => Vector3.Distance(x.position, position)).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackWeakest:
-                // Choose the player with the lowest HP.
-                targetPlayer = players.Where(x => x.isPlaying).OrderBy(x => x.stats.HP).FirstOrDefault();
+                // Choose the hero with the lowest HP.
+                targetPlayer = heroes.Where(x => x.isPlaying).OrderBy(x => x.stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackStrongest:
-                // Choose the player with the highest HP.
-                targetPlayer = players.Where(x => x.isPlaying).OrderByDescending(x => x.stats.HP).FirstOrDefault();
+                // Choose the hero with the highest HP.
+                targetPlayer = heroes.Where(x => x.isPlaying).OrderByDescending(x => x.stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackRandom:
-                // Choose a random player's location.
-                targetLocation = Random.Player.location;
+                // Choose a random hero's location.
+                targetLocation = Random.Hero.location;
                 break;
             case AttackStrategy.MoveAnywhere:
                 // Choose a random location.

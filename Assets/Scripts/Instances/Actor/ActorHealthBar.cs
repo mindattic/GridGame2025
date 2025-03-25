@@ -4,7 +4,7 @@ using UnityEngine;
 public class ActorHealthBar
 {
    //Quick Reference Properties
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedPlayer;
+    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     protected ActorRenderers render => instance.render;
     protected ActorStats stats => instance.stats;
 
