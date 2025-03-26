@@ -16,22 +16,22 @@ public class CreditsManager : MonoBehaviour
     private void Awake()
     {
         canvas2D = GameObject.Find(ComponentHelper.Credits.Canvas2D).GetComponent<RectTransform>();
-        title = GameObject.Find(ComponentHelper.Credits.Title).GetComponent<RectTransform>();
-        scrollView = GameObject.Find(ComponentHelper.Credits.ScrollView).GetComponent<RectTransform>();
-        content = GameObject.Find(ComponentHelper.Credits.Content).GetComponent<RectTransform>();
+        //title = GameObject.Find(ComponentHelper.Credits.Title).GetComponent<RectTransform>();
+        //scrollView = GameObject.Find(ComponentHelper.Credits.ScrollView).GetComponent<RectTransform>();
+        //content = GameObject.Find(ComponentHelper.Credits.Content).GetComponent<RectTransform>();
         textarea = GameObject.Find(ComponentHelper.Credits.Textarea).GetComponent<RectTransform>();
         fade = GameObject.Find(ComponentHelper.Credits.Fade).GetComponent<FadeInstance>();
 
-        var screenWidth = canvas2D.rect.width;
-        var screenHeight = canvas2D.rect.height;
-        var buttonWidth = 0.9f * screenWidth;
-        var buttonHeight = screenHeight / 16f;
-        var fontSize = buttonHeight / 2;
-        var rowSpacing = 0.01f * screenHeight;
+        //var screenWidth = canvas2D.rect.width;
+        //var screenHeight = canvas2D.rect.height;
+        //var buttonWidth = 0.9f * screenWidth;
+        //var buttonHeight = screenHeight / 16f;
+        //var fontSize = buttonHeight / 2;
+        //var rowSpacing = 0.01f * screenHeight;
 
-        title.GetComponent<Label>().fontSize = fontSize;
-        scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
-        content.GetComponent<VerticalLayoutGroup>().spacing = rowSpacing;
+        //title.GetComponent<Label>().fontSize = fontSize;
+        //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
+        //content.GetComponent<VerticalLayoutGroup>().spacing = rowSpacing;
 
         const string NL = "\r\n";
         string text
@@ -56,9 +56,9 @@ public class CreditsManager : MonoBehaviour
         var textareaHeight
             = label.textInfo.lineCount
             * label.textInfo.lineInfo[0].lineHeight
-            + screenHeight * 0.5f;
+            + canvas2D.rect.height * 0.5f;
 
-        textarea.sizeDelta = new Vector2(screenWidth, textareaHeight);
+        textarea.sizeDelta = new Vector2(canvas2D.rect.width, textareaHeight);
 
         StartCoroutine(fade.FadeIn());
     }

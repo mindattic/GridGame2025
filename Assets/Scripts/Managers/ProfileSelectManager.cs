@@ -85,8 +85,8 @@ public class ProfileSelectManager : MonoBehaviour
         GameObject instance = Instantiate(buttonPrefab, content);
         instance.name = "CreateNewProfile";
 
-        RectTransform buttonRect = instance.GetComponent<RectTransform>();
-        buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+        //RectTransform buttonRect = instance.GetComponent<RectTransform>();
+        //buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnCreateNewProfileButtonClicked());
@@ -100,8 +100,8 @@ public class ProfileSelectManager : MonoBehaviour
         GameObject instance = Instantiate(buttonPrefab, content);
         instance.name = $"Profile_{item.Key}";
 
-        RectTransform buttonRect = instance.GetComponent<RectTransform>();
-        buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+        //RectTransform buttonRect = instance.GetComponent<RectTransform>();
+       // buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnProfileButtonClicked(item.Key));

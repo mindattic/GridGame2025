@@ -27,27 +27,8 @@ public class SettingsManager : MonoBehaviour
     private void Awake()
     {
         canvas2D = GameObject.Find(ComponentHelper.Settings.Canvas2D).GetComponent<RectTransform>();
-        title = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>();
-        scrollView = GameObject.Find(ComponentHelper.Settings.ScrollView).GetComponent<RectTransform>();
-        content = GameObject.Find(ComponentHelper.Settings.Content).GetComponent<RectTransform>();
-        verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
         fade = GameObject.Find(ComponentHelper.Settings.Fade).GetComponent<FadeInstance>();
         actorPanMultiplier = GameObject.Find(ComponentHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
-
-        screenWidth = canvas2D.rect.width;
-        screenHeight = canvas2D.rect.height;
-
-        buttonWidth = 0.9f * screenWidth;
-        buttonHeight = screenHeight / 16f;
-
-        title.fontSize = buttonHeight / 2;
-        scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
-
-        spacing = 0.01f * screenHeight;
-        verticalLayoutGroup.spacing = spacing;
-
-        actorPanMultiplier.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-
         StartCoroutine(fade.FadeIn());
     }
 
@@ -75,7 +56,7 @@ public class SettingsManager : MonoBehaviour
 
     public void UpdateActorPanMultiplier()
     {
-        var slider = actorPanMultiplier.GetComponent<Slider>();
+        var slider = actorPanMultiplier.GetComponentInChildren<Slider>();
         ProfileRepo.instance.CurrentProfile.Settings.ActorPanMultiplier = slider.value;
     }
 }

@@ -35,24 +35,24 @@ public class SaveFileSelectManager : MonoBehaviour
     private void Awake()
     {
         // Use appropriate ComponentHelper names or adjust as needed
-        canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
-        header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>() ?? throw new UnityException("Title is null");
-        scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
-        content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
-        verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
-        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>() ?? throw new UnityException("FadeInstance is null");
+        canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
+        //header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>();
+        //scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
+        content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>();
+        //verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
+        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
-        screenWidth = canvas2D.rect.width;
-        screenHeight = canvas2D.rect.height;
-        buttonWidth = 0.9f * screenWidth;
-        buttonHeight = screenHeight / 16f;
-        fontSize = buttonHeight / 2;
-        rowSpacing = 0.01f * screenHeight;
+        //screenWidth = canvas2D.rect.width;
+        //screenHeight = canvas2D.rect.height;
+        //buttonWidth = 0.9f * screenWidth;
+        //buttonHeight = screenHeight / 16f;
+        //fontSize = buttonHeight / 2;
+        //rowSpacing = 0.01f * screenHeight;
 
-        header.fontSize = fontSize;
-        scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
+        //header.fontSize = fontSize;
+        //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
 
-        verticalLayoutGroup.spacing = rowSpacing;
+        //verticalLayoutGroup.spacing = rowSpacing;
     }
 
     private void Start()
@@ -103,8 +103,8 @@ public class SaveFileSelectManager : MonoBehaviour
         instance.name = $"Button_{Path.GetFileNameWithoutExtension(item.FileName)}";
 
         //Set the button size: 90% of width, 1/16th of height
-        RectTransform buttonRect = instance.GetComponent<RectTransform>();
-        buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+        //RectTransform buttonRect = instance.GetComponent<RectTransform>();
+        //buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
         //Set the button click event
         Button button = instance.GetComponent<Button>();

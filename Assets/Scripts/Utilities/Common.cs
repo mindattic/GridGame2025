@@ -110,7 +110,7 @@ public static class ComponentHelper
         public const string Viewport = "Canvas2D/ScrollView/Viewport";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
         public const string Map = "Canvas2D/ScrollView/Viewport/Content/Map";
-        public const string Player = "Canvas2D/ScrollView/Viewport/Content/Hero";
+        public const string Hero = "Canvas2D/ScrollView/Viewport/Content/Hero";
 
     }
 
