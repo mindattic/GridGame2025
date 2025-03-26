@@ -33,27 +33,61 @@ public class ActorRepo : ScriptableObject
     //Serialized fields
     [SerializeField] public Dictionary<string, ActorData> Actors;
 
-
     private void OnEnable()
     {
-        Load();
+        Reload();
     }
 
-    private void Load()
+    private void Reload()
     {
+
         Actors = new Dictionary<string, ActorData>
         {
-            { "Barbarian", new ActorData
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Barbarian
+            { "Barbarian",
+            new ActorData
             {
                 Character = Character.Barbarian,
                 Description = "A warrior driven by rage.",
-                Stats = new ActorStats
+
+                BaseStats = new ActorStats
                 {
-                    Level = 1, PreviousHP = 40, HP = 40, MaxHP = 40,
-                    PreviousAP = 0, AP = 0, MaxAP = 100,
-                    Strength = 9, Vitality = 6, Agility = 4, Speed = 5, Luck = 5
+                    Level = 1,
+                    Strength = 9,
+                    Vitality = 6,
+                    Agility = 3,
+                    Speed = 2,
+                    Luck = 4
                 },
-                ThumbnailSettings = new ThumbnailSettings { X = 420, Y = 50, Width = 256, Height = 256 },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 2.4f,
+                    Vitality = 1.2f,
+                    Agility = 0.5f,
+                    Speed = 0.3f,
+                    Luck = 0.6f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(2f, 1f, 0f, 0f, 0.5f) },
+                    { 10, new StatGrowth(3f, 2f, 1f, 0f, 1.0f) },
+                    { 20, new StatGrowth(4f, 2f, 1f, 1f, 1.5f) },
+                    { 40, new StatGrowth(6f, 3f, 2f, 1f, 2.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 420,
+                    Y = 50,
+                    Width = 256,
+                    Height = 256
+                },
+
                 Details = new ActorDetails
                 {
                     Description = "A warrior driven by rage.",
@@ -62,17 +96,51 @@ public class ActorRepo : ScriptableObject
                 }
             }
             },
-            { "Bat", new ActorData
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Bat
+            { "Bat",
+            new ActorData
             {
                 Character = Character.Bat,
                 Description = "A flying menace.",
-                Stats = new ActorStats
+
+                BaseStats = new ActorStats
                 {
-                    Level = 1, PreviousHP = 5, HP = 5, MaxHP = 5,
-                    PreviousAP = 0, AP = 0, MaxAP = 100,
-                    Strength = 2, Vitality = 4, Agility = 1, Speed = 1, Luck = 6
+                    Level = 1,
+                    Strength = 2,
+                    Vitality = 1,
+                    Agility = 6,
+                    Speed = 7,
+                    Luck = 5
                 },
-                ThumbnailSettings = new ThumbnailSettings { X = 200, Y = 380, Width = 512, Height = 512 },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 0.4f,
+                    Vitality = 0.2f,
+                    Agility = 1.2f,
+                    Speed = 1.4f,
+                    Luck = 0.6f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(0.5f, 0.2f, 2.0f, 2.0f, 1.0f) },
+                    { 10, new StatGrowth(1.0f, 0.5f, 1.5f, 2.5f, 1.5f) },
+                    { 20, new StatGrowth(2.0f, 1.0f, 2.5f, 3.0f, 2.0f) },
+                    { 40, new StatGrowth(3.0f, 2.0f, 4.0f, 4.0f, 2.5f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 200,
+                    Y = 380,
+                    Width = 512,
+                    Height = 512
+                },
+
                 Details = new ActorDetails
                 {
                     Description = "A warrior driven by rage.",
@@ -81,17 +149,51 @@ public class ActorRepo : ScriptableObject
                 }
             }
             },
-            { "Cleric", new ActorData
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Cleric
+            { "Cleric",
+            new ActorData
             {
                 Character = Character.Cleric,
                 Description = "A strict adherent to the church.",
-                Stats = new ActorStats
+
+                BaseStats = new ActorStats
                 {
-                    Level = 1, PreviousHP = 30, HP = 30, MaxHP = 30,
-                    PreviousAP = 0, AP = 0, MaxAP = 100,
-                    Strength = 2, Vitality = 5, Agility = 3, Speed = 3, Luck = 9
+                    Level = 1,
+                    Strength = 2,
+                    Vitality = 5,
+                    Agility = 3,
+                    Speed = 3,
+                    Luck = 9
                 },
-                ThumbnailSettings = new ThumbnailSettings { X = 360, Y = 100, Width = 256, Height = 256 },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 0.4f,
+                    Vitality = 1.2f,
+                    Agility = 0.8f,
+                    Speed = 0.8f,
+                    Luck = 2.5f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(0.0f, 1.0f, 0.0f, 0.0f, 3.0f) },
+                    { 10, new StatGrowth(0.5f, 1.5f, 1.0f, 0.5f, 4.0f) },
+                    { 20, new StatGrowth(1.0f, 2.0f, 1.0f, 1.0f, 5.0f) },
+                    { 40, new StatGrowth(1.5f, 2.5f, 2.0f, 2.0f, 6.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 360,
+                    Y = 100,
+                    Width = 256,
+                    Height = 256
+                },
+
                 Details = new ActorDetails
                 {
                     Description = "An adherent to the Lightbearer Orthodoxy.",
@@ -100,17 +202,51 @@ public class ActorRepo : ScriptableObject
                 }
             }
             },
-            { "Ninja", new ActorData
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Ninja
+            { "Ninja",
+            new ActorData
             {
                 Character = Character.Ninja,
                 Description = "A stealthy assassin.",
-                Stats = new ActorStats
+
+                BaseStats = new ActorStats
                 {
-                    Level = 1, PreviousHP = 35, HP = 35, MaxHP = 35,
-                    PreviousAP = 0, AP = 0, MaxAP = 100,
-                    Strength = 4, Vitality = 4, Agility = 10, Speed = 10, Luck = 5
+                    Level = 1,
+                    Strength = 6,
+                    Vitality = 3,
+                    Agility = 10,
+                    Speed = 10,
+                    Luck = 4
                 },
-                ThumbnailSettings = new ThumbnailSettings { X = 380, Y = 50, Width = 196, Height = 196 },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.6f,
+                    Vitality = 0.5f,
+                    Agility = 2.2f,
+                    Speed = 2.0f,
+                    Luck = 0.8f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(1.0f, 0.0f, 2.0f, 2.0f, 0.5f) },
+                    { 10, new StatGrowth(2.0f, 0.5f, 3.0f, 2.5f, 1.0f) },
+                    { 20, new StatGrowth(3.0f, 1.0f, 4.0f, 3.0f, 1.5f) },
+                    { 40, new StatGrowth(5.0f, 1.5f, 5.0f, 4.0f, 2.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 380,
+                    Y = 50,
+                    Width = 196,
+                    Height = 196
+                },
+
                 Details = new ActorDetails
                 {
                     Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
@@ -119,17 +255,51 @@ public class ActorRepo : ScriptableObject
                 }
             }
             },
-            { "Paladin", new ActorData
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Paladin
+            { "Paladin",
+            new ActorData
             {
                 Character = Character.Paladin,
                 Description = "A holy knight.",
-                Stats = new ActorStats
+
+                BaseStats = new ActorStats
                 {
-                    Level = 1, PreviousHP = 50, HP = 50, MaxHP = 50,
-                    PreviousAP = 0, AP = 0, MaxAP = 100,
-                    Strength = 6, Vitality = 8, Agility = 3, Speed = 3, Luck = 6
+                    Level = 1,
+                    Strength = 6,
+                    Vitality = 8,
+                    Agility = 2,
+                    Speed = 2,
+                    Luck = 5
                 },
-                ThumbnailSettings = new ThumbnailSettings { X = 420, Y = 90, Width = 196, Height = 196 },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.4f,
+                    Vitality = 2.0f,
+                    Agility = 0.6f,
+                    Speed = 0.6f,
+                    Luck = 0.9f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(1.0f, 2.0f, 0.0f, 0.0f, 0.5f) },
+                    { 10, new StatGrowth(2.0f, 2.0f, 0.5f, 0.5f, 1.0f) },
+                    { 20, new StatGrowth(3.0f, 3.5f, 0.5f, 0.5f, 1.5f) },
+                    { 40, new StatGrowth(5.0f, 5.0f, 1.0f, 1.0f, 2.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 430,
+                    Y = 60,
+                    Width = 196,
+                    Height = 196
+                },
+
                 Details = new ActorDetails
                 {
                     Description = "A holy knight honor bound to defend the Lightbearer Orthodoxy.",
@@ -138,17 +308,51 @@ public class ActorRepo : ScriptableObject
                 }
             }
             },
-            { "Scorpion", new ActorData
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Scorpion
+            { "Scorpion",
+            new ActorData
             {
                 Character = Character.Scorpion,
                 Description = "A poisonous insectile predator.",
-                Stats = new ActorStats
+
+                BaseStats = new ActorStats
                 {
-                    Level = 2, PreviousHP = 100, HP = 100, MaxHP = 100,
-                    PreviousAP = 0, AP = 0, MaxAP = 100,
-                    Strength = 4, Vitality = 2, Agility = 1, Speed = 4, Luck = 2
+                    Level = 1,
+                    Strength = 4,
+                    Vitality = 8,
+                    Agility = 2,
+                    Speed = 3,
+                    Luck = 2
                 },
-                ThumbnailSettings = new ThumbnailSettings { X = 200, Y = 380, Width = 256, Height = 256 },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.0f,
+                    Vitality = 2.2f,
+                    Agility = 0.6f,
+                    Speed = 0.8f,
+                    Luck = 0.4f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(1.0f, 3.0f, 0.0f, 0.0f, 0.5f) },
+                    { 10, new StatGrowth(2.0f, 3.5f, 0.5f, 0.5f, 0.8f) },
+                    { 20, new StatGrowth(3.0f, 4.5f, 1.0f, 1.0f, 1.0f) },
+                    { 40, new StatGrowth(4.0f, 6.0f, 1.5f, 1.5f, 1.5f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 200,
+                    Y = 380,
+                    Width = 256,
+                    Height = 256
+                },
+
                 Details = new ActorDetails
                 {
                     Description = "A poisonous insectile predator.",
@@ -157,17 +361,51 @@ public class ActorRepo : ScriptableObject
                 }
             }
             },
-            { "Slime", new ActorData
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Slime
+            { "Slime",
+            new ActorData
             {
                 Character = Character.Slime,
                 Description = "A weak and squishy creature.",
-                Stats = new ActorStats
+
+                BaseStats = new ActorStats
                 {
-                    Level = 1, PreviousHP = 8, HP = 8, MaxHP = 8,
-                    PreviousAP = 0, AP = 0, MaxAP = 100,
-                    Strength = 1, Vitality = 1, Agility = 1, Speed = 1, Luck = 1
+                    Level = 1,
+                    Strength = 1,
+                    Vitality = 1,
+                    Agility = 1,
+                    Speed = 1,
+                    Luck = 1
                 },
-                ThumbnailSettings = new ThumbnailSettings { X = 200, Y = 250, Width = 512, Height = 512 },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 0.2f,
+                    Vitality = 0.3f,
+                    Agility = 0.2f,
+                    Speed = 0.2f,
+                    Luck = 0.2f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(0.5f, 0.5f, 0.5f, 0.5f, 0.5f) },
+                    { 10, new StatGrowth(0.8f, 0.8f, 0.8f, 0.8f, 0.8f) },
+                    { 20, new StatGrowth(1.0f, 1.0f, 1.0f, 1.0f, 1.0f) },
+                    { 40, new StatGrowth(1.5f, 1.5f, 1.5f, 1.5f, 1.5f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 200,
+                    Y = 250,
+                    Width = 512,
+                    Height = 512
+                },
+
                 Details = new ActorDetails
                 {
                     Description = "A weak and squishy creature.",
@@ -176,54 +414,89 @@ public class ActorRepo : ScriptableObject
                 }
             }
             },
-            { "Yeti", new ActorData
+            
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Yeti
+            { "Yeti",
+            new ActorData
             {
                 Character = Character.Yeti,
                 Description = "A large humanoid underdweller.",
-                Stats = new ActorStats
+
+                BaseStats = new ActorStats
                 {
-                    Level = 5, PreviousHP = 50, HP = 50, MaxHP = 50,
-                    PreviousAP = 0, AP = 0, MaxAP = 100,
-                    Strength = 4, Vitality = 10, Agility = 1, Speed = 1, Luck = 5
+                    Level = 5,
+                    Strength = 6,
+                    Vitality = 10,
+                    Agility = 1,
+                    Speed = 1,
+                    Luck = 3
                 },
-                ThumbnailSettings = new ThumbnailSettings { X = 200, Y = 150, Width = 256, Height = 256 },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 2.0f,
+                    Vitality = 2.5f,
+                    Agility = 0.4f,
+                    Speed = 0.3f,
+                    Luck = 0.6f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 10, new StatGrowth(3.0f, 3.5f, 0.5f, 0.5f, 0.5f) },
+                    { 20, new StatGrowth(4.0f, 4.5f, 1.0f, 1.0f, 1.0f) },
+                    { 40, new StatGrowth(5.0f, 6.0f, 1.5f, 1.5f, 1.5f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 200,
+                    Y = 150,
+                    Width = 256,
+                    Height = 256
+                },
+
                 Details = new ActorDetails
                 {
                     Description = "A large humanoid underdweller.",
                     Card = "Intermittently goes <color=#FF0000>[Berserk]</color> attacking multiple nearby enemies.",
                     Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                 }
-            }
-            }
+            }},
+
         };
     }
 
+
+
     public ActorStats GetStats(Character character)
-    {
-        var data = Actors[character.ToString()].Stats;
-        if (data == null)
-            Debug.LogError($"Unable to retrieve actor stats for `{character}`");
+{
+    var data = Actors[character.ToString()].Stats;
+    if (data == null)
+        Debug.LogError($"Unable to retrieve actor stats for `{character}`");
 
-        return new ActorStats(data); //Return a new copy instead of a shared reference
-    }
+    return new ActorStats(data); //Return a new copy instead of a shared reference
+}
 
-    public ThumbnailSettings GetThumbnailSetting(Character character)
-    {
-        var data = Actors[character.ToString()].ThumbnailSettings;
-        if (data == null)
-            Debug.LogError($"Unable to retrieve thumnail settings for `{character}`");
+public ThumbnailSettings GetThumbnailSetting(Character character)
+{
+    var data = Actors[character.ToString()].ThumbnailSettings;
+    if (data == null)
+        Debug.LogError($"Unable to retrieve thumnail settings for `{character}`");
 
-        return new ThumbnailSettings(data); //Return a new copy instead of a shared reference
-    }
+    return new ThumbnailSettings(data); //Return a new copy instead of a shared reference
+}
 
-    public ActorDetails GetDetails(Character character)
-    {
-        var data = Actors[character.ToString()].Details;
-        if (data == null)
-            Debug.LogError($"Unable to retrieve actor details for `{character}`");
+public ActorDetails GetDetails(Character character)
+{
+    var data = Actors[character.ToString()].Details;
+    if (data == null)
+        Debug.LogError($"Unable to retrieve actor details for `{character}`");
 
-        return new ActorDetails(data); //Return a new copy instead of a shared reference
-    }
+    return new ActorDetails(data); //Return a new copy instead of a shared reference
+}
 
 
 }

@@ -68,7 +68,6 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
-    <Compile Include="Assets\Scripts\Models\DataModels.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\StageWave.cs" />
@@ -109,6 +108,7 @@
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackAction.cs" />
+    <Compile Include="Assets\Scripts\Models\ActorModels.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
@@ -122,7 +122,6 @@
     <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
-    <Compile Include="Assets\Scripts\Models\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />

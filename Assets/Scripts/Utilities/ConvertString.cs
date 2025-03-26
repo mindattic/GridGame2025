@@ -55,13 +55,6 @@ namespace Assets.Scripts.Utilities
             return LocationHelper.Nowhere; //Default fallback
         }
 
-        public static Character ToCharacter(string value)
-        {
-            return Enum.TryParse<Character>(value, true, out var character)
-                ? character
-                : Character.Unknown;  //Default fallback
-        }
-
         public static Team ToTeam(string value)
         {
             return Enum.TryParse<Team>(value, true, out var team)

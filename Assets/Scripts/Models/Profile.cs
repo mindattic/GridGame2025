@@ -108,9 +108,11 @@ namespace Game.Models.Profile
         public List<StageActor> HeroActors = new List<StageActor>();
 
         public PartySaveData() { }
+
         public PartySaveData(PartySaveData other)
         {
             this.HeroActors = other.HeroActors;
         }
     }
+
 }

@@ -45,6 +45,7 @@ public class ProfileRepo : ScriptableObject
     public bool HasCurrentProfile => HasProfiles && !string.IsNullOrWhiteSpace(currentProfileKey) && profiles.ContainsKey(currentProfileKey);
     public bool HasCurrentSave => HasCurrentProfile && CurrentProfile.HasSaves && CurrentProfile.CurrentSave != null;
     public Profile CurrentProfile => HasCurrentProfile ? profiles[currentProfileKey] : null;
+    //public string MostRecentKey => new DirectoryInfo(FolderHelper.Folder.Profiles).GetDirectories().OrderByDescending(d => d.LastWriteTime).FirstOrDefault().Name;
 
     // Constructor
     private void OnEnable()
@@ -84,7 +85,11 @@ public class ProfileRepo : ScriptableObject
         if (!profiles.Any())
             return false;
 
-        // Auto-select a profile if one is not already selected.
+        //If the stored key is invalid select another profile
+        if (!string.IsNullOrWhiteSpace(currentProfileKey) && !profiles.ContainsKey(currentProfileKey))
+            currentProfileKey = profiles.Keys.First();
+
+        //Auto-select a profile if one is not already selected.
         var success = !string.IsNullOrWhiteSpace(currentProfileKey)
             ? SelectProfile(currentProfileKey)
             : SelectProfile(profiles.Keys.First());
@@ -127,7 +132,14 @@ public class ProfileRepo : ScriptableObject
 
         // Append profile and set as current
         profiles.Add(key, newProfile);
-        currentProfileKey = key;
+
+        //Select newly created profile
+        var success = SelectProfile(key);
+        if (!success)
+        {
+            Debug.Log($"Failed to select profile `{key}`");
+            return null;
+        }
 
         // Write the initial SaveState to disk
         string savesPath = Path.Combine(newProfile.Folder, "Saves");
@@ -159,7 +171,7 @@ public class ProfileRepo : ScriptableObject
         }
 
         string folder = Path.Combine(FolderHelper.Folder.Profiles, key);
-        if (!Directory.Exists(folder)) 
+        if (!Directory.Exists(folder))
             return null;
 
         //Reconstruct profile
@@ -216,6 +228,11 @@ public class ProfileRepo : ScriptableObject
         {
             Directory.Delete(folder, true);
         }
+
+        //Unselect profile (if applicable)
+        if (currentProfileKey == key)
+            currentProfileKey = null;
+
         Reload();
         return true;
     }

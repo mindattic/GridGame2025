@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Models;
+using System;
 using UnityEngine;
 
 [Serializable]
@@ -6,64 +7,46 @@ public class StageActor
 {
     public Character Character;
     public Team Team;
+    public int Level = 1;
     public int SpawnTurn;
-    public Vector2Int? Location;  // Assuming Location is nullable; Vector2Int is a struct, so it's copied by value.
-   
+    public Vector2Int? Location;
+
+    // This is NOT serialized — calculated on demand.
+    [NonSerialized]
+    public ActorStats Stats;
+
     public StageActor() { }
 
     public StageActor(StageActor other)
     {
         Character = other.Character;
         Team = other.Team;
+        Level = other.Level;
         SpawnTurn = other.SpawnTurn;
         Location = other.Location.HasValue ? other.Location : Random.UnoccupiedLocation;
-   
+        AssignStats();
     }
 
-    public StageActor(Character character, Team team)
+    public StageActor(Character character, Team team, int level = 1)
     {
         Character = character;
         Team = team;
+        Level = level;
         SpawnTurn = 0;
         Location = Random.UnoccupiedLocation;
+        AssignStats();
     }
 
-}
-
-
-
-/*
- * using System;
-using UnityEngine;
-
-namespace Assets.Scripts.Models
-{
-    [Serializable]
-    public class StageActor
+    public void AssignStats()
     {
-        public StageActor() { }
-
-
-        public StageActor(StageActor other)
+        if (ActorRepo.instance != null && ActorRepo.instance.Actors.ContainsKey(Character.ToString()))
         {
-            Character = other.Character;
-            Team = other.Team;
-            SpawnTurn = other.SpawnTurn;
-            Location = other.Location.HasValue ? other.Location : Random.UnoccupiedLocation;
+            var actor = ActorRepo.instance.Actors[Character.ToString()];
+            Stats = actor.GetStats(Level);
         }
-
-        public StageActor(Character character, Team team)
+        else
         {
-            Character = character;
-            Team = team;
-            SpawnTurn = 0;
-            Location = Random.UnoccupiedLocation;
+            Debug.LogError($"StageActor failed to assign stats for Character: {Character}");
         }
-
-        public Character Character;
-        public Team Team;
-        public int SpawnTurn;
-        public Vector2Int? Location;
     }
 }
-*/

@@ -60,16 +60,13 @@ public enum Status
 
 public enum Character
 {
-    Unknown,
-    Paladin,
     Barbarian,
-    Ninja,
-    Sentinel,
-    PandaGirl,
-    Cleric,
-    Slime,
     Bat,
+    Cleric,
+    Ninja,
+    Paladin,
     Scorpion,
+    Slime, 
     Yeti
 }
 

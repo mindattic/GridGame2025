@@ -36,11 +36,10 @@ public class StageRepo : ScriptableObject
 
     private void OnEnable()
     {
-        LoadStages();
-  
+        Reload();
     }
 
-    private void LoadStages()
+    private void Reload()
     {
         Stages = new Dictionary<string, Stage>
     {
@@ -58,7 +57,6 @@ public class StageRepo : ScriptableObject
                     {
                         Actors = new List<StageActor>()
                         {
-                            new StageActor { Character = Character.Ninja, Team = Team.Hero },
                             new StageActor { Character = Character.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) }
                         },
                         DottedLines = new List<StageDottedLine>

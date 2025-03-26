@@ -1,4 +1,5 @@
 using Assets.Scripts.Behaviors.Actor;
+using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
 

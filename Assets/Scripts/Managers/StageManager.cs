@@ -141,17 +141,22 @@ public class StageManager : MonoBehaviour
         var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<ActorInstance>();
         instance.transform.parent = board.transform;
+
         instance.character = stageActor.Character;
         instance.friendlyName = instance.character.ToString().Split("Instance")[0];
         instance.name = $"{stageActor.Character}Instance{Guid.NewGuid():N}";
         instance.team = stageActor.Team;
-        instance.stats = ActorRepo.instance.GetStats(stageActor.Character);
+
+        // Assign stats based on character and stageActor's level
+        instance.stats = ActorRepo.instance.Actors[stageActor.Character.ToString()].GetStats(stageActor.Level);
+
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
         instance.Spawn(stageActor.Location.Value);
 
         actors.Add(instance);
     }
+
 
     /// <summary>
     /// Called when an actor dies. Triggers checks for game over or stage completion.

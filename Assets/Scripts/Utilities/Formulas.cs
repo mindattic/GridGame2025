@@ -1,4 +1,5 @@
-﻿using Game.Behaviors;
+﻿using Assets.Scripts.Models;
+using Game.Behaviors;
 using System;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -82,6 +83,11 @@ namespace Assets.Scripts.Utilities
         public static bool IsCriticalHit(ActorInstance attacker, ActorInstance target)
         {
             return false;
+        }
+
+        public static float Health(ActorStats stats)
+        {
+            return 30 + (stats.Vitality * 5) + (stats.Level * 2);
         }
 
         public static float Offense(ActorStats stats)
