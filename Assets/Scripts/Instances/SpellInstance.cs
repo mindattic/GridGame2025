@@ -223,7 +223,7 @@ public class SpellInstance : MonoBehaviour
 
     private IEnumerator SpawnVFX()
     {
-        //TODO: Differnet trail hides? Hide, Fade, Shrink, etc...
+        //TODO: Differnet trail hides? Hide, FadeInstance, Shrink, etc...
         trailInstance.SetActive(false); //Hide trail until end
 
         VFXResource vfxResource = resourceManager.VisualEffect(spell.vfxKey);

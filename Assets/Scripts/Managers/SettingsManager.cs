@@ -10,7 +10,7 @@ public class SettingsManager : MonoBehaviour
 {
     //Fields
     private RectTransform canvas2D;
-    private Label header;
+    private Label title;
     private RectTransform scrollView;
     private RectTransform content;
     private VerticalLayoutGroup verticalLayoutGroup;
@@ -19,7 +19,7 @@ public class SettingsManager : MonoBehaviour
     private float buttonWidth;
     private float buttonHeight;
     private float spacing;
-    private Fade fade;
+    private FadeInstance fade;
 
 
     private RectTransform actorPanMultiplier;
@@ -27,11 +27,11 @@ public class SettingsManager : MonoBehaviour
     private void Awake()
     {
         canvas2D = GameObject.Find(ComponentHelper.Settings.Canvas2D).GetComponent<RectTransform>();
-        header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>();
+        title = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>();
         scrollView = GameObject.Find(ComponentHelper.Settings.ScrollView).GetComponent<RectTransform>();
         content = GameObject.Find(ComponentHelper.Settings.Content).GetComponent<RectTransform>();
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
-        fade = GameObject.Find(ComponentHelper.Settings.Fade).GetComponent<Fade>();
+        fade = GameObject.Find(ComponentHelper.Settings.Fade).GetComponent<FadeInstance>();
         actorPanMultiplier = GameObject.Find(ComponentHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
 
         screenWidth = canvas2D.rect.width;
@@ -40,7 +40,7 @@ public class SettingsManager : MonoBehaviour
         buttonWidth = 0.9f * screenWidth;
         buttonHeight = screenHeight / 16f;
 
-        header.fontSize = buttonHeight / 2;
+        title.fontSize = buttonHeight / 2;
         scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
 
         spacing = 0.01f * screenHeight;

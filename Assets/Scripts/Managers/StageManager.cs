@@ -10,7 +10,7 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     // Quick Reference Properties:
-    protected Fade fade => GameManager.instance.fade;
+    protected FadeInstance fade => GameManager.instance.fade;
     protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     public int totalCoins
     {

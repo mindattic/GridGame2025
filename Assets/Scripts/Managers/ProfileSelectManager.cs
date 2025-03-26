@@ -14,7 +14,7 @@ public class ProfileSelectManager : MonoBehaviour
     private RectTransform scrollView;
     private RectTransform content;
     private VerticalLayoutGroup verticalLayoutGroup;
-    private Fade fade;
+    private FadeInstance fade;
 
     private float screenWidth;
     private float screenHeight;
@@ -26,11 +26,11 @@ public class ProfileSelectManager : MonoBehaviour
     private void Awake()
     {
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
-        header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>();
+        header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>();
         scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
         content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<RectTransform>();
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
-        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>();
+        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;

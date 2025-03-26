@@ -7,7 +7,7 @@ public class ProfileCreateManager : MonoBehaviour
     //Fields
     private RectTransform canvas2D;
     private RectTransform background;
-    private Fade fade;
+    private FadeInstance fade;
     private float screenWidth;
     private float screenHeight;
 
@@ -15,7 +15,7 @@ public class ProfileCreateManager : MonoBehaviour
     {
         canvas2D = GameObject.Find(ComponentHelper.ProfileCreate.Canvas2D).GetComponent<RectTransform>();
         background = GameObject.Find(ComponentHelper.ProfileCreate.Background).GetComponent<RectTransform>();
-        fade = GameObject.Find(ComponentHelper.ProfileCreate.Fade).GetComponent<Fade>();
+        fade = GameObject.Find(ComponentHelper.ProfileCreate.Fade).GetComponent<FadeInstance>();
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;

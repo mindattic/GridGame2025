@@ -22,7 +22,7 @@ public class SaveFileSelectManager : MonoBehaviour
     private RectTransform scrollView;
     private Transform content;
     private VerticalLayoutGroup verticalLayoutGroup;
-    private Fade fade;
+    private FadeInstance fade;
 
     private float screenWidth;
     private float screenHeight;
@@ -36,11 +36,11 @@ public class SaveFileSelectManager : MonoBehaviour
     {
         // Use appropriate ComponentHelper names or adjust as needed
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
-        header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>() ?? throw new UnityException("Header is null");
+        header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>() ?? throw new UnityException("Title is null");
         scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
         content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
-        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>() ?? throw new UnityException("FadeInstance is null");
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;

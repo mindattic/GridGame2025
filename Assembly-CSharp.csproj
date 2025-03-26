@@ -103,7 +103,6 @@
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
-    <Compile Include="Assets\Scripts\Canvas\Fade.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
@@ -142,6 +141,7 @@
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
+    <Compile Include="Assets\Scripts\Canvas\FadeInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Canvas\TimerBar.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />

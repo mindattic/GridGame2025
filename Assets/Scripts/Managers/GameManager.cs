@@ -89,7 +89,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public bool hasSelectedPlayer => selectedHero != null;
 
     //Instances
-    [HideInInspector] public Fade fade;
+    [HideInInspector] public FadeInstance fade;
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TimerBar timerBar;
     [HideInInspector] public BoardInstance board;
@@ -145,7 +145,7 @@ public class GameManager : Singleton<GameManager>
         //Canvas
         tutorialPopup = GameObject.Find(ComponentHelper.Game.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
         card = GameObject.Find(ComponentHelper.Game.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
-        fade = GameObject.Find(ComponentHelper.Game.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        fade = GameObject.Find(ComponentHelper.Game.Fade).GetComponent<FadeInstance>() ?? throw new UnityException("FadeInstance is null");
         canvas2D = GameObject.Find(ComponentHelper.Game.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
         canvas3D = GameObject.Find(ComponentHelper.Game.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
         timerBar = GameObject.Find(ComponentHelper.Game.TimerBar).GetComponent<TimerBar>() ?? throw new UnityException("TimerBarInstance is null");

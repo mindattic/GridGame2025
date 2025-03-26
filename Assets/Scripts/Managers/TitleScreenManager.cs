@@ -16,7 +16,7 @@ public class TitleScreenManager : MonoBehaviour
     private RectTransform creditsButton;
     private RectTransform profileButton;
     private RectTransform profileButtonLabel;
-    private Fade fade;
+    private FadeInstance fade;
 
     float screenWidth;
     float screenHeight;
@@ -42,7 +42,7 @@ public class TitleScreenManager : MonoBehaviour
         creditsButton = GameObject.Find(ComponentHelper.TitleScreen.CreditsButton).GetComponent<RectTransform>();
         profileButton = GameObject.Find(ComponentHelper.TitleScreen.ProfileButton).GetComponent<RectTransform>();
         profileButtonLabel = GameObject.Find(ComponentHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
-        fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<Fade>();
+        fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;

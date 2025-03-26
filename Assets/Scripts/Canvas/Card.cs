@@ -25,11 +25,11 @@ namespace Game.Behaviors
         RectTransform rectTransform;     // The RectTransform of this card, used for layout and positioning.
         GameObject backdrop;             // The backdrop GameObject of the card.
         GameObject portrait;             // The portrait GameObject showing the actor's image.
-        GameObject title;                // The header GameObject displaying the actor's name.
+        GameObject title;                // The title GameObject displaying the actor's name.
         GameObject details;              // The details GameObject displaying actor stats and information.
         Image backdropImage;             // The Image component for the backdrop.
         Image portraitImage;             // The Image component for the portrait.
-        TextMeshProUGUI titleText;       // CreditsLabel component for the header.
+        TextMeshProUGUI titleText;       // CreditsLabel component for the title.
         TextMeshProUGUI detailsText;     // CreditsLabel component for detailed stats and description.
         Vector3 destination;             // Final destination position for the portrait during slide-in animation.
         Vector3 offscreenPosition;       // Starting offscreen position for the portrait.

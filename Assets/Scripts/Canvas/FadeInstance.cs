@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fade : MonoBehaviour
+public class FadeInstance : MonoBehaviour
 {
     private Image image;
     private float fadeDuration = 0.5f;
@@ -21,7 +21,7 @@ public class Fade : MonoBehaviour
         image.color = new Color(0, 0, 0, 1);
         float elapsedTime = 0f;
 
-        //During: Fade from black (1) to transparent (0)
+        //During: FadeInstance from black (1) to transparent (0)
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -44,7 +44,7 @@ public class Fade : MonoBehaviour
         image.color = new Color(0, 0, 0, 0);
         float elapsedTime = 0f;
 
-        //During: Fade from transparent (0) to black (1)
+        //During: FadeInstance from transparent (0) to black (1)
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;

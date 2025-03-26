@@ -72,7 +72,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Header = "Canvas2D/Header";
+        public const string Title = "Canvas2D/Title";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Viewport = "Canvas2D/ScrollView/Viewport";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
@@ -105,7 +105,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Header = "Canvas2D/Header";
+        public const string Title = "Canvas2D/Title";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Viewport = "Canvas2D/ScrollView/Viewport";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
@@ -118,9 +118,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Header = "Canvas2D/Header";
         public const string Background = "Canvas2D/Background";
-
     }
 
 
@@ -128,7 +126,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Header = "Canvas2D/Header";
+        public const string Title = "Canvas2D/Title";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
 
@@ -144,7 +142,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Header = "Canvas2D/Header";
+        public const string Title = "Canvas2D/Title";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
         public const string ActorPanMultiplier = "Canvas2D/ScrollView/Viewport/Content/ActorPanMultiplier";
@@ -154,7 +152,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Header = "Canvas2D/Header";
+        public const string Title = "Canvas2D/Title";
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
     }
@@ -289,7 +287,7 @@ public static class Constants
     //Card
     public const string CardBackdrop = "Card/Backdrop";
     public const string CardPortrait = "Card/Portrait";
-    public const string CardTitle = "Card/TitleScreen";
+    public const string CardTitle = "Card/Title";
     public const string CardDetails = "Card/Details";
 
     //Audio sources

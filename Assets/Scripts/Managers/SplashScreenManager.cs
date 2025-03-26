@@ -5,12 +5,12 @@ using UnityEngine;
 public class SplashScreenManager : MonoBehaviour
 {
     //Fields
-    private Fade fade;
+    private FadeInstance fade;
     private float waitDuration = 30;
 
     private void Awake()
     {
-        fade = GameObject.Find(ComponentHelper.SplashScreen.Fade).GetComponent<Fade>();
+        fade = GameObject.Find(ComponentHelper.SplashScreen.Fade).GetComponent<FadeInstance>();
     }
 
     void Start()

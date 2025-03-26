@@ -141,7 +141,7 @@ public class PortraitInstance : MonoBehaviour
             //Shrink
             transform.localScale *= 0.99f;
 
-            //Fade
+            //FadeInstance
             alpha -= Increment.OnePercent;
             alpha = Mathf.Clamp(alpha, minAlpha, maxAlpha);
             spriteRenderer.color = new Color(1, 1, 1, alpha);

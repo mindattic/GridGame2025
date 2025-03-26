@@ -14,7 +14,7 @@ public class PlayerStageMover : MonoBehaviour
     private bool isMoving = false;
     private Vector2 targetPosition;
     private string targetStageName; // Stores the name of the target stage
-    private Fade fade; // Reference to fade manager
+    private FadeInstance fade; // Reference to fade manager
 
     private enum MoveDirection
     {
@@ -27,7 +27,7 @@ public class PlayerStageMover : MonoBehaviour
 
     private void Start()
     {
-        fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<Fade>();
+        fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<FadeInstance>();
     }
 
     public void MoveToStage(Button stageButton)
@@ -83,7 +83,7 @@ public class PlayerStageMover : MonoBehaviour
         // Update hero profile stage
         ProfileRepo.instance.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
-        // Fade out & load next scene
+        // FadeInstance out & load next scene
         StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
     }
 

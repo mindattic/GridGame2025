@@ -21,14 +21,14 @@ public class PauseManager : MonoBehaviour
     private Sprite pause;
     private Sprite paused;
     private GameObject pauseMenu;
-    private Fade fade;
+    private FadeInstance fade;
 
     void Awake()
     {
         pauseButton = GameObject.Find(ComponentHelper.Game.PauseButton);
         pauseButtonImage = pauseButton.GetComponent<Image>();
         pauseMenu = GameObject.Find(ComponentHelper.Game.PauseMenu).gameObject;
-        fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<Fade>();
+        fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
     }
 
     private void Start()

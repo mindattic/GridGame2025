@@ -22,11 +22,8 @@ public class OverworldManager : MonoBehaviour
     private float screenHeight;
     private float buttonWidth;
     private float buttonHeight;
-    private Fade fade;
-
+    private FadeInstance fade;
     private List<Button> stageButtons = new List<Button>();
-
-
 
     private void Awake()
     {
@@ -37,7 +34,6 @@ public class OverworldManager : MonoBehaviour
             return;
         }
 
-        header = GameObject.Find(ComponentHelper.Overworld.Header).GetComponent<Label>();
         canvas2D = GameObject.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>();
         scrollView = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>();
         scrollRect = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<ScrollRect>();
@@ -45,7 +41,7 @@ public class OverworldManager : MonoBehaviour
         content = GameObject.Find(ComponentHelper.Overworld.Content).GetComponent<RectTransform>();
         map = GameObject.Find(ComponentHelper.Overworld.Map).GetComponent<RectTransform>();
         hero = GameObject.Find(ComponentHelper.Overworld.Player).GetComponent<PlayerStageMover>();
-        fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<Fade>();
+        fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<FadeInstance>();
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
