@@ -17,7 +17,7 @@ public class ConfirmationDialogInstance : MonoBehaviour
 
     public void Assign(string text, Action<bool> onSubmit = default)
     {
-        Initialize();
+        Setup();
         ResizeUI();
         BindEvents();
 
@@ -28,9 +28,9 @@ public class ConfirmationDialogInstance : MonoBehaviour
     /// <summary>
     /// Call this method to initialize the dialog after instantiating the prefab.
     /// </summary>
-    /// <param name="text">Text to display to the user.</param>
+    /// <param name="text">CreditsLabel to display to the user.</param>
     /// <param name="onSubmitCallback">Callback for handling Yes/No result.</param>
-    public void Initialize()
+    private void Setup()
     {
         canvas2D = GameObject.Find(ComponentHelper.ConfirmationDialog.Canvas2D).GetComponent<RectTransform>();
         panel = GameObject.Find(ComponentHelper.ConfirmationDialog.Panel).GetComponent<RectTransform>();
@@ -81,7 +81,7 @@ public class ConfirmationDialogInstance : MonoBehaviour
 public static class ConfirmationDialog
 {
     /// <summary>
-    /// Shows a ConfirmationDialog prefab in the specified canvas, with the given text and callback.
+    /// Shows a ConfirmationDialog prefab in the specified canvas, with the given textarea and callback.
     /// </summary>
     /// <param name="canvas2D">The RectTransform of your 2D canvas.</param>
     /// <param name="text">Prompt to display in the confirmation dialog.</param>
@@ -112,7 +112,7 @@ public static class ConfirmationDialog
         if (instance == null)
             throw new UnityException("ConfirmationDialogInstance component not found on the prefab");
 
-        // Initialize with user-specified text and callback.
+        // Setup with user-specified textarea and callback.
         instance.Assign(text, onSubmit);
 
         // Return the instance so caller can manage it further if needed.

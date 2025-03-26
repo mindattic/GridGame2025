@@ -156,7 +156,7 @@ public class ProfileRepo : ScriptableObject
             return null;
         }
 
-        // Initialize settings in a separate file.
+        // Setup settings in a separate file.
         newProfile.Settings = LoadSettings(newProfile);
 
         return key;

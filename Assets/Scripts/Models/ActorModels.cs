@@ -85,7 +85,7 @@ namespace Assets.Scripts.Models
     public class ActorData
     {
         public int Level = 1;
-        public Character Character;
+        public string Character;
         public string Description;
 
         public ActorStats BaseStats; // Template baseline
@@ -127,38 +127,36 @@ namespace Assets.Scripts.Models
         {
             if (level < 1) level = 1;
 
-            var result = new ActorStats(BaseStats); // Clone base
+            var status = new ActorStats(BaseStats); // Clone base
 
             for (int lvl = 2; lvl <= level; lvl++)
             {
                 // Always apply default growth
-                result.Strength += Mathf.FloorToInt(StatGrowth.Strength);
-                result.Vitality += Mathf.FloorToInt(StatGrowth.Vitality);
-                result.Agility += Mathf.FloorToInt(StatGrowth.Agility);
-                result.Speed += Mathf.FloorToInt(StatGrowth.Speed);
-                result.Luck += Mathf.FloorToInt(StatGrowth.Luck);
+                status.Strength += Mathf.FloorToInt(StatGrowth.Strength);
+                status.Vitality += Mathf.FloorToInt(StatGrowth.Vitality);
+                status.Agility += Mathf.FloorToInt(StatGrowth.Agility);
+                status.Speed += Mathf.FloorToInt(StatGrowth.Speed);
+                status.Luck += Mathf.FloorToInt(StatGrowth.Luck);
 
                 // Then apply any milestone boost (if applicable)
                 if (MilestoneStatGrowth.TryGetValue(lvl, out var boost))
                 {
-                    result.Strength += Mathf.FloorToInt(boost.Strength);
-                    result.Vitality += Mathf.FloorToInt(boost.Vitality);
-                    result.Agility += Mathf.FloorToInt(boost.Agility);
-                    result.Speed += Mathf.FloorToInt(boost.Speed);
-                    result.Luck += Mathf.FloorToInt(boost.Luck);
-                }
-
-               
+                    status.Strength += Mathf.FloorToInt(boost.Strength);
+                    status.Vitality += Mathf.FloorToInt(boost.Vitality);
+                    status.Agility += Mathf.FloorToInt(boost.Agility);
+                    status.Speed += Mathf.FloorToInt(boost.Speed);
+                    status.Luck += Mathf.FloorToInt(boost.Luck);
+                }          
             }
 
             //Assign current level
-            result.Level = level;
+            status.Level = level;
 
             //Calculate health based on stats
-            result.HP = Formulas.Health(result);
-            result.MaxHP = result.HP;
+            status.HP = Formulas.Health(status);
+            status.MaxHP = status.HP;
 
-            return result;
+            return status;
         }
     }
 

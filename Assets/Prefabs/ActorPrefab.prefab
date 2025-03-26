@@ -1015,8 +1015,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   texture: {fileID: 0}
   sprite: {fileID: 0}
-  extraRangeX: 44
-  extraRangeY: 44
+  rangeMultiplier: 0
+  range: {x: 0, y: 0}
   panSpeed: 1
   wobbleAmplitudeFactorX: 0.5
   wobbleAmplitudeFactorY: 0.5
@@ -2897,7 +2897,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5604287690528834684
 Transform:
   m_ObjectHideFlags: 0

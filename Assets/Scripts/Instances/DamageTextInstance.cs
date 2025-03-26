@@ -143,7 +143,7 @@ public class DamageTextInstance : MonoBehaviour
 
         // Setup bounce physics parameters
         float vY = tileSize * 6;                    // Initial upward velocity
-        float gravity = -tileSize * 18f;           // Gravity pulling the text down
+        float gravity = -tileSize * 18f;           // Gravity pulling the textarea down
         float bounceDamping = 0.5f;                // Reduces bounce height after each impact
         float groundY = initialPosition.y;         // The starting y position is treated as ground level
         float bounceEnd = tileSize * 0.1f;         // Threshold below which bouncing stops
@@ -164,7 +164,7 @@ public class DamageTextInstance : MonoBehaviour
             position.y += vY * Time.deltaTime;
             position.x += bounceCount <= 3 ? horizontalSpeed * Time.deltaTime : 0;
 
-            // Check if the text has hit (or gone below) the ground level
+            // Check if the textarea has hit (or gone below) the ground level
             if (position.y <= groundY)
             {
                 position.y = groundY;

@@ -3,12 +3,12 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// Displays "Wave X/Y" text with an animation that rotates it into view,
+/// Displays "Wave X/Y" textarea with an animation that rotates it into view,
 /// holds for 3 seconds, and then rotates it out.
 /// </summary>
 public class WaveAnnouncement : MonoBehaviour
 {
-    public TextMeshProUGUI label; // UI Text component
+    public TextMeshProUGUI label; // UI CreditsLabel component
     public float rotationSpeed = 200f; // Speed of rotation
 
     public void Awake()
@@ -36,7 +36,7 @@ public class WaveAnnouncement : MonoBehaviour
     }
 
     /// <summary>
-    /// Animates the wave text: rotates in, holds, and rotates out.
+    /// Animates the wave textarea: rotates in, holds, and rotates out.
     /// </summary>
     private IEnumerator AnimateWaveText()
     {
@@ -48,7 +48,7 @@ public class WaveAnnouncement : MonoBehaviour
     }
 
     /// <summary>
-    /// Smoothly rotates the text to the given X angle.
+    /// Smoothly rotates the textarea to the given X angle.
     /// </summary>
     private IEnumerator RotateTo(float targetX)
     {

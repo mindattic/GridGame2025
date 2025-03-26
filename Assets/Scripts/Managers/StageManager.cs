@@ -70,8 +70,7 @@ public class StageManager : MonoBehaviour
     public void RestartStage()
     {
         // Reset everything for a new stage.
-        var latestSave = ProfileRepo.instance.CurrentProfile.LatestSave;
-        currentWave = latestSave.Stage.CurrentWave;
+        currentWave = ProfileRepo.instance.CurrentProfile.CurrentSave.Stage.CurrentWave;
         actorManager.Clear();
         dottedLineManager.Clear();
         supportLineManager.Clear();
@@ -82,11 +81,11 @@ public class StageManager : MonoBehaviour
         // Assign persistent hero actors from ProfileRepo
         foreach (var heroActor in ProfileRepo.instance.CurrentProfile.CurrentSave.Party.HeroActors)
         {
-            SpawnActor(new StageActor(heroActor));
+            SpawnActor(new StageActor(heroActor, location: Random.UnoccupiedLocation));
         }
 
-        //Hack: For some reason enemies might spawn on top of actos because they aren't loaded at same time...
-        actors.ForEach(x => x.flags.HasSpawned = true);
+        //HACK: For some reason enemies might spawn on top of heroes because they aren't loaded at same time...
+        //actors.ForEach(x => x.flags.HasSpawned = true);
 
         // Reload the wave based on currentWave.
         if (currentStage.Waves.Count > 0)
@@ -100,7 +99,6 @@ public class StageManager : MonoBehaviour
 
         StartCoroutine(fade.FadeIn());
     }
-
 
     /// <summary>
     /// Loads the given wave index.
@@ -118,7 +116,7 @@ public class StageManager : MonoBehaviour
         // Assign actors for this wave
         foreach (var stageActor in wave.Actors)
         {
-            SpawnActor(new StageActor(stageActor));
+            SpawnActor(new StageActor(stageActor, location: Random.UnoccupiedLocation));
         }
 
         // Assign dotted lines for this wave
@@ -148,7 +146,7 @@ public class StageManager : MonoBehaviour
         instance.team = stageActor.Team;
 
         // Assign stats based on character and stageActor's level
-        instance.stats = ActorRepo.instance.Actors[stageActor.Character.ToString()].GetStats(stageActor.Level);
+        instance.stats = ActorRepo.instance.Actors[stageActor.Character].GetStats(stageActor.Level);
 
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
@@ -229,9 +227,9 @@ public class StageManager : MonoBehaviour
     /// Convenience method for adding a new enemy actor.
     /// </summary>
     /// <param name="character">Character type for the enemy.</param>
-    public void AddEnemy(Character character)
+    public void AddEnemy(string character)
     {
-        SpawnActor(new StageActor(character, Team.Enemy));
+        SpawnActor(new StageActor(character, Team.Enemy, location: Random.UnoccupiedLocation));
     }
 
 }

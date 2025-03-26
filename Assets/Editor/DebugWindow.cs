@@ -302,11 +302,11 @@ public class DebugWindow : EditorWindow
         bool isClicked;
 
         GUILayout.BeginHorizontal();
-        isClicked = GUILayout.Button("Splash Screen", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("SplashScreen Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
             SceneRepo.instance.LoadScene(SceneHelper.SplashScreen);
 
-        isClicked = GUILayout.Button("Title Screen", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("TitleScreen Screen", GUILayout.Width(Screen.width * Constants.percent25));
         if (isClicked)
             SceneRepo.instance.LoadScene(SceneHelper.TitleScreen);
 

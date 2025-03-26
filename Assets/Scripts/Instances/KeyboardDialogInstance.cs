@@ -107,7 +107,7 @@ public class KeyboardDialogInstance : MonoBehaviour
       int maxLength = 32,
       Action<string> onSubmit = default)
     {
-        Initialize();
+        Setup();
         UpdateKeyLabels();
         ResizeUI();
         BindEvents();
@@ -120,7 +120,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         onSubmitClicked = onSubmit;
     }
 
-    private void Initialize()
+    private void Setup()
     {
         canvas2D = GameObject.Find(ComponentHelper.KeyboardDialog.Canvas2D).GetComponent<RectTransform>();
         panel = GameObject.Find(ComponentHelper.KeyboardDialog.Panel).GetComponent<RectTransform>();

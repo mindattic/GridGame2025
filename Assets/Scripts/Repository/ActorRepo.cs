@@ -2,6 +2,9 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
 [CreateAssetMenu(fileName = "ActorRepo", menuName = "Repositories/ActorRepo")]
 public class ActorRepo : ScriptableObject
 {
@@ -45,10 +48,10 @@ public class ActorRepo : ScriptableObject
         {
 
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Barbarian
-            { "Barbarian",
+            { CharacterHelper.Barbarian,
             new ActorData
             {
-                Character = Character.Barbarian,
+                Character = CharacterHelper.Barbarian,
                 Description = "A warrior driven by rage.",
 
                 BaseStats = new ActorStats
@@ -98,10 +101,10 @@ public class ActorRepo : ScriptableObject
             },
 
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Bat
-            { "Bat",
+            { CharacterHelper.Bat,
             new ActorData
             {
-                Character = Character.Bat,
+                Character = CharacterHelper.Bat,
                 Description = "A flying menace.",
 
                 BaseStats = new ActorStats
@@ -151,10 +154,10 @@ public class ActorRepo : ScriptableObject
             },
 
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Cleric
-            { "Cleric",
+            { CharacterHelper.Cleric,
             new ActorData
             {
-                Character = Character.Cleric,
+                Character = CharacterHelper.Cleric,
                 Description = "A strict adherent to the church.",
 
                 BaseStats = new ActorStats
@@ -204,10 +207,10 @@ public class ActorRepo : ScriptableObject
             },
 
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Ninja
-            { "Ninja",
+            { CharacterHelper.Ninja,
             new ActorData
             {
-                Character = Character.Ninja,
+                Character = CharacterHelper.Ninja,
                 Description = "A stealthy assassin.",
 
                 BaseStats = new ActorStats
@@ -257,10 +260,10 @@ public class ActorRepo : ScriptableObject
             },
 
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Paladin
-            { "Paladin",
+            { CharacterHelper.Paladin,
             new ActorData
             {
-                Character = Character.Paladin,
+                Character = CharacterHelper.Paladin,
                 Description = "A holy knight.",
 
                 BaseStats = new ActorStats
@@ -310,10 +313,10 @@ public class ActorRepo : ScriptableObject
             },
 
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Scorpion
-            { "Scorpion",
+            { CharacterHelper.Scorpion,
             new ActorData
             {
-                Character = Character.Scorpion,
+                Character = CharacterHelper.Scorpion,
                 Description = "A poisonous insectile predator.",
 
                 BaseStats = new ActorStats
@@ -363,10 +366,10 @@ public class ActorRepo : ScriptableObject
             },
 
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Slime
-            { "Slime",
+            { CharacterHelper.Slime,
             new ActorData
             {
-                Character = Character.Slime,
+                Character = CharacterHelper.Slime,
                 Description = "A weak and squishy creature.",
 
                 BaseStats = new ActorStats
@@ -416,10 +419,10 @@ public class ActorRepo : ScriptableObject
             },
             
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Yeti
-            { "Yeti",
+            { CharacterHelper.Yeti,
             new ActorData
             {
-                Character = Character.Yeti,
+                Character = CharacterHelper.Yeti,
                 Description = "A large humanoid underdweller.",
 
                 BaseStats = new ActorStats
@@ -468,35 +471,6 @@ public class ActorRepo : ScriptableObject
 
         };
     }
-
-
-
-    public ActorStats GetStats(Character character)
-{
-    var data = Actors[character.ToString()].Stats;
-    if (data == null)
-        Debug.LogError($"Unable to retrieve actor stats for `{character}`");
-
-    return new ActorStats(data); //Return a new copy instead of a shared reference
-}
-
-public ThumbnailSettings GetThumbnailSetting(Character character)
-{
-    var data = Actors[character.ToString()].ThumbnailSettings;
-    if (data == null)
-        Debug.LogError($"Unable to retrieve thumnail settings for `{character}`");
-
-    return new ThumbnailSettings(data); //Return a new copy instead of a shared reference
-}
-
-public ActorDetails GetDetails(Character character)
-{
-    var data = Actors[character.ToString()].Details;
-    if (data == null)
-        Debug.LogError($"Unable to retrieve actor details for `{character}`");
-
-    return new ActorDetails(data); //Return a new copy instead of a shared reference
-}
 
 
 }

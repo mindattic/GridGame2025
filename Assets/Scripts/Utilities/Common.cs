@@ -76,7 +76,7 @@ public static class ComponentHelper
         public const string ScrollView = "Canvas2D/ScrollView";
         public const string Viewport = "Canvas2D/ScrollView/Viewport";
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
-        public const string Text = "Canvas2D/ScrollView/Viewport/Content/Credits";
+        public const string Textarea = "Canvas2D/ScrollView/Viewport/Content/Textarea";
     }
 
     public static class Game
@@ -134,7 +134,7 @@ public static class ComponentHelper
 
     }
 
-    public static class Splash
+    public static class SplashScreen
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
@@ -159,15 +159,17 @@ public static class ComponentHelper
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
     }
 
-    public static class Title
+    public static class TitleScreen
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string MainMenu = "Canvas2D/MainMenu";
-        public const string ContinueButton = "Canvas2D/MainMenu/ContinueButton";
-        public const string LoadGameButton = "Canvas2D/MainMenu/LoadGameButton";
-        public const string ChangeProfileButton = "Canvas2D/ChangeProfileButton";
-        public const string ChangeProfileButtonLabel = "Canvas2D/ChangeProfileButton/Label";
+        public const string Panel = "Canvas2D/Panel";
+        public const string ContinueButton = "Canvas2D/Panel/ContinueButton";
+        public const string LoadGameButton = "Canvas2D/Panel/LoadGameButton";
+        public const string SettingsButton = "Canvas2D/Panel/SettingsButton";
+        public const string CreditsButton = "Canvas2D/Panel/CreditsButton";
+        public const string ProfileButton = "Canvas2D/ProfileButton";
+        public const string ProfileButtonLabel = "Canvas2D/ProfileButton/Label";
     }
 
     public static class ConfirmationDialog
@@ -287,7 +289,7 @@ public static class Constants
     //Card
     public const string CardBackdrop = "Card/Backdrop";
     public const string CardPortrait = "Card/Portrait";
-    public const string CardTitle = "Card/Title";
+    public const string CardTitle = "Card/TitleScreen";
     public const string CardDetails = "Card/Details";
 
     //Audio sources
@@ -1172,10 +1174,22 @@ public static class ProfileHelper
     {
         HeroActors = new List<StageActor>
         {
-            new StageActor { Character = Character.Paladin, Team = Team.Hero },
-            new StageActor { Character = Character.Barbarian, Team = Team.Hero },
-            new StageActor { Character = Character.Cleric, Team = Team.Hero },
+            new StageActor { Character = CharacterHelper.Paladin, Team = Team.Hero },
+            new StageActor { Character = CharacterHelper.Barbarian, Team = Team.Hero },
+            new StageActor { Character = CharacterHelper.Cleric, Team = Team.Hero },
         }
     };
 
+}
+
+public static class CharacterHelper
+{
+    public const string Barbarian = "Barbarian";
+    public const string Bat = "Bat";
+    public const string Cleric = "Cleric";
+    public const string Ninja = "Ninja";
+    public const string Paladin = "Paladin";
+    public const string Scorpion = "Scorpion";
+    public const string Slime = "Slime";
+    public const string Yeti = "Yeti";
 }

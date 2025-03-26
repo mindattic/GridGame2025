@@ -87,11 +87,11 @@ public class ActorThumbnail : MonoBehaviour
 
 
         // Get the full texture from the resource manager.
-        texture = GameManager.instance.resourceManager.Portrait(instance.character.ToString()).Value;
+        texture = GameManager.instance.resourceManager.Portrait(instance.character).Value;
 
         // Retrieve the thumbnail settings.
         if (other == null)
-            thumbnailSettings = ActorRepo.instance.GetThumbnailSetting(instance.character);
+            thumbnailSettings = new ThumbnailSettings(ActorRepo.instance.Actors[instance.character].ThumbnailSettings);
         else
             thumbnailSettings = new ThumbnailSettings(other);
 

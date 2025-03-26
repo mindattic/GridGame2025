@@ -35,8 +35,8 @@ namespace Assets.Scripts.Repositories
         }
 
         //Fields
-        [SerializeField] public string previousScene = "Title";
-        [SerializeField] public string currentScene = "Title";
+        [SerializeField] public string previousScene = "TitleScreen";
+        [SerializeField] public string currentScene = "TitleScreen";
 
         public IEnumerator LoadScene(string sceneName)
         {

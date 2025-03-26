@@ -58,17 +58,6 @@ public enum Status
 //   On
 //}
 
-public enum Character
-{
-    Barbarian,
-    Bat,
-    Cleric,
-    Ninja,
-    Paladin,
-    Scorpion,
-    Slime, 
-    Yeti
-}
 
 public enum Glow
 {

@@ -59,10 +59,12 @@ public class OverworldManager : MonoBehaviour
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         FindStageButtons();
         OnCenterOnHeroClicked();
-
-        StartCoroutine(fade.FadeIn());
     }
 
+    private void Start()
+    {
+        StartCoroutine(fade.FadeIn());
+    }
 
     private void FindStageButtons()
     {
@@ -96,9 +98,9 @@ public class OverworldManager : MonoBehaviour
     //    button.transform.localPosition = position;
     //    button.onClick.AddListener(() => OnStageSelectButtonClicked(stageName));
 
-    //    // Set the button text
+    //    // Set the button textarea
     //    Label label = instance.GetComponentInChildren<Label>();
-    //    label.text = stageName;
+    //    label.textarea = stageName;
     //}
 
     public void OnStageSelectButtonClicked(Button stageButton)

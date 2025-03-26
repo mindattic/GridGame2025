@@ -585,7 +585,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a wiggle animation on the turn delay text to indicate a delay before the actor's turn.
+        /// Triggers a wiggle animation on the turn delay textarea to indicate a delay before the actor's turn.
         /// </summary>
         public void TriggerTurnDelayWiggle(Trigger trigger = default)
         {
@@ -599,7 +599,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// TurnDelayWiggle coroutine: Oscillates the turn delay text with damping,
+        /// TurnDelayWiggle coroutine: Oscillates the turn delay textarea with damping,
         /// then smoothly returns it to its original orientation.
         /// </summary>
         private IEnumerator TurnDelayWiggle(Trigger trigger = default)
@@ -638,7 +638,7 @@ namespace Assets.Scripts.Instances.Actor
             trigger.SetContext(instance);
             yield return trigger.StartCoroutine();
 
-            // After: Ensure the turn delay text rotation is reset.
+            // After: Ensure the turn delay textarea rotation is reset.
             render.turnDelayText.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }

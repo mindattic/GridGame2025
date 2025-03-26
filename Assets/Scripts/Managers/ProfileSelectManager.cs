@@ -12,36 +12,37 @@ public class ProfileSelectManager : MonoBehaviour
     private RectTransform canvas2D;
     private Label header;
     private RectTransform scrollView;
-    private Transform content;
+    private RectTransform content;
     private VerticalLayoutGroup verticalLayoutGroup;
+    private Fade fade;
+
     private float screenWidth;
     private float screenHeight;
     private float buttonWidth;
     private float buttonHeight;
-    private float spacing;
-    private Fade fade;
+    private float fontSize;
+    private float rowSpacing;
    
-
     private void Awake()
     {
-        canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
-        header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>() ?? throw new UnityException("Label is null");
-        scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
-        content = GameObject.Find(ComponentHelper.StageSelect.Content).transform ?? throw new UnityException("Content is null");
-        verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
-        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
+        canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
+        header = GameObject.Find(ComponentHelper.StageSelect.Header).GetComponent<Label>();
+        scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
+        content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<RectTransform>();
+        verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
+        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>();
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
-
         buttonWidth = 0.9f * screenWidth;
         buttonHeight = screenHeight / 16f;
+        fontSize = buttonHeight / 2;
+        rowSpacing = 0.01f * screenHeight;
 
-        header.fontSize = buttonHeight / 2;
+        header.fontSize = fontSize;
         scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
 
-        spacing = 0.01f * screenHeight;
-        verticalLayoutGroup.spacing = spacing;
+        verticalLayoutGroup.spacing = rowSpacing;
     }
 
     private void Start()
@@ -50,20 +51,32 @@ public class ProfileSelectManager : MonoBehaviour
         StartCoroutine(fade.FadeIn());
     }
 
-    private void Reload()
+    private void Clear()
     {
-        // Clear existing content
+        //Validate a current profile exists
+        if (!ProfileRepo.instance.HasProfiles)
+        {
+            Debug.LogError("No profiles found.");
+            return;
+        }
+
         foreach (Transform child in content)
         {
             Destroy(child.gameObject);
         }
+    }
+
+    private void Reload()
+    {
+        //Clear existing content
+        Clear();
 
         AddCreateNewProfileButton();
 
-        // Add each profile as a button
-        foreach (var entry in ProfileRepo.instance.profiles.Values)
+        //Add each profile as a button
+        foreach (var item in ProfileRepo.instance.profiles.Values)
         {
-            AddProfileSelectButton(entry);
+            AddProfileSelectButton(item);
         }
     }
 
@@ -82,19 +95,19 @@ public class ProfileSelectManager : MonoBehaviour
         label.text = "Create New Profile";
     }
 
-    public void AddProfileSelectButton(Profile profile)
+    public void AddProfileSelectButton(Profile item)
     {
         GameObject instance = Instantiate(buttonPrefab, content);
-        instance.name = $"Profile_{profile.Key}";
+        instance.name = $"Profile_{item.Key}";
 
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
         buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
         Button button = instance.GetComponent<Button>();
-        button.onClick.AddListener(() => OnProfileButtonClicked(profile.Key));
+        button.onClick.AddListener(() => OnProfileButtonClicked(item.Key));
 
         Label label = instance.GetComponentInChildren<Label>();
-        label.text = profile.Key;
+        label.text = item.Key;
     }
 
     private void OnProfileButtonClicked(string key)

@@ -353,7 +353,7 @@ GameObject:
   - component: {fileID: 162363679}
   - component: {fileID: 162363678}
   m_Layer: 0
-  m_Name: ChangeProfileButton
+  m_Name: ProfileButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1186,7 +1186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 875096672}
   m_Layer: 0
-  m_Name: MainMenu
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

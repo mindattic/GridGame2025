@@ -29,8 +29,8 @@ namespace Game.Behaviors
         GameObject details;              // The details GameObject displaying actor stats and information.
         Image backdropImage;             // The Image component for the backdrop.
         Image portraitImage;             // The Image component for the portrait.
-        TextMeshProUGUI titleText;       // Text component for the header.
-        TextMeshProUGUI detailsText;     // Text component for detailed stats and description.
+        TextMeshProUGUI titleText;       // CreditsLabel component for the header.
+        TextMeshProUGUI detailsText;     // CreditsLabel component for detailed stats and description.
         Vector3 destination;             // Final destination position for the portrait during slide-in animation.
         Vector3 offscreenPosition;       // Starting offscreen position for the portrait.
         AnimationCurve slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // Easing curve for slide-in animation.
@@ -106,14 +106,14 @@ namespace Game.Behaviors
 
             // Enable the backdrop and portrait images.
             backdropImage.enabled = true;
-            portraitImage.sprite = resourceManager.Portrait(focusedActor.character.ToString()).Value.ToSprite();
+            portraitImage.sprite = resourceManager.Portrait(focusedActor.character).Value.ToSprite();
             portraitImage.enabled = true;
 
             // Extract the actor's name (splitting at underscore to simplify if needed).
             titleText.text = focusedActor.friendlyName;
 
             // Format the actor's stats for display:
-            var hp = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}"; // HP/MaxHP with proper spacing.
+            var hp = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}"; // HP/MaxHP with proper rowSpacing.
             var str = $"{focusedActor.stats.Strength,4}";                // Right-align Strength in 4 characters.
             var vit = $"{focusedActor.stats.Vitality,4}";                // Right-align Vitality.
             var agi = $"{focusedActor.stats.Agility,4}";                 // Right-align Agility.
@@ -125,8 +125,8 @@ namespace Game.Behaviors
                 $"HP       STR  VIT  AGI  SPD  LCK{Environment.NewLine}" +
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
-            // Set the details text combining the stats table with extra details from DataManager.
-            detailsText.text = stats + ActorRepo.instance.GetDetails(focusedActor.character).Card;
+            // Set the details textarea combining the stats table with extra details from DataManager.
+            detailsText.text = stats + ActorRepo.instance.Actors[focusedActor.character].Details.Card;
 
             // Begin the slide-in animation for the portrait.
             TriggerSlideIn();

@@ -46,7 +46,7 @@ namespace Game.Behaviors
             //string turn = turnManager.isHeroTurn ? "Hero" : "Opponent";
             //string phase = turnManager.currentPhase.ToString();
 
-            //value.text = ""
+            //value.textarea = ""
             //   + $"{fps} FPS" + Environment.NewLine 
             //   + $"Runtime: {Time.time}" + Environment.NewLine
             //   + $"   Turn: {turn}" + Environment.NewLine
@@ -82,7 +82,7 @@ namespace Game.Behaviors
             //string a13 = actors[13] != null ? $"{actors[13].name}: {actors[13].HP}{Environment.NewLine}" : $"{Environment.NewLine}";
 
 
-            //value.text = a0 + a1+ a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10 + a11 + a12 + a13;
+            //value.textarea = a0 + a1+ a2 + a3 + a4 + a5 + a6 + a7 + a8 + a9 + a10 + a11 + a12 + a13;
 
         }
     }

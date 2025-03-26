@@ -41,14 +41,12 @@ public class StageSelectManager : MonoBehaviour
 
         spacing = 0.01f * screenHeight;
         verticalLayoutGroup.spacing = spacing;
-    }
 
-    private void Start()
-    {
         foreach (var stage in StageRepo.instance.Stages)
         {
             AddButton(stage.Value.Name);
         }
+
         StartCoroutine(fade.FadeIn());
     }
 
@@ -66,7 +64,7 @@ public class StageSelectManager : MonoBehaviour
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnStageSelectButtonClicked(stageName));
 
-        //Set the button text
+        //Set the button textarea
         Label label = instance.GetComponentInChildren<Label>();
         label.text = stageName;
     }

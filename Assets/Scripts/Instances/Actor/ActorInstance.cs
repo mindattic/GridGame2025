@@ -130,7 +130,7 @@ public class ActorInstance : MonoBehaviour
     // Fields: Core data fields representing character stats, state, and modules.
     [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animation behavior.
     public string friendlyName;
-    public Character character;                         // Character data for this actor.
+    public string character;                         // Character data for this actor.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
     public Vector3 previousPosition;                    // World position before the last movement.
     public Vector2Int location;                         // CurrentProfile grid location.
@@ -268,7 +268,7 @@ public class ActorInstance : MonoBehaviour
             vfx.Attack = resourceManager.VisualEffect("DoubleClaw");
         }
 
-        // Set name tag text and toggle its visibility based on debug settings.
+        // Set name tag textarea and toggle its visibility based on debug settings.
         render.SetNameTagText(friendlyName);
         render.SetNameTagEnabled(isEnabled: debugManager.showActorNameTag);
 
@@ -365,14 +365,14 @@ public class ActorInstance : MonoBehaviour
         StartCoroutine(TakeDamage(attack));
     }
 
-    //FireDamage: Coroutine to display fire damage text and wait until the next frame.
+    //FireDamage: Coroutine to display fire damage textarea and wait until the next frame.
     public IEnumerator FireDamage(float amount)
     {
         damageTextManager.Spawn($"Fireball: - {amount} HP", position);
         yield return Wait.UntilNextFrame();
     }
 
-    //Heal: Coroutine to display healing text and wait until the next frame.
+    //Heal: Coroutine to display healing textarea and wait until the next frame.
     public IEnumerator Heal(float amount)
     {
         damageTextManager.Spawn($"Heal: +{amount} HP", position);
@@ -394,7 +394,7 @@ public class ActorInstance : MonoBehaviour
             healthBar.Update();
         }
 
-        // Immediately display damage text and play sound.
+        // Immediately display damage textarea and play sound.
         damageTextManager.Spawn(attack.Damage.ToString(), position);
         audioManager.Play($"Slash{Random.Int(1, 7)}");
 

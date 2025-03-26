@@ -46,7 +46,7 @@ public class ActorActionBar
     }
 
     // Save refreshes the action bar UI to reflect the actor's CurrentProfile AP values.
-    // It adjusts the fill and drain bar scales, updates the text display, triggers a weapon wiggle animation,
+    // It adjusts the fill and drain bar scales, updates the textarea display, triggers a weapon wiggle animation,
     // and initiates the drain animation.
     public void Update()
     {

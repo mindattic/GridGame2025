@@ -5,43 +5,42 @@ using UnityEngine;
 [Serializable]
 public class StageActor
 {
-    public Character Character;
+    public string Character;
     public Team Team;
     public int Level = 1;
     public int SpawnTurn;
     public Vector2Int? Location;
 
-    // This is NOT serialized — calculated on demand.
     [NonSerialized]
     public ActorStats Stats;
 
     public StageActor() { }
 
-    public StageActor(StageActor other)
+    public StageActor(StageActor other, Vector2Int? location = null)
     {
         Character = other.Character;
         Team = other.Team;
         Level = other.Level;
         SpawnTurn = other.SpawnTurn;
-        Location = other.Location.HasValue ? other.Location : Random.UnoccupiedLocation;
+        Location = location.HasValue ? location.Value : other.Location;
         AssignStats();
     }
 
-    public StageActor(Character character, Team team, int level = 1)
+    public StageActor(string character, Team team = Team.Enemy, int level = 1, Vector2Int? location = null)
     {
         Character = character;
         Team = team;
         Level = level;
         SpawnTurn = 0;
-        Location = Random.UnoccupiedLocation;
+        Location = location.HasValue ? location.Value : null;
         AssignStats();
     }
 
     public void AssignStats()
     {
-        if (ActorRepo.instance != null && ActorRepo.instance.Actors.ContainsKey(Character.ToString()))
+        if (ActorRepo.instance != null && ActorRepo.instance.Actors.ContainsKey(Character))
         {
-            var actor = ActorRepo.instance.Actors[Character.ToString()];
+            var actor = ActorRepo.instance.Actors[Character];
             Stats = actor.GetStats(Level);
         }
         else

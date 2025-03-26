@@ -13,34 +13,12 @@ namespace Assets.Scripts.Utilities
 
         const float baseHitRate = 66.6666f;
         const float armorWeightPenalty = 0.1666f;
-  
-        public static float StatGrowth(int level)
-        {
-            return Mathf.Round(100f * (level / 100.0f) * Random.Float(0.4f, 0.8f));
-        }
-
-        public static ActorStats RandomStats(int level)
-        {
-            ActorStats stats = new ActorStats()
-            {
-                Level = level,
-                Strength = StatGrowth(level),
-                Vitality = StatGrowth(level),
-                Agility = StatGrowth(level),
-                Speed = StatGrowth(level),
-                Luck = StatGrowth(level),
-            };
-
-            stats.MaxHP = level * 3 + StatGrowth(level);
-            stats.HP = stats.MaxHP;
-
-            return stats;
-        }
 
         public static float LuckModifier(ActorStats stats)
         {
             var multiplier = stats.Level * 0.01f;
-            return Random.Float(1, 1f + stats.Luck * multiplier);
+            var luckModifier = Random.Float(1, 1f + stats.Luck * multiplier);
+            return luckModifier;
         }
 
         public static float Accuracy(ActorStats stats)
@@ -49,7 +27,8 @@ namespace Assets.Scripts.Utilities
             var multiplier = 2.0f;
             var agi = stats.Agility * multiplier;
             var lck = LuckModifier(stats);
-            return Mathf.Round(baseAccuracy + agi + lck);
+            var accuracy = Mathf.FloorToInt(baseAccuracy + agi + lck);
+            return accuracy;
         }
 
         public static float Evasion(ActorStats stats)
@@ -58,8 +37,8 @@ namespace Assets.Scripts.Utilities
             var spd = stats.Speed * multiplier;
             var lck = LuckModifier(stats);
             var armor = 10 * armorWeightPenalty;
-
-            return Mathf.Round(spd + lck - armor);
+            var eveasion = Mathf.FloorToInt(spd + lck - armor);
+            return eveasion;
         }
 
         public static bool IsHit(ActorInstance attacker, ActorInstance opponent)
@@ -97,8 +76,8 @@ namespace Assets.Scripts.Utilities
             var weapon = 10;
             var weaponModifier = weapon * multiplier;
             var lck = LuckModifier(stats);
-
-            return Mathf.Round(atk + weaponModifier + lck);
+            var offense = Mathf.FloorToInt(atk + weaponModifier + lck);
+            return offense;
         }
 
         public static float Defense(ActorStats stats)
@@ -108,31 +87,18 @@ namespace Assets.Scripts.Utilities
             var armor = 10;
             var armorModifier = armor * 1.0f;
             var lck = LuckModifier(stats);
-
-            return Mathf.Round(def + armorModifier + lck);
+            var defense = Mathf.FloorToInt(def + armorModifier + lck);
+            return defense;
         }
 
         public static int CalculateDamage(ActorInstance attacker, ActorInstance defender)
         {
             var offense = Offense(attacker.stats);
             var defense = Defense(defender.stats);
-            var damage = Math.Clamp((int)Math.Round(offense - defense), 1, 999);
-            //var msg
-            //    = $"{attacker.name} vs {defender.name}: "
-            //    + $@"Offense(<color=""yellow"">{offense}</color>) "
-            //    + $@"- Defense(<color=""yellow"">{defense}</color>) => "
-            //    + $@"Damage(<color=""yellow"">{damage}</color>)";
-            //log.Info(msg);
+            var damage = Mathf.FloorToInt(offense - defense);
             return damage;
         }
 
-
-        public static int CalculateTurnDelay(ActorStats stats)
-        {
-            const float baseDelay = 33.3333f;
-            var spd = (int)Math.Round(baseDelay / Mathf.Max(stats.Speed, 1));
-            return Random.Int(2, Math.Min(spd, 9));
-        }
 
 
     }

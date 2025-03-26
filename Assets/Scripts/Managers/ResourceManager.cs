@@ -422,7 +422,7 @@ public class ResourceManager : MonoBehaviour
         //    }
 
         //    //Deserialize JSON
-        //    var tutorials = JsonConvert.DeserializeObject<JsonWrapper<Tutorial>>(jsonFile.text);
+        //    var tutorials = JsonConvert.DeserializeObject<JsonWrapper<Tutorial>>(jsonFile.textarea);
 
         //    foreach (var key in keys)
         //    {

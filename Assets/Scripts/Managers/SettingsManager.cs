@@ -34,8 +34,6 @@ public class SettingsManager : MonoBehaviour
         fade = GameObject.Find(ComponentHelper.Settings.Fade).GetComponent<Fade>();
         actorPanMultiplier = GameObject.Find(ComponentHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
 
-
-
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
 
@@ -48,13 +46,8 @@ public class SettingsManager : MonoBehaviour
         spacing = 0.01f * screenHeight;
         verticalLayoutGroup.spacing = spacing;
 
-
         actorPanMultiplier.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-    }
 
-    // Start is called once before the first execution of Save after the MonoBehaviour is created
-    private void Start()
-    {
         StartCoroutine(fade.FadeIn());
     }
 

@@ -22,12 +22,15 @@ public class SaveFileSelectManager : MonoBehaviour
     private RectTransform scrollView;
     private Transform content;
     private VerticalLayoutGroup verticalLayoutGroup;
+    private Fade fade;
+
     private float screenWidth;
     private float screenHeight;
     private float buttonWidth;
     private float buttonHeight;
-    private float spacing;
-    private Fade fade;
+    private float fontSize;
+    private float rowSpacing;
+
 
     private void Awake()
     {
@@ -38,34 +41,22 @@ public class SaveFileSelectManager : MonoBehaviour
         content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
         fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<Fade>() ?? throw new UnityException("Fade is null");
-  
+
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
-
         buttonWidth = 0.9f * screenWidth;
         buttonHeight = screenHeight / 16f;
+        fontSize = buttonHeight / 2;
+        rowSpacing = 0.01f * screenHeight;
 
-        header.fontSize = buttonHeight / 2;
+        header.fontSize = fontSize;
         scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
 
-        spacing = 0.01f * screenHeight;
-        verticalLayoutGroup.spacing = spacing;
+        verticalLayoutGroup.spacing = rowSpacing;
     }
 
     private void Start()
     {
-        Reload();
-        StartCoroutine(fade.FadeIn());
-    }
-
-    private void Reload()
-    {
-        //Clear existing content
-        foreach (Transform child in content)
-        {
-            Destroy(child.gameObject);
-        }
-
         //Validate a current profile exists
         if (!ProfileRepo.instance.HasCurrentProfile)
         {
@@ -73,25 +64,43 @@ public class SaveFileSelectManager : MonoBehaviour
             return;
         }
 
-        //Retrieve all save files in profile folder
-        string savesPath = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
-        var saveFiles = Directory.GetFiles(savesPath, "*.json").ToArray();
- 
-        //TODO: Need to retrieve and parse all save files so that save data is available to populate button
-        foreach(var saveState in ProfileRepo.instance.CurrentProfile.SaveStates)
+        Reload();
+        StartCoroutine(fade.FadeIn());
+    }
+
+
+    private void Clear()
+    {
+        foreach (Transform child in content)
         {
-            AddLoadSaveFileButton(saveState);
+            Destroy(child.gameObject);
         }
     }
 
-    public void AddLoadSaveFileButton(SaveState saveState)
+    private void Reload()
+    {
+        //Clear existing content
+        Clear();
+
+        //Retrieve all saves in profile
+        string savesPath = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
+        var saveFiles = Directory.GetFiles(savesPath, "*.json").ToArray();
+
+        //Add each save as a button
+        foreach (var item in ProfileRepo.instance.CurrentProfile.SaveStates)
+        {
+            AddLoadSaveFileButton(item);
+        }
+    }
+
+    public void AddLoadSaveFileButton(SaveState item)
     {
         string savesPath = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
-        string filePath = Path.Combine(savesPath, saveState.FileName);
+        string filePath = Path.Combine(savesPath, item.FileName);
 
         //Instantiate the prefab as a child of `content`
         GameObject instance = Instantiate(buttonPrefab, content);
-        instance.name = $"Button_{Path.GetFileNameWithoutExtension(saveState.FileName)}";
+        instance.name = $"Button_{Path.GetFileNameWithoutExtension(item.FileName)}";
 
         //Set the button size: 90% of width, 1/16th of height
         RectTransform buttonRect = instance.GetComponent<RectTransform>();
@@ -101,9 +110,9 @@ public class SaveFileSelectManager : MonoBehaviour
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnLoadSaveFileButtonClicked(filePath));
 
-        //Apply text to labels
-        instance.transform.Find("SaveNumber").GetComponent<Label>().text = $"Save {saveState.Index:D3}";
-        instance.transform.Find("Timestamp").GetComponent<Label>().text = DateTimeHelper.ParseTimeElapsed(saveState.Timestamp);
+        //Apply textarea to labels
+        instance.transform.Find("SaveNumber").GetComponent<Label>().text = $"Save {item.Index:D3}";
+        instance.transform.Find("Timestamp").GetComponent<Label>().text = DateTimeHelper.ParseTimeElapsed(item.Timestamp);
     }
 
     private void OnLoadSaveFileButtonClicked(string filePath)

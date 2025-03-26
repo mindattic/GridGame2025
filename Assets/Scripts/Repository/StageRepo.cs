@@ -57,7 +57,7 @@ public class StageRepo : ScriptableObject
                     {
                         Actors = new List<StageActor>()
                         {
-                            new StageActor { Character = Character.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) }
+                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) }
                         },
                         DottedLines = new List<StageDottedLine>
                         {
@@ -83,21 +83,21 @@ public class StageRepo : ScriptableObject
                     {
                         Actors = new List<StageActor>()
                         {
-                            new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                            new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                            new StageActor { Character = Character.Slime, Team = Team.Enemy }
+                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy },
+                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy },
+                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy }
                         },
                     },
                     new StageWave()
                     {
                         Actors = new List<StageActor>()
                         {
-                            new StageActor { Character = Character.Slime, Team = Team.Enemy },
-                            new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                            new StageActor { Character = Character.Bat, Team = Team.Enemy },
-                            new StageActor { Character = Character.Bat, Team = Team.Enemy, SpawnTurn = 2 },
-                            new StageActor { Character = Character.Bat, Team = Team.Enemy, SpawnTurn = 3 },
-                            new StageActor { Character = Character.Bat, Team = Team.Enemy, SpawnTurn = 4 },
+                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy },
+                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy },
+                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy },
+                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 2 },
+                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 3 },
+                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 4 },
                         },
                     },
                 }
@@ -110,7 +110,7 @@ public class StageRepo : ScriptableObject
                 CompletionCondition = "DefeatAllEnemies",
                 CompletionValue = 0,
                 NextStage = "Stage 3",
-                Waves = GenerateWaves(4, new List<Character> { Character.Slime, Character.Scorpion, Character.Bat })
+                Waves = GenerateWaves(4, new List<string> { CharacterHelper.Slime, CharacterHelper.Scorpion, CharacterHelper.Bat })
             }
         },
         { "Stage 3", new Stage
@@ -120,7 +120,7 @@ public class StageRepo : ScriptableObject
                 CompletionCondition = "DefeatAllEnemies",
                 CompletionValue = 0,
                 NextStage = "Stage 4",
-                Waves = GenerateWaves(5, new List<Character> { Character.Slime, Character.Yeti, Character.Scorpion, Character.Bat })
+                Waves = GenerateWaves(5, new List<string> { CharacterHelper.Slime, CharacterHelper.Yeti, CharacterHelper.Scorpion, CharacterHelper.Bat })
             }
         },
         { "Stage 4", new Stage
@@ -130,7 +130,7 @@ public class StageRepo : ScriptableObject
                 CompletionCondition = "DefeatAllEnemies",
                 CompletionValue = 0,
                 NextStage = "Stage 5",
-                Waves = GenerateWaves(3, new List<Character> { Character.Yeti, Character.Slime, Character.Bat, Character.Scorpion })
+                Waves = GenerateWaves(3, new List<string> { CharacterHelper.Yeti, CharacterHelper.Slime, CharacterHelper.Bat, CharacterHelper.Scorpion })
             }
         },
         { "Stage 5", new Stage
@@ -140,7 +140,7 @@ public class StageRepo : ScriptableObject
                 CompletionCondition = "DefeatAllEnemies",
                 CompletionValue = 0,
                 NextStage = "Stage 6",
-                Waves = GenerateWaves(5, new List<Character> { Character.Yeti, Character.Slime, Character.Scorpion, Character.Bat })
+                Waves = GenerateWaves(5, new List<string> { CharacterHelper.Yeti, CharacterHelper.Slime, CharacterHelper.Scorpion, CharacterHelper.Bat })
             }
         }
     };
@@ -152,7 +152,7 @@ public class StageRepo : ScriptableObject
     /// <param name="waveCount">Index of waves.</param>
     /// <param name="possibleEnemies">List of enemy types to use in waves.</param>
     /// <returns>A list of StageWave.</returns>
-    private List<StageWave> GenerateWaves(int waveCount, List<Character> possibleEnemies)
+    private List<StageWave> GenerateWaves(int waveCount, List<string> possibleEnemies)
     {
         //DEBUG: Manually enter heros in here for now, should be stored in ProfileRepo
 
@@ -175,7 +175,7 @@ public class StageRepo : ScriptableObject
             int enemyCount = rng.Next(2, 6);
             for (int j = 0; j < enemyCount; j++)
             {
-                Character randomEnemy = possibleEnemies[rng.Next(possibleEnemies.Count)];
+                string randomEnemy = possibleEnemies[rng.Next(possibleEnemies.Count)];
                 wave.Actors.Add(new StageActor
                 {
                     Character = randomEnemy,

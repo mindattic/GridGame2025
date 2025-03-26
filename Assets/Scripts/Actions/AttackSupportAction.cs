@@ -18,7 +18,7 @@ namespace Assets.Scripts.Actions
         public override IEnumerator Execute()
         {
             // If supporter is a Cleric, heal the attacker
-            if (supporter.character == Character.Cleric)
+            if (supporter.character == CharacterHelper.Cleric)
             {
                 GameManager.instance.spellManager.EnqueueHeal(supporter, attacker);
                 yield return null;

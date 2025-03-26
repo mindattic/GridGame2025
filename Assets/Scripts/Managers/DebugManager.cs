@@ -532,22 +532,22 @@ public class DebugManager : MonoBehaviour
 
     public void SpawnSlime()
     {
-        stageManager.AddEnemy(Character.Slime);
+        stageManager.AddEnemy(CharacterHelper.Slime);
     }
 
     public void SpawnBat()
     {
-        stageManager.AddEnemy(Character.Bat);
+        stageManager.AddEnemy(CharacterHelper.Bat);
     }
 
     public void SpawnScorpion()
     {
-        stageManager.AddEnemy(Character.Scorpion);
+        stageManager.AddEnemy(CharacterHelper.Scorpion);
     }
 
     public void SpawnYeti()
     {
-        stageManager.AddEnemy(Character.Yeti);
+        stageManager.AddEnemy(CharacterHelper.Yeti);
     }
 
 
