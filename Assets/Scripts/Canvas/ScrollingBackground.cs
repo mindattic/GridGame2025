@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ScrollingBackground : MonoBehaviour
 {
-    public Vector2 scrollSpeed = new Vector2(0f, 0.1f); // Scrolling speed
+    [SerializeField] public Vector2 scrollSpeed = new Vector2(0f, 0f);
     private RawImage rawImage;
     private Rect uvRect;
 
@@ -18,12 +18,12 @@ public class ScrollingBackground : MonoBehaviour
 
         // Assign uvRect
         uvRect = rawImage.uvRect;
-        uvRect.y = Random.Float();
     }
 
     void Update()
     {
-        if (rawImage == null) return;
+        if (rawImage == null || !gameObject.activeSelf) 
+            return;
 
         // Increment the UV rect's position over time
         uvRect.position += scrollSpeed * Time.deltaTime;
