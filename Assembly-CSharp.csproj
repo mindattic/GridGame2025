@@ -98,8 +98,9 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
+    <Compile Include="Assets\Scripts\Canvas\RosterCarousel.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
-    <Compile Include="Assets\HubManager.cs" />
+    <Compile Include="Assets\CanvasCarouselSlideInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Models\CanvasCarousel.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Managers\HeroManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
@@ -180,10 +182,12 @@
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
+    <Compile Include="Assets\Scripts\Canvas\HubCarousel.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ResourceManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\HubManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\PortraitInstance.cs" />

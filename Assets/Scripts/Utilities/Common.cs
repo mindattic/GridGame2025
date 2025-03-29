@@ -114,7 +114,8 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Panel = "Canvas2D/Panel";
+        public const string HubPanel = "Canvas2D/Hub/Panel";
+        public const string RosterPanel = "Canvas2D/Roster/Panel";
     }
 
     public static class Overworld
@@ -177,11 +178,11 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Panel = "Canvas2D/Panel";
-        public const string ContinueButton = "Canvas2D/Panel/ContinueButton";
-        public const string LoadGameButton = "Canvas2D/Panel/LoadGameButton";
-        public const string SettingsButton = "Canvas2D/Panel/SettingsButton";
-        public const string CreditsButton = "Canvas2D/Panel/CreditsButton";
+        public const string Panel = "Canvas2D/HubPanel";
+        public const string ContinueButton = "Canvas2D/HubPanel/ContinueButton";
+        public const string LoadGameButton = "Canvas2D/HubPanel/LoadGameButton";
+        public const string SettingsButton = "Canvas2D/HubPanel/SettingsButton";
+        public const string CreditsButton = "Canvas2D/HubPanel/CreditsButton";
         public const string ProfileButton = "Canvas2D/ProfileButton";
         public const string ProfileButtonLabel = "Canvas2D/ProfileButton/Label";
     }
@@ -190,7 +191,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string ConfirmDialog = "Canvas2D/ConfirmationDialog";
-        public const string Panel = ConfirmDialog + "/Panel";
+        public const string Panel = ConfirmDialog + "/HubPanel";
         public const string Prompt = Panel + "/Prompt";
         public const string ButtonYes = Panel + "/ButtonYes";
         public const string ButtonNo = Panel + "/ButtonNo";
@@ -200,7 +201,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Keyboard = "Canvas2D/Keyboard";
-        public const string Panel = Keyboard + "/Panel";
+        public const string Panel = Keyboard + "/HubPanel";
         public const string Prompt = Panel + "/Prompt";
         public const string InputBackdrop = Panel + "/InputBackdrop";
         public const string InputLabel = Panel + "/InputLabel";

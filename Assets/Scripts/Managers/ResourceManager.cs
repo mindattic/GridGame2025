@@ -13,7 +13,7 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
     //Quick Reference Properties
-    protected LogManager logManager => GameManager.instance.logManager;
+    //protected LogManager logManager => GameManager.instance.logManager;
 
     //Fields
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> backgrounds = new Dictionary<string, ResourceItem<Sprite>>();
@@ -70,7 +70,7 @@ public class ResourceManager : MonoBehaviour
 
         //Sprites
         keys.SetRange(
-            "DottedLine", "DottedLineArrow", "DottedLineTurn", "Footstep", "Pause", "Paused");
+            "DottedLine", "DottedLineArrow", "DottedLineTurn", "Footstep", "Pause", "Paused", "Forest");
         sprites = LoadResources<Sprite>(ResourceFolderHelper.Sprites, keys);
 
         //Weapon Types
@@ -113,7 +113,7 @@ public class ResourceManager : MonoBehaviour
         if (backgrounds.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve background `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve background `{key}` from resource manager.");
         return null;
     }
 
@@ -125,7 +125,7 @@ public class ResourceManager : MonoBehaviour
         if (portraits.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve portrait texture2D `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve portrait texture2D `{key}` from resource manager.");
         return null;
     }
 
@@ -137,7 +137,7 @@ public class ResourceManager : MonoBehaviour
         if (soundEffects.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve sound effect `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve sound effect `{key}` from resource manager.");
         return null;
     }
 
@@ -149,7 +149,7 @@ public class ResourceManager : MonoBehaviour
         if (musicTracks.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve music track `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve music track `{key}` from resource manager.");
         return null;
     }
 
@@ -168,7 +168,7 @@ public class ResourceManager : MonoBehaviour
         if (materials.TryGetValue(key, out var entry) && SetMaterialTexture(ref entry, texture))
             return entry;
 
-        logManager.Error($"Failed to retrieve material `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve material `{key}` from resource manager.");
         return null;
     }
 
@@ -180,7 +180,7 @@ public class ResourceManager : MonoBehaviour
         if (seamless.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve seamless sprite `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve seamless sprite `{key}` from resource manager.");
         return null;
     }
 
@@ -192,7 +192,7 @@ public class ResourceManager : MonoBehaviour
         if (sprites.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve sprite `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve sprite `{key}` from resource manager.");
         return null;
     }
 
@@ -204,7 +204,7 @@ public class ResourceManager : MonoBehaviour
         if (weaponTypes.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve weapon type sprite `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve weapon type sprite `{key}` from resource manager.");
         return null;
     }
 
@@ -216,7 +216,7 @@ public class ResourceManager : MonoBehaviour
         if (textures.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve texture2D `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve texture2D `{key}` from resource manager.");
         return null;
     }
 
@@ -228,7 +228,7 @@ public class ResourceManager : MonoBehaviour
         if (tutorials.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve tutorial `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve tutorial `{key}` from resource manager.");
         return null;
     }
 
@@ -240,7 +240,7 @@ public class ResourceManager : MonoBehaviour
         if (visualEffects.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve visual effect `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve visual effect `{key}` from resource manager.");
         return null;
     }
 
@@ -252,7 +252,7 @@ public class ResourceManager : MonoBehaviour
         if (trailEffects.TryGetValue(key, out var entry))
             return entry;
 
-        logManager.Error($"Failed to retrieve trailInstance effect `{key}` from resource manager.");
+        Debug.Log($"Failed to retrieve trailInstance effect `{key}` from resource manager.");
         return null;
     }
 
@@ -261,7 +261,7 @@ public class ResourceManager : MonoBehaviour
     {
         T resource = Resources.Load<T>(resourcePath);
         if (resource == null)
-            logManager.Error($"Failed to load external resource from `{resourcePath}`");
+            Debug.Log($"Failed to load external resource from `{resourcePath}`");
 
         return resource;
     }
@@ -278,7 +278,7 @@ public class ResourceManager : MonoBehaviour
                 T value = Resources.Load<T>($"{resourcePath}/{key}");
                 if (value == null)
                 {
-                    logManager.Error($"Resource `{key}` not found at resource path `{resourcePath}`");
+                    Debug.Log($"Resource `{key}` not found at resource path `{resourcePath}`");
                     continue;
                 }
 
@@ -294,7 +294,7 @@ public class ResourceManager : MonoBehaviour
         }
         catch (Exception ex)
         {
-            logManager.Error(ex.Message);
+            Debug.Log(ex.Message);
         }
 
         return entries;
@@ -326,7 +326,7 @@ public class ResourceManager : MonoBehaviour
                 var data = TrailEffectRepo.instance.Get(key);
                 if (data == null)
                 {
-                    logManager.Error($"Trail Effect Entry `{key}` is null");
+                    Debug.Log($"Trail Effect Entry `{key}` is null");
                     continue;
                 }
 
@@ -334,7 +334,7 @@ public class ResourceManager : MonoBehaviour
                 var prefab = Resources.Load<GameObject>($"{resourcePath}/{key}");
                 if (prefab == null)
                 {
-                    logManager.Error($"Trail Effect `{key}` not found at resource path `{resourcePath}`");
+                    Debug.Log($"Trail Effect `{key}` not found at resource path `{resourcePath}`");
                     continue;
                 }
 
@@ -355,7 +355,7 @@ public class ResourceManager : MonoBehaviour
         }
         catch (Exception ex)
         {
-            logManager.Error(ex.Message);
+            Debug.Log(ex.Message);
         }
 
         return entries;
@@ -372,7 +372,7 @@ public class ResourceManager : MonoBehaviour
                 var data = VisualEffectRepo.instance.Get(key);
                 if (data == null)
                 {
-                    logManager.Error($"Visual Effect Entry `{key}` is null");
+                    Debug.Log($"Visual Effect Entry `{key}` is null");
                     continue;
                 }
 
@@ -380,7 +380,7 @@ public class ResourceManager : MonoBehaviour
                 var prefab = Resources.Load<GameObject>($"{resourcePath}/{key}");
                 if (prefab == null)
                 {
-                    logManager.Error($"Visual Effect `{key}` not found at resource path `{resourcePath}`");
+                    Debug.Log($"Visual Effect `{key}` not found at resource path `{resourcePath}`");
                     continue;
                 }
 
@@ -401,7 +401,7 @@ public class ResourceManager : MonoBehaviour
         }
         catch (Exception ex)
         {
-            logManager.Error(ex.Message);
+            Debug.Log(ex.Message);
         }
 
         return entries;
