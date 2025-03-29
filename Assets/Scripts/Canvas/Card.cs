@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
+using Label = TMPro.TextMeshProUGUI;
 
 namespace Game.Behaviors
 {
@@ -14,49 +16,42 @@ namespace Game.Behaviors
     public class Card : MonoBehaviour
     {
         // Quick Reference Properties:
-        protected float cardPortraitSize => GameManager.instance.cardPortraitSize;
         protected ResourceManager resourceManager => GameManager.instance.resourceManager;
         protected List<ActorInstance> actors => GameManager.instance.actors;
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
         protected bool hasFocusedActor => GameManager.instance.hasFocusedActor;
         protected ActorInstance focusedActor => GameManager.instance.focusedActor;
 
+
         // Fields for UI elements and animation settings.
-        RectTransform rectTransform;     // The RectTransform of this card, used for layout and positioning.
-        GameObject backdrop;             // The backdrop GameObject of the card.
-        GameObject portrait;             // The portrait GameObject showing the actor's image.
-        GameObject title;                // The title GameObject displaying the actor's name.
-        GameObject details;              // The details GameObject displaying actor stats and information.
-        Image backdropImage;             // The Image component for the backdrop.
-        Image portraitImage;             // The Image component for the portrait.
-        TextMeshProUGUI titleText;       // CreditsLabel component for the title.
-        TextMeshProUGUI detailsText;     // CreditsLabel component for detailed stats and description.
-        Vector3 destination;             // Final destination position for the portrait during slide-in animation.
+
+
+        private RectTransform canvas2D;
+        RectTransform card;    
+        RectTransform backdrop;            
+        RectTransform portrait;          
+        RectTransform title;                
+        RectTransform details;
+
         Vector3 offscreenPosition;       // Starting offscreen position for the portrait.
+        Vector3 destination;             // Final destination position for the portrait during slide-in animation. 
         AnimationCurve slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // Easing curve for slide-in animation.
         float slideDuration = 0.5f;      // Duration of the slide-in animation in seconds.
+        float portraitSize;
 
-        // Awake is called when the script Instance is loaded.
-        // This method initializes references to UI elements by finding them in the scene.
+
         private void Awake()
         {
-            //Get the RectTransform component of the card.
-            rectTransform = GetComponent<RectTransform>();
+            canvas2D = GameObject.Find(ComponentHelper.Game.Canvas2D).GetComponent<RectTransform>();
+            card = GameObject.Find(ComponentHelper.Game.Card.Root).GetComponent<RectTransform>();
+            backdrop = GameObject.Find(ComponentHelper.Game.Card.Backdrop).GetComponent<RectTransform>();
+            portrait = GameObject.Find(ComponentHelper.Game.Card.Portrait).GetComponent<RectTransform>();      
+            title = GameObject.Find(ComponentHelper.Game.Card.Title).GetComponent<RectTransform>();
+            details = GameObject.Find(ComponentHelper.Game.Card.Details).GetComponent<RectTransform>();
 
-            // Find and assign UI GameObjects using predefined constant names.
-            backdrop = GameObject.Find(Constants.CardBackdrop);
-            backdropImage = backdrop.GetComponent<Image>();
 
-            portrait = GameObject.Find(Constants.CardPortrait);
-            portraitImage = portrait.GetComponent<Image>();
+            portraitSize = canvas2D.rect.width;
 
-            title = GameObject.Find(Constants.CardTitle);
-            titleText = title.GetComponent<TextMeshProUGUI>();
-
-            details = GameObject.Find(Constants.CardDetails);
-            detailsText = details.GetComponent<TextMeshProUGUI>();
-
-            // Start with a cleared (hidden) card.
             Clear();
         }
 
@@ -64,37 +59,14 @@ namespace Game.Behaviors
         // It sets up the initial positions and sizes for UI elements.
         private void Start()
         {
-            // The following commented code shows an example of configuring anchors and size,
-            // but is not used in the CurrentProfile implementation.
-            /*
-            RectTransform rect;
-            rect = backdrop.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.sizeDelta = new Vector2(Screen.width, Screen.width * Constants.percent33);
-
-            rect = portrait.GetComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.5f, 0.5f);
-            rect.anchorMax = new Vector2(0.5f, 0.5f);
-            rect.pivot = new Vector2(0.5f, 0.5f);
-            rect.sizeDelta = new Vector2(Screen.width, Screen.width * Constants.percent33);
-            */
-
-            // Set the portrait's size according to the global cardPortraitSize.
-            portraitImage.rectTransform.sizeDelta = new Vector2(cardPortraitSize, cardPortraitSize);
-
-            // Calculate the destination position for the portrait's slide-in animation.
-            var position = portraitImage.rectTransform.localPosition;
-            float width = portraitImage.rectTransform.rect.width;
-            float height = portraitImage.rectTransform.rect.height;
-            // Destination is calculated so that the portrait centers within its rect.
-            destination = new Vector3(position.x + width / 2, position.y + height / 2, position.z);
+            //Set the portrait's size
+            portrait.sizeDelta = new Vector2(portraitSize, portraitSize);
 
             // Define the offscreen starting position, just outside the screen width.
-            offscreenPosition = new Vector3(Screen.width + width, destination.y, destination.z);
-            // Initially position the portrait offscreen.
-            portraitImage.rectTransform.localPosition = offscreenPosition;
+            offscreenPosition = new Vector3(portraitSize, 0);
+
+            // Destination is calculated so that the portrait centers within its rect.
+            destination = new Vector3(-portraitSize / 4, 0);
         }
 
         // SelectProfile populates the card with data from the currently focused actor.
@@ -105,12 +77,10 @@ namespace Game.Behaviors
                 return;
 
             // Enable the backdrop and portrait images.
-            backdropImage.enabled = true;
-            portraitImage.sprite = resourceManager.Portrait(focusedActor.character).Value.ToSprite();
-            portraitImage.enabled = true;
-
-            // Extract the actor's name (splitting at underscore to simplify if needed).
-            titleText.text = focusedActor.friendlyName;
+            backdrop.gameObject.SetActive(true);
+            portrait.gameObject.SetActive(true);
+            portrait.GetComponent<Image>().sprite = resourceManager.Portrait(focusedActor.character).Value.ToSprite();
+            title.GetComponent<Label>().text = focusedActor.friendlyName;
 
             // Format the actor's stats for display:
             var hp = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}"; // HP/MaxHP with proper rowSpacing.
@@ -126,7 +96,7 @@ namespace Game.Behaviors
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
             // Set the details textarea combining the stats table with extra details from DataManager.
-            detailsText.text = stats + ActorRepo.instance.Actors[focusedActor.character].Details.Card;
+            details.GetComponent<Label>().text = stats + ActorRepo.instance.Actors[focusedActor.character].Details.Card;
 
             // Begin the slide-in animation for the portrait.
             TriggerSlideIn();
@@ -142,6 +112,7 @@ namespace Game.Behaviors
         private IEnumerator SlideIn()
         {
             float elapsedTime = 0f;
+            portrait.anchoredPosition = offscreenPosition;
 
             // Animate over the duration specified by slideDuration.
             while (elapsedTime < slideDuration)
@@ -152,30 +123,26 @@ namespace Game.Behaviors
                 float curveValue = slideInCurve.Evaluate(progress);
 
                 // Lerp (linearly interpolate) the portrait's position from offscreen to destination.
-                portraitImage.rectTransform.localPosition = Vector3.Lerp(offscreenPosition, destination, curveValue);
+                portrait.anchoredPosition = Vector3.Lerp(offscreenPosition, destination, curveValue);
 
                 yield return Wait.OneTick(); // Wait for the next frame.
             }
 
             // Ensure the portrait is exactly at the destination position after the animation.
-            portraitImage.rectTransform.localPosition = destination;
+            portrait.anchoredPosition = destination;
         }
 
         // Clear resets the card UI to a hidden state, clearing all displayed data.
         public void Clear()
         {
             // Disable visual components of the card.
-            backdropImage.enabled = false;
-            portraitImage.enabled = false;
-            titleText.text = "";
-            detailsText.text = "";
-
-            // Optionally, disable selection boxes on all actors or update the focus indicator.
-            // actors.ForEach(x => x.render.SetSelectionBoxEnabled(false));
-            // focusIndicator.SelectProfile();
+            backdrop.gameObject.SetActive(false);
+            portrait.gameObject.SetActive(false);
+            title.GetComponent<Label>().text = "";
+            details.GetComponent<Label>().text = "";
 
             // Reset the portrait's position to the offscreen starting position.
-            portraitImage.rectTransform.localPosition = offscreenPosition;
+            portrait.anchoredPosition = offscreenPosition;
         }
     }
 }

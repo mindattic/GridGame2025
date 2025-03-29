@@ -18,13 +18,6 @@ public class TitleScreenManager : MonoBehaviour
     private RectTransform profileButtonLabel;
     private FadeInstance fade;
 
-    float screenWidth;
-    float screenHeight;
-    float buttonWidth;
-    float buttonHeight;
-    float fontSize;
-    float rowSpacing;
-
     private void Awake()
     {
         //Verify that game is ready to run
@@ -35,40 +28,9 @@ public class TitleScreenManager : MonoBehaviour
         }
 
         canvas2D = GameObject.Find(ComponentHelper.TitleScreen.Canvas2D).GetComponent<RectTransform>();
-        //panel = GameObject.Find(ComponentHelper.TitleScreen.Panel).GetComponent<RectTransform>();
-        //continueButton = GameObject.Find(ComponentHelper.TitleScreen.ContinueButton).GetComponent<RectTransform>();
-        //loadGameButton = GameObject.Find(ComponentHelper.TitleScreen.LoadGameButton).GetComponent<RectTransform>();
-        //settingsButton = GameObject.Find(ComponentHelper.TitleScreen.SettingsButton).GetComponent<RectTransform>();
-        //creditsButton = GameObject.Find(ComponentHelper.TitleScreen.CreditsButton).GetComponent<RectTransform>();
-        //profileButton = GameObject.Find(ComponentHelper.TitleScreen.ProfileButton).GetComponent<RectTransform>();
+
         profileButtonLabel = GameObject.Find(ComponentHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
         fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
-
-        //screenWidth = canvas2D.rect.width;
-        //screenHeight = canvas2D.rect.height;
-        //buttonWidth = 0.9f * screenWidth;
-        //buttonHeight = screenHeight / 16f;
-        //fontSize = buttonHeight / 2;
-        //rowSpacing = screenHeight * 0.01f;
-
-        //panel.sizeDelta = new Vector2(screenWidth, screenHeight);
-        //panel.anchoredPosition = new Vector2(0, 0);
-
-        //continueButton.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-        //continueButton.anchoredPosition = new Vector2(0, buttonHeight * 2 + rowSpacing * 2);
-        //continueButton.GetComponentInChildren<Label>().fontSize = fontSize;
-
-        //loadGameButton.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-        //loadGameButton.anchoredPosition = new Vector2(0, buttonHeight + rowSpacing);
-        //loadGameButton.GetComponentInChildren<Label>().fontSize = fontSize;
-
-        //settingsButton.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-        //settingsButton.anchoredPosition = new Vector2(0, 0);
-        //settingsButton.GetComponentInChildren<Label>().fontSize = fontSize;
-
-        //creditsButton.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-        //creditsButton.anchoredPosition = new Vector2(0, -buttonHeight - rowSpacing);
-        //creditsButton.GetComponentInChildren<Label>().fontSize = fontSize;
 
         profileButtonLabel.GetComponent<Label>().text = ProfileRepo.instance.CurrentProfile.Key;
 

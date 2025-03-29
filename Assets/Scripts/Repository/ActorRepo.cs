@@ -191,10 +191,10 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 360,
-                    Y = 100,
-                    Width = 256,
-                    Height = 256
+                    X = 455,
+                    Y = 60,
+                    Width = 215,
+                    Height = 215
                 },
 
                 Details = new ActorDetails

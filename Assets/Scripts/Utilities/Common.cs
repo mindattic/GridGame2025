@@ -88,7 +88,6 @@ public static class ComponentHelper
         public const string PauseMenu = "Canvas2D/PauseMenu";
         public const string WaveAnnouncement = "Canvas2D/WaveAnnouncement";
         public const string CanvasOverlay = "Canvas2D/CanvasOverlay";
-        public const string Card = "Canvas2D/Card";
         public const string TimerBar = "Canvas2D/TimerBar";
         public const string CoinBar = "Canvas2D/CoinBar";
         public const string TutorialPopup = "Canvas2D/TutorialPopup";
@@ -99,6 +98,23 @@ public static class ComponentHelper
             public const string BoardOverlay = "BoardOverlay";
             public const string FocusIndicator = "FocusIndicator";
         }
+
+        public static class Card
+        {
+            public const string Root = "Canvas2D/Card";
+            public const string Backdrop = "Canvas2D/Card/Backdrop";
+            public const string Portrait = "Canvas2D/Card/Portrait";
+            public const string Title = "Canvas2D/Card/Title";
+            public const string Details = "Canvas2D/Card/Details";
+        }
+    }
+
+
+    public static class Hub
+    {
+        public const string Canvas2D = "Canvas2D";
+        public const string Fade = "Canvas2D/Fade";
+        public const string Panel = "Canvas2D/Panel";
     }
 
     public static class Overworld
@@ -548,12 +564,12 @@ public static class Increment
 
     public static class HealthBar
     {
-        public static float Drain = 0.25f;
+        public static float Drain = 0.3333f;
     }
 
     public static class ActionBar
     {
-        public static float Drain = 0.25f;
+        public static float Drain = 0.3333f;
     }
 }
 

@@ -22,11 +22,11 @@ public class ScrollingBackground : MonoBehaviour
 
     void Update()
     {
-        if (rawImage == null || !gameObject.activeSelf) 
+        if (rawImage == null || !gameObject.activeInHierarchy)
             return;
 
         // Increment the UV rect's position over time
-        uvRect.position += scrollSpeed * Time.deltaTime;
+        uvRect.position += scrollSpeed * Time.unscaledDeltaTime;
 
         // Apply the modified UV rect back to the RawImage
         rawImage.uvRect = uvRect;

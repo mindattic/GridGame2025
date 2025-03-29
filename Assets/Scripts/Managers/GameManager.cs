@@ -63,7 +63,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;
     [HideInInspector] public Vector3 tileScale;
-    [HideInInspector] public float cardPortraitSize;
     [HideInInspector] public Canvas canvas2D;
     [HideInInspector] public Canvas canvas3D;
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
@@ -127,8 +126,7 @@ public class GameManager : Singleton<GameManager>
         tileSize = oneSixth;
         tileScale = new Vector3(tileSize, tileSize, 1f);
 
-        cardPortraitSize = ScreenHelper.ScreenInPixels.Width / 2;
-
+ 
         cursorSpeed = tileSize * 0.5f;
         swapSpeed = tileSize * 0.1666f;
         moveSpeed = tileSize * 0.125f;
@@ -139,62 +137,60 @@ public class GameManager : Singleton<GameManager>
 
         totalCoins = 0;
 
-        //Resources
-        resourceManager = GameObject.Find(Constants.Resources).GetComponent<ResourceManager>() ?? throw new UnityException("ResourceManager is null");
-
         //Canvas
-        tutorialPopup = GameObject.Find(ComponentHelper.Game.TutorialPopup).GetComponent<TutorialPopup>() ?? throw new UnityException("TutorialPopup is null");
-        card = GameObject.Find(ComponentHelper.Game.Card).GetComponent<Card>() ?? throw new UnityException("CardManager is null");
-        fade = GameObject.Find(ComponentHelper.Game.Fade).GetComponent<FadeInstance>() ?? throw new UnityException("FadeInstance is null");
-        canvas2D = GameObject.Find(ComponentHelper.Game.Canvas2D).GetComponent<Canvas>() ?? throw new UnityException("Canvas2D is null");
-        canvas3D = GameObject.Find(ComponentHelper.Game.Canvas3D).GetComponent<Canvas>() ?? throw new UnityException("Canvas3D is null");
-        timerBar = GameObject.Find(ComponentHelper.Game.TimerBar).GetComponent<TimerBar>() ?? throw new UnityException("TimerBarInstance is null");
-        coinBar = GameObject.Find(ComponentHelper.Game.CoinBar).GetComponent<CoinBar>() ?? throw new UnityException("CoinBarInstance is null");
-        waveAnnouncement = GameObject.Find(ComponentHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>() ?? throw new UnityException("WaveAnnouncement is null");
-        canvasOverlay = GameObject.Find(ComponentHelper.Game.CanvasOverlay).GetComponent<CanvasOverlay>() ?? throw new UnityException("CanvasOverlay is null");
+        tutorialPopup = GameObject.Find(ComponentHelper.Game.TutorialPopup).GetComponent<TutorialPopup>();
+        card = GameObject.Find(ComponentHelper.Game.Card.Root).GetComponent<Card>();
+        fade = GameObject.Find(ComponentHelper.Game.Fade).GetComponent<FadeInstance>();
+        canvas2D = GameObject.Find(ComponentHelper.Game.Canvas2D).GetComponent<Canvas>();
+        canvas3D = GameObject.Find(ComponentHelper.Game.Canvas3D).GetComponent<Canvas>();
+        timerBar = GameObject.Find(ComponentHelper.Game.TimerBar).GetComponent<TimerBar>();
+        coinBar = GameObject.Find(ComponentHelper.Game.CoinBar).GetComponent<CoinBar>();
+        waveAnnouncement = GameObject.Find(ComponentHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
+        canvasOverlay = GameObject.Find(ComponentHelper.Game.CanvasOverlay).GetComponent<CanvasOverlay>();
 
         //Board
-        board = GameObject.Find(ComponentHelper.Game.Board.Root).GetComponent<BoardInstance>() ?? throw new UnityException("BoardInstance is null");
-        boardOverlay = GameObject.Find(ComponentHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>() ?? throw new UnityException("BoardOverlay is null");
-        focusIndicator = GameObject.Find(ComponentHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>() ?? throw new UnityException("FocusIndicator is null");
+        board = GameObject.Find(ComponentHelper.Game.Board.Root).GetComponent<BoardInstance>();
+        boardOverlay = GameObject.Find(ComponentHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
+        focusIndicator = GameObject.Find(ComponentHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>();
 
         var game = GameObject.Find(Constants.Game);
 
         //Audio
-        soundSource = game.GetComponents<AudioSource>()[Constants.SoundSourceIndex] ?? throw new UnityException("SoundSource is null");
-        musicSource = game.GetComponents<AudioSource>()[Constants.MusicSourceIndex] ?? throw new UnityException("MusicSource is null");
+        soundSource = game.GetComponents<AudioSource>()[Constants.SoundSourceIndex];
+        musicSource = game.GetComponents<AudioSource>()[Constants.MusicSourceIndex];
 
         //Managers
         //databaseManager = game.GetComponent<DatabaseManager>() ?? throw new UnityException("DatabaseManager is null");
-        cameraManager = game.GetComponent<CameraManager>() ?? throw new UnityException("CameraManager is null");
-        stageManager = game.GetComponent<StageManager>() ?? throw new UnityException("StageManager is null");
-        boardManager = game.GetComponent<BoardManager>() ?? throw new UnityException("BoardManager is null");
-        turnManager = game.GetComponent<TurnManager>() ?? throw new UnityException("TurnManager is null");
-        inputManager = game.GetComponent<InputManager>() ?? throw new UnityException("InputManager is null");
-        actorManager = game.GetComponent<ActorManager>() ?? throw new UnityException("ActorManager is null");
-        supportLineManager = game.GetComponent<SupportLineManager>() ?? throw new UnityException("SupportLineManager is null");
-        attackLineManager = game.GetComponent<AttackLineManager>() ?? throw new UnityException("AttackLineManager is null");
-        damageTextManager = game.GetComponent<DamageTextManager>() ?? throw new UnityException("DamageTextManager is null");
-        ghostManager = game.GetComponent<GhostManager>() ?? throw new UnityException("GhostManager is null");
-        portraitManager = game.GetComponent<PortraitManager>() ?? throw new UnityException("PortraitManager is null");
-        selectedHeroManager = game.GetComponent<SelectedHeroManager>() ?? throw new UnityException("SelectedPlayerManager is null");
-        heroManager = game.GetComponent<HeroManager>() ?? throw new UnityException("PlayerManager is null");
-        enemyManager = game.GetComponent<EnemyManager>() ?? throw new UnityException("EnemyManager is null");
-        tileManager = game.GetComponent<TileManager>() ?? throw new UnityException("TileManager is null");
-        footstepManager = game.GetComponent<FootstepManager>() ?? throw new UnityException("FootstepManager is null");
-        tooltipManager = game.GetComponent<TooltipManager>() ?? throw new UnityException("TooltipManager is null");
-        audioManager = game.GetComponent<AudioManager>() ?? throw new UnityException("AudioManager is null");
-        debugManager = game.GetComponent<DebugManager>() ?? throw new UnityException("DebugManager is null");
-        consoleManager = game.GetComponent<ConsoleManager>() ?? throw new UnityException("ConsoleManager is null");
-        logManager = game.GetComponent<LogManager>() ?? throw new UnityException("LogManager is null");
-        vfxManager = game.GetComponent<VFXManager>() ?? throw new UnityException("VFXManager is null");
-        trailManager = game.GetComponent<TrailManager>() ?? throw new UnityException("TrailManager is null");
-        coinManager = game.GetComponent<CoinManager>() ?? throw new UnityException("CoinManager is null");
-        pauseManager = game.GetComponent<PauseManager>() ?? throw new UnityException("PauseManager is null");
-        dottedLineManager = game.GetComponent<DottedLineManager>() ?? throw new UnityException("DottedLineManager is null");
-        spellManager = game.GetComponent<SpellManager>() ?? throw new UnityException("SpellManager is null");
-        actionManager = game.GetComponent<ActionManager>() ?? throw new UnityException("ActionManager is null");
-        pincerAttackManager = game.GetComponent<PincerAttackManager>() ?? throw new UnityException("PincerAttackManager is null");
+        resourceManager = game.GetComponent<ResourceManager>();
+        cameraManager = game.GetComponent<CameraManager>();
+        stageManager = game.GetComponent<StageManager>();
+        boardManager = game.GetComponent<BoardManager>();
+        turnManager = game.GetComponent<TurnManager>();
+        inputManager = game.GetComponent<InputManager>();
+        actorManager = game.GetComponent<ActorManager>();
+        supportLineManager = game.GetComponent<SupportLineManager>();
+        attackLineManager = game.GetComponent<AttackLineManager>();
+        damageTextManager = game.GetComponent<DamageTextManager>();
+        ghostManager = game.GetComponent<GhostManager>();
+        portraitManager = game.GetComponent<PortraitManager>();
+        selectedHeroManager = game.GetComponent<SelectedHeroManager>();
+        heroManager = game.GetComponent<HeroManager>();
+        enemyManager = game.GetComponent<EnemyManager>();
+        tileManager = game.GetComponent<TileManager>();
+        footstepManager = game.GetComponent<FootstepManager>();
+        tooltipManager = game.GetComponent<TooltipManager>();
+        audioManager = game.GetComponent<AudioManager>();
+        debugManager = game.GetComponent<DebugManager>();
+        consoleManager = game.GetComponent<ConsoleManager>();
+        logManager = game.GetComponent<LogManager>();
+        vfxManager = game.GetComponent<VFXManager>();
+        trailManager = game.GetComponent<TrailManager>();
+        coinManager = game.GetComponent<CoinManager>();
+        pauseManager = game.GetComponent<PauseManager>();
+        dottedLineManager = game.GetComponent<DottedLineManager>();
+        spellManager = game.GetComponent<SpellManager>();
+        actionManager = game.GetComponent<ActionManager>();
+        pincerAttackManager = game.GetComponent<PincerAttackManager>();
 
 
         #region Platform Dependent Compilation
