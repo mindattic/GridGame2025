@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,13 +14,32 @@ public class CanvasCarouselSlideInstance : MonoBehaviour
     [Tooltip("Manually override height of this slide.")]
     public float Height = 1000f;
 
-    public RectTransform Rect => GetComponent<RectTransform>();
+    public RectTransform rectTransform;
+    public UnityEngine.UI.Image image;
+    public Button button;
+
+    [Range(0f, 1f)]
+    public float alphaThreshold = 0.1f;
 
     private void Awake()
     {
-        // Apply manual dimensions to RectTransform
-        RectTransform rt = GetComponent<RectTransform>();
-        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Width);
-        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Height);
+        rectTransform = GetComponent<RectTransform>();
+        image = GetComponent<Image>();
+        button = GetComponent<Button>();
+
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Width);
+        rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Height);
     }
+
+    public void Initialize(Sprite sprite, System.Action onClick = null)
+    {
+        image.sprite = sprite;
+        if (onClick == null || !image.sprite.texture.isReadable) 
+            return;
+
+        image.alphaHitTestMinimumThreshold = 0.1f;
+        button.enabled = true;
+        button.onClick.AddListener(() => onClick.Invoke());
+    }
+
 }

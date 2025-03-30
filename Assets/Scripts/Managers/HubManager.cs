@@ -21,22 +21,18 @@ public class HubManager : MonoBehaviour
         {
             GameObject slide = Instantiate(slidePrefab, hubPanel);
             var instance = slide.GetComponent<CanvasCarouselSlideInstance>();
-            instance.Key = $"HubSlide{i}";
+            instance.Key = $"{i}";
             instance.Width = 1000f;
             instance.Height = 1000f;
-            slide.name = instance.Key;
-
-            // Load sprite from Resources/Sprites/Forest.png (or .jpg, etc.)
-            Sprite hubSprite = Resources.Load<Sprite>("Sprites/Forest");
-            slide.GetComponent<Image>().sprite = hubSprite;
-            
-            hubCarousel.AddItem(instance.Key, instance.Rect);
+            slide.name = $"HubSlide_{instance.Key}";
+            instance.Initialize(sprite: Resources.Load<Sprite>("Sprites/Forest"));
+            hubCarousel.AddItem(instance.Key, instance.rectTransform);
         }
         hubCarousel.Initialize();
 
 
         // Roster Slides
-        string[] sprites = { "Paladin", "Barbarian", "Cleric", "Ninja"};
+        string[] sprites = { "Paladin", "Barbarian", "Cleric", "Ninja" };
         for (int i = 0; i < sprites.Length; i++)
         {
             GameObject slide = Instantiate(slidePrefab, rosterPanel);
@@ -46,22 +42,13 @@ public class HubManager : MonoBehaviour
             instance.Height = 256f;
             slide.name = $"RosterSlide_{instance.Key}";
 
-            // Load from Resources/Portraits/{spriteName}.png
-            string spriteName = sprites[i % sprites.Length];
-            Sprite portraitSprite = Resources.Load<Sprite>($"Portraits/{spriteName}");
-            slide.GetComponent<Image>().sprite = portraitSprite;
-
-            //Button btn = slide.GetComponent<Button>();
-            //if (btn != null)
-            //{
-            //    string matchKey = $"HubSlide{i % hubSlideCount}";
-            //    btn.onClick.AddListener(() => hubCarousel.CenterOn(matchKey));
-            //}
-
-            rosterCarousel.AddItem(instance.Key, instance.Rect);
+            instance.Initialize(
+                sprite: Resources.Load<Sprite>($"Portraits/{sprites[i]}"), 
+                onClick: () => rosterCarousel.CenterOn(instance.rectTransform));
+          
+            rosterCarousel.AddItem(instance.Key, instance.rectTransform);
         }
         rosterCarousel.Initialize();
-
 
     }
 }
