@@ -206,11 +206,11 @@ public class ActorRepo : ScriptableObject
             }
             },
 
-            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Ninja
-            { CharacterHelper.Ninja,
+             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| GreenNinja
+            { CharacterHelper.GreenNinja,
             new ActorData
             {
-                Character = CharacterHelper.Ninja,
+                Character = CharacterHelper.GreenNinja,
                 Description = "A stealthy assassin.",
 
                 BaseStats = new ActorStats
@@ -307,6 +307,165 @@ public class ActorRepo : ScriptableObject
                 {
                     Description = "A holy knight honor bound to defend the Lightbearer Orthodoxy.",
                     Card = "Intermittently uses <color=#FF0000>[Taunt]</color> to force enemies to focus their results.",
+                    Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                }
+            }
+            },
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Pugilist
+            { CharacterHelper.Pugilist,
+            new ActorData
+            {
+                Character = CharacterHelper.Pugilist,
+                Description = "A stealthy assassin.",
+
+                BaseStats = new ActorStats
+                {
+                    Level = 1,
+                    Strength = 6,
+                    Vitality = 3,
+                    Agility = 10,
+                    Speed = 10,
+                    Luck = 4
+                },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.6f,
+                    Vitality = 0.5f,
+                    Agility = 2.2f,
+                    Speed = 2.0f,
+                    Luck = 0.8f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(1.0f, 0.0f, 2.0f, 2.0f, 0.5f) },
+                    { 10, new StatGrowth(2.0f, 0.5f, 3.0f, 2.5f, 1.0f) },
+                    { 20, new StatGrowth(3.0f, 1.0f, 4.0f, 3.0f, 1.5f) },
+                    { 40, new StatGrowth(5.0f, 1.5f, 5.0f, 4.0f, 2.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 380,
+                    Y = 50,
+                    Width = 196,
+                    Height = 196
+                },
+
+                Details = new ActorDetails
+                {
+                    Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
+                    Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                    Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                }
+            }
+            },
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| RedNinja
+            { CharacterHelper.RedNinja,
+            new ActorData
+            {
+                Character = CharacterHelper.RedNinja,
+                Description = "A stealthy assassin.",
+
+                BaseStats = new ActorStats
+                {
+                    Level = 1,
+                    Strength = 6,
+                    Vitality = 3,
+                    Agility = 10,
+                    Speed = 10,
+                    Luck = 4
+                },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.6f,
+                    Vitality = 0.5f,
+                    Agility = 2.2f,
+                    Speed = 2.0f,
+                    Luck = 0.8f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(1.0f, 0.0f, 2.0f, 2.0f, 0.5f) },
+                    { 10, new StatGrowth(2.0f, 0.5f, 3.0f, 2.5f, 1.0f) },
+                    { 20, new StatGrowth(3.0f, 1.0f, 4.0f, 3.0f, 1.5f) },
+                    { 40, new StatGrowth(5.0f, 1.5f, 5.0f, 4.0f, 2.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 380,
+                    Y = 50,
+                    Width = 196,
+                    Height = 196
+                },
+
+                Details = new ActorDetails
+                {
+                    Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
+                    Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                    Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                }
+            }
+            },
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Ronin
+            { CharacterHelper.Ronin,
+            new ActorData
+            {
+                Character = CharacterHelper.Ronin,
+                Description = "A stealthy assassin.",
+
+                BaseStats = new ActorStats
+                {
+                    Level = 1,
+                    Strength = 6,
+                    Vitality = 3,
+                    Agility = 10,
+                    Speed = 10,
+                    Luck = 4
+                },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.6f,
+                    Vitality = 0.5f,
+                    Agility = 2.2f,
+                    Speed = 2.0f,
+                    Luck = 0.8f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(1.0f, 0.0f, 2.0f, 2.0f, 0.5f) },
+                    { 10, new StatGrowth(2.0f, 0.5f, 3.0f, 2.5f, 1.0f) },
+                    { 20, new StatGrowth(3.0f, 1.0f, 4.0f, 3.0f, 1.5f) },
+                    { 40, new StatGrowth(5.0f, 1.5f, 5.0f, 4.0f, 2.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 380,
+                    Y = 50,
+                    Width = 196,
+                    Height = 196
+                },
+
+                Details = new ActorDetails
+                {
+                    Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
+                    Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
                     Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                 }
             }
@@ -418,6 +577,110 @@ public class ActorRepo : ScriptableObject
             }
             },
             
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Thief
+            { CharacterHelper.Thief,
+            new ActorData
+            {
+                Character = CharacterHelper.Thief,
+                Description = "A stealthy assassin.",
+
+                BaseStats = new ActorStats
+                {
+                    Level = 1,
+                    Strength = 6,
+                    Vitality = 3,
+                    Agility = 10,
+                    Speed = 10,
+                    Luck = 4
+                },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.6f,
+                    Vitality = 0.5f,
+                    Agility = 2.2f,
+                    Speed = 2.0f,
+                    Luck = 0.8f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(1.0f, 0.0f, 2.0f, 2.0f, 0.5f) },
+                    { 10, new StatGrowth(2.0f, 0.5f, 3.0f, 2.5f, 1.0f) },
+                    { 20, new StatGrowth(3.0f, 1.0f, 4.0f, 3.0f, 1.5f) },
+                    { 40, new StatGrowth(5.0f, 1.5f, 5.0f, 4.0f, 2.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 380,
+                    Y = 50,
+                    Width = 196,
+                    Height = 196
+                },
+
+                Details = new ActorDetails
+                {
+                    Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
+                    Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                    Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                }
+            }
+            },
+
+             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Vampire
+            { CharacterHelper.Vampire,
+            new ActorData
+            {
+                Character = CharacterHelper.Vampire,
+                Description = "A large humanoid underdweller.",
+
+                BaseStats = new ActorStats
+                {
+                    Level = 5,
+                    Strength = 6,
+                    Vitality = 10,
+                    Agility = 1,
+                    Speed = 1,
+                    Luck = 3
+                },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 2.0f,
+                    Vitality = 2.5f,
+                    Agility = 0.4f,
+                    Speed = 0.3f,
+                    Luck = 0.6f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 10, new StatGrowth(3.0f, 3.5f, 0.5f, 0.5f, 0.5f) },
+                    { 20, new StatGrowth(4.0f, 4.5f, 1.0f, 1.0f, 1.0f) },
+                    { 40, new StatGrowth(5.0f, 6.0f, 1.5f, 1.5f, 1.5f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 200,
+                    Y = 150,
+                    Width = 256,
+                    Height = 256
+                },
+
+                Details = new ActorDetails
+                {
+                    Description = "A large humanoid underdweller.",
+                    Card = "Intermittently goes <color=#FF0000>[Berserk]</color> attacking multiple nearby enemies.",
+                    Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                }
+            }},
+
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Yeti
             { CharacterHelper.Yeti,
             new ActorData

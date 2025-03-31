@@ -1202,9 +1202,15 @@ public static class CharacterHelper
     public const string Barbarian = "Barbarian";
     public const string Bat = "Bat";
     public const string Cleric = "Cleric";
-    public const string Ninja = "Ninja";
+    public const string GreenNinja = "GreenNinja";
     public const string Paladin = "Paladin";
+    public const string PandaGirl = "PandaGirl";
+    public const string Pugilist = "Pugilist";
+    public const string RedNinja = "RedNinja";
+    public const string Ronin = "Ronin";
     public const string Scorpion = "Scorpion";
     public const string Slime = "Slime";
+    public const string Thief = "Thief";
+    public const string Vampire = "Vampire";
     public const string Yeti = "Yeti";
 }

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6d6b4f828ac806142b67bf8f2d1f2041
+guid: a9cbb743035ba98478d148642a01fcd9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 61506194941554554
-    second: Ninja_0
+      213: 1917789662028094354
+    second: Ronin_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,10 +72,10 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -178,13 +178,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Ninja_0
+      name: Ronin_0
       rect:
         serializedVersion: 2
-        x: 90
-        y: 3
-        width: 864
-        height: 1058
+        x: 210
+        y: 8
+        width: 643
+        height: 998
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a7f2af4fe838ad000800000000000000
-      internalID: 61506194941554554
+      spriteID: 29bd917698b5d9a10800000000000000
+      internalID: 1917789662028094354
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Ninja_0: 61506194941554554
+      Ronin_0: 1917789662028094354
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

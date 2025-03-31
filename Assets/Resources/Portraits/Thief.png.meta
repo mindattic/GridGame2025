@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7640b30f339194744a3b21198afe980c
+guid: 89dfb96e60b79a64286c3d5612513008
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7694014812932834686
-    second: Cleric_0
+      213: 2759625832949664974
+    second: Thief_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -178,13 +178,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Cleric_0
+      name: Thief_0
       rect:
         serializedVersion: 2
-        x: 28
-        y: 3
-        width: 978
-        height: 1034
+        x: 353
+        y: 22
+        width: 393
+        height: 999
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e75847d25b1a6ca60800000000000000
-      internalID: 7694014812932834686
+      spriteID: eccc4fde2192c4620800000000000000
+      internalID: 2759625832949664974
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Cleric_0: 7694014812932834686
+      Thief_0: 2759625832949664974
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

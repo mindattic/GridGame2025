@@ -44,7 +44,7 @@ public class ResourceManager : MonoBehaviour
 
         //Portraits
         keys.SetRange(
-            "Barbarian", "Bat", "Cleric", "Ninja", "Paladin", "PandaGirl", "Scorpion", "Sentinel", "Slime", "Yeti");
+            "Barbarian", "Bat", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Scorpion", "Slime", "Thief", "Vampire", "Yeti");
         portraits = LoadResources<Texture2D>(ResourceFolderHelper.Portraits, keys);
 
         //Sound Effects

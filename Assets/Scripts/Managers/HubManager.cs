@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class HubManager : MonoBehaviour
 {
-    [SerializeField] ResourceManager resourceManager;
     public GameObject slidePrefab;
     public RectTransform hubPanel;
     public RectTransform rosterPanel;
@@ -32,7 +31,7 @@ public class HubManager : MonoBehaviour
 
 
         // Roster Slides
-        string[] sprites = { "Paladin", "Barbarian", "Cleric", "Ninja" };
+        string[] sprites = { "Barbarian", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Thief", "Vampire" };
         for (int i = 0; i < sprites.Length; i++)
         {
             GameObject slide = Instantiate(slidePrefab, rosterPanel);
