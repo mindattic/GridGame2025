@@ -1,6 +1,6 @@
+using Assets.Scripts.Repositories;
+using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
-using UnityEngine.UI;
 
 public class HubManager : MonoBehaviour
 {
@@ -9,12 +9,20 @@ public class HubManager : MonoBehaviour
     public RectTransform rosterPanel;
     public HubCarousel hubCarousel;
     public RosterCarousel rosterCarousel;
+    private FadeInstance fade;
 
     public int hubSlideCount = 4;
 
-    void Start()
+    public void Awake()
     {
+        fade = GameObject.Find(ComponentHelper.Hub.Fade).GetComponent<FadeInstance>();
 
+        LoadHubSlides();
+        LoadRosterSlides();
+    }
+
+    private void LoadHubSlides()
+    {
         // Hub Slides
         for (int i = 0; i < hubSlideCount; i++)
         {
@@ -28,8 +36,10 @@ public class HubManager : MonoBehaviour
             hubCarousel.AddItem(instance.Key, instance.rectTransform);
         }
         hubCarousel.Initialize();
+    }
 
-
+    private void LoadRosterSlides()
+    {
         // Roster Slides
         string[] sprites = { "Barbarian", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Thief", "Vampire" };
         for (int i = 0; i < sprites.Length; i++)
@@ -42,12 +52,23 @@ public class HubManager : MonoBehaviour
             slide.name = $"RosterSlide_{instance.Key}";
 
             instance.Initialize(
-                sprite: Resources.Load<Sprite>($"Portraits/{sprites[i]}"), 
+                sprite: Resources.Load<Sprite>($"Portraits/{sprites[i]}"),
                 onClick: () => rosterCarousel.CenterOn(instance.rectTransform));
-          
+
             rosterCarousel.AddItem(instance.Key, instance.rectTransform);
         }
         rosterCarousel.Initialize();
-
     }
+
+    void Start()
+    {
+      
+        StartCoroutine(fade.FadeIn());
+    }
+
+    public void OnBackButtonClicked()
+    {
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
+    }
+
 }

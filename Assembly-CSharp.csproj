@@ -270,6 +270,7 @@
     <None Include="Assets\Shader\FX_Diffuse.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Shader\Alpha Blended.shader" />
+    <None Include="Assets\Resources\Shaders\DoubleOutlineImage.shader" />
     <None Include="Assets\Shader\FireDartsOriginalFinal.shader" />
     <None Include="Assets\Shader\Add_CenterGlow.shader" />
     <None Include="Assets\Shader\water_add.shader" />
