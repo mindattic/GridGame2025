@@ -257,62 +257,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 40629338}
   m_CullTransparentMesh: 1
---- !u!1 &282357486
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 282357487}
-  - component: {fileID: 282357488}
-  m_Layer: 5
-  m_Name: Hub
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &282357487
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 282357486}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 825924566}
-  m_Father: {fileID: 1825619937}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &282357488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 282357486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6638a64512b7984686fedc677f826e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 825924566}
-  spacing: 0
-  deceleration: 3000
-  maxSpeed: 3000
-  scrollSpeed: 10
-  dragThreshold: 15
-  wrapThresholdMultiplier: 1.5
 --- !u!1 &283215792
 GameObject:
   m_ObjectHideFlags: 0
@@ -518,50 +462,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!1 &825924565
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 825924566}
-  - component: {fileID: 825924567}
-  m_Layer: 5
-  m_Name: Panel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &825924566
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 825924565}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 282357487}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: -626}
-  m_SizeDelta: {x: 980, y: 1858}
-  m_Pivot: {x: 0.5, y: 0}
---- !u!222 &825924567
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 825924565}
-  m_CullTransparentMesh: 1
 --- !u!1 &1107934092
 GameObject:
   m_ObjectHideFlags: 0
@@ -573,7 +473,7 @@ GameObject:
   - component: {fileID: 1107934094}
   - component: {fileID: 1107934095}
   m_Layer: 0
-  m_Name: HubManager
+  m_Name: PartyManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -608,8 +508,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slidePrefab: {fileID: 4099700881169421454, guid: 44ecf220cc3e53049ba0e1ff93f1dfbd, type: 3}
   rosterPanel: {fileID: 2026057530}
-  rosterCarousel: {fileID: 1219531915}
-  hubSlideCount: 6
+  spacing: 0
+  deceleration: 1250
+  maxSpeed: 3000
+  scrollSpeed: 10
+  dragThreshold: 15
+  wrapThresholdMultiplier: 1.5
 --- !u!1 &1219531911
 GameObject:
   m_ObjectHideFlags: 0
@@ -623,7 +527,7 @@ GameObject:
   - component: {fileID: 1219531913}
   - component: {fileID: 1219531915}
   m_Layer: 5
-  m_Name: Roster
+  m_Name: RosterCarousel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -700,7 +604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 2026057530}
-  spacing: 256
+  spacing: 0
   deceleration: 3000
   maxSpeed: 3000
   scrollSpeed: 10
@@ -1026,7 +930,6 @@ RectTransform:
   m_Children:
   - {fileID: 1910504889}
   - {fileID: 40629339}
-  - {fileID: 282357487}
   - {fileID: 1219531912}
   - {fileID: 1632491818}
   m_Father: {fileID: 0}

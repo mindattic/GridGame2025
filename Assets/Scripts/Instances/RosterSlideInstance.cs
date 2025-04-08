@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(RectTransform), typeof(Image))]
-public class CanvasCarouselSlideInstance : MonoBehaviour
+public class RosterSlideInstance : MonoBehaviour
 {
     [Tooltip("Unique key used to register this slide in the carousel.")]
     public string Key;

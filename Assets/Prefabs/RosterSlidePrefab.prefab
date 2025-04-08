@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4285030429876043884}
   - component: {fileID: 3656057824197307176}
   m_Layer: 0
-  m_Name: CanvasCarouselSlidePrefab
+  m_Name: RosterSlidePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

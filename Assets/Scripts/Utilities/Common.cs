@@ -110,12 +110,12 @@ public static class ComponentHelper
     }
 
 
-    public static class Hub
+    public static class PartyManager
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string HubPanel = "Canvas2D/Hub/Panel";
-        public const string RosterPanel = "Canvas2D/Roster/Panel";
+        public const string Title = "Canvas2D/Title";
+        public const string RosterPanel = "Canvas2D/RosterCarousel/Panel";
     }
 
     public static class Overworld
