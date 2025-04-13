@@ -159,7 +159,7 @@ public class ActorRepo : ScriptableObject
             {
                 Character = CharacterHelper.Cleric,
                 Description = "A strict adherent to the church.",
-
+            
                 BaseStats = new ActorStats
                 {
                     Level = 1,
