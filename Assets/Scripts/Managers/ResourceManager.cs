@@ -16,11 +16,11 @@ public class ResourceManager : MonoBehaviour
     //protected LogManager logManager => GameManager.instance.logManager;
 
     //Fields
-    [SerializeField] public Dictionary<string, ResourceItem<Sprite>> backgrounds = new Dictionary<string, ResourceItem<Sprite>>();
+    //[SerializeField] public Dictionary<string, ResourceItem<Sprite>> backgrounds = new Dictionary<string, ResourceItem<Sprite>>();
     //[SerializeField] public Dictionary<string, ResourceItem<Texture2D>> portraits = new Dictionary<string, ResourceItem<Texture2D>>();
-    [SerializeField] public Dictionary<string, ResourceItem<AudioClip>> soundEffects = new Dictionary<string, ResourceItem<AudioClip>>();
-    [SerializeField] public Dictionary<string, ResourceItem<AudioClip>> musicTracks = new Dictionary<string, ResourceItem<AudioClip>>();
-    [SerializeField] public Dictionary<string, ResourceItem<Material>> materials = new Dictionary<string, ResourceItem<Material>>();
+    //[SerializeField] public Dictionary<string, ResourceItem<AudioClip>> soundEffects = new Dictionary<string, ResourceItem<AudioClip>>();
+    //[SerializeField] public Dictionary<string, ResourceItem<AudioClip>> musicTracks = new Dictionary<string, ResourceItem<AudioClip>>();
+    //[SerializeField] public Dictionary<string, ResourceItem<Material>> materials = new Dictionary<string, ResourceItem<Material>>();
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> seamless = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> sprites = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> weaponTypes = new Dictionary<string, ResourceItem<Sprite>>();
@@ -38,30 +38,30 @@ public class ResourceManager : MonoBehaviour
         List<string> keys = new List<string>();
 
         //Backgrounds
-        keys.SetRange(
-            "CandleLitPath");
-        backgrounds = LoadResources<Sprite>(ResourceFolderHelper.Backgrounds, keys);
+        //keys.SetRange(
+        //    "CandleLitPath");
+        //backgrounds = LoadResources<Sprite>(ResourceFolderHelper.Backgrounds, keys);
 
         //Portraits
         //keys.SetRange(
         //    "Barbarian", "Bat", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Scorpion", "Slime", "Thief", "Vampire", "Yeti");
         //portraits = LoadResources<Texture2D>(ResourceFolderHelper.Portraits, keys);
 
-        //Sound Effects
-        keys.SetRange(
-            "Click", "Death", "Move1", "Move2", "Move3", "Move4", "Move5", "Move6", "NextTurn", "PlayerGlow", "Portrait", 
-            "Rumble", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
-        soundEffects = LoadResources<AudioClip>(ResourceFolderHelper.SoundEffects, keys);
+        ////Sound Effects
+        //keys.SetRange(
+        //    "Click", "Death", "Move1", "Move2", "Move3", "Move4", "Move5", "Move6", "NextTurn", "PlayerGlow", "Portrait", 
+        //    "Rumble", "Slash1", "Slash2", "Slash3", "Slash4", "Slash5", "Slash6", "Slash7", "Slide");
+        ////soundEffects = LoadResources<AudioClip>(ResourceFolderHelper.SoundEffects, keys);
 
         //Music Tracks
-        keys.SetRange(
-            "MelancholyLull");
-        musicTracks = LoadResources<AudioClip>(ResourceFolderHelper.MusicTracks, keys);
+        //keys.SetRange(
+        //    "MelancholyLull");
+        //musicTracks = LoadResources<AudioClip>(ResourceFolderHelper.MusicTracks, keys);
 
         //Materials
-        keys.SetRange(
-            "EnemyParallax", "PlayerParallax");
-        materials = LoadResources<Material>(ResourceFolderHelper.Materials, keys);
+        //keys.SetRange(
+        //    "EnemyParallax", "PlayerParallax");
+        //materials = LoadResources<Material>(ResourceFolderHelper.Materials, keys);
 
         //Seamless Sprites
         keys.SetRange(
@@ -105,72 +105,26 @@ public class ResourceManager : MonoBehaviour
         visualEffects = LoadVisualEffects(keys);
     }
 
-    public ResourceItem<Sprite> Background(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
 
-        if (backgrounds.TryGetValue(key, out var entry))
-            return entry;
 
-        Debug.Log($"Failed to retrieve background `{key}` from resource manager.");
-        return null;
-    }
-
-    //public ResourceItem<Texture2D> Portrait(string key)
+    //public ResourceItem<Material> Material(string key, Texture2D texture = null)
     //{
     //    if (string.IsNullOrWhiteSpace(key))
     //        return null;
 
-    //    if (portraits.TryGetValue(key, out var entry))
+    //    static bool SetMaterialTexture(ref ResourceItem<Material> entry, Texture2D texture = null)
+    //    {
+    //        if (texture != null)
+    //            entry.Value.mainTexture = texture;
+    //        return true;
+    //    }
+
+    //    if (materials.TryGetValue(key, out var entry) && SetMaterialTexture(ref entry, texture))
     //        return entry;
 
-    //    Debug.Log($"Failed to retrieve portrait texture2D `{key}` from resource manager.");
+    //    Debug.Log($"Failed to retrieve material `{key}` from resource manager.");
     //    return null;
     //}
-
-    public ResourceItem<AudioClip> SoundEffect(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
-
-        if (soundEffects.TryGetValue(key, out var entry))
-            return entry;
-
-        Debug.Log($"Failed to retrieve sound effect `{key}` from resource manager.");
-        return null;
-    }
-
-    public ResourceItem<AudioClip> MusicTrack(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
-
-        if (musicTracks.TryGetValue(key, out var entry))
-            return entry;
-
-        Debug.Log($"Failed to retrieve music track `{key}` from resource manager.");
-        return null;
-    }
-
-    public ResourceItem<Material> Material(string key, Texture2D texture = null)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
-
-        static bool SetMaterialTexture(ref ResourceItem<Material> entry, Texture2D texture = null)
-        {
-            if (texture != null)
-                entry.Value.mainTexture = texture;
-            return true;
-        }
-
-        if (materials.TryGetValue(key, out var entry) && SetMaterialTexture(ref entry, texture))
-            return entry;
-
-        Debug.Log($"Failed to retrieve material `{key}` from resource manager.");
-        return null;
-    }
 
     public ResourceItem<Sprite> Seamless(string key)
     {

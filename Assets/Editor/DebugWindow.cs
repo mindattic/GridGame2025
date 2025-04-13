@@ -447,7 +447,7 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    // RenderLevelControls renders buttons for stage control: Reload, Previous, and Next.
+    // RenderLevelControls renders buttons for stage control: Load, Previous, and Next.
     private void RenderLevelControls()
     {
         GUILayout.BeginHorizontal();
@@ -455,7 +455,7 @@ public class DebugWindow : EditorWindow
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Reload", GUILayout.Width(Screen.width * Constants.percent33)))
+        if (GUILayout.Button("Load", GUILayout.Width(Screen.width * Constants.percent33)))
             OnReloadStageClick();
 
         //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.thumbnailWidth * Constants.percent33)))
@@ -474,7 +474,7 @@ public class DebugWindow : EditorWindow
     private string thumbnailWidth = "256";
     private string thumbnailHeight = "256";
 
-    private async void RenderThumbnailSettings()
+    private void RenderThumbnailSettings()
     {
         // First horizontal row: the header label.
         GUILayout.BeginHorizontal();
@@ -503,7 +503,8 @@ public class DebugWindow : EditorWindow
             {
                 var characterName = GameManager.instance.focusedActor.characterName;
                 var actorData = ActorRepo.instance.Actors[characterName];
-                GameManager.instance.focusedActor.thumbnail.sprite = ThumbnailHelper.Generate(actorData);
+                //actorData.Thumbnail = ThumbnailHelper.Generate(actorData);
+                GameManager.instance.focusedActor.thumbnail.sprite = actorData.Thumbnail;
             }
             else
             {

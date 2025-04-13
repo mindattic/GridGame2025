@@ -158,9 +158,11 @@ public class ActorRenderers
         parallax.sprite = sprite;
     }
 
-    public void SetParallaxMaterial(Material material)
+    public void SetParallaxMaterial(Material material, Texture texture = null)
     {
         parallax.material = material;
+        if (texture != null)
+            parallax.material.mainTexture = texture;
     }
 
     public void SetParallaxAlpha(float alpha)

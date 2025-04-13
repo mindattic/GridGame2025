@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Repositories
+  m_EditorClassIdentifier: 
+  m_GroupName: Repositories
+  m_GUID: 69e98f35f906b454ca8f36d33ddb3bbe
+  m_SerializeEntries:
+  - m_GUID: 07910d6e1fb61874284d43826041d5be
+    m_Address: Repositories/StageRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1835e172d730d9749bcca35890dba1b7
+    m_Address: Repositories/TutorialRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2b52bc3427f47cf4885f2e27f08d14a6
+    m_Address: Repositories/MaterialRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 314a4f2a3f4f700438e5052f786be201
+    m_Address: Repositories/MusicTrackRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3369ed43eb850684c9a79ecc238c79fb
+    m_Address: Repositories/ProfileRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3db3dae33d6ad2a40a6d93a0bd12ceeb
+    m_Address: Repositories/ActorRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7179d2fc00b1d1b4789f50f37bfa98c1
+    m_Address: Repositories/SoundEffectRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9bbd784bd3747724b85459fee333e78b
+    m_Address: Repositories/VisualEffectRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9ce14376725b1c4cb2b813fddc6e545
+    m_Address: Repositories/TrailEffectRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f53948fd859d4cb4b95eea644338c480
+    m_Address: Repositories/SceneRepo
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

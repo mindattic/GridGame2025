@@ -125,9 +125,9 @@ public class PartyManager : MonoBehaviour
 
             // Load the sprite asynchronously
             string address = $"Actor-Portraits/{sprites[i]}";
-            var sprite = await AssetHelper.LoadSpriteAsync(address);
+            var sprite = AssetHelper.LoadAsset<Sprite>(address);
 
-            // Initialize the instance with all required variables
+            // Load the instance with all required variables
             instance.Initialize(
                 key: sprites[i],
                 sprite: sprite,

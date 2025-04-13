@@ -1,11 +1,12 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [CreateAssetMenu(fileName = "StageRepo", menuName = "Repositories/StageRepo")]
 public class StageRepo : ScriptableObject
 {
-    //Singleton
+    // Singleton instance
     private static StageRepo Instance;
 
     public static StageRepo instance
@@ -13,21 +14,41 @@ public class StageRepo : ScriptableObject
         get
         {
             if (Instance == null)
-                Debug.LogError("StageRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            {
+                Debug.LogWarning("StageRepo instance is null. Attempting to load synchronously.");
+                LoadSynchronously();
+            }
+
+            if (Instance == null)
+                Debug.LogError("StageRepo accessed before being initialized!");
+
             return Instance;
         }
     }
 
-    //Assign
+    // Auto-initialize before the scene loads
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void AutoInitialize()
+    private static async void AutoInitialize()
     {
         if (Instance == null)
         {
-            Instance = Resources.Load<StageRepo>("Repositories/StageRepo");
+            var handle = Addressables.LoadAssetAsync<StageRepo>("Repositories/StageRepo");
+            Instance = await handle.Task;
+
             if (Instance == null)
-                Debug.LogError("StageRepo asset not found in Resources/Repositories/StageRepo");
+                Debug.LogError("StageRepo asset not found in Addressables with key 'Repositories/StageRepo'");
         }
+    }
+
+    // Synchronous fallback for loading the StageRepo
+    private static void LoadSynchronously()
+    {
+        var handle = Addressables.LoadAssetAsync<StageRepo>("Repositories/StageRepo");
+        handle.WaitForCompletion(); // Block until the asset is loaded
+        Instance = handle.Result;
+
+        if (Instance == null)
+            Debug.LogError("Failed to load StageRepo synchronously from Addressables.");
     }
 
     //Serialized fields

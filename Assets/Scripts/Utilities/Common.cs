@@ -1253,13 +1253,35 @@ public static class CharacterHelper
 }
 
 
+public static class TextureHelper
+{
+    public static Texture2D CreateNewTexture(Texture2D originalTexture, Rect rect)
+    {
+        // Ensure the rect dimensions are within the bounds of the original texture
+        int rectX = Mathf.Clamp((int)rect.x, 0, originalTexture.width);
+        int rectY = Mathf.Clamp((int)rect.y, 0, originalTexture.height);
+        int rectWidth = Mathf.Clamp((int)rect.width, 0, originalTexture.width - rectX);
+        int rectHeight = Mathf.Clamp((int)rect.height, 0, originalTexture.height - rectY);
 
+        // Create a new texture with the specified dimensions
+        Texture2D newTexture = new Texture2D(rectWidth, rectHeight);
+
+        // Copy the pixel data from the original texture to the new texture
+        Color[] pixels = originalTexture.GetPixels(rectX, rectY, rectWidth, rectHeight);
+        newTexture.SetPixels(pixels);
+
+        // Apply the changes to the new texture
+        newTexture.Apply();
+
+        return newTexture;
+    }
+}
 
 public static class AssetHelper
 {
-    public static async Task<Sprite> LoadSpriteAsync(string address)
+    public static async Task<T> LoadAssetAsync<T>(string address)
     {
-        var handle = Addressables.LoadAssetAsync<Sprite>(address);
+        var handle = Addressables.LoadAssetAsync<T>(address);
         await handle.Task;
 
         if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
@@ -1267,8 +1289,23 @@ public static class AssetHelper
             return handle.Result;
         }
 
-        Debug.LogError($"Failed to load sprite at address: {address}");
-        return null;
+        Debug.LogError($"Failed to load {typeof(T)} at address: {address}");
+        return default(T);
+    }
+
+    public static T LoadAsset<T>(string address)
+    {
+        var handle = Addressables.LoadAssetAsync<T>(address);
+        handle.WaitForCompletion(); // Block until the asset is fully loaded
+
+
+        if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+        {
+            return handle.Result;
+        }
+
+  Debug.LogError($"Failed to load {typeof(T)} at address: {address}");
+        return default(T);
     }
 }
 
@@ -1292,65 +1329,3 @@ public static async Task<UnityEngine.ResourceManagement.AsyncOperations.AsyncOpe
 
 */
 
-public static class ThumbnailHelper
-{
-   
-
-
-    /// <summary>
-    /// Generates the thumbnail sprite using ThumbnailSettings.
-    /// The perfect frame is defined by a top‑left coordinate (X, Y) and Width/Height.
-    /// Extra panning range is provided via extrarange.x/extrarange.y. Since Sprite.Create
-    /// requires a bottom‑left origin, we convert the perfect frame's top‑left to bottom‑left.
-    /// </summary>
-    public static Sprite Generate(ActorData actorData)
-    {
-        //Retrieve applicable settings
-        var rangeMultiplier = ProfileRepo.instance.CurrentProfile.Settings.ActorPanMultiplier;
-
-        // Get the full texture from the resource manager.
-        //var texture = GameManager.instance.resourceManager.Portrait(instance.characterName).Value;
-        //string address = $"Actor-Portraits/{characterName}";
-
-
-        //var texture = actorData.Portrait.texture;
-
-        var range = new Vector2(
-            actorData.ThumbnailSettings.Width * rangeMultiplier,
-            actorData.ThumbnailSettings.Height * rangeMultiplier);
-
-        // In ThumbnailSettings, X and Y represent the top‑left coordinate of the perfect frame.
-        // Convert to bottom‑left coordinate for Sprite.Create:
-
-        var topLeft = new Vector2Int(actorData.ThumbnailSettings.X, actorData.ThumbnailSettings.Y);
-
-
-        int perfectBLX = topLeft.x;
-        int perfectBLY = actorData.Portrait.texture.height - topLeft.y - actorData.ThumbnailSettings.Height;
-
-        // Calculate the desired extended cropping rectangle.
-        int desiredWidth = actorData.ThumbnailSettings.Width + (int)range.x;
-        int desiredHeight = actorData.ThumbnailSettings.Height + (int)range.y;
-
-        // Ensure the desired dimensions do not exceed the texture size.
-        int rectWidth = Mathf.Min(desiredWidth, actorData.Portrait.texture.width);
-        int rectHeight = Mathf.Min(desiredHeight, actorData.Portrait.texture.height);
-
-        // We want the perfect frame to remain centered in the extended region.
-        // Subtract half of the extra range from the perfect frame's bottom‑left coordinate.
-        int rectX = perfectBLX - (int)(range.x / 2);
-        int rectY = perfectBLY - (int)(range.y / 2);
-
-        // Clamp the cropping rectangle so it remains within the texture bounds.
-        rectX = Mathf.Clamp(rectX, 0, actorData.Portrait.texture.width - rectWidth);
-        rectY = Mathf.Clamp(rectY, 0, actorData.Portrait.texture.height - rectHeight);
-
-        Rect rect = new Rect(rectX, rectY, rectWidth, rectHeight);
-
-        // Create a sprite from the extended cropped region.
-        // The pivot is set to (0.5, 0.5) so that panning (via UV offsets) remains centered.
-        var sprite = Sprite.Create(actorData.Portrait.texture, rect, new Vector2(0.5f, 0.5f), 100f);
-
-        return sprite;
-    }
-}

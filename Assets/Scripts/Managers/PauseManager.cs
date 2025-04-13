@@ -94,6 +94,7 @@ public class PauseManager : MonoBehaviour
 
     public void OnPartyManagerButtonClicked()
     {
+        Time.timeScale = 1f;
         ProfileRepo.instance.Save(overwrite: true);
         StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.PartyManager)));
     }
@@ -106,12 +107,14 @@ public class PauseManager : MonoBehaviour
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
+        ProfileRepo.instance.Save(overwrite: true);
         StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.StageSelect)));   
     }
 
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
+        ProfileRepo.instance.Save(overwrite: true);
         StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Settings)));
     }
 

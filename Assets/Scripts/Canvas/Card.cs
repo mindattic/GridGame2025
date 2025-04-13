@@ -71,7 +71,7 @@ namespace Game.Behaviors
         }
 
         // SelectProfile populates the card with data from the currently focused actor.
-        public async void Assign()
+        public void Assign()
         {
             // If no actor is focused, exit without making changes.
             if (!hasFocusedActor)
@@ -82,7 +82,7 @@ namespace Game.Behaviors
             portrait.gameObject.SetActive(true);
 
             string address = $"Actor-Portraits/{focusedActor.characterName}";
-            portrait.GetComponent<Image>().sprite = await AssetHelper.LoadSpriteAsync(address);
+            portrait.GetComponent<Image>().sprite = AssetHelper.LoadAsset<Sprite>(address);
             title.GetComponent<Label>().text = focusedActor.friendlyName;
 
             // Format the actor's stats for display:

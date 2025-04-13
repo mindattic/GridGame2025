@@ -87,7 +87,7 @@ public class StageManager : MonoBehaviour
         //HACK: For some reason enemies might spawn on top of heroes because they aren't loaded at same time...
         //actors.ForEach(x => x.flags.HasSpawned = true);
 
-        // Initialize the wave based on currentWave.
+        // Load the wave based on currentWave.
         if (currentStage.Waves.Count > 0)
         {
             LoadWave(currentWave);
@@ -142,7 +142,7 @@ public class StageManager : MonoBehaviour
 
         instance.characterName = stageActor.Character;
         instance.friendlyName = instance.characterName.ToString().Split("Instance")[0];
-        instance.name = $"{stageActor.Character}Instance{Guid.NewGuid():N}";
+        instance.name = $"{stageActor.Character}_{Guid.NewGuid():N}";
         instance.team = stageActor.Team;
 
         // Assign stats based on characterName and stageActor's level

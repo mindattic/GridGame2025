@@ -77,7 +77,7 @@ public class ActorThumbnail : MonoBehaviour
         thumbnailSettings = actorData.ThumbnailSettings;
 
         // Set the sprite for the SpriteRenderer
-        spriteRenderer.sprite = actorData.Thumbnail;
+        spriteRenderer.sprite = Generate(actorData);
 
         // Calculate the range based on the thumbnail settings
         range = new Vector2(
@@ -86,7 +86,62 @@ public class ActorThumbnail : MonoBehaviour
         );
     }
 
-   
+    private Sprite Generate(ActorData actorData)
+    {
+        //Retrieve applicable settings
+        var rangeMultiplier = ProfileRepo.instance.CurrentProfile.Settings.ActorPanMultiplier;
+
+        // Get the full texture from the resource manager.
+        //var texture = GameManager.instance.resourceManager.Portrait(instance.characterName).Value;
+        //string address = $"Actor-Portraits/{characterName}";
+
+
+        //var texture = actorData.Portrait.texture;
+
+
+        var thumbnailSettings = actorData.ThumbnailSettings;
+        var texture = TextureHelper.CreateNewTexture(actorData.Portrait.texture, actorData.Portrait.rect);
+
+
+        var range = new Vector2(
+            thumbnailSettings.Width * rangeMultiplier,
+            thumbnailSettings.Height * rangeMultiplier);
+
+        // In ThumbnailSettings, X and Y represent the top‑left coordinate of the perfect frame.
+        // Convert to bottom‑left coordinate for Sprite.Create:
+
+        var topLeft = new Vector2Int(thumbnailSettings.X, thumbnailSettings.Y);
+
+
+        int perfectBLX = topLeft.x;
+        int perfectBLY = texture.height - topLeft.y - thumbnailSettings.Height;
+
+        // Calculate the desired extended cropping rectangle.
+        int desiredWidth = thumbnailSettings.Width + (int)range.x;
+        int desiredHeight = thumbnailSettings.Height + (int)range.y;
+
+        // Ensure the desired dimensions do not exceed the texture size.
+        int rectWidth = Mathf.Min(desiredWidth, texture.width);
+        int rectHeight = Mathf.Min(desiredHeight, texture.height);
+
+        // We want the perfect frame to remain centered in the extended region.
+        // Subtract half of the extra range from the perfect frame's bottom‑left coordinate.
+        int rectX = perfectBLX - (int)(range.x / 2);
+        int rectY = perfectBLY - (int)(range.y / 2);
+
+        // Clamp the cropping rectangle so it remains within the texture bounds.
+        rectX = Mathf.Clamp(rectX, 0, texture.width - rectWidth);
+        rectY = Mathf.Clamp(rectY, 0, texture.height - rectHeight);
+
+        Rect rect = new Rect(rectX, rectY, rectWidth, rectHeight);
+
+        // Create a sprite from the extended cropped region.
+        // The pivot is set to (0.5, 0.5) so that panning (via UV offsets) remains centered.
+        var sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f), 100f);
+
+        return sprite;
+    }
+
     private void Update()
     {
         // --- Panning Code ---

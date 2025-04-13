@@ -1,4 +1,4 @@
-using Assets.Scripts.Models;
+﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,40 +11,59 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 [CreateAssetMenu(fileName = "ActorRepo", menuName = "Repositories/ActorRepo")]
 public class ActorRepo : ScriptableObject
 {
-    //Singleton
+    // Singleton instance
     private static ActorRepo Instance;
-
     public static ActorRepo instance
     {
         get
         {
             if (Instance == null)
-                Debug.LogError("ActorRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            {
+                Debug.LogWarning("ActorRepo instance is null. Attempting to load synchronously.");
+                LoadSynchronously();
+            }
+
+            if (Instance == null)
+                Debug.LogError("ActorRepo accessed before being initialized! Ensure it's assigned in Addressables.");
+
             return Instance;
         }
     }
 
-    //Assign
+    // Auto-initialize before the scene loads
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void AutoInitialize()
+    private static async void AutoInitialize()
     {
         if (Instance == null)
         {
-            Instance = Resources.Load<ActorRepo>("Repositories/ActorRepo");
+            var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
+            Instance = await handle.Task;
+
             if (Instance == null)
-                Debug.LogError("ActorRepo asset not found in Resources/Repositories/ActorRepo");
+                Debug.LogError("ActorRepo asset not found in Addressables with key 'Repositories/ActorRepo'");
         }
+    }
+
+    // Synchronous fallback for loading the ActorRepo
+    private static void LoadSynchronously()
+    {
+        var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
+        handle.WaitForCompletion(); // Block until the asset is loaded
+        Instance = handle.Result;
+
+        if (Instance == null)
+            Debug.LogError("Failed to load ActorRepo synchronously from Addressables.");
     }
 
     //Serialized fields
     [SerializeField] public Dictionary<string, ActorData> Actors;
 
-    private async void OnEnable()
+    private void OnEnable()
     {
-        await Initialize();
+        Load();
     }
 
-    private async Task Initialize()
+    private void Load()
     {
 
         Actors = new Dictionary<string, ActorData>
@@ -512,7 +531,7 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 400,
+                    X = 420,
                     Y = 50,
                     Width = 196,
                     Height = 196
@@ -790,37 +809,27 @@ public class ActorRepo : ScriptableObject
 
         };
 
-        // Load sprites asynchronously
-        var tasks = Actors.Values.Select(async actorData =>
+
+        foreach (var actorData in Actors.Values)
         {
             string address = $"Actor-Portraits/{actorData.Character}";
 
             try
             {
                 // Load the portrait sprite
-                actorData.Portrait = await AssetHelper.LoadSpriteAsync(address);
+                actorData.Portrait = AssetHelper.LoadAsset<Sprite>(address);
                 if (actorData.Portrait == null)
                 {
                     Debug.LogWarning($"Sprite for {actorData.Character} not found at address: {address}");
                     return;
                 }
 
-                // Generate the thumbnail
-                actorData.Thumbnail = ThumbnailHelper.Generate(actorData);
-                if (actorData.Thumbnail == null)
-                {
-                    Debug.LogWarning($"Unable to generate thumbnail for {actorData.Character} based on address: {address}");
-                }
             }
             catch (UnityException ex)
             {
                 Debug.LogError($"Failed to load sprite for {actorData.Character} at address: {address}. Exception: {ex.Message}");
             }
-        });
-
-        await Task.WhenAll(tasks);
+        }
     }
-
-
-
+   
 }

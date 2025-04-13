@@ -33,7 +33,7 @@
 //        // Initialization moved to manual call
 //    }
 
-//    public void Initialize()
+//    public void Load()
 //    {
 //        if (slides.Count > 0)
 //        {

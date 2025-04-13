@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Repositories
@@ -16,22 +17,40 @@ namespace Assets.Scripts.Repositories
             {
                 if (Instance == null)
                 {
-                    Debug.LogError("SceneRepo accessed before being initialized!");
+                    Debug.LogWarning("SceneRepo instance is null. Attempting to load synchronously.");
+                    LoadSynchronously();
                 }
+
+                if (Instance == null)
+                    Debug.LogError("SceneRepo accessed before being initialized!");
+
                 return Instance;
             }
         }
 
-        //Assign
+        // Auto-initialize before the scene loads
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static void AutoInitialize()
+        private static async void AutoInitialize()
         {
             if (Instance == null)
             {
-                Instance = Resources.Load<SceneRepo>("Repositories/SceneRepo");
+                var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
+                Instance = await handle.Task;
+
                 if (Instance == null)
-                    Debug.LogError("SceneRepo asset not found in Resources/Repositories/SceneRepo");
+                    Debug.LogError("SceneRepo asset not found in Addressables with key 'Repositories/SceneRepo'");
             }
+        }
+
+        // Synchronous fallback for loading the SceneRepo
+        private static void LoadSynchronously()
+        {
+            var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
+            handle.WaitForCompletion(); // Block until the asset is loaded
+            Instance = handle.Result;
+
+            if (Instance == null)
+                Debug.LogError("Failed to load SceneRepo synchronously from Addressables.");
         }
 
         //Fields

@@ -17,22 +17,43 @@ public class ProfileRepo : ScriptableObject
         get
         {
             if (Instance == null)
-                Debug.LogError("ProfileRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            {
+                Debug.LogWarning("ProfileRepo instance is null. Attempting to load synchronously.");
+                LoadSynchronously();
+            }
+
+            if (Instance == null)
+                Debug.LogError("ProfileRepo accessed before being initialized! Ensure it's assigned in Addressables.");
+
             return Instance;
         }
     }
 
     // Auto-initialize before the scene loads
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void AutoInitialize()
+    private static async void AutoInitialize()
     {
         if (Instance == null)
         {
-            Instance = Resources.Load<ProfileRepo>(RepositoryHelper.ProfileRepo);
+            var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
+            Instance = await handle.Task;
+
             if (Instance == null)
-                Debug.LogError($"{RepositoryHelper.ProfileRepo} asset not found.");
+                Debug.LogError("ProfileRepo asset not found in Addressables with key 'Repositories/ProfileRepo'");
         }
     }
+
+    // Synchronous fallback for loading the ProfileRepo
+    private static void LoadSynchronously()
+    {
+        var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
+        handle.WaitForCompletion(); // Block until the asset is loaded
+        Instance = handle.Result;
+
+        if (Instance == null)
+            Debug.LogError("Failed to load ProfileRepo synchronously from Addressables.");
+    }
+
 
     // Fields
     private List<string> folders = new List<string>();
@@ -50,10 +71,10 @@ public class ProfileRepo : ScriptableObject
     // Constructor
     private void OnEnable()
     {
-        Reload();
+        Load();
     }
 
-    public bool Reload()
+    public bool Load()
     {
         // Create profiles folder (if applicable)
         if (!Directory.Exists(FolderHelper.Folder.Profiles))
@@ -233,7 +254,7 @@ public class ProfileRepo : ScriptableObject
         if (currentProfileKey == key)
             currentProfileKey = null;
 
-        Reload();
+        Load();
         return true;
     }
 

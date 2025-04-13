@@ -98,7 +98,6 @@ namespace Assets.Scripts.Models
         public ActorDetails Details;
 
         public Sprite Portrait;
-        public Sprite Thumbnail;
 
         public ActorData() { }
 

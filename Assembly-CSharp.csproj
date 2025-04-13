@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\Managers\DamageTextManager.cs" />
     <Compile Include="Assets\Scripts\Managers\ActionManager.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Repository\SoundEffectRepo.cs" />
     <Compile Include="Assets\Scripts\Actions\EnemyStartAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
@@ -170,6 +171,7 @@
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Repository\SceneRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
+    <Compile Include="Assets\Scripts\Repository\MaterialRepo.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\WallManager.cs" />
+    <Compile Include="Assets\Scripts\Repository\MusicTrackRepo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shader\Add_CenterGlow 2.shader" />

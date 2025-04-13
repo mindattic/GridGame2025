@@ -439,7 +439,7 @@ public static class KeyboardDialog
         int maxLength = 32,
         Action<string> onSubmit = default)
     {
-        //Initialize prefab from Resources
+        //Load prefab from Resources
         var prefabPath = $"{ResourceFolderHelper.Prefabs}/KeyboardDialog";
         var prefab = Resources.Load<GameObject>(prefabPath);
         if (prefab == null)

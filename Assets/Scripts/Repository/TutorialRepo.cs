@@ -1,11 +1,12 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [CreateAssetMenu(fileName = "TutorialRepo", menuName = "Repositories/TutorialRepo")]
 public class TutorialRepo : ScriptableObject
 {
-    //Singleton
+    // Singleton instance
     private static TutorialRepo Instance;
 
     public static TutorialRepo instance
@@ -13,21 +14,41 @@ public class TutorialRepo : ScriptableObject
         get
         {
             if (Instance == null)
-                Debug.LogError("TutorialRepo accessed before being initialized! Ensure it's assigned in Awake().");
+            {
+                Debug.LogWarning("TutorialRepo instance is null. Attempting to load synchronously.");
+                LoadSynchronously();
+            }
+
+            if (Instance == null)
+                Debug.LogError("TutorialRepo accessed before being initialized!");
+
             return Instance;
         }
     }
 
-    //Assign
+    // Auto-initialize before the scene loads
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static void AutoInitialize()
+    private static async void AutoInitialize()
     {
         if (Instance == null)
         {
-            Instance = Resources.Load<TutorialRepo>("Repositories/TutorialRepo");
+            var handle = Addressables.LoadAssetAsync<TutorialRepo>("Repositories/TutorialRepo");
+            Instance = await handle.Task;
+
             if (Instance == null)
-                Debug.LogError("TutorialRepo asset not found in Resources/Repositories/TutorialRepo");
+                Debug.LogError("TutorialRepo asset not found in Addressables with key 'Repositories/TutorialRepo'");
         }
+    }
+
+    // Synchronous fallback for loading the TutorialRepo
+    private static void LoadSynchronously()
+    {
+        var handle = Addressables.LoadAssetAsync<TutorialRepo>("Repositories/TutorialRepo");
+        handle.WaitForCompletion(); // Block until the asset is loaded
+        Instance = handle.Result;
+
+        if (Instance == null)
+            Debug.LogError("Failed to load TutorialRepo synchronously from Addressables.");
     }
 
     //Serialized fields
