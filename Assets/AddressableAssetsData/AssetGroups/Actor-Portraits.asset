@@ -70,6 +70,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3b71ea3972ad6e4fb41c7ad7cea2b19
+    m_Address: Actor-Portraits/Sellsword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df703c1a12fb23a4496807d0328c74df
     m_Address: Actor-Portraits/Yeti
     m_ReadOnly: 0

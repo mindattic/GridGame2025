@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Intermission.Before;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -110,23 +111,33 @@ public class PartyManager : MonoBehaviour
         WrapSlides();
     }
 
-    private void LoadRosterSlides()
+    private async void LoadRosterSlides()
     {
-        string[] sprites = { "Barbarian", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Thief", "Vampire" };
+        string[] sprites = { "Barbarian", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Sellsword", "Thief", "Vampire" };
         for (int i = 0; i < sprites.Length; i++)
         {
+            // Instantiate the slide prefab and retrieve the RosterSlideInstance script
             GameObject slide = Instantiate(slidePrefab, rosterPanel);
             var instance = slide.GetComponent<RosterSlideInstance>();
-            instance.Key = sprites[i];
-            instance.Width = 512f;
-            instance.Height = 512f;
-            slide.name = $"RosterSlide_{instance.Key}";
 
+            // Set the slide name
+            slide.name = $"RosterSlide_{sprites[i]}";
+
+            // Load the sprite asynchronously
+            string address = $"Actor-Portraits/{sprites[i]}";
+            var sprite = await AssetHelper.LoadSpriteAsync(address);
+
+            // Initialize the instance with all required variables
             instance.Initialize(
-                sprite: Resources.Load<Sprite>($"Portraits/{sprites[i]}"),
+                key: sprites[i],
+                sprite: sprite,
+                width: 512f,
+                height: 512f,
                 onClick: () => CenterOn(instance),
-                isInParty: IsInParty(sprites[i]));
+                isInParty: IsInParty(sprites[i])
+            );
 
+            // Add the instance to the roster
             AddItem(instance);
         }
 

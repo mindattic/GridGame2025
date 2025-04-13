@@ -1244,6 +1244,7 @@ public static class CharacterHelper
     public const string Pugilist = "Pugilist";
     public const string RedNinja = "RedNinja";
     public const string Ronin = "Ronin";
+    public const string Sellsword = "Sellsword";
     public const string Scorpion = "Scorpion";
     public const string Slime = "Slime";
     public const string Thief = "Thief";

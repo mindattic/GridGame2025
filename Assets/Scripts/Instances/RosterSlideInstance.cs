@@ -45,8 +45,13 @@ public class RosterSlideInstance : MonoBehaviour
         centerButtonWidth = Width * 0.33f;
     }
 
-    public void Initialize(Sprite sprite, System.Action onClick, bool isInParty)
+    public void Initialize(string key, Sprite sprite, float width, float height, System.Action onClick, bool isInParty)
     {
+        // Assign key and dimensions
+        Key = key;
+        Width = width;
+        Height = height;
+
         // Set the image sprite
         image.alphaHitTestMinimumThreshold = alphaThreshold;
         image.sprite = sprite;
@@ -57,6 +62,7 @@ public class RosterSlideInstance : MonoBehaviour
         // Assign the onClick event to the center button
         centerButton.onClick.AddListener(() => onClick?.Invoke());
 
+        // Configure the checkmark
         checkmark.sizeDelta = new Vector2(Height / 10, Height / 10);
         SetCheckmark(isInParty);
     }

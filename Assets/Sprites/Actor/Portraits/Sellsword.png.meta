@@ -1,10 +1,7 @@
 fileFormatVersion: 2
-guid: a9cbb743035ba98478d148642a01fcd9
+guid: d3b71ea3972ad6e4fb41c7ad7cea2b19
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: 1917789662028094354
-    second: Ronin_0
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -75,7 +72,7 @@ TextureImporter:
     maxTextureSize: 1024
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -176,29 +173,7 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites:
-    - serializedVersion: 2
-      name: Ronin_0
-      rect:
-        serializedVersion: 2
-        x: 210
-        y: 8
-        width: 643
-        height: 998
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 29bd917698b5d9a10800000000000000
-      internalID: 1917789662028094354
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
+    sprites: []
     outline: []
     customData: 
     physicsShape: []
@@ -212,8 +187,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      Ronin_0: 1917789662028094354
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

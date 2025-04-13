@@ -503,8 +503,6 @@ public class DebugWindow : EditorWindow
             {
                 var characterName = GameManager.instance.focusedActor.characterName;
                 var actorData = ActorRepo.instance.Actors[characterName];
-
-
                 GameManager.instance.focusedActor.thumbnail.sprite = ThumbnailHelper.Generate(actorData);
             }
             else

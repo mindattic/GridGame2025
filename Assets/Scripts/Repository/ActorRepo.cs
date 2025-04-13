@@ -474,6 +474,59 @@ public class ActorRepo : ScriptableObject
             }
             },
 
+              // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Sellsword
+            { CharacterHelper.Sellsword,
+            new ActorData
+            {
+                Character = CharacterHelper.Sellsword,
+                Description = "A mercenary that fights for coin.",
+
+                BaseStats = new ActorStats
+                {
+                    Level = 1,
+                    Strength = 6,
+                    Vitality = 3,
+                    Agility = 10,
+                    Speed = 10,
+                    Luck = 4
+                },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.6f,
+                    Vitality = 0.5f,
+                    Agility = 2.2f,
+                    Speed = 2.0f,
+                    Luck = 0.8f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth(1.0f, 0.0f, 2.0f, 2.0f, 0.5f) },
+                    { 10, new StatGrowth(2.0f, 0.5f, 3.0f, 2.5f, 1.0f) },
+                    { 20, new StatGrowth(3.0f, 1.0f, 4.0f, 3.0f, 1.5f) },
+                    { 40, new StatGrowth(5.0f, 1.5f, 5.0f, 4.0f, 2.0f) }
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    X = 400,
+                    Y = 50,
+                    Width = 196,
+                    Height = 196
+                },
+
+                Details = new ActorDetails
+                {
+                    Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
+                    Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                    Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                }
+            }
+            },
+
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Scorpion
             { CharacterHelper.Scorpion,
             new ActorData
