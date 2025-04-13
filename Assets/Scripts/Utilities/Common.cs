@@ -24,6 +24,8 @@ public static class SceneHelper
     public static string Settings = "Settings";
     public static string StageSelect = "StageSelect";
     public static string TitleScreen = "TitleScreen";
+    public static string PartyManager = "PartyManager";
+
 }
 
 public static class ComponentHelper
@@ -115,6 +117,9 @@ public static class ComponentHelper
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
         public const string Title = "Canvas2D/Title";
+        public const string AddRemovePartyMemberButton = "Canvas2D/AddRemovePartyMemberButton";
+        public const string AddRemovePartyMemberButtonLabel = "Canvas2D/AddRemovePartyMemberButton/Label";
+        public const string AddRemovePartyMemberButtonCount = "Canvas2D/AddRemovePartyMemberButton/Count";
         public const string RosterPanel = "Canvas2D/RosterCarousel/Panel";
     }
 
@@ -310,6 +315,8 @@ public static class Constants
     //Audio sources
     public const int SoundSourceIndex = 0;
     public const int MusicSourceIndex = 1;
+
+    public const int MaxPartyMemberCount = 6;
 }
 
 public static class Tag

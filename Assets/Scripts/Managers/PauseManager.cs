@@ -91,6 +91,13 @@ public class PauseManager : MonoBehaviour
         stageManager.RestartStage();
         Resume();
     }
+
+    public void OnPartyManagerButtonClicked()
+    {
+        ProfileRepo.instance.Save(overwrite: true);
+        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.PartyManager)));
+    }
+
     public void OnSpawnEnemyButtonClicked()
     {
         debugManager.SpawnRandomEnemy();

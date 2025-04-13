@@ -391,4 +391,60 @@ public class ProfileRepo : ScriptableObject
 
         return true;
     }
+
+
+
+    public void AddToParty(string characterName)
+    {
+        if (!HasCurrentSave)
+        {
+            Debug.LogError("No valid save to modify.");
+            return;
+        }
+
+        var party = CurrentProfile.CurrentSave.Party;
+        if (party.HeroActors.Any(hero => hero.Character == characterName))
+        {
+            Debug.Log($"{characterName} is already in the party.");
+            return;
+        }
+
+        party.HeroActors.Add(new StageActor
+        {
+            Character = characterName,
+            Team = Team.Hero,
+            Level = 1,
+            SpawnTurn = 0,
+            Location = null
+        });
+
+        Save(true); // Overwrite the current save
+        Debug.Log($"{characterName} added to the party.");
+    }
+
+    public void RemoveFromParty(string characterName)
+    {
+        if (!HasCurrentSave)
+        {
+            Debug.LogError("No valid save to modify.");
+            return;
+        }
+
+        var party = CurrentProfile.CurrentSave.Party;
+        var removed = party.HeroActors.RemoveAll(hero => hero.Character == characterName);
+
+        if (removed > 0)
+        {
+            Save(true); // Overwrite the current save
+            Debug.Log($"{characterName} removed from the party.");
+        }
+        else
+        {
+            Debug.Log($"{characterName} is not in the party.");
+        }
+    }
+
+
+
+
 }

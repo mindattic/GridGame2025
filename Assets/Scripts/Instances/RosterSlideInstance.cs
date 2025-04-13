@@ -1,45 +1,68 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(RectTransform), typeof(Image))]
 public class RosterSlideInstance : MonoBehaviour
 {
-    [Tooltip("Unique key used to register this slide in the carousel.")]
-    public string Key;
+    [HideInInspector] public string Key;
+    [HideInInspector] public float Width;
+    [HideInInspector] public float Height;
 
-    [Tooltip("Manually override width of this slide.")]
-    public float Width = 1000f;
+    [HideInInspector] public RectTransform rectTransform;
+    private Image image;
+    private Button imageButton;
 
-    [Tooltip("Manually override height of this slide.")]
-    public float Height = 1000f;
+    private RectTransform centerButtonRect; // New center button
+    private Button centerButton; // New center button
 
-    public RectTransform rectTransform;
-    public UnityEngine.UI.Image image;
-    public Button button;
+    private RectTransform checkmark;
+  
 
-    [Range(0f, 1f)]
-    public float alphaThreshold = 0.1f;
 
-    private void Awake()
+    private float alphaThreshold;
+    private float centerButtonWidth;
+
+
+    public void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
-        image = GetComponent<Image>();
-        button = GetComponent<Button>();
+        image = rectTransform.GetComponent<Image>();
+        imageButton = rectTransform.GetComponent<Button>();
+        centerButton = rectTransform.Find("CenterButton").GetComponent<Button>();
+        checkmark = rectTransform.Find("Checkmark").GetComponent<RectTransform>();
 
         rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Width);
         rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Height);
+
+
+        centerButtonRect = centerButton.GetComponent<RectTransform>();
+        centerButtonRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Width);
+        centerButtonRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, Height);
+
+        centerButtonRect.sizeDelta = new Vector2(centerButtonWidth, Height); // 1/3th width, full height
+        centerButtonRect.anchoredPosition = Vector2.zero; // Center it on the image
+
+        alphaThreshold = 0.1f;
+        centerButtonWidth = Width * 0.33f;
     }
 
-    public void Initialize(Sprite sprite, System.Action onClick = null)
+    public void Initialize(Sprite sprite, System.Action onClick, bool isInParty)
     {
+        // Set the image sprite
+        image.alphaHitTestMinimumThreshold = alphaThreshold;
         image.sprite = sprite;
-        if (onClick == null || !image.sprite.texture.isReadable) 
-            return;
 
-        image.alphaHitTestMinimumThreshold = 0.1f;
-        button.enabled = true;
-        button.onClick.AddListener(() => onClick.Invoke());
+        // Assign the onClick event to the image button
+        imageButton.onClick.AddListener(() => onClick?.Invoke());
+
+        // Assign the onClick event to the center button
+        centerButton.onClick.AddListener(() => onClick?.Invoke());
+
+        checkmark.sizeDelta = new Vector2(Height / 10, Height / 10);
+        SetCheckmark(isInParty);
     }
 
+    public void SetCheckmark(bool isInParty)
+    {
+        checkmark.gameObject.SetActive(isInParty);
+    }
 }

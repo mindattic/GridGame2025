@@ -97,6 +97,9 @@ namespace Assets.Scripts.Models
         public ThumbnailSettings ThumbnailSettings;
         public ActorDetails Details;
 
+        public Sprite Portrait;
+        public Sprite Thumbnail;
+
         public ActorData() { }
 
         public ActorData(ActorData other)

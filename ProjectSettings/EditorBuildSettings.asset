@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Overworld.unity
     guid: be24d6630a34a6a4da57045ef4f61470
   - enabled: 1
+    path: Assets/Scenes/PartyManager.unity
+    guid: aab5dfe8563f78c4197844bc30952ecf
+  - enabled: 1
     path: Assets/Scenes/ProfileCreate.unity
     guid: 6a87d94a2498c5c43bac80f0c8f0d308
   - enabled: 1

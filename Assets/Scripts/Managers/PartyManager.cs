@@ -31,14 +31,50 @@ public class PartyManager : MonoBehaviour
     private bool scrollingToCenter = false;
     private bool clickAllowed = true;
 
+
+    private RectTransform addRemovePartyMemberButton;
+    private RectTransform addRemovePartyMemberLabel;
+    private RectTransform addRemovePartyMemberCount;
+
+  
     private FadeInstance fade;
+
+
+    private bool IsInParty(string characterName)
+    {
+        return ProfileRepo.instance.CurrentProfile.CurrentSave.Party.HeroActors.Any(hero => hero.Character == characterName);
+    }
+
+    //Properties
+    private int partyMemberCount => ProfileRepo.instance.CurrentProfile.CurrentSave.Party.HeroActors.Count;
+
 
     private void Awake()
     {
+        //Validate a current profile exists
+        if (!ProfileRepo.instance.HasCurrentProfile || !ProfileRepo.instance.HasCurrentSave)
+        {
+            Debug.LogError("No current profile selected.");
+            return;
+        }
+
+        //Validate a current save exists
+        if (!ProfileRepo.instance.HasCurrentSave)
+        {
+            Debug.LogError("No current save selected.");
+            return;
+        }
+
         title = GameObject.Find(ComponentHelper.PartyManager.Title).GetComponent<Label>();
         rosterPanel = GameObject.Find(ComponentHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
+        addRemovePartyMemberButton = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButton).GetComponent<RectTransform>();
+        addRemovePartyMemberLabel = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<RectTransform>();
+        addRemovePartyMemberCount = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButtonCount).GetComponent<RectTransform>();
         fade = GameObject.Find(ComponentHelper.PartyManager.Fade).GetComponent<FadeInstance>();
+
+        UpdatePartyMemberCountLabel();
         LoadRosterSlides();
+
     }
 
     private void Start()
@@ -88,7 +124,8 @@ public class PartyManager : MonoBehaviour
 
             instance.Initialize(
                 sprite: Resources.Load<Sprite>($"Portraits/{sprites[i]}"),
-                onClick: () => CenterOn(instance));
+                onClick: () => CenterOn(instance),
+                isInParty: IsInParty(sprites[i]));
 
             AddItem(instance);
         }
@@ -205,7 +242,72 @@ public class PartyManager : MonoBehaviour
         targetOffset = -offset;
         scrollingToCenter = true;
 
+        // Update the title
         title.text = slide.Key;
+
+        // Update the button text and functionality
+        UpdateAddRemoveButton(slide.Key);
+    }
+
+
+    private void UpdatePartyMemberLabel(bool isInParty)
+    {
+        addRemovePartyMemberLabel.GetComponent<Label>().text = isInParty ? "Remove from Party" : "Add to Party";
+    }
+
+    private void UpdatePartyMemberCountLabel()
+    {
+        addRemovePartyMemberCount.GetComponent<Label>().text = $"{partyMemberCount}/{Constants.MaxPartyMemberCount}";
+    }
+
+    private void UpdateSlideCheckmark(string characterName, bool isInParty)
+    {
+        // Update the checkmark for the slide
+        if (slides.TryGetValue(characterName, out var slide))
+        {
+            slide.SetCheckmark(isInParty);
+        }
+    }
+
+    private void UpdateAddRemoveButton(string characterName)
+    {
+        bool isInParty = IsInParty(characterName);
+        UpdatePartyMemberLabel(isInParty);
+        UpdatePartyMemberCountLabel();
+        UpdateSlideCheckmark(characterName, isInParty);
+
+        // Update the button functionality
+        var button = addRemovePartyMemberButton.GetComponent<Button>();
+        button.onClick.RemoveAllListeners(); // Clear previous listeners
+        if (isInParty)
+        {
+            button.onClick.AddListener(() => RemoveFromParty(characterName));
+        }
+        else
+        {
+            button.onClick.AddListener(() => AddToParty(characterName));
+        }
+    }
+
+    private void AddToParty(string characterName)
+    {
+        if (partyMemberCount >= Constants.MaxPartyMemberCount)
+        {
+            Debug.LogWarning($"Cannot add more than {Constants.MaxPartyMemberCount} members to the party.");
+            return;
+        }
+
+        ProfileRepo.instance.AddToParty(characterName);
+        UpdateAddRemoveButton(characterName); // Refresh button state
+    }
+
+
+
+
+    private void RemoveFromParty(string characterName)
+    {
+        ProfileRepo.instance.RemoveFromParty(characterName);
+        UpdateAddRemoveButton(characterName); // Refresh button state
     }
 
     public void AddItem(RosterSlideInstance slide)

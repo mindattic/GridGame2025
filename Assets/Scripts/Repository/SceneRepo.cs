@@ -53,12 +53,11 @@ namespace Assets.Scripts.Repositories
             yield return SceneManager.LoadSceneAsync(currentScene);
         }
 
-        public IEnumerator LoadPreviousScene()
+        public IEnumerator LoadPreviousScene(string defaultScene = "Game")
         {
             if (string.IsNullOrWhiteSpace(previousScene))
             {
-                Debug.LogError("previousScene is not set.");
-                yield break;
+                previousScene = defaultScene;
             }
 
             currentScene = previousScene;
