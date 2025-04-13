@@ -141,7 +141,7 @@ public class StageManager : MonoBehaviour
         instance.transform.parent = board.transform;
 
         instance.characterName = stageActor.Character;
-        instance.friendlyName = instance.characterName.ToString().Split("Instance")[0];
+        instance.friendlyName = instance.characterName;
         instance.name = $"{stageActor.Character}_{Guid.NewGuid():N}";
         instance.team = stageActor.Team;
 

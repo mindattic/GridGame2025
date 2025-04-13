@@ -22,9 +22,9 @@ public class ResourceManager : MonoBehaviour
     //[SerializeField] public Dictionary<string, ResourceItem<AudioClip>> musicTracks = new Dictionary<string, ResourceItem<AudioClip>>();
     //[SerializeField] public Dictionary<string, ResourceItem<Material>> materials = new Dictionary<string, ResourceItem<Material>>();
    // [SerializeField] public Dictionary<string, ResourceItem<Sprite>> seamless = new Dictionary<string, ResourceItem<Sprite>>();
-    [SerializeField] public Dictionary<string, ResourceItem<Sprite>> sprites = new Dictionary<string, ResourceItem<Sprite>>();
-    [SerializeField] public Dictionary<string, ResourceItem<Sprite>> weaponTypes = new Dictionary<string, ResourceItem<Sprite>>();
-    [SerializeField] public Dictionary<string, ResourceItem<Texture2D>> textures = new Dictionary<string, ResourceItem<Texture2D>>();
+    //[SerializeField] public Dictionary<string, ResourceItem<Sprite>> sprites = new Dictionary<string, ResourceItem<Sprite>>();
+    //[SerializeField] public Dictionary<string, ResourceItem<Sprite>> weaponTypes = new Dictionary<string, ResourceItem<Sprite>>();
+    //[SerializeField] public Dictionary<string, ResourceItem<Texture2D>> textures = new Dictionary<string, ResourceItem<Texture2D>>();
     [SerializeField] public Dictionary<string, TrailResource> trailEffects = new Dictionary<string, TrailResource>();
     [SerializeField] public Dictionary<string, Tutorial> tutorials = new Dictionary<string, Tutorial>();
     [SerializeField] public Dictionary<string, VFXResource> visualEffects = new Dictionary<string, VFXResource>();
@@ -68,21 +68,21 @@ public class ResourceManager : MonoBehaviour
         //    "BlackFire1", "BlackFire2", "Fire1", "RedFire1", "Swords1", "Swords2", "WhiteFire1", "WhiteFire2");
         //seamless = LoadResources<Sprite>(ResourceFolderHelper.Seamless, keys);
 
-        //Sprites
-        keys.SetRange(
-            "DottedLine", "DottedLineArrow", "DottedLineTurn", "Footstep", "Pause", "Paused", "Forest");
-        sprites = LoadResources<Sprite>(ResourceFolderHelper.Sprites, keys);
+        ////Sprites
+        //keys.SetRange(
+        //    "DottedLine", "DottedLineArrow", "DottedLineTurn", "Footstep", "Pause", "Paused", "Forest");
+        //sprites = LoadResources<Sprite>(ResourceFolderHelper.Sprites, keys);
 
         //Weapon Types
-        keys.SetRange(
-            "Bow", "Claw", "Crossbow", "Dagger", "Grenade", "Hammer", "Katana", "Mace", "Pistol", "Polearm", "Potion",
-            "Scythe", "Shield", "Shuriken", "Spear", "Staff", "Sword", "Wand");
-        weaponTypes = LoadResources<Sprite>(ResourceFolderHelper.WeaponTypes, keys);
+        //keys.SetRange(
+        //    "Bow", "Claw", "Crossbow", "Dagger", "Grenade", "Hammer", "Katana", "Mace", "Pistol", "Polearm", "Potion",
+        //    "Scythe", "Shield", "Shuriken", "Spear", "Staff", "Sword", "Wand");
+        //weaponTypes = LoadResources<Sprite>(ResourceFolderHelper.WeaponTypes, keys);
 
         //Textures
-        keys.SetRange(
-            "Tutorial.1-1", "Tutorial.1-2", "Tutorial.1-3");
-        textures = LoadResources<Texture2D>(ResourceFolderHelper.Textures, keys);
+        //keys.SetRange(
+        //    "Tutorial.1-1", "Tutorial.1-2", "Tutorial.1-3");
+        //textures = LoadResources<Texture2D>(ResourceFolderHelper.Textures, keys);
 
         //Trail Effects
         keys.SetRange(
@@ -138,41 +138,41 @@ public class ResourceManager : MonoBehaviour
     //    return null;
     //}
 
-    public ResourceItem<Sprite> Sprite(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
+    //public ResourceItem<Sprite> Sprite(string key)
+    //{
+    //    if (string.IsNullOrWhiteSpace(key))
+    //        return null;
 
-        if (sprites.TryGetValue(key, out var entry))
-            return entry;
+    //    if (sprites.TryGetValue(key, out var entry))
+    //        return entry;
 
-        Debug.Log($"Failed to retrieve sprite `{key}` from resource manager.");
-        return null;
-    }
+    //    Debug.Log($"Failed to retrieve sprite `{key}` from resource manager.");
+    //    return null;
+    //}
 
-    public ResourceItem<Sprite> WeaponType(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
+    //public ResourceItem<Sprite> WeaponType(string key)
+    //{
+    //    if (string.IsNullOrWhiteSpace(key))
+    //        return null;
 
-        if (weaponTypes.TryGetValue(key, out var entry))
-            return entry;
+    //    if (weaponTypes.TryGetValue(key, out var entry))
+    //        return entry;
 
-        Debug.Log($"Failed to retrieve weapon type sprite `{key}` from resource manager.");
-        return null;
-    }
+    //    Debug.Log($"Failed to retrieve weapon type sprite `{key}` from resource manager.");
+    //    return null;
+    //}
 
-    public ResourceItem<Texture2D> Texture(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
+    //public ResourceItem<Texture2D> Texture(string key)
+    //{
+    //    if (string.IsNullOrWhiteSpace(key))
+    //        return null;
 
-        if (textures.TryGetValue(key, out var entry))
-            return entry;
+    //    if (textures.TryGetValue(key, out var entry))
+    //        return entry;
 
-        Debug.Log($"Failed to retrieve texture2D `{key}` from resource manager.");
-        return null;
-    }
+    //    Debug.Log($"Failed to retrieve texture2D `{key}` from resource manager.");
+    //    return null;
+    //}
 
     public Tutorial Tutorial(string key)
     {

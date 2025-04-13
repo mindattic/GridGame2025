@@ -58,7 +58,7 @@ public class FootstepManager : MonoBehaviour
     {
         GameObject prefab = Instantiate(FootstepPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<FootstepInstance>();
-        instance.sprite = resourceManager.Sprite("Footstep").Value;
+        instance.sprite = SpriteRepo.instance.Sprites["Footstep"];
         instance.name = $"Footstep_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.Spawn(actor.position, RotationHelper.ByDirection(actor.position, previousPosition), isRightFoot);

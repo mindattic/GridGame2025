@@ -33,8 +33,8 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-        pause = resourceManager.Sprite("Pause").Value;
-        paused = resourceManager.Sprite("Paused").Value;
+        pause = SpriteRepo.instance.Sprites["Pause"];
+        paused = SpriteRepo.instance.Sprites["Paused"];
         pauseButtonImage.sprite = pause;
         canvasOverlay.Hide();
         pauseMenu.SetActive(false);

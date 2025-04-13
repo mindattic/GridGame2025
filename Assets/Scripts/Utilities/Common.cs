@@ -1304,7 +1304,7 @@ public static class AssetHelper
             return handle.Result;
         }
 
-  Debug.LogError($"Failed to load {typeof(T)} at address: {address}");
+        Debug.LogError($"Failed to load {typeof(T)} at address: {address}");
         return default(T);
     }
 }

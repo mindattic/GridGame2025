@@ -243,7 +243,7 @@ public class ActorInstance : MonoBehaviour
         weapon.Defense = Random.Float(0, 5);
         weapon.Name = $"{weapon.Type}";
         // Set the weapon icon using resources.
-        render.weaponIcon.sprite = resourceManager.WeaponType(weapon.Type.ToString()).Value;
+        render.weaponIcon.sprite = SpriteRepo.instance.WeaponTypes[weapon.Type.ToString()];
 
         // Configure visual appearance and effects based on team.
         if (isPlayer)
@@ -251,7 +251,7 @@ public class ActorInstance : MonoBehaviour
             render.SetOpaqueColor(ColorHelper.Solid.White);
             render.SetQualityColor(ColorHelper.Solid.White);
             render.SetGlowColor(ColorHelper.Solid.White);
-            render.SetParallaxSprite(SeamlessRepo.instance.Seamless["WhiteFire2"]);
+            render.SetParallaxSprite(SpriteRepo.instance.Seamless["WhiteFire2"]);
             render.SetParallaxMaterial(MaterialRepo.instance.Materials["PlayerParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
             vfx.Attack = resourceManager.VisualEffect("BlueSlash1");
@@ -261,7 +261,7 @@ public class ActorInstance : MonoBehaviour
             render.SetOpaqueColor(ColorHelper.Solid.Red);
             render.SetQualityColor(ColorHelper.Solid.Red);
             render.SetGlowColor(ColorHelper.Solid.Red);
-            render.SetParallaxSprite(SeamlessRepo.instance.Seamless["RedFire1"]);
+            render.SetParallaxSprite(SpriteRepo.instance.Seamless["RedFire1"]);
             render.SetParallaxMaterial(MaterialRepo.instance.Materials["EnemyParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
             render.SetFrameColor(ColorHelper.Solid.Red);

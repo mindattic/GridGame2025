@@ -65,7 +65,7 @@ namespace Assets.Scripts.GUI
         {
             if (!debugManager.showTutorials || !hasPages) return;
 
-            image.sprite = resourceManager.Texture(pages[currentPage].TextureKey).Value.ToSprite();
+            image.sprite = SpriteRepo.instance.TutorialPages[pages[currentPage].TextureKey];
             title.text = pages[currentPage].Title;
             content.text = pages[currentPage].Content;
 
