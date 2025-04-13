@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Repositories;
+﻿using Assets.Scripts.Models;
+using Assets.Scripts.Repositories;
 using Game.Models;
 using Game.Models.Profile;
 using System;
@@ -7,10 +8,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static ComponentHelper;
 
 public static class SceneHelper
 {
@@ -516,6 +520,31 @@ public static class CoroutineHelper
             yield return runningCoroutine;
         }
     }
+
+
+    public static IEnumerator LoadSpriteAsync(string address, Action<Sprite> onComplete)
+    {
+        // Use Addressables to load the sprite
+        var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<Sprite>(address);
+
+        // Wait until the operation is complete
+        yield return handle;
+
+        if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+        {
+            onComplete?.Invoke(handle.Result);
+        }
+        else
+        {
+            Debug.LogError($"Failed to load sprite at address: {address}");
+            onComplete?.Invoke(null);
+        }
+
+        // Release the handle to free memory
+        UnityEngine.AddressableAssets.Addressables.Release(handle);
+    }
+
+
 }
 
 public static class Opacity
@@ -1004,7 +1033,7 @@ public static class DeathHelper
 {
     public static IEnumerator Process()
     {
-        //Wait until all dying actor's HP bars are fully drained
+        //Wait until all dying actorData's HP bars are fully drained
         var dyingActors = GameManager.instance.actors.Where(x => x.isDying).ToList();
         if (dyingActors.Any())
             yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
@@ -1220,4 +1249,107 @@ public static class CharacterHelper
     public const string Thief = "Thief";
     public const string Vampire = "Vampire";
     public const string Yeti = "Yeti";
+}
+
+
+
+
+public static class AssetHelper
+{
+    public static async Task<Sprite> LoadSpriteAsync(string address)
+    {
+        var handle = Addressables.LoadAssetAsync<Sprite>(address);
+        await handle.Task;
+
+        if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+        {
+            return handle.Result;
+        }
+
+        Debug.LogError($"Failed to load sprite at address: {address}");
+        return null;
+    }
+}
+
+/*
+ * Alternative: Let the Caller Handle the Release
+If you want the caller to manage the handle (e.g., for long-term use of the asset), you can return the AsyncOperationHandle<Sprite> instead of the Sprite itself:
+
+public static async Task<UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<Sprite>> LoadSpriteHandleAsync(string address)
+{
+    var handle = Addressables.LoadAssetAsync<Sprite>(address);
+    await handle.Task;
+
+    if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+    {
+        return handle;
+    }
+
+    Debug.LogError($"Failed to load sprite at address: {address}");
+    return default; // Return an empty handle if loading fails
+}
+
+*/
+
+public static class ThumbnailHelper
+{
+   
+
+
+    /// <summary>
+    /// Generates the thumbnail sprite using ThumbnailSettings.
+    /// The perfect frame is defined by a top‑left coordinate (X, Y) and Width/Height.
+    /// Extra panning range is provided via extrarange.x/extrarange.y. Since Sprite.Create
+    /// requires a bottom‑left origin, we convert the perfect frame's top‑left to bottom‑left.
+    /// </summary>
+    public static Sprite Generate(ActorData actorData)
+    {
+        //Retrieve applicable settings
+        var rangeMultiplier = ProfileRepo.instance.CurrentProfile.Settings.ActorPanMultiplier;
+
+        // Get the full texture from the resource manager.
+        //var texture = GameManager.instance.resourceManager.Portrait(instance.characterName).Value;
+        //string address = $"Actor-Portraits/{characterName}";
+
+
+        //var texture = actorData.Portrait.texture;
+
+        var range = new Vector2(
+            actorData.ThumbnailSettings.Width * rangeMultiplier,
+            actorData.ThumbnailSettings.Height * rangeMultiplier);
+
+        // In ThumbnailSettings, X and Y represent the top‑left coordinate of the perfect frame.
+        // Convert to bottom‑left coordinate for Sprite.Create:
+
+        var topLeft = new Vector2Int(actorData.ThumbnailSettings.X, actorData.ThumbnailSettings.Y);
+
+
+        int perfectBLX = topLeft.x;
+        int perfectBLY = actorData.Portrait.texture.height - topLeft.y - actorData.ThumbnailSettings.Height;
+
+        // Calculate the desired extended cropping rectangle.
+        int desiredWidth = actorData.ThumbnailSettings.Width + (int)range.x;
+        int desiredHeight = actorData.ThumbnailSettings.Height + (int)range.y;
+
+        // Ensure the desired dimensions do not exceed the texture size.
+        int rectWidth = Mathf.Min(desiredWidth, actorData.Portrait.texture.width);
+        int rectHeight = Mathf.Min(desiredHeight, actorData.Portrait.texture.height);
+
+        // We want the perfect frame to remain centered in the extended region.
+        // Subtract half of the extra range from the perfect frame's bottom‑left coordinate.
+        int rectX = perfectBLX - (int)(range.x / 2);
+        int rectY = perfectBLY - (int)(range.y / 2);
+
+        // Clamp the cropping rectangle so it remains within the texture bounds.
+        rectX = Mathf.Clamp(rectX, 0, actorData.Portrait.texture.width - rectWidth);
+        rectY = Mathf.Clamp(rectY, 0, actorData.Portrait.texture.height - rectHeight);
+
+        Rect rect = new Rect(rectX, rectY, rectWidth, rectHeight);
+
+        // Create a sprite from the extended cropped region.
+        // The pivot is set to (0.5, 0.5) so that panning (via UV offsets) remains centered.
+        var sprite = Sprite.Create(actorData.Portrait.texture, rect, new Vector2(0.5f, 0.5f), 100f);
+
+        return sprite;
+    }
 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// ActorInstance represents a game character (either hero or enemy) and encapsulates
+// ActorInstance represents a game characterName (either hero or enemy) and encapsulates
 // its state, behaviors, rendering, movement, and interactions with game systems.
 public class ActorInstance : MonoBehaviour
 {
@@ -127,10 +127,10 @@ public class ActorInstance : MonoBehaviour
     public System.Action onSortingOrderChanged;                                         // Invoked when the sorting order is modified.
     //public System.Action onDragDetected;                                                // Invoked when a drag operation is detected on the actor.
 
-    // Fields: Core data fields representing character stats, state, and modules.
+    // Fields: Core data fields representing characterName stats, state, and modules.
     [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animation behavior.
     public string friendlyName;
-    public string character;                         // Character data for this actor.
+    public string characterName;                         // Character data for this actor.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
     public Vector3 previousPosition;                    // World position before the last movement.
     public Vector2Int location;                         // CurrentProfile grid location.

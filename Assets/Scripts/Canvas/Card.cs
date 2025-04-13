@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static ComponentHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -70,7 +71,7 @@ namespace Game.Behaviors
         }
 
         // SelectProfile populates the card with data from the currently focused actor.
-        public void Assign()
+        public async void Assign()
         {
             // If no actor is focused, exit without making changes.
             if (!hasFocusedActor)
@@ -79,7 +80,9 @@ namespace Game.Behaviors
             // Enable the backdrop and portrait images.
             backdrop.gameObject.SetActive(true);
             portrait.gameObject.SetActive(true);
-            portrait.GetComponent<Image>().sprite = resourceManager.Portrait(focusedActor.character).Value.ToSprite();
+
+            string address = $"Actor-Portraits/{focusedActor.characterName}";
+            portrait.GetComponent<Image>().sprite = await AssetHelper.LoadSpriteAsync(address);
             title.GetComponent<Label>().text = focusedActor.friendlyName;
 
             // Format the actor's stats for display:
@@ -96,7 +99,7 @@ namespace Game.Behaviors
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
             // Set the details textarea combining the stats table with extra details from DataManager.
-            details.GetComponent<Label>().text = stats + ActorRepo.instance.Actors[focusedActor.character].Details.Card;
+            details.GetComponent<Label>().text = stats + ActorRepo.instance.Actors[focusedActor.characterName].Details.Card;
 
             // Begin the slide-in animation for the portrait.
             TriggerSlideIn();

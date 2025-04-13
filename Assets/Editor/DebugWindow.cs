@@ -474,7 +474,7 @@ public class DebugWindow : EditorWindow
     private string thumbnailWidth = "256";
     private string thumbnailHeight = "256";
 
-    private void RenderThumbnailSettings()
+    private async void RenderThumbnailSettings()
     {
         // First horizontal row: the header label.
         GUILayout.BeginHorizontal();
@@ -501,8 +501,11 @@ public class DebugWindow : EditorWindow
                 int.TryParse(thumbnailWidth, out int w) &&
                 int.TryParse(thumbnailHeight, out int h))
             {
-                var settings = new ThumbnailSettings(x, y, w, h);
-                GameManager.instance.focusedActor.thumbnail.Generate(settings);
+                var characterName = GameManager.instance.focusedActor.characterName;
+                var actorData = ActorRepo.instance.Actors[characterName];
+
+
+                GameManager.instance.focusedActor.thumbnail.sprite = ThumbnailHelper.Generate(actorData);
             }
             else
             {

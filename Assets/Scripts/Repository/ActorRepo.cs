@@ -1,7 +1,10 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
-
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 
 
@@ -36,12 +39,12 @@ public class ActorRepo : ScriptableObject
     //Serialized fields
     [SerializeField] public Dictionary<string, ActorData> Actors;
 
-    private void OnEnable()
+    private async void OnEnable()
     {
-        Reload();
+        await Initialize();
     }
 
-    private void Reload()
+    private async Task Initialize()
     {
 
         Actors = new Dictionary<string, ActorData>
@@ -159,7 +162,7 @@ public class ActorRepo : ScriptableObject
             {
                 Character = CharacterHelper.Cleric,
                 Description = "A strict adherent to the church.",
-            
+
                 BaseStats = new ActorStats
                 {
                     Level = 1,
@@ -733,7 +736,38 @@ public class ActorRepo : ScriptableObject
             }},
 
         };
+
+        // Load sprites asynchronously
+        var tasks = Actors.Values.Select(async actorData =>
+        {
+            string address = $"Actor-Portraits/{actorData.Character}";
+
+            try
+            {
+                // Load the portrait sprite
+                actorData.Portrait = await AssetHelper.LoadSpriteAsync(address);
+                if (actorData.Portrait == null)
+                {
+                    Debug.LogWarning($"Sprite for {actorData.Character} not found at address: {address}");
+                    return;
+                }
+
+                // Generate the thumbnail
+                actorData.Thumbnail = ThumbnailHelper.Generate(actorData);
+                if (actorData.Thumbnail == null)
+                {
+                    Debug.LogWarning($"Unable to generate thumbnail for {actorData.Character} based on address: {address}");
+                }
+            }
+            catch (UnityException ex)
+            {
+                Debug.LogError($"Failed to load sprite for {actorData.Character} at address: {address}. Exception: {ex.Message}");
+            }
+        });
+
+        await Task.WhenAll(tasks);
     }
+
 
 
 }

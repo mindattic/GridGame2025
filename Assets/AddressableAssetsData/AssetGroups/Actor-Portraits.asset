@@ -1,0 +1,91 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Actor-Portraits
+  m_EditorClassIdentifier: 
+  m_GroupName: Actor-Portraits
+  m_GUID: 3e03276e0d1cefe4c9254557565a9d9f
+  m_SerializeEntries:
+  - m_GUID: 072c7035075f31a46afbd448bb571a43
+    m_Address: Actor-Portraits/Cleric
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2262c640efa569e46b392011d401017c
+    m_Address: Actor-Portraits/Vampire
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 518bd1155d0288048b25a7dfb95e8e90
+    m_Address: Actor-Portraits/Scorpion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62b2bf8fd02edeb4baab8026b6689c28
+    m_Address: Actor-Portraits/Bat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 650ff7b70e8536740a41c6e6a4f471c9
+    m_Address: Actor-Portraits/Pugilist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 72bef3fdc53d888449c4855675a9dbee
+    m_Address: Actor-Portraits/Barbarian
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 82450d315a87a7b449d3af5d8b729dc1
+    m_Address: Actor-Portraits/Slime
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c507e947ca00714eb63a958f8c66563
+    m_Address: Actor-Portraits/RedNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 90e9568d06ce15c49a6831d07e4ee717
+    m_Address: Actor-Portraits/PandaGirl
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9a1220991cd3674887a46429488d42a
+    m_Address: Actor-Portraits/Ronin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b011d9ffb88d3df48a8c3a4420e7456e
+    m_Address: Actor-Portraits/GreenNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df703c1a12fb23a4496807d0328c74df
+    m_Address: Actor-Portraits/Yeti
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e05ffe7665f763f429173980c11f9e47
+    m_Address: Actor-Portraits/Paladin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0e0c3f4a1d67504ab6131b1c8035947
+    m_Address: Actor-Portraits/Thief
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 73817aa738369fb42bf1c09068f851c4, type: 2}
+  m_SchemaSet:
+    m_Schemas: []

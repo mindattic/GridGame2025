@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Intermission.Before;
 
 public class PortraitManager : MonoBehaviour
 {
@@ -33,7 +34,15 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.sortingOrder = sortingOrder--;
-        instance.sprite = resourceManager.Portrait(actor.character).Value.ToSprite();
+
+        //instance.sprite = resourceManager.Portrait(actor.characterName).Value.ToSprite();
+        //string address = $"Actor-Portraits/{actor.characterName}";
+        //yield return CoroutineHelper.LoadSpriteAsync(address, sprite =>
+        //{
+        //    instance.sprite = sprite;
+        //});
+        instance.sprite = ActorRepo.instance.Actors[actor.characterName].Portrait;
+
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
         instance.actor = actor;
@@ -43,13 +52,6 @@ public class PortraitManager : MonoBehaviour
         yield return instance.SlideIn();
     }
 
-
-    public void TriggerDissolve()
-    {
-        var actor = heroes.Shuffle().FirstOrDefault();
-        Dissolve(actor);
-    }
-
     public void Dissolve(ActorInstance actor)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
@@ -57,7 +59,17 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.sortingOrder = SortingOrder.Max;
-        instance.sprite = resourceManager.Portrait(actor.character).Value.ToSprite();
+
+        //instance.sprite = resourceManager.Portrait(actor.characterName).Value.ToSprite();
+
+        // Load the sprite asynchronously
+        //string address = $"Actor-Portraits/{actor.characterName}";
+        //yield return CoroutineHelper.LoadSpriteAsync(address, sprite =>
+        //{
+        //    instance.sprite = sprite;
+        //});
+        instance.sprite = ActorRepo.instance.Actors[actor.characterName].Portrait;
+
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
         instance.position = actor.position;

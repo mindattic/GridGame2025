@@ -17,7 +17,7 @@ public class ResourceManager : MonoBehaviour
 
     //Fields
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> backgrounds = new Dictionary<string, ResourceItem<Sprite>>();
-    [SerializeField] public Dictionary<string, ResourceItem<Texture2D>> portraits = new Dictionary<string, ResourceItem<Texture2D>>();
+    //[SerializeField] public Dictionary<string, ResourceItem<Texture2D>> portraits = new Dictionary<string, ResourceItem<Texture2D>>();
     [SerializeField] public Dictionary<string, ResourceItem<AudioClip>> soundEffects = new Dictionary<string, ResourceItem<AudioClip>>();
     [SerializeField] public Dictionary<string, ResourceItem<AudioClip>> musicTracks = new Dictionary<string, ResourceItem<AudioClip>>();
     [SerializeField] public Dictionary<string, ResourceItem<Material>> materials = new Dictionary<string, ResourceItem<Material>>();
@@ -43,9 +43,9 @@ public class ResourceManager : MonoBehaviour
         backgrounds = LoadResources<Sprite>(ResourceFolderHelper.Backgrounds, keys);
 
         //Portraits
-        keys.SetRange(
-            "Barbarian", "Bat", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Scorpion", "Slime", "Thief", "Vampire", "Yeti");
-        portraits = LoadResources<Texture2D>(ResourceFolderHelper.Portraits, keys);
+        //keys.SetRange(
+        //    "Barbarian", "Bat", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Scorpion", "Slime", "Thief", "Vampire", "Yeti");
+        //portraits = LoadResources<Texture2D>(ResourceFolderHelper.Portraits, keys);
 
         //Sound Effects
         keys.SetRange(
@@ -117,17 +117,17 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
-    public ResourceItem<Texture2D> Portrait(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
+    //public ResourceItem<Texture2D> Portrait(string key)
+    //{
+    //    if (string.IsNullOrWhiteSpace(key))
+    //        return null;
 
-        if (portraits.TryGetValue(key, out var entry))
-            return entry;
+    //    if (portraits.TryGetValue(key, out var entry))
+    //        return entry;
 
-        Debug.Log($"Failed to retrieve portrait texture2D `{key}` from resource manager.");
-        return null;
-    }
+    //    Debug.Log($"Failed to retrieve portrait texture2D `{key}` from resource manager.");
+    //    return null;
+    //}
 
     public ResourceItem<AudioClip> SoundEffect(string key)
     {
