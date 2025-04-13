@@ -21,7 +21,7 @@ public class ResourceManager : MonoBehaviour
     //[SerializeField] public Dictionary<string, ResourceItem<AudioClip>> soundEffects = new Dictionary<string, ResourceItem<AudioClip>>();
     //[SerializeField] public Dictionary<string, ResourceItem<AudioClip>> musicTracks = new Dictionary<string, ResourceItem<AudioClip>>();
     //[SerializeField] public Dictionary<string, ResourceItem<Material>> materials = new Dictionary<string, ResourceItem<Material>>();
-    [SerializeField] public Dictionary<string, ResourceItem<Sprite>> seamless = new Dictionary<string, ResourceItem<Sprite>>();
+   // [SerializeField] public Dictionary<string, ResourceItem<Sprite>> seamless = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> sprites = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Sprite>> weaponTypes = new Dictionary<string, ResourceItem<Sprite>>();
     [SerializeField] public Dictionary<string, ResourceItem<Texture2D>> textures = new Dictionary<string, ResourceItem<Texture2D>>();
@@ -63,10 +63,10 @@ public class ResourceManager : MonoBehaviour
         //    "EnemyParallax", "PlayerParallax");
         //materials = LoadResources<Material>(ResourceFolderHelper.Materials, keys);
 
-        //Seamless Sprites
-        keys.SetRange(
-            "BlackFire1", "BlackFire2", "Fire1", "RedFire1", "Swords1", "Swords2", "WhiteFire1", "WhiteFire2");
-        seamless = LoadResources<Sprite>(ResourceFolderHelper.Seamless, keys);
+        ////Seamless Sprites
+        //keys.SetRange(
+        //    "BlackFire1", "BlackFire2", "Fire1", "RedFire1", "Swords1", "Swords2", "WhiteFire1", "WhiteFire2");
+        //seamless = LoadResources<Sprite>(ResourceFolderHelper.Seamless, keys);
 
         //Sprites
         keys.SetRange(
@@ -126,17 +126,17 @@ public class ResourceManager : MonoBehaviour
     //    return null;
     //}
 
-    public ResourceItem<Sprite> Seamless(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
+    //public ResourceItem<Sprite> Seamless(string key)
+    //{
+    //    if (string.IsNullOrWhiteSpace(key))
+    //        return null;
 
-        if (seamless.TryGetValue(key, out var entry))
-            return entry;
+    //    if (seamless.TryGetValue(key, out var entry))
+    //        return entry;
 
-        Debug.Log($"Failed to retrieve seamless sprite `{key}` from resource manager.");
-        return null;
-    }
+    //    Debug.Log($"Failed to retrieve seamless sprite `{key}` from resource manager.");
+    //    return null;
+    //}
 
     public ResourceItem<Sprite> Sprite(string key)
     {

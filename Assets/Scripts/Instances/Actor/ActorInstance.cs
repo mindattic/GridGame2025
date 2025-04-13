@@ -251,7 +251,7 @@ public class ActorInstance : MonoBehaviour
             render.SetOpaqueColor(ColorHelper.Solid.White);
             render.SetQualityColor(ColorHelper.Solid.White);
             render.SetGlowColor(ColorHelper.Solid.White);
-            render.SetParallaxSprite(resourceManager.Seamless("WhiteFire2").Value);
+            render.SetParallaxSprite(SeamlessRepo.instance.Seamless["WhiteFire2"]);
             render.SetParallaxMaterial(MaterialRepo.instance.Materials["PlayerParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
             vfx.Attack = resourceManager.VisualEffect("BlueSlash1");
@@ -261,7 +261,7 @@ public class ActorInstance : MonoBehaviour
             render.SetOpaqueColor(ColorHelper.Solid.Red);
             render.SetQualityColor(ColorHelper.Solid.Red);
             render.SetGlowColor(ColorHelper.Solid.Red);
-            render.SetParallaxSprite(resourceManager.Seamless("RedFire1").Value);
+            render.SetParallaxSprite(SeamlessRepo.instance.Seamless["RedFire1"]);
             render.SetParallaxMaterial(MaterialRepo.instance.Materials["EnemyParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
             render.SetFrameColor(ColorHelper.Solid.Red);

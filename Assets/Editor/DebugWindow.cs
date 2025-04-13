@@ -504,7 +504,7 @@ public class DebugWindow : EditorWindow
                 var characterName = GameManager.instance.focusedActor.characterName;
                 var actorData = ActorRepo.instance.Actors[characterName];
                 //actorData.Thumbnail = ThumbnailHelper.Generate(actorData);
-                GameManager.instance.focusedActor.thumbnail.sprite = actorData.Thumbnail;
+                //GameManager.instance.focusedActor.thumbnail.sprite = actorData.Thumbnail;
             }
             else
             {
