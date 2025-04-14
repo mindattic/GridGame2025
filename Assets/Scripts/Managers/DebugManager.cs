@@ -239,7 +239,7 @@ public class DebugManager : MonoBehaviour
 
     public void TutorialTest()
     {
-        var tutorial = resourceManager.tutorials.FirstOrDefault().Value;
+        var tutorial = TutorialRepo.instance.Tutorials["Tutorial1"];
         tutorialPopup.Load(tutorial);
     }
 

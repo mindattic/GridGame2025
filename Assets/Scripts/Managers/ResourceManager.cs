@@ -25,8 +25,8 @@ public class ResourceManager : MonoBehaviour
     //[SerializeField] public Dictionary<string, ResourceItem<Sprite>> sprites = new Dictionary<string, ResourceItem<Sprite>>();
     //[SerializeField] public Dictionary<string, ResourceItem<Sprite>> weaponTypes = new Dictionary<string, ResourceItem<Sprite>>();
     //[SerializeField] public Dictionary<string, ResourceItem<Texture2D>> textures = new Dictionary<string, ResourceItem<Texture2D>>();
-    [SerializeField] public Dictionary<string, TrailResource> trailEffects = new Dictionary<string, TrailResource>();
-    [SerializeField] public Dictionary<string, Tutorial> tutorials = new Dictionary<string, Tutorial>();
+    //[SerializeField] public Dictionary<string, TrailResource> trailEffects = new Dictionary<string, TrailResource>();
+    //[SerializeField] public Dictionary<string, Tutorial> tutorials = new Dictionary<string, Tutorial>();
     [SerializeField] public Dictionary<string, VFXResource> visualEffects = new Dictionary<string, VFXResource>();
 
     public void Awake()
@@ -91,9 +91,9 @@ public class ResourceManager : MonoBehaviour
         //trailEffects = LoadTrailEffects(keys);
 
         //Tutorials
-        keys.SetRange(
-            "Tutorial1");
-        tutorials = LoadTutorials(keys);
+        //keys.SetRange(
+        //    "Tutorial1");
+        //tutorials = LoadTutorials(keys);
 
         //Visual Effects
         keys.SetRange(
@@ -174,17 +174,17 @@ public class ResourceManager : MonoBehaviour
     //    return null;
     //}
 
-    public Tutorial Tutorial(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
+    //public Tutorial Tutorial(string key)
+    //{
+    //    if (string.IsNullOrWhiteSpace(key))
+    //        return null;
 
-        if (tutorials.TryGetValue(key, out var entry))
-            return entry;
+    //    if (tutorials.TryGetValue(key, out var entry))
+    //        return entry;
 
-        Debug.Log($"Failed to retrieve tutorial `{key}` from resource manager.");
-        return null;
-    }
+    //    Debug.Log($"Failed to retrieve tutorial `{key}` from resource manager.");
+    //    return null;
+    //}
 
     public VFXResource VisualEffect(string key)
     {
@@ -361,38 +361,38 @@ public class ResourceManager : MonoBehaviour
         return entries;
     }
 
-    public Dictionary<string, Tutorial> LoadTutorials(List<string> keys)
-    {
-        //Dictionary<string, Tutorial> entries = new Dictionary<string, Tutorial>();
+    //public Dictionary<string, Tutorial> LoadTutorials(List<string> keys)
+    //{
+    //    //Dictionary<string, Tutorial> entries = new Dictionary<string, Tutorial>();
 
-        //try
-        //{
-        //    //Assign JSON from Resources
-        //    TextAsset jsonFile = Resources.Get<TextAsset>("Data/Tutorials");
-        //    if (jsonFile == null)
-        //    {
-        //        Debug.LogError("Tutorials.json not found in Resources/Data/");
-        //        return null;
-        //    }
+    //    //try
+    //    //{
+    //    //    //Assign JSON from Resources
+    //    //    TextAsset jsonFile = Resources.Get<TextAsset>("Data/Tutorials");
+    //    //    if (jsonFile == null)
+    //    //    {
+    //    //        Debug.LogError("Tutorials.json not found in Resources/Data/");
+    //    //        return null;
+    //    //    }
 
-        //    //Deserialize JSON
-        //    var tutorials = JsonConvert.DeserializeObject<JsonWrapper<Tutorial>>(jsonFile.textarea);
+    //    //    //Deserialize JSON
+    //    //    var tutorials = JsonConvert.DeserializeObject<JsonWrapper<Tutorial>>(jsonFile.textarea);
 
-        //    foreach (var key in keys)
-        //    {
-        //        var tutorial = tutorials.Items.FirstOrDefault(x => x.Key == key);
-        //        entries.Add(key, tutorial);
-        //    }
-        //}
-        //catch (System.Exception ex)
-        //{
-        //    Debug.LogError($"Error loading tutorials: {ex.Message}");
-        //}
+    //    //    foreach (var key in keys)
+    //    //    {
+    //    //        var tutorial = tutorials.Items.FirstOrDefault(x => x.Key == key);
+    //    //        entries.Add(key, tutorial);
+    //    //    }
+    //    //}
+    //    //catch (System.Exception ex)
+    //    //{
+    //    //    Debug.LogError($"Error loading tutorials: {ex.Message}");
+    //    //}
 
-        //return entries;
+    //    //return entries;
 
-        return TutorialRepo.instance.Tutorials;
-    }
+    //    return TutorialRepo.instance.Tutorials;
+    //}
 
 
 }
