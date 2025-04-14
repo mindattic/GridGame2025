@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class PauseManager : MonoBehaviour
 {
     //Quick Reference Properties
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected StageManager stageManager => GameManager.instance.stageManager;
 

@@ -8,7 +8,7 @@ public class SpellInstance : MonoBehaviour
 {
    //Quick Reference Properties
     protected BoardInstance board => GameManager.instance.board;
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
+    
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected SpellManager spellManager => GameManager.instance.spellManager;
     protected float tileSize => GameManager.instance.tileSize;
@@ -226,7 +226,7 @@ public class SpellInstance : MonoBehaviour
         //TODO: Differnet trail hides? Hide, FadeInstance, Shrink, etc...
         trailInstance.SetActive(false); //Hide trail until end
 
-        VFXResource vfxResource = resourceManager.VisualEffect(spell.vfxKey);
+        VFXData vfxResource = VisualEffectRepo.instance.VisualEffects[spell.vfxKey];
         yield return vfxManager.Spawn(vfxResource, spell.target.position, spell.trigger);
     }
 

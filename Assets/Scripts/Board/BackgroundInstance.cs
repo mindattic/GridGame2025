@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 public class BackgroundInstance : MonoBehaviour
 {
     //Quick Reference Properties
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
 
     //Fields
     private bool isMoving;

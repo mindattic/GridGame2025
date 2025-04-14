@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(SpriteRenderer))]
 public class ActorThumbnail : MonoBehaviour
 {
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
 
     // Reference to the actor this thumbnail represents.
     private ActorInstance instance;

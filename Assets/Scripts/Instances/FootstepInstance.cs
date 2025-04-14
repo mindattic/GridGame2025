@@ -5,7 +5,7 @@ public class FootstepInstance : MonoBehaviour
 {
     //Quick Reference Properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
+    
 
     //Inernal properties
     public string Name

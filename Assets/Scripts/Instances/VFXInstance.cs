@@ -35,7 +35,7 @@ public class VFXInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    public IEnumerator Spawn(VFXResource vfx, Vector3 position, Trigger trigger = null)
+    public IEnumerator Spawn(VFXData vfx, Vector3 position, Trigger trigger = null)
     {
         if (trigger == null)
             trigger = new Trigger(null);

@@ -17,7 +17,7 @@ namespace Game.Behaviors
     public class Card : MonoBehaviour
     {
         // Quick Reference Properties:
-        protected ResourceManager resourceManager => GameManager.instance.resourceManager;
+        
         protected List<ActorInstance> actors => GameManager.instance.actors;
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
         protected bool hasFocusedActor => GameManager.instance.hasFocusedActor;

@@ -11,7 +11,7 @@ public class StageManager : MonoBehaviour
 {
     // Quick Reference Properties:
     protected FadeInstance fade => GameManager.instance.fade;
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
+    
     public int totalCoins
     {
         get => GameManager.instance.totalCoins;

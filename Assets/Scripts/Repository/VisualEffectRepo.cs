@@ -66,6 +66,7 @@ public class VisualEffectRepo : ScriptableObject
             { "AcidSplash", new VFXData
                 {
                 Name = "AcidSplash",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/AcidSplash"),
                 RelativeOffset = new Vector3(0f, 0.01f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -77,6 +78,7 @@ public class VisualEffectRepo : ScriptableObject
             { "AirSlash", new VFXData
                 {
                 Name = "AirSlash",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/AirSlash"),
                 RelativeOffset = new Vector3(0.01f, -0.15f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.15f, 0.15f, 0.15f),
@@ -88,6 +90,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BloodClaw", new VFXData
             {
                 Name = "BloodClaw",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BloodClaw"),
                 RelativeOffset = new Vector3(0f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.15f, 0.15f, 0f),
@@ -99,6 +102,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BlueSlash1", new VFXData
                 {
                 Name = "BlueSlash1",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSlash1"),
                 RelativeOffset = new Vector3(0f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -110,6 +114,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BlueSlash2", new VFXData
                 {
                 Name = "BlueSlash2",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSlash2"),
                 RelativeOffset = new Vector3(0f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -121,6 +126,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BlueSlash3", new VFXData
                 {
                 Name = "BlueSlash3",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSlash3"),
                 RelativeOffset = new Vector3(0.02f, -0.15f, 0f),
                 AngularRotation = new Vector3(30f, 30f, 0f),
                 RelativeScale = new Vector3(0.08f, 0.08f, 0f),
@@ -132,6 +138,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BlueSword", new VFXData
                 {
                 Name = "BlueSword",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSword"),
                 RelativeOffset = new Vector3(0f, 0.05f, 0f),
                 AngularRotation = new Vector3(30f, 30f, 0f),
                 RelativeScale = new Vector3(0.12f, 0.08f, 0f),
@@ -143,6 +150,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BlueSword4X", new VFXData
                 {
                 Name = "BlueSword4X",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSword4X"),
                 RelativeOffset = new Vector3(-0.05f, -0.1f, 0f),
                 AngularRotation = new Vector3(30f, 30f, 0f),
                 RelativeScale = new Vector3(0.08f, 0.08f, 0f),
@@ -154,6 +162,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BlueYellowSword", new VFXData
                 {
                 Name = "BlueYellowSword",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueYellowSword"),
                 RelativeOffset = new Vector3(0.03f, 0.01f, 0f),
                 AngularRotation = new Vector3(60f, 0f, 0f),
                 RelativeScale = new Vector3(0.07f, 0.07f, 0.07f),
@@ -165,6 +174,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BlueYellowSword3X", new VFXData
                 {
                 Name = "BlueYellowSword3X",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueYellowSword3X"),
                 RelativeOffset = new Vector3(0.02f, -0.05f, 0f),
                 AngularRotation = new Vector3(60f, 0f, 0f),
                 RelativeScale = new Vector3(0.07f, 0.07f, 0.07f),
@@ -176,6 +186,7 @@ public class VisualEffectRepo : ScriptableObject
             { "BuffLife", new VFXData
                 {
                 Name = "BuffLife",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BuffLife"),
                 RelativeOffset = new Vector3(0f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.16f, 0.16f, 0f),
@@ -187,6 +198,7 @@ public class VisualEffectRepo : ScriptableObject
             { "DoubleClaw", new VFXData
                 {
                 Name = "DoubleClaw",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/DoubleClaw"),
                 RelativeOffset = new Vector3(-0.03f, -0.1f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.12f, 0.12f, 0f),
@@ -198,6 +210,7 @@ public class VisualEffectRepo : ScriptableObject
             { "FireRain", new VFXData
                 {
                 Name = "FireRain",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/FireRain"),
                 RelativeOffset = new Vector3(0.03f, -0.05f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.1f, 0.1f, 0f),
@@ -209,6 +222,7 @@ public class VisualEffectRepo : ScriptableObject
             { "GodRays", new VFXData
                 {
                 Name = "GodRays",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/GodRays"),
                 RelativeOffset = new Vector3(0f, -0.25f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.07f, 0.07f, 0f),
@@ -220,6 +234,7 @@ public class VisualEffectRepo : ScriptableObject
             { "GoldBuff", new VFXData
                 {
                 Name = "GoldBuff",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/GoldBuff"),
                 RelativeOffset = new Vector3(0f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
@@ -231,6 +246,7 @@ public class VisualEffectRepo : ScriptableObject
             { "GreenBuff", new VFXData
                 {
                 Name = "GreenBuff",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/GreenBuff"),
                 RelativeOffset = new Vector3(0.02f, -0.25f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
@@ -242,6 +258,7 @@ public class VisualEffectRepo : ScriptableObject
             { "HexShield", new VFXData
                 {
                 Name = "HexShield",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/HexShield"),
                 RelativeOffset = new Vector3(0f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.16f, 0.16f, 0.16f),
@@ -252,6 +269,7 @@ public class VisualEffectRepo : ScriptableObject
             },
             { "LevelUp", new VFXData
                 {
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/LevelUp"),
                 Name = "LevelUp",
                 RelativeOffset = new Vector3(0f, -0.15f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
@@ -264,6 +282,7 @@ public class VisualEffectRepo : ScriptableObject
             { "LightningExplosion", new VFXData
                 {
                 Name = "LightningExplosion",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/LightningExplosion"),
                 RelativeOffset = new Vector3(0f, -0.1f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.1f, 0.1f, 0f),
@@ -275,6 +294,7 @@ public class VisualEffectRepo : ScriptableObject
             { "LightningStrike", new VFXData
                 {
                 Name = "LightningStrike",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/LightningStrike"),
                 RelativeOffset = new Vector3(-0.07f, 0.1f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.05f, 0.05f, 0f),
@@ -286,6 +306,7 @@ public class VisualEffectRepo : ScriptableObject
             { "MoonFeather", new VFXData
                 {
                 Name = "MoonFeather",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/MoonFeather"),
                 RelativeOffset = new Vector3(0f, -0.02f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(4f, 4f, 0f),
@@ -297,6 +318,7 @@ public class VisualEffectRepo : ScriptableObject
             { "OrangeSlash", new VFXData
                 {
                 Name = "OrangeSlash",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/OrangeSlash"),
                 RelativeOffset = new Vector3(-0.12f, 0.01f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.03f, 0.03f, 0.03f),
@@ -308,6 +330,7 @@ public class VisualEffectRepo : ScriptableObject
             { "PinkSpark", new VFXData
                 {
                 Name = "PinkSpark",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/PinkSpark"),
                 RelativeOffset = new Vector3(0f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.04f, 0.04f, 0.04f),
@@ -319,6 +342,7 @@ public class VisualEffectRepo : ScriptableObject
             { "PuffyExplosion", new VFXData
                 {
                 Name = "PuffyExplosion",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/PuffyExplosion"),
                 RelativeOffset = new Vector3(-0.02f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.2f, 0.2f, 0f),
@@ -330,6 +354,7 @@ public class VisualEffectRepo : ScriptableObject
             { "RayBlast", new VFXData
                 {
                 Name = "RayBlast",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/RayBlast"),
                 RelativeOffset = new Vector3(0.02f, -0.02f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.1f, 0.1f, 0f),
@@ -341,6 +366,7 @@ public class VisualEffectRepo : ScriptableObject
             { "RedSlash2X", new VFXData
                 {
                 Name = "RedSlash2X",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/RedSlash2X"),
                 RelativeOffset = new Vector3(0.05f, -0.07f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.08f, 0.08f, 0f),
@@ -352,6 +378,7 @@ public class VisualEffectRepo : ScriptableObject
             { "RedSword", new VFXData
                 {
                 Name = "RedSword",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/RedSword"),
                 RelativeOffset = new Vector3(-0.06f, 0.05f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 142f),
                 RelativeScale = new Vector3(0.2f, 0.2f, 0.2f),
@@ -363,6 +390,7 @@ public class VisualEffectRepo : ScriptableObject
             { "RotaryKnife", new VFXData
                 {
                 Name = "RotaryKnife",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/RotaryKnife"),
                 RelativeOffset = new Vector3(0.03f, -0.05f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.25f, 0.25f, 0f),
@@ -374,6 +402,7 @@ public class VisualEffectRepo : ScriptableObject
             { "ToxicCloud", new VFXData
                 {
                 Name = "ToxicCloud",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/ToxicCloud"),
                 RelativeOffset = new Vector3(-0.02f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.15f, 0.15f, 0.15f),
@@ -385,6 +414,7 @@ public class VisualEffectRepo : ScriptableObject
             { "YellowHit", new VFXData
                 {
                 Name = "YellowHit",
+                Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/YellowHit"),
                 RelativeOffset = new Vector3(-0.02f, 0f, 0f),
                 AngularRotation = new Vector3(0f, 0f, 0f),
                 RelativeScale = new Vector3(0.2f, 0.2f, 0f),

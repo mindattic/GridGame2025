@@ -9,7 +9,6 @@ namespace Assets.Scripts.GUI
     public class TutorialPopup : MonoBehaviour
     {
        //Quick Reference Properties
-        protected ResourceManager resourceManager => GameManager.instance.resourceManager;
         protected DebugManager debugManager => GameManager.instance.debugManager;
 
         //Internal properties

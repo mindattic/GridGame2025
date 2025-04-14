@@ -7,7 +7,6 @@ using UnityEngine.Events;
 public class DottedLineManager : MonoBehaviour
 {
     protected float tileSize => GameManager.instance.tileSize;
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected BoardInstance board => GameManager.instance.board;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     protected bool hasSelectedPlayer => GameManager.instance.hasSelectedPlayer;

@@ -6,7 +6,6 @@ public class DottedLineInstance : MonoBehaviour
 {
    //Quick Reference Properties
     protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
     protected LogManager logManager => GameManager.instance.logManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;

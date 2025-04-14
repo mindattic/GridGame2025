@@ -8,7 +8,6 @@ public class FootstepManager : MonoBehaviour
 {
     //Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected BoardInstance board => GameManager.instance.board;
 
     //Fields

@@ -8,7 +8,7 @@ using static ComponentHelper.Game;
 public class PortraitInstance : MonoBehaviour
 {
     //Quick Reference Properties
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
+    
 
     public Transform parent
     {

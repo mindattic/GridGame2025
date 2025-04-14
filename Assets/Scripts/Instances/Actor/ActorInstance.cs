@@ -24,7 +24,6 @@ public class ActorInstance : MonoBehaviour
     protected float moveSpeed => GameManager.instance.moveSpeed;
     protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
-    protected ResourceManager resourceManager => GameManager.instance.resourceManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     protected float snapDistance => GameManager.instance.snapThreshold;
     protected StageManager stageManager => GameManager.instance.stageManager;
@@ -254,7 +253,7 @@ public class ActorInstance : MonoBehaviour
             render.SetParallaxSprite(SpriteRepo.instance.Seamless["WhiteFire2"]);
             render.SetParallaxMaterial(MaterialRepo.instance.Materials["PlayerParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
-            vfx.Attack = resourceManager.VisualEffect("BlueSlash1");
+            vfx.Attack = VisualEffectRepo.instance.VisualEffects["BlueSlash1"];
         }
         else if (isEnemy)
         {
@@ -265,7 +264,7 @@ public class ActorInstance : MonoBehaviour
             render.SetParallaxMaterial(MaterialRepo.instance.Materials["EnemyParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
             render.SetFrameColor(ColorHelper.Solid.Red);
-            vfx.Attack = resourceManager.VisualEffect("DoubleClaw");
+            vfx.Attack = VisualEffectRepo.instance.VisualEffects["DoubleClaw"];
         }
 
         // Set name tag textarea and toggle its visibility based on debug settings.

@@ -1,13 +1,44 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
-public class VFXResource
+//public class VFXResource
+//{
+//    public string Name;
+//    public GameObject Prefab;
+//    public Vector3 RelativeOffset;
+//    public Vector3 AngularRotation;
+//    public Vector3 RelativeScale;
+//    public float Delay = 0f;
+//    public float Duration = 2f;
+//    public bool IsLoop;
+//}
+
+
+[Serializable]
+public class VFXData
 {
+    public VFXData() { }
+
+    public VFXData(VFXData other)
+    {
+        Name = other.Name;
+        Prefab = other.Prefab;
+        RelativeOffset = other.RelativeOffset;
+        AngularRotation = other.AngularRotation;
+        RelativeScale = other.RelativeScale;
+        Delay = other.Delay;
+        Duration = other.Duration;
+        IsLoop = other.IsLoop;
+       
+    }
+
     public string Name;
     public GameObject Prefab;
     public Vector3 RelativeOffset;
     public Vector3 AngularRotation;
     public Vector3 RelativeScale;
-    public float Delay = 0f;
-    public float Duration = 2f;
+    public float Delay;
+    public float Duration;
     public bool IsLoop;
+   
 }

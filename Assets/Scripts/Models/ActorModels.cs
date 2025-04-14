@@ -178,6 +178,7 @@ namespace Assets.Scripts.Models
             Delay = other.Delay;
             Duration = other.Duration;
             IsLoop = other.IsLoop;
+            Prefab = other.Prefab;
         }
 
         public string Name;
@@ -187,6 +188,7 @@ namespace Assets.Scripts.Models
         public float Delay;
         public float Duration;
         public bool IsLoop;
+        public GameObject Prefab;
     }
 
 

@@ -23,7 +23,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TutorialPopup tutorialPopup;
 
     //Managers
-    [HideInInspector] public ResourceManager resourceManager;
     [HideInInspector] public InputManager inputManager;
     [HideInInspector] public CameraManager cameraManager;
     [HideInInspector] public StageManager stageManager;
@@ -160,8 +159,6 @@ public class GameManager : Singleton<GameManager>
         musicSource = game.GetComponents<AudioSource>()[Constants.MusicSourceIndex];
 
         //Managers
-        //databaseManager = game.GetComponent<DatabaseManager>() ?? throw new UnityException("DatabaseManager is null");
-        resourceManager = game.GetComponent<ResourceManager>();
         cameraManager = game.GetComponent<CameraManager>();
         stageManager = game.GetComponent<StageManager>();
         boardManager = game.GetComponent<BoardManager>();
@@ -229,9 +226,8 @@ public class GameManager : Singleton<GameManager>
       
         //Assign in specific order:
         board.Initialize();             //01
-        resourceManager.Initialize();   //02    
-        stageManager.Initialize();      //03
-        focusIndicator.Initialize();    //04
+        stageManager.Initialize();      //02
+        focusIndicator.Initialize();    //03
     }
 
 }
