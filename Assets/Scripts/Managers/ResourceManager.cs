@@ -85,10 +85,10 @@ public class ResourceManager : MonoBehaviour
         //textures = LoadResources<Texture2D>(ResourceFolderHelper.Textures, keys);
 
         //Trail Effects
-        keys.SetRange(
-            "BlueGlow", "Bubble", "Feather", "Fireball", "Flame", "GoldSparkle", "GreenSparkle", "IceSparkle",
-            "PinkDust", "RosePetal", "StarSparkle");
-        trailEffects = LoadTrailEffects(keys);
+        //keys.SetRange(
+        //    "BlueGlow", "Bubble", "Feather", "Fireball", "Flame", "GoldSparkle", "GreenSparkle", "IceSparkle",
+        //    "PinkDust", "RosePetal", "StarSparkle");
+        //trailEffects = LoadTrailEffects(keys);
 
         //Tutorials
         keys.SetRange(
@@ -198,17 +198,17 @@ public class ResourceManager : MonoBehaviour
         return null;
     }
 
-    public TrailResource TrailEffect(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
+    //public TrailResource TrailEffect(string key)
+    //{
+    //    if (string.IsNullOrWhiteSpace(key))
+    //        return null;
 
-        if (trailEffects.TryGetValue(key, out var entry))
-            return entry;
+    //    if (trailEffects.TryGetValue(key, out var entry))
+    //        return entry;
 
-        Debug.Log($"Failed to retrieve trailInstance effect `{key}` from resource manager.");
-        return null;
-    }
+    //    Debug.Log($"Failed to retrieve trailInstance effect `{key}` from resource manager.");
+    //    return null;
+    //}
 
 
     public T Load<T>(string resourcePath) where T : UnityEngine.Object

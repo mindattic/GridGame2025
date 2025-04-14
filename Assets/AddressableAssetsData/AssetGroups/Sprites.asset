@@ -12,51 +12,191 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
   m_Name: Sprites
   m_EditorClassIdentifier: 
-  m_GroupName: Seamless
+  m_GroupName: Sprites
   m_GUID: 5399e47a23a1a8948ba2de9bda8e0bfa
   m_SerializeEntries:
+  - m_GUID: 03e927c2624e6b648bb31a83f951f5b8
+    m_Address: Sprites/TutorialPages/Tutorial.1-1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bc676a5bc7e5f94998afc8e2970a363
+    m_Address: Sprites/WeaponTypes/Potion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1cbcbf2795bc96441952b0a623beaeac
+    m_Address: Sprites/TutorialPages/Tutorial.1-2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 210503921c15f9647893f137236a6b7e
-    m_Address: Seamless/WhiteFire2
+    m_Address: Sprites/Seamless/WhiteFire2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24139eefbfe09f749b543d1055acc7bc
+    m_Address: Sprites/Pause
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2fc8e4e9f7189c049a580cafd1e4b37f
-    m_Address: Seamless/BlackFire2
+    m_Address: Sprites/Seamless/BlackFire2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38046f430cc691342aaaab1202d2de9e
+    m_Address: Sprites/WeaponTypes/Sword
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ab6f42876f744d4e94691fd9b1721d9
-    m_Address: Seamless/Fire1
+    m_Address: Sprites/Seamless/Fire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e16de365aa680b469f9945c3dd96d2c
+    m_Address: Sprites/WeaponTypes/Staff
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f3d2278569a15e4fa7543570bff6a11
+    m_Address: Sprites/WeaponTypes/Shield
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4808e864b93a90b47ad6c86204ac174a
-    m_Address: Seamless/BlackFire1
+    m_Address: Sprites/Seamless/BlackFire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d0c4234de2d46049a85ddb2b89ef944
+    m_Address: Sprites/WeaponTypes/Hammer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 556091e6bd2e8d7499cc3f80e8479d37
+    m_Address: Sprites/WeaponTypes/Bow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d12baf801de08e48b1c7305ad8655c8
+    m_Address: Sprites/WeaponTypes/Katana
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f27d800d92dc01458cc0c90ccb3c652
+    m_Address: Sprites/Forest
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f37be176d63e8d4fb3a83b7021d59f0
+    m_Address: Sprites/Leaves/MapleLeaf1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d138ee776549614f96c88c0457703d0
+    m_Address: Sprites/WeaponTypes/Crossbow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 85b00e2c9a932d84f9982c115f97e6a7
+    m_Address: Sprites/Leaves/Leaf2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8835a6000aa9d124db4d980461277199
+    m_Address: Sprites/WeaponTypes/Wand
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8d223d4b225639f469ef46e58fa96ffa
-    m_Address: Seamless/WhiteFire1
+    m_Address: Sprites/Seamless/WhiteFire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96a963b79ecbeda4a8ddcd843268c79f
+    m_Address: Sprites/Leaves/MapleLeaf2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a25374bd16283344d99e20c2b6cfd1ab
+    m_Address: Sprites/WeaponTypes/Dagger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a5eb8ff48f1d64849aacb60a01d80021
+    m_Address: Sprites/WeaponTypes/Spear
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa206f6bf08484c459dac22687c29209
+    m_Address: Sprites/Paused
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5393b208835cd649b137cfa74eb31e9
+    m_Address: Sprites/WeaponTypes/Shuriken
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b7a0627510abd3041926697c69156fd7
-    m_Address: Seamless/Swords1
+    m_Address: Sprites/Seamless/Swords1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c349fb0c20bbf4e46bef4edfc800c618
-    m_Address: Repositories/SeamlessRepo
+  - m_GUID: ba7c9382ba4099044b632cc01b6e50f3
+    m_Address: Sprites/Leaves/Leaf1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c58c2cfe4cd204f4e9bacee1a0685ec3
+    m_Address: Sprites/WeaponTypes/Mace
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c608b84a82ea0e24595d29fe1d51eb29
+    m_Address: Sprites/Footstep
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d07afbf831712b34e9dc7689a931acf6
+    m_Address: Sprites/WeaponTypes/Scythe
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d494bec28e68e8d4a966f4ded22a613f
+    m_Address: Sprites/TutorialPages/Tutorial.1-3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e14487b72508eb54d8e4233c81df6813
+    m_Address: Sprites/WeaponTypes/Claw
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e6445dce8ae655e4598f47e5f6eef956
-    m_Address: Seamless/Swords2
+    m_Address: Sprites/Seamless/Swords2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e9a768e7cc448e64c893a1d3a069f20d
+    m_Address: Sprites/WeaponTypes/Grenade
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ec90b83af9bd6a946a01cffd9f5dce36
-    m_Address: Seamless/RedFire1
+    m_Address: Sprites/Seamless/RedFire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee9fb49490ac79c4cb717edf322fa379
+    m_Address: Sprites/WeaponTypes/Polearm
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fedb31964b6f37b45b3abf945fd97637
+    m_Address: Sprites/WeaponTypes/Pistol
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

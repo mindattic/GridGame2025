@@ -60,7 +60,7 @@ public class SpellInstance : MonoBehaviour
         endPosition = spell.target.position;
         transform.position = startPosition;
 
-        TrailResource trailResource = resourceManager.TrailEffect(spell.trailKey);
+        TrailResource trailResource = TrailEffectRepo.instance.TrailEffects[spell.trailKey];
         trailInstance = Instantiate(trailResource.Prefab, transform.position, Quaternion.identity);
         //trailInstance.transform.parent = board.transform;
         trailInstance.transform.localPosition = trailResource.RelativeOffset;

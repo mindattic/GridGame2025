@@ -66,7 +66,7 @@ public class TrailEffectRepo : ScriptableObject
             { "BlueGlow", new TrailResource
                 {
                     Name = "BlueGlow",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/BlueGlow"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -78,7 +78,7 @@ public class TrailEffectRepo : ScriptableObject
             { "Bubble", new TrailResource
                 {
                     Name = "Bubble",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/Bubble"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -90,7 +90,7 @@ public class TrailEffectRepo : ScriptableObject
             { "Feather", new TrailResource
                 {
                     Name = "Feather",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/Feather"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -102,7 +102,7 @@ public class TrailEffectRepo : ScriptableObject
             { "Fireball", new TrailResource
                 {
                     Name = "Fireball",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/Fireball"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.5f, 0.5f, 0.5f),
@@ -114,7 +114,7 @@ public class TrailEffectRepo : ScriptableObject
             { "Flame", new TrailResource
                 {
                     Name = "Flame",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/Flame"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
@@ -126,7 +126,7 @@ public class TrailEffectRepo : ScriptableObject
             { "GoldSparkle", new TrailResource
                 {
                     Name = "GoldSparkle",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/GoldSparkle"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
@@ -138,7 +138,7 @@ public class TrailEffectRepo : ScriptableObject
             { "GreenSparkle", new TrailResource
                 {
                     Name = "GreenSparkle",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/GreenSparkle"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
@@ -150,7 +150,7 @@ public class TrailEffectRepo : ScriptableObject
             { "IceSparkle", new TrailResource
                 {
                     Name = "IceSparkle",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/IceSparkle"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -162,7 +162,7 @@ public class TrailEffectRepo : ScriptableObject
             { "PinkDust", new TrailResource
                 {
                     Name = "PinkDust",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/PinkDust"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -174,7 +174,7 @@ public class TrailEffectRepo : ScriptableObject
             { "RosePetal", new TrailResource
                 {
                     Name = "RosePetal",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/RosePetal"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -186,7 +186,7 @@ public class TrailEffectRepo : ScriptableObject
             { "StarSparkle", new TrailResource
                 {
                     Name = "StarSparkle",
-                    Prefab = null,
+                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/StarSparkle"),
                     RelativeOffset = new Vector3(0, 0, 0),
                     AngularRotation = new Vector3(0, 0, 0),
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),

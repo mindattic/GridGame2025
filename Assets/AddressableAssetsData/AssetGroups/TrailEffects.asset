@@ -10,63 +10,63 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Repositories
+  m_Name: TrailEffects
   m_EditorClassIdentifier: 
-  m_GroupName: Repositories
-  m_GUID: 69e98f35f906b454ca8f36d33ddb3bbe
+  m_GroupName: TrailEffects
+  m_GUID: 2578757ce0d8eb247bce42c4c4b04967
   m_SerializeEntries:
-  - m_GUID: 07910d6e1fb61874284d43826041d5be
-    m_Address: Repositories/StageRepo
+  - m_GUID: 09cc03906436b5a49849abb66d159478
+    m_Address: TrailEffects/IceSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1835e172d730d9749bcca35890dba1b7
-    m_Address: Repositories/TutorialRepo
+  - m_GUID: 0cc61da64e192f146b38f812cc5645b4
+    m_Address: TrailEffects/PinkDust
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2b52bc3427f47cf4885f2e27f08d14a6
-    m_Address: Repositories/MaterialRepo
+  - m_GUID: 49e6d9236fcf78646931ecf0ec5682d8
+    m_Address: TrailEffects/Feather
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 314a4f2a3f4f700438e5052f786be201
-    m_Address: Repositories/MusicTrackRepo
+  - m_GUID: 71b664a2d9932a344b8563c3a00b15ab
+    m_Address: TrailEffects/Fireball
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3369ed43eb850684c9a79ecc238c79fb
-    m_Address: Repositories/ProfileRepo
+  - m_GUID: 770299b675d80ee4fb7bccf1bc8cc6ba
+    m_Address: TrailEffects/StarSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3db3dae33d6ad2a40a6d93a0bd12ceeb
-    m_Address: Repositories/ActorRepo
+  - m_GUID: 7bf713e99ad076343b773221b19799a2
+    m_Address: TrailEffects/BlueGlow
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7179d2fc00b1d1b4789f50f37bfa98c1
-    m_Address: Repositories/SoundEffectRepo
+  - m_GUID: 805f43fefa2159d459e0ab55a868ae06
+    m_Address: TrailEffects/Bubble
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8be32b36f18c0564d844e04962f898b3
-    m_Address: Repositories/SpriteRepo
+  - m_GUID: 9263c45164b34c845ba8a1cadf40ac86
+    m_Address: TrailEffects/GoldSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9bbd784bd3747724b85459fee333e78b
-    m_Address: Repositories/VisualEffectRepo
+  - m_GUID: 9810767d7a151584ba06e8d0fed68584
+    m_Address: TrailEffects/Flame
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a9ce14376725b1c4cb2b813fddc6e545
-    m_Address: Repositories/TrailEffectRepo
+  - m_GUID: a2e72b420d967db47b029c1e6c7f608e
+    m_Address: TrailEffects/RosePetal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f53948fd859d4cb4b95eea644338c480
-    m_Address: Repositories/SceneRepo
+  - m_GUID: f8fc602f1dd633547be1cd437c18d647
+    m_Address: TrailEffects/GreenSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
