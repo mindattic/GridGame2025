@@ -160,6 +160,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf346e2648c5d7e4f821c7b14f1d6ac4
+    m_Address: Sprites/Backgrounds/CandleLitPath
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d07afbf831712b34e9dc7689a931acf6
     m_Address: Sprites/WeaponTypes/Scythe
     m_ReadOnly: 0

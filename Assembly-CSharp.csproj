@@ -81,7 +81,6 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\Random.cs" />
-    <Compile Include="Assets\Scripts\Models\Destination.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Board\FocusIndicator.cs" />
@@ -96,6 +95,7 @@
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DatabaseManager.cs" />
+    <Compile Include="Assets\Scripts\Models\VisualEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
@@ -119,8 +119,8 @@
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScrollingBackground.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
+    <Compile Include="Assets\Scripts\Models\TrailEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
-    <Compile Include="Assets\Scripts\Models\TrailResource.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
@@ -135,8 +135,6 @@
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Actions\CastSpellAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
-    <Compile Include="Assets\Scripts\Models\Location.cs" />
-    <Compile Include="Assets\Scripts\Models\VFXResource.cs" />
     <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
@@ -152,7 +150,6 @@
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\Trigger.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
-    <Compile Include="Assets\Scripts\Models\ResourceModels.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Repository\TutorialRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />

@@ -11,7 +11,7 @@ public class TrailManager : MonoBehaviour
     //Fields
     Dictionary<string, TrailInstance> trailEffects = new Dictionary<string, TrailInstance>();
 
-    public void TriggerSpawn(TrailResource resource, Vector3 position, Trigger trigger = default)
+    public void TriggerSpawn(TrailEffectAsset resource, Vector3 position, Trigger trigger = default)
     {
         if (trigger == default)
             trigger = new Trigger();
@@ -23,7 +23,7 @@ public class TrailManager : MonoBehaviour
         StartCoroutine(instance.Spawn(resource, position, trigger));
     }
 
-    public IEnumerator Spawn(TrailResource resource, Vector3 position, Trigger trigger = default)
+    public IEnumerator Spawn(TrailEffectAsset resource, Vector3 position, Trigger trigger = default)
     {
         if (trigger == default)
             trigger = new Trigger();

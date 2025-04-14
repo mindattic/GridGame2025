@@ -60,7 +60,7 @@ public class SpellInstance : MonoBehaviour
         endPosition = spell.target.position;
         transform.position = startPosition;
 
-        TrailResource trailResource = TrailEffectRepo.instance.TrailEffects[spell.trailKey];
+        TrailEffectAsset trailResource = TrailEffectRepo.instance.TrailEffects[spell.trailKey];
         trailInstance = Instantiate(trailResource.Prefab, transform.position, Quaternion.identity);
         //trailInstance.transform.parent = board.transform;
         trailInstance.transform.localPosition = trailResource.RelativeOffset;
@@ -226,7 +226,7 @@ public class SpellInstance : MonoBehaviour
         //TODO: Differnet trail hides? Hide, FadeInstance, Shrink, etc...
         trailInstance.SetActive(false); //Hide trail until end
 
-        VFXData vfxResource = VisualEffectRepo.instance.VisualEffects[spell.vfxKey];
+        VisualEffectAsset vfxResource = VisualEffectRepo.instance.VisualEffects[spell.vfxKey];
         yield return vfxManager.Spawn(vfxResource, spell.target.position, spell.trigger);
     }
 

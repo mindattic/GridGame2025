@@ -87,15 +87,8 @@ public class ActorThumbnail : MonoBehaviour
 
     private Sprite Generate(ActorData actorData)
     {
-        //Retrieve applicable settings
+        //Retrieve settings
         var rangeMultiplier = ProfileRepo.instance.CurrentProfile.Settings.ActorPanMultiplier;
-
-        // Get the full texture from the resource manager.
-        //var texture = GameManager.instance.resourceManager.Portrait(instance.characterName).Value;
-        //string address = $"Actor-Portraits/{characterName}";
-
-
-        //var texture = actorData.Portrait.texture;
 
 
         var thumbnailSettings = actorData.ThumbnailSettings;

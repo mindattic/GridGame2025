@@ -34,13 +34,6 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.sortingOrder = sortingOrder--;
-
-        //instance.sprite = resourceManager.Portrait(actor.characterName).Value.ToSprite();
-        //string address = $"Actor-Portraits/{actor.characterName}";
-        //yield return CoroutineHelper.LoadSpriteAsync(address, sprite =>
-        //{
-        //    instance.sprite = sprite;
-        //});
         instance.sprite = ActorRepo.instance.Actors[actor.characterName].Portrait;
 
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
@@ -59,15 +52,6 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.sortingOrder = SortingOrder.Max;
-
-        //instance.sprite = resourceManager.Portrait(actor.characterName).Value.ToSprite();
-
-        // Load the sprite asynchronously
-        //string address = $"Actor-Portraits/{actor.characterName}";
-        //yield return CoroutineHelper.LoadSpriteAsync(address, sprite =>
-        //{
-        //    instance.sprite = sprite;
-        //});
         instance.sprite = ActorRepo.instance.Actors[actor.characterName].Portrait;
 
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);

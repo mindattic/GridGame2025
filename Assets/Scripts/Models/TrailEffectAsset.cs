@@ -2,10 +2,10 @@
 using UnityEngine;
 
 [Serializable]
-public class TrailResource
+public class TrailEffectAsset
 {
-    public TrailResource() { }
-    public TrailResource(TrailResource other)
+    public TrailEffectAsset() { }
+    public TrailEffectAsset(TrailEffectAsset other)
     {
         Name = other.Name;
         RelativeOffset = other.RelativeOffset;

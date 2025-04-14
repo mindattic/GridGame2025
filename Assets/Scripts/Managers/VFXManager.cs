@@ -12,7 +12,7 @@ public class VFXManager : MonoBehaviour
     //Fields
     Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();
 
-    public void TriggerSpawn(VFXData resource, Vector3 position, Trigger trigger = default)
+    public void TriggerSpawn(VisualEffectAsset resource, Vector3 position, Trigger trigger = default)
     {
         if (trigger == default)
             trigger = new Trigger();
@@ -24,7 +24,7 @@ public class VFXManager : MonoBehaviour
         StartCoroutine(instance.Spawn(resource, position, trigger));
     }
 
-    public IEnumerator Spawn(VFXData resource, Vector3 position, Trigger trigger = default)
+    public IEnumerator Spawn(VisualEffectAsset resource, Vector3 position, Trigger trigger = default)
     {
         if (trigger == default)
             trigger = new Trigger();

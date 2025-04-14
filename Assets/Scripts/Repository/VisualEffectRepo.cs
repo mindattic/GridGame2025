@@ -52,7 +52,7 @@ public class VisualEffectRepo : ScriptableObject
     }
 
     //Serialized fields
-    [SerializeField] public Dictionary<string, VFXData> VisualEffects;
+    [SerializeField] public Dictionary<string, VisualEffectAsset> VisualEffects;
 
     private void OnEnable()
     {
@@ -61,9 +61,9 @@ public class VisualEffectRepo : ScriptableObject
 
     private void Load()
     {
-        VisualEffects = new Dictionary<string, VFXData>
+        VisualEffects = new Dictionary<string, VisualEffectAsset>
         {
-            { "AcidSplash", new VFXData
+            { "AcidSplash", new VisualEffectAsset
                 {
                 Name = "AcidSplash",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/AcidSplash"),
@@ -75,7 +75,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "AirSlash", new VFXData
+            { "AirSlash", new VisualEffectAsset
                 {
                 Name = "AirSlash",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/AirSlash"),
@@ -87,7 +87,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "BloodClaw", new VFXData
+            { "BloodClaw", new VisualEffectAsset
             {
                 Name = "BloodClaw",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BloodClaw"),
@@ -99,7 +99,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "BlueSlash1", new VFXData
+            { "BlueSlash1", new VisualEffectAsset
                 {
                 Name = "BlueSlash1",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSlash1"),
@@ -111,7 +111,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "BlueSlash2", new VFXData
+            { "BlueSlash2", new VisualEffectAsset
                 {
                 Name = "BlueSlash2",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSlash2"),
@@ -123,7 +123,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "BlueSlash3", new VFXData
+            { "BlueSlash3", new VisualEffectAsset
                 {
                 Name = "BlueSlash3",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSlash3"),
@@ -135,7 +135,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "BlueSword", new VFXData
+            { "BlueSword", new VisualEffectAsset
                 {
                 Name = "BlueSword",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSword"),
@@ -147,7 +147,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "BlueSword4X", new VFXData
+            { "BlueSword4X", new VisualEffectAsset
                 {
                 Name = "BlueSword4X",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSword4X"),
@@ -159,7 +159,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "BlueYellowSword", new VFXData
+            { "BlueYellowSword", new VisualEffectAsset
                 {
                 Name = "BlueYellowSword",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueYellowSword"),
@@ -171,7 +171,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
              }
             },
-            { "BlueYellowSword3X", new VFXData
+            { "BlueYellowSword3X", new VisualEffectAsset
                 {
                 Name = "BlueYellowSword3X",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueYellowSword3X"),
@@ -183,7 +183,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "BuffLife", new VFXData
+            { "BuffLife", new VisualEffectAsset
                 {
                 Name = "BuffLife",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BuffLife"),
@@ -195,7 +195,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "DoubleClaw", new VFXData
+            { "DoubleClaw", new VisualEffectAsset
                 {
                 Name = "DoubleClaw",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/DoubleClaw"),
@@ -207,7 +207,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "FireRain", new VFXData
+            { "FireRain", new VisualEffectAsset
                 {
                 Name = "FireRain",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/FireRain"),
@@ -219,7 +219,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "GodRays", new VFXData
+            { "GodRays", new VisualEffectAsset
                 {
                 Name = "GodRays",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/GodRays"),
@@ -231,7 +231,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "GoldBuff", new VFXData
+            { "GoldBuff", new VisualEffectAsset
                 {
                 Name = "GoldBuff",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/GoldBuff"),
@@ -243,7 +243,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "GreenBuff", new VFXData
+            { "GreenBuff", new VisualEffectAsset
                 {
                 Name = "GreenBuff",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/GreenBuff"),
@@ -255,7 +255,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "HexShield", new VFXData
+            { "HexShield", new VisualEffectAsset
                 {
                 Name = "HexShield",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/HexShield"),
@@ -267,7 +267,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "LevelUp", new VFXData
+            { "LevelUp", new VisualEffectAsset
                 {
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/LevelUp"),
                 Name = "LevelUp",
@@ -279,7 +279,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "LightningExplosion", new VFXData
+            { "LightningExplosion", new VisualEffectAsset
                 {
                 Name = "LightningExplosion",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/LightningExplosion"),
@@ -291,7 +291,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "LightningStrike", new VFXData
+            { "LightningStrike", new VisualEffectAsset
                 {
                 Name = "LightningStrike",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/LightningStrike"),
@@ -303,7 +303,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "MoonFeather", new VFXData
+            { "MoonFeather", new VisualEffectAsset
                 {
                 Name = "MoonFeather",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/MoonFeather"),
@@ -315,7 +315,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "OrangeSlash", new VFXData
+            { "OrangeSlash", new VisualEffectAsset
                 {
                 Name = "OrangeSlash",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/OrangeSlash"),
@@ -327,7 +327,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "PinkSpark", new VFXData
+            { "PinkSpark", new VisualEffectAsset
                 {
                 Name = "PinkSpark",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/PinkSpark"),
@@ -339,7 +339,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "PuffyExplosion", new VFXData
+            { "PuffyExplosion", new VisualEffectAsset
                 {
                 Name = "PuffyExplosion",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/PuffyExplosion"),
@@ -351,7 +351,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "RayBlast", new VFXData
+            { "RayBlast", new VisualEffectAsset
                 {
                 Name = "RayBlast",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/RayBlast"),
@@ -363,7 +363,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "RedSlash2X", new VFXData
+            { "RedSlash2X", new VisualEffectAsset
                 {
                 Name = "RedSlash2X",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/RedSlash2X"),
@@ -375,7 +375,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "RedSword", new VFXData
+            { "RedSword", new VisualEffectAsset
                 {
                 Name = "RedSword",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/RedSword"),
@@ -387,7 +387,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "RotaryKnife", new VFXData
+            { "RotaryKnife", new VisualEffectAsset
                 {
                 Name = "RotaryKnife",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/RotaryKnife"),
@@ -399,7 +399,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "ToxicCloud", new VFXData
+            { "ToxicCloud", new VisualEffectAsset
                 {
                 Name = "ToxicCloud",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/ToxicCloud"),
@@ -411,7 +411,7 @@ public class VisualEffectRepo : ScriptableObject
                 IsLoop = false
                 }
             },
-            { "YellowHit", new VFXData
+            { "YellowHit", new VisualEffectAsset
                 {
                 Name = "YellowHit",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/YellowHit"),
@@ -426,13 +426,13 @@ public class VisualEffectRepo : ScriptableObject
         };
     }
 
-    public VFXData Get(string name)
+    public VisualEffectAsset Get(string name)
     {
         var data = VisualEffects[name];
         if (data == null)
             Debug.LogError($"Unable to retrieve visual effect for `{name}`");
 
-        return new VFXData(data); //Return a new copy instead of a shared reference
+        return new VisualEffectAsset(data); //Return a new copy instead of a shared reference
     }
 
 }

@@ -34,7 +34,7 @@ public class TrailInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    public IEnumerator Spawn(TrailResource trail, Vector3 position, Trigger trigger = default)
+    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 position, Trigger trigger = default)
     {
         if (trigger == default)
             trigger = new Trigger();

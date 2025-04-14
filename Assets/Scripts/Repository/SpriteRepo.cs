@@ -51,6 +51,7 @@ public class SpriteRepo : ScriptableObject
     }
 
     //Serialized fields
+    [SerializeField] public Dictionary<string, Sprite> Backgrounds;
     [SerializeField] public Dictionary<string, Sprite> Seamless;
     [SerializeField] public Dictionary<string, Sprite> Sprites;
     [SerializeField] public Dictionary<string, Sprite> WeaponTypes;
@@ -65,6 +66,12 @@ public class SpriteRepo : ScriptableObject
 
     private void Load()
     {
+
+        Backgrounds = new Dictionary<string, Sprite>
+        {
+            { "CandleLitPath", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath") },
+        };
+
         Seamless = new Dictionary<string, Sprite>
         {
             { "BlackFire1", AssetHelper.LoadAsset<Sprite>("Sprites/Seamless/BlackFire1") },

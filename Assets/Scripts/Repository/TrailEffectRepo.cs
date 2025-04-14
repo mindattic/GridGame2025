@@ -52,7 +52,7 @@ public class TrailEffectRepo : ScriptableObject
     }
 
     //Serialized fields
-    [SerializeField] public Dictionary<string, TrailResource> TrailEffects;
+    [SerializeField] public Dictionary<string, TrailEffectAsset> TrailEffects;
 
     private void OnEnable()
     {
@@ -61,9 +61,9 @@ public class TrailEffectRepo : ScriptableObject
 
     private void Load()
     {
-        TrailEffects = new Dictionary<string, TrailResource>
+        TrailEffects = new Dictionary<string, TrailEffectAsset>
         {
-            { "BlueGlow", new TrailResource
+            { "BlueGlow", new TrailEffectAsset
                 {
                     Name = "BlueGlow",
                     Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/BlueGlow"),
@@ -75,7 +75,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "Bubble", new TrailResource
+            { "Bubble", new TrailEffectAsset
                 {
                     Name = "Bubble",
                     Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/Bubble"),
@@ -87,7 +87,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "Feather", new TrailResource
+            { "Feather", new TrailEffectAsset
                 {
                     Name = "Feather",
                     Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/Feather"),
@@ -99,7 +99,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "Fireball", new TrailResource
+            { "Fireball", new TrailEffectAsset
                 {
                     Name = "Fireball",
                     Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/Fireball"),
@@ -111,7 +111,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "Flame", new TrailResource
+            { "Flame", new TrailEffectAsset
                 {
                     Name = "Flame",
                     Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/Flame"),
@@ -123,7 +123,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "GoldSparkle", new TrailResource
+            { "GoldSparkle", new TrailEffectAsset
                 {
                     Name = "GoldSparkle",
                     Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/GoldSparkle"),
@@ -135,7 +135,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "GreenSparkle", new TrailResource
+            { "GreenSparkle", new TrailEffectAsset
                 {
                     Name = "GreenSparkle",
                     Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/GreenSparkle"),
@@ -147,7 +147,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "IceSparkle", new TrailResource
+            { "IceSparkle", new TrailEffectAsset
                 {
                     Name = "IceSparkle",
                     Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/IceSparkle"),
@@ -159,7 +159,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "PinkDust", new TrailResource
+            { "PinkDust", new TrailEffectAsset
                 {
                     Name = "PinkDust",
                     Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/PinkDust"),
@@ -171,7 +171,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "RosePetal", new TrailResource
+            { "RosePetal", new TrailEffectAsset
                 {
                     Name = "RosePetal",
                     Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/RosePetal"),
@@ -183,7 +183,7 @@ public class TrailEffectRepo : ScriptableObject
                     IsLoop = true
                 }
             },
-            { "StarSparkle", new TrailResource
+            { "StarSparkle", new TrailEffectAsset
                 {
                     Name = "StarSparkle",
                     Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/StarSparkle"),
@@ -198,13 +198,13 @@ public class TrailEffectRepo : ScriptableObject
         };
     }
 
-    public TrailResource Get(string name)
+    public TrailEffectAsset Get(string name)
     {
         var data = TrailEffects[name];
         if (data == null)
             Debug.LogError($"Unable to retrieve trailInstance effect for `{name}`");
 
-        return new TrailResource(data); //Return a new copy instead of a shared reference
+        return new TrailEffectAsset(data); //Return a new copy instead of a shared reference
     }
 
 }

@@ -57,10 +57,10 @@ public class StageRepo : ScriptableObject
 
     private void OnEnable()
     {
-        Reload();
+        Load();
     }
 
-    private void Reload()
+    private void Load()
     {
         Stages = new Dictionary<string, Stage>
     {
