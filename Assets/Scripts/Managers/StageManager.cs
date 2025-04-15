@@ -79,9 +79,11 @@ public class StageManager : MonoBehaviour
         turnManager.Initialize();
 
         // Assign persistent hero actors from ProfileRepo
-        foreach (var heroActor in ProfileRepo.instance.CurrentProfile.CurrentSave.Party.HeroActors)
+        foreach (var partyMember in ProfileRepo.instance.CurrentProfile.CurrentSave.Party.Members)
         {
-            SpawnActor(new StageActor(heroActor, location: Random.UnoccupiedLocation));
+            var hero = ActorRepo.instance.Actors[partyMember.Character];
+            var stageActor = new StageActor(partyMember.Character, Team.Hero, hero.Level, location: Random.UnoccupiedLocation);
+            SpawnActor(stageActor);
         }
 
         //HACK: For some reason enemies might spawn on top of heroes because they aren't loaded at same time...
@@ -116,7 +118,7 @@ public class StageManager : MonoBehaviour
         // Assign actors for this wave
         foreach (var stageActor in wave.Actors)
         {
-            SpawnActor(new StageActor(stageActor, location: Random.UnoccupiedLocation));
+            SpawnActor(stageActor);
         }
 
         // Assign dotted lines for this wave
@@ -229,7 +231,8 @@ public class StageManager : MonoBehaviour
     /// <param name="character">Character type for the enemy.</param>
     public void AddEnemy(string character)
     {
-        SpawnActor(new StageActor(character, Team.Enemy, location: Random.UnoccupiedLocation));
+        var stageActor = new StageActor(character, Team.Enemy, level: 1, location: Random.UnoccupiedLocation);
+        SpawnActor(stageActor);
     }
 
 }

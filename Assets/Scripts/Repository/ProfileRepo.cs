@@ -148,6 +148,7 @@ public class ProfileRepo : ScriptableObject
             DateTime.UtcNow,
             new GlobalSaveData(ProfileHelper.DefaultGlobal),
             new StageSaveData(ProfileHelper.DefaultStage),
+            new RosterSaveData(ProfileHelper.DefaultRoster),
             new PartySaveData(ProfileHelper.DefaultParty));
         newProfile.SaveStates.Add(newSave);
 
@@ -355,6 +356,7 @@ public class ProfileRepo : ScriptableObject
             DateTime.UtcNow,
             CurrentProfile.CurrentSave.Global,
             CurrentProfile.CurrentSave.Stage,
+            CurrentProfile.CurrentSave.Roster,
             CurrentProfile.CurrentSave.Party);
 
         string savesPath = Path.Combine(CurrentProfile.Folder, "Saves");
@@ -415,7 +417,7 @@ public class ProfileRepo : ScriptableObject
 
 
 
-    public void AddToParty(string characterName)
+    public void AddToParty(string character)
     {
         if (!HasCurrentSave)
         {
@@ -423,27 +425,20 @@ public class ProfileRepo : ScriptableObject
             return;
         }
 
-        var party = CurrentProfile.CurrentSave.Party;
-        if (party.HeroActors.Any(hero => hero.Character == characterName))
+        var party = CurrentProfile.CurrentSave.Party.Members;
+        if (party.Any(hero => hero.Character == character))
         {
-            Debug.Log($"{characterName} is already in the party.");
+            Debug.Log($"{character} is already in the party.");
             return;
         }
 
-        party.HeroActors.Add(new StageActor
-        {
-            Character = characterName,
-            Team = Team.Hero,
-            Level = 1,
-            SpawnTurn = 0,
-            Location = null
-        });
+        party.Add(new CharacterLevelPair(character, 1));
 
         Save(true); // Overwrite the current save
-        Debug.Log($"{characterName} added to the party.");
+        Debug.Log($"{character} added to the party.");
     }
 
-    public void RemoveFromParty(string characterName)
+    public void RemoveFromParty(string character)
     {
         if (!HasCurrentSave)
         {
@@ -451,17 +446,17 @@ public class ProfileRepo : ScriptableObject
             return;
         }
 
-        var party = CurrentProfile.CurrentSave.Party;
-        var removed = party.HeroActors.RemoveAll(hero => hero.Character == characterName);
+        var party = CurrentProfile.CurrentSave.Party.Members;
+        var removed = party.RemoveAll(hero => hero.Character == character);
 
         if (removed > 0)
         {
             Save(true); // Overwrite the current save
-            Debug.Log($"{characterName} removed from the party.");
+            Debug.Log($"{character} removed from the party.");
         }
         else
         {
-            Debug.Log($"{characterName} is not in the party.");
+            Debug.Log($"{character} is not in the party.");
         }
     }
 

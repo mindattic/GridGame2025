@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Intermission.Before;
 using Button = UnityEngine.UI.Button;
@@ -35,19 +36,20 @@ public class PartyManager : MonoBehaviour
 
     private RectTransform addRemovePartyMemberButton;
     private RectTransform addRemovePartyMemberLabel;
-    private RectTransform addRemovePartyMemberCount;
+    private RectTransform partyMemberCountLabel;
 
-  
+    private StatsDisplay statsDisplay;
+
     private FadeInstance fade;
 
 
-    private bool IsInParty(string characterName)
+    private bool IsInParty(string character)
     {
-        return ProfileRepo.instance.CurrentProfile.CurrentSave.Party.HeroActors.Any(hero => hero.Character == characterName);
+        return ProfileRepo.instance.CurrentProfile.CurrentSave.Party.Members.Any(x => x.Character == character);
     }
 
     //Properties
-    private int partyMemberCount => ProfileRepo.instance.CurrentProfile.CurrentSave.Party.HeroActors.Count;
+    private int partyMemberCount => ProfileRepo.instance.CurrentProfile.CurrentSave.Party.Members.Count;
 
 
     private void Awake()
@@ -56,6 +58,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.instance.HasCurrentProfile || !ProfileRepo.instance.HasCurrentSave)
         {
             Debug.LogError("No current profile selected.");
+            SceneManager.LoadScene(SceneHelper.ProfileCreate);         
             return;
         }
 
@@ -70,7 +73,8 @@ public class PartyManager : MonoBehaviour
         rosterPanel = GameObject.Find(ComponentHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
         addRemovePartyMemberButton = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButton).GetComponent<RectTransform>();
         addRemovePartyMemberLabel = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<RectTransform>();
-        addRemovePartyMemberCount = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButtonCount).GetComponent<RectTransform>();
+        partyMemberCountLabel = GameObject.Find(ComponentHelper.PartyManager.PartyMemberCountLabel).GetComponent<RectTransform>();
+        statsDisplay = GameObject.Find(ComponentHelper.PartyManager.StatsDisplay).GetComponent<StatsDisplay>();
         fade = GameObject.Find(ComponentHelper.PartyManager.Fade).GetComponent<FadeInstance>();
 
         UpdatePartyMemberCountLabel();
@@ -111,30 +115,30 @@ public class PartyManager : MonoBehaviour
         WrapSlides();
     }
 
-    private async void LoadRosterSlides()
+    private void LoadRosterSlides()
     {
-        string[] sprites = { "Barbarian", "Cleric", "GreenNinja", "Paladin", "Pugilist", "RedNinja", "Ronin", "Sellsword", "Thief", "Vampire" };
-        for (int i = 0; i < sprites.Length; i++)
+        var rosterMembers = ProfileRepo.instance.CurrentProfile.CurrentSave.Roster.Members;
+        foreach (var member in rosterMembers)
         {
             // Instantiate the slide prefab and retrieve the RosterSlideInstance script
             GameObject slide = Instantiate(slidePrefab, rosterPanel);
             var instance = slide.GetComponent<RosterSlideInstance>();
 
             // Set the slide name
-            slide.name = $"RosterSlide_{sprites[i]}";
+            slide.name = $"RosterSlide_{member.Character}";
 
             // Load the sprite asynchronously
-            string address = $"Actor-Portraits/{sprites[i]}";
+            string address = $"Actor-Portraits/{member.Character}";
             var sprite = AssetHelper.LoadAsset<Sprite>(address);
 
             // Load the instance with all required variables
             instance.Initialize(
-                key: sprites[i],
+                key: member.Character,
                 sprite: sprite,
                 width: 512f,
                 height: 512f,
                 onClick: () => CenterOn(instance),
-                isInParty: IsInParty(sprites[i])
+                isInParty: IsInParty(member.Character)
             );
 
             // Add the instance to the roster
@@ -258,8 +262,16 @@ public class PartyManager : MonoBehaviour
 
         // Update the button text and functionality
         UpdateAddRemoveButton(slide.Key);
+
+        // Update the stats display
+        UpdateStatsDisplay(slide.Key);
     }
 
+    private void UpdateStatsDisplay(string character)
+    {
+        var rosterMember = ProfileRepo.instance.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.Character == character).First();
+        statsDisplay.Load(rosterMember.Character, rosterMember.Level);
+    }
 
     private void UpdatePartyMemberLabel(bool isInParty)
     {
@@ -268,7 +280,7 @@ public class PartyManager : MonoBehaviour
 
     private void UpdatePartyMemberCountLabel()
     {
-        addRemovePartyMemberCount.GetComponent<Label>().text = $"{partyMemberCount}/{Constants.MaxPartyMemberCount}";
+        partyMemberCountLabel.GetComponent<Label>().text = $"{partyMemberCount}/{Constants.MaxPartyMemberCount}";
     }
 
     private void UpdateSlideCheckmark(string characterName, bool isInParty)

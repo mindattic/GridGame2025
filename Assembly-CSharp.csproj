@@ -9,8 +9,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -94,6 +93,7 @@
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
+    <Compile Include="Assets\StatsDisplay.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Scripts\Models\VisualEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
@@ -114,7 +114,6 @@
     <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
     <Compile Include="Assets\Scripts\Actions\DirectAttackAction.cs" />
-    <Compile Include="Assets\Scripts\Models\AnimatedImage.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScrollingBackground.cs" />

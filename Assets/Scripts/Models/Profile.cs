@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 namespace Game.Models.Profile
 {
@@ -48,11 +49,16 @@ namespace Game.Models.Profile
         public int Index;
         public GlobalSaveData Global;
         public StageSaveData Stage;
+        public RosterSaveData Roster;
         public PartySaveData Party;
-        
+
         public SaveState() { }
 
-        public SaveState(int index, DateTime timestamp, GlobalSaveData global, StageSaveData stage, PartySaveData party)
+        public SaveState(int index, DateTime timestamp, 
+            GlobalSaveData global, 
+            StageSaveData stage, 
+            RosterSaveData roster,
+            PartySaveData party)
         {
             Index = index;
             Timestamp = timestamp;
@@ -60,6 +66,7 @@ namespace Game.Models.Profile
             FileName = $"Save{index:D3}.json";
             Global = global;
             Stage = stage;
+            Roster = roster;
             Party = party;
         }
 
@@ -72,6 +79,7 @@ namespace Game.Models.Profile
             this.FileName = other.FileName;
             this.Global = new GlobalSaveData(other.Global);
             this.Stage = new StageSaveData(other.Stage);
+            this.Roster = new RosterSaveData(other.Roster);
             this.Party = new PartySaveData(other.Party);
         }
     }
@@ -103,16 +111,45 @@ namespace Game.Models.Profile
     }
 
     [Serializable]
+    public class RosterSaveData
+    {
+        public List<CharacterLevelPair> Members = new List<CharacterLevelPair>();
+
+        public RosterSaveData() { }
+
+        public RosterSaveData(RosterSaveData other)
+        {
+            this.Members = other.Members;
+        }
+    }
+
+
+    [Serializable]
     public class PartySaveData
     {
-        public List<StageActor> HeroActors = new List<StageActor>();
+        public List<CharacterLevelPair> Members = new List<CharacterLevelPair>();
 
         public PartySaveData() { }
 
         public PartySaveData(PartySaveData other)
         {
-            this.HeroActors = other.HeroActors;
+            this.Members = other.Members;
         }
     }
+
+
+    [Serializable]
+    public class CharacterLevelPair
+    {
+        public string Character;
+        public int Level;
+        public CharacterLevelPair() { }
+        public CharacterLevelPair(string character, int level = 1)
+        {
+            Character = character;
+            Level = level;
+        }
+    }
+
 
 }

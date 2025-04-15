@@ -123,7 +123,8 @@ public static class ComponentHelper
         public const string Title = "Canvas2D/Title";
         public const string AddRemovePartyMemberButton = "Canvas2D/AddRemovePartyMemberButton";
         public const string AddRemovePartyMemberButtonLabel = "Canvas2D/AddRemovePartyMemberButton/Label";
-        public const string AddRemovePartyMemberButtonCount = "Canvas2D/AddRemovePartyMemberButton/Count";
+        public const string PartyMemberCountLabel = "Canvas2D/PartyMemberCountLabel";
+        public const string StatsDisplay = "Canvas2D/StatsDisplay";
         public const string RosterPanel = "Canvas2D/RosterCarousel/Panel";
     }
 
@@ -187,11 +188,11 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Fade = "Canvas2D/Fade";
-        public const string Panel = "Canvas2D/HubPanel";
-        public const string ContinueButton = "Canvas2D/HubPanel/ContinueButton";
-        public const string LoadGameButton = "Canvas2D/HubPanel/LoadGameButton";
-        public const string SettingsButton = "Canvas2D/HubPanel/SettingsButton";
-        public const string CreditsButton = "Canvas2D/HubPanel/CreditsButton";
+        public const string Panel = "Canvas2D/Panel";
+        public const string ContinueButton = "Canvas2D/Panel/ContinueButton";
+        public const string LoadGameButton = "Canvas2D/Panel/LoadGameButton";
+        public const string SettingsButton = "Canvas2D/Panel/SettingsButton";
+        public const string CreditsButton = "Canvas2D/Panel/CreditsButton";
         public const string ProfileButton = "Canvas2D/ProfileButton";
         public const string ProfileButtonLabel = "Canvas2D/ProfileButton/Label";
     }
@@ -200,7 +201,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string ConfirmDialog = "Canvas2D/ConfirmationDialog";
-        public const string Panel = ConfirmDialog + "/HubPanel";
+        public const string Panel = ConfirmDialog + "/Panel";
         public const string Prompt = Panel + "/Prompt";
         public const string ButtonYes = Panel + "/ButtonYes";
         public const string ButtonNo = Panel + "/ButtonNo";
@@ -210,7 +211,7 @@ public static class ComponentHelper
     {
         public const string Canvas2D = "Canvas2D";
         public const string Keyboard = "Canvas2D/Keyboard";
-        public const string Panel = Keyboard + "/HubPanel";
+        public const string Panel = Keyboard + "/Panel";
         public const string Prompt = Panel + "/Prompt";
         public const string InputBackdrop = Panel + "/InputBackdrop";
         public const string InputLabel = Panel + "/InputLabel";
@@ -1221,13 +1222,28 @@ public static class ProfileHelper
         CurrentWave = 0,
     };
 
+    public static RosterSaveData DefaultRoster = new RosterSaveData()
+    {
+        Members = new List<CharacterLevelPair>() {
+        new CharacterLevelPair(CharacterHelper.Paladin),
+        new CharacterLevelPair(CharacterHelper.Barbarian),
+        new CharacterLevelPair(CharacterHelper.Cleric),
+        new CharacterLevelPair(CharacterHelper.GreenNinja),
+        new CharacterLevelPair(CharacterHelper.Pugilist),
+        new CharacterLevelPair(CharacterHelper.RedNinja),
+        new CharacterLevelPair(CharacterHelper.Ronin),
+        new CharacterLevelPair(CharacterHelper.Sellsword),
+        new CharacterLevelPair(CharacterHelper.Thief),
+        new CharacterLevelPair(CharacterHelper.Vampire),
+    }
+    };
+
     public static PartySaveData DefaultParty = new PartySaveData()
     {
-        HeroActors = new List<StageActor>
-        {
-            new StageActor { Character = CharacterHelper.Paladin, Team = Team.Hero },
-            new StageActor { Character = CharacterHelper.Barbarian, Team = Team.Hero },
-            new StageActor { Character = CharacterHelper.Cleric, Team = Team.Hero },
+        Members = new List<CharacterLevelPair>() {
+            new CharacterLevelPair(CharacterHelper.Paladin),
+            new CharacterLevelPair(CharacterHelper.Barbarian),
+            new CharacterLevelPair(CharacterHelper.Cleric),
         }
     };
 
@@ -1250,6 +1266,11 @@ public static class CharacterHelper
     public const string Thief = "Thief";
     public const string Vampire = "Vampire";
     public const string Yeti = "Yeti";
+}
+
+public enum Characters
+{
+    Barbarian, Bat, Cleric, GreenNinja, Paladin, PandaGirl, RedNinja, Scorpion, Slime, Thief, Vampire, Yeti
 }
 
 

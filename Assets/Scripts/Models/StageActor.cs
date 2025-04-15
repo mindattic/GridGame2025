@@ -1,32 +1,35 @@
 ﻿using Assets.Scripts.Models;
 using System;
 using UnityEngine;
+using static Game.Instances.Actor.ActorLayer;
+using UnityEngine.UIElements;
+using static UnityEditor.FilePathAttribute;
+using UnityEngine.TextCore.Text;
 
 [Serializable]
 public class StageActor
 {
     public string Character;
-    public Team Team;
     public int Level = 1;
-    public int SpawnTurn;
-    public Vector2Int? Location;
-
-    [NonSerialized]
-    public ActorStats Stats;
+    [NonSerialized] public Team Team; 
+    [NonSerialized] public int SpawnTurn;
+    [NonSerialized] public Vector2Int? Location;
+    [NonSerialized] public ActorStats Stats;
 
     public StageActor() { }
 
-    public StageActor(StageActor other, Vector2Int? location = null)
+    //Copy constructor
+    public StageActor(StageActor other)
     {
         Character = other.Character;
         Team = other.Team;
         Level = other.Level;
         SpawnTurn = other.SpawnTurn;
-        Location = location.HasValue ? location.Value : other.Location;
+        Location = other.Location;
         AssignStats();
     }
 
-    public StageActor(string character, Team team = Team.Enemy, int level = 1, Vector2Int? location = null)
+    public StageActor(string character, Team team, int level, Vector2Int? location = null)
     {
         Character = character;
         Team = team;

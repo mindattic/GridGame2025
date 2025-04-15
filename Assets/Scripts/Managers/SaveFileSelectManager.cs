@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
@@ -61,6 +62,7 @@ public class SaveFileSelectManager : MonoBehaviour
         if (!ProfileRepo.instance.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
+            SceneManager.LoadScene(SceneHelper.ProfileCreate);
             return;
         }
 

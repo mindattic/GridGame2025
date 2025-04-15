@@ -339,3 +339,21 @@ public static class Texture2DExtensions
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
 }
+
+
+public static class CharactersExtensions
+{
+    public static string ToString(this Characters character)
+    {
+        return character.ToString();
+    }
+
+    public static Characters FromString(string value)
+    {
+        if (Enum.TryParse(value, true, out Characters result))
+        {
+            return result;
+        }
+        throw new ArgumentException($"Invalid character value: {value}");
+    }
+}
