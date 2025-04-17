@@ -91,11 +91,9 @@ public static class ConfirmationDialog
         string text = "Are you sure?",
         Action<bool> onSubmit = null)
     {
-        // Load the prefab from Resources.
-        var prefabPath = $"{ResourceFolderHelper.Prefabs}/ConfirmationDialog";
-        var prefab = Resources.Load<GameObject>(prefabPath);
+        var prefab = PrefabRepo.instance.Prefabs["ConfirmationDialog"];
         if (prefab == null)
-            throw new UnityException($"Prefab `{prefabPath}` not found");
+            throw new UnityException($"Prefab not found");
 
         // Check for a valid parent canvas.
         if (canvas2D == null)

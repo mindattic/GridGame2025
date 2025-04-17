@@ -20,15 +20,15 @@ public class StatsDisplay : MonoBehaviour
     private void Awake()
     {
         var statsDisplay = GameObject.Find(ComponentHelper.PartyManager.StatsDisplay).GetComponent<RectTransform>();
-       
+        var panel = statsDisplay.transform.GetChild("Panel").GetComponent<RectTransform>();
 
-        levelRow = statsDisplay.transform.GetChild("LVL").GetComponent<RectTransform>();
-        hpRow = statsDisplay.transform.GetChild("HP").GetComponent<RectTransform>();
-        strRow = statsDisplay.transform.GetChild("STR").GetComponent<RectTransform>();
-        vitRow = statsDisplay.transform.GetChild("VIT").GetComponent<RectTransform>();
-        agiRow = statsDisplay.transform.GetChild("AGI").GetComponent<RectTransform>();
-        spdRow = statsDisplay.transform.GetChild("SPD").GetComponent<RectTransform>();
-        lckRow = statsDisplay.transform.GetChild("LCK").GetComponent<RectTransform>();
+        levelRow = panel.transform.GetChild("LVL").GetComponent<RectTransform>();
+        hpRow = panel.transform.GetChild("HP").GetComponent<RectTransform>();
+        strRow = panel.transform.GetChild("STR").GetComponent<RectTransform>();
+        vitRow = panel.transform.GetChild("VIT").GetComponent<RectTransform>();
+        agiRow = panel.transform.GetChild("AGI").GetComponent<RectTransform>();
+        spdRow = panel.transform.GetChild("SPD").GetComponent<RectTransform>();
+        lckRow = panel.transform.GetChild("LCK").GetComponent<RectTransform>();
 
 
         float parentWidth = statsDisplay.rect.width;

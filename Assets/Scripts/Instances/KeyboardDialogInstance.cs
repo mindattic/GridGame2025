@@ -439,11 +439,9 @@ public static class KeyboardDialog
         int maxLength = 32,
         Action<string> onSubmit = default)
     {
-        //Load prefab from Resources
-        var prefabPath = $"{ResourceFolderHelper.Prefabs}/KeyboardDialog";
-        var prefab = Resources.Load<GameObject>(prefabPath);
+        var prefab = PrefabRepo.instance.Prefabs["KeyboardDialog"];
         if (prefab == null)
-            throw new UnityException($"Prefab `{prefabPath}` not found");
+            throw new UnityException($"Prefab not found");
 
         //Find a parent canvas2D
         if (canvas2D == null)

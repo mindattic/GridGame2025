@@ -47,10 +47,10 @@ public class CanvasParticleEmitter : MonoBehaviour
 
         sprites = new Sprite[]
         {
-            Resources.Load<Sprite>("Sprites/Leaves/Leaf1"),
-            Resources.Load<Sprite>("Sprites/Leaves/Leaf2"),
-            Resources.Load<Sprite>("Sprites/Leaves/MapleLeaf1"),
-            Resources.Load<Sprite>("Sprites/Leaves/MapleLeaf2"),
+            SpriteRepo.instance.Sprites["Sprites/Leaves/Leaf1"],
+            SpriteRepo.instance.Sprites["Sprites/Leaves/Leaf2"],
+            SpriteRepo.instance.Sprites["Sprites/Leaves/MapleLeaf1"],
+            SpriteRepo.instance.Sprites["Sprites/Leaves/MapleLeaf2"],
         };
 
     }

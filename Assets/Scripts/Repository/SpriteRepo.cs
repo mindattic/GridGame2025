@@ -57,6 +57,7 @@ public class SpriteRepo : ScriptableObject
     [SerializeField] public Dictionary<string, Sprite> WeaponTypes;
     [SerializeField] public Dictionary<string, Sprite> Leaves;
     [SerializeField] public Dictionary<string, Sprite> TutorialPages;
+    [SerializeField] public Dictionary<string, Sprite> Logos;
 
 
     private void OnEnable()
@@ -72,6 +73,25 @@ public class SpriteRepo : ScriptableObject
             { "CandleLitPath", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath") },
         };
 
+        Leaves = new Dictionary<string, Sprite>
+        {
+            { "Leaf1", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/Leaf1") },
+            { "Leaf2", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/Leaf2") },
+            { "MapleLeaf1", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/MapleLeaf1") },
+            { "MapleLeaf2", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/MapleLeaf2") },
+        };
+
+        Logos = new Dictionary<string, Sprite>
+        {
+            { "Mindattic.64x64", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.64x64") },
+            { "Mindattic.128x128", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.128x128") },
+            { "Mindattic.256x256", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.256x256") },
+            { "Mindattic.512x512", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.512x512") },
+            { "Mindattic.1024x1024", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.1024x1024") },
+
+
+        };
+
         Seamless = new Dictionary<string, Sprite>
         {
             { "BlackFire1", AssetHelper.LoadAsset<Sprite>("Sprites/Seamless/BlackFire1") },
@@ -84,7 +104,6 @@ public class SpriteRepo : ScriptableObject
             { "WhiteFire2", AssetHelper.LoadAsset<Sprite>("Sprites/Seamless/WhiteFire2") },
         };
 
-
         Sprites = new Dictionary<string, Sprite>
         {
             { "DottedLine", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLine") },
@@ -94,6 +113,8 @@ public class SpriteRepo : ScriptableObject
             { "Pause", AssetHelper.LoadAsset<Sprite>("Sprites/Pause") },
             { "Paused", AssetHelper.LoadAsset<Sprite>("Sprites/Paused") },
             { "Forest", AssetHelper.LoadAsset<Sprite>("Sprites/Forest") },
+            { "Black16x16", AssetHelper.LoadAsset<Sprite>("Sprites/Black16x16") },
+
         };
 
         WeaponTypes = new Dictionary<string, Sprite>
@@ -118,14 +139,7 @@ public class SpriteRepo : ScriptableObject
             { "Wand", AssetHelper.LoadAsset<Sprite>("Sprites/WeaponTypes/Wand") },
         };
 
-        Leaves = new Dictionary<string, Sprite>
-        {
-            { "Leaf1", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/Leaf1") },
-            { "Leaf2", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/Leaf2") },
-            { "MapleLeaf1", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/MapleLeaf1") },
-            { "MapleLeaf2", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/MapleLeaf2") },
-        };
-
+     
         TutorialPages = new Dictionary<string, Sprite>
         {
             { "Tutorial.1-1", AssetHelper.LoadAsset<Sprite>("Sprites/TutorialPages/Tutorial.1-1") },
