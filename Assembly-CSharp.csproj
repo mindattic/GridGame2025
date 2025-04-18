@@ -101,7 +101,6 @@
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Canvas\RosterCarousel.cs" />
-    <Compile Include="Assets\ScalableButton.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
@@ -173,6 +172,7 @@
     <Compile Include="Assets\Scripts\Repository\MaterialRepo.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
+    <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />

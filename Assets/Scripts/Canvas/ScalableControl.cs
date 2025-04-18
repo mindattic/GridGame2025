@@ -4,27 +4,43 @@ using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
 
 [ExecuteAlways]
-public class ScalableButton : MonoBehaviour
+public class ScalableControl : MonoBehaviour
 {
-    [Header("Edges")]
-    public RectTransform top;
-    public RectTransform bottom;
-    public RectTransform left;
-    public RectTransform right;
+    private RectTransform top;
+    private RectTransform bottom;
+    private RectTransform left;
+    private RectTransform right;
 
-    [Header("Corners")]
-    public RectTransform topLeft;
-    public RectTransform topRight;
-    public RectTransform bottomLeft;
-    public RectTransform bottomRight;
+    private RectTransform topLeft;
+    private RectTransform topRight;
+    private RectTransform bottomLeft;
+    private RectTransform bottomRight;
 
-    [Header("Core")]
-    public RectTransform background;
-    public RectTransform label;
+    private RectTransform background;
+    private RectTransform label;
 
-    [Header("Sizes")]
-    public float cornerSize = 16f;
-    public float edgeThickness = 16f;
+    private float cornerSize = 16f;
+    private float edgeThickness = 16f;
+
+
+    public void Awake()
+    {
+        top = this.transform.Find("Top")?.GetComponent<RectTransform>();
+        bottom = this.transform.Find("Bottom")?.GetComponent<RectTransform>();
+        left = this.transform.Find("Left")?.GetComponent<RectTransform>();
+        right = this.transform.Find("Right")?.GetComponent<RectTransform>();
+
+        topLeft = this.transform.Find("TopLeft")?.GetComponent<RectTransform>();
+        topRight = this.transform.Find("TopRight")?.GetComponent<RectTransform>();
+        bottomLeft = this.transform.Find("BottomLeft")?.GetComponent<RectTransform>();
+        bottomRight = this.transform.Find("BottomRight")?.GetComponent<RectTransform>();
+
+        background = this.transform.Find("Background")?.GetComponent<RectTransform>();
+        label = this.transform.Find("Label")?.GetComponent<RectTransform>();
+    }
+
+    void Start() => ApplyLayout();
+    void OnValidate() => ApplyLayout();
 
 #if UNITY_EDITOR
     void Update()
@@ -33,9 +49,6 @@ public class ScalableButton : MonoBehaviour
         ApplyLayout();
     }
 #endif
-
-    void Start() => ApplyLayout();
-    void OnValidate() => ApplyLayout();
 
     void ApplyLayout()
     {
@@ -132,20 +145,20 @@ public class ScalableButton : MonoBehaviour
             background.anchoredPosition = Vector2.zero;
             background.sizeDelta = Vector2.zero;
 
-            if (background.TryGetComponent(out Image bgImage) && bgImage.type == Image.Type.Tiled)
-            {
-                float targetTileSize = root.rect.width; // Adjust this for your desired visual tile size
+            //if (background.TryGetComponent(out Image bgImage) && bgImage.type == Image.Type.Tiled)
+            //{
+            //    float targetTileSize = root.rect.width; // Adjust this for your desired visual tile size
 
-                float scaleFactor = 1f;
-                if (bgImage.canvas != null)
-                    scaleFactor = bgImage.canvas.scaleFactor;
+            //    float scaleFactor = 1f;
+            //    if (bgImage.canvas != null)
+            //        scaleFactor = bgImage.canvas.scaleFactor;
 
-                float widthInPixels = root.rect.width * scaleFactor;
-                float heightInPixels = root.rect.height * scaleFactor;
+            //    float widthInPixels = root.rect.width * scaleFactor;
+            //    float heightInPixels = root.rect.height * scaleFactor;
 
-                float rawMultiplier = targetTileSize / ((widthInPixels + heightInPixels) * 0.5f);
-                bgImage.pixelsPerUnitMultiplier = Mathf.Clamp(rawMultiplier, 0.1f, 10f);
-            }
+            //    float rawMultiplier = targetTileSize / ((widthInPixels + heightInPixels) * 0.5f);
+            //    bgImage.pixelsPerUnitMultiplier = Mathf.Clamp(rawMultiplier, 0.1f, 10f);
+            //}
         }
 
 
