@@ -9,8 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using static Unity.VisualScripting.Member;
+using static UnityEngine.GraphicsBuffer;
 
 public class DebugManager : MonoBehaviour
 {
@@ -25,7 +27,6 @@ public class DebugManager : MonoBehaviour
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected StageManager stageManager => GameManager.instance.stageManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
-    protected TooltipManager tooltipManager => GameManager.instance.tooltipManager;
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
@@ -231,9 +232,19 @@ public class DebugManager : MonoBehaviour
 
     public void TooltipTest()
     {
-        var text = $"Test {Random.Int(1000, 9999)}";
-        var position = Random.Hero.currentTile.position;
-        tooltipManager.Spawn(text, position);
+        var tt = new TooltipSettings()
+        {
+            message = "Tap here to confirm",
+            target = hero1.transform,
+            placement = TooltipPlacement.Top,
+            useFade = true,
+            useTypewriter = true,
+            autoDestroy = true,
+            followPointer = false,
+            autoDestroyDelay = 2.5f,
+        };
+
+        Tooltip.Show(tt);
     }
 
     public void TutorialTest()

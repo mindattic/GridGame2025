@@ -5799,7 +5799,6 @@ GameObject:
   - component: {fileID: 1751276297}
   - component: {fileID: 1751276298}
   - component: {fileID: 1751276300}
-  - component: {fileID: 1751276302}
   - component: {fileID: 1751276303}
   - component: {fileID: 1751276314}
   - component: {fileID: 1751276304}
@@ -5852,7 +5851,6 @@ MonoBehaviour:
   musicSource: {fileID: 0}
   card: {fileID: 0}
   tutorialPopup: {fileID: 0}
-  resourceManager: {fileID: 0}
   inputManager: {fileID: 0}
   cameraManager: {fileID: 0}
   stageManager: {fileID: 0}
@@ -6329,19 +6327,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0274e3d20fbcae644a388995bed0e644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1751276302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751276275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbc1162697f09824d81817c3a4875305, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tooltipPrefab: {fileID: 8802531427282824641, guid: 8dcbe09a25d23aa468bbcf1da143f0c6, type: 3}
 --- !u!114 &1751276303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6727,7 +6712,7 @@ SpriteRenderer:
   m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &1754065675

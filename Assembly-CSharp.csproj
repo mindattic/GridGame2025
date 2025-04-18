@@ -94,7 +94,6 @@
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
-    <Compile Include="Assets\StatsDisplay.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Scripts\Models\VisualEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
@@ -158,7 +157,6 @@
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
-    <Compile Include="Assets\Scripts\FixButtonLayout.cs" />
     <Compile Include="Assets\Scripts\Managers\HeroManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\OverworldManager.cs" />
@@ -191,7 +189,6 @@
     <Compile Include="Assets\Scripts\Canvas\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Actions\PhaseAction.cs" />
-    <Compile Include="Assets\Scripts\Managers\TooltipManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />

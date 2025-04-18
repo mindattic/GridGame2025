@@ -225,3 +225,27 @@ public enum DamageTextStyle
     Oscillate,
     Bounce
 }
+
+
+
+public enum TooltipPlacement
+{
+    Top,
+    Right,
+    Bottom,
+    Left
+}
+
+public enum TooltipTextAlignment
+{
+    Left,
+    Center,
+    Right
+}
+
+public enum TooltipVerticalAlignment
+{
+    Top,
+    Middle,
+    Bottom
+}

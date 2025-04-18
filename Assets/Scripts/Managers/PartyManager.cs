@@ -1,5 +1,6 @@
 using Assets.Scripts.Models;
 using Assets.Scripts.Repositories;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -7,6 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static Intermission.Before;
+using static UnityEngine.Rendering.DebugUI.Table;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -35,10 +37,20 @@ public class PartyManager : MonoBehaviour
 
 
     private RectTransform addRemovePartyMemberButton;
-    private RectTransform addRemovePartyMemberLabel;
-    private RectTransform partyMemberCountLabel;
+    private Label addRemovePartyMemberLabel;
+    private Label partyMemberCountLabel;
 
-    private StatsDisplay statsDisplay;
+    //private StatsDisplay statsDisplay;
+    private Dictionary<RectTransform, Coroutine> barAnimations = new();
+    private RectTransform levelRow;
+    private RectTransform hpRow;
+    private RectTransform strRow;
+    private RectTransform vitRow;
+    private RectTransform agiRow;
+    private RectTransform spdRow;
+    private RectTransform lckRow;
+    private float centeredX;
+
 
     private FadeInstance fade;
 
@@ -73,13 +85,31 @@ public class PartyManager : MonoBehaviour
         title = GameObject.Find(ComponentHelper.PartyManager.Title).GetComponent<RectTransform>();
         rosterPanel = GameObject.Find(ComponentHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
         addRemovePartyMemberButton = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButton).GetComponent<RectTransform>();
-        addRemovePartyMemberLabel = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<RectTransform>();
-        partyMemberCountLabel = GameObject.Find(ComponentHelper.PartyManager.PartyMemberCountLabel).GetComponent<RectTransform>();
-        statsDisplay = GameObject.Find(ComponentHelper.PartyManager.StatsDisplay).GetComponent<StatsDisplay>();
+        addRemovePartyMemberLabel = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<Label>();
+        partyMemberCountLabel = GameObject.Find(ComponentHelper.PartyManager.PartyMemberCountLabel).GetComponent<Label>();
+        //statsDisplay = GameObject.Find(ComponentHelper.PartyManager.StatsDisplay).GetComponent<StatsDisplay>();
+
+
+        var statsDisplay = GameObject.Find(ComponentHelper.PartyManager.StatsDisplay).GetComponent<RectTransform>();
+        var panel = statsDisplay.transform.GetChild("Panel").GetComponent<RectTransform>();
+        levelRow = panel.transform.GetChild("LVL").GetComponent<RectTransform>();
+        hpRow = panel.transform.GetChild("HP").GetComponent<RectTransform>();
+        strRow = panel.transform.GetChild("STR").GetComponent<RectTransform>();
+        vitRow = panel.transform.GetChild("VIT").GetComponent<RectTransform>();
+        agiRow = panel.transform.GetChild("AGI").GetComponent<RectTransform>();
+        spdRow = panel.transform.GetChild("SPD").GetComponent<RectTransform>();
+        lckRow = panel.transform.GetChild("LCK").GetComponent<RectTransform>();
         fade = GameObject.Find(ComponentHelper.PartyManager.Fade).GetComponent<FadeInstance>();
+
+        float parentWidth = statsDisplay.rect.width;
+        float barBackWidth = levelRow.rect.width;
+        centeredX = (parentWidth - barBackWidth) / 2;
 
         UpdatePartyMemberCountLabel();
         LoadRosterSlides();
+
+
+
 
     }
 
@@ -271,17 +301,17 @@ public class PartyManager : MonoBehaviour
     private void UpdateStatsDisplay(string character)
     {
         var rosterMember = ProfileRepo.instance.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.Character == character).First();
-        statsDisplay.Load(rosterMember.Character, rosterMember.Level);
+        Load(rosterMember.Character, rosterMember.Level);
     }
 
     private void UpdatePartyMemberLabel(bool isInParty)
     {
-        addRemovePartyMemberLabel.GetComponent<Label>().text = isInParty ? "Remove from Party" : "Add to Party";
+        addRemovePartyMemberLabel.text = isInParty ? "Remove from Party" : "Add to Party";
     }
 
     private void UpdatePartyMemberCountLabel()
     {
-        partyMemberCountLabel.GetComponent<Label>().text = $"{partyMemberCount}/{Constants.MaxPartyMemberCount}";
+        partyMemberCountLabel.text = $"{partyMemberCount}/{Constants.MaxPartyMemberCount}";
     }
 
     private void UpdateSlideCheckmark(string characterName, bool isInParty)
@@ -342,9 +372,91 @@ public class PartyManager : MonoBehaviour
         }
     }
 
+    public void Load(string character, int level)
+    {
+        var actorData = ActorRepo.instance.Actors[character];
+        var stats = actorData.GetStats(level);
+
+        // Update each stat row
+        UpdateStatRow(levelRow, "LVL", stats.Level); // Assuming max level is 100
+        UpdateStatRow(hpRow, "HP", stats.HP, stats.MaxHP);
+        UpdateStatRow(strRow, "STR", stats.Strength); // Assuming max stat value is 100
+        UpdateStatRow(vitRow, "VIT", stats.Vitality);
+        UpdateStatRow(agiRow, "AGI", stats.Agility);
+        UpdateStatRow(spdRow, "SPD", stats.Speed);
+        UpdateStatRow(lckRow, "LCK", stats.Luck);
+    }
+
+
+
+    private void UpdateStatRow(RectTransform row, string label, float value, float maxValue = 99)
+    {
+        var labelComponent = row.Find("Label").GetComponent<Label>();
+        labelComponent.text = label;
+
+        var backImage = row.Find("Bar/Back").GetComponent<Image>();
+        var fillImage = row.Find("Bar/Fill").GetComponent<Image>();
+        var valueComponent = row.Find("Value").GetComponent<Label>();
+        valueComponent.text = $"{value}";
+
+        float targetWidth = backImage.rectTransform.rect.width * (value / maxValue);
+
+        // Cancel any existing animation on this row
+        if (barAnimations.TryGetValue(row, out Coroutine running))
+            StopCoroutine(running);
+
+        // Start new animation
+        barAnimations[row] = StartCoroutine(AnimateBarFill(row, fillImage.rectTransform, targetWidth));
+
+    }
+
+    private IEnumerator AnimateBarFill(RectTransform row, RectTransform bar, float targetWidth)
+    {
+        float duration = 0.4f;
+        float elapsed = 0f;
+        float startWidth = bar.sizeDelta.x;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float newWidth = Mathf.Lerp(startWidth, targetWidth, t);
+            bar.sizeDelta = new Vector2(newWidth, bar.sizeDelta.y);
+            yield return null;
+        }
+
+        bar.sizeDelta = new Vector2(targetWidth, bar.sizeDelta.y);
+
+        //Remove from dictionary
+        barAnimations.Remove(row);
+    }
+
+
+
+
     public void OnBackButtonClicked()
     {
         //StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
         StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
     }
+
+
+    public void OnEquipmentTooltipAnchorClicked()
+    {
+
+        var message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In tellus augue, iaculis quis neque at, malesuada consectetur leo. Vestibulum id nulla lobortis, ullamcorper nibh at, vestibulum justo. Etiam sed ipsum eget odio consequat vulputate. Phasellus consequat neque quam, ac pulvinar nulla consectetur quis. Nulla facilisi. Nulla semper, justo eget volutpat tempor, elit mauris convallis mi, nec pellentesque neque dui eu metus. Mauris non facilisis sapien, lacinia consequat nibh.";
+        var tt = new TooltipSettings()
+        {
+            message = message,
+            target = GameObject.Find("TestTooltip").GetComponent<RectTransform>(),
+            placement = TooltipPlacement.Top,
+            useFade = true,
+            useTypewriter = true,
+            autoDestroy = false,
+            autoDestroyDelay = 2.5f,     
+        };
+        Tooltip.Show(tt);
+    }
+
+
 }

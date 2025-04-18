@@ -39,7 +39,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public EnemyManager enemyManager;
     [HideInInspector] public TileManager tileManager;
     [HideInInspector] public FootstepManager footstepManager;
-    [HideInInspector] public TooltipManager tooltipManager;
     [HideInInspector] public AudioManager audioManager;
     [HideInInspector] public VFXManager vfxManager;
     [HideInInspector] public TrailManager trailManager;
@@ -175,7 +174,6 @@ public class GameManager : Singleton<GameManager>
         enemyManager = game.GetComponent<EnemyManager>();
         tileManager = game.GetComponent<TileManager>();
         footstepManager = game.GetComponent<FootstepManager>();
-        tooltipManager = game.GetComponent<TooltipManager>();
         audioManager = game.GetComponent<AudioManager>();
         debugManager = game.GetComponent<DebugManager>();
         consoleManager = game.GetComponent<ConsoleManager>();
