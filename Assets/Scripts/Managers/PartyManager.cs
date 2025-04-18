@@ -15,7 +15,7 @@ public class PartyManager : MonoBehaviour
     [Header("UI References")]
     public GameObject slidePrefab;
 
-    private Label title;
+    private RectTransform title;
     private RectTransform rosterPanel;
     private float spacing = 0f;
     private float deceleration = 1250;
@@ -55,7 +55,7 @@ public class PartyManager : MonoBehaviour
     private void Awake()
     {
         //Validate a current profile exists
-        if (!ProfileRepo.instance.HasCurrentProfile || !ProfileRepo.instance.HasCurrentSave)
+        if (!ProfileRepo.instance.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
             SceneManager.LoadScene(SceneHelper.ProfileCreate);         
@@ -66,10 +66,11 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.instance.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
+            SceneManager.LoadScene(SceneHelper.SaveFileSelect);
             return;
         }
 
-        title = GameObject.Find(ComponentHelper.PartyManager.Title).GetComponent<Label>();
+        title = GameObject.Find(ComponentHelper.PartyManager.Title).GetComponent<RectTransform>();
         rosterPanel = GameObject.Find(ComponentHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
         addRemovePartyMemberButton = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButton).GetComponent<RectTransform>();
         addRemovePartyMemberLabel = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<RectTransform>();
@@ -258,7 +259,7 @@ public class PartyManager : MonoBehaviour
         scrollingToCenter = true;
 
         // Update the title
-        title.text = slide.Key;
+        title.GetComponent<Label>().text = slide.Key;
 
         // Update the button text and functionality
         UpdateAddRemoveButton(slide.Key);

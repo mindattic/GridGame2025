@@ -18,8 +18,9 @@ public class SoundEffectRepo : ScriptableObject
         {
             if (Instance == null)
             {
-                Debug.LogWarning("SoundEffectRepo instance is null. Attempting to load synchronously.");
-                LoadSynchronously();
+                var handle = Addressables.LoadAssetAsync<SoundEffectRepo>("Repositories/SoundEffectRepo");
+                handle.WaitForCompletion(); // Block until the asset is loaded
+                Instance = handle.Result;
             }
 
             if (Instance == null)
@@ -30,29 +31,29 @@ public class SoundEffectRepo : ScriptableObject
     }
 
     // Auto-initialize before the scene loads
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static async void AutoInitialize()
-    {
-        if (Instance == null)
-        {
-            var handle = Addressables.LoadAssetAsync<SoundEffectRepo>("Repositories/SoundEffectRepo");
-            Instance = await handle.Task;
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    //private static async void AutoInitialize()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        var handle = Addressables.LoadAssetAsync<SoundEffectRepo>("Repositories/SoundEffectRepo");
+    //        Instance = await handle.Task;
 
-            if (Instance == null)
-                Debug.LogError("SoundEffectRepo asset not found in Addressables with key 'Repositories/SoundEffectRepo'");
-        }
-    }
+    //        if (Instance == null)
+    //            Debug.LogError("SoundEffectRepo asset not found in Addressables with key 'Repositories/SoundEffectRepo'");
+    //    }
+    //}
 
     // Synchronous fallback for loading the SoundEffectRepo
-    private static void LoadSynchronously()
-    {
-        var handle = Addressables.LoadAssetAsync<SoundEffectRepo>("Repositories/SoundEffectRepo");
-        handle.WaitForCompletion(); // Block until the asset is loaded
-        Instance = handle.Result;
+    //private static void LoadSynchronously()
+    //{
+    //    var handle = Addressables.LoadAssetAsync<SoundEffectRepo>("Repositories/SoundEffectRepo");
+    //    handle.WaitForCompletion(); // Block until the asset is loaded
+    //    Instance = handle.Result;
 
-        if (Instance == null)
-            Debug.LogError("Failed to load SoundEffectRepo synchronously from Addressables.");
-    }
+    //    if (Instance == null)
+    //        Debug.LogError("Failed to load SoundEffectRepo synchronously from Addressables.");
+    //}
 
     // Serialized fields
     [SerializeField] public Dictionary<string, AudioClip> SoundEffects;

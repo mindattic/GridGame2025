@@ -14,8 +14,9 @@ public class MusicTrackRepo : ScriptableObject
         {
             if (Instance == null)
             {
-                Debug.LogWarning("MusicTrackRepo instance is null. Attempting to load synchronously.");
-                LoadSynchronously();
+                var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
+                handle.WaitForCompletion(); // Block until the asset is loaded
+                Instance = handle.Result;
             }
 
             if (Instance == null)
@@ -26,29 +27,29 @@ public class MusicTrackRepo : ScriptableObject
     }
 
     // Auto-initialize before the scene loads
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static async void AutoInitialize()
-    {
-        if (Instance == null)
-        {
-            var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
-            Instance = await handle.Task;
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    //private static async void AutoInitialize()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
+    //        Instance = await handle.Task;
 
-            if (Instance == null)
-                Debug.LogError("MusicTrackRepo asset not found in Addressables with key 'Repositories/MusicTrackRepo'");
-        }
-    }
+    //        if (Instance == null)
+    //            Debug.LogError("MusicTrackRepo asset not found in Addressables with key 'Repositories/MusicTrackRepo'");
+    //    }
+    //}
 
     // Synchronous fallback for loading the MusicTrackRepo
-    private static void LoadSynchronously()
-    {
-        var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
-        handle.WaitForCompletion(); // Block until the asset is loaded
-        Instance = handle.Result;
+    //private static void LoadSynchronously()
+    //{
+    //    var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
+    //    handle.WaitForCompletion(); // Block until the asset is loaded
+    //    Instance = handle.Result;
 
-        if (Instance == null)
-            Debug.LogError("Failed to load MusicTrackRepo synchronously from Addressables.");
-    }
+    //    if (Instance == null)
+    //        Debug.LogError("Failed to load MusicTrackRepo synchronously from Addressables.");
+    //}
 
     //Serialized fields
     [SerializeField] public Dictionary<string, AudioClip> MusicTracks;

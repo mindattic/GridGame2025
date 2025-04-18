@@ -14,8 +14,9 @@ public class SpriteRepo : ScriptableObject
         {
             if (Instance == null)
             {
-                Debug.LogWarning("SpriteRepo instance is null. Attempting to load synchronously.");
-                LoadSynchronously();
+                var handle = Addressables.LoadAssetAsync<SpriteRepo>("Repositories/SpriteRepo");
+                handle.WaitForCompletion(); // Block until the asset is loaded
+                Instance = handle.Result;
             }
 
             if (Instance == null)
@@ -26,29 +27,29 @@ public class SpriteRepo : ScriptableObject
     }
 
     // Auto-initialize before the scene loads
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static async void AutoInitialize()
-    {
-        if (Instance == null)
-        {
-            var handle = Addressables.LoadAssetAsync<SpriteRepo>("Repositories/SpriteRepo");
-            Instance = await handle.Task;
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    //private static async void AutoInitialize()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        var handle = Addressables.LoadAssetAsync<SpriteRepo>("Repositories/SpriteRepo");
+    //        Instance = await handle.Task;
 
-            if (Instance == null)
-                Debug.LogError("SpriteRepo asset not found in Addressables with key 'Repositories/SpriteRepo'");
-        }
-    }
+    //        if (Instance == null)
+    //            Debug.LogError("SpriteRepo asset not found in Addressables with key 'Repositories/SpriteRepo'");
+    //    }
+    //}
 
     // Synchronous fallback for loading the SpriteRepo
-    private static void LoadSynchronously()
-    {
-        var handle = Addressables.LoadAssetAsync<SpriteRepo>("Repositories/SpriteRepo");
-        handle.WaitForCompletion(); // Block until the asset is loaded
-        Instance = handle.Result;
+    //private static void LoadSynchronously()
+    //{
+    //    var handle = Addressables.LoadAssetAsync<SpriteRepo>("Repositories/SpriteRepo");
+    //    handle.WaitForCompletion(); // Block until the asset is loaded
+    //    Instance = handle.Result;
 
-        if (Instance == null)
-            Debug.LogError("Failed to load SpriteRepo synchronously from Addressables.");
-    }
+    //    if (Instance == null)
+    //        Debug.LogError("Failed to load SpriteRepo synchronously from Addressables.");
+    //}
 
     //Serialized fields
     [HideInInspector] public Dictionary<string, Sprite> Backgrounds;

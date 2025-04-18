@@ -19,8 +19,9 @@ public class ActorRepo : ScriptableObject
         {
             if (Instance == null)
             {
-                Debug.LogWarning("ActorRepo instance is null. Attempting to load synchronously.");
-                LoadSynchronously();
+                var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
+                handle.WaitForCompletion(); // Block until the asset is loaded
+                Instance = handle.Result;
             }
 
             if (Instance == null)
@@ -31,29 +32,29 @@ public class ActorRepo : ScriptableObject
     }
 
     // Auto-initialize before the scene loads
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static async void AutoInitialize()
-    {
-        if (Instance == null)
-        {
-            var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
-            Instance = await handle.Task;
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    //private static async void AutoInitialize()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
+    //        Instance = await handle.Task;
 
-            if (Instance == null)
-                Debug.LogError("ActorRepo asset not found in Addressables with key 'Repositories/ActorRepo'");
-        }
-    }
+    //        if (Instance == null)
+    //            Debug.LogError("ActorRepo asset not found in Addressables with key 'Repositories/ActorRepo'");
+    //    }
+    //}
 
     // Synchronous fallback for loading the ActorRepo
-    private static void LoadSynchronously()
-    {
-        var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
-        handle.WaitForCompletion(); // Block until the asset is loaded
-        Instance = handle.Result;
+    //private static void LoadSynchronously()
+    //{
+    //    var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
+    //    handle.WaitForCompletion(); // Block until the asset is loaded
+    //    Instance = handle.Result;
 
-        if (Instance == null)
-            Debug.LogError("Failed to load ActorRepo synchronously from Addressables.");
-    }
+    //    if (Instance == null)
+    //        Debug.LogError("Failed to load ActorRepo synchronously from Addressables.");
+    //}
 
     //Serialized fields
     [SerializeField] public Dictionary<string, ActorData> Actors;

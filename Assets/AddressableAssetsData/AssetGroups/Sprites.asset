@@ -30,6 +30,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1352dc0ad19aee0419020f6a45351a21
+    m_Address: Sprites/Seamless/Background.Menu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ab6fc6396a111c46bdaefbcdcc388bc
     m_Address: Sprites/Logos/Mindattic.1024x1024
     m_ReadOnly: 0
@@ -47,6 +52,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 210503921c15f9647893f137236a6b7e
     m_Address: Sprites/Seamless/WhiteFire2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 220b3b17154498d4fbbb9b3afd501028
+    m_Address: Sprites/Seamless/Background.LightBlue
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -167,6 +177,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98745ca6abc132544813043cf430e256
     m_Address: Sprites/GUI/Button.1024x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f0f639a249386446aff26158e7b7fb0
+    m_Address: Sprites/Seamless/Background.DarkBlue
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

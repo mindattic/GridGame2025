@@ -15,8 +15,9 @@ public class VisualEffectRepo : ScriptableObject
         {
             if (Instance == null)
             {
-                Debug.LogWarning("VisualEffectRepo instance is null. Attempting to load synchronously.");
-                LoadSynchronously();
+                var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
+                handle.WaitForCompletion(); // Block until the asset is loaded
+                Instance = handle.Result;
             }
 
             if (Instance == null)
@@ -27,29 +28,29 @@ public class VisualEffectRepo : ScriptableObject
     }
 
     // Auto-initialize before the scene loads
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static async void AutoInitialize()
-    {
-        if (Instance == null)
-        {
-            var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
-            Instance = await handle.Task;
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    //private static async void AutoInitialize()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
+    //        Instance = await handle.Task;
 
-            if (Instance == null)
-                Debug.LogError("VisualEffectRepo asset not found in Addressables with key 'Repositories/VisualEffectRepo'");
-        }
-    }
+    //        if (Instance == null)
+    //            Debug.LogError("VisualEffectRepo asset not found in Addressables with key 'Repositories/VisualEffectRepo'");
+    //    }
+    //}
 
     // Synchronous fallback for loading the VisualEffectRepo
-    private static void LoadSynchronously()
-    {
-        var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
-        handle.WaitForCompletion(); // Block until the asset is loaded
-        Instance = handle.Result;
+    //private static void LoadSynchronously()
+    //{
+    //    var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
+    //    handle.WaitForCompletion(); // Block until the asset is loaded
+    //    Instance = handle.Result;
 
-        if (Instance == null)
-            Debug.LogError("Failed to load VisualEffectRepo synchronously from Addressables.");
-    }
+    //    if (Instance == null)
+    //        Debug.LogError("Failed to load VisualEffectRepo synchronously from Addressables.");
+    //}
 
     //Serialized fields
     [SerializeField] public Dictionary<string, VisualEffectAsset> VisualEffects;

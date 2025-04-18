@@ -18,8 +18,9 @@ public class ProfileRepo : ScriptableObject
         {
             if (Instance == null)
             {
-                Debug.LogWarning("ProfileRepo instance is null. Attempting to load synchronously.");
-                LoadSynchronously();
+                var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
+                handle.WaitForCompletion(); // Block until the asset is loaded
+                Instance = handle.Result;
             }
 
             if (Instance == null)
@@ -30,29 +31,29 @@ public class ProfileRepo : ScriptableObject
     }
 
     // Auto-initialize before the scene loads
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static async void AutoInitialize()
-    {
-        if (Instance == null)
-        {
-            var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
-            Instance = await handle.Task;
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    //private static async void AutoInitialize()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
+    //        Instance = await handle.Task;
 
-            if (Instance == null)
-                Debug.LogError("ProfileRepo asset not found in Addressables with key 'Repositories/ProfileRepo'");
-        }
-    }
+    //        if (Instance == null)
+    //            Debug.LogError("ProfileRepo asset not found in Addressables with key 'Repositories/ProfileRepo'");
+    //    }
+    //}
 
     // Synchronous fallback for loading the ProfileRepo
-    private static void LoadSynchronously()
-    {
-        var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
-        handle.WaitForCompletion(); // Block until the asset is loaded
-        Instance = handle.Result;
+    //private static void LoadSynchronously()
+    //{
+    //    var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
+    //    handle.WaitForCompletion(); // Block until the asset is loaded
+    //    Instance = handle.Result;
 
-        if (Instance == null)
-            Debug.LogError("Failed to load ProfileRepo synchronously from Addressables.");
-    }
+    //    if (Instance == null)
+    //        Debug.LogError("Failed to load ProfileRepo synchronously from Addressables.");
+    //}
 
 
     // Fields

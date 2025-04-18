@@ -17,8 +17,9 @@ namespace Assets.Scripts.Repositories
             {
                 if (Instance == null)
                 {
-                    Debug.LogWarning("SceneRepo instance is null. Attempting to load synchronously.");
-                    LoadSynchronously();
+                    var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
+                    handle.WaitForCompletion(); // Block until the asset is loaded
+                    Instance = handle.Result;
                 }
 
                 if (Instance == null)
@@ -29,29 +30,29 @@ namespace Assets.Scripts.Repositories
         }
 
         // Auto-initialize before the scene loads
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        private static async void AutoInitialize()
-        {
-            if (Instance == null)
-            {
-                var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
-                Instance = await handle.Task;
+        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        //private static async void AutoInitialize()
+        //{
+        //    if (Instance == null)
+        //    {
+        //        var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
+        //        Instance = await handle.Task;
 
-                if (Instance == null)
-                    Debug.LogError("SceneRepo asset not found in Addressables with key 'Repositories/SceneRepo'");
-            }
-        }
+        //        if (Instance == null)
+        //            Debug.LogError("SceneRepo asset not found in Addressables with key 'Repositories/SceneRepo'");
+        //    }
+        //}
 
         // Synchronous fallback for loading the SceneRepo
-        private static void LoadSynchronously()
-        {
-            var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
-            handle.WaitForCompletion(); // Block until the asset is loaded
-            Instance = handle.Result;
+        //private static void LoadSynchronously()
+        //{
+        //    var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
+        //    handle.WaitForCompletion(); // Block until the asset is loaded
+        //    Instance = handle.Result;
 
-            if (Instance == null)
-                Debug.LogError("Failed to load SceneRepo synchronously from Addressables.");
-        }
+        //    if (Instance == null)
+        //        Debug.LogError("Failed to load SceneRepo synchronously from Addressables.");
+        //}
 
         //Fields
         [SerializeField] public string previousScene = "TitleScreen";

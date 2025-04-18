@@ -15,8 +15,9 @@ public class TrailEffectRepo : ScriptableObject
         {
             if (Instance == null)
             {
-                Debug.LogWarning("TrailEffectRepo instance is null. Attempting to load synchronously.");
-                LoadSynchronously();
+                var handle = Addressables.LoadAssetAsync<TrailEffectRepo>("Repositories/TrailEffectRepo");
+                handle.WaitForCompletion(); // Block until the asset is loaded
+                Instance = handle.Result;
             }
 
             if (Instance == null)
@@ -27,29 +28,29 @@ public class TrailEffectRepo : ScriptableObject
     }
 
     // Auto-initialize before the scene loads
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static async void AutoInitialize()
-    {
-        if (Instance == null)
-        {
-            var handle = Addressables.LoadAssetAsync<TrailEffectRepo>("Repositories/TrailEffectRepo");
-            Instance = await handle.Task;
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    //private static async void AutoInitialize()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        var handle = Addressables.LoadAssetAsync<TrailEffectRepo>("Repositories/TrailEffectRepo");
+    //        Instance = await handle.Task;
 
-            if (Instance == null)
-                Debug.LogError("TrailEffectRepo asset not found in Addressables with key 'Repositories/TrailEffectRepo'");
-        }
-    }
+    //        if (Instance == null)
+    //            Debug.LogError("TrailEffectRepo asset not found in Addressables with key 'Repositories/TrailEffectRepo'");
+    //    }
+    //}
 
     // Synchronous fallback for loading the TrailEffectRepo
-    private static void LoadSynchronously()
-    {
-        var handle = Addressables.LoadAssetAsync<TrailEffectRepo>("Repositories/TrailEffectRepo");
-        handle.WaitForCompletion(); // Block until the asset is loaded
-        Instance = handle.Result;
+    //private static void LoadSynchronously()
+    //{
+    //    var handle = Addressables.LoadAssetAsync<TrailEffectRepo>("Repositories/TrailEffectRepo");
+    //    handle.WaitForCompletion(); // Block until the asset is loaded
+    //    Instance = handle.Result;
 
-        if (Instance == null)
-            Debug.LogError("Failed to load TrailEffectRepo synchronously from Addressables.");
-    }
+    //    if (Instance == null)
+    //        Debug.LogError("Failed to load TrailEffectRepo synchronously from Addressables.");
+    //}
 
     //Serialized fields
     [SerializeField] public Dictionary<string, TrailEffectAsset> TrailEffects;

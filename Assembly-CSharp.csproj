@@ -100,7 +100,6 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
-    <Compile Include="Assets\Scripts\Canvas\RosterCarousel.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />

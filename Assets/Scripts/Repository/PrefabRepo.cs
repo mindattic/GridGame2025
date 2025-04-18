@@ -14,8 +14,9 @@ public class PrefabRepo : ScriptableObject
         {
             if (Instance == null)
             {
-                Debug.LogWarning("PrefabRepo instance is null. Attempting to load synchronously.");
-                LoadSynchronously();
+                var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
+                handle.WaitForCompletion(); // Block until the asset is loaded
+                Instance = handle.Result;
             }
 
             if (Instance == null)
@@ -26,29 +27,29 @@ public class PrefabRepo : ScriptableObject
     }
 
     // Auto-initialize before the scene loads
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    private static async void AutoInitialize()
-    {
-        if (Instance == null)
-        {
-            var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
-            Instance = await handle.Task;
+    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    //private static async void AutoInitialize()
+    //{
+    //    if (Instance == null)
+    //    {
+    //        var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
+    //        Instance = await handle.Task;
 
-            if (Instance == null)
-                Debug.LogError("PrefabRepo asset not found in Addressables with key 'Repositories/PrefabRepo'");
-        }
-    }
+    //        if (Instance == null)
+    //            Debug.LogError("PrefabRepo asset not found in Addressables with key 'Repositories/PrefabRepo'");
+    //    }
+    //}
 
     // Synchronous fallback for loading the MaterialRepo
-    private static void LoadSynchronously()
-    {
-        var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
-        handle.WaitForCompletion(); // Block until the asset is loaded
-        Instance = handle.Result;
+    //private static void LoadSynchronously()
+    //{
+    //    var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
+    //    handle.WaitForCompletion(); // Block until the asset is loaded
+    //    Instance = handle.Result;
 
-        if (Instance == null)
-            Debug.LogError("Failed to load MaterialRepo synchronously from Addressables.");
-    }
+    //    if (Instance == null)
+    //        Debug.LogError("Failed to load MaterialRepo synchronously from Addressables.");
+    //}
 
     //Serialized fields
     [SerializeField] public Dictionary<string, GameObject> Prefabs;
