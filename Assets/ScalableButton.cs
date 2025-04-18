@@ -1,4 +1,7 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Label = TMPro.TextMeshProUGUI;
 
 [ExecuteAlways]
 public class ScalableButton : MonoBehaviour
@@ -15,7 +18,7 @@ public class ScalableButton : MonoBehaviour
     public RectTransform bottomLeft;
     public RectTransform bottomRight;
 
-    [Header("Core")]2
+    [Header("Core")]
     public RectTransform background;
     public RectTransform label;
 
@@ -26,9 +29,8 @@ public class ScalableButton : MonoBehaviour
 #if UNITY_EDITOR
     void Update()
     {
-        // Only apply layout continuously in the editor (not during play mode)
-        if (!Application.isPlaying)
-            ApplyLayout();
+        // Continuously apply layout changes in Play & Edit mode (if in unity editor)
+        ApplyLayout();
     }
 #endif
 
@@ -39,12 +41,12 @@ public class ScalableButton : MonoBehaviour
     {
         RectTransform root = GetComponent<RectTransform>();
         if (root.rect.width == 0 || root.rect.height == 0)
-            return; // prevent divide by zero before layout is ready
+            return;
 
         float minAnchor = cornerSize / root.rect.width;
         float minAnchorY = cornerSize / root.rect.height;
 
-        // Edges with adjusted anchors
+        // Edges
         if (top)
         {
             top.anchorMin = new Vector2(minAnchor, 1);
@@ -121,14 +123,33 @@ public class ScalableButton : MonoBehaviour
         // Background (fills inside border)
         if (background)
         {
-            background.anchorMin = new Vector2(minAnchor, minAnchorY);
-            background.anchorMax = new Vector2(1 - minAnchor, 1 - minAnchorY);
+            float bgMinAnchor = cornerSize * 0.333f / root.rect.width;
+            float bgMinAnchorY = cornerSize * 0.3333f / root.rect.height;
+
+            background.anchorMin = new Vector2(bgMinAnchor, bgMinAnchorY);
+            background.anchorMax = new Vector2(1 - bgMinAnchor, 1 - bgMinAnchorY);
             background.pivot = new Vector2(0.5f, 0.5f);
             background.anchoredPosition = Vector2.zero;
             background.sizeDelta = Vector2.zero;
+
+            if (background.TryGetComponent(out Image bgImage) && bgImage.type == Image.Type.Tiled)
+            {
+                float targetTileSize = root.rect.width; // Adjust this for your desired visual tile size
+
+                float scaleFactor = 1f;
+                if (bgImage.canvas != null)
+                    scaleFactor = bgImage.canvas.scaleFactor;
+
+                float widthInPixels = root.rect.width * scaleFactor;
+                float heightInPixels = root.rect.height * scaleFactor;
+
+                float rawMultiplier = targetTileSize / ((widthInPixels + heightInPixels) * 0.5f);
+                bgImage.pixelsPerUnitMultiplier = Mathf.Clamp(rawMultiplier, 0.1f, 10f);
+            }
         }
 
-        // Label (inside padding)
+
+        // Label (inside same area as background)
         if (label)
         {
             label.anchorMin = new Vector2(minAnchor, minAnchorY);
@@ -136,6 +157,14 @@ public class ScalableButton : MonoBehaviour
             label.pivot = new Vector2(0.5f, 0.5f);
             label.anchoredPosition = Vector2.zero;
             label.sizeDelta = Vector2.zero;
+
+            // Auto-adjust font size based on height (48 at 128 height)
+            if (label.TryGetComponent(out Label text))
+            {
+                float fontSize = (root.rect.height / 128f) * 48f;
+                text.fontSize = Mathf.Clamp(Mathf.RoundToInt(fontSize), 12, 96);
+            }
         }
+
     }
 }
