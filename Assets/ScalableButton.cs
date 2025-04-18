@@ -15,7 +15,7 @@ public class ScalableButton : MonoBehaviour
     public RectTransform bottomLeft;
     public RectTransform bottomRight;
 
-    [Header("Core")]
+    [Header("Core")]2
     public RectTransform background;
     public RectTransform label;
 
