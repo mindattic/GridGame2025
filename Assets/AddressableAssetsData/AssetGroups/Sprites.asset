@@ -15,8 +15,23 @@ MonoBehaviour:
   m_GroupName: Sprites
   m_GUID: 5399e47a23a1a8948ba2de9bda8e0bfa
   m_SerializeEntries:
+  - m_GUID: 014efbe6c64d33d4199aa5ac4c996dc8
+    m_Address: Sprites/Logos/Mindattic.256x256
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 03e927c2624e6b648bb31a83f951f5b8
     m_Address: Sprites/TutorialPages/Tutorial.1-1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06abdf2b7a22b484ba3b2d123cbb3128
+    m_Address: Sprites/GUI/Button.512x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ab6fc6396a111c46bdaefbcdcc388bc
+    m_Address: Sprites/Logos/Mindattic.1024x1024
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -42,6 +57,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2fc8e4e9f7189c049a580cafd1e4b37f
     m_Address: Sprites/Seamless/BlackFire2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32567222831a1e342a40f4a1e8301fa8
+    m_Address: Sprites/Logos/Mindattic.512x512
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -85,6 +105,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5dd9b999e36555e41949077f5c13e3cf
+    m_Address: Sprites/GUI/Button.128x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 689440e14c4f7a1438b5682c0ecb66ea
+    m_Address: Sprites/GUI/BackButton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f27d800d92dc01458cc0c90ccb3c652
     m_Address: Sprites/Forest
     m_ReadOnly: 0
@@ -92,6 +122,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f37be176d63e8d4fb3a83b7021d59f0
     m_Address: Sprites/Leaves/MapleLeaf1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7188e9a019e6bdb40aadb43e75fb62f2
+    m_Address: Sprites/GUI/Button.256x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bf8d08a98f4a674ca8c1661f2c4a2a8
+    m_Address: Assets/Sprites/GUI/menu-background.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -125,8 +165,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98745ca6abc132544813043cf430e256
+    m_Address: Sprites/GUI/Button.1024x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a25374bd16283344d99e20c2b6cfd1ab
     m_Address: Sprites/WeaponTypes/Dagger
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a383516d04697454587aa9f044f09f7b
+    m_Address: Sprites/GUI/Button.64x64
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -180,6 +230,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de7fd390674c2b645be754a415fd3628
+    m_Address: Sprites/Logos/Mindattic.128x128
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e14487b72508eb54d8e4233c81df6813
     m_Address: Sprites/WeaponTypes/Claw
     m_ReadOnly: 0
@@ -202,6 +257,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ee9fb49490ac79c4cb717edf322fa379
     m_Address: Sprites/WeaponTypes/Polearm
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f61ad0ebb0999354785fb74215bedf61
+    m_Address: Sprites/Logos/Mindattic.64x64
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

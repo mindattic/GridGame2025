@@ -51,13 +51,14 @@ public class SpriteRepo : ScriptableObject
     }
 
     //Serialized fields
-    [SerializeField] public Dictionary<string, Sprite> Backgrounds;
-    [SerializeField] public Dictionary<string, Sprite> Seamless;
-    [SerializeField] public Dictionary<string, Sprite> Sprites;
-    [SerializeField] public Dictionary<string, Sprite> WeaponTypes;
-    [SerializeField] public Dictionary<string, Sprite> Leaves;
-    [SerializeField] public Dictionary<string, Sprite> TutorialPages;
-    [SerializeField] public Dictionary<string, Sprite> Logos;
+    [HideInInspector] public Dictionary<string, Sprite> Backgrounds;
+    [HideInInspector] public Dictionary<string, Sprite> GUI;
+    [HideInInspector] public Dictionary<string, Sprite> Seamless;
+    [HideInInspector] public Dictionary<string, Sprite> Sprites;
+    [HideInInspector] public Dictionary<string, Sprite> WeaponTypes;
+    [HideInInspector] public Dictionary<string, Sprite> Leaves;
+    [HideInInspector] public Dictionary<string, Sprite> TutorialPages;
+    [HideInInspector] public Dictionary<string, Sprite> Logos;
 
 
     private void OnEnable()
@@ -71,6 +72,11 @@ public class SpriteRepo : ScriptableObject
         Backgrounds = new Dictionary<string, Sprite>
         {
             { "CandleLitPath", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath") },
+        };
+
+        GUI = new Dictionary<string, Sprite>
+        {
+            { "BackButton", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/BackButton") },
         };
 
         Leaves = new Dictionary<string, Sprite>
