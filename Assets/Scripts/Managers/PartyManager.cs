@@ -14,8 +14,7 @@ using Label = TMPro.TextMeshProUGUI;
 
 public class PartyManager : MonoBehaviour
 {
-    [Header("UI References")]
-    public GameObject slidePrefab;
+    private GameObject slidePrefab;
 
     private RectTransform title;
     private RectTransform rosterPanel;
@@ -81,6 +80,8 @@ public class PartyManager : MonoBehaviour
             SceneManager.LoadScene(SceneHelper.SaveFileSelect);
             return;
         }
+
+        slidePrefab = PrefabRepo.instance.Prefabs["RosterSlidePrefab"];
 
         title = GameObject.Find(ComponentHelper.PartyManager.Title).GetComponent<RectTransform>();
         rosterPanel = GameObject.Find(ComponentHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
@@ -454,6 +455,7 @@ public class PartyManager : MonoBehaviour
             useTypewriter = true,
             autoDestroy = false,
             autoDestroyDelay = 2.5f,     
+            textAlignment = TooltipTextAlignment.TopLeft
         };
         Tooltip.Show(tt);
     }

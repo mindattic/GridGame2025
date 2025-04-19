@@ -58,46 +58,37 @@ public class SoundEffectRepo : ScriptableObject
     // Serialized fields
     [SerializeField] public Dictionary<string, AudioClip> SoundEffects;
 
-    private async void OnEnable()
+    private void OnEnable()
     {
-        await Load();
+        Load();
     }
 
-    private async Task Load()
+    private void Load()
     {
         // Initialize the SoundEffects dictionary
-        SoundEffects = new Dictionary<string, AudioClip>();
-
-        // List of sound effect keys
-        string[] soundKeys = new string[]
+        SoundEffects = new Dictionary<string, AudioClip>
         {
-            "Click", "Death", "Move1", "Move2", "Move3", "Move4", "Move5", "Move6",
-            "NextTurn", "PlayerGlow", "Portrait", "Rumble", "Slash1", "Slash2", "Slash3",
-            "Slash4", "Slash5", "Slash6", "Slash7", "Slide"
+            { "Click", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Click") },
+            { "Death", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Death") },
+            { "Move1", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Move1") },
+            { "Move2", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Move2") },
+            { "Move3", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Move3") },
+            { "Move4", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Move4") },
+            { "Move5", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Move5") },
+            { "Move6", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Move6") },
+            { "NextTurn", AssetHelper.LoadAsset<AudioClip>("SoundEffects/NextTurn") },
+            { "PlayerGlow", AssetHelper.LoadAsset<AudioClip>("SoundEffects/PlayerGlow") },
+            { "Portrait", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Portrait") },
+            { "Rumble", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Rumble") },
+            { "Slash1", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash1") },
+            { "Slash2", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash2") },
+            { "Slash3", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash3") },
+            { "Slash4", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash4") },
+            { "Slash5", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash5") },
+            { "Slash6", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash6") },
+            { "Slash7", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash7") },
+            { "Slide", AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slide") }
         };
 
-        // Load sound effects asynchronously
-        var tasks = soundKeys.Select(async key =>
-        {
-            string address = $"SoundEffects/{key}";
-            try
-            {
-                var clip = await AssetHelper.LoadAssetAsync<AudioClip>(address);
-                if (clip != null)
-                {
-                    SoundEffects[key] = clip;
-                }
-                else
-                {
-                    Debug.LogWarning($"Sound effect not found at address: {address}");
-                }
-            }
-            catch (UnityException ex)
-            {
-                Debug.LogError($"Failed to load sound effect at address: {address}. Exception: {ex.Message}");
-            }
-        });
-
-        await Task.WhenAll(tasks);
     }
 }

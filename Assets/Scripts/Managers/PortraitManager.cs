@@ -17,10 +17,15 @@ public class PortraitManager : MonoBehaviour
 
 
     //Fields
-    [SerializeField] public GameObject portraitPrefab;
+    private GameObject portraitPrefab;
     public ActorInstance actor;
     public int sortingOrder;
 
+
+    public void Awake()
+    {
+        portraitPrefab = PrefabRepo.instance.Prefabs["PortraitPrefab"];
+    }
 
     public void TriggerSlideIn(ActorInstance actor, Direction direction)
     {

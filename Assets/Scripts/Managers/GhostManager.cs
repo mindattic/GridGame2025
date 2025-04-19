@@ -11,12 +11,17 @@ public class GhostManager : MonoBehaviour
     protected BoardInstance board => GameManager.instance.board;
 
     //Fields
-    [SerializeField] public GameObject ghostPrefab;
+    private GameObject ghostPrefab;
     ActorInstance actor;
     float threshold;
     Vector3 previousPosition;
 
-    //Method which is automatically called before the first frame update  
+    public void Awake()
+    {
+        ghostPrefab = PrefabRepo.instance.Prefabs["GhostPrefab"];
+    }
+
+
     void Start() {
         threshold = tileSize / 12;
     }

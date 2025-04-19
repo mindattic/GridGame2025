@@ -42,10 +42,14 @@ public class StageManager : MonoBehaviour
     public int enemyCount => actors.FindAll(x => x.isEnemy).Count;
 
     // Fields:
-    [SerializeField] public GameObject actorPrefab;
+    private GameObject actorPrefab;
     public Stage currentStage;
     private int currentWave = 0; // Track the current wave
 
+    public void Awake()
+    {
+        actorPrefab = PrefabRepo.instance.Prefabs["ActorPrefab"];
+    }
 
     /// <summary>
     /// Initializes the StageManager by retrieving the stage name from the hero's profile,
@@ -59,6 +63,10 @@ public class StageManager : MonoBehaviour
             Debug.LogError("No saved game state found.");
             return;
         }
+
+
+     
+
         currentStage = StageRepo.instance.Get(latestSave.Stage.CurrentStage);
         RestartStage();
     }

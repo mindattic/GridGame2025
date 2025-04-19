@@ -9,8 +9,14 @@ public class DamageTextManager : MonoBehaviour
     //Quick Reference Properties
     protected Canvas canvas3D => GameManager.instance.canvas3D;
 
+
     //Fields
-    [SerializeField] public GameObject DamageTextPrefab;
+    private GameObject DamageTextPrefab;
+
+    public void Awake()
+    {
+        DamageTextPrefab = PrefabRepo.instance.Prefabs["DamageTextPrefab"];
+    }
 
     public void Spawn(string text, Vector3 position, DamageTextStyle style = DamageTextStyle.Oscillate)
     {

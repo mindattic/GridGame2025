@@ -236,16 +236,16 @@ public enum TooltipPlacement
     Left
 }
 
-public enum TooltipTextAlignment
+
+
+public enum TypewriterMode
 {
-    Left,
-    Center,
-    Right
+    CharacterByCharacter,
+    LineByLine
 }
 
-public enum TooltipVerticalAlignment
+public enum TooltipTextAlignment
 {
-    Top,
-    Middle,
-    Bottom
+    Center,
+    TopLeft
 }

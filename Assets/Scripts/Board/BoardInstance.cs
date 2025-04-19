@@ -15,18 +15,25 @@ public class BoardInstance : MonoBehaviour
     protected TileMap tileMap { get => GameManager.instance.tileMap; set => GameManager.instance.tileMap = value; }
 
     // Fields:
-    [SerializeField] public GameObject TilePrefab; // Prefab used to instantiate individual tiles.
+    private GameObject TilePrefab; // Prefab used to instantiate individual tiles.
     [HideInInspector] public int columnCount = 6;      // Index of columns on the board.
     [HideInInspector] public int rowCount = 8;         // Index of rows on the board.
     [HideInInspector] public Vector2 offset;           // Board offset (used to position the board in world space).
     [HideInInspector] public RectFloat bounds;         // Bounds of the board, calculated from the offset and dimensions.
     [HideInInspector] public Vector2 center;           // Center point of the board bounds.
 
+
+    public void Awake()
+    {
+        TilePrefab = PrefabRepo.instance.Prefabs["TilePrefab"];
+    }
+
     /// <summary>
     /// Assign is called to set up the board by calculating its offset, bounds, and generating the tiles.
     /// </summary>
     public void Initialize()
     {
+      
         CalculateOffset();
         CalculateBounds();
         GenerateTiles();

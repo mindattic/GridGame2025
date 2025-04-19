@@ -8,7 +8,7 @@ using Label = TMPro.TextMeshProUGUI;
 
 public class ProfileSelectManager : MonoBehaviour
 {
-    [SerializeField] public GameObject buttonPrefab;
+    private GameObject buttonPrefab;
     private RectTransform canvas2D;
     private Label header;
     private RectTransform scrollView;
@@ -25,6 +25,9 @@ public class ProfileSelectManager : MonoBehaviour
    
     private void Awake()
     {
+
+        buttonPrefab = PrefabRepo.instance.Prefabs["ScreenWidthButtonPrefab"];
+
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
         header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>();
         scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>();

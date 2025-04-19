@@ -140,11 +140,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7bf8d08a98f4a674ca8c1661f2c4a2a8
-    m_Address: Assets/Sprites/GUI/menu-background.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7d138ee776549614f96c88c0457703d0
     m_Address: Sprites/WeaponTypes/Crossbow
     m_ReadOnly: 0

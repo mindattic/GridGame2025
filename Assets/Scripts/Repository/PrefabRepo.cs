@@ -65,7 +65,6 @@ public class PrefabRepo : ScriptableObject
         {
             { "ActorPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ActorPrefab") },
             { "AttackLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/AttackLinePrefab") },
-            { "BoardPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/BoardPrefab") },
             { "CanvasParticlePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CanvasParticlePrefab") },
             { "CoinPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CoinPrefab") },
             { "ConfirmationDialog", AssetHelper.LoadAsset<GameObject>("Prefabs/ConfirmationDialog") },

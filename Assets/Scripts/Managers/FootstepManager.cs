@@ -11,13 +11,18 @@ public class FootstepManager : MonoBehaviour
     protected BoardInstance board => GameManager.instance.board;
 
     //Fields
-    [SerializeField] public GameObject FootstepPrefab;
+    private GameObject FootstepPrefab;
     ActorInstance actor;
     Vector3 previousPosition;
     bool isRightFoot = false;
     float threshold;
 
-    //Method which is automatically called before the first frame update  
+    public void Awake()
+    {
+        FootstepPrefab = PrefabRepo.instance.Prefabs["FootstepPrefab"];
+    }
+
+
     void Start()
     {
         threshold = tileSize / 4;

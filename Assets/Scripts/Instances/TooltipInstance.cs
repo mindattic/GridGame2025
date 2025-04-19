@@ -25,6 +25,9 @@ public class TooltipInstance : MonoBehaviour
     public float verticalPadding = 12f;
     public float lineBuffer = 4f;
     public float horizontalMargin = 24f;
+    public float typewriterSpeed = 0.02f;
+    public TypewriterMode typewriterMode = TypewriterMode.CharacterByCharacter;
+    public TooltipTextAlignment textAlignment = TooltipTextAlignment.TopLeft;
 
     public void Assign(string message, RectTransform uiTarget, Transform worldTarget, TooltipPlacement placement)
     {
@@ -45,19 +48,10 @@ public class TooltipInstance : MonoBehaviour
         float canvasMaxWidth = canvas2D.rect.width - (horizontalMargin * 2f);
         string wrappedMessage = WrapMessage(message, canvasMaxWidth);
 
-        if (useTypewriter)
-            StartCoroutine(TypewriterEffect(wrappedMessage));
-        else
-        {
-            label.text = wrappedMessage;
-            if (autoDestroy) StartCoroutine(AutoDestroy());
-        }
-
         LayoutRebuilder.ForceRebuildLayoutImmediate(label.rectTransform);
 
         float fontSize = label.fontSize;
         float lineHeight = fontSize + lineBuffer;
-
         string[] lines = wrappedMessage.Split('\n');
         float maxLineWidth = 0f;
 
@@ -71,44 +65,57 @@ public class TooltipInstance : MonoBehaviour
         float height = (lines.Length * lineHeight) + (verticalPadding * 2f);
         background.sizeDelta = new Vector2(width, height);
 
-        Vector2 tooltipSize = background.sizeDelta;
-        Vector2 screenPos;
+        switch (textAlignment)
+        {
+            case TooltipTextAlignment.TopLeft:
+                label.alignment = TextAlignmentOptions.TopLeft;
+                label.rectTransform.pivot = new Vector2(0, 1);
+                label.rectTransform.anchorMin = new Vector2(0, 1);
+                label.rectTransform.anchorMax = new Vector2(0, 1);
+                label.rectTransform.sizeDelta = new Vector2(width - (horizontalPadding * 2f), height - (verticalPadding * 2f));
+                label.rectTransform.anchoredPosition = new Vector2(horizontalPadding, -verticalPadding);
+                break;
 
-        if (uiTarget != null)
-        {
-            screenPos = RectTransformUtility.WorldToScreenPoint(null, uiTarget.position);
+            case TooltipTextAlignment.Center:
+                label.alignment = TextAlignmentOptions.Center;
+                label.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+                label.rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+                label.rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+                label.rectTransform.anchoredPosition = Vector2.zero;
+                break;
         }
-        else if (worldTarget != null)
+
+        if (useTypewriter)
         {
-            screenPos = Camera.main.WorldToScreenPoint(worldTarget.position);
+            if (typewriterMode == TypewriterMode.LineByLine)
+                StartCoroutine(TypewriterLineByLine(wrappedMessage));
+            else
+                StartCoroutine(TypewriterCharacterByCharacter(wrappedMessage));
         }
         else
         {
-            screenPos = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            label.text = wrappedMessage;
+            if (autoDestroy) StartCoroutine(AutoDestroy());
         }
 
+        Vector2 tooltipSize = background.sizeDelta;
+        Vector2 screenPos = uiTarget != null
+            ? RectTransformUtility.WorldToScreenPoint(null, uiTarget.position)
+            : (worldTarget != null ? Camera.main.WorldToScreenPoint(worldTarget.position) : new Vector2(Screen.width / 2f, Screen.height / 2f));
+
         RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas2D, screenPos, null, out Vector2 localPos);
+        Vector2 finalPos = CalculatePosition(localPos, tooltipSize, uiTarget ? uiTarget.sizeDelta : Vector2.zero, placement);
 
-        Vector2 finalPos = CalculatePosition(
-            localPos,
-            tooltipSize,
-            uiTarget ? uiTarget.sizeDelta : Vector2.zero,
-            placement
-        );
-
-        // Set pivot for growth direction based on placement
         switch (placement)
         {
             case TooltipPlacement.Top:
-                background.pivot = new Vector2(0.5f, 0); // grow upward
+                background.pivot = new Vector2(0.5f, 0);
                 break;
             case TooltipPlacement.Bottom:
-                background.pivot = new Vector2(0.5f, 1); // grow downward
+                background.pivot = new Vector2(0.5f, 1);
                 break;
-            case TooltipPlacement.Left:
-            case TooltipPlacement.Right:
             default:
-                background.pivot = new Vector2(0.5f, 0.5f); // centered
+                background.pivot = new Vector2(0.5f, 0.5f);
                 break;
         }
 
@@ -131,8 +138,7 @@ public class TooltipInstance : MonoBehaviour
     private string WrapMessage(string input, float maxWidth)
     {
         string[] words = input.Split(' ');
-        float fontSize = label.fontSize;
-        float lineHeight = fontSize + lineBuffer;
+        float lineHeight = label.fontSize + lineBuffer;
         StringBuilder builder = new StringBuilder();
         string currentLine = "";
 
@@ -143,9 +149,7 @@ public class TooltipInstance : MonoBehaviour
             if (size.x > maxWidth)
             {
                 if (!string.IsNullOrEmpty(currentLine))
-                {
                     builder.AppendLine(currentLine.TrimEnd());
-                }
                 currentLine = word;
             }
             else
@@ -158,14 +162,7 @@ public class TooltipInstance : MonoBehaviour
         return builder.ToString();
     }
 
-    public void SetText(string newText)
-    {
-        StopAllCoroutines();
-        label.text = newText;
-        LayoutRebuilder.ForceRebuildLayoutImmediate(label.rectTransform);
-    }
-
-    private IEnumerator TypewriterEffect(string fullText)
+    private IEnumerator TypewriterCharacterByCharacter(string fullText)
     {
         label.text = "";
         int i = 0;
@@ -175,45 +172,49 @@ public class TooltipInstance : MonoBehaviour
         while (i < fullText.Length)
         {
             char c = fullText[i];
-
-            if (c == '<')
-                insideTag = true;
-
+            if (c == '<') insideTag = true;
+            if (c == '>') insideTag = false;
             visibleText.Append(c);
             i++;
 
-            if (c == '>')
-                insideTag = false;
-
-            // Only update the UI if we're not inside a tag
             if (!insideTag)
             {
                 label.text = visibleText.ToString();
-
-                //Rebuild the layout
                 LayoutRebuilder.ForceRebuildLayoutImmediate(label.rectTransform);
-
-                //Recalculate background size
                 UpdateBackgroundSize();
-
-                yield return new WaitForSeconds(0.02f);
+                yield return new WaitForSeconds(typewriterSpeed);
             }
         }
 
         label.text = fullText;
+        if (autoDestroy) StartCoroutine(AutoDestroy());
+    }
 
-        if (autoDestroy)
-            StartCoroutine(AutoDestroy());
+    private IEnumerator TypewriterLineByLine(string fullText)
+    {
+        label.text = "";
+        string[] lines = fullText.Split('\n');
+        StringBuilder displayedText = new StringBuilder();
+
+        foreach (string line in lines)
+        {
+            displayedText.AppendLine(line);
+            label.text = displayedText.ToString();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(label.rectTransform);
+            UpdateBackgroundSize();
+            yield return new WaitForSeconds(typewriterSpeed * 10f);
+        }
+
+        label.text = fullText;
+        if (autoDestroy) StartCoroutine(AutoDestroy());
     }
 
     private IEnumerator AnimateGrowth(Vector2 anchoredTarget, TooltipPlacement placement)
     {
         float duration = 0.2f;
         float elapsed = 0f;
-
         Vector3 startScale = new Vector3(0.95f, 0.95f, 1f);
         Vector3 endScale = Vector3.one;
-
         float offset = 10f;
         Vector2 startPos = anchoredTarget;
         Vector2 endPos = anchoredTarget;
@@ -240,20 +241,17 @@ public class TooltipInstance : MonoBehaviour
         background.anchoredPosition = endPos;
     }
 
-
     private void UpdateBackgroundSize()
     {
         float fontSize = label.fontSize;
         float lineHeight = fontSize + lineBuffer;
         string[] lines = label.text.Split('\n');
-
         float maxLineWidth = 0f;
         foreach (var line in lines)
         {
             var size = label.GetPreferredValues(line, Mathf.Infinity, lineHeight);
             maxLineWidth = Mathf.Max(maxLineWidth, size.x);
         }
-
         float width = maxLineWidth + (horizontalPadding * 2f);
         float height = (lines.Length * lineHeight) + (verticalPadding * 2f);
         background.sizeDelta = new Vector2(width, height);
@@ -276,9 +274,7 @@ public class TooltipInstance : MonoBehaviour
     {
         yield return new WaitForSeconds(autoDestroyDelay);
         if (useFade)
-        {
             yield return StartCoroutine(Fade(1f, 0f, fadeTime));
-        }
         Destroy(gameObject);
     }
 
@@ -288,9 +284,6 @@ public class TooltipInstance : MonoBehaviour
         {
             Vector2 mousePos = Input.mousePosition;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas2D, mousePos + screenOffset, null, out Vector2 localPos);
-
-
-
             background.anchoredPosition = ClampToScreen(localPos, background.sizeDelta);
         }
     }
@@ -298,28 +291,20 @@ public class TooltipInstance : MonoBehaviour
     private Vector2 CalculatePosition(Vector2 origin, Vector2 tooltipSize, Vector2 targetSize, TooltipPlacement placement)
     {
         float padding = 16f;
-
         switch (placement)
         {
             case TooltipPlacement.Top:
-                // Tooltip pivot is bottom (0), so we anchor its bottom to the top of the target
                 return origin + new Vector2(0, targetSize.y / 2 + padding);
-
             case TooltipPlacement.Bottom:
-                // Tooltip pivot is top (1), so anchor its top to the bottom of the target
                 return origin - new Vector2(0, targetSize.y / 2 + padding);
-
             case TooltipPlacement.Left:
                 return origin - new Vector2(targetSize.x / 2 + tooltipSize.x / 2 + padding, 0);
-
             case TooltipPlacement.Right:
                 return origin + new Vector2(targetSize.x / 2 + tooltipSize.x / 2 + padding, 0);
-
             default:
                 return origin;
         }
     }
-
 
     private Vector2 ClampToScreen(Vector2 position, Vector2 size)
     {
@@ -327,10 +312,8 @@ public class TooltipInstance : MonoBehaviour
         float canvasHeight = canvas2D.rect.height;
         float halfWidth = size.x / 2;
         float halfHeight = size.y / 2;
-
         position.x = Mathf.Clamp(position.x, -canvasWidth / 2 + halfWidth, canvasWidth / 2 - halfWidth);
         position.y = Mathf.Clamp(position.y, -canvasHeight / 2 + halfHeight, canvasHeight / 2 - halfHeight);
-
         return position;
     }
 }
@@ -345,6 +328,9 @@ public class TooltipSettings
     public bool useFade = false;
     public bool useTypewriter = false;
     public bool autoDestroy = false;
+    public TypewriterMode typewriterMode = TypewriterMode.CharacterByCharacter;
+    public TooltipTextAlignment textAlignment = TooltipTextAlignment.TopLeft;
+    public float typewriterSpeed = 0.02f;
 }
 
 public static class Tooltip
@@ -353,7 +339,6 @@ public static class Tooltip
     {
         var prefab = PrefabRepo.instance.Prefabs["TooltipPrefab"];
         var canvas = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
-
         GameObject go = GameObject.Instantiate(prefab, canvas);
         go.name = $"Tooltip_{System.Guid.NewGuid():N}";
 
@@ -363,21 +348,19 @@ public static class Tooltip
         instance.autoDestroy = settings.autoDestroy;
         instance.followPointer = settings.followPointer;
         instance.autoDestroyDelay = settings.autoDestroyDelay;
+        instance.typewriterMode = settings.typewriterMode;
+        instance.textAlignment = settings.textAlignment;
+        instance.typewriterSpeed = settings.typewriterSpeed;
 
         RectTransform uiTarget = null;
         Transform worldTarget = null;
 
         if (settings.target is RectTransform rectTransform)
-        {
             uiTarget = rectTransform;
-        }
         else if (settings.target is Transform transform)
-        {
             worldTarget = transform;
-        }
 
         instance.Assign(settings.message, uiTarget, worldTarget, settings.placement);
-
         return instance;
     }
 }

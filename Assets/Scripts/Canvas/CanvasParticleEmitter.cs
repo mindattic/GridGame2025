@@ -6,8 +6,10 @@ using System.Collections.Generic;
 public class CanvasParticleEmitter : MonoBehaviour
 {
 
-    [SerializeField] public GameObject canvasParticlePrefab; // Prefab with an Image component
-    [SerializeField] private RectTransform canvasTransform; // SelectProfile the Canvas
+
+    private RectTransform canvas2D; // SelectProfile the Canvas
+    private GameObject canvasParticlePrefab;
+    
     private float spawnIntervalMin; // Time between spawns
     private float spawnIntervalMax; // Time between spawns
     private float speedMin;
@@ -27,6 +29,10 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     private void Awake()
     {
+        canvas2D = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
+        canvasParticlePrefab = PrefabRepo.instance.Prefabs["CanvasParticlePrefab"];
+
+
         xMin = -Screen.width;
         xMax = Screen.width;
         yMin = -200;
@@ -47,10 +53,10 @@ public class CanvasParticleEmitter : MonoBehaviour
 
         sprites = new Sprite[]
         {
-            SpriteRepo.instance.Sprites["Sprites/Leaves/Leaf1"],
-            SpriteRepo.instance.Sprites["Sprites/Leaves/Leaf2"],
-            SpriteRepo.instance.Sprites["Sprites/Leaves/MapleLeaf1"],
-            SpriteRepo.instance.Sprites["Sprites/Leaves/MapleLeaf2"],
+            SpriteRepo.instance.Leaves["Leaf1"],
+            SpriteRepo.instance.Leaves["Leaf2"],
+            SpriteRepo.instance.Leaves["MapleLeaf1"],
+            SpriteRepo.instance.Leaves["MapleLeaf2"],
         };
 
     }
@@ -81,7 +87,7 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     private void SpawnImage(bool preheat = false)
     {
-        GameObject newImage = Instantiate(canvasParticlePrefab, canvasTransform);
+        GameObject newImage = Instantiate(canvasParticlePrefab, canvas2D);
         RectTransform rect = newImage.GetComponent<RectTransform>();
         Image image = newImage.GetComponent<Image>();
         if (rect == null || image == null)

@@ -3,7 +3,12 @@ using UnityEngine;
 
 public class CoinManager : MonoBehaviour
 {
-    [SerializeField] public GameObject CoinPrefab;
+    private GameObject CoinPrefab;
+
+    public void Awake()
+    {
+        CoinPrefab = PrefabRepo.instance.Prefabs["CoinPrefab"];
+    }
 
     public void Spawn(Vector3 position)
     {

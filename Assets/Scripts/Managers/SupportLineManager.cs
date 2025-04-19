@@ -7,6 +7,12 @@ public class SupportLineManager : MonoBehaviour
     [SerializeField] public GameObject supportLinePrefab;
     public Dictionary<(Vector2Int, Vector2Int), SupportLineInstance> supportLines = new Dictionary<(Vector2Int, Vector2Int), SupportLineInstance>();
 
+
+    public void Awake()
+    {
+        supportLinePrefab = PrefabRepo.instance.Prefabs["SupportLinePrefab"];
+    }
+
     public bool Exists(ActorInstance actor1, ActorInstance actor2)
     {
         var key = GetKey(actor1, actor2);

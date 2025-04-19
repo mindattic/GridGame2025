@@ -13,14 +13,14 @@ public class DottedLineManager : MonoBehaviour
   
 
     //Fields
-    [SerializeField] public GameObject DottedLinePrefab;
+    private GameObject DottedLinePrefab;
 
     public List<DottedLineInstance> dottedLines = new List<DottedLineInstance>();
 
-    //Method which is automatically called before the first frame update  
-    void Start()
+ 
+    void Awake()
     {
-  
+        DottedLinePrefab = PrefabRepo.instance.Prefabs["DottedLinePrefab"];
     }
 
 

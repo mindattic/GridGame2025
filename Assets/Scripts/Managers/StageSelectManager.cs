@@ -8,7 +8,7 @@ using Label = TMPro.TextMeshProUGUI;
 public class StageSelectManager : MonoBehaviour
 {
     //Fields
-    [SerializeField] public GameObject buttonPrefab;
+    private GameObject buttonPrefab;
     private RectTransform canvas2D;
     private Label header;
     private RectTransform scrollView;
@@ -23,6 +23,9 @@ public class StageSelectManager : MonoBehaviour
 
     private void Awake()
     {
+
+        buttonPrefab = PrefabRepo.instance.Prefabs["ScreenWidthButtonPrefab"];
+
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
         //header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>() ?? throw new UnityException("Label is null");
         //scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");

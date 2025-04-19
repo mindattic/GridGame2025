@@ -11,8 +11,14 @@ namespace Game.Behaviors
     public class AttackLineManager : MonoBehaviour
     {
         //Variables
-        [SerializeField] public GameObject AttackLinePrefab;
+        private GameObject AttackLinePrefab;
         public Dictionary<(Vector2Int, Vector2Int), AttackLineInstance> attackLines = new Dictionary<(Vector2Int, Vector2Int), AttackLineInstance>();
+
+
+        public void Awake()
+        {
+            AttackLinePrefab = PrefabRepo.instance.Prefabs["AttackLinePrefab"];
+        }
 
         public bool Exists(ActorPair actorPair)
         {

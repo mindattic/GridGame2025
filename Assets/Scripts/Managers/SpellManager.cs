@@ -7,17 +7,23 @@ using UnityEngine;
 
 public class SpellManager : MonoBehaviour
 {
-
-
-
-
+    //Quick Reference
     protected BoardInstance board => GameManager.instance.board;
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
 
-    [SerializeField] public GameObject spellPrefab; // Assigned via inspector
+    //Fields
+
+    private GameObject spellPrefab;
 
     Dictionary<string, SpellInstance> spells = new Dictionary<string, SpellInstance>();
+
+
+
+    public void Awake()
+    {
+        spellPrefab = PrefabRepo.instance.Prefabs["SpellPrefab"];
+    }
 
     // Spawns a SpellInstance configured by type.
     public IEnumerator Spawn(SpellSettings spell)
