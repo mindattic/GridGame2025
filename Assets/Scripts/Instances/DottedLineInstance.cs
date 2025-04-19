@@ -1,6 +1,7 @@
 using Game.Behaviors;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class DottedLineInstance : MonoBehaviour
 {
@@ -67,7 +68,7 @@ public class DottedLineInstance : MonoBehaviour
         this.segment = segment;
         this.location = location;
         this.position = Geometry.GetPositionByLocation(this.location);
-        this.transform.localScale = tileScale;
+        this.spriteRenderer.transform.localScale = tileScale;
 
         //Assign resources
         var line = SpriteRepo.instance.Sprites["DottedLine"];

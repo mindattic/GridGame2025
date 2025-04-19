@@ -30,11 +30,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 231b405edfadab84ebe1ec2b74eeed52
-    m_Address: Prefabs/BoardPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 272c21994119e6f46be8d6131b08c15d
     m_Address: Prefabs/ScreenWidthButtonPrefab
     m_ReadOnly: 0
