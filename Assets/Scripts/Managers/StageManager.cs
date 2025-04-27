@@ -160,6 +160,9 @@ public class StageManager : MonoBehaviour
 
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
+
+
+        stageActor.Location ??= Random.UnoccupiedLocation;
         instance.Spawn(stageActor.Location.Value);
 
         actors.Add(instance);

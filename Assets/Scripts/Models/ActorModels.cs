@@ -16,11 +16,15 @@ namespace Assets.Scripts.Models
         public float PreviousAP;
         public float AP;
         public float MaxAP;
+
+        //Base Stats
         public float Strength;
-        public float Vitality;
         public float Agility;
+        public float Vitality;
+        public float Intelligence;
         public float Speed;
         public float Luck;
+       
 
         public ActorStats() { }
 

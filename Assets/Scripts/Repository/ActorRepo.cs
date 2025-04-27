@@ -1,10 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 
 
@@ -108,10 +105,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 420,
-                    Y = 50,
-                    Width = 256,
-                    Height = 256
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -161,10 +157,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 200,
-                    Y = 380,
-                    Width = 512,
-                    Height = 512
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -214,10 +209,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 385,
-                    Y = 50,
-                    Width = 196,
-                    Height = 196
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -267,10 +261,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 380,
-                    Y = 50,
-                    Width = 196,
-                    Height = 196
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -320,10 +313,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 430,
-                    Y = 60,
-                    Width = 196,
-                    Height = 196
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -373,10 +365,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 380,
-                    Y = 50,
-                    Width = 196,
-                    Height = 196
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -426,10 +417,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 380,
-                    Y = 50,
-                    Width = 196,
-                    Height = 196
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -479,10 +469,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 420,
-                    Y = 50,
-                    Width = 196,
-                    Height = 196
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -532,10 +521,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 420,
-                    Y = 50,
-                    Width = 196,
-                    Height = 196
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -585,10 +573,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 200,
-                    Y = 380,
-                    Width = 256,
-                    Height = 256
+                    Position = new Vector3(0.5f, -1.4f, 0f),
+                    Scale = new Vector3(5f, 5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -638,10 +625,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 200,
-                    Y = 250,
-                    Width = 512,
-                    Height = 512
+                    Position = new Vector3(0.2f, 0.2f, 0f),
+                    Scale = new Vector3(1.5f, 1.5f, 1f),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -691,10 +677,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 380,
-                    Y = 50,
-                    Width = 196,
-                    Height = 196
+                    Position = new Vector3(0.5f,-1.4f,0),
+                    Scale = new Vector3(5,5,1),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -743,10 +728,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 380,
-                    Y = 50,
-                    Width = 196,
-                    Height = 196
+                      Position = new Vector3(0.5f,-1.4f,0),
+                      Scale = new Vector3(5,5,1),
+                      Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -794,10 +778,9 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    X = 200,
-                    Y = 150,
-                    Width = 256,
-                    Height = 256
+                    Position = new Vector3(0, -2, 0),
+                    Scale = new Vector3(5, 5, 1),
+                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -832,5 +815,5 @@ public class ActorRepo : ScriptableObject
             }
         }
     }
-   
+
 }

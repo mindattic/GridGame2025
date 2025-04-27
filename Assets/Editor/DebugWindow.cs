@@ -345,10 +345,10 @@ public class DebugWindow : EditorWindow
     private void RenderStats()
     {
         GUILayout.BeginHorizontal();
-        //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailWidth * 0.25f));
+        //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
         GUILayout.Label($"Turn: {(turnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Phase: {turnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
-        //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailWidth * 0.25f));
+        //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
@@ -458,10 +458,10 @@ public class DebugWindow : EditorWindow
         if (GUILayout.Button("Load", GUILayout.Width(Screen.width * Constants.percent33)))
             OnReloadStageClick();
 
-        //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.thumbnailWidth * Constants.percent33)))
+        //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.thumbnailScaleX * Constants.percent33)))
         //    OnPreviousStageClick();
 
-        //if (GUILayout.Button("Next >", GUILayout.Width(Screen.thumbnailWidth * Constants.percent33)))
+        //if (GUILayout.Button("Next >", GUILayout.Width(Screen.thumbnailScaleX * Constants.percent33)))
         //    OnNextStageClick();
 
         GUILayout.EndHorizontal();
@@ -469,10 +469,12 @@ public class DebugWindow : EditorWindow
     }
 
     // Class-level fields
-    private string thumbnailX = "0";
-    private string thumbnailY = "0";
-    private string thumbnailWidth = "256";
-    private string thumbnailHeight = "256";
+    private string thumbnailPositionX = "0.5";
+    private string thumbnailPositionY = "-1.4";
+    private string thumbnailScaleX = "5";
+    private string thumbnailScaleY = "5";
+    private string thumbnailRangeX = "0.25";
+    private string thumbnailRangeY = "0.25";
 
     private void RenderThumbnailSettings()
     {
@@ -483,32 +485,29 @@ public class DebugWindow : EditorWindow
 
         // Second horizontal row: the controls.
         GUILayout.BeginHorizontal();
-        GUILayout.Label("X:", GUILayout.Width(20));
-        thumbnailX = GUILayout.TextField(thumbnailX, GUILayout.Width(64));
-        GUILayout.Label("Y:", GUILayout.Width(20));
-        thumbnailY = GUILayout.TextField(thumbnailY, GUILayout.Width(64));
-        GUILayout.Label("Width:", GUILayout.Width(50));
-        thumbnailWidth = GUILayout.TextField(thumbnailWidth, GUILayout.Width(64));
-        GUILayout.Label("Height:", GUILayout.Width(50));
-        thumbnailHeight = GUILayout.TextField(thumbnailHeight, GUILayout.Width(64));
+        GUILayout.Label("pX:", GUILayout.Width(20));
+        thumbnailPositionX = GUILayout.TextField(thumbnailPositionX, GUILayout.Width(64));
+        GUILayout.Label("pY:", GUILayout.Width(20));
+        thumbnailPositionY = GUILayout.TextField(thumbnailPositionY, GUILayout.Width(64));
+        GUILayout.Label("sX:", GUILayout.Width(6204));
+        thumbnailScaleX = GUILayout.TextField(thumbnailScaleX, GUILayout.Width(64));
+        GUILayout.Label("sY:", GUILayout.Width(20));
+        thumbnailScaleY = GUILayout.TextField(thumbnailScaleY, GUILayout.Width(64));
 
         // Generate button.
         if (GUILayout.Button("Generate", GUILayout.Width(64)))
         {
             // Try parsing the inputs to integers.
-            if (int.TryParse(thumbnailX, out int x) &&
-                int.TryParse(thumbnailY, out int y) &&
-                int.TryParse(thumbnailWidth, out int w) &&
-                int.TryParse(thumbnailHeight, out int h))
+            if (GameManager.instance.focusedActor != null && 
+                float.TryParse(thumbnailPositionX, out float pX) &&
+                float.TryParse(thumbnailPositionY, out float pY) &&
+                float.TryParse(thumbnailScaleX, out float sX) &&
+                float.TryParse(thumbnailScaleY, out float sY))
             {
                 var characterName = GameManager.instance.focusedActor.characterName;
-                var actorData = ActorRepo.instance.Actors[characterName];
-                //actorData.Thumbnail = ThumbnailHelper.Generate(actorData);
-                //GameManager.instance.focusedActor.thumbnail.sprite = actorData.Thumbnail;
-            }
-            else
-            {
-                Debug.Log("Invalid input! Please enter valid integer values.");
+                var position = new Vector3(pX, pY, 0f);
+                var scale = new Vector3(sX, sY, 1f);
+                GameManager.instance.focusedActor.thumbnail.Set(position, scale);
             }
         }
         GUILayout.EndHorizontal();

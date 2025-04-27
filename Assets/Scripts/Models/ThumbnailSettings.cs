@@ -1,30 +1,27 @@
-﻿namespace Assets.Scripts.Models
+﻿using UnityEngine;
+
+namespace Assets.Scripts.Models
 {
     [System.Serializable]
     public class ThumbnailSettings
     {
-        //Fields
-        public int X;
-        public int Y;
-        public int Width;
-        public int Height;
+        public Vector2 Position;
+        public Vector2 Scale;
+        public Vector2 Range;
 
         public ThumbnailSettings() { }
 
-        public ThumbnailSettings(int x, int y, int width, int height)
+        public ThumbnailSettings(Vector2 scale, Vector2 position)
         {
-            X = x;
-            Y = y;
-            Width = width;
-            Height = height;
+            Scale = scale;
+            Position = position;
         }
 
         public ThumbnailSettings(ThumbnailSettings other)
         {
-            X = other.X;
-            Y = other.Y;
-            Width = other.Width;
-            Height = other.Height;
+            Scale = other.Scale;
+            Position = other.Position;
+
         }
     }
 }

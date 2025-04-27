@@ -33,12 +33,10 @@ public class TitleScreenManager : MonoBehaviour
         fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
 
         profileButtonLabel.GetComponent<Label>().text = ProfileRepo.instance.CurrentProfile.Key;
-    }
 
-    public void Start()
-    {
         StartCoroutine(fade.FadeIn());
     }
+
 
     public void OnContinueButtonClicked()
     {

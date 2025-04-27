@@ -111,13 +111,10 @@ public class PartyManager : MonoBehaviour
 
 
 
-
-    }
-
-    private void Start()
-    {
         StartCoroutine(fade.FadeIn());
     }
+
+   
 
     private void Update()
     {

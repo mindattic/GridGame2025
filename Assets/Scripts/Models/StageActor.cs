@@ -11,7 +11,7 @@ public class StageActor
 {
     public string Character;
     public int Level = 1;
-    [NonSerialized] public Team Team; 
+    [NonSerialized] public Team Team;
     [NonSerialized] public int SpawnTurn;
     [NonSerialized] public Vector2Int? Location;
     [NonSerialized] public ActorStats Stats;
@@ -35,7 +35,7 @@ public class StageActor
         Team = team;
         Level = level;
         SpawnTurn = 0;
-        Location = location.HasValue ? location.Value : null;
+        Location = location.HasValue ? location.Value : Random.UnoccupiedLocation;
         AssignStats();
     }
 
