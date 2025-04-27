@@ -34,12 +34,12 @@ public class ProfileRepo : ScriptableObject
     //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     //private static async void AutoInitialize()
     //{
-    //    if (Instance == null)
+    //    if (_ == null)
     //    {
     //        var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
-    //        Instance = await handle.Task;
+    //        _ = await handle.Task;
 
-    //        if (Instance == null)
+    //        if (_ == null)
     //            Debug.LogError("ProfileRepo asset not found in Addressables with key 'Repositories/ProfileRepo'");
     //    }
     //}
@@ -49,9 +49,9 @@ public class ProfileRepo : ScriptableObject
     //{
     //    var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<ProfileRepo>("Repositories/ProfileRepo");
     //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    Instance = handle.Result;
+    //    _ = handle.Result;
 
-    //    if (Instance == null)
+    //    if (_ == null)
     //        Debug.LogError("Failed to load ProfileRepo synchronously from Addressables.");
     //}
 

@@ -305,15 +305,15 @@ public class PincerAttackManager : MonoBehaviour
         // Iterate over each valid pair and assign the appropriate sorting order.
         foreach (var pair in participants.pair)
         {
-            // Set both attackers to the attacker sorting order.
+            // Assign both attackers to the attacker sorting order.
             pair.attacker1.sortingOrder = SortingOrder.Attacker;
             pair.attacker2.sortingOrder = SortingOrder.Attacker;
 
-            // Set each opponent between the attackers to the opponent sorting order.
+            // Assign each opponent between the attackers to the opponent sorting order.
             foreach (var opp in pair.opponents)
                 opp.sortingOrder = SortingOrder.Opponent;
 
-            // Set all supporters for attacker1 and attacker2 to the supporter sorting order.
+            // Assign all supporters for attacker1 and attacker2 to the supporter sorting order.
             foreach (var s in pair.supporters1)
                 s.sortingOrder = SortingOrder.Supporter;
             foreach (var s in pair.supporters2)

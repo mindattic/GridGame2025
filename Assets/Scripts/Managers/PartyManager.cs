@@ -153,7 +153,7 @@ public class PartyManager : MonoBehaviour
             GameObject slide = Instantiate(slidePrefab, rosterPanel);
             var instance = slide.GetComponent<RosterSlideInstance>();
 
-            // Set the slide name
+            // Assign the slide name
             slide.name = $"RosterSlide_{member.Character}";
 
             // Load the sprite asynchronously

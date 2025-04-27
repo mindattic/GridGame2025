@@ -59,15 +59,15 @@ public class StageSelectManager : MonoBehaviour
         GameObject instance = Instantiate(buttonPrefab, content);
         instance.name = $"Button_{stageName}";
        
-        //Set the button size
+        //Assign the button size
         //RectTransform buttonRect = instance.GetComponent<RectTransform>();
         //buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
-        //Set the button's click event
+        //Assign the button's click event
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnStageSelectButtonClicked(stageName));
 
-        //Set the button textarea
+        //Assign the button textarea
         Label label = instance.GetComponentInChildren<Label>();
         label.text = stageName;
     }

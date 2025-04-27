@@ -11,38 +11,59 @@ using UnityEngine.SceneManagement;
 // It uses a runtime initialization attribute to automatically run after the scene loads.
 public static class DebugWindowTrigger
 {
-    // Called automatically after a scene is loaded.
+    private static float delayTime = 3f;   // 3-second delay
+    private static float elapsedTime = 0f;
+    private static bool isWaiting = false;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     private static void OnSceneLoaded()
     {
-        // Only proceed if the Editor is playing.
+        if (DebugWindow.isOpen)
+            DebugWindow.CloseWindow();
+
         if (!EditorApplication.isPlaying)
             return;
 
-        // If the active scene is the "Game" scene, enqueue a call to open the debug window.
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            // Uncomment the Debug.Log below for logging if needed.
-            // Debug.Log("[DebugWindow] Game scene loaded, opening Debug Window.");
-            EditorApplication.delayCall += OpenDebugWindow;
+            // Start waiting process
+            isWaiting = true;
+            elapsedTime = 0f;
+            EditorApplication.update += WaitAndOpenDebugWindow;
         }
     }
 
-    // Opens the Debug Window by calling its static ShowWindow() method.
+    private static void WaitAndOpenDebugWindow()
+    {
+        if (!isWaiting)
+            return;
+
+        elapsedTime += Time.unscaledDeltaTime;
+
+        if (elapsedTime >= delayTime)
+        {
+            isWaiting = false;
+            EditorApplication.update -= WaitAndOpenDebugWindow;
+
+            OpenDebugWindow();
+        }
+    }
+
     private static void OpenDebugWindow()
     {
         DebugWindow.ShowWindow();
     }
 }
 
+
 // This attribute ensures that the static constructor is called when the Unity Editor loads.
 [InitializeOnLoad]
 public class DebugWindow : EditorWindow
 {
     // Singleton instance of the DebugWindow.
-    private static DebugWindow instance;
+    public static DebugWindow instance;
     // Tracks whether the window is currently open.
-    private static bool isWindowOpen = false;
+    public static bool isOpen = false;
 
     // Scroll position for the log area.
     private Vector2 scrollPosition;
@@ -78,7 +99,7 @@ public class DebugWindow : EditorWindow
     {
         // Open or focus the debug window.
         instance = GetWindow<DebugWindow>("Debug Window");
-        isWindowOpen = true;
+        isOpen = true;
     }
 
     // Closes the debug window.
@@ -89,7 +110,7 @@ public class DebugWindow : EditorWindow
 
         instance.Close();
         instance = null;
-        isWindowOpen = false;
+        isOpen = false;
     }
 
     // Called when play mode state changes (e.g., entering play mode).
@@ -99,7 +120,7 @@ public class DebugWindow : EditorWindow
         // When entering play mode, close any open debug window.
         if (state == PlayModeStateChange.EnteredPlayMode)
         {
-            if (isWindowOpen)
+            if (isOpen)
                 CloseWindow();
 
             // Delay re-opening the window until the Game scene has loaded.
@@ -162,7 +183,7 @@ public class DebugWindow : EditorWindow
             return;
 
         instance = this;
-        isWindowOpen = true;
+        isOpen = true;
         lastUpdateTime = DateTime.Now;
 
         // Retrieve references from the GameManager.
@@ -174,7 +195,7 @@ public class DebugWindow : EditorWindow
         logManager = gameManager.logManager;
         selectedHeroManager = gameManager.selectedHeroManager;
 
-        // Set initial debug flag values.
+        // Assign initial debug flag values.
         debugManager.showActorNameTag = false;
         debugManager.showActorFrame = false;
         debugManager.showTutorials = false;
@@ -190,7 +211,7 @@ public class DebugWindow : EditorWindow
     // OnDisable is called when the window is closed.
     private void OnDisable()
     {
-        isWindowOpen = false;
+        isOpen = false;
         instance = null;
 
         // Unregister event handlers.
@@ -489,7 +510,7 @@ public class DebugWindow : EditorWindow
         thumbnailPositionX = GUILayout.TextField(thumbnailPositionX, GUILayout.Width(64));
         GUILayout.Label("pY:", GUILayout.Width(20));
         thumbnailPositionY = GUILayout.TextField(thumbnailPositionY, GUILayout.Width(64));
-        GUILayout.Label("sX:", GUILayout.Width(6204));
+        GUILayout.Label("sX:", GUILayout.Width(20));
         thumbnailScaleX = GUILayout.TextField(thumbnailScaleX, GUILayout.Width(64));
         GUILayout.Label("sY:", GUILayout.Width(20));
         thumbnailScaleY = GUILayout.TextField(thumbnailScaleY, GUILayout.Width(64));
@@ -498,15 +519,15 @@ public class DebugWindow : EditorWindow
         if (GUILayout.Button("Generate", GUILayout.Width(64)))
         {
             // Try parsing the inputs to integers.
-            if (GameManager.instance.focusedActor != null && 
+            if (GameManager.instance.focusedActor != null &&
                 float.TryParse(thumbnailPositionX, out float pX) &&
                 float.TryParse(thumbnailPositionY, out float pY) &&
                 float.TryParse(thumbnailScaleX, out float sX) &&
                 float.TryParse(thumbnailScaleY, out float sY))
             {
-                var characterName = GameManager.instance.focusedActor.characterName;
                 var position = new Vector3(pX, pY, 0f);
                 var scale = new Vector3(sX, sY, 1f);
+                var thumbnailSettings = new ThumbnailSettings(position, scale);
                 GameManager.instance.focusedActor.thumbnail.Set(position, scale);
             }
         }

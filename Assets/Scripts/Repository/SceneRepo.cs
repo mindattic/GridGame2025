@@ -33,12 +33,12 @@ namespace Assets.Scripts.Repositories
         //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         //private static async void AutoInitialize()
         //{
-        //    if (Instance == null)
+        //    if (_ == null)
         //    {
         //        var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
-        //        Instance = await handle.Task;
+        //        _ = await handle.Task;
 
-        //        if (Instance == null)
+        //        if (_ == null)
         //            Debug.LogError("SceneRepo asset not found in Addressables with key 'Repositories/SceneRepo'");
         //    }
         //}
@@ -48,9 +48,9 @@ namespace Assets.Scripts.Repositories
         //{
         //    var handle = Addressables.LoadAssetAsync<SceneRepo>("Repositories/SceneRepo");
         //    handle.WaitForCompletion(); // Block until the asset is loaded
-        //    Instance = handle.Result;
+        //    _ = handle.Result;
 
-        //    if (Instance == null)
+        //    if (_ == null)
         //        Debug.LogError("Failed to load SceneRepo synchronously from Addressables.");
         //}
 

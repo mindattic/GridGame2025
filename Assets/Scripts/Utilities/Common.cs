@@ -287,6 +287,8 @@ public static class Constants
     public const string Canvas2D = "Canvas2D";
     public const string Art = "Art";
 
+    public const float PortraitSize = 1024f;
+
     //Date formats
     public const string dateFormat = "yyyy.MM.dd.HH.mm.ss";
 

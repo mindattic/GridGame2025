@@ -52,7 +52,7 @@ public class BoardInstance : MonoBehaviour
         // Here, (tileSize * 4) + tileSize * 2 positions the board using 6 tiles' height.
         var y = (tileSize * 4) + tileSize * 2;
         offset = new Vector2(x, y);
-        // Set the board's world position to the calculated offset.
+        // Assign the board's world position to the calculated offset.
         transform.position = offset;
     }
 
@@ -96,7 +96,7 @@ public class BoardInstance : MonoBehaviour
                 var prefab = Instantiate(TilePrefab, Vector2.zero, Quaternion.identity);
                 // Get the TileInstance component from the instantiated prefab.
                 var instance = prefab.GetComponent<TileInstance>();
-                // Set the parent of the tile to be this board, so they are organized under the board.
+                // Assign the parent of the tile to be this board, so they are organized under the board.
                 instance.parent = transform;
                 // Key the tile based on its grid coordinates.
                 instance.name = $"Tile_{col}x{row}";
@@ -107,9 +107,9 @@ public class BoardInstance : MonoBehaviour
             }
         }
 
-        // Set the grid origin of the TileMap to the position of the tile at grid (1,1).
+        // Assign the grid origin of the TileMap to the position of the tile at grid (1,1).
         tileMap.gridOrigin = tileMap.GetTile(new Vector2Int(1, 1)).position;
-        // Set the tile size in the TileMap.
+        // Assign the tile size in the TileMap.
         tileMap.tileSize = tileSize;
 
         // Find all GameObjects tagged as "Tile" and add their TileInstance components to the global GameManager's tiles list.

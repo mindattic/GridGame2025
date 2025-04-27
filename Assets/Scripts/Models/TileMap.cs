@@ -191,7 +191,7 @@ namespace Assets.Scripts.Models
             public TileInstance Tile { get; }
 
             /// <summary>
-            /// Constructs a new TileEntry with the specified grid location, world position, and tile Instance.
+            /// Constructs a new TileEntry with the specified grid location, world position, and tile _.
             /// </summary>
             /// <param name="location">Grid coordinates for the tile.</param>
             /// <param name="position">World space position for the tile.</param>

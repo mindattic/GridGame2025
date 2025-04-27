@@ -49,7 +49,7 @@ public class FocusIndicator : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    // Awake is called when the script Instance is being loaded.
+    // Awake is called when the script _ is being loaded.
     // Here, we cache the SpriteRenderer component for later use.
     private void Awake()
     {
@@ -93,7 +93,7 @@ public class FocusIndicator : MonoBehaviour
     {
         // Disable the indicator's sprite.
         spriteRenderer.enabled = false;
-        // Set its position to 'Nowhere', effectively removing it from the board.
+        // Assign its position to 'Nowhere', effectively removing it from the board.
         position = PositionHelper.Nowhere;
     }
 }

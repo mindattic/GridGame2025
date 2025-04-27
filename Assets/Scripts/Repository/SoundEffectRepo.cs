@@ -34,12 +34,12 @@ public class SoundEffectRepo : ScriptableObject
     //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     //private static async void AutoInitialize()
     //{
-    //    if (Instance == null)
+    //    if (_ == null)
     //    {
     //        var handle = Addressables.LoadAssetAsync<SoundEffectRepo>("Repositories/SoundEffectRepo");
-    //        Instance = await handle.Task;
+    //        _ = await handle.Task;
 
-    //        if (Instance == null)
+    //        if (_ == null)
     //            Debug.LogError("SoundEffectRepo asset not found in Addressables with key 'Repositories/SoundEffectRepo'");
     //    }
     //}
@@ -49,9 +49,9 @@ public class SoundEffectRepo : ScriptableObject
     //{
     //    var handle = Addressables.LoadAssetAsync<SoundEffectRepo>("Repositories/SoundEffectRepo");
     //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    Instance = handle.Result;
+    //    _ = handle.Result;
 
-    //    if (Instance == null)
+    //    if (_ == null)
     //        Debug.LogError("Failed to load SoundEffectRepo synchronously from Addressables.");
     //}
 

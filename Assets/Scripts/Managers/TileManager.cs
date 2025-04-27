@@ -24,7 +24,7 @@ public class TileManager : MonoBehaviour
     protected TileMap tileMap => GameManager.instance.tileMap;
 
     /// <summary>
-    /// Awake is called when the script Instance is being loaded.
+    /// Awake is called when the script _ is being loaded.
     /// It is currently empty but can be used for early initialization if needed.
     /// </summary>
     public void Awake()
@@ -63,7 +63,7 @@ public class TileManager : MonoBehaviour
     /// <param name="newLocation">The new grid location that is now selected.</param>
     public void OnSelectedPlayerLocationChanged(Vector2Int previousLocation, Vector2Int newLocation)
     {
-        // Set the previous tile's color back to white.
+        // Assign the previous tile's color back to white.
         tileMap.GetTile(previousLocation).color = ColorHelper.Tile.White;
         // Highlight the new tile by setting its color to yellow.
         tileMap.GetTile(newLocation).color = ColorHelper.Tile.Yellow;

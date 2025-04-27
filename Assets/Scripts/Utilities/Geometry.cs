@@ -13,7 +13,7 @@ public class Geometry
     private static BoardInstance board => GameManager.instance.board;           // Reference to the game board.
     private static float tileSize => GameManager.instance.tileSize;               // Size of each tile in world units.
     private static Vector3 tileScale => GameManager.instance.tileScale;           // Scale factor for tiles.
-    private static TileMap tileMap => GameManager.instance.tileMap;               // The TileMap Instance storing tile data.
+    private static TileMap tileMap => GameManager.instance.tileMap;               // The TileMap _ storing tile data.
     private static List<ActorInstance> actors => GameManager.instance.actors;       // List of all actor instances.
     private static List<TileInstance> tiles => GameManager.instance.tiles;          // List of all tile instances.
 
@@ -55,7 +55,7 @@ public class Geometry
     }
 
     /// <summary>
-    /// Finds the tile Instance closest to a given world position.
+    /// Finds the tile _ closest to a given world position.
     /// </summary>
     /// <param name="position">World position to search near.</param>
     /// <returns>The closest TileInstance based on Euclidean distance.</returns>
@@ -65,7 +65,7 @@ public class Geometry
     }
 
     /// <summary>
-    /// Finds the tile Instance at a specified grid location.
+    /// Finds the tile _ at a specified grid location.
     /// </summary>
     /// <param name="location">Grid location (Vector2Int) to look up.</param>
     /// <returns>The TileInstance at that location.</returns>

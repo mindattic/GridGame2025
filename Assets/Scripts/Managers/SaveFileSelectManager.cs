@@ -106,11 +106,11 @@ public class SaveFileSelectManager : MonoBehaviour
         GameObject instance = Instantiate(buttonPrefab, content);
         instance.name = $"Button_{Path.GetFileNameWithoutExtension(item.FileName)}";
 
-        //Set the button size: 90% of width, 1/16th of height
+        //Assign the button size: 90% of width, 1/16th of height
         //RectTransform buttonRect = instance.GetComponent<RectTransform>();
         //buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
-        //Set the button click event
+        //Assign the button click event
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnLoadSaveFileButtonClicked(filePath));
 

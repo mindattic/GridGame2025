@@ -30,12 +30,12 @@ public class PrefabRepo : ScriptableObject
     //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     //private static async void AutoInitialize()
     //{
-    //    if (Instance == null)
+    //    if (_ == null)
     //    {
     //        var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
-    //        Instance = await handle.Task;
+    //        _ = await handle.Task;
 
-    //        if (Instance == null)
+    //        if (_ == null)
     //            Debug.LogError("PrefabRepo asset not found in Addressables with key 'Repositories/PrefabRepo'");
     //    }
     //}
@@ -45,9 +45,9 @@ public class PrefabRepo : ScriptableObject
     //{
     //    var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
     //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    Instance = handle.Result;
+    //    _ = handle.Result;
 
-    //    if (Instance == null)
+    //    if (_ == null)
     //        Debug.LogError("Failed to load MaterialRepo synchronously from Addressables.");
     //}
 

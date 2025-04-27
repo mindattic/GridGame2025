@@ -9,7 +9,7 @@ using UnityEngine.TextCore.Text;
 [Serializable]
 public class StageActor
 {
-    public string Character;
+    public string characterName;
     public int Level = 1;
     [NonSerialized] public Team Team;
     [NonSerialized] public int SpawnTurn;
@@ -21,7 +21,7 @@ public class StageActor
     //Copy constructor
     public StageActor(StageActor other)
     {
-        Character = other.Character;
+        characterName = other.characterName;
         Team = other.Team;
         Level = other.Level;
         SpawnTurn = other.SpawnTurn;
@@ -31,7 +31,7 @@ public class StageActor
 
     public StageActor(string character, Team team, int level, Vector2Int? location = null)
     {
-        Character = character;
+        characterName = character;
         Team = team;
         Level = level;
         SpawnTurn = 0;
@@ -41,14 +41,14 @@ public class StageActor
 
     public void AssignStats()
     {
-        if (ActorRepo.instance != null && ActorRepo.instance.Actors.ContainsKey(Character))
+        if (ActorRepo.instance != null && ActorRepo.instance.Actors.ContainsKey(characterName))
         {
-            var actor = ActorRepo.instance.Actors[Character];
+            var actor = ActorRepo.instance.Actors[characterName];
             Stats = actor.GetStats(Level);
         }
         else
         {
-            Debug.LogError($"StageActor failed to assign stats for Character: {Character}");
+            Debug.LogError($"StageActor failed to assign stats for characterName: {characterName}");
         }
     }
 }

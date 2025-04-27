@@ -46,6 +46,8 @@ public class ActorInstance : MonoBehaviour
     public bool isSpawnable => !flags.HasSpawned && spawnTurn <= turnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
     public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum action points.
 
+    public string characterName;                                // characterName data for this actor.
+
     // Determines if the actor is invincible based on team-specific debug settings.
     public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isHeroInvincible);
 
@@ -128,8 +130,6 @@ public class ActorInstance : MonoBehaviour
 
     // Fields: Core data fields representing characterName stats, state, and modules.
     [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animation behavior.
-    public string friendlyName;
-    public string characterName;                         // Character data for this actor.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
     public Vector3 previousPosition;                    // World position before the last movement.
     public Vector2Int location;                         // CurrentProfile grid location.
@@ -191,10 +191,10 @@ public class ActorInstance : MonoBehaviour
         return Direction.None;
     }
 
-    // Awake: Initialization of the actor Instance. Sets up modules and subscribes to events.
+    // Awake: Initialization of the actor _. Sets up modules and subscribes to events.
     private void Awake()
     {
-        // Assign modules with this actor Instance context.
+        // Assign modules with this actor _ context.
         render.Initialize(this);
         action.Initialize(this);
         movement.Initialize(this);
@@ -224,7 +224,7 @@ public class ActorInstance : MonoBehaviour
     // Assign: Initializes and spawns the actor at the specified start location.
     public void Spawn(Vector2Int startLocation)
     {
-        // Set CurrentProfile and previous locations.
+        // Assign CurrentProfile and previous locations.
         location = startLocation;
         previousLocation = location;
 
@@ -241,7 +241,7 @@ public class ActorInstance : MonoBehaviour
         weapon.Attack = Random.Float(10, 15);
         weapon.Defense = Random.Float(0, 5);
         weapon.Name = $"{weapon.Type}";
-        // Set the weapon icon using resources.
+        // Assign the weapon icon using resources.
         render.weaponIcon.sprite = SpriteRepo.instance.WeaponTypes[weapon.Type.ToString()];
 
         // Configure visual appearance and effects based on team.
@@ -267,8 +267,8 @@ public class ActorInstance : MonoBehaviour
             vfx.Attack = VisualEffectRepo.instance.VisualEffects["DoubleClaw"];
         }
 
-        // Set name tag textarea and toggle its visibility based on debug settings.
-        render.SetNameTagText(friendlyName);
+        // Assign name tag textarea and toggle its visibility based on debug settings.
+        render.SetNameTagText(characterName);
         render.SetNameTagEnabled(isEnabled: debugManager.showActorNameTag);
 
         // Save health and action bars.
@@ -348,7 +348,7 @@ public class ActorInstance : MonoBehaviour
                 break;
         }
 
-        //Set the actor's location to the nearest valid attack location relative to the target.
+        //Assign the actor's location to the nearest valid attack location relative to the target.
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
         //Note: nextPosition is commented out and could be used for future logic.
         //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
@@ -453,7 +453,7 @@ public class ActorInstance : MonoBehaviour
         if (!isDying)
             yield break;
 
-        //Before: Set actor to fully opaque.
+        //Before: Assign actor to fully opaque.
         var alpha = 1f;
         render.SetAlpha(alpha);
 
@@ -464,7 +464,7 @@ public class ActorInstance : MonoBehaviour
         //Trigger portrait dissolve effect and play death sound.
         portraitManager.Dissolve(this);
         audioManager.Play("Death");
-        //Set sorting order to maximum so that the death sequence renders on top.
+        //Assign sorting order to maximum so that the death sequence renders on top.
         sortingOrder = SortingOrder.Max;
 
         //During: Gradually reduce the alpha value for a fade-out effect.

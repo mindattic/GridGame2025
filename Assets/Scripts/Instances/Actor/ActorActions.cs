@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Instances.Actor
 {
-    // ActorActions encapsulates a collection of animated actions for an actor Instance,
+    // ActorActions encapsulates a collection of animated actions for an actor _,
     // such as shaking, dodging, bumping, growing, spinning, fading in, and weapon wiggle.
     // These actions are implemented using coroutines that interpolate values over time.
     public class ActorActions
@@ -25,14 +25,14 @@ namespace Assets.Scripts.Instances.Actor
         protected Vector3 tileScale => GameManager.instance.tileScale;
 
         // Fields:
-        // The parent actor Instance this actions module is controlling.
+        // The parent actor _ this actions module is controlling.
         private ActorInstance instance;
         // Parameters for the weapon wiggle animation.
         private float wiggleSpeed;
         private float wiggleAmplitude;
 
         /// <summary>
-        /// Assign sets up this actions module with its parent actor Instance and calculates
+        /// Assign sets up this actions module with its parent actor _ and calculates
         /// initial parameters for animations.
         /// </summary>
         public void Initialize(ActorInstance parentInstance)
@@ -334,7 +334,7 @@ namespace Assets.Scripts.Instances.Actor
             trigger.SetContext(instance);
             yield return trigger.StartCoroutine();
 
-            // After: Set the scale exactly to max size.
+            // After: Assign the scale exactly to max size.
             scale = new Vector3(maxSize, maxSize, 0);
         }
 
@@ -561,7 +561,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new Trigger();
 
-            // Before: Set the initial rotation for the weapon icon.
+            // Before: Assign the initial rotation for the weapon icon.
             float start = -45f;
             float rotZ = start;
             render.weaponIcon.transform.rotation = Quaternion.Euler(0, 0, rotZ);

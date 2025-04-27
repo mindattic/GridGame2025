@@ -3,29 +3,29 @@ using UnityEngine.SceneManagement;
 
 /// <summary>
 /// A generic singleton base class for MonoBehaviour-derived classes.
-/// This class ensures that only one Instance of T exists and provides global access to it.
+/// This class ensures that only one _ of T exists and provides global access to it.
 /// </summary>
 /// <typeparam name="T">The type of the singleton, which must derive from MonoBehaviour.</typeparam>
 public abstract class Singleton<T> : Singleton where T : MonoBehaviour
 {
-    // The singleton Instance of type T.
+    // The singleton _ of type T.
     private static T _instance;
 
-    // Lock object to ensure thread safety when accessing Instance.
+    // Lock object to ensure thread safety when accessing _.
     private static readonly object objLock = new object();
 
     // Flag to determine if this singleton should persist between scene loads.
     private bool isPersistent = true;
 
     /// <summary>
-    /// Public property to access the singleton Instance.
-    /// If no Instance exists, it attempts to find one or creates a new one if the active scene is "Game".
+    /// Public property to access the singleton _.
+    /// If no _ exists, it attempts to find one or creates a new one if the active scene is "Game".
     /// </summary>
     public static T instance
     {
         get
         {
-            // If the application is quitting, do not return the Instance.
+            // If the application is quitting, do not return the _.
             if (isQuitting)
             {
                 Debug.LogWarning($"[{nameof(Singleton)}<{typeof(T)}>] instance will not be returned because the application is quitting.");
@@ -35,7 +35,7 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
             // Lock to ensure that only one thread can access this block at a time.
             lock (objLock)
             {
-                // If an Instance already exists, return it.
+                // If an _ already exists, return it.
                 if (_instance != null)
                     return _instance;
 
@@ -43,18 +43,18 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
                 var instances = Object.FindObjectsByType<T>(FindObjectsSortMode.None);
                 if (instances.Length > 0)
                 {
-                    // If more than one Instance exists, log a warning and destroy extras.
+                    // If more than one _ exists, log a warning and destroy extras.
                     if (instances.Length > 1)
                     {
-                        // Debug.LogWarning($"[{nameof(Singleton)}<{typeof(T)}>] More than one Instance found. Destroying extras.");
+                        // Debug.LogWarning($"[{nameof(Singleton)}<{typeof(T)}>] More than one _ found. Destroying extras.");
                         for (int i = 1; i < instances.Length; i++)
                             Destroy(instances[i]);
                     }
-                    // Use the first found Instance.
+                    // Use the first found _.
                     return _instance = instances[0];
                 }
 
-                // If no Instance exists and the active scene is not "Game", do not create one.
+                // If no _ exists and the active scene is not "Game", do not create one.
                 if (SceneManager.GetActiveScene().name != "Game")
                 {
                     return null;
@@ -68,7 +68,7 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     }
 
     /// <summary>
-    /// Awake is called when the script Instance is being loaded.
+    /// Awake is called when the script _ is being loaded.
     /// If isPersistent is true, this GameObject will not be destroyed on scene load.
     /// </summary>
     private void Awake()
@@ -88,7 +88,7 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
 
 /// <summary>
 /// Base non-generic singleton class that tracks whether the application is quitting.
-/// This is used by Singleton<T> to prevent new Instance creation during shutdown.
+/// This is used by Singleton<T> to prevent new _ creation during shutdown.
 /// </summary>
 public abstract class Singleton : MonoBehaviour
 {

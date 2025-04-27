@@ -83,16 +83,16 @@ public class OverworldManager : MonoBehaviour
     //    GameObject instance = Instantiate(stageIconPrefab, content);
     //    instance.name = $"StageIcon_{stageName}";
 
-    //    // Set the button size: 90% of width, 1/16th of height
+    //    // Assign the button size: 90% of width, 1/16th of height
     //    RectTransform buttonRect = instance.GetComponent<RectTransform>();
     //    buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
-    //    // Set the button's click event
+    //    // Assign the button's click event
     //    Button button = instance.GetComponent<Button>();
     //    button.transform.localPosition = position;
     //    button.onClick.AddListener(() => OnStageSelectButtonClicked(stageName));
 
-    //    // Set the button textarea
+    //    // Assign the button textarea
     //    Label label = instance.GetComponentInChildren<Label>();
     //    label.textarea = stageName;
     //}

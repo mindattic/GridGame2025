@@ -73,7 +73,7 @@ public class SelectedHeroManager : MonoBehaviour
         if (!turnManager.isHeroTurn || !turnManager.isStartPhase || !hasFocusedActor || focusedActor.isEnemy)
             return;
 
-        // Set the selected hero to be the focused actor.
+        // Assign the selected hero to be the focused actor.
         selectedHero = focusedActor;
 
         // If the selected hero is already moving, do not process further drag logic.

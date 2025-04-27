@@ -31,12 +31,12 @@ public class TutorialRepo : ScriptableObject
     //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     //private static async void AutoInitialize()
     //{
-    //    if (Instance == null)
+    //    if (_ == null)
     //    {
     //        var handle = Addressables.LoadAssetAsync<TutorialRepo>("Repositories/TutorialRepo");
-    //        Instance = await handle.Task;
+    //        _ = await handle.Task;
 
-    //        if (Instance == null)
+    //        if (_ == null)
     //            Debug.LogError("TutorialRepo asset not found in Addressables with key 'Repositories/TutorialRepo'");
     //    }
     //}
@@ -46,9 +46,9 @@ public class TutorialRepo : ScriptableObject
     //{
     //    var handle = Addressables.LoadAssetAsync<TutorialRepo>("Repositories/TutorialRepo");
     //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    Instance = handle.Result;
+    //    _ = handle.Result;
 
-    //    if (Instance == null)
+    //    if (_ == null)
     //        Debug.LogError("Failed to load TutorialRepo synchronously from Addressables.");
     //}
 

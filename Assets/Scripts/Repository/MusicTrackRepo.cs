@@ -30,12 +30,12 @@ public class MusicTrackRepo : ScriptableObject
     //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     //private static async void AutoInitialize()
     //{
-    //    if (Instance == null)
+    //    if (_ == null)
     //    {
     //        var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
-    //        Instance = await handle.Task;
+    //        _ = await handle.Task;
 
-    //        if (Instance == null)
+    //        if (_ == null)
     //            Debug.LogError("MusicTrackRepo asset not found in Addressables with key 'Repositories/MusicTrackRepo'");
     //    }
     //}
@@ -45,9 +45,9 @@ public class MusicTrackRepo : ScriptableObject
     //{
     //    var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
     //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    Instance = handle.Result;
+    //    _ = handle.Result;
 
-    //    if (Instance == null)
+    //    if (_ == null)
     //        Debug.LogError("Failed to load MusicTrackRepo synchronously from Addressables.");
     //}
 

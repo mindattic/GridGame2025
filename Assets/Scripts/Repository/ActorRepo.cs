@@ -61,6 +61,7 @@ public class ActorRepo : ScriptableObject
         Load();
     }
 
+
     private void Load()
     {
 
@@ -107,7 +108,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -159,7 +159,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -211,7 +210,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -263,7 +261,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -315,7 +312,7 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
+
                 },
 
                 Details = new ActorDetails
@@ -367,7 +364,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -419,7 +415,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -471,7 +466,7 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
+             
                 },
 
                 Details = new ActorDetails
@@ -523,7 +518,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -575,7 +569,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
                     Scale = new Vector3(5f, 5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -627,7 +620,7 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.2f, 0.2f, 0f),
                     Scale = new Vector3(1.5f, 1.5f, 1f),
-                    Range = new Vector2(0.25f, 0.25f),
+ 
                 },
 
                 Details = new ActorDetails
@@ -679,7 +672,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0.5f,-1.4f,0),
                     Scale = new Vector3(5,5,1),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails
@@ -730,7 +722,7 @@ public class ActorRepo : ScriptableObject
                 {
                       Position = new Vector3(0.5f,-1.4f,0),
                       Scale = new Vector3(5,5,1),
-                      Range = new Vector2(0.25f, 0.25f),
+  
                 },
 
                 Details = new ActorDetails
@@ -780,7 +772,6 @@ public class ActorRepo : ScriptableObject
                 {
                     Position = new Vector3(0, -2, 0),
                     Scale = new Vector3(5, 5, 1),
-                    Range = new Vector2(0.25f, 0.25f),
                 },
 
                 Details = new ActorDetails

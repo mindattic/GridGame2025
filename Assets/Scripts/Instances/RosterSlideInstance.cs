@@ -52,7 +52,7 @@ public class RosterSlideInstance : MonoBehaviour
         Width = width;
         Height = height;
 
-        // Set the image sprite
+        // Assign the image sprite
         image.alphaHitTestMinimumThreshold = alphaThreshold;
         image.sprite = sprite;
 

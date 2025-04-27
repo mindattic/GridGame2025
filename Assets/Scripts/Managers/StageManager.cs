@@ -150,19 +150,18 @@ public class StageManager : MonoBehaviour
         var instance = prefab.GetComponent<ActorInstance>();
         instance.transform.parent = board.transform;
 
-        instance.characterName = stageActor.Character;
-        instance.friendlyName = instance.characterName;
-        instance.name = $"{stageActor.Character}_{Guid.NewGuid():N}";
+        instance.name = $"{stageActor.characterName}_{Guid.NewGuid():N}";
+        instance.characterName = stageActor.characterName;
         instance.team = stageActor.Team;
 
         // Assign stats based on characterName and stageActor's level
-        instance.stats = ActorRepo.instance.Actors[stageActor.Character].GetStats(stageActor.Level);
+        instance.stats = ActorRepo.instance.Actors[stageActor.characterName].GetStats(stageActor.Level);
 
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
 
-
         stageActor.Location ??= Random.UnoccupiedLocation;
+
         instance.Spawn(stageActor.Location.Value);
 
         actors.Add(instance);
@@ -239,7 +238,7 @@ public class StageManager : MonoBehaviour
     /// <summary>
     /// Convenience method for adding a new enemy actor.
     /// </summary>
-    /// <param name="character">Character type for the enemy.</param>
+    /// <param name="character">characterName type for the enemy.</param>
     public void AddEnemy(string character)
     {
         var stageActor = new StageActor(character, Team.Enemy, level: 1, location: Random.UnoccupiedLocation);

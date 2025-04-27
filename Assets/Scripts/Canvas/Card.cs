@@ -60,7 +60,7 @@ namespace Game.Behaviors
         // It sets up the initial positions and sizes for UI elements.
         private void Start()
         {
-            //Set the portrait's size
+            //Assign the portrait's size
             portrait.sizeDelta = new Vector2(portraitSize, portraitSize);
 
             // Define the offscreen starting position, just outside the screen width.
@@ -83,7 +83,7 @@ namespace Game.Behaviors
 
             string address = $"Actor-Portraits/{focusedActor.characterName}";
             portrait.GetComponent<Image>().sprite = AssetHelper.LoadAsset<Sprite>(address);
-            title.GetComponent<Label>().text = focusedActor.friendlyName;
+            title.GetComponent<Label>().text = focusedActor.characterName;
 
             // Format the actor's stats for display:
             var hp = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}"; // HP/MaxHP with proper rowSpacing.
@@ -98,7 +98,7 @@ namespace Game.Behaviors
                 $"HP       STR  VIT  AGI  SPD  LCK{Environment.NewLine}" +
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
-            // Set the details textarea combining the stats table with extra details from DataManager.
+            // Assign the details textarea combining the stats table with extra details from DataManager.
             details.GetComponent<Label>().text = stats + ActorRepo.instance.Actors[focusedActor.characterName].Details.Card;
 
             // Begin the slide-in animation for the portrait.

@@ -31,12 +31,12 @@ public class VisualEffectRepo : ScriptableObject
     //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     //private static async void AutoInitialize()
     //{
-    //    if (Instance == null)
+    //    if (_ == null)
     //    {
     //        var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
-    //        Instance = await handle.Task;
+    //        _ = await handle.Task;
 
-    //        if (Instance == null)
+    //        if (_ == null)
     //            Debug.LogError("VisualEffectRepo asset not found in Addressables with key 'Repositories/VisualEffectRepo'");
     //    }
     //}
@@ -46,9 +46,9 @@ public class VisualEffectRepo : ScriptableObject
     //{
     //    var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
     //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    Instance = handle.Result;
+    //    _ = handle.Result;
 
-    //    if (Instance == null)
+    //    if (_ == null)
     //        Debug.LogError("Failed to load VisualEffectRepo synchronously from Addressables.");
     //}
 

@@ -218,6 +218,18 @@ public class GameManager : Singleton<GameManager>
     //Method which is automatically called before the first frame update  
     void Start()
     {
+        if (ActorRepo.instance == null)
+        {
+            Debug.LogError("ActorRepo failed to initialize properly.");
+            return;
+        }
+
+        if (ActorRepo.instance == null)
+        {
+            Debug.LogError("Failed to load ActorRepo. Stopping initialization.");
+            return;
+        }
+
         //Verify that game is ready to run
         if (!ProfileRepo.instance.HasProfiles)
             return;

@@ -31,12 +31,12 @@ public class StageRepo : ScriptableObject
     //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     //private static async void AutoInitialize()
     //{
-    //    if (Instance == null)
+    //    if (_ == null)
     //    {
     //        var handle = Addressables.LoadAssetAsync<StageRepo>("Repositories/StageRepo");
-    //        Instance = await handle.Task;
+    //        _ = await handle.Task;
 
-    //        if (Instance == null)
+    //        if (_ == null)
     //            Debug.LogError("StageRepo asset not found in Addressables with key 'Repositories/StageRepo'");
     //    }
     //}
@@ -46,9 +46,9 @@ public class StageRepo : ScriptableObject
     //{
     //    var handle = Addressables.LoadAssetAsync<StageRepo>("Repositories/StageRepo");
     //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    Instance = handle.Result;
+    //    _ = handle.Result;
 
-    //    if (Instance == null)
+    //    if (_ == null)
     //        Debug.LogError("Failed to load StageRepo synchronously from Addressables.");
     //}
 
@@ -79,7 +79,7 @@ public class StageRepo : ScriptableObject
                     {
                         Actors = new List<StageActor>()
                         {
-                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) }
+                            new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) }
                         },
                         DottedLines = new List<StageDottedLine>
                         {
@@ -105,21 +105,21 @@ public class StageRepo : ScriptableObject
                     {
                         Actors = new List<StageActor>()
                         {
-                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy },
-                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy },
-                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy }
+                            new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy },
+                            new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy },
+                            new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy }
                         },
                     },
                     new StageWave()
                     {
                         Actors = new List<StageActor>()
                         {
-                            new StageActor { Character = CharacterHelper.Slime, Team = Team.Enemy },
-                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy },
-                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy },
-                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 2 },
-                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 3 },
-                            new StageActor { Character = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 4 },
+                            new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy },
+                            new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy },
+                            new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy },
+                            new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 2 },
+                            new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 3 },
+                            new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 4 },
                         },
                     },
                 }
@@ -200,7 +200,7 @@ public class StageRepo : ScriptableObject
                 string randomEnemy = possibleEnemies[rng.Next(possibleEnemies.Count)];
                 wave.Actors.Add(new StageActor
                 {
-                    Character = randomEnemy,
+                    characterName = randomEnemy,
                     Team = Team.Enemy,
                     Location = new Vector2Int(rng.Next(1, 6), rng.Next(1, 6))
                 });
