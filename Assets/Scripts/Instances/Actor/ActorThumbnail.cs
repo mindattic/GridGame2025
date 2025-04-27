@@ -21,8 +21,7 @@ public class ActorThumbnail : MonoBehaviour
     private float cycleTime;
     private float cyclePeriod;
     private Vector2 noiseSeed;
-    private float slowSpeed;
-
+  
     //Properties
     public Texture2D texture => spriteRenderer.sprite.texture;
 
@@ -37,20 +36,25 @@ public class ActorThumbnail : MonoBehaviour
         float baseTextureSize = 1024f;
         float textureSize = Mathf.Max(texture.width, texture.height);
         rangeMultiplier = 0.05f * (textureSize / baseTextureSize);
-        range = new Vector2(1, 1);
+        range = new Vector2(0.5f, 0.5f);
 
-        panSpeed = 1f;
+        panSpeed = 0.25f;
         wobbleAmplitudeFactorX = 0.25f;
         wobbleAmplitudeFactorY = 0.25f;
-        nextPauseInterval = Random.Float(3f, 7f);
-        pauseDuration = Random.Float(2f, 5f);
-        cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
-        slowSpeed = panSpeed / 4f;
-        nextPauseInterval = 5f;                 // How long to move before pausing.
-        pauseDuration = 2f;                     // How long to hold a pause.
-        pauseRampDuration = 0.5f;               // Easing time for ramping down/up.
+        pauseRampDuration = 0.5f;
         effectiveNoiseTime = 0f;
         cycleTime = 0f;
+
+        nextPauseInterval = Random.Float(3f, 7f);
+        pauseDuration = Random.Float(2f, 5f);  
+        cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
+        
+        
+    }
+
+    private void CalculatePause()
+    {
+
     }
 
     public void Set(Vector3 position, Vector3 scale)
@@ -94,7 +98,14 @@ public class ActorThumbnail : MonoBehaviour
         // Update the cycle timer
         cycleTime += Time.deltaTime;
         if (cycleTime >= cyclePeriod)
+        {
             cycleTime -= cyclePeriod;
+
+            nextPauseInterval = Random.Float(3f, 7f);
+            pauseDuration = Random.Float(2f, 5f);
+            cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
+        }
+
 
         // Determine speed multiplier based on pause cycle
         float multiplier = 1f;
@@ -122,7 +133,7 @@ public class ActorThumbnail : MonoBehaviour
         }
 
         // Advance effective noise time
-        effectiveNoiseTime += Time.deltaTime * multiplier * slowSpeed;
+        effectiveNoiseTime += Time.deltaTime * multiplier * panSpeed;
 
         // Generate Perlin noise values
         float noiseX = Mathf.PerlinNoise(effectiveNoiseTime, noiseSeed.x);
