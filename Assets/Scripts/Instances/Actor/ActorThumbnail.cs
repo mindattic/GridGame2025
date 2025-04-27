@@ -40,8 +40,8 @@ public class ActorThumbnail : MonoBehaviour
         range = new Vector2(1, 1);
 
         panSpeed = 1f;
-        wobbleAmplitudeFactorX = 0.7f;
-        wobbleAmplitudeFactorY = 0.7f;
+        wobbleAmplitudeFactorX = 0.25f;
+        wobbleAmplitudeFactorY = 0.25f;
         nextPauseInterval = Random.Float(3f, 7f);
         pauseDuration = Random.Float(2f, 5f);
         cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
