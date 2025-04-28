@@ -29,12 +29,7 @@ public static class ProfileRepo
     public static bool Load()
     {
         if (isLoaded)
-        {
-            Debug.Log("[ProfileRepo] Already loaded.");
             return true;
-        }
-
-        Debug.Log("[ProfileRepo] Starting profile load...");
 
         if (!Directory.Exists(FolderHelper.Folder.Profiles))
         {
@@ -43,27 +38,21 @@ public static class ProfileRepo
         }
 
         folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
-        Debug.Log($"[ProfileRepo] Found {folders.Count} profile folders.");
-
+     
         profiles.Clear();
         foreach (var folder in folders)
         {
             string key = new DirectoryInfo(folder).Name;
-            Debug.Log($"[ProfileRepo] Attempting to load profile: {key}");
-
             var profile = GetProfile(key);
             if (profile != null)
             {
-                profiles[key] = profile;
-                Debug.Log($"[ProfileRepo] Loaded profile: {key}");
+                profiles[key] = profile;;
             }
             else
             {
                 Debug.LogWarning($"[ProfileRepo] Failed to load profile: {key}");
             }
         }
-
-        Debug.Log($"[ProfileRepo] Total profiles loaded: {profiles.Count}");
 
         if (!profiles.Any())
         {
@@ -84,8 +73,6 @@ public static class ProfileRepo
         isLoaded = false;
         Load();
     }
-
-    // --- Profile Management Methods ---
 
     public static string CreateProfile(string value)
     {

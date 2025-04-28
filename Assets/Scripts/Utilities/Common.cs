@@ -1084,36 +1084,68 @@ public static class MenuHelper
 
 }
 
+
 public static class FolderHelper
 {
     public static class Folder
     {
-        public static string Profiles;
+        /*
+        Application.persistentDataPath resolves to:
 
-        static Folder()
+        Windows     | C:\Users\<User>\AppData\LocalLow\<CompanyName>\<ProductName>
+        macOS       | ~/Library/Application Support/<CompanyName>/<ProductName>
+        Linux       | ~/.config/unity3d/<CompanyName>/<ProductName>
+        Android     | /storage/emulated/0/Android/data/<package-name>/files
+        iOS         | /var/mobile/Containers/Data/Application/<guid>/Documents
+        WebGL       | IndexedDB (no filesystem access)
+        */
+
+        public static string Profiles
         {
-            if (!System.IO.Directory.Exists(Application.persistentDataPath))
+            get
             {
-                Debug.LogError("Application.persistentDataPath is null or whitespace.");
-                return;
-            }
+#if UNITY_WEBGL
+                Debug.LogError("File system operations are not supported on WebGL.");
+                return string.Empty;
+#else
+                string path = Path.Combine(Application.persistentDataPath, "Profiles");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
 
-            Profiles = Path.Combine(Application.persistentDataPath, "Profiles");
+                return path;
+#endif
+            }
         }
     }
 
+    /// <summary>
+    /// Creates a folder at the specified path if it doesn't exist.
+    /// </summary>
     public static string Create(string basePath, string folderName)
     {
+#if UNITY_WEBGL
+        Debug.LogError("Folder creation is not supported on WebGL.");
+        return string.Empty;
+#else
         var path = Path.Combine(basePath, folderName);
-        if (!System.IO.Directory.Exists(path))
-            System.IO.Directory.CreateDirectory(path);
+        if (!Directory.Exists(path))
+            Directory.CreateDirectory(path);
 
         return path;
+#endif
     }
 
+    /// <summary>
+    /// Returns a list of directories within the specified base path.
+    /// </summary>
     public static List<string> Get(string basePath)
     {
-        return System.IO.Directory.GetDirectories(basePath).ToList();
+#if UNITY_WEBGL
+        Debug.LogError("Directory listing is not supported on WebGL.");
+        return new List<string>();
+#else
+        return Directory.GetDirectories(basePath).ToList();
+#endif
     }
 }
 

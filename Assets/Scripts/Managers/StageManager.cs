@@ -150,7 +150,7 @@ public class StageManager : MonoBehaviour
         var instance = prefab.GetComponent<ActorInstance>();
         instance.transform.parent = board.transform;
 
-        instance.name = $"{stageActor.characterName}actors{Guid.NewGuid():N}";
+        instance.name = $"{stageActor.characterName}_{Guid.NewGuid():N}";
         instance.characterName = stageActor.characterName;
         instance.team = stageActor.Team;
 

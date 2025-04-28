@@ -31,7 +31,7 @@ public class SpellManager : MonoBehaviour
         // Instantiate the SpellInstance prefab at the source's position.
         var prefab = Instantiate(spellPrefab, spell.source.position, Quaternion.identity);
         var instance = prefab.GetComponent<SpellInstance>();
-        instance.name = $"Spell_{spell.friendlyName}actors{Guid.NewGuid():N}";
+        instance.name = $"Spell_{spell.friendlyName}_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         spells.Add(instance.name, instance);
         yield return instance.Spawn(spell);
