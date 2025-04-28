@@ -210,7 +210,7 @@ public class GameManager : Singleton<GameManager>
 #else
         deviceType = "Unknown";
 #endif
-        Debug.Log($"Running on `{deviceType}`");
+        //Debug.Log($"Running on `{deviceType}`");
 
         //#if UNITY_EDITOR
         //        Debug.Log($"Emulated on UNITY_EDITOR");

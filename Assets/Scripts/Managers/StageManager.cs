@@ -138,7 +138,6 @@ public class StageManager : MonoBehaviour
         }
 
         waveAnnouncement.Show(waveIndex + 1, currentStage.Waves.Count);
-        Debug.Log($"Wave {waveIndex + 1} of {currentStage.Waves.Count} loaded.");
     }
 
     /// <summary>
