@@ -15,7 +15,7 @@ public class DamageTextManager : MonoBehaviour
 
     public void Awake()
     {
-        DamageTextPrefab = PrefabRepo.instance.Prefabs["DamageTextPrefab"];
+        DamageTextPrefab = PrefabRepo.Prefabs["DamageTextPrefab"];
     }
 
     public void Spawn(string text, Vector3 position, DamageTextStyle style = DamageTextStyle.Oscillate)

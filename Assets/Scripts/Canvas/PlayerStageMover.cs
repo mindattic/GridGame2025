@@ -81,10 +81,10 @@ public class PlayerStageMover : MonoBehaviour
         yield return Wait.For(Interval.HalfSecond);
 
         // Update hero profile stage
-        ProfileRepo.instance.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
+        ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
         // FadeInstance out & load next scene
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
     private void SetAnimation(Vector2 direction)

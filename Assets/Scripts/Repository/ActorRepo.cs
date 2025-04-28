@@ -1,71 +1,29 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
+using System.Net;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
 
 
-[CreateAssetMenu(fileName = "ActorRepo", menuName = "Repositories/ActorRepo")]
-public class ActorRepo : ScriptableObject
+public static class ActorRepo
 {
-    // Singleton instance
-    private static ActorRepo Instance;
-    public static ActorRepo instance
+    private static Dictionary<string, ActorData> actors;
+
+    public static Dictionary<string, ActorData> Actors
     {
         get
         {
-            if (Instance == null)
-            {
-                var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
-                handle.WaitForCompletion(); // Block until the asset is loaded
-                Instance = handle.Result;
-            }
-
-            if (Instance == null)
-                Debug.LogError("ActorRepo accessed before being initialized! Ensure it's assigned in Addressables.");
-
-            return Instance;
+            if (actors == null)
+                Load();
+            return actors;
         }
     }
 
-    // Auto-initialize before the scene loads
-    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    //private static async void AutoInitialize()
-    //{
-    //    if (Instance == null)
-    //    {
-    //        var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
-    //        Instance = await handle.Task;
-
-    //        if (Instance == null)
-    //            Debug.LogError("ActorRepo asset not found in Addressables with key 'Repositories/ActorRepo'");
-    //    }
-    //}
-
-    // Synchronous fallback for loading the ActorRepo
-    //private static void LoadSynchronously()
-    //{
-    //    var handle = Addressables.LoadAssetAsync<ActorRepo>("Repositories/ActorRepo");
-    //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    Instance = handle.Result;
-
-    //    if (Instance == null)
-    //        Debug.LogError("Failed to load ActorRepo synchronously from Addressables.");
-    //}
-
-    //Serialized fields
-    [SerializeField] public Dictionary<string, ActorData> Actors;
-
-    private void OnEnable()
-    {
-        Load();
-    }
-
-
-    private void Load()
+    private static void Load()
     {
 
-        Actors = new Dictionary<string, ActorData>
+        actors = new Dictionary<string, ActorData>
         {
 
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Barbarian
@@ -106,16 +64,18 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Position = new Vector3(0.5f, -1.1f, 0f),
+                    Scale = new Vector3(5f, 5f, 0),
                 },
+
+                Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Barbarian}"),
 
                 Details = new ActorDetails
                 {
                     Description = "A warrior driven by rage.",
                     Card = "Gains <color=#FF0033>[Rage]</color> when attacking or being attacked. Will eventually go <color=#FF0000>[Berserk]</color> and attack multiple nearby enemies.",
                     Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
-                }
+               }
             }
             },
 
@@ -157,9 +117,11 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Position = new Vector3(0.15f, 0.3f, 0f),
+                    Scale = new Vector3(1.5f, 1.5f, 0),
                 },
+
+                 Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Bat}"),
 
                 Details = new ActorDetails
                 {
@@ -209,8 +171,10 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Scale = new Vector3(5f, 5f, 0),
                 },
+
+                  Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Cleric}"),
 
                 Details = new ActorDetails
                 {
@@ -260,8 +224,11 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Scale = new Vector3(5f, 5f, 0),
                 },
+
+                 Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.GreenNinja}"),
+
 
                 Details = new ActorDetails
                 {
@@ -311,9 +278,12 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Scale = new Vector3(5f, 5f, 0),
 
                 },
+
+                   Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Paladin}"),
+
 
                 Details = new ActorDetails
                 {
@@ -363,8 +333,10 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Scale = new Vector3(5f, 5f, 0),
                 },
+
+                  Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Pugilist}"),
 
                 Details = new ActorDetails
                 {
@@ -414,8 +386,11 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Scale = new Vector3(5f, 5f, 0),
                 },
+
+                 Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.RedNinja}"),
+
 
                 Details = new ActorDetails
                 {
@@ -465,9 +440,12 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
-             
+                    Scale = new Vector3(5f, 5f, 0),
+
                 },
+
+                 Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Ronin}"),
+
 
                 Details = new ActorDetails
                 {
@@ -517,8 +495,11 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Scale = new Vector3(5f, 5f, 0),
                 },
+
+                 Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Sellsword}"),
+
 
                 Details = new ActorDetails
                 {
@@ -567,9 +548,11 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.5f, -1.4f, 0f),
-                    Scale = new Vector3(5f, 5f, 1f),
+                    Position = new Vector3(0.5f, -0.15f, 0f),
+                    Scale = new Vector3(2f, 2f, 0),
                 },
+
+                Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Scorpion}"),
 
                 Details = new ActorDetails
                 {
@@ -618,10 +601,12 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.2f, 0.2f, 0f),
-                    Scale = new Vector3(1.5f, 1.5f, 1f),
- 
+                    Position = new Vector3(0.4f, 0.5f, 0f),
+                    Scale = new Vector3(3f, 3f, 0),
                 },
+
+                 Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Slime}"),
+
 
                 Details = new ActorDetails
                 {
@@ -671,8 +656,11 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(0.5f,-1.4f,0),
-                    Scale = new Vector3(5,5,1),
+                    Scale = new Vector3(5,5,0),
                 },
+
+                Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Thief}"),
+
 
                 Details = new ActorDetails
                 {
@@ -721,9 +709,12 @@ public class ActorRepo : ScriptableObject
                 ThumbnailSettings = new ThumbnailSettings
                 {
                       Position = new Vector3(0.5f,-1.4f,0),
-                      Scale = new Vector3(5,5,1),
-  
+                      Scale = new Vector3(5,5,0),
+
                 },
+
+                 Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Vampire}"),
+
 
                 Details = new ActorDetails
                 {
@@ -770,9 +761,11 @@ public class ActorRepo : ScriptableObject
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0, -2, 0),
-                    Scale = new Vector3(5, 5, 1),
+                    Position = new Vector3(0.4f, -0.3f, 0),
+                    Scale = new Vector3(2f, 2f, 0),
                 },
+
+                Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Yeti}"),
 
                 Details = new ActorDetails
                 {
@@ -783,28 +776,6 @@ public class ActorRepo : ScriptableObject
             }},
 
         };
-
-
-        foreach (var actorData in Actors.Values)
-        {
-            string address = $"Actor-Portraits/{actorData.Character}";
-
-            try
-            {
-                // Load the portrait sprite
-                actorData.Portrait = AssetHelper.LoadAsset<Sprite>(address);
-                if (actorData.Portrait == null)
-                {
-                    Debug.LogWarning($"Sprite for {actorData.Character} not found at address: {address}");
-                    return;
-                }
-
-            }
-            catch (UnityException ex)
-            {
-                Debug.LogError($"Failed to load sprite for {actorData.Character} at address: {address}. Exception: {ex.Message}");
-            }
-        }
     }
 
 }

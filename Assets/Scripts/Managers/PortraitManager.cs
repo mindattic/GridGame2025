@@ -24,7 +24,7 @@ public class PortraitManager : MonoBehaviour
 
     public void Awake()
     {
-        portraitPrefab = PrefabRepo.instance.Prefabs["PortraitPrefab"];
+        portraitPrefab = PrefabRepo.Prefabs["PortraitPrefab"];
     }
 
     public void TriggerSlideIn(ActorInstance actor, Direction direction)
@@ -39,7 +39,7 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.sortingOrder = sortingOrder--;
-        instance.sprite = ActorRepo.instance.Actors[actor.characterName].Portrait;
+        instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
 
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
@@ -57,7 +57,7 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.sortingOrder = SortingOrder.Max;
-        instance.sprite = ActorRepo.instance.Actors[actor.characterName].Portrait;
+        instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
 
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);

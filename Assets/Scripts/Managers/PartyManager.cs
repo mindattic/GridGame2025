@@ -56,17 +56,17 @@ public class PartyManager : MonoBehaviour
 
     private bool IsInParty(string character)
     {
-        return ProfileRepo.instance.CurrentProfile.CurrentSave.Party.Members.Any(x => x.Character == character);
+        return ProfileRepo.CurrentProfile.CurrentSave.Party.Members.Any(x => x.Character == character);
     }
 
     //Properties
-    private int partyMemberCount => ProfileRepo.instance.CurrentProfile.CurrentSave.Party.Members.Count;
+    private int partyMemberCount => ProfileRepo.CurrentProfile.CurrentSave.Party.Members.Count;
 
 
     private void Awake()
     {
         //Validate a current profile exists
-        if (!ProfileRepo.instance.HasCurrentProfile)
+        if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
             SceneManager.LoadScene(SceneHelper.ProfileCreate);         
@@ -74,14 +74,14 @@ public class PartyManager : MonoBehaviour
         }
 
         //Validate a current save exists
-        if (!ProfileRepo.instance.HasCurrentSave)
+        if (!ProfileRepo.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
             SceneManager.LoadScene(SceneHelper.SaveFileSelect);
             return;
         }
 
-        slidePrefab = PrefabRepo.instance.Prefabs["RosterSlidePrefab"];
+        slidePrefab = PrefabRepo.Prefabs["RosterSlidePrefab"];
 
         title = GameObject.Find(ComponentHelper.PartyManager.Title).GetComponent<RectTransform>();
         rosterPanel = GameObject.Find(ComponentHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
@@ -146,7 +146,7 @@ public class PartyManager : MonoBehaviour
 
     private void LoadRosterSlides()
     {
-        var rosterMembers = ProfileRepo.instance.CurrentProfile.CurrentSave.Roster.Members;
+        var rosterMembers = ProfileRepo.CurrentProfile.CurrentSave.Roster.Members;
         foreach (var member in rosterMembers)
         {
             // Instantiate the slide prefab and retrieve the RosterSlideInstance script
@@ -298,7 +298,7 @@ public class PartyManager : MonoBehaviour
 
     private void UpdateStatsDisplay(string character)
     {
-        var rosterMember = ProfileRepo.instance.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.Character == character).First();
+        var rosterMember = ProfileRepo.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.Character == character).First();
         Load(rosterMember.Character, rosterMember.Level);
     }
 
@@ -349,7 +349,7 @@ public class PartyManager : MonoBehaviour
             return;
         }
 
-        ProfileRepo.instance.AddToParty(characterName);
+        ProfileRepo.AddToParty(characterName);
         UpdateAddRemoveButton(characterName); // Refresh button state
     }
 
@@ -358,7 +358,7 @@ public class PartyManager : MonoBehaviour
 
     private void RemoveFromParty(string characterName)
     {
-        ProfileRepo.instance.RemoveFromParty(characterName);
+        ProfileRepo.RemoveFromParty(characterName);
         UpdateAddRemoveButton(characterName); // Refresh button state
     }
 
@@ -372,7 +372,7 @@ public class PartyManager : MonoBehaviour
 
     public void Load(string character, int level)
     {
-        var actorData = ActorRepo.instance.Actors[character];
+        var actorData = ActorRepo.Actors[character];
         var stats = actorData.GetStats(level);
 
         // Update each stat row
@@ -434,8 +434,8 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        //StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
+        //StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
 

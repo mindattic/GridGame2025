@@ -20,7 +20,7 @@ public class DottedLineManager : MonoBehaviour
  
     void Awake()
     {
-        DottedLinePrefab = PrefabRepo.instance.Prefabs["DottedLinePrefab"];
+        DottedLinePrefab = PrefabRepo.Prefabs["DottedLinePrefab"];
     }
 
 

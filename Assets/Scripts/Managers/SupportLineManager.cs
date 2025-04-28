@@ -10,7 +10,7 @@ public class SupportLineManager : MonoBehaviour
 
     public void Awake()
     {
-        supportLinePrefab = PrefabRepo.instance.Prefabs["SupportLinePrefab"];
+        supportLinePrefab = PrefabRepo.Prefabs["SupportLinePrefab"];
     }
 
     public bool Exists(ActorInstance actor1, ActorInstance actor2)

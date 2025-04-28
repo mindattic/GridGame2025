@@ -1,67 +1,24 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
-[CreateAssetMenu(fileName = "PrefabRepo", menuName = "Repositories/PrefabRepo")]
-public class PrefabRepo : ScriptableObject
+public static class PrefabRepo
 {
-    // Singleton instance
-    private static PrefabRepo Instance;
-    public static PrefabRepo instance
+    private static Dictionary<string, GameObject> prefabs;
+
+    public static Dictionary<string, GameObject> Prefabs
     {
         get
         {
-            if (Instance == null)
-            {
-                var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
-                handle.WaitForCompletion(); // Block until the asset is loaded
-                Instance = handle.Result;
-            }
-
-            if (Instance == null)
-                Debug.LogError("PrefabRepo accessed before being initialized! Ensure it's assigned in Addressables.");
-
-            return Instance;
+            if (prefabs == null)
+                Load();
+            return prefabs;
         }
     }
 
-    // Auto-initialize before the scene loads
-    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    //private static async void AutoInitialize()
-    //{
-    //    if (_ == null)
-    //    {
-    //        var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
-    //        _ = await handle.Task;
-
-    //        if (_ == null)
-    //            Debug.LogError("PrefabRepo asset not found in Addressables with key 'Repositories/PrefabRepo'");
-    //    }
-    //}
-
-    // Synchronous fallback for loading the MaterialRepo
-    //private static void LoadSynchronously()
-    //{
-    //    var handle = Addressables.LoadAssetAsync<PrefabRepo>("Repositories/PrefabRepo");
-    //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    _ = handle.Result;
-
-    //    if (_ == null)
-    //        Debug.LogError("Failed to load MaterialRepo synchronously from Addressables.");
-    //}
-
-    //Serialized fields
-    [SerializeField] public Dictionary<string, GameObject> Prefabs;
-
-    private void OnEnable()
+    private static void Load()
     {
-        Load();
-    }
-
-    private void Load()
-    {
-        Prefabs = new Dictionary<string, GameObject>
+        prefabs = new Dictionary<string, GameObject>
         {
             { "ActorPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ActorPrefab") },
             { "AttackLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/AttackLinePrefab") },
@@ -83,8 +40,17 @@ public class PrefabRepo : ScriptableObject
             { "SupportLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SupportLinePrefab") },
             { "TilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TilePrefab") },
             { "TooltipPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TooltipPrefab") },
-            { "WallPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/WallPrefab") },
+            { "WallPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/WallPrefab") }
         };
     }
 
+    // Optional helper for direct prefab access
+    public static GameObject Get(string key)
+    {
+        if (prefabs.TryGetValue(key, out var prefab))
+            return prefab;
+
+        Debug.LogError($"Prefab '{key}' not found in PrefabRepo.");
+        return null;
+    }
 }

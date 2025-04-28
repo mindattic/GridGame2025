@@ -2,67 +2,26 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-
-[CreateAssetMenu(fileName = "VisualEffectRepo", menuName = "Repositories/VisualEffectRepo")]
-public class VisualEffectRepo : ScriptableObject
+public static class VisualEffectRepo
 {
-    // Singleton instance
-    private static VisualEffectRepo Instance;
+    private static Dictionary<string, VisualEffectAsset> visualEffects;
+    private static bool isLoaded = false;
 
-    public static VisualEffectRepo instance
+    public static Dictionary<string, VisualEffectAsset> VisualEffects
     {
         get
         {
-            if (Instance == null)
-            {
-                var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
-                handle.WaitForCompletion(); // Block until the asset is loaded
-                Instance = handle.Result;
-            }
-
-            if (Instance == null)
-                Debug.LogError("VisualEffectRepo accessed before being initialized!");
-
-            return Instance;
+            if (!isLoaded)
+                Load();
+            return visualEffects;
         }
     }
 
-    // Auto-initialize before the scene loads
-    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    //private static async void AutoInitialize()
-    //{
-    //    if (_ == null)
-    //    {
-    //        var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
-    //        _ = await handle.Task;
-
-    //        if (_ == null)
-    //            Debug.LogError("VisualEffectRepo asset not found in Addressables with key 'Repositories/VisualEffectRepo'");
-    //    }
-    //}
-
-    // Synchronous fallback for loading the VisualEffectRepo
-    //private static void LoadSynchronously()
-    //{
-    //    var handle = Addressables.LoadAssetAsync<VisualEffectRepo>("Repositories/VisualEffectRepo");
-    //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    _ = handle.Result;
-
-    //    if (_ == null)
-    //        Debug.LogError("Failed to load VisualEffectRepo synchronously from Addressables.");
-    //}
-
-    //Serialized fields
-    [SerializeField] public Dictionary<string, VisualEffectAsset> VisualEffects;
-
-    private void OnEnable()
+    private static void Load()
     {
-        Load();
-    }
+        if (isLoaded) return;
 
-    private void Load()
-    {
-        VisualEffects = new Dictionary<string, VisualEffectAsset>
+        visualEffects = new Dictionary<string, VisualEffectAsset>
         {
             { "AcidSplash", new VisualEffectAsset
                 {
@@ -427,9 +386,9 @@ public class VisualEffectRepo : ScriptableObject
         };
     }
 
-    public VisualEffectAsset Get(string name)
+    public static VisualEffectAsset Get(string name)
     {
-        var data = VisualEffects[name];
+        var data = visualEffects[name];
         if (data == null)
             Debug.LogError($"Unable to retrieve visual effect for `{name}`");
 

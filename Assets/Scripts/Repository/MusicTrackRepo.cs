@@ -1,70 +1,42 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-
-[CreateAssetMenu(fileName = "MusicTrackRepo", menuName = "Repositories/MusicTrackRepo")]
-public class MusicTrackRepo : ScriptableObject
+public static class MusicTrackRepo
 {
-    // Singleton instance
-    private static MusicTrackRepo Instance;
-    public static MusicTrackRepo instance
+    private static Dictionary<string, AudioClip> musicTracks;
+    private static bool isLoaded = false;
+
+    public static Dictionary<string, AudioClip> MusicTracks
     {
         get
         {
-            if (Instance == null)
-            {
-                var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
-                handle.WaitForCompletion(); // Block until the asset is loaded
-                Instance = handle.Result;
-            }
-
-            if (Instance == null)
-                Debug.LogError("MusicTrackRepo accessed before being initialized! Ensure it's assigned in Addressables.");
-
-            return Instance;
+            if (!isLoaded)
+                Load();
+            return musicTracks;
         }
     }
 
-    // Auto-initialize before the scene loads
-    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    //private static async void AutoInitialize()
-    //{
-    //    if (_ == null)
-    //    {
-    //        var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
-    //        _ = await handle.Task;
-
-    //        if (_ == null)
-    //            Debug.LogError("MusicTrackRepo asset not found in Addressables with key 'Repositories/MusicTrackRepo'");
-    //    }
-    //}
-
-    // Synchronous fallback for loading the MusicTrackRepo
-    //private static void LoadSynchronously()
-    //{
-    //    var handle = Addressables.LoadAssetAsync<MusicTrackRepo>("Repositories/MusicTrackRepo");
-    //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    _ = handle.Result;
-
-    //    if (_ == null)
-    //        Debug.LogError("Failed to load MusicTrackRepo synchronously from Addressables.");
-    //}
-
-    //Serialized fields
-    [SerializeField] public Dictionary<string, AudioClip> MusicTracks;
-
-    private void OnEnable()
+    private static void Load()
     {
-        Load();
-    }
+        if (isLoaded) return;
 
-    private async void Load()
-    {
-        MusicTracks = new Dictionary<string, AudioClip>
+        musicTracks = new Dictionary<string, AudioClip>
         {
-            { "MelancholyLull", await AssetHelper.LoadAssetAsync<AudioClip>("MusicTracks/MelancholyLull") },
+            { "MelancholyLull", AssetHelper.LoadAsset<AudioClip>("MusicTracks/MelancholyLull") }
+            // Add more tracks here as needed
         };
     }
 
+    /// <summary>
+    /// Retrieves a single music track asynchronously by key.
+    /// </summary>
+    public static AudioClip Get(string key)
+    {
+        if (musicTracks.TryGetValue(key, out var clip))
+            return clip;
+
+        Debug.LogError($"Music track '{key}' not found in MusicTrackRepo.");
+        return null;
+    }
 }

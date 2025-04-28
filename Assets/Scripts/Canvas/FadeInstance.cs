@@ -10,7 +10,7 @@ public class FadeInstance : MonoBehaviour
     private void Awake()
     {
         image = GetComponent<Image>();
-        image.sprite = SpriteRepo.instance.Sprites["Black16x16"];
+        image.sprite = SpriteRepo.Sprites["Black16x16"];
         image.color = new Color(0, 0, 0, 1);
     }
 

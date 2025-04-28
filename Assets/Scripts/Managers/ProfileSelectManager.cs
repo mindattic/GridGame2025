@@ -26,7 +26,7 @@ public class ProfileSelectManager : MonoBehaviour
     private void Awake()
     {
 
-        buttonPrefab = PrefabRepo.instance.Prefabs["ScreenWidthButtonPrefab"];
+        buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
 
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
         header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>();
@@ -57,7 +57,7 @@ public class ProfileSelectManager : MonoBehaviour
     private void Clear()
     {
         //Validate a current profile exists
-        if (!ProfileRepo.instance.HasProfiles)
+        if (!ProfileRepo.HasProfiles)
         {
             Debug.LogError("No profiles found.");
             return;
@@ -77,7 +77,7 @@ public class ProfileSelectManager : MonoBehaviour
         AddCreateNewProfileButton();
 
         //Add each profile as a button
-        foreach (var item in ProfileRepo.instance.profiles.Values)
+        foreach (var item in ProfileRepo.Profiles.Values)
         {
             AddProfileSelectButton(item);
         }
@@ -115,17 +115,17 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void OnProfileButtonClicked(string key)
     {
-        ProfileRepo.instance.SelectProfile(key);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
+        ProfileRepo.SelectProfile(key);
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
     }
 
     private void OnCreateNewProfileButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.ProfileCreate)));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.ProfileCreate)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
     }
 }

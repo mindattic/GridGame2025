@@ -26,8 +26,8 @@ public class ProfileCreateManager : MonoBehaviour
         {
             KeyboardDialog.Show(canvas2D, "Who are you?", onSubmit: (value) =>
             {
-                ProfileRepo.instance.CreateProfile(value);
-                StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
+                ProfileRepo.CreateProfile(value);
+                StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
             });
 
             yield return null;

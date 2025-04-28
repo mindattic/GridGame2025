@@ -1,75 +1,33 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-
-[CreateAssetMenu(fileName = "TrailEffectRepo", menuName = "Repositories/TrailEffectRepo")]
-public class TrailEffectRepo : ScriptableObject
+public static class TrailEffectRepo
 {
-    // Singleton instance
-    private static TrailEffectRepo Instance;
+    private static Dictionary<string, TrailEffectAsset> trailEffects;
+    private static bool isLoaded = false;
 
-    public static TrailEffectRepo instance
+    public static Dictionary<string, TrailEffectAsset> TrailEffects
     {
         get
         {
-            if (Instance == null)
-            {
-                var handle = Addressables.LoadAssetAsync<TrailEffectRepo>("Repositories/TrailEffectRepo");
-                handle.WaitForCompletion(); // Block until the asset is loaded
-                Instance = handle.Result;
-            }
-
-            if (Instance == null)
-                Debug.LogError("TrailEffectRepo accessed before being initialized!");
-
-            return Instance;
+            if (!isLoaded)
+                Load();
+            return trailEffects;
         }
     }
 
-    // Auto-initialize before the scene loads
-    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    //private static async void AutoInitialize()
-    //{
-    //    if (_ == null)
-    //    {
-    //        var handle = Addressables.LoadAssetAsync<TrailEffectRepo>("Repositories/TrailEffectRepo");
-    //        _ = await handle.Task;
-
-    //        if (_ == null)
-    //            Debug.LogError("TrailEffectRepo asset not found in Addressables with key 'Repositories/TrailEffectRepo'");
-    //    }
-    //}
-
-    // Synchronous fallback for loading the TrailEffectRepo
-    //private static void LoadSynchronously()
-    //{
-    //    var handle = Addressables.LoadAssetAsync<TrailEffectRepo>("Repositories/TrailEffectRepo");
-    //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    _ = handle.Result;
-
-    //    if (_ == null)
-    //        Debug.LogError("Failed to load TrailEffectRepo synchronously from Addressables.");
-    //}
-
-    //Serialized fields
-    [SerializeField] public Dictionary<string, TrailEffectAsset> TrailEffects;
-
-    private void OnEnable()
+    private static void Load()
     {
-        Load();
-    }
+        if (isLoaded) return;
 
-    private void Load()
-    {
-        TrailEffects = new Dictionary<string, TrailEffectAsset>
+        trailEffects = new Dictionary<string, TrailEffectAsset>
         {
             { "BlueGlow", new TrailEffectAsset
                 {
                     Name = "BlueGlow",
-                    Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/BlueGlow"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/BlueGlow"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                     Delay = 0f,
                     Duration = 2f,
@@ -79,9 +37,9 @@ public class TrailEffectRepo : ScriptableObject
             { "Bubble", new TrailEffectAsset
                 {
                     Name = "Bubble",
-                    Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/Bubble"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/Bubble"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                     Delay = 0f,
                     Duration = 2f,
@@ -91,9 +49,9 @@ public class TrailEffectRepo : ScriptableObject
             { "Feather", new TrailEffectAsset
                 {
                     Name = "Feather",
-                    Prefab = AssetHelper.LoadAsset<GameObject>($"TrailEffects/Feather"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/Feather"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                     Delay = 0f,
                     Duration = 2f,
@@ -103,9 +61,9 @@ public class TrailEffectRepo : ScriptableObject
             { "Fireball", new TrailEffectAsset
                 {
                     Name = "Fireball",
-                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/Fireball"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/Fireball"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.5f, 0.5f, 0.5f),
                     Delay = 0f,
                     Duration = 2f,
@@ -115,9 +73,9 @@ public class TrailEffectRepo : ScriptableObject
             { "Flame", new TrailEffectAsset
                 {
                     Name = "Flame",
-                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/Flame"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/Flame"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
                     Delay = 0f,
                     Duration = 2f,
@@ -127,9 +85,9 @@ public class TrailEffectRepo : ScriptableObject
             { "GoldSparkle", new TrailEffectAsset
                 {
                     Name = "GoldSparkle",
-                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/GoldSparkle"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/GoldSparkle"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
                     Delay = 0f,
                     Duration = 2f,
@@ -139,9 +97,9 @@ public class TrailEffectRepo : ScriptableObject
             { "GreenSparkle", new TrailEffectAsset
                 {
                     Name = "GreenSparkle",
-                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/GreenSparkle"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/GreenSparkle"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
                     Delay = 0f,
                     Duration = 2f,
@@ -151,9 +109,9 @@ public class TrailEffectRepo : ScriptableObject
             { "IceSparkle", new TrailEffectAsset
                 {
                     Name = "IceSparkle",
-                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/IceSparkle"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/IceSparkle"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                     Delay = 0f,
                     Duration = 2f,
@@ -163,9 +121,9 @@ public class TrailEffectRepo : ScriptableObject
             { "PinkDust", new TrailEffectAsset
                 {
                     Name = "PinkDust",
-                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/PinkDust"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/PinkDust"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                     Delay = 0f,
                     Duration = 2f,
@@ -175,9 +133,9 @@ public class TrailEffectRepo : ScriptableObject
             { "RosePetal", new TrailEffectAsset
                 {
                     Name = "RosePetal",
-                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/RosePetal"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/RosePetal"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                     Delay = 0f,
                     Duration = 2f,
@@ -187,9 +145,9 @@ public class TrailEffectRepo : ScriptableObject
             { "StarSparkle", new TrailEffectAsset
                 {
                     Name = "StarSparkle",
-                    Prefab = AssetHelper.LoadAsset < GameObject >($"TrailEffects/StarSparkle"),
-                    RelativeOffset = new Vector3(0, 0, 0),
-                    AngularRotation = new Vector3(0, 0, 0),
+                    Prefab = AssetHelper.LoadAsset<GameObject>("TrailEffects/StarSparkle"),
+                    RelativeOffset = Vector3.zero,
+                    AngularRotation = Vector3.zero,
                     RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                     Delay = 0f,
                     Duration = 2f,
@@ -197,15 +155,18 @@ public class TrailEffectRepo : ScriptableObject
                 }
             }
         };
+
+        isLoaded = true;
     }
 
-    public TrailEffectAsset Get(string name)
+    public static TrailEffectAsset Get(string name)
     {
-        var data = TrailEffects[name];
-        if (data == null)
-            Debug.LogError($"Unable to retrieve trailInstance effect for `{name}`");
+        if (!TrailEffects.ContainsKey(name))
+        {
+            Debug.LogError($"Unable to retrieve trail effect for `{name}`");
+            return null;
+        }
 
-        return new TrailEffectAsset(data); //Return a new copy instead of a shared reference
+        return new TrailEffectAsset(TrailEffects[name]);  // Return a new copy
     }
-
 }

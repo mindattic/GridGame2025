@@ -91,7 +91,7 @@ public static class ConfirmationDialog
         string text = "Are you sure?",
         Action<bool> onSubmit = null)
     {
-        var prefab = PrefabRepo.instance.Prefabs["ConfirmationDialog"];
+        var prefab = PrefabRepo.Prefabs["ConfirmationDialog"];
         if (prefab == null)
             throw new UnityException($"Prefab not found");
 

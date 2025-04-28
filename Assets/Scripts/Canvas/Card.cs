@@ -12,7 +12,7 @@ using Label = TMPro.TextMeshProUGUI;
 namespace Game.Behaviors
 {
     // The Card class manages the UI card display that shows details about a focused actor.
-    // It handles initialization, assignment of data (such as portrait, name, and stats),
+    // It handles initialization, assignment of actors (such as portrait, name, and stats),
     // and provides an animation to slide the portrait into view.
     public class Card : MonoBehaviour
     {
@@ -70,7 +70,7 @@ namespace Game.Behaviors
             destination = new Vector3(-portraitSize / 4, 0);
         }
 
-        // SelectProfile populates the card with data from the currently focused actor.
+        // SelectProfile populates the card with actors from the currently focused actor.
         public void Assign()
         {
             // If no actor is focused, exit without making changes.
@@ -99,7 +99,7 @@ namespace Game.Behaviors
                 $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
 
             // Assign the details textarea combining the stats table with extra details from DataManager.
-            details.GetComponent<Label>().text = stats + ActorRepo.instance.Actors[focusedActor.characterName].Details.Card;
+            details.GetComponent<Label>().text = stats + ActorRepo.Actors[focusedActor.characterName].Details.Card;
 
             // Begin the slide-in animation for the portrait.
             TriggerSlideIn();
@@ -135,7 +135,7 @@ namespace Game.Behaviors
             portrait.anchoredPosition = destination;
         }
 
-        // Clear resets the card UI to a hidden state, clearing all displayed data.
+        // Clear resets the card UI to a hidden state, clearing all displayed actors.
         public void Clear()
         {
             // Disable visual components of the card.

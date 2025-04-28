@@ -71,9 +71,9 @@ public class DottedLineInstance : MonoBehaviour
         this.spriteRenderer.transform.localScale = tileScale;
 
         //Assign resources
-        var line = SpriteRepo.instance.Sprites["DottedLine"];
-        var turn = SpriteRepo.instance.Sprites["DottedLineTurn"];
-        var arrow = SpriteRepo.instance.Sprites["DottedLineArrow"];
+        var line = SpriteRepo.Sprites["DottedLine"];
+        var turn = SpriteRepo.Sprites["DottedLineTurn"];
+        var arrow = SpriteRepo.Sprites["DottedLineArrow"];
 
         connectedLocations.Clear(); //Ensure connectedLocations are reset
         connectedLocations.Add(location); //SpawnActor self-currentLocation to connectedLocations

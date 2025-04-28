@@ -32,8 +32,8 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-        pause = SpriteRepo.instance.Sprites["Pause"];
-        paused = SpriteRepo.instance.Sprites["Paused"];
+        pause = SpriteRepo.Sprites["Pause"];
+        paused = SpriteRepo.Sprites["Paused"];
         pauseButtonImage.sprite = pause;
         canvasOverlay.Hide();
         pauseMenu.SetActive(false);
@@ -81,7 +81,7 @@ public class PauseManager : MonoBehaviour
 
     public void OnSaveGameButtonClicked()
     {
-        ProfileRepo.instance.Save(overwrite: true);
+        ProfileRepo.Save(overwrite: true);
         Resume();
     }
 
@@ -94,8 +94,8 @@ public class PauseManager : MonoBehaviour
     public void OnPartyManagerButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileRepo.instance.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.PartyManager)));
+        ProfileRepo.Save(overwrite: true);
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.PartyManager)));
     }
 
     public void OnSpawnEnemyButtonClicked()
@@ -106,22 +106,22 @@ public class PauseManager : MonoBehaviour
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileRepo.instance.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.StageSelect)));   
+        ProfileRepo.Save(overwrite: true);
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.StageSelect)));   
     }
 
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileRepo.instance.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Settings)));
+        ProfileRepo.Save(overwrite: true);
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnTitleScreenButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileRepo.instance.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
+        ProfileRepo.Save(overwrite: true);
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
     }
 
 }

@@ -21,7 +21,7 @@ public class TitleScreenManager : MonoBehaviour
     private void Awake()
     {
         //Verify that game is ready to run
-        if (!ProfileRepo.instance.HasProfiles)
+        if (!ProfileRepo.HasProfiles)
         {
             SceneManager.LoadScene(SceneHelper.ProfileCreate);
             return;
@@ -32,7 +32,7 @@ public class TitleScreenManager : MonoBehaviour
         profileButtonLabel = GameObject.Find(ComponentHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
         fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
 
-        profileButtonLabel.GetComponent<Label>().text = ProfileRepo.instance.CurrentProfile.Key;
+        profileButtonLabel.GetComponent<Label>().text = ProfileRepo.CurrentProfile.Key;
 
         StartCoroutine(fade.FadeIn());
     }
@@ -40,32 +40,32 @@ public class TitleScreenManager : MonoBehaviour
 
     public void OnContinueButtonClicked()
     {
-        ProfileRepo.instance.CurrentProfile.CurrentSave = ProfileRepo.instance.CurrentProfile.LatestSave;
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
+        ProfileRepo.CurrentProfile.CurrentSave = ProfileRepo.CurrentProfile.LatestSave;
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
     public void OnLoadGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.SaveFileSelect)));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.SaveFileSelect)));
     }
 
     public void OnNewGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.ProfileCreate)));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.ProfileCreate)));
     }
 
     public void OnSettingsButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnCreditsButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Credits)));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Credits)));
     }
 
     public void OnChangeProfileButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.ProfileSelect)));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.ProfileSelect)));
     }
 }

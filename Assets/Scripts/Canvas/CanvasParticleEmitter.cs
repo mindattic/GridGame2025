@@ -30,7 +30,7 @@ public class CanvasParticleEmitter : MonoBehaviour
     private void Awake()
     {
         canvas2D = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
-        canvasParticlePrefab = PrefabRepo.instance.Prefabs["CanvasParticlePrefab"];
+        canvasParticlePrefab = PrefabRepo.Prefabs["CanvasParticlePrefab"];
 
 
         xMin = -Screen.width;
@@ -53,10 +53,10 @@ public class CanvasParticleEmitter : MonoBehaviour
 
         sprites = new Sprite[]
         {
-            SpriteRepo.instance.Leaves["Leaf1"],
-            SpriteRepo.instance.Leaves["Leaf2"],
-            SpriteRepo.instance.Leaves["MapleLeaf1"],
-            SpriteRepo.instance.Leaves["MapleLeaf2"],
+            SpriteRepo.Leaves["Leaf1"],
+            SpriteRepo.Leaves["Leaf2"],
+            SpriteRepo.Leaves["MapleLeaf1"],
+            SpriteRepo.Leaves["MapleLeaf2"],
         };
 
     }

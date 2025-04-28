@@ -49,7 +49,7 @@ public class FocusIndicator : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    // Awake is called when the script _ is being loaded.
+    // Awake is called when the script actors is being loaded.
     // Here, we cache the SpriteRenderer component for later use.
     private void Awake()
     {

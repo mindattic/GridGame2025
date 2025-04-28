@@ -1294,7 +1294,7 @@ public static class TextureHelper
         // Create a new texture with the specified dimensions
         Texture2D newTexture = new Texture2D(rectWidth, rectHeight);
 
-        // Copy the pixel data from the original texture to the new texture
+        // Copy the pixel actors from the original texture to the new texture
         Color[] pixels = originalTexture.GetPixels(rectX, rectY, rectWidth, rectHeight);
         newTexture.SetPixels(pixels);
 

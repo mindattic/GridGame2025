@@ -48,7 +48,7 @@ public class StageManager : MonoBehaviour
 
     public void Awake()
     {
-        actorPrefab = PrefabRepo.instance.Prefabs["ActorPrefab"];
+        actorPrefab = PrefabRepo.Prefabs["ActorPrefab"];
     }
 
     /// <summary>
@@ -57,7 +57,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var latestSave = ProfileRepo.instance.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
+        var latestSave = ProfileRepo.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
         if (latestSave == null)
         {
             Debug.LogError("No saved game state found.");
@@ -67,7 +67,7 @@ public class StageManager : MonoBehaviour
 
      
 
-        currentStage = StageRepo.instance.Get(latestSave.Stage.CurrentStage);
+        currentStage = StageRepo.Get(latestSave.Stage.CurrentStage);
         RestartStage();
     }
 
@@ -78,7 +78,7 @@ public class StageManager : MonoBehaviour
     public void RestartStage()
     {
         // Reset everything for a new stage.
-        currentWave = ProfileRepo.instance.CurrentProfile.CurrentSave.Stage.CurrentWave;
+        currentWave = ProfileRepo.CurrentProfile.CurrentSave.Stage.CurrentWave;
         actorManager.Clear();
         dottedLineManager.Clear();
         supportLineManager.Clear();
@@ -87,9 +87,9 @@ public class StageManager : MonoBehaviour
         turnManager.Initialize();
 
         // Assign persistent hero actors from ProfileRepo
-        foreach (var partyMember in ProfileRepo.instance.CurrentProfile.CurrentSave.Party.Members)
+        foreach (var partyMember in ProfileRepo.CurrentProfile.CurrentSave.Party.Members)
         {
-            var hero = ActorRepo.instance.Actors[partyMember.Character];
+            var hero = ActorRepo.Actors[partyMember.Character];
             var stageActor = new StageActor(partyMember.Character, Team.Hero, hero.Level, location: Random.UnoccupiedLocation);
             SpawnActor(stageActor);
         }
@@ -150,12 +150,12 @@ public class StageManager : MonoBehaviour
         var instance = prefab.GetComponent<ActorInstance>();
         instance.transform.parent = board.transform;
 
-        instance.name = $"{stageActor.characterName}_{Guid.NewGuid():N}";
+        instance.name = $"{stageActor.characterName}actors{Guid.NewGuid():N}";
         instance.characterName = stageActor.characterName;
         instance.team = stageActor.Team;
 
         // Assign stats based on characterName and stageActor's level
-        instance.stats = ActorRepo.instance.Actors[stageActor.characterName].GetStats(stageActor.Level);
+        instance.stats = ActorRepo.Actors[stageActor.characterName].GetStats(stageActor.Level);
 
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
@@ -208,7 +208,7 @@ public class StageManager : MonoBehaviour
         IEnumerator loadNextStage()
         {
             var stageName = currentStage.NextStage;
-            currentStage = StageRepo.instance.Get(stageName);
+            currentStage = StageRepo.Get(stageName);
             RestartStage();
             yield return null;
         }

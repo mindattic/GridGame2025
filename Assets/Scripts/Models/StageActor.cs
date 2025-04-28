@@ -41,9 +41,9 @@ public class StageActor
 
     public void AssignStats()
     {
-        if (ActorRepo.instance != null && ActorRepo.instance.Actors.ContainsKey(characterName))
+        if (ActorRepo.Actors.ContainsKey(characterName))
         {
-            var actor = ActorRepo.instance.Actors[characterName];
+            var actor = ActorRepo.Actors[characterName];
             Stats = actor.GetStats(Level);
         }
         else

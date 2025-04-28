@@ -28,7 +28,7 @@ public class OverworldManager : MonoBehaviour
     private void Awake()
     {
         //Verify that game is ready to run
-        if (!ProfileRepo.instance.HasProfiles)
+        if (!ProfileRepo.HasProfiles)
         {
             SceneManager.LoadScene(SceneHelper.ProfileCreate);
             return;
@@ -105,7 +105,7 @@ public class OverworldManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
     }
 
     public void OnCenterOnHeroClicked()

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Instances.Actor
 {
-    // ActorActions encapsulates a collection of animated actions for an actor _,
+    // ActorActions encapsulates a collection of animated actions for an actor actors,
     // such as shaking, dodging, bumping, growing, spinning, fading in, and weapon wiggle.
     // These actions are implemented using coroutines that interpolate values over time.
     public class ActorActions
@@ -25,14 +25,14 @@ namespace Assets.Scripts.Instances.Actor
         protected Vector3 tileScale => GameManager.instance.tileScale;
 
         // Fields:
-        // The parent actor _ this actions module is controlling.
+        // The parent actor actors this actions module is controlling.
         private ActorInstance instance;
         // Parameters for the weapon wiggle animation.
         private float wiggleSpeed;
         private float wiggleAmplitude;
 
         /// <summary>
-        /// Assign sets up this actions module with its parent actor _ and calculates
+        /// Assign sets up this actions module with its parent actor actors and calculates
         /// initial parameters for animations.
         /// </summary>
         public void Initialize(ActorInstance parentInstance)

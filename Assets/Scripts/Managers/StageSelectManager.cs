@@ -24,7 +24,7 @@ public class StageSelectManager : MonoBehaviour
     private void Awake()
     {
 
-        buttonPrefab = PrefabRepo.instance.Prefabs["ScreenWidthButtonPrefab"];
+        buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
 
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
         //header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>() ?? throw new UnityException("Label is null");
@@ -45,7 +45,7 @@ public class StageSelectManager : MonoBehaviour
         //spacing = 0.01f * screenHeight;
         //verticalLayoutGroup.spacing = spacing;
 
-        foreach (var stage in StageRepo.instance.Stages)
+        foreach (var stage in StageRepo.Stages)
         {
             AddButton(stage.Value.Name);
         }
@@ -74,13 +74,13 @@ public class StageSelectManager : MonoBehaviour
 
     private void OnStageSelectButtonClicked(string stageName)
     {
-        ProfileRepo.instance.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
+        ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
     }
 
 }

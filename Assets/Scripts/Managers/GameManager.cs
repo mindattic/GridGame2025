@@ -103,9 +103,13 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
-        //Verify that game is ready to run
-        if (!ProfileRepo.instance.HasProfiles)
+
+        // First thing: Load profiles
+        ProfileRepo.Load();
+
+        if (!ProfileRepo.HasProfiles)
         {
+            Debug.LogWarning("[GameManager] No profiles detected after load. Redirecting...");
             SceneManager.LoadScene(SceneHelper.ProfileCreate);
             return;
         }
@@ -218,22 +222,11 @@ public class GameManager : Singleton<GameManager>
     //Method which is automatically called before the first frame update  
     void Start()
     {
-        if (ActorRepo.instance == null)
-        {
-            Debug.LogError("ActorRepo failed to initialize properly.");
+        // By now, profiles are guaranteed to be loaded.
+        if (!ProfileRepo.HasProfiles)
             return;
-        }
 
-        if (ActorRepo.instance == null)
-        {
-            Debug.LogError("Failed to load ActorRepo. Stopping initialization.");
-            return;
-        }
 
-        //Verify that game is ready to run
-        if (!ProfileRepo.instance.HasProfiles)
-            return;
-      
         //Assign in specific order:
         board.Initialize();             //01
         stageManager.Initialize();      //02

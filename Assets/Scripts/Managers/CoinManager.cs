@@ -7,7 +7,7 @@ public class CoinManager : MonoBehaviour
 
     public void Awake()
     {
-        CoinPrefab = PrefabRepo.instance.Prefabs["CoinPrefab"];
+        CoinPrefab = PrefabRepo.Prefabs["CoinPrefab"];
     }
 
     public void Spawn(Vector3 position)

@@ -35,7 +35,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     private void Awake()
     {
-        buttonPrefab = PrefabRepo.instance.Prefabs["SaveFileButtonPrefab"];
+        buttonPrefab = PrefabRepo.Prefabs["SaveFileButtonPrefab"];
 
         // Use appropriate ComponentHelper names or adjust as needed
         canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
@@ -61,7 +61,7 @@ public class SaveFileSelectManager : MonoBehaviour
     private void Start()
     {
         //Validate a current profile exists
-        if (!ProfileRepo.instance.HasCurrentProfile)
+        if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
             SceneManager.LoadScene(SceneHelper.ProfileCreate);
@@ -87,11 +87,11 @@ public class SaveFileSelectManager : MonoBehaviour
         Clear();
 
         //Retrieve all saves in profile
-        string savesPath = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
+        string savesPath = Path.Combine(ProfileRepo.CurrentProfile.Folder, "Saves");
         var saveFiles = Directory.GetFiles(savesPath, "*.json").ToArray();
 
         //Add each save as a button
-        foreach (var item in ProfileRepo.instance.CurrentProfile.SaveStates)
+        foreach (var item in ProfileRepo.CurrentProfile.SaveStates)
         {
             AddLoadSaveFileButton(item);
         }
@@ -99,7 +99,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void AddLoadSaveFileButton(SaveState item)
     {
-        string savesPath = Path.Combine(ProfileRepo.instance.CurrentProfile.Folder, "Saves");
+        string savesPath = Path.Combine(ProfileRepo.CurrentProfile.Folder, "Saves");
         string filePath = Path.Combine(savesPath, item.FileName);
 
         //Instantiate the prefab as a child of `content`
@@ -128,10 +128,10 @@ public class SaveFileSelectManager : MonoBehaviour
             SaveState selectedSave = JsonConvert.DeserializeObject<SaveState>(json);
             if (selectedSave != null)
             {
-                ProfileRepo.instance.CurrentProfile.CurrentSave = selectedSave;
+                ProfileRepo.CurrentProfile.CurrentSave = selectedSave;
 
                 // Proceed to load the game scene using the active save.
-                StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.Game)));
+                StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
             }
             else
             {
@@ -147,6 +147,6 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
     }
 }

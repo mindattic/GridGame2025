@@ -21,14 +21,14 @@ public class SplashScreenManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
+            StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
     }
 
     private IEnumerator Startup()
     {
         yield return fade.FadeIn();
         yield return new WaitForSeconds(waitDuration);
-        StartCoroutine(fade.FadeOut(SceneRepo.instance.LoadScene(SceneHelper.TitleScreen)));
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
     }
 
 

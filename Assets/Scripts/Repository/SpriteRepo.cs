@@ -1,86 +1,107 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
-[CreateAssetMenu(fileName = "SpriteRepo", menuName = "Repositories/SpriteRepo")]
-public class SpriteRepo : ScriptableObject
+public static class SpriteRepo
 {
-    // Singleton instance
-    private static SpriteRepo Instance;
-    public static SpriteRepo instance
+    private static Dictionary<string, Sprite> backgrounds;
+    private static Dictionary<string, Sprite> gui;
+    private static Dictionary<string, Sprite> seamless;
+    private static Dictionary<string, Sprite> sprites;
+    private static Dictionary<string, Sprite> weaponTypes;
+    private static Dictionary<string, Sprite> leaves;
+    private static Dictionary<string, Sprite> tutorialPages;
+    private static Dictionary<string, Sprite> logos;
+
+    private static bool isLoaded = false;
+
+    public static Dictionary<string, Sprite> Backgrounds
     {
         get
         {
-            if (Instance == null)
-            {
-                var handle = Addressables.LoadAssetAsync<SpriteRepo>("Repositories/SpriteRepo");
-                handle.WaitForCompletion(); // Block until the asset is loaded
-                Instance = handle.Result;
-            }
-
-            if (Instance == null)
-                Debug.LogError("SpriteRepo accessed before being initialized! Ensure it's assigned in Addressables.");
-
-            return Instance;
+            if (!isLoaded) Load();
+            return backgrounds;
         }
     }
 
-    // Auto-initialize before the scene loads
-    //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    //private static async void AutoInitialize()
-    //{
-    //    if (_ == null)
-    //    {
-    //        var handle = Addressables.LoadAssetAsync<SpriteRepo>("Repositories/SpriteRepo");
-    //        _ = await handle.Task;
-
-    //        if (_ == null)
-    //            Debug.LogError("SpriteRepo asset not found in Addressables with key 'Repositories/SpriteRepo'");
-    //    }
-    //}
-
-    // Synchronous fallback for loading the SpriteRepo
-    //private static void LoadSynchronously()
-    //{
-    //    var handle = Addressables.LoadAssetAsync<SpriteRepo>("Repositories/SpriteRepo");
-    //    handle.WaitForCompletion(); // Block until the asset is loaded
-    //    _ = handle.Result;
-
-    //    if (_ == null)
-    //        Debug.LogError("Failed to load SpriteRepo synchronously from Addressables.");
-    //}
-
-    //Serialized fields
-    [HideInInspector] public Dictionary<string, Sprite> Backgrounds;
-    [HideInInspector] public Dictionary<string, Sprite> GUI;
-    [HideInInspector] public Dictionary<string, Sprite> Seamless;
-    [HideInInspector] public Dictionary<string, Sprite> Sprites;
-    [HideInInspector] public Dictionary<string, Sprite> WeaponTypes;
-    [HideInInspector] public Dictionary<string, Sprite> Leaves;
-    [HideInInspector] public Dictionary<string, Sprite> TutorialPages;
-    [HideInInspector] public Dictionary<string, Sprite> Logos;
-
-
-    private void OnEnable()
+    public static Dictionary<string, Sprite> GUI
     {
-        Load();
+        get
+        {
+            if (!isLoaded) Load();
+            return gui;
+        }
     }
 
-    private void Load()
+    public static Dictionary<string, Sprite> Seamless
     {
+        get
+        {
+            if (!isLoaded) Load();
+            return seamless;
+        }
+    }
 
-        Backgrounds = new Dictionary<string, Sprite>
+    public static Dictionary<string, Sprite> Sprites
+    {
+        get
+        {
+            if (!isLoaded) Load();
+            return sprites;
+        }
+    }
+
+    public static Dictionary<string, Sprite> WeaponTypes
+    {
+        get
+        {
+            if (!isLoaded) Load();
+            return weaponTypes;
+        }
+    }
+
+    public static Dictionary<string, Sprite> Leaves
+    {
+        get
+        {
+            if (!isLoaded) Load();
+            return leaves;
+        }
+    }
+
+    public static Dictionary<string, Sprite> TutorialPages
+    {
+        get
+        {
+            if (!isLoaded) Load();
+            return tutorialPages;
+        }
+    }
+
+    public static Dictionary<string, Sprite> Logos
+    {
+        get
+        {
+            if (!isLoaded) Load();
+            return logos;
+        }
+    }
+
+    private static void Load()
+    {
+        if (isLoaded) return;
+
+        backgrounds = new Dictionary<string, Sprite>
         {
             { "CandleLitPath", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath") },
         };
 
-        GUI = new Dictionary<string, Sprite>
+        gui = new Dictionary<string, Sprite>
         {
             { "BackButton", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/BackButton") },
         };
 
-        Leaves = new Dictionary<string, Sprite>
+        leaves = new Dictionary<string, Sprite>
         {
             { "Leaf1", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/Leaf1") },
             { "Leaf2", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/Leaf2") },
@@ -88,18 +109,16 @@ public class SpriteRepo : ScriptableObject
             { "MapleLeaf2", AssetHelper.LoadAsset<Sprite>("Sprites/Leaves/MapleLeaf2") },
         };
 
-        Logos = new Dictionary<string, Sprite>
+        logos = new Dictionary<string, Sprite>
         {
             { "Mindattic.64x64", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.64x64") },
             { "Mindattic.128x128", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.128x128") },
             { "Mindattic.256x256", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.256x256") },
             { "Mindattic.512x512", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.512x512") },
             { "Mindattic.1024x1024", AssetHelper.LoadAsset<Sprite>("Sprites/Logos/Mindattic.1024x1024") },
-
-
         };
 
-        Seamless = new Dictionary<string, Sprite>
+        seamless = new Dictionary<string, Sprite>
         {
             { "BlackFire1", AssetHelper.LoadAsset<Sprite>("Sprites/Seamless/BlackFire1") },
             { "BlackFire2", AssetHelper.LoadAsset<Sprite>("Sprites/Seamless/BlackFire2") },
@@ -111,7 +130,7 @@ public class SpriteRepo : ScriptableObject
             { "WhiteFire2", AssetHelper.LoadAsset<Sprite>("Sprites/Seamless/WhiteFire2") },
         };
 
-        Sprites = new Dictionary<string, Sprite>
+        sprites = new Dictionary<string, Sprite>
         {
             { "DottedLine", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLine") },
             { "DottedLineArrow", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineArrow") },
@@ -121,10 +140,9 @@ public class SpriteRepo : ScriptableObject
             { "Paused", AssetHelper.LoadAsset<Sprite>("Sprites/Paused") },
             { "Forest", AssetHelper.LoadAsset<Sprite>("Sprites/Forest") },
             { "Black16x16", AssetHelper.LoadAsset<Sprite>("Sprites/Black16x16") },
-
         };
 
-        WeaponTypes = new Dictionary<string, Sprite>
+        weaponTypes = new Dictionary<string, Sprite>
         {
             { "Bow", AssetHelper.LoadAsset<Sprite>("Sprites/WeaponTypes/Bow") },
             { "Claw", AssetHelper.LoadAsset<Sprite>("Sprites/WeaponTypes/Claw") },
@@ -146,13 +164,13 @@ public class SpriteRepo : ScriptableObject
             { "Wand", AssetHelper.LoadAsset<Sprite>("Sprites/WeaponTypes/Wand") },
         };
 
-     
-        TutorialPages = new Dictionary<string, Sprite>
+        tutorialPages = new Dictionary<string, Sprite>
         {
             { "Tutorial.1-1", AssetHelper.LoadAsset<Sprite>("Sprites/TutorialPages/Tutorial.1-1") },
             { "Tutorial.1-2", AssetHelper.LoadAsset<Sprite>("Sprites/TutorialPages/Tutorial.1-2") },
             { "Tutorial.1-3", AssetHelper.LoadAsset<Sprite>("Sprites/TutorialPages/Tutorial.1-3") },
         };
-    }
 
+        isLoaded = true;
+    }
 }

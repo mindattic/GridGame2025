@@ -46,7 +46,7 @@ public class ActorInstance : MonoBehaviour
     public bool isSpawnable => !flags.HasSpawned && spawnTurn <= turnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
     public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum action points.
 
-    public string characterName;                                // characterName data for this actor.
+    public string characterName;                                // characterName actors for this actor.
 
     // Determines if the actor is invincible based on team-specific debug settings.
     public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isHeroInvincible);
@@ -128,7 +128,7 @@ public class ActorInstance : MonoBehaviour
     public System.Action onSortingOrderChanged;                                         // Invoked when the sorting order is modified.
     //public System.Action onDragDetected;                                                // Invoked when a drag operation is detected on the actor.
 
-    // Fields: Core data fields representing characterName stats, state, and modules.
+    // Fields: Core actors fields representing characterName stats, state, and modules.
     [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animation behavior.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
     public Vector3 previousPosition;                    // World position before the last movement.
@@ -191,10 +191,10 @@ public class ActorInstance : MonoBehaviour
         return Direction.None;
     }
 
-    // Awake: Initialization of the actor _. Sets up modules and subscribes to events.
+    // Awake: Initialization of the actor actors. Sets up modules and subscribes to events.
     private void Awake()
     {
-        // Assign modules with this actor _ context.
+        // Assign modules with this actor actors context.
         render.Initialize(this);
         action.Initialize(this);
         movement.Initialize(this);
@@ -242,7 +242,7 @@ public class ActorInstance : MonoBehaviour
         weapon.Defense = Random.Float(0, 5);
         weapon.Name = $"{weapon.Type}";
         // Assign the weapon icon using resources.
-        render.weaponIcon.sprite = SpriteRepo.instance.WeaponTypes[weapon.Type.ToString()];
+        render.weaponIcon.sprite = SpriteRepo.WeaponTypes[weapon.Type.ToString()];
 
         // Configure visual appearance and effects based on team.
         if (isPlayer)
@@ -250,21 +250,21 @@ public class ActorInstance : MonoBehaviour
             render.SetOpaqueColor(ColorHelper.Solid.White);
             render.SetQualityColor(ColorHelper.Solid.White);
             render.SetGlowColor(ColorHelper.Solid.White);
-            render.SetParallaxSprite(SpriteRepo.instance.Seamless["WhiteFire2"]);
-            render.SetParallaxMaterial(MaterialRepo.instance.Materials["PlayerParallax"], thumbnail.texture);
+            render.SetParallaxSprite(SpriteRepo.Seamless["WhiteFire2"]);
+            render.SetParallaxMaterial(MaterialRepo.Materials["PlayerParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
-            vfx.Attack = VisualEffectRepo.instance.VisualEffects["BlueSlash1"];
+            vfx.Attack = VisualEffectRepo.VisualEffects["BlueSlash1"];
         }
         else if (isEnemy)
         {
             render.SetOpaqueColor(ColorHelper.Solid.Red);
             render.SetQualityColor(ColorHelper.Solid.Red);
             render.SetGlowColor(ColorHelper.Solid.Red);
-            render.SetParallaxSprite(SpriteRepo.instance.Seamless["RedFire1"]);
-            render.SetParallaxMaterial(MaterialRepo.instance.Materials["EnemyParallax"], thumbnail.texture);
+            render.SetParallaxSprite(SpriteRepo.Seamless["RedFire1"]);
+            render.SetParallaxMaterial(MaterialRepo.Materials["EnemyParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
             render.SetFrameColor(ColorHelper.Solid.Red);
-            vfx.Attack = VisualEffectRepo.instance.VisualEffects["DoubleClaw"];
+            vfx.Attack = VisualEffectRepo.VisualEffects["DoubleClaw"];
         }
 
         // Assign name tag textarea and toggle its visibility based on debug settings.

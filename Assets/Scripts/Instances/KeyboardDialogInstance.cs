@@ -439,7 +439,7 @@ public static class KeyboardDialog
         int maxLength = 32,
         Action<string> onSubmit = default)
     {
-        var prefab = PrefabRepo.instance.Prefabs["KeyboardDialog"];
+        var prefab = PrefabRepo.Prefabs["KeyboardDialog"];
         if (prefab == null)
             throw new UnityException($"Prefab not found");
 

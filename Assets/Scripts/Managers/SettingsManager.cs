@@ -44,7 +44,7 @@ public class SettingsManager : MonoBehaviour
                 {
                     Debug.Log("User said: " + value);
 
-                    StartCoroutine(fade.Hide(SceneRepo.instance.LoadPreviousScene()));
+                    StartCoroutine(fade.Hide(SceneRepo.LoadPreviousScene()));
                 }
             });
 
@@ -59,6 +59,6 @@ public class SettingsManager : MonoBehaviour
     public void UpdateActorPanMultiplier()
     {
         var slider = actorPanMultiplier.GetComponentInChildren<Slider>();
-        ProfileRepo.instance.CurrentProfile.Settings.ActorPanMultiplier = slider.value;
+        ProfileRepo.CurrentProfile.Settings.ActorPanMultiplier = slider.value;
     }
 }

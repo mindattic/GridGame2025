@@ -25,7 +25,7 @@ public class BoardInstance : MonoBehaviour
 
     public void Awake()
     {
-        TilePrefab = PrefabRepo.instance.Prefabs["TilePrefab"];
+        TilePrefab = PrefabRepo.Prefabs["TilePrefab"];
     }
 
     /// <summary>

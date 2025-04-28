@@ -36,56 +36,53 @@ public class ActorThumbnail : MonoBehaviour
         float baseTextureSize = 1024f;
         float textureSize = Mathf.Max(texture.width, texture.height);
         rangeMultiplier = 0.05f * (textureSize / baseTextureSize);
-        range = new Vector2(0.5f, 0.5f);
+
 
         panSpeed = 0.25f;
-        wobbleAmplitudeFactorX = 0.25f;
-        wobbleAmplitudeFactorY = 0.25f;
-        pauseRampDuration = 0.5f;
+    
         effectiveNoiseTime = 0f;
         cycleTime = 0f;
 
         nextPauseInterval = Random.Float(3f, 7f);
-        pauseDuration = Random.Float(2f, 5f);  
+        pauseDuration = Random.Float(2f, 5f);
+        pauseRampDuration = Random.Float(0.25f, 0.75f);
         cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
-        
-        
-    }
 
-    private void CalculatePause()
-    {
+
+        range = new Vector2(0.1f, 0.1f);
+        wobbleAmplitudeFactorX = 0.2f;
+        wobbleAmplitudeFactorY = 0.2f;
+
 
     }
 
     public void Set(Vector3 position, Vector3 scale)
     {
         thumbnailSettings = new ThumbnailSettings(position, scale);
-        transform.localScale = thumbnailSettings.Scale;
         transform.localPosition = thumbnailSettings.Position;
+        transform.localScale = thumbnailSettings.Scale;
     }
 
     public void Initialize(ActorInstance parentInstance)
     {
         instance = parentInstance;
 
-        var actorData = ActorRepo.instance.Actors[instance.characterName];
+        var actorData = ActorRepo.Actors[instance.characterName];
 
         spriteRenderer.sprite = actorData.Portrait;
         spriteRenderer.material.SetTexture("_MainTex", spriteRenderer.sprite.texture);
 
-        thumbnailSettings = actorData.ThumbnailSettings;
-        transform.localScale = thumbnailSettings.Scale;
+        thumbnailSettings = new ThumbnailSettings(actorData.ThumbnailSettings);
         transform.localPosition = thumbnailSettings.Position;
+        transform.localScale = thumbnailSettings.Scale;
 
         // Dynamic range based on texture size
-        float baseTextureSize = 256f;  // Use your original target baseline
         float textureSize = Mathf.Max(texture.width, texture.height);
-        rangeMultiplier = 0.05f * (textureSize / baseTextureSize);
+        rangeMultiplier = 0.05f * (textureSize / Constants.PortraitSize);
 
-        range = new Vector2(
-            rangeMultiplier * texture.width,
-            rangeMultiplier * texture.height
-        );
+        range = new Vector2(0.1f, 0.1f);
+        wobbleAmplitudeFactorX = 0.25f;
+        wobbleAmplitudeFactorY = 0.25f;
     }
 
     private void Update()
@@ -103,7 +100,9 @@ public class ActorThumbnail : MonoBehaviour
 
             nextPauseInterval = Random.Float(3f, 7f);
             pauseDuration = Random.Float(2f, 5f);
+            pauseRampDuration = Random.Float(0.25f, 0.75f);
             cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
+
         }
 
 
@@ -146,10 +145,8 @@ public class ActorThumbnail : MonoBehaviour
         float wobbleY = centeredNoiseY * maxOffset.y * wobbleAmplitudeFactorY * 0.5f;
         float baseOffsetX = maxOffset.x * 0.5f;
         float baseOffsetY = maxOffset.y * 0.5f;
-        float offsetX = Mathf.Clamp(baseOffsetX + wobbleX, 0, maxOffset.x);
-        float offsetY = Mathf.Clamp(baseOffsetY + wobbleY, 0, maxOffset.y);
-
-        // Update shader offset property
+        float offsetX = baseOffsetX + wobbleX;
+        float offsetY = baseOffsetY + wobbleY;
         spriteRenderer.material.SetVector("_MainTexOffset", new Vector4(offsetX, offsetY, 0, 0));
     }
 
