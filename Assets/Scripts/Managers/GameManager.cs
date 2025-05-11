@@ -69,12 +69,12 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Vector3 touchPosition2D;
     [HideInInspector] public Vector3 touchPosition3D;
     [HideInInspector] public Vector3 touchOffset;
-    [HideInInspector] public float cursorSpeed;
-    [HideInInspector] public float swapSpeed;
-    [HideInInspector] public float moveSpeed;
+    [HideInInspector] public float cursorFocus;
+    [HideInInspector] public float swapFocus;
+    [HideInInspector] public float moveFocus;
     [HideInInspector] public float snapThreshold;
     [HideInInspector] public float dragThreshold;
-    [HideInInspector] public float bumpSpeed;
+    [HideInInspector] public float bumpFocus;
 
     //Actors
     [HideInInspector] public List<ActorInstance> actors;
@@ -98,8 +98,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public int totalCoins;
 
     //Properties
-    public float gameSpeed { get => Time.timeScale; set => Time.timeScale = value; }
-    public float previousGameSpeed;
+    public float gameFocus { get => Time.timeScale; set => Time.timeScale = value; }
+    public float previousGameFocus;
 
     private void Awake()
     {
@@ -117,7 +117,7 @@ public class GameManager : Singleton<GameManager>
         Application.targetFrameRate = targetFramerate;
         QualitySettings.vSyncCount = vSyncCount;
 
-        previousGameSpeed = Time.timeScale;
+        previousGameFocus = Time.timeScale;
 
         //DEBUG: Need to add buffer so tile doesn't align to left-most and right-most edge,
         //however this causes actors to not align properly after moving for some reason
@@ -129,10 +129,10 @@ public class GameManager : Singleton<GameManager>
         tileScale = new Vector3(tileSize, tileSize, 1f);
 
  
-        cursorSpeed = tileSize * 0.5f;
-        swapSpeed = tileSize * 0.1666f;
-        moveSpeed = tileSize * 0.125f;
-        bumpSpeed = tileSize * 0.08f;
+        cursorFocus = tileSize * 0.5f;
+        swapFocus = tileSize * 0.1666f;
+        moveFocus = tileSize * 0.125f;
+        bumpFocus = tileSize * 0.08f;
         snapThreshold = tileSize * 0.125f * 1.01f;
         dragThreshold = tileSize * 0.125f;
         ShakeIntensity.Initialize(tileSize);

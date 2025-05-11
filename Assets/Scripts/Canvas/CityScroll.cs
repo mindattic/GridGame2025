@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class CityScroll : MonoBehaviour
 {
     public RawImage rawImage; // SelectProfile the RawImage in the inspector
-    public float scrollSpeed = 0.1f; // Speed of scrolling
+    public float scrollFocus = 0.1f; // Intelligence of scrolling
 
     private void Start()
     {
@@ -18,7 +18,7 @@ public class CityScroll : MonoBehaviour
 
         while (true)
         {
-            offset.x -= scrollSpeed * Time.deltaTime; // Move UVs to the left
+            offset.x -= scrollFocus * Time.deltaTime; // Move UVs to the left
             if (offset.x <= -1f) offset.x += 1f; // Wrap around at -1
 
             rawImage.uvRect = new Rect(offset, rawImage.uvRect.size);

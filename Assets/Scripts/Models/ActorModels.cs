@@ -6,8 +6,20 @@ using UnityEngine;
 namespace Assets.Scripts.Models
 {
 
+    public class BaseStats
+    {
+        public float Strength;          //Physical damage output
+        public float Agility;           //Crit, Dodge, block, parry 
+        public float Intelligence;      //Magic damage output 
+        public float Focus;             //Accuracy, crit chance, and precision
+        public float Vitality;          //Max HP and survivability
+        public float Stamina;           //AP regen, action economy
+        public float Luck;              //Determines random effects 
+    }
+
+
     [Serializable]
-    public class ActorStats
+    public class ActorStats: BaseStats
     {
         public float Level = 1;
         public float PreviousHP;
@@ -16,15 +28,6 @@ namespace Assets.Scripts.Models
         public float PreviousAP;
         public float AP;
         public float MaxAP;
-
-        //Base Stats
-        public float Strength;
-        public float Agility;
-        public float Vitality;
-        public float Intelligence;
-        public float Speed;
-        public float Luck;
-       
 
         public ActorStats() { }
 
@@ -38,49 +41,51 @@ namespace Assets.Scripts.Models
             AP = 0;
             MaxAP = 100;
             Strength = other.Strength;
-            Vitality = other.Vitality;
             Agility = other.Agility;
-            Speed = other.Speed;
+            Intelligence = other.Intelligence;  
+            Focus = other.Focus;
+            Vitality = other.Vitality;
+            Stamina = other.Stamina;
             Luck = other.Luck;
         }
     }
 
 
     [Serializable]
-    public class StatGrowth
+    public class StatGrowth : BaseStats
     {
-        public float Strength;
-        public float Vitality;
-        public float Agility;
-        public float Speed;
-        public float Luck;
-
         public StatGrowth() { }
 
-        public StatGrowth(float str, float vit, float agi, float spd, float luck)
+        public StatGrowth(float strength, float agility, float intelligence, float focus, float vitality, float stamina, float luck)
         {
-            Strength = str;
-            Vitality = vit;
-            Agility = agi;
-            Speed = spd;
+            Strength = strength;
+            Agility = agility;
+            Intelligence = intelligence;
+            Focus = focus;
+            Vitality = vitality;
+            Stamina = stamina;
             Luck = luck;
         }
 
         public StatGrowth(StatGrowth other)
         {
             Strength = other.Strength;
-            Vitality = other.Vitality;
             Agility = other.Agility;
-            Speed = other.Speed;
+            Intelligence = other.Intelligence;
+            Focus = other.Focus;
+            Vitality = other.Vitality;
+            Stamina = other.Stamina;
             Luck = other.Luck;
         }
 
         public static StatGrowth operator +(StatGrowth a, StatGrowth b) => new StatGrowth
         {
             Strength = a.Strength + b.Strength,
-            Vitality = a.Vitality + b.Vitality,
             Agility = a.Agility + b.Agility,
-            Speed = a.Speed + b.Speed,
+            Intelligence = a.Intelligence + b.Intelligence,
+            Focus = a.Focus + b.Focus,
+            Vitality = a.Vitality + b.Vitality,
+            Stamina = a.Stamina + b.Stamina,
             Luck = a.Luck + b.Luck
         };
     }
@@ -139,18 +144,22 @@ namespace Assets.Scripts.Models
             {
                 // Always apply default growth
                 status.Strength += Mathf.FloorToInt(StatGrowth.Strength);
-                status.Vitality += Mathf.FloorToInt(StatGrowth.Vitality);
                 status.Agility += Mathf.FloorToInt(StatGrowth.Agility);
-                status.Speed += Mathf.FloorToInt(StatGrowth.Speed);
+                status.Intelligence += Mathf.FloorToInt(StatGrowth.Intelligence);
+                status.Focus += Mathf.FloorToInt(StatGrowth.Focus);
+                status.Vitality += Mathf.FloorToInt(StatGrowth.Vitality);
+                status.Stamina += Mathf.FloorToInt(StatGrowth.Stamina);
                 status.Luck += Mathf.FloorToInt(StatGrowth.Luck);
 
                 // Then apply any milestone boost (if applicable)
                 if (MilestoneStatGrowth.TryGetValue(lvl, out var boost))
                 {
                     status.Strength += Mathf.FloorToInt(boost.Strength);
-                    status.Vitality += Mathf.FloorToInt(boost.Vitality);
                     status.Agility += Mathf.FloorToInt(boost.Agility);
-                    status.Speed += Mathf.FloorToInt(boost.Speed);
+                    status.Intelligence += Mathf.FloorToInt(boost.Intelligence);
+                    status.Focus += Mathf.FloorToInt(boost.Focus);
+                    status.Vitality += Mathf.FloorToInt(boost.Vitality);
+                    status.Stamina += Mathf.FloorToInt(boost.Stamina);
                     status.Luck += Mathf.FloorToInt(boost.Luck);
                 }          
             }
@@ -165,11 +174,6 @@ namespace Assets.Scripts.Models
             return status;
         }
     }
-
-
-
-   
-
 
     [Serializable]
     public enum StageCompletionCondition

@@ -25,7 +25,7 @@ public class TooltipInstance : MonoBehaviour
     public float verticalPadding = 12f;
     public float lineBuffer = 4f;
     public float horizontalMargin = 24f;
-    public float typewriterSpeed = 0.02f;
+    public float typewriterFocus = 0.02f;
     public TypewriterMode typewriterMode = TypewriterMode.CharacterByCharacter;
     public TooltipTextAlignment textAlignment = TooltipTextAlignment.TopLeft;
 
@@ -182,7 +182,7 @@ public class TooltipInstance : MonoBehaviour
                 label.text = visibleText.ToString();
                 LayoutRebuilder.ForceRebuildLayoutImmediate(label.rectTransform);
                 UpdateBackgroundSize();
-                yield return new WaitForSeconds(typewriterSpeed);
+                yield return new WaitForSeconds(typewriterFocus);
             }
         }
 
@@ -202,7 +202,7 @@ public class TooltipInstance : MonoBehaviour
             label.text = displayedText.ToString();
             LayoutRebuilder.ForceRebuildLayoutImmediate(label.rectTransform);
             UpdateBackgroundSize();
-            yield return new WaitForSeconds(typewriterSpeed * 10f);
+            yield return new WaitForSeconds(typewriterFocus * 10f);
         }
 
         label.text = fullText;
@@ -330,7 +330,7 @@ public class TooltipSettings
     public bool autoDestroy = false;
     public TypewriterMode typewriterMode = TypewriterMode.CharacterByCharacter;
     public TooltipTextAlignment textAlignment = TooltipTextAlignment.TopLeft;
-    public float typewriterSpeed = 0.02f;
+    public float typewriterFocus = 0.02f;
 }
 
 public static class Tooltip
@@ -350,7 +350,7 @@ public static class Tooltip
         instance.autoDestroyDelay = settings.autoDestroyDelay;
         instance.typewriterMode = settings.typewriterMode;
         instance.textAlignment = settings.textAlignment;
-        instance.typewriterSpeed = settings.typewriterSpeed;
+        instance.typewriterFocus = settings.typewriterFocus;
 
         RectTransform uiTarget = null;
         Transform worldTarget = null;

@@ -20,8 +20,8 @@ public class PartyManager : MonoBehaviour
     private RectTransform rosterPanel;
     private float spacing = 0f;
     private float deceleration = 1250;
-    private float maxSpeed = 3000f;
-    private float scrollSpeed = 10f;
+    private float maxFocus = 3000f;
+    private float scrollFocus = 10f;
     private float dragThreshold = 15f;
     private float wrapThresholdMultiplier = 1.5f;
 
@@ -202,7 +202,7 @@ public class PartyManager : MonoBehaviour
                     clickAllowed = false;
 
                 MoveSlides(deltaX);
-                velocity = Mathf.Clamp(deltaX / Time.deltaTime, -maxSpeed, maxSpeed);
+                velocity = Mathf.Clamp(deltaX / Time.deltaTime, -maxFocus, maxFocus);
                 touchStart = current;
             }
             else if (touch.phase == TouchPhase.Ended)
@@ -381,7 +381,7 @@ public class PartyManager : MonoBehaviour
         UpdateStatRow(strRow, "STR", stats.Strength); // Assuming max stat value is 100
         UpdateStatRow(vitRow, "VIT", stats.Vitality);
         UpdateStatRow(agiRow, "AGI", stats.Agility);
-        UpdateStatRow(spdRow, "SPD", stats.Speed);
+        UpdateStatRow(spdRow, "SPD", stats.Intelligence);
         UpdateStatRow(lckRow, "LCK", stats.Luck);
     }
 

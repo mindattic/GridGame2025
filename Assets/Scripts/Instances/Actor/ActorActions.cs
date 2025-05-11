@@ -28,7 +28,7 @@ namespace Assets.Scripts.Instances.Actor
         // The parent actor actors this actions module is controlling.
         private ActorInstance instance;
         // Parameters for the weapon wiggle animation.
-        private float wiggleSpeed;
+        private float wiggleFocus;
         private float wiggleAmplitude;
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace Assets.Scripts.Instances.Actor
             this.instance = parentInstance;
 
             // Determine wiggle speed and amplitude based on tile size.
-            wiggleSpeed = tileSize * 48f;
+            wiggleFocus = tileSize * 48f;
             wiggleAmplitude = 15f; // Maximum deviation (in degrees) for the weapon wiggle.
         }
 
@@ -410,13 +410,13 @@ namespace Assets.Scripts.Instances.Actor
             // Before: Assign variables for rotation.
             bool isDone = false;
             var rotY = 0f;
-            var spinSpeed = tileSize * 24f;
+            var spinFocus = tileSize * 24f;
             rotation = Geometry.Rotation(0, rotY, 0);
 
             // During: Rotate until reaching 90 degrees, then reverse until back at 0.
             while (!isDone)
             {
-                rotY += !trigger.HasTriggered ? spinSpeed : -spinSpeed;
+                rotY += !trigger.HasTriggered ? spinFocus : -spinFocus;
 
                 if (!trigger.HasTriggered && rotY >= 90f)
                 {
@@ -570,7 +570,7 @@ namespace Assets.Scripts.Instances.Actor
             while (instance.stats.AP == instance.stats.MaxAP)
             {
                 // Calculate the CurrentProfile rotation offset using a sine function.
-                rotZ = start + Mathf.Sin(Time.time * wiggleSpeed) * wiggleAmplitude;
+                rotZ = start + Mathf.Sin(Time.time * wiggleFocus) * wiggleAmplitude;
                 render.weaponIcon.transform.rotation = Quaternion.Euler(0, 0, rotZ);
                 yield return Wait.OneTick();
             }
@@ -618,7 +618,7 @@ namespace Assets.Scripts.Instances.Actor
             while (amplitude > cutoff)
             {
                 timeElapsed += Time.deltaTime;
-                float rotZ = Mathf.Sin(timeElapsed * wiggleSpeed) * amplitude;
+                float rotZ = Mathf.Sin(timeElapsed * wiggleFocus) * amplitude;
                 render.turnDelayText.transform.rotation = Quaternion.Euler(0, 0, rotZ);
                 amplitude *= dampingRate;
                 yield return Wait.OneTick();
@@ -628,7 +628,7 @@ namespace Assets.Scripts.Instances.Actor
             float currentZ = render.turnDelayText.transform.rotation.eulerAngles.z;
             while (Mathf.Abs(Mathf.DeltaAngle(currentZ, 0f)) > cutoff)
             {
-                timeElapsed += Time.deltaTime * wiggleSpeed;
+                timeElapsed += Time.deltaTime * wiggleFocus;
                 currentZ = Mathf.LerpAngle(currentZ, 0f, timeElapsed);
                 render.turnDelayText.transform.rotation = Quaternion.Euler(0, 0, currentZ);
                 yield return Wait.OneTick();

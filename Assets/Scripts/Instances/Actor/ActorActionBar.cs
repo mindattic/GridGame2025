@@ -17,7 +17,7 @@ public class ActorActionBar
     protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     // Retrieves the rendering module, which manages all UI elements related to the actor.
     protected ActorRenderers render => instance.render;
-    // Retrieves the stats module that stores the actor's AP, MaxAP, Speed, etc.
+    // Retrieves the stats module that stores the actor's AP, MaxAP, Intelligence, etc.
     protected ActorStats stats => instance.stats;
     // Indicates whether a hero is selected.
     protected bool hasSelectedPlayer => selectedPlayer != null;
@@ -105,7 +105,7 @@ public class ActorActionBar
             instance.StartCoroutine(Fill());
     }
 
-    // Fill is a coroutine that incrementally increases the actor's AP based on its Speed stat.
+    // Fill is a coroutine that incrementally increases the actor's AP based on its Intelligence stat.
     // It continues to increase AP until the actor reaches max AP or one of the abort conditions occurs.
     private IEnumerator Fill()
     {
@@ -121,7 +121,7 @@ public class ActorActionBar
 
         // Before starting, mark that the actor is gaining AP and calculate the increment amount.
         flags.isGainingAP = true;
-        float amount = stats.Speed * 0.1f;
+        float amount = stats.Intelligence * 0.1f;
 
         // During: Gradually increase AP until max AP is reached.
         while (hasSelectedPlayer && instance.isEnemy && instance.isPlaying && !instance.hasMaxAP)
@@ -147,12 +147,12 @@ public class ActorActionBar
         Update();
     }
 
-    // AddInitiative provides a small initial AP value based on the actor's Speed stat.
+    // AddInitiative provides a small initial AP value based on the actor's Intelligence stat.
     // This is used to seed the initiative system, allowing for a randomized start.
     public void AddInitiative()
     {
         // TODO: Consider incorporating Stats.Luck for more nuanced randomization.
-        float amount = stats.Speed * 0.01f;
+        float amount = stats.Intelligence * 0.01f;
         stats.AP = amount;
         stats.PreviousAP = amount;
         Update();

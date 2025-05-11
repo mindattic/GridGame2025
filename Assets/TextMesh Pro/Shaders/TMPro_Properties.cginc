@@ -1,14 +1,14 @@
 // UI Editable properties
 uniform sampler2D	_FaceTex;					// Alpha : Signed Distance
-uniform float		_FaceUVSpeedX;
-uniform float		_FaceUVSpeedY;
+uniform float		_FaceUVFocusX;
+uniform float		_FaceUVFocusY;
 uniform fixed4		_FaceColor;					// RGBA : Color + Opacity
 uniform float		_FaceDilate;				// v[ 0, 1]
 uniform float		_OutlineSoftness;			// v[ 0, 1]
 
 uniform sampler2D	_OutlineTex;				// RGBA : Color + Opacity
-uniform float		_OutlineUVSpeedX;
-uniform float		_OutlineUVSpeedY;
+uniform float		_OutlineUVFocusX;
+uniform float		_OutlineUVFocusY;
 uniform fixed4		_OutlineColor;				// RGBA : Color + Opacity
 uniform float		_OutlineWidth;				// v[ 0, 1]
 

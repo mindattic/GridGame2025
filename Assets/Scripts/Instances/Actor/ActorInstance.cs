@@ -21,7 +21,7 @@ public class ActorInstance : MonoBehaviour
     protected ActorInstance focusedActor => GameManager.instance.focusedActor;
     protected bool hasFocusedActor => focusedActor != null;
     protected bool hasSelectedPlayer => selectedPlayer != null;
-    protected float moveSpeed => GameManager.instance.moveSpeed;
+    protected float moveFocus => GameManager.instance.moveFocus;
     protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;

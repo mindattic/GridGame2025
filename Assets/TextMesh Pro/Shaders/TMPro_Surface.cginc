@@ -51,8 +51,8 @@ void PixShader(Input input, inout SurfaceOutput o)
 	float4 outlineColor = _OutlineColor;
 	faceColor *= input.color;
 	outlineColor.a *= input.color.a;
-	faceColor *= tex2D(_FaceTex, float2(input.uv2_FaceTex.x + _FaceUVSpeedX * _Time.y, input.uv2_FaceTex.y + _FaceUVSpeedY * _Time.y));
-	outlineColor *= tex2D(_OutlineTex, float2(input.uv2_OutlineTex.x + _OutlineUVSpeedX * _Time.y, input.uv2_OutlineTex.y + _OutlineUVSpeedY * _Time.y));
+	faceColor *= tex2D(_FaceTex, float2(input.uv2_FaceTex.x + _FaceUVFocusX * _Time.y, input.uv2_FaceTex.y + _FaceUVFocusY * _Time.y));
+	outlineColor *= tex2D(_OutlineTex, float2(input.uv2_OutlineTex.x + _OutlineUVFocusX * _Time.y, input.uv2_OutlineTex.y + _OutlineUVFocusY * _Time.y));
 	faceColor = GetColor(sd, faceColor, outlineColor, outline, softness);
 	faceColor.rgb /= max(faceColor.a, 0.0001);
 

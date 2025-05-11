@@ -29,14 +29,14 @@ namespace Game.Models.Profile
     public class ProfileSettings
     {
         public float ActorPanMultiplier;
-        public float GameSpeed;
+        public float GameFocus;
 
         public ProfileSettings() { }
 
         public ProfileSettings(ProfileSettings other)
         {
             this.ActorPanMultiplier = other.ActorPanMultiplier;
-            this.GameSpeed = other.GameSpeed;
+            this.GameFocus = other.GameFocus;
         }
     }
 

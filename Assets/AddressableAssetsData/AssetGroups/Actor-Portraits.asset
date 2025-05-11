@@ -30,11 +30,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 38134fd0c9a06d144a3c34f71e43bbc2
-    m_Address: Repositories/PrefabRepo
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 39005a360618d6f43b13954739818ba2
     m_Address: Sprites/DottedLineTurn
     m_ReadOnly: 0

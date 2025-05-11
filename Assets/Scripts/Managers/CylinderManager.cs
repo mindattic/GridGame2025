@@ -7,7 +7,7 @@ public class CylinderManager : MonoBehaviour
     //Fields
     [SerializeField] public float Ceiling = 1f;
     [SerializeField] public float Floor = -1f;
-    [SerializeField] public float Speed = 0.05f;
+    [SerializeField] public float Focus = 0.05f;
     private bool isRising = true;
 
 
@@ -15,22 +15,22 @@ public class CylinderManager : MonoBehaviour
     {
         if (isRising && transform.position.y < 1f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, Ceiling, transform.position.z), Speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, Ceiling, transform.position.z), Focus * Time.deltaTime);
         }
         else
         {
-            Speed = Random.Int(2, 5) * 0.01f;
+            Focus = Random.Int(2, 5) * 0.01f;
             Floor = -1f + (-1f * Random.Percent);
             isRising = false;
         }
 
         if (!isRising && transform.position.y > -1f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, Floor, transform.position.z), Speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(transform.position.x, Floor, transform.position.z), Focus * Time.deltaTime);
         }
         else
         {
-            Speed = Random.Int(2, 5) * 0.01f;
+            Focus = Random.Int(2, 5) * 0.01f;
             Ceiling = 1f + (1f * Random.Percent);
             isRising = true;
         }

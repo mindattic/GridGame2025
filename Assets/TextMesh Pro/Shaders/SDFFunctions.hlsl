@@ -77,9 +77,9 @@ void EvaluateLight_float(float4 faceColor, float3 n, out float4 color)
 
 
 //
-void GenerateUV_float(float2 inUV, float4 transform, float2 animSpeed, out float2 outUV)
+void GenerateUV_float(float2 inUV, float4 transform, float2 animFocus, out float2 outUV)
 {
-	outUV = inUV * transform.xy + transform.zw + (animSpeed * _Time.y);
+	outUV = inUV * transform.xy + transform.zw + (animFocus * _Time.y);
 }
 
 void ComputeUVOffset_float(float texWidth, float texHeight, float2 offset, float SDR, out float2 uvOffset)

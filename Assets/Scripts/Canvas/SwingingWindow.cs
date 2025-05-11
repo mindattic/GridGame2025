@@ -6,7 +6,7 @@ public class SwingingWindow : MonoBehaviour
 {
     private float minAngle;
     private float maxAngle;
-    private float windSpeedMultiplier;
+    private float windFocusMultiplier;
     private float accelerationFactor;
     private float noiseScale;
     private float maxAcceleration;
@@ -28,7 +28,7 @@ public class SwingingWindow : MonoBehaviour
     {
         minAngle = -90f;
         maxAngle = 90f;
-        windSpeedMultiplier = 10f;
+        windFocusMultiplier = 10f;
         accelerationFactor = 10f;
         noiseScale = 0.2f;
         maxAcceleration = 5f;
@@ -80,7 +80,7 @@ public class SwingingWindow : MonoBehaviour
                 float wiggle = Mathf.Sin(time * wiggleFrequency) * wiggleIntensity;
                 float adjustedTarget = Mathf.Clamp(targetYRotation + wiggle, minAngle, maxAngle);
 
-                currentYRotation = Mathf.Lerp(currentYRotation, adjustedTarget, Time.deltaTime * windSpeedMultiplier);
+                currentYRotation = Mathf.Lerp(currentYRotation, adjustedTarget, Time.deltaTime * windFocusMultiplier);
                 currentYRotation = Mathf.Clamp(currentYRotation, minAngle, maxAngle);
                 transform.rotation = Quaternion.Euler(0, currentYRotation, 9f);
                 yield return null;

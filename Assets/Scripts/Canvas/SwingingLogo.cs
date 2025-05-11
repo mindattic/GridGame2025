@@ -6,7 +6,7 @@ public class SwingingLogo : MonoBehaviour
 {
     //[SerializeField] private float minAngle;
     //[SerializeField] private float maxAngle;
-    //[SerializeField] private float windSpeedMultiplier;
+    //[SerializeField] private float windFocusMultiplier;
     //[SerializeField] private float accelerationFactor;
     //[SerializeField] private float noiseScale;
     //[SerializeField] private float maxAcceleration;
@@ -62,7 +62,7 @@ public class SwingingLogo : MonoBehaviour
     //            float wiggle = Mathf.Sin(time * wiggleFrequency) * wiggleIntensity;
     //            float adjustedTarget = Mathf.Clamp(targetYRotation + wiggle, minAngle, maxAngle);
 
-    //            currentYRotation = Mathf.Lerp(currentYRotation, adjustedTarget, Time.deltaTime * windSpeedMultiplier);
+    //            currentYRotation = Mathf.Lerp(currentYRotation, adjustedTarget, Time.deltaTime * windFocusMultiplier);
     //            currentYRotation = Mathf.Clamp(currentYRotation, minAngle, maxAngle);
     //            transform.rotation = Quaternion.Euler(0, currentYRotation, 0f);
     //            yield return null;

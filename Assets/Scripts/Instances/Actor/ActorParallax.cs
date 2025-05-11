@@ -7,7 +7,7 @@
 
         //Fields
         private ActorInstance instance;
-        public float maxSpeed = 0f;
+        public float maxFocus = 0f;
         public float targetX = 0f;
         public float targetY = 0f;
         public Direction attackerDirection = Direction.None;
@@ -17,7 +17,7 @@
         {
             this.instance = parentInstance;
 
-            maxSpeed = tileSize * 10f;
+            maxFocus = tileSize * 10f;
         }
 
         public void Assign(Direction attackerDirection)
@@ -29,18 +29,18 @@
             {
                 case Direction.North:
                     targetX = 0f;
-                    targetY = maxSpeed;
+                    targetY = maxFocus;
                     break;
                 case Direction.East:
-                    targetX = maxSpeed;
+                    targetX = maxFocus;
                     targetY = 0f;
                     break;
                 case Direction.South:
                     targetX = 0f;
-                    targetY = -maxSpeed;
+                    targetY = -maxFocus;
                     break;
                 case Direction.West:
-                    targetX = -maxSpeed;
+                    targetX = -maxFocus;
                     targetY = 0f;
                     break;
                 case Direction.None:

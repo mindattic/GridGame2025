@@ -186,7 +186,7 @@ public enum VFX
     RedSword
 }
 
-public enum GameSpeedOption
+public enum GameFocusOption
 {
     Paused = 0,
     Slower = 1,

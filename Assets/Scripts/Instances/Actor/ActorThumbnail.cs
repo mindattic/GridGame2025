@@ -11,7 +11,7 @@ public class ActorThumbnail : MonoBehaviour
 
     public float rangeMultiplier;
     public Vector2 range;
-    public float panSpeed;
+    public float panFocus;
     public float wobbleAmplitudeFactorX;
     public float wobbleAmplitudeFactorY;
     public float nextPauseInterval;
@@ -38,7 +38,7 @@ public class ActorThumbnail : MonoBehaviour
         rangeMultiplier = 0.05f * (textureSize / baseTextureSize);
 
 
-        panSpeed = 0.25f;
+        panFocus = 0.25f;
     
         effectiveNoiseTime = 0f;
         cycleTime = 0f;
@@ -132,7 +132,7 @@ public class ActorThumbnail : MonoBehaviour
         }
 
         // Advance effective noise time
-        effectiveNoiseTime += Time.deltaTime * multiplier * panSpeed;
+        effectiveNoiseTime += Time.deltaTime * multiplier * panFocus;
 
         // Generate Perlin noise values
         float noiseX = Mathf.PerlinNoise(effectiveNoiseTime, noiseSeed.x);

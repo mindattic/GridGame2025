@@ -6,11 +6,11 @@ using System.Collections;
 public class CanvasParticleInstance : MonoBehaviour
 {
     //Fields
-    private float xRotationSpeed;
-    private float yRotationSpeed;
-    private float zRotationSpeed;
-    private float horizontalSpeed;
-    private float fallSpeed;
+    private float xRotationFocus;
+    private float yRotationFocus;
+    private float zRotationFocus;
+    private float horizontalFocus;
+    private float fallFocus;
     private RectTransform rectTransform;
 
     //Properties
@@ -21,14 +21,14 @@ public class CanvasParticleInstance : MonoBehaviour
     }
 
 
-    public void Initialize(float rotationSpeed, float horizontalSpeed, float fallSpeed)
+    public void Initialize(float rotationFocus, float horizontalFocus, float fallFocus)
     {
 
-        this.xRotationSpeed = Random.Boolean ? Random.Float(0, rotationSpeed) : 0;
-        this.yRotationSpeed = Random.Boolean ? Random.Float(0, rotationSpeed) : 0;
-        this.zRotationSpeed = rotationSpeed;
-        this.horizontalSpeed = horizontalSpeed;
-        this.fallSpeed = fallSpeed;
+        this.xRotationFocus = Random.Boolean ? Random.Float(0, rotationFocus) : 0;
+        this.yRotationFocus = Random.Boolean ? Random.Float(0, rotationFocus) : 0;
+        this.zRotationFocus = rotationFocus;
+        this.horizontalFocus = horizontalFocus;
+        this.fallFocus = fallFocus;
         rectTransform = GetComponent<RectTransform>();
         StartCoroutine(MoveAndDestroy());
     }
@@ -38,13 +38,13 @@ public class CanvasParticleInstance : MonoBehaviour
         while (rectTransform.anchoredPosition.x < Screen.width)
         {
             rectTransform.anchoredPosition += new Vector2(
-                horizontalSpeed * Time.deltaTime,
-                -fallSpeed * Time.deltaTime);
+                horizontalFocus * Time.deltaTime,
+                -fallFocus * Time.deltaTime);
 
             rectTransform.Rotate(
-                xRotationSpeed * Time.deltaTime,
-                yRotationSpeed * Time.deltaTime,
-                zRotationSpeed * Time.deltaTime);
+                xRotationFocus * Time.deltaTime,
+                yRotationFocus * Time.deltaTime,
+                zRotationFocus * Time.deltaTime);
 
             yield return null;
         }

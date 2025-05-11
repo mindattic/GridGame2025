@@ -9,7 +9,7 @@ using TMPro;
 public class WaveAnnouncement : MonoBehaviour
 {
     public TextMeshProUGUI label; // UI CreditsLabel component
-    public float rotationSpeed = 200f; // Speed of rotation
+    public float rotationFocus = 200f; // Intelligence of rotation
 
     public void Awake()
     {
@@ -55,7 +55,7 @@ public class WaveAnnouncement : MonoBehaviour
         Quaternion targetRotation = Quaternion.Euler(targetX, 0, 0);
         while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
         {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationFocus * Time.deltaTime);
             yield return null;
         }
         transform.rotation = targetRotation; // Ensure exact final rotation

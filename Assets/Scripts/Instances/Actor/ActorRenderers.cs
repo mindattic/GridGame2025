@@ -171,13 +171,13 @@ public class ActorRenderers
         this.parallax.color = parallaxColor;
     }
 
-    public void SetParallaxSpeed(float xScroll, float yScroll)
+    public void SetParallaxFocus(float xScroll, float yScroll)
     {
-        instance.StartCoroutine(UpdateParallaxSpeed("_XScroll", xScroll));
-        instance.StartCoroutine(UpdateParallaxSpeed("_YScroll", yScroll));
+        instance.StartCoroutine(UpdateParallaxFocus("_XScroll", xScroll));
+        instance.StartCoroutine(UpdateParallaxFocus("_YScroll", yScroll));
     }
 
-    private IEnumerator UpdateParallaxSpeed(string scrollProperty, float targetValue)
+    private IEnumerator UpdateParallaxFocus(string scrollProperty, float targetValue)
     {
         //Fetch the CurrentProfile value once at the start
         float currentValue = parallax.material.GetFloat(scrollProperty);

@@ -90,7 +90,7 @@ namespace Game.Behaviors
             var str = $"{focusedActor.stats.Strength,4}";                // Right-align Strength in 4 characters.
             var vit = $"{focusedActor.stats.Vitality,4}";                // Right-align Vitality.
             var agi = $"{focusedActor.stats.Agility,4}";                 // Right-align Agility.
-            var spd = $"{focusedActor.stats.Speed,4}";                   // Right-align Speed.
+            var spd = $"{focusedActor.stats.Intelligence,4}";                   // Right-align Intelligence.
             var lck = $"{focusedActor.stats.Luck,4}";                    // Right-align Luck.
 
             // Create a formatted stats table string.

@@ -82,7 +82,7 @@ public class DebugWindow : EditorWindow
     private SelectedHeroManager selectedHeroManager;
 
     // Debug window UI selections for game speed, debug options, and VFX testing.
-    private GameSpeedOption selectedGameSpeed = GameSpeedOption.Normal;
+    private GameFocusOption selectedGameFocus = GameFocusOption.Normal;
     private DebugOptions selectedOption = DebugOptions.None;
     private VFX selectedVfx = VFX.None;
 
@@ -261,7 +261,7 @@ public class DebugWindow : EditorWindow
         RenderScenes();
         RenderStats();
         RenderCheckboxes();
-        RenderGameSpeedDropdown();
+        RenderGameFocusDropdown();
         RenderDebugOptionsDropdown();
         RenderVFXDropdown();
         RenderLevelControls();
@@ -432,14 +432,14 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    // RenderGameSpeedDropdown renders a dropdown to select the game speed and an Apply button.
-    private void RenderGameSpeedDropdown()
+    // RenderGameFocusDropdown renders a dropdown to select the game speed and an Apply button.
+    private void RenderGameFocusDropdown()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Game Speed", GUILayout.Width(Screen.width * 0.25f));
-        selectedGameSpeed = (GameSpeedOption)EditorGUILayout.EnumPopup(selectedGameSpeed, GUILayout.Width(Screen.width * 0.5f));
+        GUILayout.Label("Game Intelligence", GUILayout.Width(Screen.width * 0.25f));
+        selectedGameFocus = (GameFocusOption)EditorGUILayout.EnumPopup(selectedGameFocus, GUILayout.Width(Screen.width * 0.5f));
         if (GUILayout.Button("Apply", GUILayout.Width(Screen.width * 0.25f)))
-            OnGameSpeedChange();
+            OnGameFocusChange();
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
@@ -597,28 +597,28 @@ public class DebugWindow : EditorWindow
     }
 
 
-    // OnGameSpeedChange adjusts the game speed based on the selected option.
-    private void OnGameSpeedChange()
+    // OnGameFocusChange adjusts the game speed based on the selected option.
+    private void OnGameFocusChange()
     {
-        switch (selectedGameSpeed)
+        switch (selectedGameFocus)
         {
-            case GameSpeedOption.Paused:
-                gameManager.gameSpeed = 0f;
+            case GameFocusOption.Paused:
+                gameManager.gameFocus = 0f;
                 break;
-            case GameSpeedOption.Slower:
-                gameManager.gameSpeed = 0.25f;
+            case GameFocusOption.Slower:
+                gameManager.gameFocus = 0.25f;
                 break;
-            case GameSpeedOption.Slow:
-                gameManager.gameSpeed = 0.5f;
+            case GameFocusOption.Slow:
+                gameManager.gameFocus = 0.5f;
                 break;
-            case GameSpeedOption.Normal:
-                gameManager.gameSpeed = 1f;
+            case GameFocusOption.Normal:
+                gameManager.gameFocus = 1f;
                 break;
-            case GameSpeedOption.Fast:
-                gameManager.gameSpeed = 2f;
+            case GameFocusOption.Fast:
+                gameManager.gameFocus = 2f;
                 break;
-            case GameSpeedOption.Faster:
-                gameManager.gameSpeed = 4f;
+            case GameFocusOption.Faster:
+                gameManager.gameFocus = 4f;
                 break;
         }
     }

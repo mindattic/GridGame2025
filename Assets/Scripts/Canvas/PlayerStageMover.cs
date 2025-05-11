@@ -9,7 +9,7 @@ public class PlayerStageMover : MonoBehaviour
 {
     public RectTransform hero;  // Reference to the hero's RectTransform
     public Animator animator;     // Reference to the Animator
-    public float moveSpeed = 30f; // Speed of movement
+    public float moveFocus = 30f; // Intelligence of movement
 
     private bool isMoving = false;
     private Vector2 targetPosition;
@@ -62,7 +62,7 @@ public class PlayerStageMover : MonoBehaviour
 
         while (Vector2.Distance(hero.anchoredPosition, targetPosition) > snapThreshold)
         {
-            hero.anchoredPosition = Vector2.MoveTowards(hero.anchoredPosition, targetPosition, moveSpeed * Time.deltaTime);
+            hero.anchoredPosition = Vector2.MoveTowards(hero.anchoredPosition, targetPosition, moveFocus * Time.deltaTime);
 
             // Continuously update animation while moving
             direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;

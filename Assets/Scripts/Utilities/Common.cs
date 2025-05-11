@@ -1247,7 +1247,7 @@ public static class ProfileHelper
     public static ProfileSettings DefaultSettings = new ProfileSettings()
     {
         ActorPanMultiplier = 0.05f,
-        GameSpeed = 1.0f,
+        GameFocus = 1.0f,
     };
 
     public static GlobalSaveData DefaultGlobal = new GlobalSaveData()

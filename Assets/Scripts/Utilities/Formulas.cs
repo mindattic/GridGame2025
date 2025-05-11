@@ -1,105 +1,112 @@
 ﻿using Assets.Scripts.Models;
 using Game.Behaviors;
-using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
-namespace Assets.Scripts.Utilities
+public static class Formulas
 {
-    public static class Formulas
+    private static LogManager log => GameManager.instance.logManager;
+
+    const float baseHitRate = 66.6666f;
+    const float armorWeightPenalty = 0.1666f;
+
+    public static float LuckModifier(ActorStats stats)
     {
-        private static LogManager log => GameManager.instance.logManager;
+        float multiplier = stats.Level * 0.01f;
+        return Random.Float(1, 1f + stats.Luck * multiplier);
+    }
 
-        const float baseHitRate = 66.6666f;
-        const float armorWeightPenalty = 0.1666f;
+    public static float Accuracy(ActorStats stats)
+    {
+        float baseAccuracy = baseHitRate + ((stats.Level - 1) / 99.0f) * baseHitRate;
+        float focus = stats.Focus * 1.5f;
+        float luck = LuckModifier(stats);
+        return Mathf.FloorToInt(baseAccuracy + focus + luck);
+    }
 
-        public static float LuckModifier(ActorStats stats)
-        {
-            var multiplier = stats.Level * 0.01f;
-            var luckModifier = Random.Float(1, 1f + stats.Luck * multiplier);
-            return luckModifier;
-        }
+    public static float Evade(ActorStats stats)
+    {
+        float agility = stats.Agility * 2f;
+        float stamina = stats.Stamina * 0.5f; // helps mitigate fatigue penalties
+        float luck = LuckModifier(stats);
+        float armorPenalty = 10 * armorWeightPenalty; // assumed fixed armor weight for now
+        return Mathf.FloorToInt(agility + stamina + luck - armorPenalty);
+    }
 
-        public static float Accuracy(ActorStats stats)
-        {
-            var baseAccuracy = baseHitRate + ((stats.Level - 1) / 99.0f) * baseHitRate;
-            var multiplier = 2.0f;
-            var agi = stats.Agility * multiplier;
-            var lck = LuckModifier(stats);
-            var accuracy = Mathf.FloorToInt(baseAccuracy + agi + lck);
-            return accuracy;
-        }
+    public static bool IsHit(ActorInstance attacker, ActorInstance defender)
+    {
+        float accuracy = Accuracy(attacker.stats);
+        float evade = Evade(defender.stats);
+        int d100 = Random.Int(1, 100);
+        bool isHit = (accuracy - evade) >= d100;
+        return isHit;
+    }
 
-        public static float Evasion(ActorStats stats)
-        {
-            var multiplier = 1.0f;
-            var spd = stats.Speed * multiplier;
-            var lck = LuckModifier(stats);
-            var armor = 10 * armorWeightPenalty;
-            var eveasion = Mathf.FloorToInt(spd + lck - armor);
-            return eveasion;
-        }
+    public static bool IsCriticalHit(ActorInstance attacker, ActorInstance defender)
+    {
+        float baseCritChance = 5f; // base 5% chance
+        float focusBonus = attacker.stats.Focus * 0.5f;
+        float luckBonus = attacker.stats.Luck * 0.3f;
+        float critChance = baseCritChance + focusBonus + luckBonus;
+        return Random.Float(0, 100) < critChance;
+    }
 
-        public static bool IsHit(ActorInstance attacker, ActorInstance opponent)
-        {
-            var accuracy = Accuracy(attacker.stats);
-            var evasion = Evasion(opponent.stats);
-            var d100 = Random.Int(1, 100);
-            var isHit = accuracy - evasion >= d100;
-            isHit = true; //DEBUG: It's not fun to miss...
-            //var msg
-            //    = $"{attacker.name} vs {opponent.name}: "
-            //    + $@"Accuracy(<color=""yellow"">{accuracy}</color>) - "
-            //    + $@"Evasion(<color=""yellow"">{evasion}</color>) "
-            //    + $@"{(isHit ? ">" : "<")} "
-            //    + $@"1d100(<color=""yellow"">{d100}</color>) => "
-            //    + $@"{(isHit ? "Hit" : "Miss")}";
-            //log.Info(msg);
-            return isHit;
-        }
+    public static float Health(ActorStats stats)
+    {
+        return 30 + (stats.Vitality * 5f) + (stats.Level * 2f);
+    }
 
-        public static bool IsCriticalHit(ActorInstance attacker, ActorInstance target)
-        {
-            return false;
-        }
+    public static float Offense(ActorStats stats)
+    {
+        float weapon = 10; // placeholder
+        float baseDamage = stats.Strength * 2f;
+        float focusBonus = stats.Focus * 0.5f; // accuracy improves quality of attack
+        float luck = LuckModifier(stats);
+        return Mathf.FloorToInt(baseDamage + weapon + focusBonus + luck);
+    }
 
-        public static float Health(ActorStats stats)
-        {
-            return 30 + (stats.Vitality * 5) + (stats.Level * 2);
-        }
+    public static float Defense(ActorStats stats)
+    {
+        float armor = 10; // placeholder
+        float vitality = stats.Vitality * 1.5f;
+        float staminaBonus = stats.Stamina * 0.5f;
+        float luck = LuckModifier(stats);
+        return Mathf.FloorToInt(vitality + armor + staminaBonus + luck);
+    }
 
-        public static float Offense(ActorStats stats)
-        {
-            var multiplier = 2.0f;
-            var atk = stats.Strength * multiplier;
-            var weapon = 10;
-            var weaponModifier = weapon * multiplier;
-            var lck = LuckModifier(stats);
-            var offense = Mathf.FloorToInt(atk + weaponModifier + lck);
-            return offense;
-        }
+    public static float MagicOffense(ActorStats stats)
+    {
+        float intelligence = stats.Intelligence * 2f;
+        float focus = stats.Focus * 1f;
+        float luck = LuckModifier(stats);
+        return Mathf.FloorToInt(intelligence + focus + luck);
+    }
 
-        public static float Defense(ActorStats stats)
-        {
-            var multiplier = 1.0f;
-            var def = stats.Vitality * multiplier;
-            var armor = 10;
-            var armorModifier = armor * 1.0f;
-            var lck = LuckModifier(stats);
-            var defense = Mathf.FloorToInt(def + armorModifier + lck);
-            return defense;
-        }
+    public static float MagicResistance(ActorStats stats)
+    {
+        float intelligence = stats.Intelligence * 1.5f;
+        float stamina = stats.Stamina * 0.5f;
+        float luck = LuckModifier(stats);
+        return Mathf.FloorToInt(intelligence + stamina + luck);
+    }
 
-        public static int CalculateDamage(ActorInstance attacker, ActorInstance defender)
-        {
-            var offense = Offense(attacker.stats);
-            var defense = Defense(defender.stats);
-            var damage = Mathf.FloorToInt(offense - defense);
-            return damage;
-        }
+    public static int CalculateDamage(ActorInstance attacker, ActorInstance defender)
+    {
+        float offense = Offense(attacker.stats);
+        float defense = Defense(defender.stats);
+        float rawDamage = offense - defense;
+        return Mathf.Max(Mathf.FloorToInt(rawDamage), 1); // Never less than 1 damage
+    }
 
+    public static int CalculateMagicDamage(ActorInstance caster, ActorInstance target)
+    {
+        float magic = MagicOffense(caster.stats);
+        float resist = MagicResistance(target.stats);
+        float damage = magic - resist;
+        return Mathf.Max(Mathf.FloorToInt(damage), 1);
+    }
 
-
+    public static float APRegen(ActorStats stats)
+    {
+        return 5f + (stats.Stamina * 0.5f) + (stats.Level * 0.2f);
     }
 }

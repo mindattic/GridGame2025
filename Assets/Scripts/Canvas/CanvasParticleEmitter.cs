@@ -14,10 +14,10 @@ public class CanvasParticleEmitter : MonoBehaviour
     private float spawnIntervalMax; // Time between spawns
     private float speedMin;
     private float speedMax;
-    private float rotationSpeedMin; // Min rotation speed
-    private float rotationSpeedMax; // Max rotation speed
-    private float fallSpeedMin; // Minimum downward speed
-    private float fallSpeedMax; // Maximum downward speed
+    private float rotationFocusMin; // Min rotation speed
+    private float rotationFocusMax; // Max rotation speed
+    private float fallFocusMin; // Minimum downward speed
+    private float fallFocusMax; // Maximum downward speed
     private float scaleMin; // Minimum scale
     private float scaleMax; // Maximum scale
     private int prewarmCount; // Index of particles to spawn on start
@@ -43,10 +43,10 @@ public class CanvasParticleEmitter : MonoBehaviour
         speedMax = 600;
         yMin = -1000;
         yMax = 1000;
-        rotationSpeedMin = 70;
-        rotationSpeedMax = 100;
-        fallSpeedMin = 40;
-        fallSpeedMax = 100;
+        rotationFocusMin = 70;
+        rotationFocusMax = 100;
+        fallFocusMin = 40;
+        fallFocusMax = 100;
         scaleMin = 0.3f;
         scaleMax = 0.4f;
         prewarmCount = 20;
@@ -102,18 +102,18 @@ public class CanvasParticleEmitter : MonoBehaviour
         rect.anchoredPosition = new Vector2(startX, startY);
 
         // SelectProfile random rotation speed, movement, and scale
-        float rotRange = Random.Float(rotationSpeedMin, rotationSpeedMax);
+        float rotRange = Random.Float(rotationFocusMin, rotationFocusMax);
         float rotWildcard = Random.Int(1, 3) == 1 ? Random.Float(1, 3f) : 1f;
         float rotDirection = Random.Boolean ? -1f : 1f;
 
-        float rotationSpeed = rotRange * rotWildcard * rotDirection;
-        float horizontalSpeed = Random.Float(speedMin, speedMax);
-        float fallSpeed = Random.Float(fallSpeedMin, fallSpeedMax);
+        float rotationFocus = rotRange * rotWildcard * rotDirection;
+        float horizontalFocus = Random.Float(speedMin, speedMax);
+        float fallFocus = Random.Float(fallFocusMin, fallFocusMax);
         float scale = Random.Float(scaleMin, scaleMax);
         rect.localScale = new Vector3(scale, scale, 1f);
 
         CanvasParticleInstance instance = newImage.AddComponent<CanvasParticleInstance>();
         instance.parent = transform;
-        instance.Initialize(rotationSpeed, horizontalSpeed, fallSpeed);
+        instance.Initialize(rotationFocus, horizontalFocus, fallFocus);
     }
 }

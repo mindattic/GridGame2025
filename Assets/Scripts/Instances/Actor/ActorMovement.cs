@@ -20,7 +20,7 @@ namespace Assets.Scripts.Instances.Actor
         protected List<ActorInstance> actors => GameManager.instance.actors;
         protected AudioManager audioManager => GameManager.instance.audioManager;
         protected BoardInstance board => GameManager.instance.board;
-        protected float moveSpeed => GameManager.instance.moveSpeed;
+        protected float moveFocus => GameManager.instance.moveFocus;
         protected float snapThreshold => GameManager.instance.snapThreshold;
         protected float tileSize => GameManager.instance.tileSize;
         protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
@@ -74,15 +74,15 @@ namespace Assets.Scripts.Instances.Actor
             flags.IsMoving = true;
             instance.sortingOrder = SortingOrder.Max;
             float tiltFactor = 25f;   //How much tilt to apply based on movement
-            float rotationSpeed = 10f; //Speed at which the tilt adjusts
-            float resetSpeed = 5f;     //Speed at which the rotation resets
+            float rotationFocus = 10f; //Intelligence at which the tilt adjusts
+            float resetFocus = 5f;     //Intelligence at which the rotation resets
 
             //During: while the actor is focused or selected and not swapping.
             while (flags.IsMoving)
             {
                 previousPosition = instance.position;
                 instance.position = touchPosition3D + touchOffset;
-                //ApplyTilt(actors.position - previousPosition, tiltFactor, rotationSpeed, resetSpeed, Vector3.zero);
+                //ApplyTilt(actors.position - previousPosition, tiltFactor, rotationFocus, resetFocus, Vector3.zero);
                 CheckLocationChanged();
                 yield return Wait.UntilNextFrame();
             }
@@ -113,7 +113,7 @@ namespace Assets.Scripts.Instances.Actor
                 Vector3 horizontalTarget = new Vector3(destination.x, position.y, position.z);
                 while (Mathf.Abs(position.x - destination.x) > snapThreshold)
                 {
-                    position = Vector3.MoveTowards(position, horizontalTarget, moveSpeed);
+                    position = Vector3.MoveTowards(position, horizontalTarget, moveFocus);
 
                     //if (flags.IsSwapping)
                     //{
@@ -137,7 +137,7 @@ namespace Assets.Scripts.Instances.Actor
                 Vector3 verticalTarget = new Vector3(position.x, destination.y, position.z);
                 while (Mathf.Abs(position.y - destination.y) > snapThreshold)
                 {
-                    position = Vector3.MoveTowards(position, verticalTarget, moveSpeed);
+                    position = Vector3.MoveTowards(position, verticalTarget, moveFocus);
 
                     //if (flags.IsSwapping)
                     //{
@@ -242,7 +242,7 @@ namespace Assets.Scripts.Instances.Actor
         ///<summary>
         ///Applies a tilt effect to the actor based on its movement velocity.
         ///</summary>
-        public void ApplyTilt(Vector3 velocity, float tiltFactor, float rotationSpeed, float resetSpeed, Vector3 baseRotation)
+        public void ApplyTilt(Vector3 velocity, float tiltFactor, float rotationFocus, float resetFocus, Vector3 baseRotation)
         {
             if (velocity.magnitude > 0.01f) //Only apply tilt if there's noticeable movement.
             {
@@ -253,7 +253,7 @@ namespace Assets.Scripts.Instances.Actor
                 instance.transform.localRotation = Quaternion.Slerp(
                     instance.transform.localRotation,
                     Quaternion.Euler(0, 0, tiltZ),
-                    Time.deltaTime * rotationSpeed
+                    Time.deltaTime * rotationFocus
                 );
             }
             else
@@ -262,7 +262,7 @@ namespace Assets.Scripts.Instances.Actor
                 instance.transform.localRotation = Quaternion.Slerp(
                     instance.transform.localRotation,
                     Quaternion.Euler(baseRotation),
-                    Time.deltaTime * resetSpeed
+                    Time.deltaTime * resetFocus
                 );
             }
         }

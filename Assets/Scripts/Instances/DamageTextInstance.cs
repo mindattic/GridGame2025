@@ -147,7 +147,7 @@ public class DamageTextInstance : MonoBehaviour
         float bounceDamping = 0.5f;                // Reduces bounce height after each impact
         float groundY = initialPosition.y;         // The starting y position is treated as ground level
         float bounceEnd = tileSize * 0.1f;         // Threshold below which bouncing stops
-        float horizontalSpeed = tileSize * Constants.percent33 * Random.Float(-1f, 1f);
+        float horizontalFocus = tileSize * Constants.percent33 * Random.Float(-1f, 1f);
         int bounceCount = 0;
 
         // Flag to determine when the fade should start (once the first bounce occurs)
@@ -162,7 +162,7 @@ public class DamageTextInstance : MonoBehaviour
             // Save the CurrentProfile position based on vertical velocity and horizontal movement
             Vector3 position = transform.position;
             position.y += vY * Time.deltaTime;
-            position.x += bounceCount <= 3 ? horizontalSpeed * Time.deltaTime : 0;
+            position.x += bounceCount <= 3 ? horizontalFocus * Time.deltaTime : 0;
 
             // Check if the textarea has hit (or gone below) the ground level
             if (position.y <= groundY)
