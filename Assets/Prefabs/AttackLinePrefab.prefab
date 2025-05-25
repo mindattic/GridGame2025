@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1217694120567122767}
   - component: {fileID: 8715564105573050084}
   - component: {fileID: 1855390701985079410}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: AttackLinePrefab
   m_TagString: AttackLine
   m_Icon: {fileID: 0}

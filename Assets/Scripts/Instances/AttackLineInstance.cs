@@ -32,7 +32,7 @@ namespace Game.Instances
             baseColor = ColorHelper.RGBA(100, 195, 200, 0);
 
             lineRenderer = gameObject.GetComponent<LineRenderer>();
-            lineRenderer.sortingOrder = SortingOrder.AttackLine;
+            //lineRenderer.sortingOrder = SortingOrder.AttackLine;
         }
 
         //Method which is automatically called before the first frame update  
@@ -75,7 +75,7 @@ namespace Game.Instances
                 points = new Vector3[] { ul, ur, lr, ll, ul };
             }
 
-            lineRenderer.sortingOrder = SortingOrder.AttackLine;
+            //lineRenderer.sortingOrder = SortingOrder.AttackLine;
             lineRenderer.positionCount = points.Length;
             lineRenderer.SetPositions(points);
 

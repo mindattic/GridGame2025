@@ -14,6 +14,8 @@ public class PortraitManager : MonoBehaviour
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;
     protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
+    protected SortingManager sortingManager => GameManager.instance.sortingManager;
+
 
 
     //Fields
@@ -56,7 +58,7 @@ public class PortraitManager : MonoBehaviour
         var instance = prefab.GetComponent<PortraitInstance>();
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
-        instance.sortingOrder = SortingOrder.Max;
+        //instance.sortingOrder = GameManager.instance.sortingManager.Max;
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
 
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
@@ -70,7 +72,7 @@ public class PortraitManager : MonoBehaviour
 
     public IEnumerator Play(ActorPair actorPair)
     {
-        sortingOrder = SortingOrder.Max;
+        //sortingOrder = SortingOrder.Max;
         yield return Wait.For(Intermission.Before.Player.Attack);
 
         //audioManager.Play("Portrait");
@@ -85,7 +87,7 @@ public class PortraitManager : MonoBehaviour
         );
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
-        sortingOrder = SortingOrder.Max;
+        //sortingOrder = SortingOrder.Max;
     }
 
 

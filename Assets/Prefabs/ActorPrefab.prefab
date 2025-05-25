@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6613482336046023288}
   - component: {fileID: 563216796185986347}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: WeaponIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 32767
   m_Sprite: {fileID: 21300000, guid: 75a961c92d21e3049810084288d03c14, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -97,7 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8471319909025867922}
   - component: {fileID: 5813452476260217969}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Quality
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +161,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2f6c507b657e28a439b4ded019357f99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -184,7 +184,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3796932674301630095}
   - component: {fileID: 8086145803856504001}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: HealthBarFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 7
   m_Sprite: {fileID: 21300000, guid: 6e1efe0b263d9c24aab1fb7a38e3d541, type: 3}
   m_Color: {r: 0, g: 0.5019608, b: 0, a: 1}
@@ -271,7 +271,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2918428974571005173}
   - component: {fileID: 8798786814118921734}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 42ad7926ac1b0514185774b0d81b3f19, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 226632295278794064}
   - component: {fileID: 7128737571371094693}
   - component: {fileID: 308395949308277366}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ActionBarText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +427,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1900842943
-  m_SortingLayer: 4
+  m_SortingLayer: 8
   m_SortingOrder: 5
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &308395949308277366
@@ -536,7 +536,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8004564749903801066}
   - component: {fileID: 6584813632425479338}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ArmorWest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -600,7 +600,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 44
   m_Sprite: {fileID: 21300000, guid: ba711bfcf9fe2834fa6eaba0b8ab9aa5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -624,7 +624,7 @@ GameObject:
   - component: {fileID: 136280427170726215}
   - component: {fileID: 594481166773605240}
   - component: {fileID: 1379581425609189733}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: HealthBarText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -692,7 +692,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1900842943
-  m_SortingLayer: 4
+  m_SortingLayer: 8
   m_SortingOrder: 5
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &1379581425609189733
@@ -800,7 +800,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2104487958924403829}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ActionBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -836,7 +836,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3949784475064755953}
   - component: {fileID: 4427227075910882768}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: HealthBarBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -900,7 +900,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: e102844aa2988194a8cda1e37e62a45c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -924,7 +924,7 @@ GameObject:
   - component: {fileID: 8656072942626124404}
   - component: {fileID: 1955594638554881738}
   - component: {fileID: 980785301762307535}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Thumbnail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -988,7 +988,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c19bc5ef1633fb44d91f89d4b32592db, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1015,7 +1015,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rangeMultiplier: 0
   range: {x: 0, y: 0}
-  panSpeed: 1
+  panFocus: 0
   wobbleAmplitudeFactorX: 0.5
   wobbleAmplitudeFactorY: 0.5
   nextPauseInterval: 5
@@ -1031,7 +1031,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8128466258399601322}
   - component: {fileID: 4271529113852149922}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ActionBarDrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1095,7 +1095,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 6e1efe0b263d9c24aab1fb7a38e3d541, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
@@ -1118,7 +1118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1187526637071599515}
   - component: {fileID: 877601067661877506}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: HealthBarDrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1182,7 +1182,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 6e1efe0b263d9c24aab1fb7a38e3d541, type: 3}
   m_Color: {r: 0.5019608, g: 0.5019608, b: 0.1254902, a: 1}
@@ -1205,7 +1205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9093335139090979263}
   - component: {fileID: 8757390260386922179}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ArmorEast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1269,7 +1269,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 44
   m_Sprite: {fileID: 21300000, guid: 403a98a439a23cf4a9ff7e72a9573a3f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1292,7 +1292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6228699779086482389}
   - component: {fileID: 8501512517261226403}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ArmorNorth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1356,7 +1356,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 44
   m_Sprite: {fileID: 21300000, guid: 86d906f7ea9d7124ca36dfcde1a81e64, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1379,7 +1379,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7197334810612330259}
   - component: {fileID: 3490896562436407259}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Opaque
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1443,7 +1443,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2f6c507b657e28a439b4ded019357f99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1468,7 +1468,8 @@ GameObject:
   - component: {fileID: 3730061202814564279}
   - component: {fileID: 8088459754222058965}
   - component: {fileID: 3730061202814564274}
-  m_Layer: 8
+  - component: {fileID: 1834988136099498174}
+  m_Layer: 10
   m_Name: ActorPrefab
   m_TagString: Actor
   m_Icon: {fileID: 0}
@@ -1608,6 +1609,13 @@ MonoBehaviour:
   team: 2
   spawnTurn: 0
   stats:
+    Strength: 0
+    Agility: 0
+    Intelligence: 0
+    Focus: 0
+    Vitality: 0
+    Stamina: 0
+    Luck: 0
     Level: 0
     PreviousHP: 0
     HP: 0
@@ -1615,13 +1623,19 @@ MonoBehaviour:
     PreviousAP: 0
     AP: 0
     MaxAP: 0
-    Strength: 0
-    Agility: 0
-    Vitality: 0
-    Intelligence: 0
-    Speed: 0
-    Luck: 0
   thumbnail: {fileID: 0}
+--- !u!210 &1834988136099498174
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3730061202814564284}
+  m_Enabled: 1
+  m_SortingLayerID: 1438895807
+  m_SortingLayer: 4
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &4211350667117699209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1632,7 +1646,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5395001445011887090}
   - component: {fileID: 4875706458581057061}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ActionBarFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1696,7 +1710,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 11
   m_Sprite: {fileID: 21300000, guid: f5eeaa1cf894d084aafc95b6c2495982, type: 3}
   m_Color: {r: 0, g: 0.76862746, b: 1, a: 1}
@@ -1720,7 +1734,7 @@ GameObject:
   - component: {fileID: 2165874276336574119}
   - component: {fileID: 2431816385811217007}
   - component: {fileID: 3529825922162758375}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: RadialText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1788,7 +1802,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1900842943
-  m_SortingLayer: 4
+  m_SortingLayer: 8
   m_SortingOrder: 5
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &3529825922162758375
@@ -1897,7 +1911,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2030446323126041855}
   - component: {fileID: 1575524956348287626}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: RadialBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1961,7 +1975,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 20
   m_Sprite: {fileID: 21300000, guid: 67da39125f7777140aba21125cdeed4a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -1983,7 +1997,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7320336492821784510}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2020,7 +2034,7 @@ GameObject:
   - component: {fileID: 2303756091576953153}
   - component: {fileID: 2237794249722743513}
   - component: {fileID: 6221499127480695323}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: NameTagText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2088,7 +2102,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 100
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &6221499127480695323
@@ -2195,7 +2209,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7829599493583300356}
   - component: {fileID: 7121407484203694635}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2265,7 +2279,7 @@ SpriteMask:
   m_MaskAlphaCutoff: 0.25
   m_FrontSortingLayerID: 1438895807
   m_BackSortingLayerID: 0
-  m_FrontSortingLayer: 2
+  m_FrontSortingLayer: 4
   m_BackSortingLayer: 0
   m_FrontSortingOrder: 0
   m_BackSortingOrder: 0
@@ -2282,7 +2296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8263191080812528504}
   - component: {fileID: 5907950400554386300}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ArmorSouth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2346,7 +2360,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 44
   m_Sprite: {fileID: 21300000, guid: 50adc835488ffc34f95c33446b46ee24, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2368,8 +2382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5724325182203668173}
-  - component: {fileID: 2884103475995167707}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2408,18 +2421,6 @@ Transform:
   - {fileID: 6180082876920132975}
   m_Father: {fileID: 3730061202814564275}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!210 &2884103475995167707
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5785203039894534629}
-  m_Enabled: 1
-  m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
-  m_SortingOrder: 0
-  m_SortAtRoot: 0
 --- !u!1 &6018713709805910958
 GameObject:
   m_ObjectHideFlags: 0
@@ -2430,7 +2431,7 @@ GameObject:
   m_Component:
   - component: {fileID: 658582063595684049}
   - component: {fileID: 2437049332399235243}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ActionBarBack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2494,7 +2495,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 9
   m_Sprite: {fileID: 21300000, guid: e102844aa2988194a8cda1e37e62a45c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2517,7 +2518,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6614507915285986201}
   - component: {fileID: 8458513981668033871}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2581,7 +2582,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 7a4f78a80b83e784f90750fd1a857065, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.2509804}
@@ -2603,7 +2604,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6180082876920132975}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2639,7 +2640,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6095386227113081049}
   - component: {fileID: 5098790026659470380}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: StatusIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2703,7 +2704,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: cc4b52ca664d5bb4a8eeebabb3277b3e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
@@ -2727,7 +2728,7 @@ GameObject:
   - component: {fileID: 5804003015905746504}
   - component: {fileID: 4387771652226431711}
   - component: {fileID: 8167028270065546572}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: TurnDelayText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2795,7 +2796,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 120
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &8167028270065546572
@@ -2902,7 +2903,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5604287690528834684}
   - component: {fileID: 7515424770841040347}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Parallax
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2966,7 +2967,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 3196744577864949591, guid: c984fa1feec841a40a97b4de59b58d79, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
@@ -2989,7 +2990,7 @@ GameObject:
   m_Component:
   - component: {fileID: 399400551369190834}
   - component: {fileID: 1885660289781437484}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: RadialFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3053,7 +3054,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 21
   m_Sprite: {fileID: 21300000, guid: 7ccbbab0a62eed44abd694c6b7ca28bf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
@@ -3172,7 +3173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1422430346481655668, guid: af15610a90be7964d9003f4269cc239f, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1422430346481655668, guid: af15610a90be7964d9003f4269cc239f, type: 3}
       propertyPath: m_IsActive

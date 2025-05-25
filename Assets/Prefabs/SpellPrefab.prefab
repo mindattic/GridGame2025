@@ -44,14 +44,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee20f3f3d80a33843a210533f8ed4dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  caster: {fileID: 0}
-  target: {fileID: 0}
-  trailEffectName: 
-  arrivalVFXName: 
-  pathCurve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  travelDuration: 1

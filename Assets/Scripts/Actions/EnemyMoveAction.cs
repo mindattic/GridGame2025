@@ -30,7 +30,7 @@ namespace Assets.Scripts.Models
                 yield break;
             }
 
-            actors.ForEach(x => x.sortingOrder = SortingOrder.Default);
+            //actors.ForEach(x => x.sortingOrder = SortingOrder.Default);
 
             //Wait for a predetermined waitDuration before enemy movement starts.
             yield return Wait.For(Intermission.Before.Enemy.Move);

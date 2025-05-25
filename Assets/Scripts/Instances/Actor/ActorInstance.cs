@@ -2,10 +2,12 @@ using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Instances.Actor;
 using Assets.Scripts.Models;
 using Game.Instances.Actor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 // ActorInstance represents a game characterName (either hero or enemy) and encapsulates
 // its state, behaviors, rendering, movement, and interactions with game systems.
@@ -82,50 +84,33 @@ public class ActorInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
+    public SortingGroup sortingGroup
+    {
+        get => this.GetComponent<SortingGroup>();
+    }
+
     // Sorting order property adjusts the rendering layers for various parts of the actor.
     // Changing the sorting order updates multiple renderer components and invokes an event.
-    public int sortingOrder
+    public Sort sortingLayer
     {
         get
         {
-            return render.opaque.sortingOrder;
+            // Convert the current layer ID to a name, then parse to Sort enum
+            string name = SortingLayer.IDToName(sortingGroup.sortingLayerID);
+            return Enum.TryParse(name, out Sort result) ? result : Sort.Default;
         }
         set
         {
-            render.opaque.sortingOrder = value + ActorLayer.Value.Opaque;
-            render.quality.sortingOrder = value + ActorLayer.Value.Quality;
-            render.parallax.sortingOrder = value + ActorLayer.Value.Parallax;
-            render.glow.sortingOrder = value + ActorLayer.Value.Glow;
-            render.thumbnail.sortingOrder = value + ActorLayer.Value.Thumbnail;
-            render.frame.sortingOrder = value + ActorLayer.Value.Frame;
-            render.statusIcon.sortingOrder = value + ActorLayer.Value.StatusIcon;
-            render.healthBarBack.sortingOrder = value + ActorLayer.Value.HealthBar.Back;
-            render.healthBarDrain.sortingOrder = value + ActorLayer.Value.HealthBar.Drain;
-            render.healthBarFill.sortingOrder = value + ActorLayer.Value.HealthBar.Fill;
-            render.healthBarText.sortingOrder = value + ActorLayer.Value.HealthBar.Text;
-            render.actionBarBack.sortingOrder = value + ActorLayer.Value.ActionBar.Back;
-            render.actionBarFill.sortingOrder = value + ActorLayer.Value.ActionBar.Fill;
-            render.actionBarText.sortingOrder = value + ActorLayer.Value.ActionBar.Text;
-            render.mask.sortingOrder = value + ActorLayer.Value.Mask;
-            render.radialBack.sortingOrder = value + ActorLayer.Value.RadialBack;
-            render.radial.sortingOrder = value + ActorLayer.Value.RadialFill;
-            render.radialText.sortingOrder = value + ActorLayer.Value.RadialText;
-            render.turnDelayText.sortingOrder = value + ActorLayer.Value.TurnDelayText;
-            render.nameTagText.sortingOrder = value + ActorLayer.Value.NameTagText;
-            render.weaponIcon.sortingOrder = value + ActorLayer.Value.WeaponIcon;
-            render.armorNorth.sortingOrder = value + ActorLayer.Value.Armor.ArmorNorth;
-            render.armorEast.sortingOrder = value + ActorLayer.Value.Armor.ArmorEast;
-            render.armorSouth.sortingOrder = value + ActorLayer.Value.Armor.ArmorSouth;
-            render.armorWest.sortingOrder = value + ActorLayer.Value.Armor.ArmorWest;
-            onSortingOrderChanged?.Invoke(); // Notify listeners that sorting order has been updated.
+            sortingGroup.sortingLayerID = SortingLayer.NameToID(value.ToString());
         }
     }
+
 
     // Event handlers for various actor-related events.
     public System.Action<Vector2Int> onOverlapDetected;                                 // Invoked when the actor overlaps with a new grid location.
     public System.Action<Vector2Int, Vector2Int> onSelectedPlayerLocationChanged;       // Invoked when the actor changes location.
     public System.Action onActorDeath;                                                  // Invoked upon actor death.
-    public System.Action onSortingOrderChanged;                                         // Invoked when the sorting order is modified.
+    //public System.Action onSortingOrderChanged;                                         // Invoked when the sorting order is modified.
     //public System.Action onDragDetected;                                                // Invoked when a drag operation is detected on the actor.
 
     // Fields: Core actors fields representing characterName stats, state, and modules.
@@ -464,8 +449,9 @@ public class ActorInstance : MonoBehaviour
         //Trigger portrait dissolve effect and play death sound.
         portraitManager.Dissolve(this);
         audioManager.Play("Death");
+
         //Assign sorting order to maximum so that the death sequence renders on top.
-        sortingOrder = SortingOrder.Max;
+        //sortingOrder = SortingOrder.Max;
 
         //During: Gradually reduce the alpha value for a fade-out effect.
         var hasSpawnedCoins = false;

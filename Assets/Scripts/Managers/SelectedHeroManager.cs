@@ -3,6 +3,7 @@ using Game.Manager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 // SelectedPlayerManager handles input and state changes for selecting, dragging, and dropping heroes.
 // It interacts with multiple core game systems via the GameManager singleton.
@@ -12,6 +13,7 @@ public class SelectedHeroManager : MonoBehaviour
     protected ActionManager actionManager => GameManager.instance.actionManager;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
+    protected SortingManager sortingManager => GameManager.instance.sortingManager;
     protected PincerAttackManager attackManager => GameManager.instance.pincerAttackManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
     protected TimerBar timerBar => GameManager.instance.timerBar;
@@ -54,6 +56,9 @@ public class SelectedHeroManager : MonoBehaviour
 
         // Save the focused actor to the one under the mouse.
         focusedActor = actor;
+        
+        focusedActor.sortingLayer = Sort.Selected;
+        Debug.Log(focusedActor.sortingLayer);
 
         // Calculate the offset between the actor's position and the mouse position.
         touchOffset = focusedActor.position - touchPosition3D;
@@ -95,7 +100,10 @@ public class SelectedHeroManager : MonoBehaviour
         // Switch the turn phase from Start to Move.
         turnManager.SetPhase(TurnPhase.Move);
 
-        //Start selected hero movement
+        selectedHero.sortingLayer = Sort.Selected;
+        Debug.Log(focusedActor.sortingLayer);
+
+        Debug.Log("This is a log.");
         selectedHero.movement.TriggerMoveTowardsCursor();
     }
 

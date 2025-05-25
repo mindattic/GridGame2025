@@ -51,9 +51,6 @@ namespace Assets.Scripts.Models
 
         private IEnumerator ProcessAttack(ActorInstance attacker, ActorInstance opponent)
         {
-            attacker.sortingOrder = SortingOrder.Attacker;
-            opponent.sortingOrder = SortingOrder.Opponent;
-
             var isHit = Formulas.IsHit(attacker, opponent);
             var isCriticalHit = Formulas.IsCriticalHit(attacker, opponent);
             var damage = Formulas.CalculateDamage(opponent, attacker);

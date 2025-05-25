@@ -21,6 +21,8 @@ public class PincerAttackManager : MonoBehaviour
     protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected List<ActorInstance> actors => GameManager.instance.actors;
+    protected SortingManager sortingManager => GameManager.instance.sortingManager;
+
 
     /// <summary>
     /// Checks for any valid pincer attack opportunities for the given team.
@@ -179,7 +181,7 @@ public class PincerAttackManager : MonoBehaviour
     {
         // Step 1: SelectProfile visual sorting orders to attackers, opponents, and supporters
         // so that they are highlighted correctly on the game board.
-        SetSortingOrder(participants);
+        //sortingManager.OnPincerAttackStart(participants);
 
         // Step 2: Queue up support actions for both attackers in every valid pair.
         foreach (var pair in participants.pair)
@@ -212,7 +214,7 @@ public class PincerAttackManager : MonoBehaviour
         yield return boardOverlay.FadeOut();
 
         // Step 5: Clean up
-        ResetSortingOrder();
+        //ResetSortingOrder();
         participants.Clear();
         turnManager.NextTurn();
     }
@@ -292,42 +294,12 @@ public class PincerAttackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the visual sorting order for each actor involved in a pincer attack.
-    /// Attackers are set to the Attacker layer, opponents to the Opponent layer, and supporters to the Supporter layer.
-    /// This is used to highlight their roles on the game board.
-    /// </summary>
-    /// <param name="participants">The participants of pincer attack pair to highlight.</param>
-    private void SetSortingOrder(PincerAttackParticipants participants)
-    {
-        // First, reset all actors to their default sorting order.
-        ResetSortingOrder();
-
-        // Iterate over each valid pair and assign the appropriate sorting order.
-        foreach (var pair in participants.pair)
-        {
-            // Assign both attackers to the attacker sorting order.
-            pair.attacker1.sortingOrder = SortingOrder.Attacker;
-            pair.attacker2.sortingOrder = SortingOrder.Attacker;
-
-            // Assign each opponent between the attackers to the opponent sorting order.
-            foreach (var opp in pair.opponents)
-                opp.sortingOrder = SortingOrder.Opponent;
-
-            // Assign all supporters for attacker1 and attacker2 to the supporter sorting order.
-            foreach (var s in pair.supporters1)
-                s.sortingOrder = SortingOrder.Supporter;
-            foreach (var s in pair.supporters2)
-                s.sortingOrder = SortingOrder.Supporter;
-        }
-    }
-
-    /// <summary>
     /// Resets the sorting order for all actors that are currently playing,
     /// reverting them to the default visual layer.
     /// </summary>
     private void ResetSortingOrder()
     {
-        foreach (var actor in actors.Where(x => x.isPlaying))
-            actor.sortingOrder = SortingOrder.Default;
+        //foreach (var actor in actors.Where(x => x.isPlaying))
+        //    actor.sortingOrder = SortingOrder.Default;
     }
 }

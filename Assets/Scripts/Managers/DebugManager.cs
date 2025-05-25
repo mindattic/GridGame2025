@@ -119,8 +119,8 @@ public class DebugManager : MonoBehaviour
 
         foreach (var pair in alignedPairs)
         {
-            pair.startActor.sortingOrder = SortingOrder.Supporter;
-            pair.endActor.sortingOrder = SortingOrder.Supporter;
+            //pair.startActor.sortingOrder = SortingOrder.Supporter;
+            //pair.endActor.sortingOrder = SortingOrder.Supporter;
             supportLineManager.Spawn(pair.startActor, pair.endActor);
         }
 
@@ -194,8 +194,8 @@ public class DebugManager : MonoBehaviour
 
         foreach (var actorPair in alignedPairs)
         {
-            actorPair.startActor.sortingOrder = SortingOrder.Attacker;
-            actorPair.endActor.sortingOrder = SortingOrder.Attacker;
+            //actorPair.startActor.sortingOrder = SortingOrder.Attacker;
+            //actorPair.endActor.sortingOrder = SortingOrder.Attacker;
             attackLineManager.Spawn(actorPair);
         }
 

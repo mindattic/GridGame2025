@@ -240,7 +240,7 @@ namespace Assets.Scripts.Instances.Actor
             var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, tileSize * percent33);
 
             // Increase sorting order to bring the actor to the front.
-            instance.sortingOrder = SortingOrder.Max;
+            //instance.sortingOrder = SortingOrder.Max;
 
             // Phase 1: Windup - move slightly opposite to the bump direction.
             float elapsedTime = 0f;

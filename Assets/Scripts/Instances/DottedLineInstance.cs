@@ -1,4 +1,5 @@
 using Game.Behaviors;
+using Game.Instances.Actor;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -53,6 +54,20 @@ public class DottedLineInstance : MonoBehaviour
         get => spriteRenderer.sprite;
         set => spriteRenderer.sprite = value;
     }
+
+
+    public int sortingOrder
+    {
+        get => spriteRenderer.sortingOrder;
+        set => spriteRenderer.sortingOrder = value;
+    }
+
+
+
+
+
+
+
     public void SetColor()
     {
         spriteRenderer.color = ColorHelper.Translucent.Yellow;

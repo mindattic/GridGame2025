@@ -18,7 +18,7 @@ public class BoardOverlay : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sortingOrder = SortingOrder.BoardOverlay;
+        //spriteRenderer.sortingOrder = SortingOrder.BoardOverlay;
         spriteRenderer.enabled = false;
         SetAlpha(minAlpha);
     }

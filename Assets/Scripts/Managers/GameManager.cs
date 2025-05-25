@@ -51,6 +51,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public SpellManager spellManager;
     [HideInInspector] public ActionManager actionManager;
     [HideInInspector] public PincerAttackManager pincerAttackManager;
+    [HideInInspector] public SortingManager sortingManager;
 
     //Board
     [HideInInspector] public BoardOverlay boardOverlay;
@@ -190,7 +191,7 @@ public class GameManager : Singleton<GameManager>
         spellManager = game.GetComponent<SpellManager>();
         actionManager = game.GetComponent<ActionManager>();
         pincerAttackManager = game.GetComponent<PincerAttackManager>();
-
+        sortingManager = game.GetComponent<SortingManager>();
 
         #region Platform Dependent Compilation
 

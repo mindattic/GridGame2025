@@ -67,7 +67,7 @@ namespace Assets.Scripts.Models
                 attacker.TriggerAttack(result);
 
                 //Short delay to create the domino effect.
-                yield return Wait.For(Interval.TenthSecond);
+                yield return Wait.For(Interval.QuarterSecond);
             }
         }
 

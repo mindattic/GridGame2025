@@ -30,7 +30,7 @@ namespace Assets.Scripts.Instances.Actor
         protected ActorStats stats => instance.stats;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
-        private int sortingOrder { get => instance.sortingOrder; set => instance.sortingOrder = value; }
+        //private int sortingOrder { get => instance.sortingOrder; set => instance.sortingOrder = value; }
         private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
         protected Vector2Int previousLocation { get => instance.previousLocation; set => instance.previousLocation = value; }
         private Vector2Int location { get => instance.location; set => instance.location = value; }
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Instances.Actor
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
         protected Card card => GameManager.instance.card;
         protected TileMap tileMap => GameManager.instance.tileMap;
-
+        protected SortingManager sortingManager => GameManager.instance.sortingManager;
 
 
 
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Instances.Actor
         {
             //Before: set a high sorting order.
             flags.IsMoving = true;
-            instance.sortingOrder = SortingOrder.Max;
+            //instance.sortingOrder = SortingOrder.Max;
             float tiltFactor = 25f;   //How much tilt to apply based on movement
             float rotationFocus = 10f; //Intelligence at which the tilt adjusts
             float resetFocus = 5f;     //Intelligence at which the rotation resets
@@ -101,7 +101,7 @@ namespace Assets.Scripts.Instances.Actor
             //Before: movement begins
             flags.IsMoving = true;
             audioManager.Play("Slide");
-            instance.sortingOrder = SortingOrder.Moving;
+            //instance.sortingOrder = SortingOrder.Moving;
 
             //Determine the destination based on the actor's grid location.
             Vector3 destination = Geometry.GetPositionByLocation(location);

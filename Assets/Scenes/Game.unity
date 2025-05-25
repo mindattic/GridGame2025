@@ -1445,7 +1445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77790cef0d7fbcb4db24be963165d30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: {x: -0.05, y: 0}
+  scrollFocus: {x: 0, y: 0}
 --- !u!114 &439779854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1582,7 +1582,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Ceiling: 1
   Floor: -1
-  Speed: 0.05
+  Focus: 0.05
 --- !u!1 &481169151
 GameObject:
   m_ObjectHideFlags: 0
@@ -1819,8 +1819,8 @@ MonoBehaviour:
       colorBlindnessType: 0
       colorBlindnessStrength: 1
   m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
-  m_ShowToolkit: 0
-  m_ShowCustomSorter: 0
+  m_ShowToolkit: 1
+  m_ShowCustomSorter: 1
   breakBeforeColorGrading: 0
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
@@ -3946,7 +3946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77790cef0d7fbcb4db24be963165d30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: {x: 0.05, y: 0}
+  scrollFocus: {x: 0, y: 0}
 --- !u!114 &1362978811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4441,7 +4441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   label: {fileID: 0}
-  rotationSpeed: 200
+  rotationFocus: 200
 --- !u!114 &1500062421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5402,6 +5402,7 @@ MonoBehaviour:
   spellManager: {fileID: 0}
   actionManager: {fileID: 0}
   pincerAttackManager: {fileID: 0}
+  sortingManager: {fileID: 0}
   boardOverlay: {fileID: 0}
   focusIndicator: {fileID: 0}
   canvasOverlay: {fileID: 0}
@@ -5414,12 +5415,12 @@ MonoBehaviour:
   touchPosition2D: {x: 0, y: 0, z: 0}
   touchPosition3D: {x: 0, y: 0, z: 0}
   touchOffset: {x: 0, y: 0, z: 0}
-  cursorSpeed: 0
-  swapSpeed: 0
-  moveSpeed: 0
+  cursorFocus: 0
+  swapFocus: 0
+  moveFocus: 0
   snapThreshold: 0
   dragThreshold: 0
-  bumpSpeed: 0
+  bumpFocus: 0
   actors: []
   focusedActor: {fileID: 0}
   selectedHero: {fileID: 0}
@@ -5430,7 +5431,7 @@ MonoBehaviour:
   lines: []
   coinBar: {fileID: 0}
   totalCoins: 0
-  previousGameSpeed: 0
+  previousGameFocus: 0
 --- !u!114 &1751276278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6215,7 +6216,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 2
+  m_SortingLayer: 4
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 10b607c4c4d23e44f90211b58b72878c, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.76862746}

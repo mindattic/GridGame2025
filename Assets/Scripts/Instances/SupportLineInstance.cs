@@ -48,13 +48,13 @@ public class SupportLineInstance : MonoBehaviour
         parent = board.transform;
         name = $"SupportLine_{Guid.NewGuid():N}";
 
-        UpdateSortingOrder();
+        //UpdateSortingOrder();
         lineRenderer.SetPosition(0, actor1.position);
         lineRenderer.SetPosition(1, actor2.position);
 
         // Subscribe to sorting order changes
-        actor1.onSortingOrderChanged += UpdateSortingOrder;
-        actor2.onSortingOrderChanged += UpdateSortingOrder;
+        //actor1.onSortingOrderChanged += UpdateSortingOrder;
+        //actor2.onSortingOrderChanged += UpdateSortingOrder;
 
         StartCoroutine(FadeIn());
     }
@@ -125,17 +125,17 @@ public class SupportLineInstance : MonoBehaviour
 
     public void UpdateSortingOrder()
     {
-        if (this == null || actor1 == null || actor2 == null || lineRenderer == null) return;
+        //if (this == null || actor1 == null || actor2 == null || lineRenderer == null) return;
 
-        int lowestSortingOrder = Mathf.Min(actor1.sortingOrder, actor2.sortingOrder);
-        lineRenderer.sortingOrder = lowestSortingOrder + baseSortingOffset;
+        //int lowestSortingOrder = Mathf.Min(actor1.sortingOrder, actor2.sortingOrder);
+        //lineRenderer.sortingOrder = lowestSortingOrder + baseSortingOffset;
     }
 
 
     public void Destroy()
     {
-        actor1.onSortingOrderChanged -= UpdateSortingOrder;
-        actor2.onSortingOrderChanged -= UpdateSortingOrder;
+        //actor1.onSortingOrderChanged -= UpdateSortingOrder;
+        //actor2.onSortingOrderChanged -= UpdateSortingOrder;
         Destroy(this.gameObject);
     }
 
