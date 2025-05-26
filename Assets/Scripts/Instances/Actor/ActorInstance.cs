@@ -445,7 +445,7 @@ public class ActorInstance : MonoBehaviour
             yield return Wait.OneTick();
         }
 
-        //After: Reset location and position, deactivate the actor, and invoke the death event.
+        //After: Reset location and position, deactivate the actor, and check death event.
         location = LocationHelper.Nowhere;
         position = PositionHelper.Nowhere;
         gameObject.SetActive(false);

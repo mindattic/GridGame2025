@@ -66,21 +66,21 @@ public class SortingManager : MonoBehaviour
     }
 
 
-    //public void OnSelectedHeroLocationChanged(Vector2Int newLocation)
-    //{
-    //    foreach (var actor in actors)
-    //    {
+    public void OnSelectedHeroLocationChanged(Vector2Int newLocation)
+    {
+        foreach (var actor in actors)
+        {
 
-    //        if (actor == selectedHero)
-    //        {
-    //            actor.SetSorting(SortingLayer.ActorAbove, GetDepthOrder(actor.transform.position));
-    //        }
-    //        else
-    //        {
-    //            actor.SetSorting(SortingLayer.ActorBelow, GetDepthOrder(actor.transform.position));
-    //        }
-    //    }
-    //}
+            if (actor == selectedHero)
+            {
+                actor.SetSorting(SortingLayer.ActorAbove, GetDepthOrder(actor.transform.position));
+            }
+            else
+            {
+                actor.SetSorting(SortingLayer.ActorBelow, GetDepthOrder(actor.transform.position));
+            }
+        }
+    }
 
 
 
