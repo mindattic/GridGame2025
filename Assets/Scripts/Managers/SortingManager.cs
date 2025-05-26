@@ -73,11 +73,11 @@ public class SortingManager : MonoBehaviour
 
             if (actor == selectedHero)
             {
-                actor.SetSorting(SortingLayer.ActorAbove, GetDepthOrder(actor.transform.position));
+                actor.SetSorting(SortingLayer.ActorAbove, SortingOrder.Max);
             }
             else
             {
-                actor.SetSorting(SortingLayer.ActorBelow, GetDepthOrder(actor.transform.position));
+                actor.SetSorting(SortingLayer.ActorBelow, SortingOrder.Min);
             }
         }
     }
@@ -90,20 +90,22 @@ public class SortingManager : MonoBehaviour
         actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
     }
 
+    public void OnActorMoving(ActorInstance actor)
+    {
+        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+        actor.SetSorting(SortingLayer.ActorAbove, 0);
+    }
+
+
     public void OnActorOverlap(ActorInstance initiator, ActorInstance target)
     {
         // Bring initiator to front
-        initiator.SetSorting(SortingLayer.ActorAbove, GetDepthOrder(initiator.transform.position));
+        initiator.SetSorting(SortingLayer.ActorAbove, SortingOrder.Max);
 
         // Push target below
-        target.SetSorting(SortingLayer.ActorBelow, GetDepthOrder(target.transform.position));
+        target.SetSorting(SortingLayer.ActorBelow, SortingOrder.Min);
     }
 
-    private int GetDepthOrder(Vector3 position)
-    {
-        // Y-axis-based depth sorting (lower Y = higher priority)
-        return Mathf.RoundToInt(-position.y * 100);
-    }
 
     public void OnPincerAttackStart(PincerAttackParticipants participants)
     {

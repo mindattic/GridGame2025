@@ -4,10 +4,7 @@ using Game.Behaviors;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 namespace Assets.Scripts.Instances.Actor
 {
@@ -37,9 +34,9 @@ namespace Assets.Scripts.Instances.Actor
         protected Vector3 previousPosition { get => instance.previousPosition; set => instance.previousPosition = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
-        protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-        protected bool hasSelectedPlayer => GameManager.instance.hasSelectedPlayer;
-        protected bool isSelectedPlayer => hasSelectedPlayer && selectedPlayer == instance;
+        protected ActorInstance selectedHero => GameManager.instance.selectedHero;
+        protected bool hasSelectedHero => GameManager.instance.hasSelectedPlayer;
+        protected bool isSelectedHero => hasSelectedHero && selectedHero == instance;
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
         protected Card card => GameManager.instance.card;
         protected TileMap tileMap => GameManager.instance.tileMap;
@@ -85,12 +82,6 @@ namespace Assets.Scripts.Instances.Actor
                 //ApplyTilt(actors.position - previousPosition, tiltFactor, rotationFocus, resetFocus, Vector3.zero);
                 CheckLocationChanged();
 
-
-                tileMap.GetTile(previousLocation).color = ColorHelper.Translucent.White;
-                tileMap.GetTile(location).color = ColorHelper.Translucent.Yellow;
-
-
-
                 yield return Wait.UntilNextFrame();
             }
 
@@ -106,6 +97,8 @@ namespace Assets.Scripts.Instances.Actor
         public IEnumerator MoveTowardDestination()
         {
             //Before: movement begins
+
+
             flags.IsMoving = true;
             audioManager.Play("Slide");
             //instance.sortingOrder = SortingOrder.Moving;
@@ -172,9 +165,9 @@ namespace Assets.Scripts.Instances.Actor
         public void SnapToLocation()
         {
             flags.IsMoving = false;
-            var closestTile = GameManager.instance.tileMap.GetTile(selectedPlayer.location);
-            selectedPlayer.location = closestTile.location;
-            selectedPlayer.position = closestTile.position;
+            var closestTile = GameManager.instance.tileMap.GetTile(selectedHero.location);
+            selectedHero.location = closestTile.location;
+            selectedHero.position = closestTile.position;
         }
 
         ///<summary>
@@ -199,22 +192,34 @@ namespace Assets.Scripts.Instances.Actor
             if (location == closestTile.location)
                 return;
 
-            //At this point, a location change has occured
+            //At this point, a location change has occured...
 
             previousLocation = location;
             location = closestTile.location;
+
+            if (isSelectedHero)
+            {
+                tileMap.GetTile(previousLocation).color = ColorHelper.Translucent.White;
+                tileMap.GetTile(location).color = ColorHelper.Translucent.Yellow;
+            }
+
 
             ActorInstance overlappingActor = actors.FirstOrDefault(x =>
                 x != instance &&
                 x.isPlaying &&
                 x.location == location);
 
-            if (overlappingActor != null)
+            if (overlappingActor == null)
+            {
+                sortingManager.OnActorMoving(this.instance);
+
+            }
+            else
             {
                 sortingManager.OnActorOverlap(this.instance, overlappingActor);
                 overlappingActor.movement.HandleOverlap(previousLocation);
             }
-              
+
         }
 
         public void TriggerMoveTowardsCursor()
