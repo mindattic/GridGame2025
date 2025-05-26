@@ -524,30 +524,6 @@ public static class CoroutineHelper
         }
     }
 
-
-    public static IEnumerator LoadSpriteAsync(string address, Action<Sprite> onComplete)
-    {
-        // Use Addressables to load the sprite
-        var handle = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<Sprite>(address);
-
-        // Wait until the operation is complete
-        yield return handle;
-
-        if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
-        {
-            onComplete?.Invoke(handle.Result);
-        }
-        else
-        {
-            Debug.LogError($"Failed to load sprite at address: {address}");
-            onComplete?.Invoke(null);
-        }
-
-        // Release the handle to free memory
-        UnityEngine.AddressableAssets.Addressables.Release(handle);
-    }
-
-
 }
 
 public static class Opacity

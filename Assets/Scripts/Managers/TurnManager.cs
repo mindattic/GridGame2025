@@ -30,9 +30,6 @@ public class TurnManager : MonoBehaviour
     public bool isEndPhase => currentPhase.Equals(TurnPhase.End);
     public bool isFirstTurn => currentTurn == 0;
 
-    //System.Action event handlers
-    public event System.Action<TurnPhase> onTurnPhaseChanged;
-
     //Fields
     public int currentTurn = 0;
     public Team currentTeam = Team.Hero;
@@ -41,16 +38,8 @@ public class TurnManager : MonoBehaviour
     public void SetPhase(TurnPhase turnPhase)
     {
         currentPhase = turnPhase;
-        onTurnPhaseChanged?.Invoke(currentPhase);
+        OnTurnPhaseChanged(currentPhase); // direct call instead of event
     }
-
-
-
-    void Awake()
-    {
-        onTurnPhaseChanged += (TurnPhase turnPhase) => OnTurnPhaseChanged(turnPhase);
-    }
-
 
     private void OnTurnPhaseChanged(TurnPhase turnPhase)
     {
@@ -58,40 +47,33 @@ public class TurnManager : MonoBehaviour
 
         if (isHeroTurn)
         {
-            switch (currentPhase)
+            if (turnPhase == TurnPhase.Start)
             {
-                case TurnPhase.Start:
-                    currentTurn++;
-                    timerBar.Refill();
-                    heroManager.TriggerGlow();
-                    break;
+                currentTurn++;
+                timerBar.Refill();
+                heroManager.TriggerGlow();
             }
         }
         else if (isEnemyTurn)
         {
-            switch (currentPhase)
+            if (turnPhase == TurnPhase.Start)
             {
-                case TurnPhase.Start:
-                    timerBar.Lock();
-                    actionManager.Add(new EnemySpawnAction());
+                timerBar.Lock();
+                actionManager.Add(new EnemySpawnAction());
 
-                    bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
-                    if (!anyReadyEnemies)
-                    {
-                        actionManager.TriggerExecute();
-                        // No enemy is ready; advance the turn immediately.
-                        NextTurn();
-                        break;
-                    }
-
-                    actionManager.Add(new EnemyStartAction());
+                bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
+                if (!anyReadyEnemies)
+                {
                     actionManager.TriggerExecute();
-                    break;
+                    NextTurn(); // No enemy ready; immediately switch turn.
+                    return;
+                }
+
+                actionManager.Add(new EnemyStartAction());
+                actionManager.TriggerExecute();
             }
         }
     }
-
-
 
     public void Initialize()
     {
@@ -103,11 +85,9 @@ public class TurnManager : MonoBehaviour
 
     public void NextTurn()
     {
-        // Switch team for the next turn.
         currentTeam = isHeroTurn ? Team.Enemy : Team.Hero;
         supportLineManager.Clear();
         attackLineManager.DespawnAll();
         SetPhase(TurnPhase.Start);
     }
-
 }
