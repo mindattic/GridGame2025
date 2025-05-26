@@ -56,7 +56,7 @@ public class DottedLineManager : MonoBehaviour
 
     //private void OnDestroy()
     //{
-    //   if (onSelectedPlayerLocationChanged != null)
-    //       onSelectedPlayerLocationChanged.RemoveListener(OnSelectedPlayerLocationChanged);
+    //   if (onSelectedHeroLocationChanged != null)
+    //       onSelectedHeroLocationChanged.RemoveListener(OnSelectedHeroLocationChanged);
     //}
 }

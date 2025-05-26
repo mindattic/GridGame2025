@@ -61,11 +61,11 @@ public class TileManager : MonoBehaviour
     /// </summary>
     /// <param name="previousLocation">The grid location that was previously selected.</param>
     /// <param name="newLocation">The new grid location that is now selected.</param>
-    public void OnSelectedPlayerLocationChanged(Vector2Int previousLocation, Vector2Int newLocation)
-    {
-        // Assign the previous tile's color back to white.
-        tileMap.GetTile(previousLocation).color = ColorHelper.Tile.White;
-        // Highlight the new tile by setting its color to yellow.
-        tileMap.GetTile(newLocation).color = ColorHelper.Tile.Yellow;
-    }
+    //public void OnSelectedHeroLocationChanged(Vector2Int previousLocation, Vector2Int newLocation)
+    //{
+    //    // Assign the previous tile's color back to white.
+    //    tileMap.GetTile(previousLocation).color = ColorHelper.Tile.White;
+    //    // Highlight the new tile by setting its color to yellow.
+    //    tileMap.GetTile(newLocation).color = ColorHelper.Tile.Yellow;
+    //}
 }

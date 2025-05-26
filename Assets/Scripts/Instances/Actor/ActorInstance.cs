@@ -95,13 +95,6 @@ public class ActorInstance : MonoBehaviour
         sortingGroup.sortingOrder = sortingOrder;
     }
 
-    // Event handlers for various actor-related events.
-    public System.Action<Vector2Int> onOverlapDetected;                                 // Invoked when the actor overlaps with a new grid location.
-    public System.Action<Vector2Int, Vector2Int> onSelectedPlayerLocationChanged;       // Invoked when the actor changes location.
-    public System.Action onActorDeath;                                                  // Invoked upon actor death.
-    //public System.Action onSortingOrderChanged;                                         // Invoked when the sorting order is modified.
-    //public System.Action onDragDetected;                                                // Invoked when a drag operation is detected on the actor.
-
     // Fields: Core actors fields representing characterName stats, state, and modules.
     [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animation behavior.
     public Vector2Int previousLocation;                 // Grid location before the last movement.
@@ -177,22 +170,13 @@ public class ActorInstance : MonoBehaviour
         glow.Initialize(this);
         parallax.Initialize(this);
         thumbnail = this.transform.Find(ComponentHelper.Actor.Front.Thumbnail).GetComponent<ActorThumbnail>();
-  
-
-        // Subscribe to event handlers to link movement and stage-related updates.
-        onOverlapDetected += (location) => movement.OnOverlapDetected(location);
-        onSelectedPlayerLocationChanged += (previousLocation, newLocation) => tileManager.OnSelectedPlayerLocationChanged(previousLocation, newLocation);
-        //onDragDetected += movement.TriggerMoveTowardsCursor;
-        onActorDeath += stageManager.OnActorDeath;
+ 
     }
 
     // OnDestroy: Clean up event subscriptions if necessary to prevent memory leaks.
     private void OnDestroy()
     {
-        // if (movement != null)
-        //     onOverlapDetected -= movement.OnOverlapDetected;
-        // if (stageManager != null)
-        //     onActorDeath -= stageManager.OnActorDeath;
+  
     }
 
     // Assign: Initializes and spawns the actor at the specified start location.
@@ -465,7 +449,7 @@ public class ActorInstance : MonoBehaviour
         location = LocationHelper.Nowhere;
         position = PositionHelper.Nowhere;
         gameObject.SetActive(false);
-        onActorDeath.Invoke();
+        stageManager.OnActorDeath();
     }
 
     //TriggerSpawnCoins: Helper function to begin spawning coins upon enemy death.

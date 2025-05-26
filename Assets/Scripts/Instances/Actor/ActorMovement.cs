@@ -84,6 +84,13 @@ namespace Assets.Scripts.Instances.Actor
                 instance.position = touchPosition3D + touchOffset;
                 //ApplyTilt(actors.position - previousPosition, tiltFactor, rotationFocus, resetFocus, Vector3.zero);
                 CheckLocationChanged();
+
+
+                tileMap.GetTile(previousLocation).color = ColorHelper.Translucent.White;
+                tileMap.GetTile(location).color = ColorHelper.Translucent.Yellow;
+
+
+
                 yield return Wait.UntilNextFrame();
             }
 
@@ -192,10 +199,10 @@ namespace Assets.Scripts.Instances.Actor
             if (location == closestTile.location)
                 return;
 
+            //At this point, a location change has occured
+
             previousLocation = location;
             location = closestTile.location;
-
-            instance.onSelectedPlayerLocationChanged?.Invoke(previousLocation, location);
 
             ActorInstance overlappingActor = actors.FirstOrDefault(x =>
                 x != instance &&
@@ -205,7 +212,7 @@ namespace Assets.Scripts.Instances.Actor
             if (overlappingActor != null)
             {
                 sortingManager.OnActorOverlap(this.instance, overlappingActor);
-                overlappingActor.onOverlapDetected.Invoke(previousLocation);
+                overlappingActor.movement.HandleOverlap(previousLocation);
             }
               
         }
@@ -215,21 +222,21 @@ namespace Assets.Scripts.Instances.Actor
             instance.StartCoroutine(MoveTowardCursor());
         }
 
-        ///<summary>
-        ///Called when an overlap with another actor is detected.
-        ///Initiates a swap movement if not already in progress.
-        ///</summary>
-        public void OnOverlapDetected(Vector2Int newLocation)
+
+
+
+
+        public void HandleOverlap(Vector2Int targetLocation)
         {
-            //Ignore this event if the actors is already in the middle of swapping
             if (flags.IsSwapping)
                 return;
 
-            var currentTile = tileMap.GetTile(newLocation);
+            var currentTile = tileMap.GetTile(targetLocation);
+
             if (currentTile.IsOccupied)
             {
-                //Debug.Log($"Tile ${currentTile.location.x}x{currentTile.location.y} is occupied.");
-
+                // You could log or just ignore
+                Debug.Log($"Tile {currentTile.location.x},{currentTile.location.y} is occupied.");
             }
             else
             {
@@ -237,7 +244,6 @@ namespace Assets.Scripts.Instances.Actor
                 location = currentTile.location;
                 instance.StartCoroutine(MoveTowardDestination());
             }
-
         }
 
 

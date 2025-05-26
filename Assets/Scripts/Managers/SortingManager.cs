@@ -1,5 +1,6 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 
@@ -64,16 +65,44 @@ public class SortingManager : MonoBehaviour
         selectedHero.SetSorting(SortingLayer.ActorAbove);
     }
 
+
+    //public void OnSelectedHeroLocationChanged(Vector2Int newLocation)
+    //{
+    //    foreach (var actor in actors)
+    //    {
+
+    //        if (actor == selectedHero)
+    //        {
+    //            actor.SetSorting(SortingLayer.ActorAbove, GetDepthOrder(actor.transform.position));
+    //        }
+    //        else
+    //        {
+    //            actor.SetSorting(SortingLayer.ActorBelow, GetDepthOrder(actor.transform.position));
+    //        }
+    //    }
+    //}
+
+
+
+
     public void OnSelectedHeroDrop()
     {
         actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
     }
 
-    public void OnActorOverlap(ActorInstance actor, ActorInstance other)
+    public void OnActorOverlap(ActorInstance initiator, ActorInstance target)
     {
-        var sortingLayer = other.sortingGroup.sortingLayerName;
-        var sortingOrder = other.sortingGroup.sortingOrder;
-        actor.SetSorting(sortingLayer, sortingOrder);
+        // Bring initiator to front
+        initiator.SetSorting(SortingLayer.ActorAbove, GetDepthOrder(initiator.transform.position));
+
+        // Push target below
+        target.SetSorting(SortingLayer.ActorBelow, GetDepthOrder(target.transform.position));
+    }
+
+    private int GetDepthOrder(Vector3 position)
+    {
+        // Y-axis-based depth sorting (lower Y = higher priority)
+        return Mathf.RoundToInt(-position.y * 100);
     }
 
     public void OnPincerAttackStart(PincerAttackParticipants participants)
