@@ -12,8 +12,7 @@ namespace Assets.Scripts.Models
 
         protected List<ActorInstance> actors = GameManager.instance.actors;
         protected PortraitManager portraitManager = GameManager.instance.portraitManager;
-
-
+        protected SortingManager sortingManager = GameManager.instance.sortingManager;
 
         //Fields
         private PincerAttackPair pair;

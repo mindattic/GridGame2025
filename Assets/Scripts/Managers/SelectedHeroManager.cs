@@ -56,9 +56,8 @@ public class SelectedHeroManager : MonoBehaviour
 
         // Save the focused actor to the one under the mouse.
         focusedActor = actor;
-        
-        focusedActor.sortingLayer = Sort.Selected;
-        Debug.Log(focusedActor.sortingLayer);
+
+        sortingManager.OnActorFocus();
 
         // Calculate the offset between the actor's position and the mouse position.
         touchOffset = focusedActor.position - touchPosition3D;
@@ -81,6 +80,8 @@ public class SelectedHeroManager : MonoBehaviour
         // Assign the selected hero to be the focused actor.
         selectedHero = focusedActor;
 
+        sortingManager.OnSelectedHeroDrag();
+
         // If the selected hero is already moving, do not process further drag logic.
         if (selectedHero.flags.IsMoving)
             return;
@@ -100,10 +101,6 @@ public class SelectedHeroManager : MonoBehaviour
         // Switch the turn phase from Start to Move.
         turnManager.SetPhase(TurnPhase.Move);
 
-        selectedHero.sortingLayer = Sort.Selected;
-        Debug.Log(focusedActor.sortingLayer);
-
-        Debug.Log("This is a log.");
         selectedHero.movement.TriggerMoveTowardsCursor();
     }
 
@@ -124,6 +121,8 @@ public class SelectedHeroManager : MonoBehaviour
 
         // Snap the selected hero's position to the nearest valid tile location on the grid.
         selectedHero.movement.SnapToLocation();
+
+        sortingManager.OnSelectedHeroDrop();
 
         //Clear the CurrentProfile selection and focused actor references
         selectedHero = null;

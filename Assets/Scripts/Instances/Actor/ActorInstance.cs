@@ -89,22 +89,11 @@ public class ActorInstance : MonoBehaviour
         get => this.GetComponent<SortingGroup>();
     }
 
-    // Sorting order property adjusts the rendering layers for various parts of the actor.
-    // Changing the sorting order updates multiple renderer components and invokes an event.
-    public Sort sortingLayer
+    public void SetSorting(string sortingLayer, int sortingOrder = 0)
     {
-        get
-        {
-            // Convert the current layer ID to a name, then parse to Sort enum
-            string name = SortingLayer.IDToName(sortingGroup.sortingLayerID);
-            return Enum.TryParse(name, out Sort result) ? result : Sort.Default;
-        }
-        set
-        {
-            sortingGroup.sortingLayerID = SortingLayer.NameToID(value.ToString());
-        }
+        sortingGroup.sortingLayerID = SortingLayer.NameToID(sortingLayer);
+        sortingGroup.sortingOrder = sortingOrder;
     }
-
 
     // Event handlers for various actor-related events.
     public System.Action<Vector2Int> onOverlapDetected;                                 // Invoked when the actor overlaps with a new grid location.

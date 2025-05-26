@@ -137,7 +137,7 @@ public class PincerAttackManager : MonoBehaviour
         if (p == null)
             return attacks; // No chain can be made if the actor is not found as attacker1.
 
-        // Sort the opponents by their distance from the CurrentProfile attacker to process closer enemies first.
+        // SortingLayer the opponents by their distance from the CurrentProfile attacker to process closer enemies first.
         var sortedOpponents = p.opponents
             .OrderBy(x => Vector2.Distance(attacker.location, x.location))
             .ToList();
@@ -181,7 +181,8 @@ public class PincerAttackManager : MonoBehaviour
     {
         // Step 1: SelectProfile visual sorting orders to attackers, opponents, and supporters
         // so that they are highlighted correctly on the game board.
-        //sortingManager.OnPincerAttackStart(participants);
+
+        sortingManager.OnPincerAttackStart(participants);
 
         // Step 2: Queue up support actions for both attackers in every valid pair.
         foreach (var pair in participants.pair)

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8006723565509624086}
   - component: {fileID: 8759452096190847201}
   - component: {fileID: -6089626438963043908}
+  - component: {fileID: -6948691103081841375}
   m_Layer: 8
   m_Name: CoinPrefab
   m_TagString: Powerup
@@ -78,7 +79,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -548907103
-  m_SortingLayer: 6
+  m_SortingLayer: 8
   m_SortingOrder: 999
   m_Sprite: {fileID: 21300000, guid: 8cb6ca72b47af5b45be626ad412f679f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -4997,3 +4998,15 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!210 &-6948691103081841375
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6220684420893423284}
+  m_Enabled: 1
+  m_SortingLayerID: -548907103
+  m_SortingLayer: 8
+  m_SortingOrder: 0
+  m_SortAtRoot: 0

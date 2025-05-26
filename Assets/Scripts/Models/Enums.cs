@@ -250,16 +250,3 @@ public enum TooltipTextAlignment
     TopLeft
 }
 
-
-public enum Sort
-{
-    Default = 0,
-    Board = 1,
-    DottedLine = 2,
-    SupportLine = 3,
-    Actor = 4,
-    Selected = 5,
-    VFX = 6,
-    Coin = 7,
-    DamageText = 8
-}

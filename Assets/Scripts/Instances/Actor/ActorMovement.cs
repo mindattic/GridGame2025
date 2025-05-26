@@ -192,8 +192,6 @@ namespace Assets.Scripts.Instances.Actor
             if (location == closestTile.location)
                 return;
 
-            //Debug.Log($"OnSelectedPlayerLocationChanged triggered for {actors.name} to {closestTile.location}, isMoving: {flags.IsMoving}");
-
             previousLocation = location;
             location = closestTile.location;
 
@@ -205,7 +203,11 @@ namespace Assets.Scripts.Instances.Actor
                 x.location == location);
 
             if (overlappingActor != null)
+            {
+                sortingManager.OnActorOverlap(this.instance, overlappingActor);
                 overlappingActor.onOverlapDetected.Invoke(previousLocation);
+            }
+              
         }
 
         public void TriggerMoveTowardsCursor()

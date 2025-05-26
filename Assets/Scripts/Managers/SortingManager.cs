@@ -1,15 +1,8 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public enum SortingScenario
-{
-    None,
-    SelectedHeroDrag,
 
-}
 
 
 public class SortingManager : MonoBehaviour
@@ -17,80 +10,96 @@ public class SortingManager : MonoBehaviour
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
-    protected bool hasSelectedHero => selectedHero != null;
+    protected ActorInstance focusedActor => GameManager.instance.focusedActor;
+
     protected ActorInstance selectedHero => GameManager.instance.selectedHero;
+
+    protected bool hasFocusedActor => focusedActor != null;
+    protected bool hasSelectedHero => selectedHero != null;
+
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
 
 
-    private const int Min = 0;
-    private const int Default = 50;
-    private const int BoardOverlay = 100;
-    private const int Opponent = 120;
-    private const int Supporter = 140;
-    private const int Attacker = 150;
-    private const int AttackLine = 200;
-    private const int Moving = 900;
-    private const int Max = 999;
-
-
-
-    public void Set(SortingScenario scenario)
+    //Sorting layers
+    public static class SortingLayer
     {
-        switch (scenario)
-        {
-            case SortingScenario.SelectedHeroDrag:
-
-                if (!hasSelectedHero) return;
-                selectedHero.transform.GetChild("Front").GetComponent<SortingGroup>().sortingLayerName = "Selected";
-                Debug.Log("Changed to layer: " + selectedHero.sortingGroup.sortingLayerName);
-                break;
-        }
+        public const string Default = "Default";
+        public const string Board = "Board";
+        public const string DottedLine = "DottedLine";
+        public const string ActorBelow = "ActorBelow";
+        public const string BoardOverlay = "BoardOverlay";
+        public const string SupportLine = "SupportLine";
+        public const string ActorAbove = "ActorAbove";
+        public const string VFX = "VFX";
+        public const string Coin = "Coin";
+        public const string DamageText = "DamageText";
     }
 
 
+    //Sorting orders
+    private static class SortingOrder
+    {
+        public const int Min = 0;
+        public const int Opponent = 100;
+        public const int Supporter = 200;
+        public const int Attacker = 300;
+        public const int AttackLine = 400;
+        public const int Max = 999;
+    }
 
 
+    public void OnActorFocus()
+    {
+        if (!hasFocusedActor) return;
+        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+        focusedActor.SetSorting(SortingLayer.ActorAbove);
+    }
 
-    //// Called when the selected hero is being dragged
-    //public void OnSelectedHeroDrag()
-    //{
-    //    if (!hasSelectedHero) return;
+    public void OnSelectedHeroDrag()
+    {
+        if (!hasSelectedHero) return;
+        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+        selectedHero.SetSorting(SortingLayer.ActorAbove);
+    }
 
-    //    // Set the selected hero's sorting order to the maximum
-    //    selectedHero.sortingOrder = Max;
+    public void OnSelectedHeroDrop()
+    {
+        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+    }
 
-    //    // Reset sorting order for all other actors
-    //    foreach (var actor in actors.Where(a => a != selectedHero))
-    //    {
-    //        actor.sortingOrder = Default;
-    //    }
-    //}
+    public void OnActorOverlap(ActorInstance actor, ActorInstance other)
+    {
+        var sortingLayer = other.sortingGroup.sortingLayerName;
+        var sortingOrder = other.sortingGroup.sortingOrder;
+        actor.SetSorting(sortingLayer, sortingOrder);
+    }
 
-    //// Called when a pincer attack starts
-    //public void OnPincerAttackStart(PincerAttackParticipants participants)
-    //{
+    public void OnPincerAttackStart(PincerAttackParticipants participants)
+    {
 
-    //    // Iterate over each valid pair and assign the appropriate sorting order.
-    //    foreach (var pair in participants.pair)
-    //    {
-    //        // Assign both attackers to the attacker sorting order.
-    //        pair.attacker1.sortingOrder = Attacker;
-    //        pair.attacker2.sortingOrder = Attacker;
+        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
 
-    //        // Assign each opponent between the attackers to the opponent sorting order.
-    //        foreach (var opp in pair.opponents)
-    //            opp.sortingOrder = Opponent;
+        // Iterate over each valid pair and assign the appropriate sorting order.
+        foreach (var pair in participants.pair)
+        {
+            // Assign both attackers to the attacker sorting order.
+            pair.attacker1.SetSorting(SortingLayer.ActorAbove, SortingOrder.Attacker);
+            pair.attacker2.SetSorting(SortingLayer.ActorAbove, SortingOrder.Attacker);
 
-    //        // Assign all supporters for attacker1 and attacker2 to the supporter sorting order.
-    //        foreach (var s in pair.supporters1)
-    //            s.sortingOrder = Supporter;
-    //        foreach (var s in pair.supporters2)
-    //            s.sortingOrder = Supporter;
-    //    }
+            // Assign each opponent between the attackers to the opponent sorting order.
+            foreach (var x in pair.opponents)
+                x.SetSorting(SortingLayer.ActorAbove, SortingOrder.Opponent);
 
-    //}
+            // Assign all supporters for attacker1 and attacker2 to the supporter sorting order.
+            foreach (var x in pair.supporters1)
+                x.SetSorting(SortingLayer.ActorAbove, SortingOrder.Supporter);
+            foreach (var x in pair.supporters2)
+                x.SetSorting(SortingLayer.ActorAbove, SortingOrder.Supporter);
+        }
+
+    }
 
     //// Called when a pincer attack ends
     //public void OnPincerAttackEnd(List<ActorInstance> involvedActors)
