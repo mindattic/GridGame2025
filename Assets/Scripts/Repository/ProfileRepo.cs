@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class ProfileRepo
 {
@@ -12,25 +13,38 @@ public static class ProfileRepo
     private static List<string> folders = new List<string>();
     private static Dictionary<string, Profile> profiles = new Dictionary<string, Profile>();
     private static string currentProfileKey;
-    private static bool isLoaded = false;
 
     // Public Properties (No Lazy Loading)
     public static bool HasFolders => folders.Any();
-    public static bool HasProfiles => profiles.Any();
-    public static bool HasCurrentProfile => HasProfiles && !string.IsNullOrWhiteSpace(currentProfileKey) && profiles.ContainsKey(currentProfileKey);
+
+    public static bool HasCurrentProfile => HasProfiles() && !string.IsNullOrWhiteSpace(currentProfileKey) && profiles.ContainsKey(currentProfileKey);
     public static bool HasCurrentSave => HasCurrentProfile && CurrentProfile.HasSaves && CurrentProfile.CurrentSave != null;
     public static Profile CurrentProfile => HasCurrentProfile ? profiles[currentProfileKey] : null;
 
     public static Dictionary<string, Profile> Profiles => profiles;
+
+
+
+    public static bool HasProfiles()
+    {
+        if (profiles.Any())
+            return true;
+
+        Load();
+
+        if (profiles.Any())
+            return true;
+
+        SceneManager.LoadScene(SceneHelper.ProfileCreate);
+        return false;
+    }
+
 
     /// <summary>
     /// Call this once at startup to initialize profiles.
     /// </summary>
     public static bool Load()
     {
-        if (isLoaded)
-            return true;
-
         if (!Directory.Exists(FolderHelper.Folder.Profiles))
         {
             Debug.LogWarning($"[ProfileRepo] Profiles folder not found. Creating: {FolderHelper.Folder.Profiles}");
@@ -38,7 +52,7 @@ public static class ProfileRepo
         }
 
         folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
-     
+
         profiles.Clear();
         foreach (var folder in folders)
         {
@@ -46,7 +60,7 @@ public static class ProfileRepo
             var profile = GetProfile(key);
             if (profile != null)
             {
-                profiles[key] = profile;;
+                profiles[key] = profile; ;
             }
             else
             {
@@ -63,14 +77,12 @@ public static class ProfileRepo
         if (string.IsNullOrWhiteSpace(currentProfileKey) || !profiles.ContainsKey(currentProfileKey))
             currentProfileKey = profiles.Keys.First();
 
-        isLoaded = true;
         return true;
     }
 
 
     public static void Reload()
     {
-        isLoaded = false;
         Load();
     }
 

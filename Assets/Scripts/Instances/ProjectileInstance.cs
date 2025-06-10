@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class SpellInstance : MonoBehaviour
+public class ProjectileInstance : MonoBehaviour
 {
    //Quick Reference Properties
     protected BoardInstance board => GameManager.instance.board;
     
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
-    protected SpellManager spellManager => GameManager.instance.spellManager;
+    protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
     protected float tileSize => GameManager.instance.tileSize;
     protected Vector3 tileScale => GameManager.instance.tileScale;
 
@@ -39,40 +39,40 @@ public class SpellInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    private SpellSettings spell = new SpellSettings();
+    private ProjectileSettings projectile = new ProjectileSettings();
 
     // Private fields for movement and for the instantiated trailInstance.
     private Vector3 startPosition;
     private Vector3 endPosition;
     private GameObject trailInstance;
 
-    public IEnumerator Spawn(SpellSettings spell)
+    public IEnumerator Spawn(ProjectileSettings projectile)
     {
-        this.spell = spell;
+        this.projectile = projectile;
         yield return SpawnTrail();
         yield return SpawnVFX();
-        spellManager.Despawn(gameObject.name);
+        projectileManager.Despawn(gameObject.name);
     }
 
     private IEnumerator SpawnTrail()
     {
-        startPosition = spell.source.position;
-        endPosition = spell.target.position;
+        startPosition = projectile.source.position;
+        endPosition = projectile.target.position;
         transform.position = startPosition;
 
-        TrailEffectAsset trailResource = TrailEffectRepo.TrailEffects[spell.trailKey];
+        TrailEffectAsset trailResource = TrailEffectRepo.TrailEffects[projectile.trailKey];
         trailInstance = Instantiate(trailResource.Prefab, transform.position, Quaternion.identity);
         //trailInstance.transform.parent = board.transform;
         trailInstance.transform.localPosition = trailResource.RelativeOffset;
         trailInstance.transform.localEulerAngles = trailResource.AngularRotation;
         trailInstance.transform.localScale = tileScale.MultiplyBy(trailResource.RelativeScale);
 
-        switch (spell.path)
+        switch (projectile.path)
         {
-            case SpellPath.AnimationCurve:
+            case ProjectilePath.AnimationCurve:
                 yield return StartCoroutine(MoveAlongCurve());
                 break;
-            case SpellPath.BezierCurve:
+            case ProjectilePath.BezierCurve:
                 yield return StartCoroutine(MoveAlongBezierCurve());
                 break;
             default:
@@ -88,15 +88,15 @@ public class SpellInstance : MonoBehaviour
         Vector3 direction = (endPosition - startPosition).normalized; // Travel direction
         Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized; // Perpendicular axis
 
-        while (elapsed < spell.duration)
+        while (elapsed < projectile.duration)
         {
-            float t = elapsed / spell.duration;
+            float t = elapsed / projectile.duration;
 
             // Interpolate position along the travel curve
-            Vector3 pos = Vector3.Lerp(startPosition, endPosition, spell.travelCurve.Evaluate(t));
+            Vector3 pos = Vector3.Lerp(startPosition, endPosition, projectile.travelCurve.Evaluate(t));
 
             // Calculate wave offset along the perpendicular direction
-            float waveOffset = spell.waveCurve.Evaluate(t);
+            float waveOffset = projectile.waveCurve.Evaluate(t);
             pos += perpendicular * waveOffset;
 
             // Apply position update
@@ -110,16 +110,16 @@ public class SpellInstance : MonoBehaviour
 
     private IEnumerator MoveAlongBezierCurve()
     {
-        if (spell.controlPoints == null || spell.controlPoints.Count < 2)
+        if (projectile.controlPoints == null || projectile.controlPoints.Count < 2)
         {
-            spell.controlPoints = GenerateBezierControlPoints();
+            projectile.controlPoints = GenerateBezierControlPoints();
         }
 
         float elapsed = 0f;
-        while (elapsed < spell.duration)
+        while (elapsed < projectile.duration)
         {
-            float t = elapsed / spell.duration;
-            Vector3 pos = EvaluateBezier(spell.controlPoints, t);
+            float t = elapsed / projectile.duration;
+            Vector3 pos = EvaluateBezier(projectile.controlPoints, t);
 
             trailInstance.transform.position = pos;
             elapsed += Time.deltaTime;
@@ -127,7 +127,7 @@ public class SpellInstance : MonoBehaviour
         }
 
         // Snap to final position
-        trailInstance.transform.position = spell.controlPoints[spell.controlPoints.Count - 1];
+        trailInstance.transform.position = projectile.controlPoints[projectile.controlPoints.Count - 1];
     }
 
     private Vector3 EvaluateBezier(List<Vector3> points, float t)
@@ -158,10 +158,10 @@ public class SpellInstance : MonoBehaviour
         controlPoints.Add(start);
 
         // TriggerEnqueueAttacks if control points are provided
-        if (spell.controlPoints != null && spell.controlPoints.Count > 0)
+        if (projectile.controlPoints != null && projectile.controlPoints.Count > 0)
         {
             // Use provided control points
-            controlPoints.AddRange(spell.controlPoints);
+            controlPoints.AddRange(projectile.controlPoints);
         }
         else
         {
@@ -172,8 +172,8 @@ public class SpellInstance : MonoBehaviour
             {
                 float factor = (float)i / (numControlPoints + 1); // Distribute points evenly
                 float forwardOffset = distance * factor;
-                float sideOffset = Mathf.Sin(factor * Mathf.PI) * distance * spell.curveDeviation;
-                float heightOffset = Mathf.Cos(factor * Mathf.PI) * distance * spell.curveHeightFactor;
+                float sideOffset = Mathf.Sin(factor * Mathf.PI) * distance * projectile.curveDeviation;
+                float heightOffset = Mathf.Cos(factor * Mathf.PI) * distance * projectile.curveHeightFactor;
 
                 Vector3 control = start
                     + direction * forwardOffset
@@ -226,8 +226,8 @@ public class SpellInstance : MonoBehaviour
         //TODO: Differnet trail hides? Hide, FadeInstance, Shrink, etc...
         trailInstance.SetActive(false); //Hide trail until end
 
-        VisualEffectAsset vfxResource = VisualEffectRepo.VisualEffects[spell.vfxKey];
-        yield return vfxManager.Spawn(vfxResource, spell.target.position, spell.trigger);
+        VisualEffectAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];
+        yield return vfxManager.Spawn(vfxResource, projectile.target.position, projectile.trigger);
     }
 
 

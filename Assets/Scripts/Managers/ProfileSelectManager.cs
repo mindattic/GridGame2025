@@ -56,13 +56,6 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Clear()
     {
-        //Validate a current profile exists
-        if (!ProfileRepo.HasProfiles)
-        {
-            Debug.LogError("No profiles found.");
-            return;
-        }
-
         foreach (Transform child in content)
         {
             Destroy(child.gameObject);
@@ -75,6 +68,9 @@ public class ProfileSelectManager : MonoBehaviour
         Clear();
 
         AddCreateNewProfileButton();
+
+        if (!ProfileRepo.HasProfiles())
+            return;
 
         //Add each profile as a button
         foreach (var item in ProfileRepo.Profiles.Values)

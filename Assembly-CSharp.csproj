@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\Random.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
+    <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Board\FocusIndicator.cs" />
     <Compile Include="Assets\Scripts\Repository\TrailEffectRepo.cs" />
@@ -93,13 +94,13 @@
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
-    <Compile Include="Assets\Scripts\Managers\SpellManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Scripts\Models\VisualEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
+    <Compile Include="Assets\Scripts\Actions\FireProjectileAction.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
@@ -131,7 +132,6 @@
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
-    <Compile Include="Assets\Scripts\Actions\CastSpellAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
@@ -139,7 +139,7 @@
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
-    <Compile Include="Assets\Scripts\Models\SpellSettings.cs" />
+    <Compile Include="Assets\Scripts\Managers\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\FadeInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Canvas\TimerBar.cs" />
@@ -167,6 +167,7 @@
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Repository\SceneRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
+    <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
     <Compile Include="Assets\Scripts\Repository\MaterialRepo.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
@@ -202,7 +203,6 @@
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
     <Compile Include="Assets\Scripts\Actions\AttackSupportAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\SpellInstance.cs" />
     <Compile Include="Assets\Scripts\Models\SaveFile.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorMovement.cs" />
     <Compile Include="Assets\Scripts\Instances\CoinInstance.cs" />

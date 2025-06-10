@@ -35,7 +35,7 @@ public static class PrefabRepo
             { "RosterSlidePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/RosterSlidePrefab") },
             { "SaveFileButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SaveFileButtonPrefab") },
             { "ScreenWidthButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ScreenWidthButtonPrefab") },
-            { "SpellPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SpellPrefab") },
+            { "ProjectilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ProjectilePrefab") },
             { "StatRow", AssetHelper.LoadAsset<GameObject>("Prefabs/StatRow") },
             { "SupportLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SupportLinePrefab") },
             { "TilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TilePrefab") },

@@ -39,6 +39,7 @@ namespace Assets.Scripts.Instances.Actor
         protected bool isSelectedHero => hasSelectedHero && selectedHero == instance;
         protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
         protected Card card => GameManager.instance.card;
+        protected TileManager tileManager => GameManager.instance.tileManager;
         protected TileMap tileMap => GameManager.instance.tileMap;
         protected SortingManager sortingManager => GameManager.instance.sortingManager;
 
@@ -69,10 +70,10 @@ namespace Assets.Scripts.Instances.Actor
         {
             //Before: set a high sorting order.
             flags.IsMoving = true;
-            //instance.sortingOrder = SortingOrder.Max;
-            float tiltFactor = 25f;   //How much tilt to apply based on movement
-            float rotationFocus = 10f; //Intelligence at which the tilt adjusts
-            float resetFocus = 5f;     //Intelligence at which the rotation resets
+
+            //float tiltFactor = 25f;   //How much tilt to apply based on movement
+            //float rotationFocus = 10f; //Intelligence at which the tilt adjusts
+            //float resetFocus = 5f;     //Intelligence at which the rotation resets
 
             //During: while the actor is focused or selected and not swapping.
             while (flags.IsMoving)
@@ -181,29 +182,31 @@ namespace Assets.Scripts.Instances.Actor
             if (!flags.IsMoving)
                 return;
 
-            if (Vector3.Distance(position, instance.currentTile.position) <= tileSize / 2)
-                return;
-
+            //Ignore if currently swapping location 
             if (flags.IsSwapping)
                 return;
 
+            //Ignore if actor has *not* traveled outside their current tile
+            //if (Vector3.Distance(position, instance.currentTile.position) <= tileSize / 2)
+            //    return;
+
+            //Determine closet tile
             var closestTile = Geometry.GetClosestTile(position);
 
+            //If it's the same, then they haven't moved
             if (location == closestTile.location)
                 return;
 
             //At this point, a location change has occured...
 
+            //Assign variables
             previousLocation = location;
             location = closestTile.location;
 
             if (isSelectedHero)
-            {
-                tileMap.GetTile(previousLocation).color = ColorHelper.Translucent.White;
-                tileMap.GetTile(location).color = ColorHelper.Translucent.Yellow;
-            }
+                tileManager.Hightlight(previousLocation, location);
 
-
+            //Determine if there is an actor overlapping location
             ActorInstance overlappingActor = actors.FirstOrDefault(x =>
                 x != instance &&
                 x.isPlaying &&
@@ -212,7 +215,6 @@ namespace Assets.Scripts.Instances.Actor
             if (overlappingActor == null)
             {
                 sortingManager.OnActorMoving(this.instance);
-
             }
             else
             {

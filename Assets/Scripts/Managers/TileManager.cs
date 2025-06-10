@@ -2,6 +2,7 @@ using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 /// <summary>
 /// TileManager is responsible for managing tile-specific behaviors on the board.
@@ -68,4 +69,11 @@ public class TileManager : MonoBehaviour
     //    // Highlight the new tile by setting its color to yellow.
     //    tileMap.GetTile(newLocation).color = ColorHelper.Tile.Yellow;
     //}
+
+
+    public void Hightlight(Vector2Int previous, Vector2Int current)
+    {
+        tileMap.GetTile(previous).color = ColorHelper.Translucent.White;
+        tileMap.GetTile(current).color = ColorHelper.Translucent.Yellow;
+    }
 }

@@ -18,7 +18,7 @@ public static class Formulas
     public static float Accuracy(ActorStats stats)
     {
         float baseAccuracy = baseHitRate + ((stats.Level - 1) / 99.0f) * baseHitRate;
-        float focus = stats.Focus * 1.5f;
+        float focus = stats.Wisdom * 1.5f;
         float luck = LuckModifier(stats);
         return Mathf.FloorToInt(baseAccuracy + focus + luck);
     }
@@ -44,7 +44,7 @@ public static class Formulas
     public static bool IsCriticalHit(ActorInstance attacker, ActorInstance defender)
     {
         float baseCritChance = 5f; // base 5% chance
-        float focusBonus = attacker.stats.Focus * 0.5f;
+        float focusBonus = attacker.stats.Wisdom * 0.5f;
         float luckBonus = attacker.stats.Luck * 0.3f;
         float critChance = baseCritChance + focusBonus + luckBonus;
         return Random.Float(0, 100) < critChance;
@@ -59,7 +59,7 @@ public static class Formulas
     {
         float weapon = 10; // placeholder
         float baseDamage = stats.Strength * 2f;
-        float focusBonus = stats.Focus * 0.5f; // accuracy improves quality of attack
+        float focusBonus = stats.Wisdom * 0.5f; // accuracy improves quality of attack
         float luck = LuckModifier(stats);
         return Mathf.FloorToInt(baseDamage + weapon + focusBonus + luck);
     }
@@ -76,7 +76,7 @@ public static class Formulas
     public static float MagicOffense(ActorStats stats)
     {
         float intelligence = stats.Intelligence * 2f;
-        float focus = stats.Focus * 1f;
+        float focus = stats.Wisdom * 1f;
         float luck = LuckModifier(stats);
         return Mathf.FloorToInt(intelligence + focus + luck);
     }

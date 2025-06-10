@@ -28,20 +28,17 @@ public class OverworldManager : MonoBehaviour
     private void Awake()
     {
         //Verify that game is ready to run
-        if (!ProfileRepo.HasProfiles)
-        {
-            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+        if (!ProfileRepo.HasProfiles())
             return;
-        }
 
-        canvas2D = GameObject.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>();
-        scrollView = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>();
-        scrollRect = GameObject.Find(ComponentHelper.Overworld.ScrollView).GetComponent<ScrollRect>();
-        viewport = GameObject.Find(ComponentHelper.Overworld.Viewport).GetComponent<RectTransform>();
-        content = GameObject.Find(ComponentHelper.Overworld.Content).GetComponent<RectTransform>();
-        map = GameObject.Find(ComponentHelper.Overworld.Map).GetComponent<RectTransform>();
-        hero = GameObject.Find(ComponentHelper.Overworld.Hero).GetComponent<PlayerStageMover>();
-        fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<FadeInstance>();
+        canvas2D = GameObjectHelper.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>();
+        scrollView = GameObjectHelper.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>();
+        scrollRect = GameObjectHelper.Find(ComponentHelper.Overworld.ScrollView).GetComponent<ScrollRect>();
+        viewport = GameObjectHelper.Find(ComponentHelper.Overworld.Viewport).GetComponent<RectTransform>();
+        content = GameObjectHelper.Find(ComponentHelper.Overworld.Content).GetComponent<RectTransform>();
+        map = GameObjectHelper.Find(ComponentHelper.Overworld.Map).GetComponent<RectTransform>();
+        hero = GameObjectHelper.Find(ComponentHelper.Overworld.Hero).GetComponent<PlayerStageMover>();
+        fade = GameObjectHelper.Find(ComponentHelper.Overworld.Fade).GetComponent<FadeInstance>();
 
         //screenWidth = canvas2D.rect.width;
         //screenHeight = canvas2D.rect.height;
@@ -56,6 +53,7 @@ public class OverworldManager : MonoBehaviour
         FindStageButtons();
         OnCenterOnHeroClicked();
 
+  
         StartCoroutine(fade.FadeIn());
     }
 

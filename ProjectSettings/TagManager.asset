@@ -67,13 +67,16 @@ TagManager:
   - name: DottedLine
     uniqueID: 1944532057
     locked: 0
+  - name: ActorBelow
+    uniqueID: 1438895807
+    locked: 0
+  - name: BoardOverlay
+    uniqueID: 1198754983
+    locked: 0
   - name: SupportLine
     uniqueID: 1208109523
     locked: 0
-  - name: Actor
-    uniqueID: 1438895807
-    locked: 0
-  - name: Selected
+  - name: ActorAbove
     uniqueID: 2574162677
     locked: 0
   - name: VFX
@@ -84,6 +87,9 @@ TagManager:
     locked: 0
   - name: DamageText
     uniqueID: 2394124353
+    locked: 0
+  - name: Portrait
+    uniqueID: 3273347601
     locked: 0
   m_RenderingLayers:
   - Default

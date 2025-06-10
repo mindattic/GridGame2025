@@ -310,7 +310,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 10b607c4c4d23e44f90211b58b72878c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8d84dfdba620a0145829a4855d50b252, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1415,7 +1415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77790cef0d7fbcb4db24be963165d30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: {x: -0.05, y: 0}
+  scrollFocus: {x: 0, y: 0}
 --- !u!114 &1191022958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2180,7 +2180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77790cef0d7fbcb4db24be963165d30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: {x: 0.05, y: 0}
+  scrollFocus: {x: 0, y: 0}
 --- !u!114 &1699061334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2258,7 +2258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77790cef0d7fbcb4db24be963165d30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: {x: 0.005, y: 0.005}
+  scrollFocus: {x: 0, y: 0}
 --- !u!114 &1875770157
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -66,8 +66,7 @@ public class DamageTextInstance : MonoBehaviour
         Color color = ColorHelper.Solid.White;
         Vector3 initialPosition = transform.position;
         float timer = 0f;
-        float duration = 0.25f; //Time for one complete back-and-forth loop
-
+        
         //During:
         while (textMesh.color.a > 0)
         {

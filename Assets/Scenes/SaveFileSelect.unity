@@ -639,7 +639,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 10b607c4c4d23e44f90211b58b72878c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8d84dfdba620a0145829a4855d50b252, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77790cef0d7fbcb4db24be963165d30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: {x: 0.05, y: 0}
+  scrollFocus: {x: 0, y: 0}
 --- !u!114 &796436899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -862,7 +862,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f80cb6a4f39f8b45940bf8836c80111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonPrefab: {fileID: 4897121260404211813, guid: 1b96e40a88c8fba41b23a5717b9099cc, type: 3}
 --- !u!1 &1088900460
 GameObject:
   m_ObjectHideFlags: 0
@@ -1450,7 +1449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77790cef0d7fbcb4db24be963165d30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: {x: -0.05, y: 0}
+  scrollFocus: {x: 0, y: 0}
 --- !u!114 &1614153932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1942,7 +1941,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77790cef0d7fbcb4db24be963165d30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: {x: 0.005, y: 0.005}
+  scrollFocus: {x: 0, y: 0}
 --- !u!114 &2136903365
 MonoBehaviour:
   m_ObjectHideFlags: 0

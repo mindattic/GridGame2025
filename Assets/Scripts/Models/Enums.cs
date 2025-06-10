@@ -212,7 +212,7 @@ public enum DottedLineSegment
     ArrowRight
 }
 
-public enum SpellPath
+public enum ProjectilePath
 {
     AnimationCurve,
     BezierCurve

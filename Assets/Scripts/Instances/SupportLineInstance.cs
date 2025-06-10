@@ -24,8 +24,7 @@ public class SupportLineInstance : MonoBehaviour
 
     private Color color = ColorHelper.RGBA(48, 161, 49, 0);
     private LineRenderer lineRenderer;
-    private int baseSortingOffset = -1; // Ensure it's always beneath actors
-
+   
     //Method which is used for initialization tasks that need to occur before the game starts 
     private void Awake()
     {

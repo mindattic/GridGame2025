@@ -4,14 +4,14 @@ using UnityEngine;
 namespace Assets.Scripts.Models
 {
 
-    public class SpellSettings
+    public class ProjectileSettings
     {
         public string friendlyName;
         public ActorInstance source;
         public ActorInstance target;
         public string trailKey;   // e.g., "GreenSparkle" or "Fireball"
         public string vfxKey;    // e.g., "BuffLife" or "PuffyExplosion"
-        public SpellPath path = SpellPath.AnimationCurve;
+        public ProjectilePath path = ProjectilePath.AnimationCurve;
         public float duration = 1.0f;
         public Trigger trigger;
 

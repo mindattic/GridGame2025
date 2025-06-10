@@ -86,17 +86,19 @@ namespace Game.Behaviors
             title.GetComponent<Label>().text = focusedActor.characterName;
 
             // Format the actor's stats for display:
-            var hp = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}"; // HP/MaxHP with proper rowSpacing.
-            var str = $"{focusedActor.stats.Strength,4}";                // Right-align Strength in 4 characters.
-            var vit = $"{focusedActor.stats.Vitality,4}";                // Right-align Vitality.
-            var agi = $"{focusedActor.stats.Agility,4}";                 // Right-align Agility.
-            var spd = $"{focusedActor.stats.Intelligence,4}";                   // Right-align Intelligence.
-            var lck = $"{focusedActor.stats.Luck,4}";                    // Right-align Luck.
+            var HP = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}";
+            var STR = $"{focusedActor.stats.Strength,4}";             
+            var VIT = $"{focusedActor.stats.Vitality,4}";              
+            var AGI = $"{focusedActor.stats.Agility,4}";                 
+            var INT = $"{focusedActor.stats.Intelligence,4}";            
+            var WIS = $"{focusedActor.stats.Wisdom,4}";            
+
+            var LCK = $"{focusedActor.stats.Luck,4}";                    
 
             // Create a formatted stats table string.
             var stats =
-                $"HP       STR  VIT  AGI  SPD  LCK{Environment.NewLine}" +
-                $"{hp}   {str}{vit}{agi}{spd}{lck}{Environment.NewLine}";
+                $"HP       STR  VIT  AGI  INT  WIS  LCK{Environment.NewLine}" +
+                $"{HP}   {STR}{VIT}{AGI}{INT}{WIS}{LCK}{Environment.NewLine}";
 
             // Assign the details textarea combining the stats table with extra details from DataManager.
             details.GetComponent<Label>().text = stats + ActorRepo.Actors[focusedActor.characterName].Details.Card;

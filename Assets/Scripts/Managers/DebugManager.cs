@@ -31,7 +31,7 @@ public class DebugManager : MonoBehaviour
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
-    protected SpellManager spellManager => GameManager.instance.spellManager;
+    protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
     protected ActionManager actionManager => GameManager.instance.actionManager;
 
     //Internal properties
@@ -575,7 +575,7 @@ public class DebugManager : MonoBehaviour
     {
         var source = hero1;
         var target = enemies.FirstOrDefault();
-        spellManager.EnqueueFireball(source, target);
+        projectileManager.EnqueueFireball(source, target);
         actionManager.TriggerExecute();
     }
 
@@ -584,7 +584,7 @@ public class DebugManager : MonoBehaviour
         var source = hero1;
         var target = hero2;
 
-        spellManager.EnqueueHeal(source, target);
+        projectileManager.EnqueueHeal(source, target);
         actionManager.TriggerExecute();
     }
 }

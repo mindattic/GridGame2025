@@ -48,7 +48,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public ConsoleManager consoleManager;
     [HideInInspector] public LogManager logManager;
     [HideInInspector] public DottedLineManager dottedLineManager;
-    [HideInInspector] public SpellManager spellManager;
+    [HideInInspector] public ProjectileManager projectileManager;
     [HideInInspector] public ActionManager actionManager;
     [HideInInspector] public PincerAttackManager pincerAttackManager;
     [HideInInspector] public SortingManager sortingManager;
@@ -104,16 +104,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
-
-        // First thing: Load profiles
-        ProfileRepo.Load();
-
-        if (!ProfileRepo.HasProfiles)
-        {
-            Debug.LogWarning("[GameManager] No profiles detected after load. Redirecting...");
-            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+        if (!ProfileRepo.HasProfiles())
             return;
-        }
 
         Application.targetFrameRate = targetFramerate;
         QualitySettings.vSyncCount = vSyncCount;
@@ -188,7 +180,7 @@ public class GameManager : Singleton<GameManager>
         coinManager = game.GetComponent<CoinManager>();
         pauseManager = game.GetComponent<PauseManager>();
         dottedLineManager = game.GetComponent<DottedLineManager>();
-        spellManager = game.GetComponent<SpellManager>();
+        projectileManager = game.GetComponent<ProjectileManager>();
         actionManager = game.GetComponent<ActionManager>();
         pincerAttackManager = game.GetComponent<PincerAttackManager>();
         sortingManager = game.GetComponent<SortingManager>();
@@ -224,7 +216,7 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         // By now, profiles are guaranteed to be loaded.
-        if (!ProfileRepo.HasProfiles)
+        if (!ProfileRepo.HasProfiles())
             return;
 
 

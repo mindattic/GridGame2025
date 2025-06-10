@@ -177,7 +177,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 10b607c4c4d23e44f90211b58b72878c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8d84dfdba620a0145829a4855d50b252, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -257,8 +257,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4457fe33571c442927e646afc59d6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasParticlePrefab: {fileID: 7305881818270878601, guid: dfd66e3027064c74080a03cf0a5ac39f, type: 3}
-  canvasTransform: {fileID: 655101921}
 --- !u!114 &418514886
 MonoBehaviour:
   m_ObjectHideFlags: 0

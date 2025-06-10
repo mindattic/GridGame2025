@@ -11,7 +11,7 @@ namespace Assets.Scripts.Models
         public float Strength;          //Physical damage output
         public float Agility;           //Crit, Dodge, block, parry 
         public float Intelligence;      //Magic damage output 
-        public float Focus;             //Accuracy, crit chance, and precision
+        public float Wisdom;             //Accuracy, crit chance, and precision
         public float Vitality;          //Max HP and survivability
         public float Stamina;           //AP regen, action economy
         public float Luck;              //Determines random effects 
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Models
             Strength = other.Strength;
             Agility = other.Agility;
             Intelligence = other.Intelligence;  
-            Focus = other.Focus;
+            Wisdom = other.Wisdom;
             Vitality = other.Vitality;
             Stamina = other.Stamina;
             Luck = other.Luck;
@@ -61,7 +61,7 @@ namespace Assets.Scripts.Models
             Strength = strength;
             Agility = agility;
             Intelligence = intelligence;
-            Focus = focus;
+            Wisdom = focus;
             Vitality = vitality;
             Stamina = stamina;
             Luck = luck;
@@ -72,7 +72,7 @@ namespace Assets.Scripts.Models
             Strength = other.Strength;
             Agility = other.Agility;
             Intelligence = other.Intelligence;
-            Focus = other.Focus;
+            Wisdom = other.Wisdom;
             Vitality = other.Vitality;
             Stamina = other.Stamina;
             Luck = other.Luck;
@@ -83,7 +83,7 @@ namespace Assets.Scripts.Models
             Strength = a.Strength + b.Strength,
             Agility = a.Agility + b.Agility,
             Intelligence = a.Intelligence + b.Intelligence,
-            Focus = a.Focus + b.Focus,
+            Wisdom = a.Wisdom + b.Wisdom,
             Vitality = a.Vitality + b.Vitality,
             Stamina = a.Stamina + b.Stamina,
             Luck = a.Luck + b.Luck
@@ -146,7 +146,7 @@ namespace Assets.Scripts.Models
                 status.Strength += Mathf.FloorToInt(StatGrowth.Strength);
                 status.Agility += Mathf.FloorToInt(StatGrowth.Agility);
                 status.Intelligence += Mathf.FloorToInt(StatGrowth.Intelligence);
-                status.Focus += Mathf.FloorToInt(StatGrowth.Focus);
+                status.Wisdom += Mathf.FloorToInt(StatGrowth.Wisdom);
                 status.Vitality += Mathf.FloorToInt(StatGrowth.Vitality);
                 status.Stamina += Mathf.FloorToInt(StatGrowth.Stamina);
                 status.Luck += Mathf.FloorToInt(StatGrowth.Luck);
@@ -157,7 +157,7 @@ namespace Assets.Scripts.Models
                     status.Strength += Mathf.FloorToInt(boost.Strength);
                     status.Agility += Mathf.FloorToInt(boost.Agility);
                     status.Intelligence += Mathf.FloorToInt(boost.Intelligence);
-                    status.Focus += Mathf.FloorToInt(boost.Focus);
+                    status.Wisdom += Mathf.FloorToInt(boost.Wisdom);
                     status.Vitality += Mathf.FloorToInt(boost.Vitality);
                     status.Stamina += Mathf.FloorToInt(boost.Stamina);
                     status.Luck += Mathf.FloorToInt(boost.Luck);

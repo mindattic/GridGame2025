@@ -436,7 +436,7 @@ public class DebugWindow : EditorWindow
     private void RenderGameFocusDropdown()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Game Intelligence", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label("Game Speed", GUILayout.Width(Screen.width * 0.25f));
         selectedGameFocus = (GameFocusOption)EditorGUILayout.EnumPopup(selectedGameFocus, GUILayout.Width(Screen.width * 0.5f));
         if (GUILayout.Button("Apply", GUILayout.Width(Screen.width * 0.25f)))
             OnGameFocusChange();
@@ -494,8 +494,6 @@ public class DebugWindow : EditorWindow
     private string thumbnailPositionY = "-1.4";
     private string thumbnailScaleX = "5";
     private string thumbnailScaleY = "5";
-    private string thumbnailRangeX = "0.25";
-    private string thumbnailRangeY = "0.25";
 
     private void RenderThumbnailSettings()
     {

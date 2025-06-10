@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 10b607c4c4d23e44f90211b58b72878c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8d84dfdba620a0145829a4855d50b252, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5333,6 +5333,7 @@ GameObject:
   - component: {fileID: 1751276315}
   - component: {fileID: 1751276316}
   - component: {fileID: 1751276317}
+  - component: {fileID: 1751276318}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -5399,7 +5400,7 @@ MonoBehaviour:
   consoleManager: {fileID: 0}
   logManager: {fileID: 0}
   dottedLineManager: {fileID: 0}
-  spellManager: {fileID: 0}
+  projectileManager: {fileID: 0}
   actionManager: {fileID: 0}
   pincerAttackManager: {fileID: 0}
   sortingManager: {fileID: 0}
@@ -5960,7 +5961,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1751276275}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a33243b23eefa5f4ab071a3ff5dad7dd, type: 3}
+  m_Script: {fileID: 11500000, guid: 7bdc1f9628d3e444bbf85315f2d548b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1751276316
@@ -5985,6 +5986,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7867e97153d6fa147b94875ee142c048, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1751276318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751276275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fd12748c89bf8544b8242bbdd9e40c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1751426063
@@ -6181,7 +6194,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1754065672}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -6216,9 +6229,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1438895807
-  m_SortingLayer: 4
+  m_SortingLayer: 3
   m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: 10b607c4c4d23e44f90211b58b72878c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8d84dfdba620a0145829a4855d50b252, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.76862746}
   m_FlipX: 0
   m_FlipY: 0
@@ -6226,7 +6239,7 @@ SpriteRenderer:
   m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &1754065675

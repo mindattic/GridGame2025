@@ -38,7 +38,7 @@ public static class ActorRepo
                         Vitality = 6,
                         Agility = 3,
                         Intelligence = 2,
-                        Focus = 1,
+                        Wisdom = 1,
                         Stamina = 2,
                         Luck = 4
                     },
@@ -48,7 +48,7 @@ public static class ActorRepo
                         Strength = 2.4f,
                         Vitality = 1.2f,
                         Agility = 0.5f,
-                        Focus = 0.3f,
+                        Wisdom = 0.3f,
                         Stamina = 0.6f,
                         Intelligence = 0.0f,
                         Luck = 0.6f
@@ -95,7 +95,7 @@ public static class ActorRepo
                         Vitality = 1,
                         Agility = 6,
                         Intelligence = 7,
-                        Focus = 3,
+                        Wisdom = 3,
                         Stamina = 2,
                         Luck = 5
                     },
@@ -106,7 +106,7 @@ public static class ActorRepo
                         Vitality = 0.2f,
                         Agility = 1.2f,
                         Intelligence = 1.4f,
-                        Focus = 1.0f,
+                        Wisdom = 1.0f,
                         Stamina = 0.6f,
                         Luck = 0.6f
                     },
@@ -123,8 +123,8 @@ public static class ActorRepo
 
                     ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.15f, 0.3f, 0f),
-                        Scale = new Vector3(1.5f, 1.5f, 0),
+                        Position = new Vector3(0.5f, -1.1f, 0f),
+                        Scale = new Vector3(5f, 5f, 0),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Bat}"),
@@ -152,7 +152,7 @@ public static class ActorRepo
                         Vitality = 5,
                         Agility = 3,
                         Intelligence = 3,
-                        Focus = 2,
+                        Wisdom = 2,
                         Stamina = 2,
                         Luck = 9
                     },
@@ -163,7 +163,7 @@ public static class ActorRepo
                         Vitality = 1.2f,
                         Agility = 0.8f,
                         Intelligence = 0.8f,
-                        Focus = 0.8f,
+                        Wisdom = 0.8f,
                         Stamina = 0.5f,
                         Luck = 2.5f
                     },
@@ -209,7 +209,7 @@ public static class ActorRepo
                         Vitality = 3,
                         Agility = 10,
                         Intelligence = 10,
-                        Focus = 5,
+                        Wisdom = 5,
                         Stamina = 4,
                         Luck = 4
                     },
@@ -220,7 +220,7 @@ public static class ActorRepo
                         Vitality = 0.5f,
                         Agility = 2.2f,
                         Intelligence = 1.2f,
-                        Focus = 2.0f,
+                        Wisdom = 2.0f,
                         Stamina = 1.0f,
                         Luck = 0.8f
                     },
@@ -266,7 +266,7 @@ public static class ActorRepo
                         Vitality = 8,
                         Agility = 2,
                         Intelligence = 2,
-                        Focus = 2,
+                        Wisdom = 2,
                         Stamina = 3,
                         Luck = 5
                     },
@@ -277,7 +277,7 @@ public static class ActorRepo
                         Vitality = 2.0f,
                         Agility = 0.6f,
                         Intelligence = 0.4f,
-                        Focus = 0.6f,
+                        Wisdom = 0.6f,
                         Stamina = 0.6f,
                         Luck = 0.9f
                     },
@@ -323,7 +323,7 @@ public static class ActorRepo
                         Vitality = 3,
                         Agility = 10,
                         Intelligence = 10,
-                        Focus = 5,
+                        Wisdom = 5,
                         Stamina = 4,
                         Luck = 4
                     },
@@ -334,7 +334,7 @@ public static class ActorRepo
                         Vitality = 0.5f,
                         Agility = 2.2f,
                         Intelligence = 1.2f,
-                        Focus = 2.0f,
+                        Wisdom = 2.0f,
                         Stamina = 1.0f,
                         Luck = 0.8f
                     },
@@ -380,7 +380,7 @@ public static class ActorRepo
                         Vitality = 3,
                         Agility = 10,
                         Intelligence = 10,
-                        Focus = 5,
+                        Wisdom = 5,
                         Stamina = 4,
                         Luck = 4
                     },
@@ -391,7 +391,7 @@ public static class ActorRepo
                         Vitality = 0.5f,
                         Agility = 2.2f,
                         Intelligence = 1.2f,
-                        Focus = 2.0f,
+                        Wisdom = 2.0f,
                         Stamina = 1.0f,
                         Luck = 0.8f
                     },
@@ -437,7 +437,7 @@ public static class ActorRepo
                         Vitality = 3,
                         Agility = 10,
                         Intelligence = 10,
-                        Focus = 5,
+                        Wisdom = 5,
                         Stamina = 4,
                         Luck = 4
                     },
@@ -448,7 +448,7 @@ public static class ActorRepo
                         Vitality = 0.5f,
                         Agility = 2.2f,
                         Intelligence = 1.2f,
-                        Focus = 2.0f,
+                        Wisdom = 2.0f,
                         Stamina = 1.0f,
                         Luck = 0.8f
                     },
@@ -494,7 +494,7 @@ public static class ActorRepo
                         Vitality = 3,
                         Agility = 10,
                         Intelligence = 4,
-                        Focus = 5,
+                        Wisdom = 5,
                         Stamina = 3,
                         Luck = 4
                     },
@@ -505,7 +505,7 @@ public static class ActorRepo
                         Vitality = 0.5f,
                         Agility = 2.2f,
                         Intelligence = 1.0f,
-                        Focus = 2.0f,
+                        Wisdom = 2.0f,
                         Stamina = 1.0f,
                         Luck = 0.8f
                     },
@@ -551,7 +551,7 @@ public static class ActorRepo
                         Vitality = 8,
                         Agility = 2,
                         Intelligence = 3,
-                        Focus = 2,
+                        Wisdom = 2,
                         Stamina = 3,
                         Luck = 2
                     },
@@ -562,7 +562,7 @@ public static class ActorRepo
                         Vitality = 2.2f,
                         Agility = 0.6f,
                         Intelligence = 0.6f,
-                        Focus = 0.8f,
+                        Wisdom = 0.8f,
                         Stamina = 0.5f,
                         Luck = 0.4f
                     },
@@ -608,7 +608,7 @@ public static class ActorRepo
                         Vitality = 1,
                         Agility = 1,
                         Intelligence = 1,
-                        Focus = 1,
+                        Wisdom = 1,
                         Stamina = 1,
                         Luck = 1
                     },
@@ -619,7 +619,7 @@ public static class ActorRepo
                         Vitality = 0.3f,
                         Agility = 0.2f,
                         Intelligence = 0.2f,
-                        Focus = 0.2f,
+                        Wisdom = 0.2f,
                         Stamina = 0.2f,
                         Luck = 0.2f
                     },
@@ -636,8 +636,8 @@ public static class ActorRepo
 
                     ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.5f, -1.4f, 0),
-                        Scale = new Vector3(5f, 5f, 0),
+                        Position = new Vector3(0.5f, 0.5f, 0f),
+                        Scale = new Vector3(2f, 2f, 0),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Slime}"),
@@ -665,7 +665,7 @@ public static class ActorRepo
                         Vitality = 3,
                         Agility = 10,
                         Intelligence = 10,
-                        Focus = 5,
+                        Wisdom = 5,
                         Stamina = 4,
                         Luck = 4
                     },
@@ -676,7 +676,7 @@ public static class ActorRepo
                         Vitality = 0.5f,
                         Agility = 2.2f,
                         Intelligence = 1.2f,
-                        Focus = 2.0f,
+                        Wisdom = 2.0f,
                         Stamina = 1.0f,
                         Luck = 0.8f
                     },
@@ -722,7 +722,7 @@ public static class ActorRepo
                         Vitality = 10,
                         Agility = 1,
                         Intelligence = 1,
-                        Focus = 2,
+                        Wisdom = 2,
                         Stamina = 3,
                         Luck = 3
                     },
@@ -733,7 +733,7 @@ public static class ActorRepo
                         Vitality = 2.5f,
                         Agility = 0.4f,
                         Intelligence = 0.6f,
-                        Focus = 0.3f,
+                        Wisdom = 0.3f,
                         Stamina = 0.5f,
                         Luck = 0.6f
                     },
@@ -778,7 +778,7 @@ public static class ActorRepo
                         Vitality = 10,
                         Agility = 1,
                         Intelligence = 1,
-                        Focus = 2,
+                        Wisdom = 2,
                         Stamina = 3,
                         Luck = 3
                     },
@@ -789,7 +789,7 @@ public static class ActorRepo
                         Vitality = 2.5f,
                         Agility = 0.4f,
                         Intelligence = 0.6f,
-                        Focus = 0.3f,
+                        Wisdom = 0.3f,
                         Stamina = 0.5f,
                         Luck = 0.6f
                     },

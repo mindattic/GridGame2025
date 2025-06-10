@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellManager : MonoBehaviour
+public class ProjectileManager : MonoBehaviour
 {
     //Quick Reference
     protected BoardInstance board => GameManager.instance.board;
@@ -14,51 +14,51 @@ public class SpellManager : MonoBehaviour
 
     //Fields
 
-    private GameObject spellPrefab;
+    private GameObject projectilePrefab;
 
-    Dictionary<string, SpellInstance> spells = new Dictionary<string, SpellInstance>();
+    Dictionary<string, ProjectileInstance> projectiles = new Dictionary<string, ProjectileInstance>();
 
 
 
     public void Awake()
     {
-        spellPrefab = PrefabRepo.Prefabs["SpellPrefab"];
+        projectilePrefab = PrefabRepo.Prefabs["ProjectilePrefab"];
     }
 
-    // Spawns a SpellInstance configured by type.
-    public IEnumerator Spawn(SpellSettings spell)
+    // Spawns a ProjectileInstance configured by type.
+    public IEnumerator Spawn(ProjectileSettings projectile)
     {
-        // Instantiate the SpellInstance prefab at the source's position.
-        var prefab = Instantiate(spellPrefab, spell.source.position, Quaternion.identity);
-        var instance = prefab.GetComponent<SpellInstance>();
-        instance.name = $"Spell_{spell.friendlyName}_{Guid.NewGuid():N}";
+        // Instantiate the ProjectileInstance prefab at the source's position.
+        var prefab = Instantiate(projectilePrefab, projectile.source.position, Quaternion.identity);
+        var instance = prefab.GetComponent<ProjectileInstance>();
+        instance.name = $"Projectile_{projectile.friendlyName}_{Guid.NewGuid():N}";
         instance.parent = board.transform;
-        spells.Add(instance.name, instance);
-        yield return instance.Spawn(spell);
+        projectiles.Add(instance.name, instance);
+        yield return instance.Spawn(projectile);
     }
 
     public void Despawn(string name)
     {
 
-        Destroy(spells[name].gameObject);
-        spells.Remove(name);
+        Destroy(projectiles[name].gameObject);
+        projectiles.Remove(name);
     }
 
     public void EnqueueHeal(ActorInstance source, ActorInstance target, bool castBeforeAttack = true)
     {
-        var spell = new SpellSettings()
+        var heal = new ProjectileSettings()
         {
             friendlyName = "Heal",
             source = source,
             target = target,
-            path = SpellPath.BezierCurve,
+            path = ProjectilePath.BezierCurve,
             controlPoints = BezierCurveHelper.Gentle(source, target),
             trailKey = "GreenSparkle",
             vfxKey = "BuffLife",
             trigger = new Trigger(target.Heal(10), isAsync: false)
         };
 
-        var action = new CastSpellAction(spell);
+        var action = new FireProjectileAction(heal);
 
         if (castBeforeAttack)
             actionManager.Insert(action);
@@ -69,19 +69,19 @@ public class SpellManager : MonoBehaviour
 
     public void EnqueueFireball(ActorInstance source, ActorInstance target, bool castBeforeAttack = true)
     {
-        var spell = new SpellSettings()
+        var fireball = new ProjectileSettings()
         {
             friendlyName = "Fireball",
             source = source,
             target = target,
-            path = SpellPath.BezierCurve,
+            path = ProjectilePath.BezierCurve,
             controlPoints = BezierCurveHelper.Overshooting(source, target),
             trailKey = "Fireball",
             vfxKey = "PuffyExplosion",
             trigger = new Trigger(target.FireDamage(10), isAsync: false)
         };
 
-        var action = new CastSpellAction(spell);
+        var action = new FireProjectileAction(fireball);
 
         if (castBeforeAttack)
             actionManager.Insert(action);

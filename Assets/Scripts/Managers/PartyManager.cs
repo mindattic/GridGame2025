@@ -21,7 +21,6 @@ public class PartyManager : MonoBehaviour
     private float spacing = 0f;
     private float deceleration = 1250;
     private float maxFocus = 3000f;
-    private float scrollFocus = 10f;
     private float dragThreshold = 15f;
     private float wrapThresholdMultiplier = 1.5f;
 

@@ -21,11 +21,8 @@ public class TitleScreenManager : MonoBehaviour
     private void Awake()
     {
         //Verify that game is ready to run
-        if (!ProfileRepo.HasProfiles)
-        {
-            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+        if (!ProfileRepo.HasProfiles())
             return;
-        }
 
         canvas2D = GameObject.Find(ComponentHelper.TitleScreen.Canvas2D).GetComponent<RectTransform>();
 

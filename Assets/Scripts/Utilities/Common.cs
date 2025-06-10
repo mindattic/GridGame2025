@@ -399,6 +399,30 @@ public static class GameObjectHelper
         //Return the child GameObject if found, otherwise null
         return childTransform != null ? childTransform.gameObject : null;
     }
+
+
+    public static GameObject Find(string path)
+    {
+        if (string.IsNullOrWhiteSpace(path))
+            return null;
+
+        string[] names = path.Split('/');
+        GameObject current = GameObject.Find(names[0]);
+
+        if (current == null)
+            return null;
+
+        for (int i = 1; i < names.Length; i++)
+        {
+            Transform child = current.transform.Find(names[i]);
+            if (child == null)
+                return null;
+
+            current = child.gameObject;
+        }
+
+        return current;
+    }
 }
 
 
@@ -801,7 +825,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for an overshooting arc.
-    /// The spell overshoots the target before curving back.
+    /// The projectile overshoots the target before curving back.
     /// </summary>
     public static List<Vector3> Overshooting(ActorInstance source, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
     {
@@ -906,7 +930,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a reverse boomerang arc.
-    /// The spell overshoots the target and curves back dramatically.
+    /// The projectile overshoots the target and curves back dramatically.
     /// </summary>
     public static List<Vector3> Boomerang(ActorInstance source, ActorInstance target, float travelModifier = 1.2f, float waveModifier = 0.8f)
     {
@@ -940,7 +964,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a homing spiral effect.
-    /// The spell moves in a corkscrew pattern toward the target.
+    /// The projectile moves in a corkscrew pattern toward the target.
     /// </summary>
     public static List<Vector3> HomingSpiral(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 2f)
     {
@@ -972,7 +996,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a zig-zag dash.
-    /// The spell moves erratically toward the target.
+    /// The projectile moves erratically toward the target.
     /// </summary>
     public static List<Vector3> ZigZagDash(ActorInstance source, ActorInstance target, float travelModifier = 1.1f, float waveModifier = 1.2f)
     {
