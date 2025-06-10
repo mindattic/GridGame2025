@@ -123,8 +123,8 @@ public static class ActorRepo
 
                     ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.5f, -1.1f, 0f),
-                        Scale = new Vector3(5f, 5f, 0),
+                        Position = new Vector3(0.5f, 0.5f, 0f),
+                        Scale = new Vector3(2f, 2f, 0),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Bat}"),

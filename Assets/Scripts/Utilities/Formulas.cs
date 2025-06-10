@@ -34,6 +34,8 @@ public static class Formulas
 
     public static bool IsHit(ActorInstance attacker, ActorInstance defender)
     {
+        return true;
+
         float accuracy = Accuracy(attacker.stats);
         float evade = Evade(defender.stats);
         int d100 = Random.Int(1, 100);
@@ -57,7 +59,8 @@ public static class Formulas
 
     public static float Offense(ActorStats stats)
     {
-        float weapon = 10; // placeholder
+
+        float weapon = 100; // placeholder
         float baseDamage = stats.Strength * 2f;
         float focusBonus = stats.Wisdom * 0.5f; // accuracy improves quality of attack
         float luck = LuckModifier(stats);

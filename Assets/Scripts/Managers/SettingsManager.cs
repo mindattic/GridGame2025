@@ -30,9 +30,11 @@ public class SettingsManager : MonoBehaviour
         fade = GameObject.Find(ComponentHelper.Settings.Fade).GetComponent<FadeInstance>();
         actorPanMultiplier = GameObject.Find(ComponentHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
 
+    }
+    private void Start()
+    {
         StartCoroutine(fade.FadeIn());
     }
-
 
     public void OnBackButtonClicked()
     {

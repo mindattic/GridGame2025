@@ -52,11 +52,12 @@ public class OverworldManager : MonoBehaviour
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         FindStageButtons();
         OnCenterOnHeroClicked();
-
-  
-        StartCoroutine(fade.FadeIn());
     }
 
+    private void Start()
+    {
+        StartCoroutine(fade.FadeIn());
+    }
 
     private void FindStageButtons()
     {

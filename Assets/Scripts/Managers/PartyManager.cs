@@ -99,7 +99,12 @@ public class PartyManager : MonoBehaviour
         agiRow = panel.transform.GetChild("AGI").GetComponent<RectTransform>();
         spdRow = panel.transform.GetChild("SPD").GetComponent<RectTransform>();
         lckRow = panel.transform.GetChild("LCK").GetComponent<RectTransform>();
-        fade = GameObject.Find(ComponentHelper.PartyManager.Fade).GetComponent<FadeInstance>();
+
+        Debug.Log(GameObject.Find("Fade")); // Should log null
+        Debug.Log(GameObject.Find("PartyManager/Canvas2D/Fade")); // Should log the object
+
+
+        fade = GameObject.Find("Fade").GetComponent<FadeInstance>();
 
         float parentWidth = statsDisplay.rect.width;
         float barBackWidth = levelRow.rect.width;
@@ -107,13 +112,12 @@ public class PartyManager : MonoBehaviour
 
         UpdatePartyMemberCountLabel();
         LoadRosterSlides();
-
-
-
-        StartCoroutine(fade.FadeIn());
     }
 
-   
+    private void Start()
+    {
+        StartCoroutine(fade.FadeIn());
+    }
 
     private void Update()
     {

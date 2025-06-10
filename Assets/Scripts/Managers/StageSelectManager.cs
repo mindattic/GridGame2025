@@ -49,7 +49,10 @@ public class StageSelectManager : MonoBehaviour
         {
             AddButton(stage.Value.Name);
         }
+    }
 
+    private void Start()
+    {
         StartCoroutine(fade.FadeIn());
     }
 

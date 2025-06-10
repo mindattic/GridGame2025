@@ -59,10 +59,11 @@ public class CreditsManager : MonoBehaviour
             + canvas2D.rect.height * 0.5f;
 
         textarea.sizeDelta = new Vector2(canvas2D.rect.width, textareaHeight);
-
+    }
+    private void Start()
+    {
         StartCoroutine(fade.FadeIn());
     }
-
 
     public void OnBackButtonClicked()
     {
