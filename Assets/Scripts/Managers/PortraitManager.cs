@@ -23,7 +23,7 @@ public class PortraitManager : MonoBehaviour
     public ActorInstance actor;
     public int sortingOrder;
 
-
+   
     public void Awake()
     {
         portraitPrefab = PrefabRepo.Prefabs["PortraitPrefab"];
@@ -32,6 +32,11 @@ public class PortraitManager : MonoBehaviour
     public void TriggerSlideIn(ActorInstance actor, Direction direction)
     {
         StartCoroutine(SlideIn(actor, direction));
+    }
+
+    public void TriggerPopIn(ActorInstance actor, Direction direction)
+    {
+        StartCoroutine(PopIn(actor, direction));
     }
 
     public IEnumerator SlideIn(ActorInstance actor, Direction direction)
@@ -50,6 +55,25 @@ public class PortraitManager : MonoBehaviour
         instance.startTime = Time.time;
 
         yield return instance.SlideIn();
+    }
+
+
+    public IEnumerator PopIn(ActorInstance actor, Direction direction)
+    {
+        var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
+        var instance = prefab.GetComponent<PortraitInstance>();
+        instance.name = $"Portrait_{Guid.NewGuid():N}";
+        instance.parent = board.transform;
+        instance.sortingOrder = sortingOrder--;
+        instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
+
+        instance.transform.localScale = new Vector3(0.1666f, 0.1666f, 1);
+        instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
+        instance.actor = actor;
+        instance.direction = direction;
+        instance.startTime = Time.time;
+
+        yield return instance.PopIn();
     }
 
     public void Dissolve(ActorInstance actor)

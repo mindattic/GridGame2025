@@ -110,7 +110,7 @@ public class SupportLineInstance : MonoBehaviour
     }
 
 
-    private void Update()
+    private void FixedUpdate()
     {
         lineRenderer.SetPosition(0, actor1.position);
         lineRenderer.SetPosition(1, actor2.position);

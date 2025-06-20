@@ -631,7 +631,8 @@ public class DebugWindow : EditorWindow
             case DebugOptions.ShakeTest: debugManager.ShakeTest(); break;
             case DebugOptions.AlignTest: debugManager.AlignTest(); break;
             case DebugOptions.CoinTest: debugManager.CoinTest(); break;
-            case DebugOptions.PortraitTest: debugManager.PortraitTest(); break;
+            case DebugOptions.PortraitSlideIn: debugManager.PortraitSlideIn(); break;
+            case DebugOptions.PortraitPopIn: debugManager.PortraitPopIn(); break;
             case DebugOptions.DamageTextTest: debugManager.DamageTextTest(); break;
             case DebugOptions.DamageTextBounceTest: debugManager.DamageTextBounceTest(); break;
             case DebugOptions.BumpTest: debugManager.BumpTest(); break;

@@ -51,12 +51,23 @@ public class DebugManager : MonoBehaviour
     public bool isEnemyStunned = false;
 
 
-    public void PortraitTest()
+    public void PortraitSlideIn()
     {
         var hero = Random.Hero;
         var direction = Random.Direction;
         portraitManager.TriggerSlideIn(hero, direction);
     }
+
+
+
+    public void PortraitPopIn()
+    {
+        var hero = Random.Hero;
+        var direction = Random.Direction;
+        portraitManager.TriggerPopIn(hero, direction);
+    }
+
+
 
     public void DamageTextTest()
     {
