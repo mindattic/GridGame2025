@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SupportLineInstance : MonoBehaviour
 {
-   //Quick Reference Properties
+    // Quick Reference Properties
     protected float tileSize => GameManager.instance.tileSize;
     protected BoardInstance board => GameManager.instance.board;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
@@ -15,25 +15,26 @@ public class SupportLineInstance : MonoBehaviour
         set => gameObject.transform.SetParent(value, true);
     }
 
-    //Fields
-    public float alpha = 0;
+    // Fields
+    public float alpha = 0f;
+
+    [SerializeField] private float fadeDuration = 0.1f;
     private float minAlpha = Opacity.Transparent;
     private float maxAlpha = Opacity.Percent50;
+
     private ActorInstance actor1;
     private ActorInstance actor2;
 
     private Color color = ColorHelper.RGBA(48, 161, 49, 0);
     private LineRenderer lineRenderer;
-   
-    //Method which is used for initialization tasks that need to occur before the game starts 
+
     private void Awake()
     {
         lineRenderer = gameObject.GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
     }
 
-    //Method which is automatically called before the first frame update  
-    void Start()
+    private void Start()
     {
         lineRenderer.startWidth = tileSize / 2;
         lineRenderer.endWidth = tileSize / 2;
@@ -47,42 +48,28 @@ public class SupportLineInstance : MonoBehaviour
         parent = board.transform;
         name = $"SupportLine_{Guid.NewGuid():N}";
 
-        //UpdateSortingOrder();
         lineRenderer.SetPosition(0, actor1.position);
         lineRenderer.SetPosition(1, actor2.position);
-
-        // Subscribe to sorting order changes
-        //actor1.onSortingOrderChanged += UpdateSortingOrder;
-        //actor2.onSortingOrderChanged += UpdateSortingOrder;
 
         StartCoroutine(FadeIn());
     }
 
     private IEnumerator FadeIn()
     {
-        //Before:
-        alpha = Opacity.Transparent;
-        color = new Color(color.r, color.g, color.b, alpha);
-        lineRenderer.startColor = color;
-        lineRenderer.endColor = color;
+        float startAlpha = minAlpha;
+        float targetAlpha = maxAlpha;
+        float elapsedTime = 0f;
 
-        //During:
-        while (alpha < maxAlpha)
+        while (elapsedTime < fadeDuration)
         {
-            alpha += Increment.OnePercent;
-            alpha = Mathf.Clamp(alpha, minAlpha, maxAlpha);
-            color = new Color(color.r, color.g, color.b, alpha);
-            lineRenderer.startColor = new Color(color.r, color.g, color.b, alpha);
-            lineRenderer.endColor = new Color(color.r, color.g, color.b, alpha);
-
-            yield return Wait.OneTick();
+            elapsedTime += Time.deltaTime;
+            alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+            UpdateLineAlpha(alpha);
+            yield return null;
         }
 
-        //After:
         alpha = maxAlpha;
-        color = new Color(color.r, color.g, color.b, alpha);
-        lineRenderer.startColor = color;
-        lineRenderer.endColor = color;
+        UpdateLineAlpha(alpha);
     }
 
     public void TriggerDespawn()
@@ -92,51 +79,45 @@ public class SupportLineInstance : MonoBehaviour
 
     public IEnumerator FadeOut()
     {
-        //Before:
-        alpha = maxAlpha;
-        color = new Color(color.r, color.g, color.b, alpha);
-        lineRenderer.startColor = color;
-        lineRenderer.endColor = color;
+        float startAlpha = maxAlpha;
+        float targetAlpha = minAlpha;
+        float elapsedTime = 0f;
 
-        //During:
-        while (alpha > minAlpha)
+        while (elapsedTime < fadeDuration)
         {
-            alpha -= Increment.OnePercent;
-            alpha = Mathf.Clamp(alpha, minAlpha, maxAlpha);
-            color = new Color(color.r, color.g, color.b, alpha);
-            lineRenderer.startColor = color;
-            lineRenderer.endColor = color;
-
-            yield return Wait.OneTick();
+            elapsedTime += Time.deltaTime;
+            alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+            UpdateLineAlpha(alpha);
+            yield return null;
         }
 
-        //After:
         alpha = minAlpha;
-        color = new Color(color.r, color.g, color.b, alpha);
-        lineRenderer.startColor = color;
-        lineRenderer.endColor = color;
-
-        //Debug.Log("FadeInstance-out complete, destroying support line");
+        UpdateLineAlpha(alpha);
 
         supportLineManager.Destroy(actor1, actor2);
     }
 
+    private void UpdateLineAlpha(float a)
+    {
+        color.a = a;
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+    }
 
     public void UpdateSortingOrder()
     {
-        //if (this == null || actor1 == null || actor2 == null || lineRenderer == null) return;
-
-        //int lowestSortingOrder = Mathf.Min(actor1.sortingOrder, actor2.sortingOrder);
-        //lineRenderer.sortingOrder = lowestSortingOrder + baseSortingOffset;
+        // Placeholder for sorting logic if needed
     }
 
+
+    private void Update()
+    {
+        lineRenderer.SetPosition(0, actor1.position);
+        lineRenderer.SetPosition(1, actor2.position);
+    }
 
     public void Destroy()
     {
-        //actor1.onSortingOrderChanged -= UpdateSortingOrder;
-        //actor2.onSortingOrderChanged -= UpdateSortingOrder;
         Destroy(this.gameObject);
     }
-
-
 }

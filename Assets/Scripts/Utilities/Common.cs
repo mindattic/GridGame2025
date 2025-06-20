@@ -604,12 +604,12 @@ public static class Increment
 
     public static class HealthBar
     {
-        public static float Drain = 0.3333f;
+        public static float Drain = 1.0f;
     }
 
     public static class ActionBar
     {
-        public static float Drain = 0.3333f;
+        public static float Drain = 1.0f;
     }
 }
 

@@ -117,7 +117,7 @@ public class PortraitInstance : MonoBehaviour
                     break;
             }
 
-            yield return Wait.OneTick();
+            yield return Wait.UntilNextFrame();
         }
 
     }
@@ -145,11 +145,12 @@ public class PortraitInstance : MonoBehaviour
             alpha -= Increment.OnePercent;
             alpha = Mathf.Clamp(alpha, minAlpha, maxAlpha);
             spriteRenderer.color = new Color(1, 1, 1, alpha);
-            yield return Wait.OneTick();
+            yield return Wait.UntilNextFrame();
         }
 
         //After:
         Destroy(this.gameObject);
     }
+
 
 }

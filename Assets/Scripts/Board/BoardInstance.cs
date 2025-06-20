@@ -15,7 +15,7 @@ public class BoardInstance : MonoBehaviour
     protected TileMap tileMap { get => GameManager.instance.tileMap; set => GameManager.instance.tileMap = value; }
 
     // Fields:
-    private GameObject TilePrefab; // Prefab used to instantiate individual tiles.
+    //private GameObject TilePrefab; // Prefab used to instantiate individual tiles.
     [HideInInspector] public int columnCount = 6;      // Index of columns on the board.
     [HideInInspector] public int rowCount = 8;         // Index of rows on the board.
     [HideInInspector] public Vector2 offset;           // Board offset (used to position the board in world space).
@@ -25,7 +25,7 @@ public class BoardInstance : MonoBehaviour
 
     public void Awake()
     {
-        TilePrefab = PrefabRepo.Prefabs["TilePrefab"];
+        //TilePrefab = PrefabRepo.Prefabs["TilePrefab"];
     }
 
     /// <summary>
@@ -84,6 +84,8 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     private void GenerateTiles()
     {
+        var TilePrefab = PrefabRepo.Prefabs["TilePrefab"];
+
         // Create a new TileMap to store the board's tiles.
         tileMap = new TileMap();
 

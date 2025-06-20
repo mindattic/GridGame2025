@@ -6,15 +6,18 @@ namespace Game.Instances
 {
     public class AttackLineInstance : MonoBehaviour
     {
-       //Quick Reference Properties
+        // Quick Reference Properties
         protected float tileSize => GameManager.instance.tileSize;
         protected BoardInstance board => GameManager.instance.board;
         public Transform parent { get => gameObject.transform.parent; set => gameObject.transform.SetParent(value, true); }
         public Vector3 position { get => gameObject.transform.position; set => gameObject.transform.position = value; }
         public int sortingOrder { get => lineRenderer.sortingOrder; set => lineRenderer.sortingOrder = value; }
 
-        //Fields
+        // Fields
         public float alpha;
+
+        [SerializeField] private float fadeDuration = 0.5f;
+
         private Vector3 startPosition;
         private Vector3 endPosition;
         private float thickness;
@@ -23,20 +26,16 @@ namespace Game.Instances
         private Color color;
         private LineRenderer lineRenderer;
 
-        //Method which is used for initialization tasks that need to occur before the game starts 
         private void Awake()
         {
             thickness = tileSize * 0.02f;
             alpha = 0f;
             maxAlpha = 1f;
             baseColor = ColorHelper.RGBA(100, 195, 200, 0);
-
             lineRenderer = gameObject.GetComponent<LineRenderer>();
-            //lineRenderer.sortingOrder = SortingOrder.AttackLine;
         }
 
-        //Method which is automatically called before the first frame update  
-        void Start()
+        private void Start()
         {
             lineRenderer.startWidth = thickness;
             lineRenderer.endWidth = thickness;
@@ -50,12 +49,9 @@ namespace Game.Instances
             startPosition = actorPair.startActor.position;
             endPosition = actorPair.endActor.position;
 
-            Vector3[] points = { };
-            Vector3 ul;
-            Vector3 ur;
-            Vector3 lr;
-            Vector3 ll;
+            Vector3 ul, ur, lr, ll;
             float offset = tileSize / 2;
+            Vector3[] points = { };
 
             if (actorPair.axis == Axis.Vertical)
             {
@@ -67,7 +63,6 @@ namespace Game.Instances
             }
             else if (actorPair.axis == Axis.Horizontal)
             {
-
                 ul = new Vector3(endPosition.x - offset, endPosition.y - offset, 0);
                 ur = new Vector3(startPosition.x + offset, startPosition.y - offset, 0);
                 lr = new Vector3(startPosition.x + offset, startPosition.y + offset, 0);
@@ -75,7 +70,6 @@ namespace Game.Instances
                 points = new Vector3[] { ul, ur, lr, ll, ul };
             }
 
-            //lineRenderer.sortingOrder = SortingOrder.AttackLine;
             lineRenderer.positionCount = points.Length;
             lineRenderer.SetPositions(points);
 
@@ -84,29 +78,20 @@ namespace Game.Instances
 
         private IEnumerator FadeIn()
         {
-            //Before:
-            alpha = 0f;
-            color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
-            lineRenderer.startColor = color;
-            lineRenderer.endColor = color;
+            float startAlpha = 0f;
+            float targetAlpha = maxAlpha;
+            float elapsedTime = 0f;
 
-            //During:
-            while (alpha < maxAlpha)
+            while (elapsedTime < fadeDuration)
             {
-                alpha += Increment.OnePercent;
-                alpha = Mathf.Clamp(alpha, Opacity.Transparent, maxAlpha);
-                color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
-                lineRenderer.startColor = color;
-                lineRenderer.endColor = color;
-
-                yield return Wait.OneTick();
+                elapsedTime += Time.deltaTime;
+                alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+                SetAlpha(alpha);
+                yield return null;
             }
 
-            //After:
             alpha = maxAlpha;
-            color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
-            lineRenderer.startColor = color;
-            lineRenderer.endColor = color;
+            SetAlpha(alpha);
         }
 
         public void TriggerDespawn()
@@ -116,32 +101,27 @@ namespace Game.Instances
 
         public IEnumerator Despawn()
         {
-            //Before:
-            alpha = maxAlpha;
-            color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
-            lineRenderer.startColor = color;
-            lineRenderer.endColor = color;
+            float startAlpha = maxAlpha;
+            float targetAlpha = 0f;
+            float elapsedTime = 0f;
 
-            //During:
-            while (alpha > 0)
+            while (elapsedTime < fadeDuration)
             {
-                alpha -= Increment.OnePercent;
-                alpha = Mathf.Clamp(alpha, Opacity.Transparent, maxAlpha);
-                color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
-                lineRenderer.startColor = color;
-                lineRenderer.endColor = color;
-
-                yield return Wait.OneTick();
+                elapsedTime += Time.deltaTime;
+                alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
+                SetAlpha(alpha);
+                yield return null;
             }
 
-            //After:
-            alpha = 0;
-            color = new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
+            alpha = 0f;
+            SetAlpha(alpha);
+        }
+
+        private void SetAlpha(float a)
+        {
+            color = new Color(baseColor.r, baseColor.g, baseColor.b, a);
             lineRenderer.startColor = color;
             lineRenderer.endColor = color;
         }
-
     }
 }
-
-

@@ -805,8 +805,8 @@ public static class ActorRepo
 
                     ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.4f, -0.3f, 0),
-                        Scale = new Vector3(2f, 2f, 0),
+                        Position = new Vector3(1.3f, -1f, 0),
+                        Scale = new Vector3(5f, 5f, 0),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Yeti}"),
