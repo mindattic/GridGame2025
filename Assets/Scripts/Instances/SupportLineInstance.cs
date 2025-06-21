@@ -36,8 +36,8 @@ public class SupportLineInstance : MonoBehaviour
 
     private void Start()
     {
-        lineRenderer.startWidth = tileSize / 2;
-        lineRenderer.endWidth = tileSize / 2;
+        lineRenderer.startWidth = tileSize / 4;
+        lineRenderer.endWidth = tileSize / 4;
     }
 
     public void Spawn(ActorInstance actor1, ActorInstance actor2)
@@ -114,6 +114,7 @@ public class SupportLineInstance : MonoBehaviour
     {
         lineRenderer.SetPosition(0, actor1.position);
         lineRenderer.SetPosition(1, actor2.position);
+
     }
 
     public void Destroy()

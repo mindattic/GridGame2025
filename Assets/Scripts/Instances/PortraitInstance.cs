@@ -124,8 +124,8 @@ public class PortraitInstance : MonoBehaviour
     }
 
 
-    private float _portraitY = 0f;
-    private Quaternion _lastPopInRotation = Quaternion.identity;
+    private float popInRotY = 0f;
+    private Quaternion lastPopInRot = Quaternion.identity;
 
     public IEnumerator PopInOut(
        float fadeDuration = 0.25f,
@@ -155,10 +155,11 @@ public class PortraitInstance : MonoBehaviour
         float minAlpha = Opacity.Transparent;
         float maxAlpha = Opacity.Percent90;
 
-        _portraitY = Random.Float() < 0.5f ? -20f : 20f;
+        float y = Random.Float(20f, 25f);
+        popInRotY = Random.Float() < 0.5f ? -y : y;
         Quaternion startRot = front.rotation;
-        Quaternion targetRot = Quaternion.Euler(75, _portraitY, 0);
-        _lastPopInRotation = targetRot;
+        Quaternion targetRot = Quaternion.Euler(75, popInRotY, 0);
+        lastPopInRot = targetRot;
 
         // Rotate up
         for (float elapsed = 0; elapsed < rotateDuration; elapsed += Time.deltaTime)
@@ -172,7 +173,7 @@ public class PortraitInstance : MonoBehaviour
         AlignPortraitWithFront(frontAnchorPos);
 
         // Fade in
-        Color c = color;    
+        Color c = color;
         for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
             float t = Mathf.Clamp01(elapsed / fadeDuration);
@@ -193,7 +194,7 @@ public class PortraitInstance : MonoBehaviour
         float maxAlpha = Opacity.Percent90;
 
         // Fade out portrait (opaque -> transparent)
-        Color c = color;      
+        Color c = color;
         for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
             float t = Mathf.Clamp01(elapsed / fadeDuration);
@@ -205,7 +206,7 @@ public class PortraitInstance : MonoBehaviour
         spriteRenderer.color = new Color(c.r, c.g, c.b, minAlpha);
 
         // Unrotate front from previous PopIn pose to default
-        Quaternion startRot = _lastPopInRotation;
+        Quaternion startRot = lastPopInRot;
         Quaternion targetRot = Quaternion.Euler(0, 0, 0);
         for (float elapsed = 0; elapsed < rotateDuration; elapsed += Time.deltaTime)
         {
