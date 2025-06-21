@@ -15,7 +15,7 @@ namespace Assets.Scripts.Actions
 
         public override IEnumerator Execute()
         {
-            yield return portraitManager.PopIn(actor);
+            yield return portraitManager.PopOut(actor);
         }
     }
 

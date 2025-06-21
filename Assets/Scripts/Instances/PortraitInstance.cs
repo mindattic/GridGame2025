@@ -172,8 +172,7 @@ public class PortraitInstance : MonoBehaviour
         AlignPortraitWithFront(frontAnchorPos);
 
         // Fade in
-        Color c = spriteRenderer.color;
-       
+        Color c = color;    
         for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
             float t = Mathf.Clamp01(elapsed / fadeDuration);
@@ -194,7 +193,7 @@ public class PortraitInstance : MonoBehaviour
         float maxAlpha = Opacity.Percent90;
 
         // Fade out portrait (opaque -> transparent)
-        Color c = spriteRenderer.color;      
+        Color c = color;      
         for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
             float t = Mathf.Clamp01(elapsed / fadeDuration);
