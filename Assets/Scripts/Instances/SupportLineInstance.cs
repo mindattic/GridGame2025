@@ -48,11 +48,13 @@ public class SupportLineInstance : MonoBehaviour
         parent = board.transform;
         name = $"SupportLine_{Guid.NewGuid():N}";
 
-        lineRenderer.SetPosition(0, actor1.position);
-        lineRenderer.SetPosition(1, actor2.position);
+        Vector3 offset = Vector3.down * (tileSize * 0.333f);
+        lineRenderer.SetPosition(0, actor1.position + offset);
+        lineRenderer.SetPosition(1, actor2.position + offset);
 
         StartCoroutine(FadeIn());
     }
+
 
     private IEnumerator FadeIn()
     {
@@ -114,10 +116,11 @@ public class SupportLineInstance : MonoBehaviour
 
     private void FixedUpdate()
     {
-        lineRenderer.SetPosition(0, actor1.position);
-        lineRenderer.SetPosition(1, actor2.position);
-
+        Vector3 offset = Vector3.down * (tileSize * 0.333f);
+        lineRenderer.SetPosition(0, actor1.position + offset);
+        lineRenderer.SetPosition(1, actor2.position + offset);
     }
+
 
     public void Destroy()
     {
