@@ -17,6 +17,7 @@ public class PortraitManager : MonoBehaviour
     protected SortingManager sortingManager => GameManager.instance.sortingManager;
 
 
+    private Dictionary<ActorInstance, PortraitInstance> portraits = new Dictionary<ActorInstance, PortraitInstance>();
 
     //Fields
     private GameObject portraitPrefab;
@@ -34,9 +35,9 @@ public class PortraitManager : MonoBehaviour
         StartCoroutine(SlideIn(actor, direction));
     }
 
-    public void TriggerPopIn(ActorInstance actor, Direction direction)
+    public void TriggerPopInOut(ActorInstance actor)
     {
-        StartCoroutine(PopIn(actor, direction));
+        StartCoroutine(PopInOut(actor));
     }
 
     public IEnumerator SlideIn(ActorInstance actor, Direction direction)
@@ -58,7 +59,7 @@ public class PortraitManager : MonoBehaviour
     }
 
 
-    public IEnumerator PopIn(ActorInstance actor, Direction direction)
+    public IEnumerator PopInOut(ActorInstance actor)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<PortraitInstance>();
@@ -68,13 +69,53 @@ public class PortraitManager : MonoBehaviour
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
 
         instance.transform.localScale = new Vector3(0.1666f, 0.1666f, 1);
-        instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
+        instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
         instance.actor = actor;
-        instance.direction = direction;
         instance.startTime = Time.time;
+
+        yield return instance.PopInOut();
+    }
+
+    public IEnumerator PopIn(ActorInstance actor)
+    {
+        // Clean up any existing
+        if (portraits.TryGetValue(actor, out var existing))
+        {
+            Destroy(existing.gameObject);
+            portraits.Remove(actor);
+        }
+
+        var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
+        var instance = prefab.GetComponent<PortraitInstance>();
+        instance.name = $"Portrait_{Guid.NewGuid():N}";
+        instance.parent = board.transform;
+        instance.sortingOrder = sortingOrder--;
+        instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
+
+        instance.transform.localScale = new Vector3(0.1666f, 0.1666f, 1);
+        instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
+        instance.actor = actor;
+        instance.startTime = Time.time;
+
+        portraits[actor] = instance;
 
         yield return instance.PopIn();
     }
+
+    public IEnumerator PopOut(ActorInstance actor)
+    {
+        if (portraits.TryGetValue(actor, out var instance) && instance != null)
+        {
+            yield return instance.PopOut();
+            portraits.Remove(actor);
+        }
+        else
+        {
+            // Nothing to pop out (already gone, or never popped in)
+            yield break;
+        }
+    }
+
 
     public void Dissolve(ActorInstance actor)
     {

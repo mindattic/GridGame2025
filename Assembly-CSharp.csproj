@@ -166,8 +166,10 @@
     <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Repository\SceneRepo.cs" />
+    <Compile Include="Assets\Scripts\Actions\PortraitPopOutAction.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
+    <Compile Include="Assets\Scripts\Actions\PortraitPopInAction.cs" />
     <Compile Include="Assets\Scripts\Repository\MaterialRepo.cs" />
     <Compile Include="Assets\Scripts\Actions\PincerAttackAction.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />

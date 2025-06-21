@@ -179,22 +179,28 @@ public class PincerAttackManager : MonoBehaviour
     /// <param name="participants">The participants of valid pincer attack pair.</param>
     private IEnumerator EnqueueAttacks(PincerAttackParticipants participants)
     {
-        // Step 1: SelectProfile visual sorting orders to attackers, opponents, and supporters
-        // so that they are highlighted correctly on the game board.
-
         sortingManager.OnPincerAttackStart(participants);
 
-        // Step 2: Queue up support actions for both attackers in every valid pair.
+        // --- 1. Gather all unique supporters (no duplicates)
+        var allSupporters = participants.pair
+            .SelectMany(pair => pair.supporters1.Concat(pair.supporters2))
+            .Distinct()
+            .ToList();
+
+        // --- 2. Queue: PopInOut for all supporters
+        foreach (var supporter in allSupporters)
+        {
+            actionManager.Add(new PortraitPopInAction(supporter));
+        }
+
+        // --- 3. Queue: AttackSupportActions and support lines (before attack)
         foreach (var pair in participants.pair)
         {
-            // For attacker1, iterate over its supporters and create support actions.
             foreach (var supporter in pair.supporters1)
             {
                 supportLineManager.Spawn(supporter, pair.attacker1);
                 actionManager.Add(new AttackSupportAction(pair.attacker1, supporter));
             }
-
-            // For attacker2, repeat the process with its supporters.
             foreach (var supporter in pair.supporters2)
             {
                 supportLineManager.Spawn(supporter, pair.attacker2);
@@ -202,20 +208,24 @@ public class PincerAttackManager : MonoBehaviour
             }
         }
 
-        // Step 3: Process the pincer results using the recursive chain attack logic
+        // --- 4. Queue: PincerAttackActions (core attack logic)
         foreach (var pair in participants.pair)
         {
             pair.results = ChainAttacks(pair.attacker1, participants.pair);
             actionManager.Add(new PincerAttackAction(pair));
         }
 
-        // Step 4: Execute all queued actions with visual fade effects.
+        // --- 5. Queue: PopOut for all supporters (after attack)
+        foreach (var supporter in allSupporters)
+        {
+            actionManager.Add(new PortraitPopOutAction(supporter));
+        }
+
+        // --- 6. Execute sequence
         yield return boardOverlay.FadeIn();
         yield return actionManager.Execute();
         yield return boardOverlay.FadeOut();
 
-        // Step 5: Clean up
-        //ResetSortingOrder();
         participants.Clear();
         turnManager.NextTurn();
     }

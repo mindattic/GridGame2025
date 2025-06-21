@@ -8,7 +8,7 @@ using static ComponentHelper.Game;
 public class PortraitInstance : MonoBehaviour
 {
     //Quick Reference Properties
-    
+
 
     public Transform parent
     {
@@ -24,7 +24,7 @@ public class PortraitInstance : MonoBehaviour
     {
         get => gameObject.transform.localScale;
         set => gameObject.transform.localScale = value;
-    } 
+    }
     public Sprite sprite
     {
         get => spriteRenderer.sprite;
@@ -123,98 +123,101 @@ public class PortraitInstance : MonoBehaviour
 
     }
 
-    public IEnumerator PopIn(
-    float fadeDuration = 0.25f,
-    float holdDuration = 0.25f,
-    float rotateDuration = 0.2f)
+
+    private float _portraitY = 0f;
+    private Quaternion _lastPopInRotation = Quaternion.identity;
+
+    public IEnumerator PopInOut(
+       float fadeDuration = 0.25f,
+       float holdDuration = 0.25f,
+       float rotateDuration = 0.2f)
     {
-        // Transparency bounds
-        float minAlpha = Opacity.Transparent;
-        float maxAlpha = Opacity.Opaque;
+        color = ColorHelper.Transparent.White;
 
-        Vector3 frontAnchorPos = actor.render.front.transform.position;
+        yield return PopIn(rotateDuration, fadeDuration);
 
-        // Set initial alpha
-        Color c = spriteRenderer.color;
-        c.a = minAlpha;
-        spriteRenderer.color = c;
-
-        // Reference to the actor's "Front"
-        Transform front = actor.render.front.transform;
-
-        // Determine random Y rotation: -20 or +20
-        float randomY = Random.Float() < 0.5f ? -20f : 20f;
-
-        // 1. ROTATE FRONT TO 75 ON X AND ±20 ON Y
-        float rotateElapsed = 0f;
-        Quaternion startRot = front.rotation;
-        Quaternion targetRot = Quaternion.Euler(75, randomY, 0);
-        while (rotateElapsed < rotateDuration)
+        for (float elapsed = 0; elapsed < holdDuration; elapsed += Time.deltaTime)
         {
-            float t = rotateElapsed / rotateDuration;
+            Vector3 frontAnchorPos = actor.render.front.transform.position;
+            AlignPortraitWithFront(frontAnchorPos);
+            yield return null;
+        }
+
+        yield return PopOut(rotateDuration, fadeDuration);
+    }
+
+
+    public IEnumerator PopIn(float rotateDuration = 0.2f, float fadeDuration = 0.25f)
+    {
+        color = ColorHelper.Transparent.White;
+        Vector3 frontAnchorPos = actor.render.front.transform.position;
+        Transform front = actor.render.front.transform;
+        float minAlpha = Opacity.Transparent;
+        float maxAlpha = Opacity.Percent90;
+
+        _portraitY = Random.Float() < 0.5f ? -20f : 20f;
+        Quaternion startRot = front.rotation;
+        Quaternion targetRot = Quaternion.Euler(75, _portraitY, 0);
+        _lastPopInRotation = targetRot;
+
+        // Rotate up
+        for (float elapsed = 0; elapsed < rotateDuration; elapsed += Time.deltaTime)
+        {
+            float t = elapsed / rotateDuration;
             front.rotation = Quaternion.Slerp(startRot, targetRot, t);
-            rotateElapsed += Time.deltaTime;
             AlignPortraitWithFront(frontAnchorPos);
             yield return null;
         }
         front.rotation = targetRot;
         AlignPortraitWithFront(frontAnchorPos);
 
-        // 2. FADE IN
-        float fadeElapsed = 0f;
-        while (fadeElapsed < fadeDuration)
+        // Fade in
+        Color c = spriteRenderer.color;
+       
+        for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
-            float t = Mathf.Clamp01(fadeElapsed / fadeDuration);
+            float t = Mathf.Clamp01(elapsed / fadeDuration);
             float alpha = Mathf.Lerp(minAlpha, maxAlpha, t);
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
             AlignPortraitWithFront(frontAnchorPos);
-            fadeElapsed += Time.deltaTime;
             yield return null;
         }
         spriteRenderer.color = new Color(c.r, c.g, c.b, maxAlpha);
         AlignPortraitWithFront(frontAnchorPos);
+    }
 
-        // 3. HOLD
-        if (holdDuration > 0f)
-        {
-            float holdElapsed = 0f;
-            while (holdElapsed < holdDuration)
-            {
-                AlignPortraitWithFront(frontAnchorPos);
-                holdElapsed += Time.deltaTime;
-                yield return null;
-            }
-        }
+    public IEnumerator PopOut(float rotateDuration = 0.2f, float fadeDuration = 0.25f)
+    {
+        Vector3 frontAnchorPos = actor.render.front.transform.position;
+        Transform front = actor.render.front.transform;
+        float minAlpha = Opacity.Transparent;
+        float maxAlpha = Opacity.Percent90;
 
-        // 4. FADE OUT
-        fadeElapsed = 0f;
-        while (fadeElapsed < fadeDuration)
+        // Fade out portrait (opaque -> transparent)
+        Color c = spriteRenderer.color;      
+        for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
-            float t = Mathf.Clamp01(fadeElapsed / fadeDuration);
+            float t = Mathf.Clamp01(elapsed / fadeDuration);
             float alpha = Mathf.Lerp(maxAlpha, minAlpha, t);
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
             AlignPortraitWithFront(frontAnchorPos);
-            fadeElapsed += Time.deltaTime;
             yield return null;
         }
         spriteRenderer.color = new Color(c.r, c.g, c.b, minAlpha);
 
-        // 5. ROTATE FRONT BACK TO (0, 0, 0)
-        rotateElapsed = 0f;
-        startRot = front.rotation;
-        targetRot = Quaternion.Euler(0, 0, 0);
-        while (rotateElapsed < rotateDuration)
+        // Unrotate front from previous PopIn pose to default
+        Quaternion startRot = _lastPopInRotation;
+        Quaternion targetRot = Quaternion.Euler(0, 0, 0);
+        for (float elapsed = 0; elapsed < rotateDuration; elapsed += Time.deltaTime)
         {
-            float t = rotateElapsed / rotateDuration;
+            float t = elapsed / rotateDuration;
             front.rotation = Quaternion.Slerp(startRot, targetRot, t);
-            rotateElapsed += Time.deltaTime;
             AlignPortraitWithFront(frontAnchorPos);
             yield return null;
         }
         front.rotation = targetRot;
         AlignPortraitWithFront(frontAnchorPos);
 
-        // 6. Optionally destroy the portrait
         Destroy(gameObject);
     }
 
@@ -241,7 +244,7 @@ public class PortraitInstance : MonoBehaviour
         //During:
         while (alpha > minAlpha)
         {
-          
+
             //Shake
             position = startPosition;
             position += new Vector3(Random.Range(ShakeIntensity.Medium), Random.Range(ShakeIntensity.Medium), 1); //TODO: Use Shake Coroutine

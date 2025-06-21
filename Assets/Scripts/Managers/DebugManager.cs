@@ -63,8 +63,7 @@ public class DebugManager : MonoBehaviour
     public void PortraitPopIn()
     {
         var hero = Random.Hero;
-        var direction = Random.Direction;
-        portraitManager.TriggerPopIn(hero, direction);
+        portraitManager.TriggerPopInOut(hero);
     }
 
 
