@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Events
 {
-    public class EnemySpawnAction : PhaseAction
+    public class EnemySpawnEvent : GameEvent
     {
-       //Quick Reference Properties
+        //Quick Reference Properties
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
-        public EnemySpawnAction() { }
+        public EnemySpawnEvent() { }
 
         public override IEnumerator Execute()
         {

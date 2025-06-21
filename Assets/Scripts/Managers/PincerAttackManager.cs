@@ -1,8 +1,7 @@
 // Import required namespaces from the Assets project and Unity.
 // These include scripts for actions, models, utilities, and Unity's standard collections and engine.
-using Assets.Scripts.Actions;
+using Assets.Scripts.Events;
 using Assets.Scripts.Models;
-using Assets.Scripts.Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +15,7 @@ public class PincerAttackManager : MonoBehaviour
     // Quick reference properties to easily access various managers and lists from the GameManager singleton.
     // These properties provide shortcuts to other systems such as turn management, action handling, and board overlays.
     protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected ActionManager actionManager => GameManager.instance.actionManager;
+    protected EventManager eventManager => GameManager.instance.eventManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
     protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
@@ -44,7 +43,7 @@ public class PincerAttackManager : MonoBehaviour
         }
 
         // If one or more pairs exist, start a coroutine that will enqueue and process the results.
-        StartCoroutine(EnqueueAttacks(participants));
+        StartCoroutine(Enqueue(participants));
     }
 
     /// <summary>
@@ -177,9 +176,11 @@ public class PincerAttackManager : MonoBehaviour
     /// resets the board state, clears the pair, and finally advances the turn.
     /// </summary>
     /// <param name="participants">The participants of valid pincer attack pair.</param>
-    private IEnumerator EnqueueAttacks(PincerAttackParticipants participants)
+    private IEnumerator Enqueue(PincerAttackParticipants participants)
     {
         sortingManager.OnPincerAttackStart(participants);
+
+        yield return boardOverlay.FadeIn();
 
         // --- 1. Gather all unique supporters (no duplicates)
         var allSupporters = participants.pair
@@ -190,7 +191,8 @@ public class PincerAttackManager : MonoBehaviour
         // --- 2. Queue: PopInOut for all supporters
         foreach (var supporter in allSupporters)
         {
-            actionManager.Add(new PortraitPopInAction(supporter));
+
+            eventManager.Add(new PortraitPopInEvent(supporter));
         }
 
         // --- 3. Queue: AttackSupportActions and support lines (before attack)
@@ -199,12 +201,12 @@ public class PincerAttackManager : MonoBehaviour
             foreach (var supporter in pair.supporters1)
             {
                 supportLineManager.Spawn(supporter, pair.attacker1);
-                actionManager.Add(new AttackSupportAction(pair.attacker1, supporter));
+                eventManager.Add(new PincerAttackSupportEvent(pair.attacker1, supporter));
             }
             foreach (var supporter in pair.supporters2)
             {
                 supportLineManager.Spawn(supporter, pair.attacker2);
-                actionManager.Add(new AttackSupportAction(pair.attacker2, supporter));
+                eventManager.Add(new PincerAttackSupportEvent(pair.attacker2, supporter));
             }
         }
 
@@ -212,18 +214,18 @@ public class PincerAttackManager : MonoBehaviour
         foreach (var pair in participants.pair)
         {
             pair.results = ChainAttacks(pair.attacker1, participants.pair);
-            actionManager.Add(new PincerAttackAction(pair));
+            eventManager.Add(new PincerAttackEvent(pair));
         }
 
         // --- 5. Queue: PopOut for all supporters (after attack)
         foreach (var supporter in allSupporters)
         {
-            actionManager.Add(new PortraitPopOutAction(supporter));
+            eventManager.Add(new PortraitPopOutEvent(supporter));
         }
 
         // --- 6. Execute sequence
-        yield return boardOverlay.FadeIn();
-        yield return actionManager.Execute();
+
+        yield return eventManager.Execute();
         yield return boardOverlay.FadeOut();
 
         participants.Clear();

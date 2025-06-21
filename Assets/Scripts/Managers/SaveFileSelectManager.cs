@@ -45,12 +45,12 @@ public class SaveFileSelectManager : MonoBehaviour
         //verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
         fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
-        //screenWidth = canvas2D.rect.width;
-        //screenHeight = canvas2D.rect.height;
-        //buttonWidth = 0.9f * screenWidth;
-        //buttonHeight = screenHeight / 16f;
+        //startX = canvas2D.rect.width;
+        //startY = canvas2D.rect.height;
+        //buttonWidth = 0.9f * startX;
+        //buttonHeight = startY / 16f;
         //fontSize = buttonHeight / 2;
-        //rowSpacing = 0.01f * screenHeight;
+        //rowSpacing = 0.01f * startY;
 
         //header.fontSize = fontSize;
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);

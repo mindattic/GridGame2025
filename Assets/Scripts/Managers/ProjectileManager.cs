@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Actions;
+﻿using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using System;
 using System.Collections;
@@ -10,7 +10,7 @@ public class ProjectileManager : MonoBehaviour
     //Quick Reference
     protected BoardInstance board => GameManager.instance.board;
     protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected ActionManager actionManager => GameManager.instance.actionManager;
+    protected EventManager eventManager => GameManager.instance.eventManager;
 
     //Fields
 
@@ -58,12 +58,12 @@ public class ProjectileManager : MonoBehaviour
             trigger = new Trigger(target.Heal(10), isAsync: false)
         };
 
-        var action = new FireProjectileAction(heal);
+        var e = new FireProjectileEvent(heal);
 
         if (castBeforeAttack)
-            actionManager.Insert(action);
+            eventManager.Insert(e);
         else
-            actionManager.Add(action);
+            eventManager.Add(e);
     }
 
 
@@ -81,12 +81,12 @@ public class ProjectileManager : MonoBehaviour
             trigger = new Trigger(target.FireDamage(10), isAsync: false)
         };
 
-        var action = new FireProjectileAction(fireball);
+        var action = new FireProjectileEvent(fireball);
 
         if (castBeforeAttack)
-            actionManager.Insert(action);
+            eventManager.Insert(action);
         else
-            actionManager.Add(action);
+            eventManager.Add(action);
     }
 
 }

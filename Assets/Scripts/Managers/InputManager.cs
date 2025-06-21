@@ -15,8 +15,7 @@ public class InputManager : MonoBehaviour
     // Assuming GameManager handles conversion from input (mouse or touch) to a 3D world position.
     protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
     protected float tileSize => GameManager.instance.tileSize;
-    protected float dragThreshold => GameManager.instance.dragThreshold;
-
+   
 
     // Fields
     private bool isTouching = false;
@@ -25,6 +24,12 @@ public class InputManager : MonoBehaviour
     //Properties
     public bool IsDragging => isTouching && Vector3.Distance(initialTouchPosition, touchPosition3D) > dragThreshold;
 
+    public float dragThreshold;
+
+    private void Awake()
+    {
+        dragThreshold = tileSize * 0.125f;
+    }
 
     // Save is called once per frame to process hero input.
     void Update()

@@ -1,4 +1,4 @@
-using Assets.Scripts.Actions;
+using Assets.Scripts.Events;
 using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
 using Game.Behaviors;
@@ -7,12 +7,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using TMPro;
-using UnityEditor.VersionControl;
 using UnityEngine;
-using static Unity.VisualScripting.Member;
-using static UnityEngine.GraphicsBuffer;
 
 public class DebugManager : MonoBehaviour
 {
@@ -32,7 +28,7 @@ public class DebugManager : MonoBehaviour
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
     protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
-    protected ActionManager actionManager => GameManager.instance.actionManager;
+    protected EventManager eventManager => GameManager.instance.eventManager;
 
     //Internal properties
     ActorInstance hero1 => heroes.Skip(0).Take(1).First();
@@ -59,13 +55,13 @@ public class DebugManager : MonoBehaviour
     }
 
 
-
     public void PortraitPopIn()
     {
         var hero = Random.Hero;
-        portraitManager.TriggerPopInOut(hero);
+        eventManager.Add(new PortraitPopInEvent(hero));
+        eventManager.Add(new PortraitPopOutEvent(hero));
+        StartCoroutine(eventManager.Execute());
     }
-
 
 
     public void DamageTextTest()
@@ -586,7 +582,7 @@ public class DebugManager : MonoBehaviour
         var source = hero1;
         var target = enemies.FirstOrDefault();
         projectileManager.EnqueueFireball(source, target);
-        actionManager.TriggerExecute();
+        eventManager.TriggerExecute();
     }
 
     public void HealTest()
@@ -595,6 +591,6 @@ public class DebugManager : MonoBehaviour
         var target = hero2;
 
         projectileManager.EnqueueHeal(source, target);
-        actionManager.TriggerExecute();
+        eventManager.TriggerExecute();
     }
 }

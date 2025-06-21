@@ -1,14 +1,12 @@
 using Game.Behaviors.Actor;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static ComponentHelper.Game;
 
 public class PortraitInstance : MonoBehaviour
 {
-    //Quick Reference Properties
-
+    // Quick Reference Properties
+    private PortraitManager portraitManager => GameManager.instance.portraitManager;
 
     public Transform parent
     {
@@ -27,72 +25,115 @@ public class PortraitInstance : MonoBehaviour
     }
     public Sprite sprite
     {
-        get => spriteRenderer.sprite;
-        set => spriteRenderer.sprite = value;
-    }
-    public Color color
-    {
-        get => spriteRenderer.color;
-        set => spriteRenderer.color = value;
+        get => spriteRenderer?.sprite;
+        set { if (spriteRenderer != null) spriteRenderer.sprite = value; }
     }
     public int sortingOrder
     {
-        set
-        {
-            spriteRenderer.sortingOrder = value;
-        }
+        set { if (spriteRenderer != null) spriteRenderer.sortingOrder = value; }
     }
 
-    //Fields
-    //[SerializeField] public ActorInstance actor;
     [SerializeField] public Direction direction;
     [SerializeField] public float startTime;
     [SerializeField] public Vector2 startPosition;
     [SerializeField] public AnimationCurve slide;
     public SpriteRenderer spriteRenderer;
-
     public ActorInstance actor;
-    float screenHeight;
-    float screenWidth;
+    float startY;
+    float startX;
 
-    //Method which is used for initialization tasks that need to occur before the game starts 
+    private float popInRotY = 0f;
+    private Quaternion lastPopInRot = Quaternion.identity;
+    private Vector3 popOutFrontRestorePos;
+
+    private bool isBeingDestroyed = false;
+
+    // Initialization
     private void Awake()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        //startY = Camera.main.orthographicSize * 2;
+        //startX = startY * Camera.main.aspect;
 
-        screenHeight = Camera.main.orthographicSize * 2;
-        screenWidth = screenHeight * Camera.main.aspect;
+        startY = 10f;
+        startX = 10f;
     }
 
-    public bool slideFinished = false;
+    private void OnDestroy()
+    {
+        isBeingDestroyed = true;
+    }
 
+    // SlideIn by duration (lerps in a set time)
+    //public IEnumerator SlideIn(float duration = 0.5f)
+    //{
+    //    if (isBeingDestroyed || spriteRenderer == null)
+    //        yield break;
+
+    //    Vector3 destination = Vector3.zero;
+
+    //    switch (direction)
+    //    {
+    //        case Direction.North:
+    //            this.position = new Vector3(1, -startY, 1);
+    //            destination = new Vector3(1, startY, 1);
+    //            break;
+    //        case Direction.East:
+    //            this.position = new Vector3(-startX, 1, 1);
+    //            destination = new Vector3(startX, 1, 1);
+    //            break;
+    //        case Direction.South:
+    //            this.position = new Vector3(-1, startY, 1);
+    //            destination = new Vector3(-1, -startY, 1);
+    //            break;
+    //        case Direction.West:
+    //            this.position = new Vector3(startX, -1, 1);
+    //            destination = new Vector3(-startX, -1, 1);
+    //            break;
+    //    }
+
+    //    Vector3 start = this.position;
+    //    float elapsed = 0f;
+    //    while (elapsed < duration)
+    //    {
+    //        if (isBeingDestroyed || spriteRenderer == null)
+    //            yield break;
+
+    //        float t = Mathf.Clamp01(elapsed / duration);
+    //        float curveT = slide != null ? slide.Evaluate(t) : t;
+    //        this.position = Vector3.Lerp(start, destination, curveT);
+    //        elapsed += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    this.position = destination;
+    //    Despawn();
+    //}
     public IEnumerator SlideIn()
     {
-
-        float minAlpha = Opacity.Transparent;
-        float maxAlpha = Opacity.Opaque;
+        spriteRenderer.color = ColorHelper.Solid.White;
         Vector3 destination = new Vector3();
 
         switch (direction)
         {
             case Direction.North:
-                this.position = new Vector3(1, -screenHeight, 1);
-                destination = new Vector3(1, screenHeight, 1);
+                this.position = new Vector3(1, -10, 1);
+                destination = new Vector3(1, 10, 1);
                 break;
 
             case Direction.East:
-                this.position = new Vector3(-screenWidth, 1, 1);
-                destination = new Vector3(screenWidth, 1, 1);
+                this.position = new Vector3(-10, 1, 1);
+                destination = new Vector3(10, 1, 1);
                 break;
 
             case Direction.South:
-                this.position = new Vector3(-1, screenHeight, 1);
-                destination = new Vector3(-1, -screenHeight, 1);
+                this.position = new Vector3(-1, 10, 1);
+                destination = new Vector3(-1, -10, 1);
                 break;
 
             case Direction.West:
-                this.position = new Vector3(screenWidth, -1, 1);
-                destination = new Vector3(-screenWidth, -1, 1);
+                this.position = new Vector3(10, -1, 1);
+                destination = new Vector3(-10, -1, 1);
                 break;
         }
 
@@ -123,21 +164,25 @@ public class PortraitInstance : MonoBehaviour
 
     }
 
-
-    private float popInRotY = 0f;
-    private Quaternion lastPopInRot = Quaternion.identity;
-
+    // PopInOut: rotates, fades in, holds, fades out, restores
     public IEnumerator PopInOut(
        float fadeDuration = 0.25f,
        float holdDuration = 0.25f,
        float rotateDuration = 0.2f)
     {
-        color = ColorHelper.Transparent.White;
+        if (isBeingDestroyed || spriteRenderer == null)
+            yield break;
+
+        Color baseColor = spriteRenderer.color;
+        spriteRenderer.color = new Color(baseColor.r, baseColor.g, baseColor.b, 0f);
 
         yield return PopIn(rotateDuration, fadeDuration);
 
         for (float elapsed = 0; elapsed < holdDuration; elapsed += Time.deltaTime)
         {
+            if (isBeingDestroyed || spriteRenderer == null)
+                yield break;
+
             Vector3 frontAnchorPos = actor.render.front.transform.position;
             AlignPortraitWithFront(frontAnchorPos);
             yield return null;
@@ -146,14 +191,15 @@ public class PortraitInstance : MonoBehaviour
         yield return PopOut(rotateDuration, fadeDuration);
     }
 
-
+    // PopIn: rotates and lowers Front, fades portrait in from transparent
     public IEnumerator PopIn(float rotateDuration = 0.2f, float fadeDuration = 0.25f)
     {
-        color = ColorHelper.Transparent.White;
-        Vector3 frontAnchorPos = actor.render.front.transform.position;
+        if (isBeingDestroyed || spriteRenderer == null)
+            yield break;
+
         Transform front = actor.render.front.transform;
-        float minAlpha = Opacity.Transparent;
-        float maxAlpha = Opacity.Percent90;
+        Vector3 originalFrontPos = front.position;
+        float yOffset = -GameManager.instance.tileSize * 0.33f; // Lowered by 33%
 
         float y = Random.Float(20f, 25f);
         popInRotY = Random.Float() < 0.5f ? -y : y;
@@ -161,107 +207,133 @@ public class PortraitInstance : MonoBehaviour
         Quaternion targetRot = Quaternion.Euler(75, popInRotY, 0);
         lastPopInRot = targetRot;
 
-        // Rotate up
+        // Animate rotation and lowering position.y
         for (float elapsed = 0; elapsed < rotateDuration; elapsed += Time.deltaTime)
         {
+            if (isBeingDestroyed || spriteRenderer == null)
+                yield break;
+
             float t = elapsed / rotateDuration;
             front.rotation = Quaternion.Slerp(startRot, targetRot, t);
-            AlignPortraitWithFront(frontAnchorPos);
+            Vector3 loweredPos = originalFrontPos + new Vector3(0, yOffset, 0);
+            front.position = Vector3.Lerp(originalFrontPos, loweredPos, t);
+            AlignPortraitWithFront(front.position);
             yield return null;
         }
         front.rotation = targetRot;
-        AlignPortraitWithFront(frontAnchorPos);
+        front.position = originalFrontPos + new Vector3(0, yOffset, 0);
+        AlignPortraitWithFront(front.position);
 
-        // Fade in
-        Color c = color;
+        // Fade in portrait (start fully transparent)
+        Color c = spriteRenderer.color;
         for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
+            if (isBeingDestroyed || spriteRenderer == null)
+                yield break;
+
             float t = Mathf.Clamp01(elapsed / fadeDuration);
-            float alpha = Mathf.Lerp(minAlpha, maxAlpha, t);
+            float alpha = Mathf.Lerp(0, 1, t); // Fade in: 0 -> 1
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
-            AlignPortraitWithFront(frontAnchorPos);
+            AlignPortraitWithFront(front.position);
             yield return null;
         }
-        spriteRenderer.color = new Color(c.r, c.g, c.b, maxAlpha);
-        AlignPortraitWithFront(frontAnchorPos);
+        spriteRenderer.color = new Color(c.r, c.g, c.b, 1f);
+        AlignPortraitWithFront(front.position);
+
+        popOutFrontRestorePos = originalFrontPos;
     }
 
+    // PopOut: fades out, restores Front rotation/position
     public IEnumerator PopOut(float rotateDuration = 0.2f, float fadeDuration = 0.25f)
     {
-        Vector3 frontAnchorPos = actor.render.front.transform.position;
-        Transform front = actor.render.front.transform;
-        float minAlpha = Opacity.Transparent;
-        float maxAlpha = Opacity.Percent90;
+        if (isBeingDestroyed || spriteRenderer == null)
+            yield break;
 
-        // Fade out portrait (opaque -> transparent)
-        Color c = color;
+        Transform front = actor.render.front.transform;
+        Vector3 loweredPos = front.position;
+        Vector3 originalPos = popOutFrontRestorePos;
+
+        // Set fully opaque before fade out
+        Color c = spriteRenderer.color;
+        spriteRenderer.color = new Color(c.r, c.g, c.b, 1f);
+
+        // Fade out portrait
         for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
+            if (isBeingDestroyed || spriteRenderer == null)
+                yield break;
+
             float t = Mathf.Clamp01(elapsed / fadeDuration);
-            float alpha = Mathf.Lerp(maxAlpha, minAlpha, t);
+            float alpha = Mathf.Lerp(1, 0, t); // Fade out: 1 -> 0
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
-            AlignPortraitWithFront(frontAnchorPos);
+            AlignPortraitWithFront(front.position);
             yield return null;
         }
-        spriteRenderer.color = new Color(c.r, c.g, c.b, minAlpha);
+        spriteRenderer.color = new Color(c.r, c.g, c.b, 0f);
+        AlignPortraitWithFront(front.position);
 
-        // Unrotate front from previous PopIn pose to default
-        Quaternion startRot = lastPopInRot;
+        // Restore rotation and position
+        Quaternion startRot = front.rotation;
         Quaternion targetRot = Quaternion.Euler(0, 0, 0);
         for (float elapsed = 0; elapsed < rotateDuration; elapsed += Time.deltaTime)
         {
+            if (isBeingDestroyed || spriteRenderer == null)
+                yield break;
+
             float t = elapsed / rotateDuration;
             front.rotation = Quaternion.Slerp(startRot, targetRot, t);
-            AlignPortraitWithFront(frontAnchorPos);
+            front.position = Vector3.Lerp(loweredPos, originalPos, t);
+            AlignPortraitWithFront(front.position);
             yield return null;
         }
         front.rotation = targetRot;
-        AlignPortraitWithFront(frontAnchorPos);
+        front.position = originalPos;
+        AlignPortraitWithFront(front.position);
 
-        Destroy(gameObject);
+        Despawn();
     }
 
     // Utility to keep portrait's feet on top of Front (even while Front rotates)
     private void AlignPortraitWithFront(Vector3 frontAnchorPos)
     {
+        if (isBeingDestroyed || spriteRenderer == null)
+            return;
+
         float halfPortraitHeight = spriteRenderer.bounds.size.y / 2f;
-        // Only use world up, not rotated up
         transform.position = frontAnchorPos + Vector3.up * halfPortraitHeight;
-        // Keep Z flat if needed
         transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
     }
 
-
+    // Dissolve: fancy fade-out with shake/shrink
     public IEnumerator Dissolve()
     {
-        float minAlpha = Opacity.Transparent;
-        float maxAlpha = Opacity.Opaque;
+        if (isBeingDestroyed || spriteRenderer == null)
+            yield break;
 
-        //Begin:
-        var alpha = maxAlpha;
+        float alpha = 1f;
         spriteRenderer.color = new Color(1, 1, 1, alpha);
 
-        //During:
-        while (alpha > minAlpha)
+        while (alpha > 0)
         {
+            if (isBeingDestroyed || spriteRenderer == null)
+                yield break;
 
-            //Shake
             position = startPosition;
-            position += new Vector3(Random.Range(ShakeIntensity.Medium), Random.Range(ShakeIntensity.Medium), 1); //TODO: Use Shake Coroutine
-
-            //Shrink
+            position += new Vector3(Random.Range(ShakeIntensity.Medium), Random.Range(ShakeIntensity.Medium), 1);
             transform.localScale *= 0.99f;
-
-            //FadeInstance
             alpha -= Increment.OnePercent;
-            alpha = Mathf.Clamp(alpha, minAlpha, maxAlpha);
+            alpha = Mathf.Clamp(alpha, 0, 1);
             spriteRenderer.color = new Color(1, 1, 1, alpha);
             yield return Wait.UntilNextFrame();
         }
 
-        //After:
-        Destroy(this.gameObject);
+        Despawn();
     }
 
-
+    private void Despawn()
+    {
+        if (isBeingDestroyed) return;
+        isBeingDestroyed = true;
+        Destroy(this.gameObject);
+    }
 }

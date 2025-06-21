@@ -11,6 +11,15 @@ namespace Game.Manager
         protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
+        protected float tileSize => GameManager.instance.tileSize;
+
+        public float snapTheshold;
+
+        private void Awake()
+        {
+            snapTheshold = tileSize * 0.125f * 1.01f;
+        }
+
         public void CheckEnemyAP()
         {
             var notReadyEnemies = enemies.Where(x => x.isPlaying && !x.hasMaxAP).ToList();

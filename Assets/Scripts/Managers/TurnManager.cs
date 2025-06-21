@@ -1,3 +1,4 @@
+using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using Game.Behaviors;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ public class TurnManager : MonoBehaviour
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected HeroManager heroManager => GameManager.instance.heroManager;
-    protected ActionManager actionManager => GameManager.instance.actionManager;
+    protected EventManager eventManager => GameManager.instance.eventManager;
     protected TimerBar timerBar => GameManager.instance.timerBar;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
@@ -59,18 +60,18 @@ public class TurnManager : MonoBehaviour
             if (turnPhase == TurnPhase.Start)
             {
                 timerBar.Lock();
-                actionManager.Add(new EnemySpawnAction());
+                eventManager.Add(new EnemySpawnEvent());
 
                 bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
                 if (!anyReadyEnemies)
                 {
-                    actionManager.TriggerExecute();
+                    eventManager.TriggerExecute();
                     NextTurn(); // No enemy ready; immediately switch turn.
                     return;
                 }
 
-                actionManager.Add(new EnemyStartAction());
-                actionManager.TriggerExecute();
+                eventManager.Add(new EnemyStartEvent());
+                eventManager.TriggerExecute();
             }
         }
     }

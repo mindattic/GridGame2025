@@ -79,10 +79,12 @@ public class SupportLineInstance : MonoBehaviour
 
     public IEnumerator FadeOut()
     {
+        //Before:
         float startAlpha = maxAlpha;
         float targetAlpha = minAlpha;
         float elapsedTime = 0f;
 
+        //During:
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -91,9 +93,9 @@ public class SupportLineInstance : MonoBehaviour
             yield return null;
         }
 
+        //After:
         alpha = minAlpha;
         UpdateLineAlpha(alpha);
-
         supportLineManager.Destroy(actor1, actor2);
     }
 

@@ -1,12 +1,13 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Events
 {
-    //PhaseAction for processing a single attacking PincerAttackPair
-    public class PincerAttackAction : PhaseAction
+    //GameEvent for processing a single attacking PincerAttackPair
+    public class PincerAttackEvent : GameEvent
     {
         //Quick Reference Properties
 
@@ -18,7 +19,7 @@ namespace Assets.Scripts.Models
         private PincerAttackPair pair;
 
         //Constructor
-        public PincerAttackAction(PincerAttackPair pair)
+        public PincerAttackEvent(PincerAttackPair pair)
         {
             this.pair = pair;
         }
@@ -30,7 +31,7 @@ namespace Assets.Scripts.Models
                 yield break;
 
             var actorPair = new ActorPair(pair.attacker1, pair.attacker2);
-            yield return portraitManager.Play(actorPair);
+            yield return portraitManager.SpawnPair(actorPair);
 
             // "Grow" both attackers, then "shrink" them:
             yield return CoroutineHelper.WaitForAll(

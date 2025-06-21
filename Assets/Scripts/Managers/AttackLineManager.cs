@@ -53,6 +53,7 @@ namespace Game.Behaviors
         {
             foreach (var instance in attackLines.Values)
             {
+
                 instance.TriggerDespawn();
             }
             attackLines.Clear();

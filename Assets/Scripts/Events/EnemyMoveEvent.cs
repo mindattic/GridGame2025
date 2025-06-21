@@ -1,20 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Action = Assets.Scripts.Models.PhaseAction;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Events
 {
-    public class EnemyMoveAction : Action
+    public class EnemyMoveEvent : GameEvent
     {
         //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
-        protected ActionManager actionManager => GameManager.instance.actionManager;
+        protected EventManager eventManager => GameManager.instance.eventManager;
         protected List<ActorInstance> actors = GameManager.instance.actors;
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
         //Constructor
-        public EnemyMoveAction() { }
+        public EnemyMoveEvent() { }
 
         public override IEnumerator Execute()
         {
@@ -43,7 +42,7 @@ namespace Assets.Scripts.Models
             }
 
             //After moving, add the enemy attack action.
-            actionManager.Add(new DirectAttackAction());
+            eventManager.Add(new DirectAttackEvent());
             turnManager.SetPhase(TurnPhase.Attack);
         }
     }

@@ -50,8 +50,8 @@ public class BoardInstance : MonoBehaviour
         var x = -(tileSize * 3) - tileSize / 2;
         // Calculate y-offset to position the board vertically.
         // Here, (tileSize * 4) + tileSize * 2 positions the board using 6 tiles' height.
-        var y = (tileSize * 4) + tileSize * 2;
-        offset = new Vector2(x, y);
+        var y = (tileSize * 4) + tileSize / 2;
+        offset = new Vector2(x, y) ;
         // Assign the board's world position to the calculated offset.
         transform.position = offset;
     }

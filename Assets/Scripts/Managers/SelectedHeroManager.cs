@@ -10,7 +10,7 @@ using UnityEngine.Rendering;
 public class SelectedHeroManager : MonoBehaviour
 {
     // Quick reference properties for accessing core game systems
-    protected ActionManager actionManager => GameManager.instance.actionManager;
+    protected EventManager eventManager => GameManager.instance.eventManager;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected SortingManager sortingManager => GameManager.instance.sortingManager;
@@ -90,11 +90,11 @@ public class SelectedHeroManager : MonoBehaviour
         card.Clear();
         focusIndicator.Clear();
 
-        // Play an audio cue to indicate that the actor has been selected for movement.
+        // SpawnPair an audio cue to indicate that the actor has been selected for movement.
         audioManager.Play("Click");
 
         // Start the movement phase:
-        // - Play the timer bar animation.
+        // - SpawnPair the timer bar animation.
         // - Check enemy action points (AP) to update available moves.
         timerBar.Play();
         actorManager.CheckEnemyAP();

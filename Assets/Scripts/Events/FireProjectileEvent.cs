@@ -1,16 +1,16 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
 
-namespace Assets.Scripts.Actions
+namespace Assets.Scripts.Events
 {
-    public class FireProjectileAction : PhaseAction
+    public class FireProjectileEvent : GameEvent
     {
        //Quick Reference Properties
         protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
         private ProjectileSettings projectile;
 
 
-        public FireProjectileAction(ProjectileSettings projectile)
+        public FireProjectileEvent(ProjectileSettings projectile)
         {
             this.projectile = projectile;
         }

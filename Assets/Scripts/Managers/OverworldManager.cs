@@ -40,14 +40,14 @@ public class OverworldManager : MonoBehaviour
         hero = GameObjectHelper.Find(ComponentHelper.Overworld.Hero).GetComponent<PlayerStageMover>();
         fade = GameObjectHelper.Find(ComponentHelper.Overworld.Fade).GetComponent<FadeInstance>();
 
-        //screenWidth = canvas2D.rect.width;
-        //screenHeight = canvas2D.rect.height;
+        //startX = canvas2D.rect.width;
+        //startY = canvas2D.rect.height;
 
        // buttonWidth = 64;
         //buttonHeight = 32;
 
-        //header.fontSize = screenHeight / 16f / 2;
-        //scrollView.sizeDelta = new Vector2(screenWidth, screenHeight);
+        //header.fontSize = startY / 16f / 2;
+        //scrollView.sizeDelta = new Vector2(startX, startY);
 
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         FindStageButtons();

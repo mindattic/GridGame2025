@@ -18,7 +18,8 @@ namespace Assets.Scripts.Instances.Actor
         protected AudioManager audioManager => GameManager.instance.audioManager;
         protected BoardInstance board => GameManager.instance.board;
         protected float moveFocus => GameManager.instance.moveFocus;
-        protected float snapThreshold => GameManager.instance.snapThreshold;
+
+        protected float snapThreshold => GameManager.instance.actorManager.snapTheshold;
         protected float tileSize => GameManager.instance.tileSize;
         protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
         protected Vector3 touchOffset => GameManager.instance.touchOffset;

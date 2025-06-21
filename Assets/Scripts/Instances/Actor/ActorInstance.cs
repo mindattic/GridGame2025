@@ -2,6 +2,7 @@ using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Instances.Actor;
 using Assets.Scripts.Models;
 using Game.Instances.Actor;
+using Game.Manager;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ public class ActorInstance : MonoBehaviour
     protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-    protected float snapDistance => GameManager.instance.snapThreshold;
+    protected float snapThreshold => GameManager.instance.actorManager.snapTheshold;
     protected StageManager stageManager => GameManager.instance.stageManager;
     protected TileMap tileMap => GameManager.instance.tileMap;
     protected Vector3 tileScale => GameManager.instance.tileScale;
@@ -88,6 +89,10 @@ public class ActorInstance : MonoBehaviour
     {
         get => this.GetComponent<SortingGroup>();
     }
+
+
+
+
 
     public void SetSorting(string sortingLayer, int sortingOrder = 0)
     {
@@ -157,6 +162,50 @@ public class ActorInstance : MonoBehaviour
         // Default: no valid direction.
         return Direction.None;
     }
+
+    /// <summary>
+    /// Checks if there is any active actor within a given range in the specified cardinal direction.
+    /// </summary>
+    public bool HasAdjacent(Direction direction, int range)
+    {
+        for (int i = 1; i <= range; i++)
+        {
+            Vector2Int checkPos = location;
+            switch (direction)
+            {
+                case Direction.North: checkPos += new Vector2Int(0, -i); break;
+                case Direction.South: checkPos += new Vector2Int(0, i); break;
+                case Direction.East: checkPos += new Vector2Int(i, 0); break;
+                case Direction.West: checkPos += new Vector2Int(-i, 0); break;
+            }
+            if (actors.Any(actor => actor.isPlaying && actor.location == checkPos))
+                return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Checks if there is any active actor within a given range in the specified diagonal direction.
+    /// </summary>
+    public bool HasDiagonal(Direction direction, int range)
+    {
+        for (int i = 1; i <= range; i++)
+        {
+            Vector2Int checkPos = location;
+            switch (direction)
+            {
+                case Direction.NorthEast: checkPos += new Vector2Int(i, -i); break; 
+                case Direction.NorthWest: checkPos += new Vector2Int(-i, -i); break;
+                case Direction.SouthEast: checkPos += new Vector2Int(i, i); break;
+                case Direction.SouthWest: checkPos += new Vector2Int(-i, i); break;
+            }
+            if (actors.Any(actor => actor.isPlaying && actor.location == checkPos))
+                return true;
+        }
+        return false;
+    }
+
+
 
     // Awake: Initialization of the actor actors. Sets up modules and subscribes to events.
     private void Awake()

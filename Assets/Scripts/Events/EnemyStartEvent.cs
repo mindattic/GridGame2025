@@ -1,15 +1,14 @@
 ﻿using System.Collections;
-using Action = Assets.Scripts.Models.PhaseAction;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Events
 {
-    public class EnemyStartAction : Action
+    public class EnemyStartEvent : GameEvent
     {
        //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
-        protected ActionManager actionManager => GameManager.instance.actionManager;
+        protected EventManager eventManager => GameManager.instance.eventManager;
 
-        public EnemyStartAction()
+        public EnemyStartEvent()
         {
         }
 
@@ -22,7 +21,7 @@ namespace Assets.Scripts.Models
             // (Optional) Log or perform any setup needed at the very start of the enemy turn.
             //Debug.Log("EnemyStartAction executing: preparing enemy movement.");
 
-            actionManager.Add(new EnemyMoveAction());
+            eventManager.Add(new EnemyMoveEvent());
             turnManager.SetPhase(TurnPhase.Move);
 
             // Yield return null (or any brief wait) to allow the phase change to propagate.

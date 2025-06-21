@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public LogManager logManager;
     [HideInInspector] public DottedLineManager dottedLineManager;
     [HideInInspector] public ProjectileManager projectileManager;
-    [HideInInspector] public ActionManager actionManager;
+    [HideInInspector] public EventManager eventManager;
     [HideInInspector] public PincerAttackManager pincerAttackManager;
     [HideInInspector] public SortingManager sortingManager;
 
@@ -73,7 +73,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public float cursorFocus;
     [HideInInspector] public float swapFocus;
     [HideInInspector] public float moveFocus;
-    [HideInInspector] public float snapThreshold;
+    //[HideInInspector] public float snapThreshold;
     [HideInInspector] public float dragThreshold;
     [HideInInspector] public float bumpFocus;
 
@@ -126,7 +126,7 @@ public class GameManager : Singleton<GameManager>
         swapFocus = tileSize * 0.1666f;
         moveFocus = tileSize * 0.125f;
         bumpFocus = tileSize * 0.08f;
-        snapThreshold = tileSize * 0.125f * 1.01f;
+  
         dragThreshold = tileSize * 0.125f;
         ShakeIntensity.Initialize(tileSize);
 
@@ -181,7 +181,7 @@ public class GameManager : Singleton<GameManager>
         pauseManager = game.GetComponent<PauseManager>();
         dottedLineManager = game.GetComponent<DottedLineManager>();
         projectileManager = game.GetComponent<ProjectileManager>();
-        actionManager = game.GetComponent<ActionManager>();
+        eventManager = game.GetComponent<EventManager>();
         pincerAttackManager = game.GetComponent<PincerAttackManager>();
         sortingManager = game.GetComponent<SortingManager>();
 

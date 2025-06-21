@@ -101,10 +101,12 @@ namespace Game.Instances
 
         public IEnumerator Despawn()
         {
+            //Before:
             float startAlpha = maxAlpha;
             float targetAlpha = 0f;
             float elapsedTime = 0f;
 
+            //During:
             while (elapsedTime < fadeDuration)
             {
                 elapsedTime += Time.deltaTime;
@@ -113,8 +115,10 @@ namespace Game.Instances
                 yield return null;
             }
 
+            //After:
             alpha = 0f;
             SetAlpha(alpha);
+            StopAllCoroutines();
         }
 
         private void SetAlpha(float a)

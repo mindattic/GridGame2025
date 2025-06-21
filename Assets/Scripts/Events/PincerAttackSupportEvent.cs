@@ -1,15 +1,15 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
 
-namespace Assets.Scripts.Actions
+namespace Assets.Scripts.Events
 {
-    public class AttackSupportAction : PhaseAction
+    public class PincerAttackSupportEvent : GameEvent
     {
         private ActorInstance attacker;
         private ActorInstance supporter;
 
         // Single-constructor approach
-        public AttackSupportAction(ActorInstance attacker, ActorInstance supporter)
+        public PincerAttackSupportEvent(ActorInstance attacker, ActorInstance supporter)
         {
             this.attacker = attacker;
             this.supporter = supporter;

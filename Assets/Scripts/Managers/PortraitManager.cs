@@ -1,30 +1,25 @@
-using Assets.Scripts.Models;
-using Game.Behaviors.Actor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Intermission.Before;
+
 
 public class PortraitManager : MonoBehaviour
 {
-    //Quick Reference Properties
-    
+    // Quick Reference Properties
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;
     protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
     protected SortingManager sortingManager => GameManager.instance.sortingManager;
 
+    private List<PortraitInstance> portraits = new List<PortraitInstance>();
 
-    private Dictionary<ActorInstance, PortraitInstance> portraits = new Dictionary<ActorInstance, PortraitInstance>();
-
-    //Fields
+    // Fields
     private GameObject portraitPrefab;
     public ActorInstance actor;
     public int sortingOrder;
 
-   
     public void Awake()
     {
         portraitPrefab = PrefabRepo.Prefabs["PortraitPrefab"];
@@ -44,45 +39,45 @@ public class PortraitManager : MonoBehaviour
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<PortraitInstance>();
+        instance.actor = actor;
+        instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.sortingOrder = sortingOrder--;
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
-
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
-        instance.actor = actor;
-        instance.direction = direction;
         instance.startTime = Time.time;
 
+        portraits.Add(instance);
         yield return instance.SlideIn();
     }
 
-
-    public IEnumerator PopInOut(ActorInstance actor)
+    public IEnumerator PopInOut(ActorInstance actor, float scale = 0.1666f)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<PortraitInstance>();
+        instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
         instance.sortingOrder = sortingOrder--;
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
-
-        instance.transform.localScale = new Vector3(0.1666f, 0.1666f, 1);
+        instance.transform.localScale = new Vector3(scale, scale, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
-        instance.actor = actor;
         instance.startTime = Time.time;
 
+        portraits.Add(instance);
         yield return instance.PopInOut();
     }
 
-    public IEnumerator PopIn(ActorInstance actor)
+    public IEnumerator PopIn(ActorInstance actor, float scale = 0.1666f)
     {
-        // Clean up any existing
-        if (portraits.TryGetValue(actor, out var existing))
+        // Remove and destroy any existing portrait for this actor
+        var existing = portraits.FirstOrDefault(x => x != null && x.actor == actor);
+        if (existing != null)
         {
             Destroy(existing.gameObject);
-            portraits.Remove(actor);
+            portraits.Remove(existing);
         }
 
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
@@ -91,56 +86,50 @@ public class PortraitManager : MonoBehaviour
         instance.parent = board.transform;
         instance.sortingOrder = sortingOrder--;
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
-
-        instance.transform.localScale = new Vector3(0.1666f, 0.1666f, 1);
+        instance.transform.localScale = new Vector3(scale, scale, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
         instance.actor = actor;
         instance.startTime = Time.time;
 
-        portraits[actor] = instance;
-
+        portraits.Add(instance);
         yield return instance.PopIn();
     }
 
     public IEnumerator PopOut(ActorInstance actor)
     {
-        if (portraits.TryGetValue(actor, out var instance) && instance != null)
+        var instance = portraits.FirstOrDefault(x => x != null && x.actor == actor);
+        if (instance != null)
         {
             yield return instance.PopOut();
-            portraits.Remove(actor);
+            portraits.Remove(instance);
+            Destroy(instance.gameObject);
         }
         else
         {
-            // Nothing to pop out (already gone, or never popped in)
             yield break;
         }
     }
-
 
     public void Dissolve(ActorInstance actor)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<PortraitInstance>();
+        instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
-        //instance.sortingOrder = GameManager.instance.sortingManager.Max;
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
-
-        instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
+        instance.transform.localScale = new Vector3(0.25f, 0.25f, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
         instance.position = actor.position;
         instance.startPosition = actor.position;
-        instance.transform.localScale = new Vector3(0.25f, 0.25f, 1);
 
+        portraits.Add(instance);
         StartCoroutine(instance.Dissolve());
     }
 
-    public IEnumerator Play(ActorPair actorPair)
+    public IEnumerator SpawnPair(ActorPair actorPair)
     {
-        //sortingOrder = SortingOrder.Max;
         yield return Wait.For(Intermission.Before.Player.Attack);
-
-        //audioManager.Play("Portrait");
         audioManager.Play("Click");
 
         var (direction1, direction2) = GetDirection(actorPair);
@@ -152,21 +141,33 @@ public class PortraitManager : MonoBehaviour
         );
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
-        //sortingOrder = SortingOrder.Max;
     }
-
-
 
     private (Direction, Direction) GetDirection(ActorPair actorPair)
     {
         var first = actorPair.axis == Axis.Vertical ? Direction.North : Direction.West;
         var second = actorPair.axis == Axis.Vertical ? Direction.South : Direction.East;
-       
+
         return (actorPair.actor1 == actorPair.startActor ? first : second,
                 actorPair.actor2 == actorPair.startActor ? first : second);
+    }
+
+    public void Despawn(PortraitInstance portrait)
+    {
+        if (portrait != null && portraits.Contains(portrait))
+        {
+            portraits.Remove(portrait);
+            Destroy(portrait.gameObject);
+        }
     }
 
 
 
 
+
+
+
+
+
 }
+

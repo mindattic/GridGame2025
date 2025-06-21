@@ -33,16 +33,16 @@ public class StageSelectManager : MonoBehaviour
         //verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
         fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>() ?? throw new UnityException("FadeInstance is null");
 
-        //screenWidth = canvas2D.rect.width;
-        //screenHeight = canvas2D.rect.height;
+        //startX = canvas2D.rect.width;
+        //startY = canvas2D.rect.height;
 
-        //buttonWidth = 0.9f * screenWidth;
-        //buttonHeight = screenHeight / 16f;
+        //buttonWidth = 0.9f * startX;
+        //buttonHeight = startY / 16f;
 
         //header.fontSize = buttonHeight / 2;
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
 
-        //spacing = 0.01f * screenHeight;
+        //spacing = 0.01f * startY;
         //verticalLayoutGroup.spacing = spacing;
 
         foreach (var stage in StageRepo.Stages)

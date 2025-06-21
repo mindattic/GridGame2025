@@ -85,6 +85,5 @@ crashlytics-build.properties
 plastic.wktree
 hidden_changes.conf
 
-# Resource Data
-!Assets/Resources/Data/
-!Assets/Resources/Data/*.json
+#Manually ignored files
+/[Aa]ssets/[Ss]cripts/ExportedScripts.txt

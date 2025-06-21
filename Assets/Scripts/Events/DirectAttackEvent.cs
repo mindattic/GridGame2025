@@ -1,13 +1,11 @@
-﻿
-using Assets.Scripts.Utilities;
+﻿using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Events
 {
-    public class DirectAttackAction : PhaseAction
+    public class DirectAttackEvent : GameEvent
     {
         //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -16,7 +14,7 @@ namespace Assets.Scripts.Models
         protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
 
         //Constructor
-        public DirectAttackAction() { }
+        public DirectAttackEvent() { }
 
         public override IEnumerator Execute()
         {

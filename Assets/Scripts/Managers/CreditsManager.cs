@@ -22,12 +22,12 @@ public class CreditsManager : MonoBehaviour
         textarea = GameObject.Find(ComponentHelper.Credits.Textarea).GetComponent<RectTransform>();
         fade = GameObject.Find(ComponentHelper.Credits.Fade).GetComponent<FadeInstance>();
 
-        //var screenWidth = canvas2D.rect.width;
-        //var screenHeight = canvas2D.rect.height;
-        //var buttonWidth = 0.9f * screenWidth;
-        //var buttonHeight = screenHeight / 16f;
+        //var startX = canvas2D.rect.width;
+        //var startY = canvas2D.rect.height;
+        //var buttonWidth = 0.9f * startX;
+        //var buttonHeight = startY / 16f;
         //var fontSize = buttonHeight / 2;
-        //var rowSpacing = 0.01f * screenHeight;
+        //var rowSpacing = 0.01f * startY;
 
         //title.GetComponent<Label>().fontSize = fontSize;
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
@@ -40,7 +40,7 @@ public class CreditsManager : MonoBehaviour
             + $"<size=150%>Ryan DeBraal</size>{NL}{NL}"
             + $"<size=80%>Typography</size>{NL}"
             + $"<size=150%>Brian Willson</size> <size=50%>(Attic)</size>{NL}"
-            + $"<size=150%>Jonas Hecksher</size> <size=50%>(Play)</size>{NL}{NL}"
+            + $"<size=150%>Jonas Hecksher</size> <size=50%>(SpawnPair)</size>{NL}{NL}"
             + $"<size=80%>Visual Effects</size>{NL}"
             + $"<size=150%>Eric Wang</size>{NL}"
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"

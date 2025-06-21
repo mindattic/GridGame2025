@@ -3,6 +3,7 @@ using Game.Instances.Actor;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Intermission.Before;
 
 public class DottedLineInstance : MonoBehaviour
 {
@@ -163,6 +164,7 @@ public class DottedLineInstance : MonoBehaviour
 
     public void Despawn()
     {
+        StopAllCoroutines();
         dottedLineManager.Despawn(this);
     }
 }

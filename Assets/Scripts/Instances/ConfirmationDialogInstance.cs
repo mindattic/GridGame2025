@@ -47,7 +47,7 @@ public class ConfirmationDialogInstance : MonoBehaviour
         //Screen dimension references
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;
-        //float keySpacing = screenWidth * 0.0025f;
+        //float keySpacing = startX * 0.0025f;
         float keyWidth = screenWidth * 0.9f / 10;
         float keyHeight = keyWidth;
 
