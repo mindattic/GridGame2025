@@ -50,9 +50,8 @@ public class VFXInstance : MonoBehaviour
         if (vfx.Delay != 0f)
             yield return new WaitForSeconds(vfx.Delay);
 
-        //Execute the evt's routine
-        evt.SetContext(this);
-        yield return evt.Execute();
+        // Run AsyncEvent (if applicable)
+        yield return evt.Execute(this);
 
         // Wait until the VFX duration completes.
         if (vfx.Duration != 0f)

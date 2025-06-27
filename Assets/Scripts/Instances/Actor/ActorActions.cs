@@ -55,9 +55,6 @@ namespace Assets.Scripts.Instances.Actor
 
             if (evt == default)
                 evt = new AsyncEvent();
-            // Add intensity and duration attributes to the evt.
-            evt.SetAttribute("intensity", intensity);
-            evt.SetAttribute("duration", duration);
 
             // Start the Shake coroutine.
             instance.StartCoroutine(Shake(evt));
@@ -73,8 +70,9 @@ namespace Assets.Scripts.Instances.Actor
                 evt = new AsyncEvent();
 
             // Retrieve intensity and duration from the evt.
-            float intensity = (float)evt.GetAttribute("intensity", 0f);
-            float duration = (float)evt.GetAttribute("duration", 0f);
+            float intensity = ShakeIntensity.Low;
+            float duration = 1f;
+
             // Repositories the original position of the actor's CurrentProfile tile.
             var originalPosition = instance.currentTile.position;
             float elapsedTime = 0f;
@@ -105,8 +103,7 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             // Optionally evt any additional behavior via the evt.
-            evt.SetContext(instance);
-            yield return evt.Execute();
+            yield return evt.Execute(instance);
 
             // After shaking, restore the thumbnail's position to its original location.
             instance.thumbnailPosition = originalPosition;
@@ -194,9 +191,8 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally run any evt-related coroutine after dodge.
-            evt.SetContext(instance);
-            yield return evt.Execute();
+            // Run AsyncEvent (if applicable)
+            yield return evt.Execute(instance);
 
             // Reset the actor's scale and rotation.
             scale = tileScale;
@@ -270,8 +266,7 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             // Optionally run any evt coroutine.
-            evt.SetContext(instance);
-            yield return evt.Execute();
+            yield return evt.Execute(instance);
 
             // Phase 3: Return - smoothly return to the starting position and reset rotation.
             elapsedTime = 0f;
@@ -299,9 +294,6 @@ namespace Assets.Scripts.Instances.Actor
             if (evt == default)
                 evt = new AsyncEvent();
 
-            if (maxSize != 0f)
-                evt.SetAttribute("maxSize", maxSize);
-
             if (instance.isActive)
                 instance.StartCoroutine(Grow(evt));
         }
@@ -315,7 +307,7 @@ namespace Assets.Scripts.Instances.Actor
                 evt = new AsyncEvent();
 
             // Before: determine target max size (default is 110% of tile size) and initial scale.
-            float maxSize = (float)evt.GetAttribute("maxSize", tileSize * 1.1f);
+            float maxSize = tileSize * 1.1f;
             float minSize = scale.x;
             float increment = tileSize * 0.01f;
             float size = minSize;
@@ -331,8 +323,7 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             // Optionally run any evt-related coroutine.
-            evt.SetContext(instance);
-            yield return evt.Execute();
+            yield return evt.Execute(instance);
 
             // After: Assign the scale exactly to max size.
             scale = new Vector3(maxSize, maxSize, 0);
@@ -345,9 +336,6 @@ namespace Assets.Scripts.Instances.Actor
         {
             if (evt == default)
                 evt = new AsyncEvent();
-
-            if (minSize != 0f)
-                evt.SetAttribute("minSize", minSize);
 
             if (instance.isActive)
                 instance.StartCoroutine(Shrink(evt));
@@ -362,7 +350,7 @@ namespace Assets.Scripts.Instances.Actor
                 evt = new AsyncEvent();
 
             // Before: determine target minimum size (default is tileSize) and CurrentProfile scale.
-            float minSize = (float)evt.GetAttribute("minSize", tileSize);
+            float minSize = tileSize;
             float maxSize = scale.x;
             float increment = tileSize * 0.01f;
             float size = maxSize;
@@ -377,9 +365,8 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally run any evt coroutine.
-            evt.SetContext(instance);
-            yield return evt.Execute();
+            // Run AsyncEvent (if applicable)
+            yield return evt.Execute(instance);
 
             // After: Ensure the scale is set exactly to the minimum size.
             scale = new Vector3(minSize, minSize, 0);
@@ -421,8 +408,8 @@ namespace Assets.Scripts.Instances.Actor
                 if (!evt.HasExecuted && rotY >= 90f)
                 {
                     rotY = 90f;
-                    evt.SetContext(instance);
-                    yield return evt.Execute();
+                    // Run AsyncEvent (if applicable)
+                    yield return evt.Execute(instance);
                 }
 
                 isDone = evt.HasExecuted && rotY <= 0f;
@@ -474,8 +461,8 @@ namespace Assets.Scripts.Instances.Actor
                 // AsyncEvent the event after 240 degrees have been rotated.
                 if (!evt.HasExecuted && rotY >= 240f)
                 {
-                    evt.SetContext(instance);
-                    yield return evt.Execute();
+                    // Run AsyncEvent (if applicable)
+                    yield return evt.Execute(instance);
                 }
 
                 isDone = rotY >= 360f;
@@ -497,9 +484,6 @@ namespace Assets.Scripts.Instances.Actor
             if (evt == default)
                 evt = new AsyncEvent();
 
-            if (delay != 0f)
-                evt.SetAttribute("waitDuration", delay);
-
             instance.StartCoroutine(FadeIn(evt));
         }
 
@@ -512,8 +496,8 @@ namespace Assets.Scripts.Instances.Actor
                 evt = new AsyncEvent();
 
             // Before: Retrieve delay and increment values from evt attributes.
-            float delay = (float)evt.GetAttribute("waitDuration", 0f);
-            float increment = (float)evt.GetAttribute("increment", 0.05f);
+            float delay = 0f;
+            float increment = 0.05f;
             float alpha = 0;
             render.SetAlpha(alpha);
 
@@ -529,9 +513,8 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally evt further actions.
-            evt.SetContext(instance);
-            yield return evt.Execute();
+            // Run AsyncEvent (if applicable)
+            yield return evt.Execute(instance);
 
             // After: Ensure alpha is fully set.
             alpha = 1;
@@ -575,9 +558,8 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally execute any evt coroutine.
-            evt.SetContext(instance);
-            yield return evt.Execute();
+            // Run AsyncEvent (if applicable)
+            yield return evt.Execute(instance);
 
             // After: Reset the weapon icon rotation.
             rotZ = start;
@@ -634,9 +616,8 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally evt any additional actions.
-            evt.SetContext(instance);
-            yield return evt.Execute();
+            // Run AsyncEvent (if applicable)
+            yield return evt.Execute(instance);
 
             // After: Ensure the turn delay textarea rotation is reset.
             render.turnDelayText.transform.rotation = Quaternion.Euler(0, 0, 0);

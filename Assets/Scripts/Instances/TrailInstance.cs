@@ -55,9 +55,8 @@ public class TrailInstance : MonoBehaviour
         if (trail.Delay != 0f)
             yield return new WaitForSeconds(trail.Delay);
 
-        //AsyncEvent coroutine (if applicable)
-        evt.SetContext(this);
-        yield return evt.Execute();
+        // Run AsyncEvent (if applicable)
+        yield return evt.Execute(this);
 
         //Wait until VFX duration completes
         if (trail.Duration != 0f)
