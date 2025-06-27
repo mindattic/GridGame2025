@@ -43,7 +43,6 @@ public class PortraitManager : MonoBehaviour
         instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
-        instance.sortingOrder = sortingOrder--;
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
@@ -60,7 +59,7 @@ public class PortraitManager : MonoBehaviour
         instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
-        instance.sortingOrder = sortingOrder--;
+        sortingManager.OnPortraitPopIn(instance);
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
         instance.transform.localScale = new Vector3(scale, scale, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
@@ -84,7 +83,7 @@ public class PortraitManager : MonoBehaviour
         var instance = prefab.GetComponent<PortraitInstance>();
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = board.transform;
-        instance.sortingOrder = sortingOrder--;
+        sortingManager.OnPortraitPopIn(instance);
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
         instance.transform.localScale = new Vector3(scale, scale, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
@@ -101,8 +100,8 @@ public class PortraitManager : MonoBehaviour
         if (instance != null)
         {
             yield return instance.PopOut();
-            portraits.Remove(instance);
-            Destroy(instance.gameObject);
+            //portraits.Remove(instance);
+            //Destroy(instance.gameObject);
         }
         else
         {

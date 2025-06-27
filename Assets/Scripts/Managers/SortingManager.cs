@@ -36,6 +36,8 @@ public class SortingManager : MonoBehaviour
         public const string VFX = "VFX";
         public const string Coin = "Coin";
         public const string DamageText = "DamageText";
+        public const string PortraitPopIn = "PortraitPopIn";
+        public const string Portrait = "Portrait";
     }
 
 
@@ -130,6 +132,11 @@ public class SortingManager : MonoBehaviour
                 x.SetSorting(SortingLayer.ActorAbove, SortingOrder.Supporter);
         }
 
+    }
+
+    public void OnPortraitPopIn(PortraitInstance portrait)
+    {
+        portrait.SetSorting(SortingLayer.PortraitPopIn, SortingOrder.Max);
     }
 
     //// Called when a pincer attack ends

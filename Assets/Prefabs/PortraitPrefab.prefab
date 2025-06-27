@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8302434056980343318}
   - component: {fileID: -8534692437993122614}
   - component: {fileID: 8519144795392396887}
-  m_Layer: 6
+  m_Layer: 12
   m_Name: PortraitPrefab
   m_TagString: Portrait
   m_Icon: {fileID: 0}
@@ -148,7 +148,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   spriteRenderer: {fileID: 0}
   actor: {fileID: 0}
-  slideFinished: 0
 --- !u!210 &8519144795392396887
 SortingGroup:
   m_ObjectHideFlags: 0

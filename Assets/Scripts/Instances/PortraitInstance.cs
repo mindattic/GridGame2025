@@ -1,6 +1,7 @@
 using Game.Behaviors.Actor;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static ComponentHelper.Game;
 
 public class PortraitInstance : MonoBehaviour
@@ -28,9 +29,17 @@ public class PortraitInstance : MonoBehaviour
         get => spriteRenderer?.sprite;
         set { if (spriteRenderer != null) spriteRenderer.sprite = value; }
     }
-    public int sortingOrder
+
+
+    public SortingGroup sortingGroup
     {
-        set { if (spriteRenderer != null) spriteRenderer.sortingOrder = value; }
+        get => this.GetComponent<SortingGroup>();
+    }
+
+    public void SetSorting(string sortingLayer, int sortingOrder = 0)
+    {
+        sortingGroup.sortingLayerID = SortingLayer.NameToID(sortingLayer);
+        sortingGroup.sortingOrder = sortingOrder;
     }
 
     [SerializeField] public Direction direction;
@@ -197,6 +206,7 @@ public class PortraitInstance : MonoBehaviour
         if (isBeingDestroyed || spriteRenderer == null)
             yield break;
 
+        
         Transform front = actor.render.front.transform;
         Vector3 originalFrontPos = front.position;
         float yOffset = -GameManager.instance.tileSize * 0.33f; // Lowered by 33%

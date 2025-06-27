@@ -191,7 +191,6 @@ public class PincerAttackManager : MonoBehaviour
         // --- 2. Queue: PopInOut for all supporters
         foreach (var supporter in allSupporters)
         {
-
             eventManager.Add(new PortraitPopInEvent(supporter));
         }
 
@@ -214,7 +213,13 @@ public class PincerAttackManager : MonoBehaviour
         foreach (var pair in participants.pair)
         {
             pair.results = ChainAttacks(pair.attacker1, participants.pair);
+
+            //eventManager.Add(new PortraitPopInEvent(pair.attacker1));
+            //eventManager.Add(new PortraitPopInEvent(pair.attacker2));
             eventManager.Add(new PincerAttackEvent(pair));
+            //eventManager.Add(new PortraitPopOutEvent(pair.attacker1));
+            //eventManager.Add(new PortraitPopOutEvent(pair.attacker2));
+
         }
 
         // --- 5. Queue: PopOut for all supporters (after attack)
@@ -227,7 +232,7 @@ public class PincerAttackManager : MonoBehaviour
 
         yield return eventManager.Execute();
         yield return boardOverlay.FadeOut();
-
+        
         participants.Clear();
         turnManager.NextTurn();
     }

@@ -14,6 +14,7 @@ namespace Assets.Scripts.Events
         protected List<ActorInstance> actors = GameManager.instance.actors;
         protected PortraitManager portraitManager = GameManager.instance.portraitManager;
         protected SortingManager sortingManager = GameManager.instance.sortingManager;
+        protected EventManager eventManager => GameManager.instance.eventManager;
 
         //Fields
         private PincerAttackPair pair;
@@ -29,6 +30,9 @@ namespace Assets.Scripts.Events
             //If no results were computed, exit early.
             if (pair.results == null || !pair.results.Any())
                 yield break;
+
+            //eventManager.Add(new PortraitPopInEvent(pair.attacker1));
+            //eventManager.Add(new PortraitPopInEvent(pair.attacker2));
 
             var actorPair = new ActorPair(pair.attacker1, pair.attacker2);
             yield return portraitManager.SpawnPair(actorPair);
@@ -69,6 +73,10 @@ namespace Assets.Scripts.Events
                 //Short delay to create the domino effect.
                 yield return Wait.For(Interval.QuarterSecond);
             }
+
+            //eventManager.Add(new PortraitPopOutEvent(pair.attacker1));
+            //eventManager.Add(new PortraitPopOutEvent(pair.attacker2));
+
         }
 
         //private IEnumerator ProcessDeaths()
