@@ -227,7 +227,7 @@ public class ProjectileInstance : MonoBehaviour
         trailInstance.SetActive(false); //Hide trail until end
 
         VisualEffectAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];
-        yield return vfxManager.Spawn(vfxResource, projectile.target.position, projectile.trigger);
+        yield return vfxManager.Spawn(vfxResource, projectile.target.position, projectile.evt);
     }
 
 

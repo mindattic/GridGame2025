@@ -121,6 +121,7 @@
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Models\TrailEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
+    <Compile Include="Assets\Scripts\Models\AwaitEvent.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
@@ -128,7 +129,6 @@
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
     <Compile Include="Assets\Scripts\Repository\ProfileRepo.cs" />
-    <Compile Include="Assets\Scripts\Events\GameEvent.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
@@ -147,7 +147,6 @@
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
-    <Compile Include="Assets\Scripts\Models\Trigger.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Repository\TutorialRepo.cs" />
@@ -195,6 +194,7 @@
     <Compile Include="Assets\Scripts\Events\FireProjectileEvent.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
+    <Compile Include="Assets\Scripts\Models\AsyncEvent.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleInstance.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />

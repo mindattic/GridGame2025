@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class FireProjectileEvent : GameEvent
+    public class FireProjectileEvent : AwaitEvent
     {
        //Quick Reference Properties
         protected ProjectileManager projectileManager => GameManager.instance.projectileManager;

@@ -30,7 +30,7 @@ public class SwingingLogo : MonoBehaviour
     //    noiseOffset = Random.Float(0f, 100f);
     //    currentYRotation = 0f;
     //    GenerateRotationBuffer();
-    //    StartCoroutine(SwingWindow());
+    //    Execute(SwingWindow());
     //}
 
     //private void GenerateRotationBuffer()

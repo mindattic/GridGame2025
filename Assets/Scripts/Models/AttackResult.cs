@@ -26,14 +26,14 @@ namespace Assets.Scripts.Models
 
     //public class AttackResultTriggers
     //{
-    //   public AttackResultTriggers(Trigger before = default, Trigger after = default)
+    //   public AttackResultTriggers(AsyncEvent before = default, AsyncEvent after = default)
     //   {
     //       Before = before;
     //       After = after;
     //   }
 
-    //   public Trigger Before = default;
-    //   public Trigger After = default;
+    //   public AsyncEvent Before = default;
+    //   public AsyncEvent After = default;
     //}
 
 

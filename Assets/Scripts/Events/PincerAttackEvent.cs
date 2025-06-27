@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Events
 {
-    //GameEvent for processing a single attacking PincerAttackPair
-    public class PincerAttackEvent : GameEvent
+    //AwaitEvent for processing a single attacking PincerAttackPair
+    public class PincerAttackEvent : AwaitEvent
     {
         //Quick Reference Properties
 
@@ -54,10 +54,10 @@ namespace Assets.Scripts.Events
             var bumpDirection = pair.attacker1.GetDirectionTo(firstOpponent);
 
             //Perform bump and execute results at the apex
-            var trigger = new Trigger(ProcessAttackSequence());
-            yield return pair.attacker1.action.Bump(bumpDirection, trigger);
+            var evt = new AsyncEvent(ProcessAttackSequence());
+            yield return pair.attacker1.action.Bump(bumpDirection, evt);
 
-            //Trigger death animations on any opponents killed in last attack sequence
+            //AsyncEvent death animations on any opponents killed in last attack sequence
             yield return DeathHelper.Process();
         }
 
@@ -67,7 +67,7 @@ namespace Assets.Scripts.Events
             {
                 var attacker = pair.attacker1;
 
-                //Trigger the result asynchronously (fire and forget).
+                //AsyncEvent the result asynchronously (fire and forget).
                 attacker.TriggerAttack(result);
 
                 //Short delay to create the domino effect.

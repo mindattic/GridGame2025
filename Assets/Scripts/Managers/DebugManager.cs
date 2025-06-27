@@ -277,8 +277,8 @@ public class DebugManager : MonoBehaviour
         }
 
         var vfx = VisualEffectRepo.VisualEffects["BlueSlash1"];
-        var trigger = new Trigger(hero1.TakeDamage(attack));
-        vfxManager.TriggerSpawn(vfx, hero1.position, trigger);
+        var evt = new AsyncEvent(hero1.TakeDamage(attack));
+        vfxManager.TriggerSpawn(vfx, hero1.position, evt);
     }
 
     public void VFXTest_BlueSlash2()
@@ -541,9 +541,9 @@ public class DebugManager : MonoBehaviour
 
             yield return true;
         }
-        var trigger = new Trigger(spawnTenCoins());
+        var evt = new AsyncEvent(spawnTenCoins());
 
-        vfxManager.TriggerSpawn(vfx, hero1.position, trigger);
+        vfxManager.TriggerSpawn(vfx, hero1.position, evt);
     }
 
     public void SpawnSlime()

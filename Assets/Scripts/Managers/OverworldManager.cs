@@ -151,7 +151,7 @@ public class OverworldManager : MonoBehaviour
 
     //public void CenterOnPosition(Vector2 targetLocalPosition, float speed = 2f, float snapThreshold = 0.001f)
     //{
-    //    StartCoroutine(SmoothCentering(targetLocalPosition, speed, snapThreshold));
+    //    Execute(SmoothCentering(targetLocalPosition, speed, snapThreshold));
     //}
 
     //private IEnumerator SmoothCentering(Vector2 targetLocalPosition, float speed, float snapThreshold)

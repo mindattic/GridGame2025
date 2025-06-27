@@ -45,7 +45,7 @@ public class BackgroundInstance : MonoBehaviour
         amplitude = new Vector2(padding.x, padding.y);
         speed = new Vector2(0.2f, 0.2f);
 
-        //StartCoroutine(MoveToRandomPositions());
+        //Execute(MoveToRandomPositions());
 
     }
 

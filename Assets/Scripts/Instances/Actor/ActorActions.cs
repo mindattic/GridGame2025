@@ -46,35 +46,35 @@ namespace Assets.Scripts.Instances.Actor
 
         /// <summary>
         /// Triggers a shake animation on the actor's thumbnail.
-        /// A Trigger parameter can specify intensity and duration.
+        /// A AsyncEvent parameter can specify intensity and duration.
         /// </summary>
-        public void TriggerShake(float intensity, float duration = 0, Trigger trigger = default)
+        public void TriggerShake(float intensity, float duration = 0, AsyncEvent evt = default)
         {
             if (!isActive || !isAlive)
                 return;
 
-            if (trigger == default)
-                trigger = new Trigger();
-            // Add intensity and duration attributes to the trigger.
-            trigger.SetAttribute("intensity", intensity);
-            trigger.SetAttribute("duration", duration);
+            if (evt == default)
+                evt = new AsyncEvent();
+            // Add intensity and duration attributes to the evt.
+            evt.SetAttribute("intensity", intensity);
+            evt.SetAttribute("duration", duration);
 
             // Start the Shake coroutine.
-            instance.StartCoroutine(Shake(trigger));
+            instance.StartCoroutine(Shake(evt));
         }
 
         /// <summary>
         /// Shake coroutine: Applies a randomized positional offset to the actor's thumbnail
         /// to simulate a shaking effect.
         /// </summary>
-        private IEnumerator Shake(Trigger trigger = default)
+        private IEnumerator Shake(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
-            // Retrieve intensity and duration from the trigger.
-            float intensity = (float)trigger.GetAttribute("intensity", 0f);
-            float duration = (float)trigger.GetAttribute("duration", 0f);
+            // Retrieve intensity and duration from the evt.
+            float intensity = (float)evt.GetAttribute("intensity", 0f);
+            float duration = (float)evt.GetAttribute("duration", 0f);
             // Repositories the original position of the actor's CurrentProfile tile.
             var originalPosition = instance.currentTile.position;
             float elapsedTime = 0f;
@@ -104,9 +104,9 @@ namespace Assets.Scripts.Instances.Actor
                     elapsedTime += Interval.OneTick;
             }
 
-            // Optionally trigger any additional behavior via the trigger.
-            trigger.SetContext(instance);
-            yield return trigger.StartCoroutine();
+            // Optionally evt any additional behavior via the evt.
+            evt.SetContext(instance);
+            yield return evt.Execute();
 
             // After shaking, restore the thumbnail's position to its original location.
             instance.thumbnailPosition = originalPosition;
@@ -115,26 +115,26 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers the dodge animation.
         /// </summary>
-        public void TriggerDodge(Trigger trigger = default)
+        public void TriggerDodge(AsyncEvent evt = default)
         {
             if (!isActive || !isAlive)
                 return;
 
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Start the Dodge coroutine.
-            instance.StartCoroutine(Dodge(trigger));
+            instance.StartCoroutine(Dodge(evt));
         }
 
         /// <summary>
         /// Dodge coroutine: Executes a two-phase dodge animation where the actor twists forward
         /// then returns to the original orientation and scale.
         /// </summary>
-        public IEnumerator Dodge(Trigger trigger = default)
+        public IEnumerator Dodge(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Define animation curves for rotation and scaling.
             var rotationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
@@ -194,9 +194,9 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally run any trigger-related coroutine after dodge.
-            trigger.SetContext(instance);
-            yield return trigger.StartCoroutine();
+            // Optionally run any evt-related coroutine after dodge.
+            evt.SetContext(instance);
+            yield return evt.Execute();
 
             // Reset the actor's scale and rotation.
             scale = tileScale;
@@ -206,25 +206,25 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a bump animation in the given direction.
         /// </summary>
-        public void TriggerBump(Direction direction, Trigger trigger = default)
+        public void TriggerBump(Direction direction, AsyncEvent evt = default)
         {
             if (!isActive || !isAlive)
                 return;
 
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
-            instance.StartCoroutine(Bump(direction, trigger));
+            instance.StartCoroutine(Bump(direction, evt));
         }
 
         /// <summary>
         /// Bump coroutine: Simulates a bump by moving the actor slightly backward (windup),
         /// then forward with a rotation, and finally returning to the original position.
         /// </summary>
-        public IEnumerator Bump(Direction direction, Trigger trigger = default)
+        public IEnumerator Bump(Direction direction, AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Define easing curves for each phase.
             var windupCurve = AnimationCurve.EaseInOut(0, 0, 0.5f, 1); // For windup phase.
@@ -269,9 +269,9 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally run any trigger coroutine.
-            trigger.SetContext(instance);
-            yield return trigger.StartCoroutine();
+            // Optionally run any evt coroutine.
+            evt.SetContext(instance);
+            yield return evt.Execute();
 
             // Phase 3: Return - smoothly return to the starting position and reset rotation.
             elapsedTime = 0f;
@@ -294,28 +294,28 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a growth animation, increasing the actor's scale up to a maximum size.
         /// </summary>
-        public void TriggerGrow(float maxSize = 0f, Trigger trigger = default)
+        public void TriggerGrow(float maxSize = 0f, AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             if (maxSize != 0f)
-                trigger.SetAttribute("maxSize", maxSize);
+                evt.SetAttribute("maxSize", maxSize);
 
             if (instance.isActive)
-                instance.StartCoroutine(Grow(trigger));
+                instance.StartCoroutine(Grow(evt));
         }
 
         /// <summary>
         /// Grow coroutine: Increases the actor's scale gradually until a specified maximum size is reached.
         /// </summary>
-        public IEnumerator Grow(Trigger trigger = default)
+        public IEnumerator Grow(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Before: determine target max size (default is 110% of tile size) and initial scale.
-            float maxSize = (float)trigger.GetAttribute("maxSize", tileSize * 1.1f);
+            float maxSize = (float)evt.GetAttribute("maxSize", tileSize * 1.1f);
             float minSize = scale.x;
             float increment = tileSize * 0.01f;
             float size = minSize;
@@ -330,9 +330,9 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally run any trigger-related coroutine.
-            trigger.SetContext(instance);
-            yield return trigger.StartCoroutine();
+            // Optionally run any evt-related coroutine.
+            evt.SetContext(instance);
+            yield return evt.Execute();
 
             // After: Assign the scale exactly to max size.
             scale = new Vector3(maxSize, maxSize, 0);
@@ -341,28 +341,28 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a shrink animation, decreasing the actor's scale down to a minimum size.
         /// </summary>
-        public void TriggerShrink(float minSize = 0f, Trigger trigger = default)
+        public void TriggerShrink(float minSize = 0f, AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             if (minSize != 0f)
-                trigger.SetAttribute("minSize", minSize);
+                evt.SetAttribute("minSize", minSize);
 
             if (instance.isActive)
-                instance.StartCoroutine(Shrink(trigger));
+                instance.StartCoroutine(Shrink(evt));
         }
 
         /// <summary>
         /// Shrink coroutine: Decreases the actor's scale gradually until a specified minimum size is reached.
         /// </summary>
-        public IEnumerator Shrink(Trigger trigger = default)
+        public IEnumerator Shrink(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Before: determine target minimum size (default is tileSize) and CurrentProfile scale.
-            float minSize = (float)trigger.GetAttribute("minSize", tileSize);
+            float minSize = (float)evt.GetAttribute("minSize", tileSize);
             float maxSize = scale.x;
             float increment = tileSize * 0.01f;
             float size = maxSize;
@@ -377,9 +377,9 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally run any trigger coroutine.
-            trigger.SetContext(instance);
-            yield return trigger.StartCoroutine();
+            // Optionally run any evt coroutine.
+            evt.SetContext(instance);
+            yield return evt.Execute();
 
             // After: Ensure the scale is set exactly to the minimum size.
             scale = new Vector3(minSize, minSize, 0);
@@ -388,24 +388,24 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a 90-degree spin animation.
         /// </summary>
-        public void TriggerSpin90(Trigger trigger = default)
+        public void TriggerSpin90(AsyncEvent evt = default)
         {
             if (!isActive || !isAlive)
                 return;
 
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
-            instance.StartCoroutine(Spin90(trigger));
+            instance.StartCoroutine(Spin90(evt));
         }
 
         /// <summary>
         /// Spin90 coroutine: Rotates the actor 90 degrees around the Y-axis and then reverses the rotation.
         /// </summary>
-        private IEnumerator Spin90(Trigger trigger = default)
+        private IEnumerator Spin90(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Before: Assign variables for rotation.
             bool isDone = false;
@@ -416,16 +416,16 @@ namespace Assets.Scripts.Instances.Actor
             // During: Rotate until reaching 90 degrees, then reverse until back at 0.
             while (!isDone)
             {
-                rotY += !trigger.HasTriggered ? spinFocus : -spinFocus;
+                rotY += !evt.HasExecuted ? spinFocus : -spinFocus;
 
-                if (!trigger.HasTriggered && rotY >= 90f)
+                if (!evt.HasExecuted && rotY >= 90f)
                 {
                     rotY = 90f;
-                    trigger.SetContext(instance);
-                    yield return trigger.StartCoroutine();
+                    evt.SetContext(instance);
+                    yield return evt.Execute();
                 }
 
-                isDone = trigger.HasTriggered && rotY <= 0f;
+                isDone = evt.HasExecuted && rotY <= 0f;
                 if (isDone)
                     rotY = 0f;
 
@@ -440,24 +440,24 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a 360-degree spin animation.
         /// </summary>
-        public void TriggerSpin360(Trigger trigger = default)
+        public void TriggerSpin360(AsyncEvent evt = default)
         {
             if (!isActive || !isAlive)
                 return;
 
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
-            instance.StartCoroutine(Spin360(trigger));
+            instance.StartCoroutine(Spin360(evt));
         }
 
         /// <summary>
         /// Spin360 coroutine: Rotates the actor 360 degrees around the Y-axis.
         /// </summary>
-        private IEnumerator Spin360(Trigger trigger = default)
+        private IEnumerator Spin360(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Before: Assign rotation variables.
             bool isDone = false;
@@ -471,11 +471,11 @@ namespace Assets.Scripts.Instances.Actor
                 rotY += speed;
                 rotation = Geometry.Rotation(0, rotY, 0);
 
-                // Trigger the event after 240 degrees have been rotated.
-                if (!trigger.HasTriggered && rotY >= 240f)
+                // AsyncEvent the event after 240 degrees have been rotated.
+                if (!evt.HasExecuted && rotY >= 240f)
                 {
-                    trigger.SetContext(instance);
-                    yield return trigger.StartCoroutine();
+                    evt.SetContext(instance);
+                    yield return evt.Execute();
                 }
 
                 isDone = rotY >= 360f;
@@ -489,31 +489,31 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a fade-in animation by gradually increasing the actor's render alpha.
         /// </summary>
-        public void TriggerFadeIn(float delay = 0f, Trigger trigger = default)
+        public void TriggerFadeIn(float delay = 0f, AsyncEvent evt = default)
         {
             if (!isActive || !isAlive)
                 return;
 
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             if (delay != 0f)
-                trigger.SetAttribute("waitDuration", delay);
+                evt.SetAttribute("waitDuration", delay);
 
-            instance.StartCoroutine(FadeIn(trigger));
+            instance.StartCoroutine(FadeIn(evt));
         }
 
         /// <summary>
         /// FadeIn coroutine: Gradually increases the alpha value of the actor's render until fully opaque.
         /// </summary>
-        private IEnumerator FadeIn(Trigger trigger = default)
+        private IEnumerator FadeIn(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
-            // Before: Retrieve delay and increment values from trigger attributes.
-            float delay = (float)trigger.GetAttribute("waitDuration", 0f);
-            float increment = (float)trigger.GetAttribute("increment", 0.05f);
+            // Before: Retrieve delay and increment values from evt attributes.
+            float delay = (float)evt.GetAttribute("waitDuration", 0f);
+            float increment = (float)evt.GetAttribute("increment", 0.05f);
             float alpha = 0;
             render.SetAlpha(alpha);
 
@@ -529,9 +529,9 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally trigger further actions.
-            trigger.SetContext(instance);
-            yield return trigger.StartCoroutine();
+            // Optionally evt further actions.
+            evt.SetContext(instance);
+            yield return evt.Execute();
 
             // After: Ensure alpha is fully set.
             alpha = 1;
@@ -541,25 +541,25 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a weapon wiggle animation when the actor's action points are full.
         /// </summary>
-        public void TriggerWeaponWiggle(Trigger trigger = default)
+        public void TriggerWeaponWiggle(AsyncEvent evt = default)
         {
-            // Only trigger wiggle if AP is full.
+            // Only evt wiggle if AP is full.
             if (stats.AP < stats.MaxAP || !isActive || !isAlive)
                 return;
 
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
-            instance.StartCoroutine(WeaponWiggle(trigger));
+            instance.StartCoroutine(WeaponWiggle(evt));
         }
 
         /// <summary>
         /// WeaponWiggle coroutine: Makes the weapon icon oscillate based on a sine wave function.
         /// </summary>
-        private IEnumerator WeaponWiggle(Trigger trigger = default)
+        private IEnumerator WeaponWiggle(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Before: Assign the initial rotation for the weapon icon.
             float start = -45f;
@@ -575,9 +575,9 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally execute any trigger coroutine.
-            trigger.SetContext(instance);
-            yield return trigger.StartCoroutine();
+            // Optionally execute any evt coroutine.
+            evt.SetContext(instance);
+            yield return evt.Execute();
 
             // After: Reset the weapon icon rotation.
             rotZ = start;
@@ -587,25 +587,25 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a wiggle animation on the turn delay textarea to indicate a delay before the actor's turn.
         /// </summary>
-        public void TriggerTurnDelayWiggle(Trigger trigger = default)
+        public void TriggerTurnDelayWiggle(AsyncEvent evt = default)
         {
             if (!isActive || !isAlive)
                 return;
 
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
-            instance.StartCoroutine(TurnDelayWiggle(trigger));
+            instance.StartCoroutine(TurnDelayWiggle(evt));
         }
 
         /// <summary>
         /// TurnDelayWiggle coroutine: Oscillates the turn delay textarea with damping,
         /// then smoothly returns it to its original orientation.
         /// </summary>
-        private IEnumerator TurnDelayWiggle(Trigger trigger = default)
+        private IEnumerator TurnDelayWiggle(AsyncEvent evt = default)
         {
-            if (trigger == default)
-                trigger = new Trigger();
+            if (evt == default)
+                evt = new AsyncEvent();
 
             // Before: Assign variables for oscillation.
             float timeElapsed = 0f;
@@ -634,9 +634,9 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Optionally trigger any additional actions.
-            trigger.SetContext(instance);
-            yield return trigger.StartCoroutine();
+            // Optionally evt any additional actions.
+            evt.SetContext(instance);
+            yield return evt.Execute();
 
             // After: Ensure the turn delay textarea rotation is reset.
             render.turnDelayText.transform.rotation = Quaternion.Euler(0, 0, 0);

@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Models;
+using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class EnemyStartEvent : GameEvent
+    public class EnemyStartEvent : AwaitEvent
     {
        //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;

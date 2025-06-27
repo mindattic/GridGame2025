@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Models;
+using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class PortraitPopInEvent : GameEvent
+    public class PortraitPopInEvent : AwaitEvent
     {
         private PortraitManager portraitManager => GameManager.instance.portraitManager;
 

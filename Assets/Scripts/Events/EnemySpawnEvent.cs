@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Assets.Scripts.Events
 {
-    public class EnemySpawnEvent : GameEvent
+    public class EnemySpawnEvent : AwaitEvent
     {
         //Quick Reference Properties
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;

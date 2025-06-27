@@ -10,14 +10,14 @@ public class EventManager : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
 
     //Fields
-    private QueueCollection<GameEvent> queue = new QueueCollection<GameEvent>();
+    private QueueCollection<AwaitEvent> queue = new QueueCollection<AwaitEvent>();
 
-    public void Add(GameEvent e)
+    public void Add(AwaitEvent e)
     {
         queue.Add(e);
     }
 
-    public void Insert(GameEvent e)
+    public void Insert(AwaitEvent e)
     {
         queue.Insert(e);
     }

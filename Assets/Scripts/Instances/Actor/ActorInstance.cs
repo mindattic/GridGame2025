@@ -287,7 +287,7 @@ public class ActorInstance : MonoBehaviour
         {
             gameObject.SetActive(true);
             flags.HasSpawned = true;
-            // Trigger fade-in and spin animations for visual feedback.
+            // AsyncEvent fade-in and spin animations for visual feedback.
             action.TriggerFadeIn();
             action.TriggerSpin360();
         }
@@ -310,11 +310,11 @@ public class ActorInstance : MonoBehaviour
             ? attack.Opponent.TakeDamage(attack)
             : attack.Opponent.AttackMiss();
 
-        //Create the trigger with asynchronous execution.
-        var trigger = new Trigger(hitOrMiss, isAsync: true);
+        //Create the evt with asynchronous execution.
+        var evt = new AsyncEvent(hitOrMiss);
 
         // Assign the attack visual effect at the opponent's position.
-        yield return vfxManager.Spawn(vfx.Attack, attack.Opponent.position, trigger);
+        yield return vfxManager.Spawn(vfx.Attack, attack.Opponent.position, evt);
     }
 
 
@@ -408,7 +408,7 @@ public class ActorInstance : MonoBehaviour
             TriggerDie();
 
         // Start the damage animation as a separate coroutine so it doesn't block.
-        //StartCoroutine(DamageTaken(attack));
+        //Execute(DamageTaken(attack));
 
         // Return immediately.
         yield break;
@@ -440,7 +440,7 @@ public class ActorInstance : MonoBehaviour
     //}
 
 
-    //AttackMiss: Coroutine to display a miss message and trigger a dodge animation.
+    //AttackMiss: Coroutine to display a miss message and evt a dodge animation.
     public IEnumerator AttackMiss()
     {
         damageTextManager.Spawn("Miss", position);
@@ -468,7 +468,7 @@ public class ActorInstance : MonoBehaviour
         if (healthBar.isDraining)
             yield return new WaitUntil(() => healthBar.isEmpty);
 
-        //Trigger portrait dissolve effect and play death sound.
+        //AsyncEvent portrait dissolve effect and play death sound.
         portraitManager.Dissolve(this);
         audioManager.Play("Death");
 

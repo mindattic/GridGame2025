@@ -65,7 +65,7 @@ public class InputManager : MonoBehaviour
 
                 case TouchPhase.Ended:
                 case TouchPhase.Canceled:
-                    // Touch has ended, trigger drop logic.
+                    // Touch has ended, evt drop logic.
                     selectedHeroManager.Drop();
                     isTouching = false;
                     break;

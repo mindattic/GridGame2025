@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class PortraitPopOutEvent : GameEvent
+    public class PortraitPopOutEvent : AwaitEvent
     {
         private PortraitManager portraitManager => GameManager.instance.portraitManager;
 

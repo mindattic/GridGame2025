@@ -1,3 +1,4 @@
+using Assets.Scripts.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,22 +12,22 @@ public class TrailManager : MonoBehaviour
     //Fields
     Dictionary<string, TrailInstance> trailEffects = new Dictionary<string, TrailInstance>();
 
-    public void TriggerSpawn(TrailEffectAsset resource, Vector3 position, Trigger trigger = default)
+    public void TriggerSpawn(TrailEffectAsset resource, Vector3 position, AsyncEvent evt = default)
     {
-        if (trigger == default)
-            trigger = new Trigger();
+        if (evt == default)
+            evt = new AsyncEvent();
 
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<TrailInstance>();
         instance.name = $"Trail_{resource.Name}_{Guid.NewGuid():N}";
         trailEffects.Add(instance.name, instance);
-        StartCoroutine(instance.Spawn(resource, position, trigger));
+        StartCoroutine(instance.Spawn(resource, position, evt));
     }
 
-    public IEnumerator Spawn(TrailEffectAsset resource, Vector3 position, Trigger trigger = default)
+    public IEnumerator Spawn(TrailEffectAsset resource, Vector3 position, AsyncEvent evt = default)
     {
-        if (trigger == default)
-            trigger = new Trigger();
+        if (evt == default)
+            evt = new AsyncEvent();
 
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<TrailInstance>();
@@ -34,7 +35,7 @@ public class TrailManager : MonoBehaviour
         instance.parent = board.transform;
         trailEffects.Add(instance.name, instance);
 
-        yield return instance.Spawn(resource, position, trigger);
+        yield return instance.Spawn(resource, position, evt);
     }
 
 

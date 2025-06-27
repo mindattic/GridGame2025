@@ -54,7 +54,7 @@ public class ActorActionBar
         render.actionBarFill.transform.localScale = GetScale(stats.AP);
         render.actionBarText.text = $@"{stats.AP}/{stats.MaxAP}";
 
-        // Trigger visual feedback on the actor's weapon.
+        // AsyncEvent visual feedback on the actor's weapon.
         instance.action.TriggerWeaponWiggle();
         // Start the drain animation if needed.
         TriggerDrain();

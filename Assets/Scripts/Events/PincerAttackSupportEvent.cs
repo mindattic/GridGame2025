@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class PincerAttackSupportEvent : GameEvent
+    public class PincerAttackSupportEvent : AwaitEvent
     {
         private ActorInstance attacker;
         private ActorInstance supporter;

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Assets.Scripts.Events
 {
-    public class DirectAttackEvent : GameEvent
+    public class DirectAttackEvent : AwaitEvent
     {
         //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -36,9 +36,9 @@ namespace Assets.Scripts.Events
                 foreach (var hero in defendingHeroes)
                 {
                     var direction = enemy.GetDirectionTo(hero);
-                    var trigger = new Trigger(ProcessAttack(enemy, hero));
-                    yield return enemy.action.Bump(direction, trigger);
-                    //enemy.action.Bump(direction, trigger);
+                    var evt = new AsyncEvent(ProcessAttack(enemy, hero));
+                    yield return enemy.action.Bump(direction, evt);
+                    //enemy.action.Bump(direction, evt);
                 }
 
                 enemy.actionBar.Reset();
@@ -62,7 +62,7 @@ namespace Assets.Scripts.Events
 
             attacker.TriggerAttack(result);
 
-            //Trigger death animations on any opponents killed in last result
+            //AsyncEvent death animations on any opponents killed in last result
             yield return DeathHelper.Process();
         }
 

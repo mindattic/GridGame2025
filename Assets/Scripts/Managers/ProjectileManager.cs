@@ -55,7 +55,7 @@ public class ProjectileManager : MonoBehaviour
             controlPoints = BezierCurveHelper.Gentle(source, target),
             trailKey = "GreenSparkle",
             vfxKey = "BuffLife",
-            trigger = new Trigger(target.Heal(10), isAsync: false)
+            evt = new AsyncEvent(target.Heal(10))
         };
 
         var e = new FireProjectileEvent(heal);
@@ -78,7 +78,7 @@ public class ProjectileManager : MonoBehaviour
             controlPoints = BezierCurveHelper.Overshooting(source, target),
             trailKey = "Fireball",
             vfxKey = "PuffyExplosion",
-            trigger = new Trigger(target.FireDamage(10), isAsync: false)
+            evt = new AsyncEvent(target.FireDamage(10))
         };
 
         var action = new FireProjectileEvent(fireball);
