@@ -60,7 +60,7 @@ public static class Formulas
     public static float Offense(ActorStats stats)
     {
 
-        float weapon = 100; // placeholder
+        float weapon = 1; // placeholder
         float baseDamage = stats.Strength * 2f;
         float focusBonus = stats.Wisdom * 0.5f; // accuracy improves quality of attackResult
         float luck = LuckModifier(stats);

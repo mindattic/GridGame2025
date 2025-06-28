@@ -88,6 +88,9 @@ TagManager:
   - name: DamageText
     uniqueID: 2394124353
     locked: 0
+  - name: PortraitPopIn
+    uniqueID: 552919669
+    locked: 0
   - name: Portrait
     uniqueID: 3273347601
     locked: 0

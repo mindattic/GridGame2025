@@ -5401,7 +5401,7 @@ MonoBehaviour:
   logManager: {fileID: 0}
   dottedLineManager: {fileID: 0}
   projectileManager: {fileID: 0}
-  actionManager: {fileID: 0}
+  sequenceManager: {fileID: 0}
   pincerAttackManager: {fileID: 0}
   sortingManager: {fileID: 0}
   boardOverlay: {fileID: 0}
@@ -5419,7 +5419,6 @@ MonoBehaviour:
   cursorFocus: 0
   swapFocus: 0
   moveFocus: 0
-  snapThreshold: 0
   dragThreshold: 0
   bumpFocus: 0
   actors: []
@@ -5445,6 +5444,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff59a8f66ea4f3a438c1534b0bd7e7f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragThreshold: 0
 --- !u!114 &1751276279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5469,6 +5469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d563df7658daf8c43a23c02b375705ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  snapTheshold: 0
 --- !u!114 &1751276282
 MonoBehaviour:
   m_ObjectHideFlags: 0

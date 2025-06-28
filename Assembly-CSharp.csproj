@@ -244,6 +244,7 @@
     <None Include="Assets\Shader\InvertColor.shader" />
     <None Include="Assets\Shader\ThirdParty\Dissolve_Rimlight.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+    <None Include="Assets\Scripts\ExportedScripts.txt" />
     <None Include="Assets\Shader\Shuriken.shader" />
     <None Include="Assets\Shader\ThirdParty\MaskUV 1.shader" />
     <None Include="Assets\Shader\ThirdParty\water_ramp.shader" />

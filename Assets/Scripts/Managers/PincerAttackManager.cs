@@ -127,28 +127,28 @@ public class PincerAttackManager : MonoBehaviour
     /// <param name="attacker">The starting attacker for the chain.</param>
     /// <param name="pair">List of all valid pincer attackResult pairs.</param>
     /// <returns>A list of AttackResult objects representing the chain of results.</returns>
-    private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pair)
+    private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pairs)
     {
         var attacks = new List<AttackResult>();
 
-        // Identify the pincer attackResult pair where the CurrentProfile actor serves as the primary attacker.
-        var p = pair.FirstOrDefault(p => p.attacker1 == attacker);
+        // Identify the pair where this actor is involved (either attacker1 or attacker2)
+        var p = pairs.FirstOrDefault(p => p.attacker1 == attacker || p.attacker2 == attacker);
         if (p == null)
-            return attacks; // No chain can be made if the actor is not found as attacker1.
+            return attacks;
 
-        // SortingLayer the opponents by their distance from the CurrentProfile attacker to process closer enemies first.
+        // Sort the opponents by their distance to this attacker
         var sortedOpponents = p.opponents
             .OrderBy(x => Vector2.Distance(attacker.location, x.location))
             .ToList();
 
-        // Iterate through each opponent and compute the attackResult result.
         foreach (var opponent in sortedOpponents)
         {
             bool isHit = Formulas.IsHit(attacker, opponent);
             bool isCritical = Formulas.IsCriticalHit(attacker, opponent);
-            int damage = isHit ? Formulas.CalculateDamage(attacker, opponent) : 0;
+            int damage = isHit
+                ? Formulas.CalculateDamage(opponent, attacker)
+                : 0;
 
-            // Record the result of this attackResult.
             attacks.Add(new AttackResult
             {
                 Attacker = attacker,
@@ -158,16 +158,12 @@ public class PincerAttackManager : MonoBehaviour
                 Damage = damage
             });
 
-            // If this opponent is also registered as an attacker in a valid pair, chain their results recursively.
-            var subsequentParticipants = pair.FirstOrDefault(p => p.attacker1 == opponent);
-            if (subsequentParticipants != null)
-            {
-                // Append the chained results from the subsequent attacker.
-                attacks.AddRange(ChainAttacks(opponent, pair));
-            }
+            // If this opponent also appears as an attacker in another pair, chain their attacks too
+            var nextPair = pairs.FirstOrDefault(q => q.attacker1 == opponent || q.attacker2 == opponent);
+            if (nextPair != null)
+                attacks.AddRange(ChainAttacks(opponent, pairs));
         }
 
-        // Return the full list of chained attackResult results.
         return attacks;
     }
 
@@ -213,7 +209,14 @@ public class PincerAttackManager : MonoBehaviour
         // --- 4. Queue: PincerAttackActions (core attackResult logic)
         foreach (var pair in participants.pair)
         {
-            pair.results = ChainAttacks(pair.attacker1, participants.pair);
+
+            var attacker1Results = ChainAttacks(pair.attacker1, participants.pair);
+            var attacker2Results = ChainAttacks(pair.attacker2, participants.pair);
+
+            pair.results.AddRange(attacker1Results);
+            pair.results.AddRange(attacker2Results);
+
+
 
             //sequenceManager.Add(new PortraitPopInEvent(pair.attacker1));
             //sequenceManager.Add(new PortraitPopInEvent(pair.attacker2));
