@@ -10,7 +10,7 @@ public class ProjectileManager : MonoBehaviour
     //Quick Reference
     protected BoardInstance board => GameManager.instance.board;
     protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected EventManager eventManager => GameManager.instance.eventManager;
+    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
 
     //Fields
 
@@ -55,15 +55,15 @@ public class ProjectileManager : MonoBehaviour
             controlPoints = BezierCurveHelper.Gentle(source, target),
             trailKey = "GreenSparkle",
             vfxKey = "BuffLife",
-            evt = new AsyncEvent(target.Heal(10))
+            trigger = new TriggerEvent(target.Heal(10))
         };
 
-        var e = new FireProjectileAwait(heal);
+        var e = new FireProjectileSequence(heal);
 
         if (castBeforeAttack)
-            eventManager.Insert(e);
+            sequenceManager.Insert(e);
         else
-            eventManager.Add(e);
+            sequenceManager.Add(e);
     }
 
 
@@ -78,15 +78,15 @@ public class ProjectileManager : MonoBehaviour
             controlPoints = BezierCurveHelper.Overshooting(source, target),
             trailKey = "Fireball",
             vfxKey = "PuffyExplosion",
-            evt = new AsyncEvent(target.FireDamage(10))
+            trigger = new TriggerEvent(target.FireDamage(10))
         };
 
-        var action = new FireProjectileAwait(fireball);
+        var action = new FireProjectileSequence(fireball);
 
         if (castBeforeAttack)
-            eventManager.Insert(action);
+            sequenceManager.Insert(action);
         else
-            eventManager.Add(action);
+            sequenceManager.Add(action);
     }
 
 }

@@ -288,7 +288,7 @@ public class ActorInstance : MonoBehaviour
         {
             gameObject.SetActive(true);
             flags.HasSpawned = true;
-            // AsyncEvent fade-in and spin animations for visual feedback.
+            // TriggerEvent fade-in and spin animations for visual feedback.
             action.TriggerFadeIn();
             action.TriggerSpin360();
         }
@@ -298,28 +298,7 @@ public class ActorInstance : MonoBehaviour
         }
     }
 
-    public void TriggerAttack(AttackResult attack)
-    {
-        StartCoroutine(Attack(attack));
-    }
-
-    // Attack: Executes an attack on an opponent, displaying VFX and applying damage.
-    public IEnumerator Attack(AttackResult attack)
-    {
-        // Determine the hit or miss routine.
-        var hitOrMiss = attack.IsHit
-            ? attack.Opponent.TakeDamage(attack)
-            : attack.Opponent.AttackMiss();
-
-        //Create the evt with asynchronous execution.
-        var evt = new AsyncEvent(hitOrMiss);
-
-        // Assign the attack visual effect at the opponent's position.
-        yield return vfxManager.Spawn(vfx.Attack, attack.Opponent.position, evt);
-    }
-
-
-    // CalculateAttackStrategy: Chooses an attack strategy based on weighted randomness and sets the target location.
+     // CalculateAttackStrategy: Chooses an attackResult strategy based on weighted randomness and sets the target location.
     public void CalculateAttackStrategy()
     {
         // Define weights for different strategies.
@@ -356,13 +335,13 @@ public class ActorInstance : MonoBehaviour
                 break;
         }
 
-        //Assign the actor's location to the nearest valid attack location relative to the target.
+        //Assign the actor's location to the nearest valid attackResult location relative to the target.
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
         //Note: nextPosition is commented out and could be used for future logic.
         //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
     }
 
-    //TriggerTakeDamage: Begins the process for this actor to take damage from an attack.
+    //TriggerTakeDamage: Begins the process for this actor to take damage from an attackResult.
     public void TriggerTakeDamage(AttackResult attack)
     {
         // If the actor is not active or alive, abort.
@@ -409,14 +388,14 @@ public class ActorInstance : MonoBehaviour
             TriggerDie();
 
         // Start the damage animation as a separate coroutine so it doesn't block.
-        //Execute(DamageTaken(attack));
+        //Execute(DamageTaken(attackResult));
 
         // Return immediately.
         yield break;
     }
 
 
-    //private IEnumerator DamageTaken(AttackResult attack)
+    //private IEnumerator DamageTaken(AttackResult attackResult)
     //{
     //    float ticks = 0f;
     //    float duration = Interval.TenTicks; // For example, 1 second.
@@ -424,7 +403,7 @@ public class ActorInstance : MonoBehaviour
     //    while (ticks < duration)
     //    {
     //        action.TriggerGrow(); // Flinch effect.
-    //        if (attack.IsCriticalHit)
+    //        if (attackResult.IsCriticalHit)
     //            action.TriggerShake(ShakeIntensity.Medium);
     //        ticks += Interval.OneTick;
     //        yield return Wait.For(Interval.OneTick);
@@ -441,7 +420,7 @@ public class ActorInstance : MonoBehaviour
     //}
 
 
-    //AttackMiss: Coroutine to display a miss message and evt a dodge animation.
+    //AttackMiss: Coroutine to display a miss message and attackResult a dodge animation.
     public IEnumerator AttackMiss()
     {
         damageTextManager.Spawn("Miss", position);
@@ -469,7 +448,7 @@ public class ActorInstance : MonoBehaviour
         if (healthBar.isDraining)
             yield return new WaitUntil(() => healthBar.isEmpty);
 
-        //AsyncEvent portrait dissolve effect and play death sound.
+        //TriggerEvent portrait dissolve effect and play death sound.
         portraitManager.Dissolve(this);
         audioManager.Play("Death");
 

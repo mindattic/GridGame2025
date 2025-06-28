@@ -141,7 +141,7 @@ public class Geometry
     }
 
     /// <summary>
-    /// Determines the attack location for an attacker relative to a defender.
+    /// Determines the attackResult location for an attacker relative to a defender.
     /// If the attacker is already adjacent to the defender, returns the attacker's location.
     /// Otherwise, returns the defender's location (i.e. swap positions).
     /// </summary>

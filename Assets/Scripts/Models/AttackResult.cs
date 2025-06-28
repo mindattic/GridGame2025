@@ -8,33 +8,13 @@ namespace Assets.Scripts.Models
 {
     public class AttackResult
     {
-        public ActorPair Pair;
+        public ActorInstance Attacker;
         public ActorInstance Opponent;
         public bool IsHit;
         public bool IsCriticalHit;
         public int Damage;
-        //public AttackResultTriggers Triggers;
 
-        //Properties
         public bool IsMiss => !IsHit;
-
-        //public AttackResult()
-        //{
-        //   Triggers = new AttackResultTriggers();
-        //}
     }
-
-    //public class AttackResultTriggers
-    //{
-    //   public AttackResultTriggers(AsyncEvent before = default, AsyncEvent after = default)
-    //   {
-    //       Before = before;
-    //       After = after;
-    //   }
-
-    //   public AsyncEvent Before = default;
-    //   public AsyncEvent After = default;
-    //}
-
 
 }

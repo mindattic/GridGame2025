@@ -62,7 +62,7 @@ public static class Formulas
 
         float weapon = 100; // placeholder
         float baseDamage = stats.Strength * 2f;
-        float focusBonus = stats.Wisdom * 0.5f; // accuracy improves quality of attack
+        float focusBonus = stats.Wisdom * 0.5f; // accuracy improves quality of attackResult
         float luck = LuckModifier(stats);
         return Mathf.FloorToInt(baseDamage + weapon + focusBonus + luck);
     }

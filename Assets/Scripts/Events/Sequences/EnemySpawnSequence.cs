@@ -5,12 +5,12 @@ using System.Linq;
 
 namespace Assets.Scripts.Events
 {
-    public class EnemySpawnAwait : AwaitEvent
+    public class EnemySpawnSequence : SequenceEvent
     {
         //Quick Reference Properties
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
-        public EnemySpawnAwait() { }
+        public EnemySpawnSequence() { }
 
         public override IEnumerator Execute()
         {

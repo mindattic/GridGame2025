@@ -3,14 +3,14 @@ using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class FireProjectileAwait : AwaitEvent
+    public class FireProjectileSequence : SequenceEvent
     {
         //Quick Reference Properties
         protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
         private ProjectileSettings projectile;
 
 
-        public FireProjectileAwait(ProjectileSettings projectile)
+        public FireProjectileSequence(ProjectileSettings projectile)
         {
             this.projectile = projectile;
         }

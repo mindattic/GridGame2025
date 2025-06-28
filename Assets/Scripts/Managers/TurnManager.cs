@@ -14,7 +14,7 @@ public class TurnManager : MonoBehaviour
     protected PortraitManager portraitManager => GameManager.instance.portraitManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected HeroManager heroManager => GameManager.instance.heroManager;
-    protected EventManager eventManager => GameManager.instance.eventManager;
+    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
     protected TimerBar timerBar => GameManager.instance.timerBar;
     protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
     protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
@@ -60,18 +60,18 @@ public class TurnManager : MonoBehaviour
             if (turnPhase == TurnPhase.Start)
             {
                 timerBar.Lock();
-                eventManager.Add(new EnemySpawnAwait());
+                sequenceManager.Add(new EnemySpawnSequence());
 
                 bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
                 if (!anyReadyEnemies)
                 {
-                    eventManager.TriggerExecute();
+                    sequenceManager.TriggerExecute();
                     NextTurn(); // No enemy ready; immediately switch turn.
                     return;
                 }
 
-                eventManager.Add(new EnemyStartAwait());
-                eventManager.TriggerExecute();
+                sequenceManager.Add(new EnemyStartSequence());
+                sequenceManager.TriggerExecute();
             }
         }
     }

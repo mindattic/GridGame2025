@@ -75,7 +75,7 @@ public static class ActorRepo
                     Details = new ActorDetails
                     {
                         Description = "A warrior driven by rage.",
-                        Card = "Gains <color=#FF0033>[Rage]</color> when attacking or being attacked. Will eventually go <color=#FF0000>[Berserk]</color> and attack multiple nearby enemies.",
+                        Card = "Gains <color=#FF0033>[Rage]</color> when attacking or being attacked. Will eventually go <color=#FF0000>[Berserk]</color> and attackResult multiple nearby enemies.",
                         Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                     }
                 }

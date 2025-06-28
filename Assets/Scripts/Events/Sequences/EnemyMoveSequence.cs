@@ -5,16 +5,16 @@ using System.Linq;
 
 namespace Assets.Scripts.Events
 {
-    public class EnemyMoveAwait : AwaitEvent
+    public class EnemyMoveSequence : SequenceEvent
     {
         //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
-        protected EventManager eventManager => GameManager.instance.eventManager;
+        protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
         protected List<ActorInstance> actors = GameManager.instance.actors;
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
         //Constructor
-        public EnemyMoveAwait() { }
+        public EnemyMoveSequence() { }
 
         public override IEnumerator Execute()
         {
@@ -35,15 +35,15 @@ namespace Assets.Scripts.Events
             //Wait for a predetermined waitDuration before enemy movement starts.
             yield return Wait.For(Intermission.Before.Enemy.Move);
 
-            //For each ready enemy, calculate its attack strategy and movement it to its destination.
+            //For each ready enemy, calculate its attackResult strategy and movement it to its destination.
             foreach (var enemy in readyEnemies)
             {
                 enemy.CalculateAttackStrategy();
                 yield return enemy.movement.MoveTowardDestination();
             }
 
-            //After moving, add the enemy attack action.
-            eventManager.Add(new DirectAttackAwait());
+            //After moving, add the enemy attackResult action.
+            sequenceManager.Add(new DirectAttackSequence());
             turnManager.SetPhase(TurnPhase.Attack);
         }
     }

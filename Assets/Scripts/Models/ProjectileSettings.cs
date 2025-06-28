@@ -14,7 +14,7 @@ namespace Assets.Scripts.Models
         public string vfxKey;    // e.g., "BuffLife" or "PuffyExplosion"
         public ProjectilePath path = ProjectilePath.AnimationCurve;
         public float duration = 1.0f;
-        public AsyncEvent evt;
+        public TriggerEvent trigger;
 
         //AnimationCurve
         public AnimationCurve travelCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);

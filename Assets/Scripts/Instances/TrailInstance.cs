@@ -36,10 +36,10 @@ public class TrailInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 position, AsyncEvent evt = default)
+    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 position, TriggerEvent trigger = default)
     {
-        if (evt == default)
-            evt = new AsyncEvent();
+        if (trigger == default)
+            trigger = new TriggerEvent();
 
         //Translate, rotate, and relativeScale relative to tile dimensions (determined by device)
         //var offset = Geometry.Tile.Relative.Translation(trailInstance.RelativeOffset);
@@ -56,8 +56,8 @@ public class TrailInstance : MonoBehaviour
         if (trail.Delay != 0f)
             yield return new WaitForSeconds(trail.Delay);
 
-        // Run AsyncEvent (if applicable)
-        yield return evt.Execute(this);
+        // Run TriggerEvent (if applicable)
+        yield return trigger.Execute(this);
 
         //Wait until VFX duration completes
         if (trail.Duration != 0f)

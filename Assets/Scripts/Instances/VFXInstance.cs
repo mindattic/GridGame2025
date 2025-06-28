@@ -37,10 +37,10 @@ public class VFXInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    public IEnumerator Spawn(VisualEffectAsset vfx, Vector3 position, AsyncEvent evt = null)
+    public IEnumerator Spawn(VisualEffectAsset vfx, Vector3 position, TriggerEvent trigger = null)
     {
-        if (evt == null)
-            evt = new AsyncEvent(null);
+        if (trigger == null)
+            trigger = new TriggerEvent(null);
 
         // Setup the position and scale based on the VFX resource.
         this.position = position;
@@ -51,8 +51,8 @@ public class VFXInstance : MonoBehaviour
         if (vfx.Delay != 0f)
             yield return new WaitForSeconds(vfx.Delay);
 
-        // Run AsyncEvent (if applicable)
-        yield return evt.Execute(this);
+        // Run TriggerEvent (if applicable)
+        yield return trigger.Execute(this);
 
         // Wait until the VFX duration completes.
         if (vfx.Duration != 0f)

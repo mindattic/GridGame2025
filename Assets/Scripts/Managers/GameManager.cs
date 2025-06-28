@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public LogManager logManager;
     [HideInInspector] public DottedLineManager dottedLineManager;
     [HideInInspector] public ProjectileManager projectileManager;
-    [HideInInspector] public EventManager eventManager;
+    [HideInInspector] public SequenceManager sequenceManager;
     [HideInInspector] public PincerAttackManager pincerAttackManager;
     [HideInInspector] public SortingManager sortingManager;
 
@@ -181,7 +181,7 @@ public class GameManager : Singleton<GameManager>
         pauseManager = game.GetComponent<PauseManager>();
         dottedLineManager = game.GetComponent<DottedLineManager>();
         projectileManager = game.GetComponent<ProjectileManager>();
-        eventManager = game.GetComponent<EventManager>();
+        sequenceManager = game.GetComponent<SequenceManager>();
         pincerAttackManager = game.GetComponent<PincerAttackManager>();
         sortingManager = game.GetComponent<SortingManager>();
 

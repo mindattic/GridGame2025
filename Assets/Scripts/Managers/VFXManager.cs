@@ -13,22 +13,22 @@ public class VFXManager : MonoBehaviour
     //Fields
     Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();
 
-    public void TriggerSpawn(VisualEffectAsset resource, Vector3 position, AsyncEvent evt = default)
+    public void TriggerSpawn(VisualEffectAsset resource, Vector3 position, TriggerEvent trigger = default)
     {
-        if (evt == default)
-            evt = new AsyncEvent();
+        if (trigger == default)
+            trigger = new TriggerEvent();
 
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
         instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
         visualEffects.Add(instance.name, instance);
-        StartCoroutine(instance.Spawn(resource, position, evt));
+        StartCoroutine(instance.Spawn(resource, position, trigger));
     }
 
-    public IEnumerator Spawn(VisualEffectAsset resource, Vector3 position, AsyncEvent evt = default)
+    public IEnumerator Spawn(VisualEffectAsset resource, Vector3 position, TriggerEvent trigger = default)
     {
-        if (evt == default)
-            evt = new AsyncEvent();
+        if (trigger == default)
+            trigger = new TriggerEvent();
 
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
@@ -36,7 +36,7 @@ public class VFXManager : MonoBehaviour
         instance.parent = board.transform;
         visualEffects.Add(instance.name, instance);
 
-        yield return instance.Spawn(resource, position, evt);
+        yield return instance.Spawn(resource, position, trigger);
     }
 
 

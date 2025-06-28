@@ -28,13 +28,21 @@ public class DebugManager : MonoBehaviour
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
     protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
-    protected EventManager eventManager => GameManager.instance.eventManager;
+    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
 
     //Internal properties
     ActorInstance hero1 => heroes.Skip(0).Take(1).First();
     ActorInstance hero2 => heroes.Skip(1).Take(1).First();
     ActorInstance hero3 => heroes.Skip(2).Take(1).First();
     ActorInstance hero4 => heroes.Skip(3).Take(1).First();
+
+    ActorInstance enemy1 => enemies.Skip(0).Take(1).First();
+    ActorInstance enemy2 => enemies.Skip(1).Take(1).First();
+    ActorInstance enemy3 => enemies.Skip(2).Take(1).First();
+    ActorInstance enemy4 => enemies.Skip(3).Take(1).First();
+    ActorInstance enemy5 => enemies.Skip(4).Take(1).First();
+    ActorInstance enemy6 => enemies.Skip(5).Take(1).First();
+
 
     //Fields
     [SerializeField] private TMP_Dropdown Dropdown;
@@ -58,9 +66,9 @@ public class DebugManager : MonoBehaviour
     public void PortraitPopIn()
     {
         var hero = Random.Hero;
-        eventManager.Add(new PortraitPopInAwait(hero));
-        eventManager.Add(new PortraitPopOutAwait(hero));
-        StartCoroutine(eventManager.Execute());
+        sequenceManager.Add(new PortraitPopInSequence(hero));
+        sequenceManager.Add(new PortraitPopOutSequence(hero));
+        StartCoroutine(sequenceManager.Execute());
     }
 
 
@@ -145,13 +153,6 @@ public class DebugManager : MonoBehaviour
 
     public void AttackLineTest()
     {
-        var enemy1 = enemies.Skip(0).Take(1).FirstOrDefault();
-        var enemy2 = enemies.Skip(1).Take(1).FirstOrDefault();
-        var enemy3 = enemies.Skip(2).Take(1).FirstOrDefault();
-        var enemy4 = enemies.Skip(3).Take(1).FirstOrDefault();
-        var enemy5 = enemies.Skip(4).Take(1).FirstOrDefault();
-        var enemy6 = enemies.Skip(5).Take(1).FirstOrDefault();
-
         actors.FirstOrDefault(x => x.location == new Vector2Int(3, 1))?.Teleport(new Vector2Int(1, 1));
         actors.FirstOrDefault(x => x.location == new Vector2Int(3, 2))?.Teleport(new Vector2Int(1, 2));
         actors.FirstOrDefault(x => x.location == new Vector2Int(3, 3))?.Teleport(new Vector2Int(1, 3));
@@ -263,7 +264,8 @@ public class DebugManager : MonoBehaviour
     {
         var attack = new AttackResult()
         {
-            Opponent = hero1,
+            Attacker = hero1,
+            Opponent = enemies.First(),
             IsHit = true,
             IsCriticalHit = Random.Int(1, 10) == 10,
             Damage = 3
@@ -277,8 +279,8 @@ public class DebugManager : MonoBehaviour
         }
 
         var vfx = VisualEffectRepo.VisualEffects["BlueSlash1"];
-        var evt = new AsyncEvent(hero1.TakeDamage(attack));
-        vfxManager.TriggerSpawn(vfx, hero1.position, evt);
+        var trigger = new TriggerEvent(hero1.TakeDamage(attack));
+        vfxManager.TriggerSpawn(vfx, hero1.position, trigger);
     }
 
     public void VFXTest_BlueSlash2()
@@ -541,9 +543,9 @@ public class DebugManager : MonoBehaviour
 
             yield return true;
         }
-        var evt = new AsyncEvent(spawnTenCoins());
+        var trigger = new TriggerEvent(spawnTenCoins());
 
-        vfxManager.TriggerSpawn(vfx, hero1.position, evt);
+        vfxManager.TriggerSpawn(vfx, hero1.position, trigger);
     }
 
     public void SpawnSlime()
@@ -582,7 +584,7 @@ public class DebugManager : MonoBehaviour
         var source = hero1;
         var target = enemies.FirstOrDefault();
         projectileManager.EnqueueFireball(source, target);
-        eventManager.TriggerExecute();
+        sequenceManager.TriggerExecute();
     }
 
     public void HealTest()
@@ -591,6 +593,6 @@ public class DebugManager : MonoBehaviour
         var target = hero2;
 
         projectileManager.EnqueueHeal(source, target);
-        eventManager.TriggerExecute();
+        sequenceManager.TriggerExecute();
     }
 }

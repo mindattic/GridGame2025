@@ -3,13 +3,13 @@ using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class EnemyStartAwait : AwaitEvent
+    public class EnemyStartSequence : SequenceEvent
     {
        //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
-        protected EventManager eventManager => GameManager.instance.eventManager;
+        protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
 
-        public EnemyStartAwait()
+        public EnemyStartSequence()
         {
         }
 
@@ -22,7 +22,7 @@ namespace Assets.Scripts.Events
             // (Optional) Log or perform any setup needed at the very start of the enemy turn.
             //Debug.Log("EnemyStartAction executing: preparing enemy movement.");
 
-            eventManager.Add(new EnemyMoveAwait());
+            sequenceManager.Add(new EnemyMoveSequence());
             turnManager.SetPhase(TurnPhase.Move);
 
             // Yield return null (or any brief wait) to allow the phase change to propagate.

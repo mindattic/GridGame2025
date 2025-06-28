@@ -7,15 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// The PincerAttackManager class is responsible for managing the pincer attack mechanics.
-// It coordinates identifying valid pincer attack setups, chaining the resulting results, 
+// The PincerAttackManager class is responsible for managing the pincer attackResult mechanics.
+// It coordinates identifying valid pincer attackResult setups, chaining the resulting results, 
 // supporting the attacking units, and then executing the queued actions.
 public class PincerAttackManager : MonoBehaviour
 {
     // Quick reference properties to easily access various managers and lists from the GameManager singleton.
     // These properties provide shortcuts to other systems such as turn management, action handling, and board overlays.
     protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected EventManager eventManager => GameManager.instance.eventManager;
+    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
     protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
@@ -24,14 +24,14 @@ public class PincerAttackManager : MonoBehaviour
 
 
     /// <summary>
-    /// Checks for any valid pincer attack opportunities for the given team.
+    /// Checks for any valid pincer attackResult opportunities for the given team.
     /// If any valid pairs (bookends) are found, the method starts a coroutine to process and execute them.
     /// Otherwise, it simply advances to the next turn.
     /// </summary>
     /// <param name="team">The team for which to check pincer results.</param>
     public void Check(Team team)
     {
-        // Retrieve all valid pincer attack pair (pairs of attackers with valid enemy opponents in between)
+        // Retrieve all valid pincer attackResult pair (pairs of attackers with valid enemy opponents in between)
         var participants = GetParticipants(team);
 
         // If no valid pairs exist, there are no pincer results to perform,
@@ -51,11 +51,11 @@ public class PincerAttackManager : MonoBehaviour
     /// that are aligned on the same row or column with only enemy actors (and no gaps) between them.
     /// For each valid pair, the method records the pair's opponents and any supporting actors.
     /// </summary>
-    /// <param name="team">The team to gather pincer attack pair for.</param>
+    /// <param name="team">The team to gather pincer attackResult pair for.</param>
     /// <returns>A PincerAttackParticipants object containing all identified valid pairs.</returns>
     public PincerAttackParticipants GetParticipants(Team team)
     {
-        // Create a new container for storing valid pincer attack pairs.
+        // Create a new container for storing valid pincer attackResult pairs.
         var participants = new PincerAttackParticipants();
 
         // Filter and gather all actors that are actively playing and belong to the specified team.
@@ -84,7 +84,7 @@ public class PincerAttackManager : MonoBehaviour
                     .Where(x => locationsBetweenAttackers.Contains(x.location))
                     .ToList();
 
-                // Conditions for a valid pincer attack:
+                // Conditions for a valid pincer attackResult:
                 // 1. There must be at least one enemy between the attackers.
                 // 2. All actors between the attackers must be opponents (i.e., not on the same team).
                 // 3. There should be no empty spaces between the attackers (the count of positions must match the count of actors).
@@ -115,7 +115,7 @@ public class PincerAttackManager : MonoBehaviour
             }
         }
 
-        // Return all identified pincer attack pairs.
+        // Return all identified pincer attackResult pairs.
         return participants;
     }
 
@@ -125,13 +125,13 @@ public class PincerAttackManager : MonoBehaviour
     /// If any opponent is also found as the primary attacker (attacker1) in another valid pair, their chain is processed recursively.
     /// </summary>
     /// <param name="attacker">The starting attacker for the chain.</param>
-    /// <param name="pair">List of all valid pincer attack pairs.</param>
+    /// <param name="pair">List of all valid pincer attackResult pairs.</param>
     /// <returns>A list of AttackResult objects representing the chain of results.</returns>
     private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pair)
     {
         var attacks = new List<AttackResult>();
 
-        // Identify the pincer attack pair where the CurrentProfile actor serves as the primary attacker.
+        // Identify the pincer attackResult pair where the CurrentProfile actor serves as the primary attacker.
         var p = pair.FirstOrDefault(p => p.attacker1 == attacker);
         if (p == null)
             return attacks; // No chain can be made if the actor is not found as attacker1.
@@ -141,16 +141,17 @@ public class PincerAttackManager : MonoBehaviour
             .OrderBy(x => Vector2.Distance(attacker.location, x.location))
             .ToList();
 
-        // Iterate through each opponent and compute the attack result.
+        // Iterate through each opponent and compute the attackResult result.
         foreach (var opponent in sortedOpponents)
         {
             bool isHit = Formulas.IsHit(attacker, opponent);
             bool isCritical = Formulas.IsCriticalHit(attacker, opponent);
             int damage = isHit ? Formulas.CalculateDamage(attacker, opponent) : 0;
 
-            // Record the result of this attack.
+            // Record the result of this attackResult.
             attacks.Add(new AttackResult
             {
+                Attacker = attacker,
                 Opponent = opponent,
                 IsHit = isHit,
                 IsCriticalHit = isCritical,
@@ -166,16 +167,16 @@ public class PincerAttackManager : MonoBehaviour
             }
         }
 
-        // Return the full list of chained attack results.
+        // Return the full list of chained attackResult results.
         return attacks;
     }
 
     /// <summary>
-    /// Enqueues both support and pincer attack actions, then executes the queued actions with visual effects.
-    /// This coroutine sets up highlighting, queues up support and attack actions, executes them,
+    /// Enqueues both support and pincer attackResult actions, then executes the queued actions with visual effects.
+    /// This coroutine sets up highlighting, queues up support and attackResult actions, executes them,
     /// resets the board state, clears the pair, and finally advances the turn.
     /// </summary>
-    /// <param name="participants">The participants of valid pincer attack pair.</param>
+    /// <param name="participants">The participants of valid pincer attackResult pair.</param>
     private IEnumerator Enqueue(PincerAttackParticipants participants)
     {
         sortingManager.OnPincerAttackStart(participants);
@@ -191,46 +192,46 @@ public class PincerAttackManager : MonoBehaviour
         // --- 2. Queue: PopInOut for all supporters
         foreach (var supporter in allSupporters)
         {
-            eventManager.Add(new PortraitPopInAwait(supporter));
+            sequenceManager.Add(new PortraitPopInSequence(supporter));
         }
 
-        // --- 3. Queue: AttackSupportActions and support lines (before attack)
+        // --- 3. Queue: AttackSupportActions and support lines (before attackResult)
         foreach (var pair in participants.pair)
         {
             foreach (var supporter in pair.supporters1)
             {
                 supportLineManager.Spawn(supporter, pair.attacker1);
-                eventManager.Add(new PincerAttackSupportAwait(pair.attacker1, supporter));
+                sequenceManager.Add(new PincerAttackSupportSequence(pair.attacker1, supporter));
             }
             foreach (var supporter in pair.supporters2)
             {
                 supportLineManager.Spawn(supporter, pair.attacker2);
-                eventManager.Add(new PincerAttackSupportAwait(pair.attacker2, supporter));
+                sequenceManager.Add(new PincerAttackSupportSequence(pair.attacker2, supporter));
             }
         }
 
-        // --- 4. Queue: PincerAttackActions (core attack logic)
+        // --- 4. Queue: PincerAttackActions (core attackResult logic)
         foreach (var pair in participants.pair)
         {
             pair.results = ChainAttacks(pair.attacker1, participants.pair);
 
-            //eventManager.Add(new PortraitPopInEvent(pair.attacker1));
-            //eventManager.Add(new PortraitPopInEvent(pair.attacker2));
-            eventManager.Add(new PincerAttackAwait(pair));
-            //eventManager.Add(new PortraitPopOutEvent(pair.attacker1));
-            //eventManager.Add(new PortraitPopOutEvent(pair.attacker2));
+            //sequenceManager.Add(new PortraitPopInEvent(pair.attacker1));
+            //sequenceManager.Add(new PortraitPopInEvent(pair.attacker2));
+            sequenceManager.Add(new PincerAttackSequence(pair));
+            //sequenceManager.Add(new PortraitPopOutEvent(pair.attacker1));
+            //sequenceManager.Add(new PortraitPopOutEvent(pair.attacker2));
 
         }
 
-        // --- 5. Queue: PopOut for all supporters (after attack)
+        // --- 5. Queue: PopOut for all supporters (after attackResult)
         foreach (var supporter in allSupporters)
         {
-            eventManager.Add(new PortraitPopOutAwait(supporter));
+            sequenceManager.Add(new PortraitPopOutSequence(supporter));
         }
 
         // --- 6. Execute sequence
 
-        yield return eventManager.Execute();
+        yield return sequenceManager.Execute();
         yield return boardOverlay.FadeOut();
         
         participants.Clear();

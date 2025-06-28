@@ -3,21 +3,21 @@ using System.Collections;
 using UnityEngine;
 using Assets.Scripts.Events;
 
-public class EventManager : MonoBehaviour
+public class SequenceManager : MonoBehaviour
 {
 
     //Quick Reference Properties
     protected TurnManager turnManager => GameManager.instance.turnManager;
 
     //Fields
-    private QueueCollection<AwaitEvent> queue = new QueueCollection<AwaitEvent>();
+    private QueueCollection<SequenceEvent> queue = new QueueCollection<SequenceEvent>();
 
-    public void Add(AwaitEvent e)
+    public void Add(SequenceEvent e)
     {
         queue.Add(e);
     }
 
-    public void Insert(AwaitEvent e)
+    public void Insert(SequenceEvent e)
     {
         queue.Insert(e);
     }

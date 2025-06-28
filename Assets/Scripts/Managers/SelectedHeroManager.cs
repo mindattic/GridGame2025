@@ -10,7 +10,7 @@ using UnityEngine.Rendering;
 public class SelectedHeroManager : MonoBehaviour
 {
     // Quick reference properties for accessing core game systems
-    protected EventManager eventManager => GameManager.instance.eventManager;
+    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected SortingManager sortingManager => GameManager.instance.sortingManager;

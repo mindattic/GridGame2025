@@ -139,7 +139,7 @@ public class SortingManager : MonoBehaviour
         portrait.SetSorting(SortingLayer.PortraitPopIn, SortingOrder.Max);
     }
 
-    //// Called when a pincer attack ends
+    //// Called when a pincer attackResult ends
     //public void OnPincerAttackEnd(List<ActorInstance> involvedActors)
     //{
     //    foreach (var actor in involvedActors)
