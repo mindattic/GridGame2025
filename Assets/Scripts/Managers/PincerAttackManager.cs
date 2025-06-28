@@ -129,12 +129,12 @@ public class PincerAttackManager : MonoBehaviour
     /// <returns>A list of AttackResult objects representing the chain of results.</returns>
     private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pairs)
     {
-        var attacks = new List<AttackResult>();
+        var attackResults = new List<AttackResult>();
 
         // Identify the pair where this actor is involved (either attacker1 or attacker2)
         var p = pairs.FirstOrDefault(p => p.attacker1 == attacker || p.attacker2 == attacker);
         if (p == null)
-            return attacks;
+            return attackResults;
 
         // Sort the opponents by their distance to this attacker
         var sortedOpponents = p.opponents
@@ -149,7 +149,7 @@ public class PincerAttackManager : MonoBehaviour
                 ? Formulas.CalculateDamage(opponent, attacker)
                 : 0;
 
-            attacks.Add(new AttackResult
+            attackResults.Add(new AttackResult
             {
                 Attacker = attacker,
                 Opponent = opponent,
@@ -158,13 +158,13 @@ public class PincerAttackManager : MonoBehaviour
                 Damage = damage
             });
 
-            // If this opponent also appears as an attacker in another pair, chain their attacks too
+            // If this opponent also appears as an attacker in another pair, chain their attackResults too
             var nextPair = pairs.FirstOrDefault(q => q.attacker1 == opponent || q.attacker2 == opponent);
             if (nextPair != null)
-                attacks.AddRange(ChainAttacks(opponent, pairs));
+                attackResults.AddRange(ChainAttacks(opponent, pairs));
         }
 
-        return attacks;
+        return attackResults;
     }
 
     /// <summary>
@@ -303,17 +303,20 @@ public class PincerAttackManager : MonoBehaviour
     /// <returns>True if the support line is blocked; otherwise, false.</returns>
     private bool IsActorBlocked(ActorInstance a, ActorInstance b)
     {
-        // First, if they are not in the same row or column, support cannot be provided.
+        // If they’re not aligned, we consider it “blocked” (i.e. no support).
         if (!a.IsSameRow(b.location) && !a.IsSameColumn(b.location))
             return true;
 
-        //Get all locations between the two actors.
-        var between = Geometry.GetLocationsBetween(a.location, b.location);
-        // Check if any playing actor occupies a location in between that is either an enemy or coincides with one of the endpoints.
+        // Get only the cells *between* a and b
+        var between = Geometry
+            .GetLocationsBetween(a.location, b.location)
+            .Where(loc => !loc.Equals(a.location) && !loc.Equals(b.location));
+
+        // If any playing actor sits on one of those cells, the path is blocked.
         return actors
-            .Where(x => x.isPlaying && between.Contains(x.location))
-            .Any(x => x.team != a.team || x == a || x == b);
+            .Any(x => x.isPlaying && between.Contains(x.location));
     }
+
 
     /// <summary>
     /// Resets the sorting order for all actors that are currently playing,
