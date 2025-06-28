@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Models;
+﻿using Assets.Scripts.Events;
+using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
 

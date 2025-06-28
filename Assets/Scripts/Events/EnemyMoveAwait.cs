@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Assets.Scripts.Events
 {
-    public class EnemyMoveEvent : AwaitEvent
+    public class EnemyMoveAwait : AwaitEvent
     {
         //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -14,7 +14,7 @@ namespace Assets.Scripts.Events
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
 
         //Constructor
-        public EnemyMoveEvent() { }
+        public EnemyMoveAwait() { }
 
         public override IEnumerator Execute()
         {
@@ -43,7 +43,7 @@ namespace Assets.Scripts.Events
             }
 
             //After moving, add the enemy attack action.
-            eventManager.Add(new DirectAttackEvent());
+            eventManager.Add(new DirectAttackAwait());
             turnManager.SetPhase(TurnPhase.Attack);
         }
     }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Assets.Scripts.Events
 {
-    public class DirectAttackEvent : AwaitEvent
+    public class DirectAttackAwait : AwaitEvent
     {
         //Quick Reference Properties
         protected TurnManager turnManager => GameManager.instance.turnManager;
@@ -14,7 +14,7 @@ namespace Assets.Scripts.Events
         protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
 
         //Constructor
-        public DirectAttackEvent() { }
+        public DirectAttackAwait() { }
 
         public override IEnumerator Execute()
         {
@@ -36,8 +36,11 @@ namespace Assets.Scripts.Events
                 foreach (var hero in defendingHeroes)
                 {
                     var direction = enemy.GetDirectionTo(hero);
-                    var evt = new AsyncEvent(ProcessAttack(enemy, hero));
-                    yield return enemy.action.Bump(direction, evt);
+
+                    var processAttack = new ProcessAttackAsync(enemy, hero);
+                    yield return enemy.action.Bump(direction, processAttack);
+
+
                     //enemy.action.Bump(direction, evt);
                 }
 
@@ -47,24 +50,24 @@ namespace Assets.Scripts.Events
             turnManager.NextTurn();
         }
 
-        private IEnumerator ProcessAttack(ActorInstance attacker, ActorInstance opponent)
-        {
-            var isHit = Formulas.IsHit(attacker, opponent);
-            var isCriticalHit = Formulas.IsCriticalHit(attacker, opponent);
-            var damage = Formulas.CalculateDamage(opponent, attacker);
-            var result = new AttackResult()
-            {
-                Opponent = opponent,
-                IsHit = isHit,
-                IsCriticalHit = isCriticalHit,
-                Damage = damage
-            };
+        //private IEnumerator ProcessAttack(ActorInstance attacker, ActorInstance opponent)
+        //{
+        //    var isHit = Formulas.IsHit(attacker, opponent);
+        //    var isCriticalHit = Formulas.IsCriticalHit(attacker, opponent);
+        //    var damage = Formulas.CalculateDamage(opponent, attacker);
+        //    var result = new AttackResult()
+        //    {
+        //        Opponent = opponent,
+        //        IsHit = isHit,
+        //        IsCriticalHit = isCriticalHit,
+        //        Damage = damage
+        //    };
 
-            attacker.TriggerAttack(result);
+        //    attacker.TriggerAttack(result);
 
-            //AsyncEvent death animations on any opponents killed in last result
-            yield return DeathHelper.Process();
-        }
+        //    //AsyncEvent death animations on any opponents killed in last result
+        //    yield return DeathHelper.Process();
+        //}
 
         //private IEnumerator ProcessDeaths()
         //{

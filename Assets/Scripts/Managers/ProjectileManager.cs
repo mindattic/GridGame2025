@@ -58,7 +58,7 @@ public class ProjectileManager : MonoBehaviour
             evt = new AsyncEvent(target.Heal(10))
         };
 
-        var e = new FireProjectileEvent(heal);
+        var e = new FireProjectileAwait(heal);
 
         if (castBeforeAttack)
             eventManager.Insert(e);
@@ -81,7 +81,7 @@ public class ProjectileManager : MonoBehaviour
             evt = new AsyncEvent(target.FireDamage(10))
         };
 
-        var action = new FireProjectileEvent(fireball);
+        var action = new FireProjectileAwait(fireball);
 
         if (castBeforeAttack)
             eventManager.Insert(action);

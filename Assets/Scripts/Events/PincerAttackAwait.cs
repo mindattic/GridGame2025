@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Assets.Scripts.Events
 {
     //AwaitEvent for processing a single attacking PincerAttackPair
-    public class PincerAttackEvent : AwaitEvent
+    public class PincerAttackAwait : AwaitEvent
     {
         //Quick Reference Properties
 
@@ -20,7 +20,7 @@ namespace Assets.Scripts.Events
         private PincerAttackPair pair;
 
         //Constructor
-        public PincerAttackEvent(PincerAttackPair pair)
+        public PincerAttackAwait(PincerAttackPair pair)
         {
             this.pair = pair;
         }

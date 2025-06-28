@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Events
 {
     public abstract class AwaitEvent
     {

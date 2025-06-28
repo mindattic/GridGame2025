@@ -1,4 +1,5 @@
 using Assets.Scripts.Behaviors.Actor;
+using Assets.Scripts.Events;
 using Assets.Scripts.Instances.Actor;
 using Assets.Scripts.Models;
 using Game.Instances.Actor;

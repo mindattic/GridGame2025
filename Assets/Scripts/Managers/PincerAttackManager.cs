@@ -191,7 +191,7 @@ public class PincerAttackManager : MonoBehaviour
         // --- 2. Queue: PopInOut for all supporters
         foreach (var supporter in allSupporters)
         {
-            eventManager.Add(new PortraitPopInEvent(supporter));
+            eventManager.Add(new PortraitPopInAwait(supporter));
         }
 
         // --- 3. Queue: AttackSupportActions and support lines (before attack)
@@ -200,12 +200,12 @@ public class PincerAttackManager : MonoBehaviour
             foreach (var supporter in pair.supporters1)
             {
                 supportLineManager.Spawn(supporter, pair.attacker1);
-                eventManager.Add(new PincerAttackSupportEvent(pair.attacker1, supporter));
+                eventManager.Add(new PincerAttackSupportAwait(pair.attacker1, supporter));
             }
             foreach (var supporter in pair.supporters2)
             {
                 supportLineManager.Spawn(supporter, pair.attacker2);
-                eventManager.Add(new PincerAttackSupportEvent(pair.attacker2, supporter));
+                eventManager.Add(new PincerAttackSupportAwait(pair.attacker2, supporter));
             }
         }
 
@@ -216,7 +216,7 @@ public class PincerAttackManager : MonoBehaviour
 
             //eventManager.Add(new PortraitPopInEvent(pair.attacker1));
             //eventManager.Add(new PortraitPopInEvent(pair.attacker2));
-            eventManager.Add(new PincerAttackEvent(pair));
+            eventManager.Add(new PincerAttackAwait(pair));
             //eventManager.Add(new PortraitPopOutEvent(pair.attacker1));
             //eventManager.Add(new PortraitPopOutEvent(pair.attacker2));
 
@@ -225,7 +225,7 @@ public class PincerAttackManager : MonoBehaviour
         // --- 5. Queue: PopOut for all supporters (after attack)
         foreach (var supporter in allSupporters)
         {
-            eventManager.Add(new PortraitPopOutEvent(supporter));
+            eventManager.Add(new PortraitPopOutAwait(supporter));
         }
 
         // --- 6. Execute sequence

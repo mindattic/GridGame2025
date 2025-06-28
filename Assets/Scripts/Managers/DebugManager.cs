@@ -58,8 +58,8 @@ public class DebugManager : MonoBehaviour
     public void PortraitPopIn()
     {
         var hero = Random.Hero;
-        eventManager.Add(new PortraitPopInEvent(hero));
-        eventManager.Add(new PortraitPopOutEvent(hero));
+        eventManager.Add(new PortraitPopInAwait(hero));
+        eventManager.Add(new PortraitPopOutAwait(hero));
         StartCoroutine(eventManager.Execute());
     }
 

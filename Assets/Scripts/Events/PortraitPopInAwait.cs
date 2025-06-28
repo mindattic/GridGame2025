@@ -3,12 +3,12 @@ using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class PortraitPopInEvent : AwaitEvent
+    public class PortraitPopInAwait : AwaitEvent
     {
         private PortraitManager portraitManager => GameManager.instance.portraitManager;
 
         private ActorInstance actor;
-        public PortraitPopInEvent(ActorInstance actor)
+        public PortraitPopInAwait(ActorInstance actor)
         {
             this.actor = actor;
         }

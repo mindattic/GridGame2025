@@ -3,13 +3,13 @@ using System.Collections;
 
 namespace Assets.Scripts.Events
 {
-    public class PincerAttackSupportEvent : AwaitEvent
+    public class PincerAttackSupportAwait : AwaitEvent
     {
         private ActorInstance attacker;
         private ActorInstance supporter;
 
         // Single-constructor approach
-        public PincerAttackSupportEvent(ActorInstance attacker, ActorInstance supporter)
+        public PincerAttackSupportAwait(ActorInstance attacker, ActorInstance supporter)
         {
             this.attacker = attacker;
             this.supporter = supporter;

@@ -2,15 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Assets.Scripts.Models
+namespace Assets.Scripts.Events
 {
-    public class AsyncEvent
+
+    public interface IAsyncEvent
+    {
+        public IEnumerator Execute(MonoBehaviour context);
+    }
+
+    public class AsyncEvent: IAsyncEvent
     {
         private IEnumerator routine;
         private MonoBehaviour context;
 
         // Indicates whether the evt has executed.
-        public bool HasExecuted { get; private set; }
+        public bool HasExecuted;
 
         // Dictionary for storing attributes.
         private Dictionary<string, object> attributes = new Dictionary<string, object>();
@@ -42,7 +48,7 @@ namespace Assets.Scripts.Models
         //}
 
         // Starts the routine; if isAsync is true, it doesn't wait for completion.
-        public IEnumerator Execute(MonoBehaviour context)
+        public virtual IEnumerator Execute(MonoBehaviour context)
         {
             if (context == null)
                 yield break;

@@ -60,7 +60,7 @@ public class TurnManager : MonoBehaviour
             if (turnPhase == TurnPhase.Start)
             {
                 timerBar.Lock();
-                eventManager.Add(new EnemySpawnEvent());
+                eventManager.Add(new EnemySpawnAwait());
 
                 bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
                 if (!anyReadyEnemies)
@@ -70,7 +70,7 @@ public class TurnManager : MonoBehaviour
                     return;
                 }
 
-                eventManager.Add(new EnemyStartEvent());
+                eventManager.Add(new EnemyStartAwait());
                 eventManager.TriggerExecute();
             }
         }
