@@ -19,12 +19,7 @@ namespace Assets.Scripts.Events
         {
             // If supporter is a Cleric, heal the attacker
             if (supporter.characterName == CharacterHelper.Cleric)
-            {
-                GameManager.instance.projectileManager.EnqueueHeal(supporter, attacker);
-                yield return null;
-            }
-
-            yield break;
+                yield return new HealSupportSequence(supporter, attacker).Execute();
         }
     }
 }

@@ -44,7 +44,7 @@ public class ProjectileManager : MonoBehaviour
         projectiles.Remove(name);
     }
 
-    public void EnqueueHeal(ActorInstance source, ActorInstance target, bool castBeforeAttack = true)
+    public void EnqueueHeal(ActorInstance source, ActorInstance target)
     {
         var heal = new ProjectileSettings()
         {
@@ -58,16 +58,18 @@ public class ProjectileManager : MonoBehaviour
             trigger = new TriggerEvent(target.Heal(10))
         };
 
-        var e = new FireProjectileSequence(heal);
+        sequenceManager.Add(new PortraitPopInSequence(source));
+        sequenceManager.Add(new FireProjectileSequence(heal));
+        sequenceManager.Add(new PortraitPopOutSequence(source));
 
-        if (castBeforeAttack)
-            sequenceManager.Insert(e);
-        else
-            sequenceManager.Add(e);
+        //if (castBeforeAttack)
+        //    sequenceManager.AddFirst(e);
+        //else
+        //    sequenceManager.Add(e);
     }
 
 
-    public void EnqueueFireball(ActorInstance source, ActorInstance target, bool castBeforeAttack = true)
+    public void EnqueueFireball(ActorInstance source, ActorInstance target)
     {
         var fireball = new ProjectileSettings()
         {
@@ -81,12 +83,14 @@ public class ProjectileManager : MonoBehaviour
             trigger = new TriggerEvent(target.FireDamage(10))
         };
 
-        var action = new FireProjectileSequence(fireball);
+        sequenceManager.Add(new PortraitPopInSequence(source));
+        sequenceManager.Add(new FireProjectileSequence(fireball));
+        sequenceManager.Add(new PortraitPopOutSequence(source));
 
-        if (castBeforeAttack)
-            sequenceManager.Insert(action);
-        else
-            sequenceManager.Add(action);
+        //if (castBeforeAttack)
+        //    sequenceManager.AddFirst(action);
+        //else
+        //    sequenceManager.Add(action);
     }
 
 }

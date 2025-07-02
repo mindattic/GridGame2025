@@ -17,6 +17,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
+
             yield return projectileManager.Spawn(projectile);
         }
     }

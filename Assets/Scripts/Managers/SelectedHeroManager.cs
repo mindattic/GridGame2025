@@ -10,6 +10,9 @@ using UnityEngine.Rendering;
 public class SelectedHeroManager : MonoBehaviour
 {
     // Quick reference properties for accessing core game systems
+    protected InputManager inputManager => GameManager.instance.inputManager;
+
+    protected AbilityButtonManager abilityButtonManager => GameManager.instance.abilityButtonManager;
     protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
     protected ActorManager actorManager => GameManager.instance.actorManager;
     protected AudioManager audioManager => GameManager.instance.audioManager;
@@ -36,6 +39,9 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Focus()
     {
+        if (inputManager.inputMode != InputMode.Gameplay)
+            return;  // ignore normal input when not in Gameplay mode
+
         // Only allow focus selection during the hero's turn and the start phase.
         if (!turnManager.isHeroTurn || !turnManager.isStartPhase)
             return;
@@ -59,6 +65,9 @@ public class SelectedHeroManager : MonoBehaviour
 
         sortingManager.OnActorFocus();
 
+        if (focusedActor.isHero)
+            abilityButtonManager.ShowAbilityButtons(focusedActor);
+
         // Calculate the offset between the actor's position and the mouse position.
         touchOffset = focusedActor.position - touchPosition3D;
 
@@ -72,6 +81,9 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Drag()
     {
+        if (inputManager.inputMode != InputMode.Gameplay)
+            return;  // ignore normal input when not in Gameplay mode
+
         // Only proceed if it's the hero's turn, the game is in the start phase,
         // there is a focused actor, and that actor is not an enemy.
         if (!turnManager.isHeroTurn || !turnManager.isStartPhase || !hasFocusedActor || focusedActor.isEnemy)
@@ -109,6 +121,10 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Drop()
     {
+        if (inputManager.inputMode != InputMode.Gameplay)
+            return;  // ignore normal input when not in Gameplay mode
+
+
         // Ensure that it's the hero's turn, the move phase is active,
         // and that there is a selected hero who is currently moving.
         if (!turnManager.isHeroTurn || !turnManager.isMovePhase || !hasSelectedHero || !selectedHero.flags.IsMoving)

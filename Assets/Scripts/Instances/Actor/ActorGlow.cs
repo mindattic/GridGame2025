@@ -11,7 +11,7 @@ namespace Assets.Scripts.Instances.Actor
         protected ActorRenderers render => instance.render;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
-        private bool isPlayer => instance.isPlayer;
+        private bool isPlayer => instance.isHero;
         private bool isEnemy => instance.isEnemy;
         protected AnimationCurve glowCurve => instance.glowCurve;
 

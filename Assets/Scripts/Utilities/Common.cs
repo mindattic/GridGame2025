@@ -97,6 +97,7 @@ public static class ComponentHelper
         public const string TimerBar = "Canvas2D/TimerBar";
         public const string CoinBar = "Canvas2D/CoinBar";
         public const string TutorialPopup = "Canvas2D/TutorialPopup";
+        public const string TargetModeOverlay = "Canvas2D/TargetModeOverlay";
 
         public static class Board
         {
@@ -331,7 +332,7 @@ public static class Tag
     public static string Board = "Board";
     public static string Tile = "Tile";
     public static string Actor = "Actor";
-    public static string SupportLine = "SupportLine";
+    public static string SupportLine = "SupportLineAbove";
     public static string AttackLine = "AttackLine";
     public static string Trail = "Trail";
     public static string Select = "SelectProfile";

@@ -24,7 +24,7 @@ namespace Assets.Scripts.Models
 
         public void Add(T item) => queue.AddLast(item); // Normal enqueue
 
-        public void Insert(T item) => queue.AddFirst(item); // Add to top
+        public void AddFirst(T item) => queue.AddFirst(item); // Add to top
 
       
         public void Insert(T item, T node, InsertOrder order = InsertOrder.Before)

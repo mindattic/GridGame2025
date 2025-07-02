@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 /// <summary>
-/// A minimal class storing two actors (actor1, actor2) plus an axis (Vertical or Horizontal).
+/// A minimal class storing two actors (supporter, attacker) plus an axis (Vertical or Horizontal).
 /// Optionally retains startActor / endActor for convenience, as well as Matches().
 /// All older "in-between" logic and lists have been removed.
 /// </summary>
@@ -65,7 +65,7 @@ public class ActorPair
     }
 
     /// <summary>
-    /// Returns true if the two actors match this pair's actor1 and actor2 in either order.
+    /// Returns true if the two actors match this pair's supporter and attacker in either order.
     /// </summary>
     public bool Matches(ActorInstance a1, ActorInstance a2)
     {

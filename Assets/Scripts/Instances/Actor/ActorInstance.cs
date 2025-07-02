@@ -40,7 +40,7 @@ public class ActorInstance : MonoBehaviour
 
     // Internal Properties: Provide information about the actor's state and position.
     public TileInstance currentTile => tileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
-    public bool isPlayer => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
+    public bool isHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
     public bool isEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an enemy.
     public bool isActive => isActiveAndEnabled;                   // Checks if the GameObject is active.
     public bool isAlive => stats.HP > 0;                          // Actor is alive if HP is above zero.
@@ -53,7 +53,7 @@ public class ActorInstance : MonoBehaviour
     public string characterName;                                // characterName actors for this actor.
 
     // Determines if the actor is invincible based on team-specific debug settings.
-    public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isPlayer && debugManager.isHeroInvincible);
+    public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isHero && debugManager.isHeroInvincible);
 
     // Transform-related properties for position, rotation, scale and parent management.
     public Transform parent
@@ -253,7 +253,7 @@ public class ActorInstance : MonoBehaviour
         render.weaponIcon.sprite = SpriteRepo.WeaponTypes[weapon.Type.ToString()];
 
         // Configure visual appearance and effects based on team.
-        if (isPlayer)
+        if (isHero)
         {
             render.SetOpaqueColor(ColorHelper.Solid.White);
             render.SetQualityColor(ColorHelper.Solid.White);

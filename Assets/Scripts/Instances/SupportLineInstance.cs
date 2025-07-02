@@ -1,61 +1,143 @@
 using System;
 using System.Collections;
+using System.Drawing;
 using UnityEngine;
+using UnityEngine.Rendering;
 
+/// <summary>
+/// Draws a curved support line (arc) between two ActorInstances,
+/// handles fade in/out, and updates positions each physics step
+/// </summary>
 public class SupportLineInstance : MonoBehaviour
 {
-    // Quick Reference Properties
+    /// <summary>
+    /// Retrieves the size of each tile from the GameManager singleton
+    /// </summary>
     protected float tileSize => GameManager.instance.tileSize;
-    protected BoardInstance board => GameManager.instance.board;
-    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
 
+    /// <summary>
+    /// Retrieves the board instance from the GameManager singleton
+    /// </summary>
+    protected BoardInstance board => GameManager.instance.board;
+
+    /// <summary>
+    /// Retrieves the manager responsible for support lines from GameManager singleton
+    /// </summary>
+    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
+    protected SortingManager sortingManager => GameManager.instance.sortingManager;
+
+    /// <summary>
+    /// Quick reference to the parent transform;
+    /// setting this moves the GameObject under the board in the hierarchy
+    /// </summary>
     public Transform parent
     {
         get => gameObject.transform.parent;
         set => gameObject.transform.SetParent(value, true);
     }
 
-    // Fields
+    /// <summary>
+    /// Current alpha transparency of the line
+    /// </summary>
     public float alpha = 0f;
 
-    [SerializeField] private float fadeDuration = 0.1f;
+    /// <summary>
+    /// Duration for fade in and fade out
+    /// </summary>
+    [SerializeField]
+    private float fadeDuration = 0.1f;
+
+    /// <summary>
+    /// Minimum alpha value (fully transparent)
+    /// </summary>
     private float minAlpha = Opacity.Transparent;
+
+    /// <summary>
+    /// Maximum alpha value (semi-transparent)
+    /// </summary>
     private float maxAlpha = Opacity.Percent50;
 
-    private ActorInstance actor1;
-    private ActorInstance actor2;
+    /// <summary>
+    /// First actor endpoint for the arc
+    /// </summary>
+    public ActorInstance supporter;
 
-    private Color color = ColorHelper.RGBA(48, 161, 49, 0);
+    /// <summary>
+    /// Second actor endpoint for the arc
+    /// </summary>
+    public ActorInstance attacker;
+
+    /// <summary>
+    /// Base color of the line (green) with adjustable alpha
+    /// </summary>
+    private UnityEngine.Color color = ColorHelper.RGBA(48, 161, 49, 0);
+
+    /// <summary>
+    /// Unity LineRenderer component used to draw the arc
+    /// </summary>
     private LineRenderer lineRenderer;
 
+    public bool isStatic = false;
+
+
+    public SortingGroup sortingGroup
+    {
+        get => this.GetComponent<SortingGroup>();
+    }
+
+
+
+
+
+
+    /// <summary>
+    /// Cache component and configure initial renderer properties
+    /// </summary>
     private void Awake()
     {
-        lineRenderer = gameObject.GetComponent<LineRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
+
+        // Set width of the line relative to tile size
+        lineRenderer.startWidth = tileSize * 0.25f;
+        lineRenderer.endWidth = tileSize * 0.25f;
+
+        // Ensure alignment faces camera
+        lineRenderer.alignment = LineAlignment.View;
+
         lineRenderer.positionCount = 2;
     }
 
-    private void Start()
+    public void SetSorting(string sortingLayer, int sortingOrder = 0)
     {
-        lineRenderer.startWidth = tileSize / 4;
-        lineRenderer.endWidth = tileSize / 4;
+        sortingGroup.sortingLayerID = SortingLayer.NameToID(sortingLayer);
+        sortingGroup.sortingOrder = sortingOrder;
     }
 
-    public void Spawn(ActorInstance actor1, ActorInstance actor2)
+    /// <summary>
+    /// Initializes the support line between two actors and starts fade-in
+    /// </summary>
+    public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
-        this.actor1 = actor1;
-        this.actor2 = actor2;
+        this.supporter = supporter;
+        this.attacker = attacker;
 
+        // Parent under the board for organization
         parent = board.transform;
+
+        // Unique name for debugging
         name = $"SupportLine_{Guid.NewGuid():N}";
+        lineRenderer.SetPosition(0, supporter.position);
+        lineRenderer.SetPosition(1, attacker.position);
 
-        Vector3 offset = Vector3.down * (tileSize * 0.333f);
-        lineRenderer.SetPosition(0, actor1.position + offset);
-        lineRenderer.SetPosition(1, actor2.position + offset);
+        sortingManager.OnSupportLineSpawn(this);
 
+        // Begin fade-in effect
         StartCoroutine(FadeIn());
     }
 
-
+    /// <summary>
+    /// Updates line alpha over time from transparent to maxAlpha
+    /// </summary>
     private IEnumerator FadeIn()
     {
         float startAlpha = minAlpha;
@@ -74,19 +156,26 @@ public class SupportLineInstance : MonoBehaviour
         UpdateLineAlpha(alpha);
     }
 
+    /// <summary>
+    /// Triggers fade-out and eventual destruction of the support line
+    /// </summary>
     public void TriggerDespawn()
     {
         StartCoroutine(FadeOut());
     }
 
+    /// <summary>
+    /// Updates line alpha over time from maxAlpha to transparent, then destroys
+    /// </summary>
     public IEnumerator FadeOut()
     {
-        //Before:
+        if (isStatic)
+            yield break;
+
         float startAlpha = maxAlpha;
         float targetAlpha = minAlpha;
         float elapsedTime = 0f;
 
-        //During:
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -95,12 +184,16 @@ public class SupportLineInstance : MonoBehaviour
             yield return null;
         }
 
-        //After:
         alpha = minAlpha;
         UpdateLineAlpha(alpha);
-        supportLineManager.Destroy(actor1, actor2);
+
+        // Inform manager to clean up references
+        supportLineManager.Destroy(supporter, attacker);
     }
 
+    /// <summary>
+    /// Applies new alpha to both ends of the LineRenderer's color
+    /// </summary>
     private void UpdateLineAlpha(float a)
     {
         color.a = a;
@@ -108,22 +201,11 @@ public class SupportLineInstance : MonoBehaviour
         lineRenderer.endColor = color;
     }
 
-    public void UpdateSortingOrder()
-    {
-        // Placeholder for sorting logic if needed
-    }
-
-
-    private void FixedUpdate()
-    {
-        Vector3 offset = Vector3.down * (tileSize * 0.333f);
-        lineRenderer.SetPosition(0, actor1.position + offset);
-        lineRenderer.SetPosition(1, actor2.position + offset);
-    }
-
-
+    /// <summary>
+    /// Destroys this GameObject when requested
+    /// </summary>
     public void Destroy()
     {
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }

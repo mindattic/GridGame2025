@@ -177,19 +177,20 @@ public class PincerAttackManager : MonoBehaviour
     {
         sortingManager.OnPincerAttackStart(participants);
 
-        yield return boardOverlay.FadeIn();
-
+     
         // --- 1. Gather all unique supporters (no duplicates)
         var allSupporters = participants.pair
             .SelectMany(pair => pair.supporters1.Concat(pair.supporters2))
             .Distinct()
             .ToList();
 
+        yield return boardOverlay.FadeIn();
+
         // --- 2. Queue: PopInOut for all supporters
-        foreach (var supporter in allSupporters)
-        {
-            sequenceManager.Add(new PortraitPopInSequence(supporter));
-        }
+        //foreach (var supporter in allSupporters)
+        //{
+        //    sequenceManager.Add(new PortraitPopInSequence(supporter));
+        //}
 
         // --- 3. Queue: AttackSupportActions and support lines (before attackResult)
         foreach (var pair in participants.pair)
@@ -197,12 +198,18 @@ public class PincerAttackManager : MonoBehaviour
             foreach (var supporter in pair.supporters1)
             {
                 supportLineManager.Spawn(supporter, pair.attacker1);
+
+                //sequenceManager.Add(new PortraitPopInSequence(supporter));
                 sequenceManager.Add(new PincerAttackSupportSequence(pair.attacker1, supporter));
+                //sequenceManager.Add(new PortraitPopOutSequence(supporter));
             }
             foreach (var supporter in pair.supporters2)
             {
                 supportLineManager.Spawn(supporter, pair.attacker2);
+
+                //sequenceManager.Add(new PortraitPopInSequence(supporter));
                 sequenceManager.Add(new PincerAttackSupportSequence(pair.attacker2, supporter));
+                //sequenceManager.Add(new PortraitPopOutSequence(supporter));
             }
         }
 
@@ -227,10 +234,10 @@ public class PincerAttackManager : MonoBehaviour
         }
 
         // --- 5. Queue: PopOut for all supporters (after attackResult)
-        foreach (var supporter in allSupporters)
-        {
-            sequenceManager.Add(new PortraitPopOutSequence(supporter));
-        }
+        //foreach (var supporter in allSupporters)
+        //{
+        //    sequenceManager.Add(new PortraitPopOutSequence(supporter));
+        //}
 
         // --- 6. Execute sequence
 
@@ -273,7 +280,7 @@ public class PincerAttackManager : MonoBehaviour
     /// </summary>
     /// <param name="attacker">The attacking actor for whom supporters are being found.</param>
     /// <returns>A list of supporting ActorInstances.</returns>
-    private List<ActorInstance> FindSupporters(ActorInstance attacker)
+    public List<ActorInstance> FindSupporters(ActorInstance attacker)
     {
         // Filter potential supporters:
         // They must be playing, on the same team, not be the attacker,

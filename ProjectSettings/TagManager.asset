@@ -67,13 +67,16 @@ TagManager:
   - name: DottedLine
     uniqueID: 1944532057
     locked: 0
+  - name: SupportLineBelow
+    uniqueID: 3102577163
+    locked: 0
   - name: ActorBelow
     uniqueID: 1438895807
     locked: 0
   - name: BoardOverlay
     uniqueID: 1198754983
     locked: 0
-  - name: SupportLine
+  - name: SupportLineAbove
     uniqueID: 1208109523
     locked: 0
   - name: ActorAbove

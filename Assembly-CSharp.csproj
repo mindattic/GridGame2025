@@ -64,8 +64,8 @@
     <Compile Include="Assets\Scripts\Managers\DamageTextManager.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Repository\SoundEffectRepo.cs" />
-    <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PincerAttackSupportSequence.cs" />
+    <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Repository\PrefabRepo.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
@@ -77,6 +77,7 @@
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
     <Compile Include="Assets\Scripts\Instances\DamageTextInstance.cs" />
+    <Compile Include="Assets\Scripts\Events\Sequences\HealSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
@@ -120,12 +121,14 @@
     <Compile Include="Assets\Scripts\Models\TrailEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\HitOrMissTrigger.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\MultiAttackTrigger.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
+    <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
     <Compile Include="Assets\Scripts\Repository\ProfileRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
@@ -185,6 +188,7 @@
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
+    <Compile Include="Assets\Scripts\Managers\AbilityButtonManager.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\SingleAttackTrigger.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
@@ -195,6 +199,7 @@
     <Compile Include="Assets\Scripts\Canvas\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PincerAttackSequence.cs" />
+    <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
@@ -204,6 +209,7 @@
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
     <Compile Include="Assets\Scripts\Repository\VisualEffectRepo.cs" />
     <Compile Include="Assets\Scripts\Utilities\ConvertString.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TargetModeOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PortraitPopOutSequence.cs" />

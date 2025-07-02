@@ -52,6 +52,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public SequenceManager sequenceManager;
     [HideInInspector] public PincerAttackManager pincerAttackManager;
     [HideInInspector] public SortingManager sortingManager;
+    [HideInInspector] public TargetLineManager targetLineManager;
+    [HideInInspector] public AbilityButtonManager abilityButtonManager;
 
     //Board
     [HideInInspector] public BoardOverlay boardOverlay;
@@ -65,6 +67,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Canvas canvas2D;
     [HideInInspector] public Canvas canvas3D;
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
+    [HideInInspector] public TargetModeOverlay targetModeOverlay;
+
 
     //Mouse
     [HideInInspector] public Vector3 touchPosition2D;
@@ -142,6 +146,7 @@ public class GameManager : Singleton<GameManager>
         coinBar = GameObject.Find(ComponentHelper.Game.CoinBar).GetComponent<CoinBar>();
         waveAnnouncement = GameObject.Find(ComponentHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
         canvasOverlay = GameObject.Find(ComponentHelper.Game.CanvasOverlay).GetComponent<CanvasOverlay>();
+        targetModeOverlay = GameObject.Find(ComponentHelper.Game.TargetModeOverlay).GetComponent<TargetModeOverlay>();
 
         //Board
         board = GameObject.Find(ComponentHelper.Game.Board.Root).GetComponent<BoardInstance>();
@@ -184,6 +189,8 @@ public class GameManager : Singleton<GameManager>
         sequenceManager = game.GetComponent<SequenceManager>();
         pincerAttackManager = game.GetComponent<PincerAttackManager>();
         sortingManager = game.GetComponent<SortingManager>();
+        targetLineManager = game.GetComponent<TargetLineManager>();
+        abilityButtonManager = game.GetComponent<AbilityButtonManager>();
 
         #region Platform Dependent Compilation
 
@@ -224,6 +231,8 @@ public class GameManager : Singleton<GameManager>
         board.Initialize();             //01
         stageManager.Initialize();      //02
         focusIndicator.Initialize();    //03
+        targetModeOverlay.Initialize(); //04
+        timerBar.Initialize(); //05
     }
 
 }

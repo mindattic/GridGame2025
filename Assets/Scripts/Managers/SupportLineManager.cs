@@ -5,7 +5,7 @@ public class SupportLineManager : MonoBehaviour
 {
     //Fields
     [SerializeField] public GameObject supportLinePrefab;
-    public Dictionary<(Vector2Int, Vector2Int), SupportLineInstance> supportLines = new Dictionary<(Vector2Int, Vector2Int), SupportLineInstance>();
+    public Dictionary<(ActorInstance, ActorInstance), SupportLineInstance> supportLines = new Dictionary<(ActorInstance, ActorInstance), SupportLineInstance>();
 
 
     public void Awake()
@@ -13,28 +13,29 @@ public class SupportLineManager : MonoBehaviour
         supportLinePrefab = PrefabRepo.Prefabs["SupportLinePrefab"];
     }
 
-    public bool Exists(ActorInstance actor1, ActorInstance actor2)
+    public bool Exists(ActorInstance supporter, ActorInstance attacker)
     {
-        var key = GetKey(actor1, actor2);
+        var key = GetKey(supporter, attacker);
         return supportLines.ContainsKey(key);
     }
 
-    public void Spawn(ActorInstance actor1, ActorInstance actor2)
+    public SupportLineInstance Spawn(ActorInstance supporter, ActorInstance attacker)
     {
-        var key = GetKey(actor1, actor2);
+        var key = GetKey(supporter, attacker);
 
-        if (Exists(actor1, actor2))
-            return;
+        if (Exists(supporter, attacker))
+            return null;
 
         var prefab = Instantiate(supportLinePrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<SupportLineInstance>();
-        supportLines[key] = instance;
-        instance.Spawn(actor1, actor2);
+        supportLines.Add(key, instance);
+        instance.Spawn(supporter, attacker);
+        return instance;
     }
 
-    public void Despawn(ActorInstance actor1, ActorInstance actor2)
+    public void Despawn(ActorInstance supporter, ActorInstance attacker)
     {
-        var key = GetKey(actor1, actor2);
+        var key = GetKey(supporter, attacker);
         if (supportLines.TryGetValue(key, out var instance))
         {
             instance.TriggerDespawn();
@@ -51,9 +52,9 @@ public class SupportLineManager : MonoBehaviour
         supportLines.Clear();
     }
 
-    public void Destroy(ActorInstance actor1, ActorInstance actor2)
+    public void Destroy(ActorInstance supporter, ActorInstance attacker)
     {
-        var key = GetKey(actor1, actor2);
+        var key = GetKey(supporter, attacker);
         if (supportLines.TryGetValue(key, out var instance))
         {
             instance.Destroy();
@@ -61,14 +62,10 @@ public class SupportLineManager : MonoBehaviour
         }
     }
 
-    private (Vector2Int, Vector2Int) GetKey(ActorInstance actor1, ActorInstance actor2)
+    public (ActorInstance, ActorInstance) GetKey(ActorInstance supporter, ActorInstance attacker)
     {
-        var location1 = actor1.location;
-        var location2 = actor2.location;
-
-        return location1.x < location2.x || (location1.x == location2.x && location1.y < location2.y)
-            ? (location1, location2)
-            : (location2, location1);
+        return (supporter, attacker);
     }
+
 
 }

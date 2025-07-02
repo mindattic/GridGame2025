@@ -17,9 +17,9 @@ public class SequenceManager : MonoBehaviour
         queue.Add(e);
     }
 
-    public void Insert(SequenceEvent e)
+    public void AddFirst(SequenceEvent e)
     {
-        queue.Insert(e);
+        queue.AddFirst(e);
     }
 
     public void TriggerExecute()

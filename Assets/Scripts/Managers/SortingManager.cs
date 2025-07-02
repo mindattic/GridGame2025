@@ -29,9 +29,10 @@ public class SortingManager : MonoBehaviour
         public const string Default = "Default";
         public const string Board = "Board";
         public const string DottedLine = "DottedLine";
+        public const string SupportLineBelow = "SupportLineBelow";
         public const string ActorBelow = "ActorBelow";
         public const string BoardOverlay = "BoardOverlay";
-        public const string SupportLine = "SupportLine";
+        public const string SupportLineAbove = "SupportLineAbove";
         public const string ActorAbove = "ActorAbove";
         public const string VFX = "VFX";
         public const string Coin = "Coin";
@@ -130,8 +131,15 @@ public class SortingManager : MonoBehaviour
                 x.SetSorting(SortingLayer.ActorAbove, SortingOrder.Supporter);
             foreach (var x in pair.supporters2)
                 x.SetSorting(SortingLayer.ActorAbove, SortingOrder.Supporter);
+
         }
 
+    }
+
+    public void OnSupportLineSpawn(SupportLineInstance supportLine)
+    {
+        var isAbove = supportLine.supporter.sortingGroup.sortingLayerName == SortingLayer.ActorAbove;
+        supportLine.SetSorting(isAbove ? SortingLayer.SupportLineAbove : SortingLayer.SupportLineBelow);
     }
 
     public void OnPortraitPopIn(PortraitInstance portrait)

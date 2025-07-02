@@ -20,6 +20,7 @@ public static class PrefabRepo
     {
         prefabs = new Dictionary<string, GameObject>
         {
+            { "AbilityButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/AbilityButtonPrefab") },
             { "ActorPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ActorPrefab") },
             { "AttackLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/AttackLinePrefab") },
             { "CanvasParticlePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CanvasParticlePrefab") },
@@ -38,6 +39,7 @@ public static class PrefabRepo
             { "ProjectilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ProjectilePrefab") },
             { "StatRow", AssetHelper.LoadAsset<GameObject>("Prefabs/StatRow") },
             { "SupportLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SupportLinePrefab") },
+            { "TargetLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TargetLinePrefab") },
             { "TilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TilePrefab") },
             { "TooltipPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TooltipPrefab") },
             { "WallPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/WallPrefab") }

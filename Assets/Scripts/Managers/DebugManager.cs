@@ -29,6 +29,9 @@ public class DebugManager : MonoBehaviour
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
     protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
     protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
+    protected PincerAttackManager pincerAttackManager => GameManager.instance.pincerAttackManager;
+
+
 
     //Internal properties
     ActorInstance hero1 => heroes.Skip(0).Take(1).First();
@@ -109,46 +112,28 @@ public class DebugManager : MonoBehaviour
 
     public void SupportLineTest()
     {
-        var alignedPairs = new HashSet<ActorPair>();
-        foreach (var actor1 in heroes)
+        foreach (var attacker in heroes)
         {
-            foreach (var actor2 in heroes)
+            var supporters = pincerAttackManager.FindSupporters(attacker);
+            foreach (var supporter in supporters)
             {
-                if (actor1 == null || actor2 == null || actor1.Equals(actor2) || !actor1.isActive || !actor1.isAlive || !actor2.isActive || !actor2.isAlive)
-                    continue;
-
-                if (actor1.IsSameColumn(actor2.location))
-                {
-                    var pair = new ActorPair(actor1, actor2, Axis.Vertical);
-                    alignedPairs.Add(pair);
-                }
-                else if (actor1.IsSameRow(actor2.location))
-                {
-                    var pair = new ActorPair(actor1, actor2, Axis.Horizontal);
-                    alignedPairs.Add(pair);
-                }
-
+                var newest = supportLineManager.Spawn(supporter, attacker);
+                newest.isStatic = true;
             }
         }
 
-        foreach (var pair in alignedPairs)
-        {
-            //pair.startActor.sortingOrder = SortingOrder.Supporter;
-            //pair.endActor.sortingOrder = SortingOrder.Supporter;
-            supportLineManager.Spawn(pair.startActor, pair.endActor);
-        }
 
-        IEnumerator _()
-        {
-            yield return Wait.For(Interval.ThreeSeconds);
+        //IEnumerator _()
+        //{
+        //    yield return Wait.For(Interval.ThreeSeconds);
 
-            foreach (var supportLine in supportLineManager.supportLines.Values)
-            {
-                supportLine.TriggerDespawn();
-            }
-        }
+        //    foreach (var supportLine in supportLineManager.supportLines.Values)
+        //    {
+        //        supportLine.TriggerDespawn();
+        //    }
+        //}
 
-        StartCoroutine(_());
+        //StartCoroutine(_());
     }
 
     public void AttackLineTest()

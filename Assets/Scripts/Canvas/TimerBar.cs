@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class TimerBar : MonoBehaviour
 {
     //Quick Reference Properties for accessing game systems
+    protected InputManager inputManager => GameManager.instance.inputManager;
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected float tileSize => GameManager.instance.tileSize;
     protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
@@ -33,6 +34,31 @@ public class TimerBar : MonoBehaviour
 
         //Assign maxWidth based on the background image width
         maxWidth = back.rectTransform.rect.width;
+
+      
+    }
+
+    public void Initialize()
+    {
+        // subscribe
+        inputManager.OnInputModeChanged += HandleModeChanged;
+
+        // initial state
+        HandleModeChanged(inputManager.inputMode);
+    }
+
+    private void HandleModeChanged(InputMode mode)
+    {
+        switch (mode)
+        {
+            case InputMode.Gameplay:
+                this.gameObject.SetActive(true);
+                break;
+
+            case InputMode.AbilityTarget:
+                this.gameObject.SetActive(false);
+                break;
+        }
     }
 
     /// <summary>

@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5922598101913747517}
   - component: {fileID: 4189669959923092886}
-  - component: {fileID: 6976513597678673816}
   - component: {fileID: 6027453370698658133}
+  - component: {fileID: -7694597542895165263}
   m_Layer: 10
-  m_Name: SupportLinePrefab
+  m_Name: TargetLinePrefab
   m_TagString: SupportLine
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,8 +102,8 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.1882353, g: 0.6313726, b: 0.19215687, a: 0.39215687}
-      key1: {r: 0.18783373, g: 0.6320754, b: 0.19136272, a: 0.39215687}
+      key0: {r: 0, g: 1, b: 1, a: 1}
+      key1: {r: 0, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -141,25 +141,6 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 0
---- !u!114 &6976513597678673816
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5922598101913747506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f9211ad183419e428163152e87c328d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  alpha: 0
-  fadeDuration: 0.1
-  supporter: {fileID: 0}
-  attacker: {fileID: 0}
-  isStatic: 0
-  segments: 32
-  arcHeight: 1
 --- !u!210 &6027453370698658133
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -168,7 +149,25 @@ SortingGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5922598101913747506}
   m_Enabled: 1
-  m_SortingLayerID: -1192390133
-  m_SortingLayer: 3
+  m_SortingLayerID: 406368527
+  m_SortingLayer: 8
   m_SortingOrder: 0
   m_SortAtRoot: 0
+--- !u!114 &-7694597542895165263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5922598101913747506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848dd71debec69e4187e79b112bf9bd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  alpha: 0
+  buttonPosition: {x: 0, y: 0, z: 0}
+  cursorPosition: {x: 0, y: 0, z: 0}
+  fadeDuration: 0.1
+  segments: 32
+  arcHeight: 0
