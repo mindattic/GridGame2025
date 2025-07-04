@@ -3,13 +3,16 @@ using UnityEngine.UI;
 
 public class TargetModeOverlay : MonoBehaviour
 {
- 
-    private Image overlayImage;
+    #region Game Properies
     protected InputManager inputManager => GameManager.instance.inputManager;
+    #endregion
 
+    //Components
+    private Image image;
+    
     private void Awake()
     {
-        overlayImage = GetComponent<Image>();
+        image = GetComponent<Image>();
     }
 
     public void Initialize()

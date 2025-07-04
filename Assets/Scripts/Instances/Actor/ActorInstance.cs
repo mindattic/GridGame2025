@@ -12,10 +12,10 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 // ActorInstance represents a game characterName (either hero or enemy) and encapsulates
-// its state, behaviors, rendering, movement, and interactions with game systems.
+// its state, behaviors, rendering, move, and interactions with game systems.
 public class ActorInstance : MonoBehaviour
 {
-    // Quick Reference Properties: Provide convenient access to core game systems via the GameManager singleton.
+    #region Game Properies
     protected List<ActorInstance> actors => GameManager.instance.actors;
     protected AudioManager audioManager => GameManager.instance.audioManager;
     protected BoardInstance board => GameManager.instance.board;
@@ -37,8 +37,11 @@ public class ActorInstance : MonoBehaviour
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected TileManager tileManager => GameManager.instance.tileManager;
+    #endregion
 
-    // Internal Properties: Provide information about the actor's state and position.
+
+
+    #region Instance Properies
     public TileInstance currentTile => tileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
     public bool isHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
     public bool isEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an enemy.
@@ -48,10 +51,21 @@ public class ActorInstance : MonoBehaviour
     public bool isDying => isActive && stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
     public bool isDead => !isActive && !isAlive;                  // Actor is dead when not active and HP is 0.
     public bool isSpawnable => !flags.HasSpawned && spawnTurn <= turnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
-    public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum action points.
+    public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum animate points.
 
-    public string characterName;                                // characterName actors for this actor.
 
+
+    public bool IsSameColumn(Vector2Int other) => location.x == other.x;
+    public bool IsSameRow(Vector2Int other) => location.y == other.y;
+    public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(location, other).Equals(1);
+    public bool IsNorthOf(Vector2Int other) => IsSameColumn(other) && location.y == other.y - 1;
+    public bool IsEastOf(Vector2Int other) => IsSameRow(other) && location.x == other.x + 1;
+    public bool IsSouthOf(Vector2Int other) => IsSameColumn(other) && location.y == other.y + 1;
+    public bool IsWestOf(Vector2Int other) => IsSameRow(other) && location.x == other.x - 1;
+    public bool IsNorthWestOf(Vector2Int other) => location.x == other.x - 1 && location.y == other.y - 1;
+    public bool IsNorthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y - 1;
+    public bool IsSouthWestOf(Vector2Int other) => location.x == other.x - 1 && location.y == other.y + 1;
+    public bool IsSouthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y + 1;
     // Determines if the actor is invincible based on team-specific debug settings.
     public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isHero && debugManager.isHeroInvincible);
 
@@ -90,7 +104,7 @@ public class ActorInstance : MonoBehaviour
     {
         get => this.GetComponent<SortingGroup>();
     }
-
+    #endregion
 
 
 
@@ -102,41 +116,31 @@ public class ActorInstance : MonoBehaviour
     }
 
     // Fields: Core actors fields representing characterName stats, state, and modules.
-    [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animation behavior.
-    public Vector2Int previousLocation;                 // Grid location before the last movement.
-    public Vector3 previousPosition;                    // World position before the last movement.
+    [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animate behavior.
+    public Vector2Int previousLocation;                 // Grid location before the last move.
+    public Vector3 previousPosition;                    // World position before the last move.
     public Vector2Int location;                         // CurrentProfile grid location.
     public Team team = Team.Neutral;                    // Actor's team affiliation.
     public int spawnTurn = 0;                           // Turn number when the actor is eligible to spawn.
+    public string characterName;                                // characterName actors for this actor.
+
 
     // Modules: Encapsulate various aspects of the actor such as rendering, stats, abilities, and animations.
     public ActorRenderers render = new ActorRenderers();
     public ActorStats stats = new ActorStats();
     public ActorFlags flags = new ActorFlags();
-    public ActorAbilities abilities = new ActorAbilities();
     public ActorVFX vfx = new ActorVFX();
     public ActorWeapon weapon = new ActorWeapon();
-    public ActorActions action = new ActorActions();
-    public ActorMovement movement = new ActorMovement();
+    public ActorAnimations animate = new ActorAnimations();
+    public ActorMovement move = new ActorMovement();
     public ActorHealthBar healthBar = new ActorHealthBar();
     public ActorActionBar actionBar = new ActorActionBar();
     public ActorGlow glow = new ActorGlow();
     public ActorParallax parallax = new ActorParallax();
     public ActorThumbnail thumbnail;
+    public List<Ability> abilities = new List<Ability>();
 
-    // Methods for checking spatial relationships between this actor and others:
 
-    public bool IsSameColumn(Vector2Int other) => location.x == other.x;
-    public bool IsSameRow(Vector2Int other) => location.y == other.y;
-    public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(location, other).Equals(1);
-    public bool IsNorthOf(Vector2Int other) => IsSameColumn(other) && location.y == other.y - 1;
-    public bool IsEastOf(Vector2Int other) => IsSameRow(other) && location.x == other.x + 1;
-    public bool IsSouthOf(Vector2Int other) => IsSameColumn(other) && location.y == other.y + 1;
-    public bool IsWestOf(Vector2Int other) => IsSameRow(other) && location.x == other.x - 1;
-    public bool IsNorthWestOf(Vector2Int other) => location.x == other.x - 1 && location.y == other.y - 1;
-    public bool IsNorthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y - 1;
-    public bool IsSouthWestOf(Vector2Int other) => location.x == other.x - 1 && location.y == other.y + 1;
-    public bool IsSouthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y + 1;
 
     // Determines the cardinal/diagonal direction from this actor to another.
     // If 'mustBeAdjacent' is true, returns Direction.None if the other actor is not adjacent.
@@ -213,8 +217,8 @@ public class ActorInstance : MonoBehaviour
     {
         // Assign modules with this actor actors context.
         render.Initialize(this);
-        action.Initialize(this);
-        movement.Initialize(this);
+        animate.Initialize(this);
+        move.Initialize(this);
         healthBar.Initialize(this);
         actionBar.Initialize(this);
         glow.Initialize(this);
@@ -279,7 +283,7 @@ public class ActorInstance : MonoBehaviour
         render.SetNameTagText(characterName);
         render.SetNameTagEnabled(isEnabled: debugManager.showActorNameTag);
 
-        // Save health and action bars.
+        // Save health and animate bars.
         healthBar.Update();
         actionBar.Reset();
 
@@ -289,8 +293,8 @@ public class ActorInstance : MonoBehaviour
             gameObject.SetActive(true);
             flags.HasSpawned = true;
             // TriggerEvent fade-in and spin animations for visual feedback.
-            action.TriggerFadeIn();
-            action.TriggerSpin360();
+            animate.TriggerFadeIn();
+            animate.TriggerSpin360();
         }
         else
         {
@@ -387,7 +391,7 @@ public class ActorInstance : MonoBehaviour
         if (isDying)
             TriggerDie();
 
-        // Start the damage animation as a separate coroutine so it doesn't block.
+        // Start the damage animate as a separate coroutine so it doesn't block.
         //Execute(DamageTaken(attackResult));
 
         // Return immediately.
@@ -402,16 +406,16 @@ public class ActorInstance : MonoBehaviour
 
     //    while (ticks < duration)
     //    {
-    //        action.TriggerGrow(); // Flinch effect.
+    //        animate.TriggerGrow(); // Flinch effect.
     //        if (attackResult.IsCriticalHit)
-    //            action.TriggerShake(ShakeIntensity.Medium);
+    //            animate.TriggerShake(ShakeIntensity.Medium);
     //        ticks += Interval.OneTick;
     //        yield return Wait.For(Interval.OneTick);
     //    }
 
     //    // Reset animations.
-    //    action.TriggerShrink();
-    //    action.TriggerShake(ShakeIntensity.Stop);
+    //    animate.TriggerShrink();
+    //    animate.TriggerShake(ShakeIntensity.Stop);
 
     //    if (isDying)
     //        TriggerDie();
@@ -420,11 +424,11 @@ public class ActorInstance : MonoBehaviour
     //}
 
 
-    //AttackMiss: Coroutine to display a miss message and attackResult a dodge animation.
+    //AttackMiss: Coroutine to display a miss message and attackResult a dodge animate.
     public IEnumerator AttackMiss()
     {
         damageTextManager.Spawn("Miss", position);
-        yield return action.Dodge();
+        yield return animate.Dodge();
     }
 
     //TriggerDie: Initiates the actor's death sequence.
@@ -526,7 +530,7 @@ public class ActorInstance : MonoBehaviour
         Teleport(tile.location);
     }
 
-    //SetReady: Resets the enemy actor's action points for a new turn.
+    //SetReady: Resets the enemy actor's animate points for a new turn.
     public void SetReady()
     {
         //Abort if the actor is not active, not alive, or not an enemy.
@@ -536,7 +540,7 @@ public class ActorInstance : MonoBehaviour
         stats.AP = stats.MaxAP;
         stats.PreviousAP = stats.MaxAP;
 
-        //Save the action bar UI to reflect the refreshed action points.
+        //Save the animate bar UI to reflect the refreshed animate points.
         actionBar.Update();
     }
 }

@@ -41,7 +41,7 @@ public class ProjectileInstance : MonoBehaviour
 
     private ProjectileSettings projectile = new ProjectileSettings();
 
-    // Private fields for movement and for the instantiated trailInstance.
+    // Private fields for move and for the instantiated trailInstance.
     private Vector3 startPosition;
     private Vector3 endPosition;
     private GameObject trailInstance;

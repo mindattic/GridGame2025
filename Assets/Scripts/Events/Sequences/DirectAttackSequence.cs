@@ -7,14 +7,12 @@ namespace Assets.Scripts.Events
 {
     public class DirectAttackSequence : SequenceEvent
     {
-        //Quick Reference Properties
+        #region Game Properies
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected List<ActorInstance> actors => GameManager.instance.actors;
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
         protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
-
-        //Constructor
-        public DirectAttackSequence() { }
+        #endregion
 
         public override IEnumerator Execute()
         {
@@ -43,10 +41,10 @@ namespace Assets.Scripts.Events
                     
                     
                     
-                    yield return enemy.action.Bump(direction, processAttack);
+                    yield return enemy.animate.Bump(direction, processAttack);
 
 
-                    //enemy.action.Bump(direction, trigger);
+                    //enemy.animate.Bump(direction, trigger);
                 }
 
                 enemy.actionBar.Reset();

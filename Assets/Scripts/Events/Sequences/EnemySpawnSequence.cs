@@ -7,10 +7,9 @@ namespace Assets.Scripts.Events
 {
     public class EnemySpawnSequence : SequenceEvent
     {
-        //Quick Reference Properties
+        #region Game Properies
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-
-        public EnemySpawnSequence() { }
+        #endregion
 
         public override IEnumerator Execute()
         {

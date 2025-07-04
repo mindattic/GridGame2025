@@ -5,77 +5,48 @@ using UnityEngine;
 // that highlights the currently focused actor (if any) on the game board.
 public class FocusIndicator : MonoBehaviour
 {
-    // Quick reference properties accessing global game settings through the GameManager singleton.
-    // These properties provide shortcuts to important values such as the tile scale and the CurrentProfile focused actor.
-
-    // Retrieves the global tile scale used in the game.
+    #region Game Properies
     protected Vector3 tileScale => GameManager.instance.tileScale;
-
-    // Checks whether a focused actor is currently assigned.
     protected bool hasFocusedActor => GameManager.instance.hasFocusedActor;
-
-    // Retrieves the currently focused actor from the GameManager.
     protected ActorInstance focusedActor => GameManager.instance.focusedActor;
+    #endregion
 
-    // Private field for the SpriteRenderer component used to visually display the indicator.
     private SpriteRenderer spriteRenderer;
 
-    // Public property to get or set the parent Transform of this game object.
-    // Setting the parent with 'worldPositionStays' set to true preserves the object's world position.
+    #region Instance Properties
     public Transform parent
     {
         get => gameObject.transform.parent;
         set => gameObject.transform.SetParent(value, true);
     }
-
-    // Public property to get or set the position of this game object in the world.
     public Vector3 position
     {
         get => gameObject.transform.position;
         set => gameObject.transform.position = value;
     }
-
-    // Public property to get or set the rotation of this game object.
     public Quaternion rotation
     {
         get => gameObject.transform.rotation;
         set => gameObject.transform.rotation = value;
     }
-
-    // Public property to get or set the local scale of this game object.
     public Vector3 scale
     {
         get => gameObject.transform.localScale;
         set => gameObject.transform.localScale = value;
     }
+    #endregion
 
-    // Awake is called when the script actors is being loaded.
-    // Here, we cache the SpriteRenderer component for later use.
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Start is called before the first frame update.
-    // This is reserved for initialization logic that might be needed before the Save loop.
-    void Start()
-    {
-        // Currently no initialization is needed at start.
-    }
-
-    // Assign sets up the FocusIndicator by scaling it slightly larger than a tile and hiding it initially.
     public void Initialize()
     {
         // Scale the indicator based on the tile scale, making it 10% larger than the standard tile.
         scale = tileScale * 1.1f;
         // Hide the sprite so that it is not visible until explicitly assigned.
         spriteRenderer.enabled = false;
-    }
-
-    // Save is called once per frame.
-    // Currently, no per-frame logic is required for the FocusIndicator.
-    void Update()
-    {
     }
 
     // SelectProfile activates and positions the FocusIndicator based on whether a focused actor exists.

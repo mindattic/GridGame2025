@@ -93,7 +93,10 @@ public static class SpriteRepo
 
         backgrounds = new Dictionary<string, Sprite>
         {
-            { "CandleLitPath", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath") },
+            { "CandleLitPath.00", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath/00") },
+            { "CandleLitPath.01", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath/01") },
+            { "CandleLitPath.02", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath/02") },
+            { "CandleLitPath.03", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath/03") },
         };
 
         gui = new Dictionary<string, Sprite>

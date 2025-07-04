@@ -5,11 +5,15 @@ namespace Assets.Scripts.Events
 {
     public class FireProjectileSequence : SequenceEvent
     {
-        //Quick Reference Properties
+        #region Game Properies
         protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
+        #endregion
+
+        //Fields
         private ProjectileSettings projectile;
 
 
+        //Constructor
         public FireProjectileSequence(ProjectileSettings projectile)
         {
             this.projectile = projectile;

@@ -65,23 +65,23 @@ namespace Assets.Scripts.Instances.Actor
 
         ///<summary>
         ///Moves the actor toward the cursor while the actor is focused or selected.
-        ///If a swap is initiated (via overlap), the movement exits immediately.
+        ///If a swap is initiated (via overlap), the move exits immediately.
         ///</summary>
-        public IEnumerator MoveTowardCursor()
+        public IEnumerator TowardCursor()
         {
             //Before: set a high sorting order.
             flags.IsMoving = true;
 
-            //float tiltFactor = 25f;   //How much tilt to apply based on movement
-            //float rotationFocus = 10f; //Intelligence at which the tilt adjusts
-            //float resetFocus = 5f;     //Intelligence at which the rotation resets
+            float tiltFactor = 25f;   //How much tilt to apply based on move
+            float rotationFocus = 10f; //Intelligence at which the tilt adjusts
+            float resetFocus = 5f;     //Intelligence at which the rotation resets
 
             //During: while the actor is focused or selected and not swapping.
             while (flags.IsMoving)
             {
                 previousPosition = instance.position;
                 instance.position = touchPosition3D + touchOffset;
-                //ApplyTilt(actors.position - previousPosition, tiltFactor, rotationFocus, resetFocus, Vector3.zero);
+                ApplyTilt(instance.position - previousPosition, tiltFactor, rotationFocus, resetFocus, Vector3.zero);
                 CheckLocationChanged();
 
                 yield return Wait.UntilNextFrame();
@@ -94,11 +94,11 @@ namespace Assets.Scripts.Instances.Actor
 
 
         ///<summary>
-        ///Moves the actor toward its grid destination using right-angle (non-diagonal) movement.
+        ///Moves the actor toward its grid destination using right-angle (non-diagonal) move.
         ///</summary>
-        public IEnumerator MoveTowardDestination()
+        public IEnumerator TowardDestination()
         {
-            //Before: movement begins
+            //Before: move begins
 
 
             flags.IsMoving = true;
@@ -111,7 +111,7 @@ namespace Assets.Scripts.Instances.Actor
             //--- Horizontal Movement ---
             if (Mathf.Abs(position.x - destination.x) > snapThreshold)
             {
-                //Opponent position for horizontal movement.
+                //Opponent position for horizontal move.
                 Vector3 horizontalTarget = new Vector3(destination.x, position.y, position.z);
                 while (Mathf.Abs(position.x - destination.x) > snapThreshold)
                 {
@@ -135,7 +135,7 @@ namespace Assets.Scripts.Instances.Actor
             //--- Vertical Movement ---
             if (Mathf.Abs(position.y - destination.y) > snapThreshold)
             {
-                //Opponent position for vertical movement.
+                //Opponent position for vertical move.
                 Vector3 verticalTarget = new Vector3(position.x, destination.y, position.z);
                 while (Mathf.Abs(position.y - destination.y) > snapThreshold)
                 {
@@ -164,7 +164,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
 
-        public void SnapToLocation()
+        public void ToLocation()
         {
             flags.IsMoving = false;
             var closestTile = GameManager.instance.tileMap.GetTile(selectedHero.location);
@@ -179,7 +179,7 @@ namespace Assets.Scripts.Instances.Actor
         ///</summary>
         private void CheckLocationChanged()
         {
-            // Ignore if the change is due to selection, not movement
+            // Ignore if the change is due to selection, not move
             if (!flags.IsMoving)
                 return;
 
@@ -220,14 +220,14 @@ namespace Assets.Scripts.Instances.Actor
             else
             {
                 sortingManager.OnActorOverlap(this.instance, overlappingActor);
-                overlappingActor.movement.HandleOverlap(previousLocation);
+                overlappingActor.move.HandleOverlap(previousLocation);
             }
 
         }
 
         public void TriggerMoveTowardsCursor()
         {
-            instance.StartCoroutine(MoveTowardCursor());
+            instance.StartCoroutine(TowardCursor());
         }
 
 
@@ -250,19 +250,19 @@ namespace Assets.Scripts.Instances.Actor
             {
                 flags.IsSwapping = true;
                 location = currentTile.location;
-                instance.StartCoroutine(MoveTowardDestination());
+                instance.StartCoroutine(TowardDestination());
             }
         }
 
 
         ///<summary>
-        ///Applies a tilt effect to the actor based on its movement velocity.
+        ///Applies a tilt effect to the actor based on its move velocity.
         ///</summary>
         public void ApplyTilt(Vector3 velocity, float tiltFactor, float rotationFocus, float resetFocus, Vector3 baseRotation)
         {
-            if (velocity.magnitude > 0.01f) //Only apply tilt if there's noticeable movement.
+            if (velocity.magnitude > 0.01f) //Only apply tilt if there's noticeable move.
             {
-                //Determine whether the movement is primarily vertical or horizontal.
+                //Determine whether the move is primarily vertical or horizontal.
                 bool isMovingVertical = Mathf.Abs(velocity.y) > Mathf.Abs(velocity.x);
                 float velocityFactor = isMovingVertical ? velocity.y : velocity.x;
                 float tiltZ = velocityFactor * tiltFactor;
@@ -274,7 +274,7 @@ namespace Assets.Scripts.Instances.Actor
             }
             else
             {
-                //Smoothly reset the rotation when the movement slows/stops.
+                //Smoothly reset the rotation when the move slows/stops.
                 instance.transform.localRotation = Quaternion.Slerp(
                     instance.transform.localRotation,
                     Quaternion.Euler(baseRotation),

@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class ActorHealthBar
 {
-   //Quick Reference Properties
+    #region Game Properies
     protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-    protected ActorRenderers render => instance.render;
-    protected ActorStats stats => instance.stats;
-
-    //Internal properties
-    public bool isEmpty => !isDraining && stats.PreviousHP < 1;
+    #endregion
 
     //Fields
     private ActorInstance instance;
     public bool isDraining;
+    protected ActorRenderers render => instance.render;
+    protected ActorStats stats => instance.stats;
 
+    //Properties
+    public bool isEmpty => !isDraining && stats.PreviousHP < 1;
 
     public void Initialize(ActorInstance parentInstance)
     {

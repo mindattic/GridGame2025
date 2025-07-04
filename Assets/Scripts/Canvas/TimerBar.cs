@@ -4,25 +4,22 @@ using UnityEngine.UI;
 
 public class TimerBar : MonoBehaviour
 {
-    //Quick Reference Properties for accessing game systems
+    #region Game Properies
     protected InputManager inputManager => GameManager.instance.inputManager;
     protected DebugManager debugManager => GameManager.instance.debugManager;
     protected float tileSize => GameManager.instance.tileSize;
     protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
-  
-    //Timer settings
-    private const float maxDuration = 6f;
-    private float timeRemaining = maxDuration;
+    #endregion
 
-    //UI elements for displaying the timer bar
+    //Components
     private Image back;
     private Image bar;
     private Image front;
 
-    //Maximum width of the timer bar
+    //Fields
+    private const float maxDuration = 6f;
+    private float timeRemaining = maxDuration;
     private float maxWidth;
-
-    //Reference to the active countdown coroutine
     private Coroutine countdown;
 
     private void Awake()
@@ -33,9 +30,7 @@ public class TimerBar : MonoBehaviour
         front = transform.GetChild("Front").GetComponent<Image>();
 
         //Assign maxWidth based on the background image width
-        maxWidth = back.rectTransform.rect.width;
-
-      
+        maxWidth = back.rectTransform.rect.width; 
     }
 
     public void Initialize()

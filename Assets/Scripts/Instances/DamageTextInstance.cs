@@ -158,7 +158,7 @@ public class DamageTextInstance : MonoBehaviour
             // Apply gravity to vertical velocity
             vY += gravity * Time.deltaTime;
 
-            // Save the CurrentProfile position based on vertical velocity and horizontal movement
+            // Save the CurrentProfile position based on vertical velocity and horizontal move
             Vector3 position = transform.position;
             position.y += vY * Time.deltaTime;
             position.x += bounceCount <= 3 ? horizontalFocus * Time.deltaTime : 0;

@@ -5,10 +5,11 @@ namespace Assets.Scripts.GUI
 {
     public class DebugButtonPanel : MonoBehaviour
     {
-       //Quick Reference Properties
+        #region Game Properies
         protected BoardInstance board => GameManager.instance.board;
         protected StageManager stageManager => GameManager.instance.stageManager;
         protected DebugManager debugManager => GameManager.instance.debugManager;
+        #endregion
 
         //Fields
         [SerializeField] private RectTransform PanelRect;

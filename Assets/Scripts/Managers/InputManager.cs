@@ -8,6 +8,7 @@ public enum InputMode
     AbilityTarget
 }
 
+
 // InputManager handles hero touch input and delegates focus, drag, and drop actions
 // to the SelectedHeroManager, while also considering the game's paused state.
 public class InputManager : MonoBehaviour
@@ -57,53 +58,65 @@ public class InputManager : MonoBehaviour
         if (pauseManager.IsPaused)
             return;
 
-        // Ability-targeting mode: intercept a tap, find the hero, and forward it
-        if (inputMode == InputMode.AbilityTarget)
+        switch (inputMode)
         {
-            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                var touch = Input.GetTouch(0);
-                Vector3 worldPos = Camera.main.ScreenToWorldPoint(touch.position);
-                worldPos.z = 0f;
+            case InputMode.AbilityTarget:
+                #region AbilityTarget
 
-                // find the hero under the touch
-                var tappedHero = GameManager.instance.actors
-                    .Where(a => Vector3.Distance(a.position, worldPos) < dragThreshold)
-                    .OrderBy(a => Vector3.Distance(a.position, worldPos))
-                    .FirstOrDefault();
+                if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    var touch = Input.GetTouch(0);
+                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(touch.position);
+                    worldPos.z = 0f;
 
-                targetLineManager.OnTargetTouch(tappedHero);
-            }
-            return;
-        }
+                    // Find the hero under the touch
+                    var tappedHero = GameManager.instance.actors
+                        .Where(a => Vector3.Distance(a.position, worldPos) < dragThreshold)
+                        .OrderBy(a => Vector3.Distance(a.position, worldPos))
+                        .FirstOrDefault();
 
-        // Normal gameplay input
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-            switch (touch.phase)
-            {
-                case TouchPhase.Began:
-                    // Attempt to focus on an actor under the touch.
-                    selectedHeroManager.Focus();
-                    isTouching = true;
-                    initialTouchPosition = touchPosition3D;
-                    break;
+                    targetLineManager.OnTargetTouch(tappedHero);
+                }
+                break;
+            #endregion
 
-                case TouchPhase.Moved:
-                    if (isTouching && Vector3.Distance(initialTouchPosition, touchPosition3D) > dragThreshold)
+
+            #region GamePlay
+
+            case InputMode.Gameplay:
+            default:
+                if (Input.touchCount > 0)
+                {
+                    Touch touch = Input.GetTouch(0);
+                    switch (touch.phase)
                     {
-                        selectedHeroManager.Drag();
-                        isTouching = false;  // Prevent duplicate drag calls.
-                    }
-                    break;
+                        case TouchPhase.Began:
+                            // Attempt to focus on an actor under the touch.
+                            selectedHeroManager.Focus();
+                            isTouching = true;
+                            initialTouchPosition = touchPosition3D;
+                            break;
 
-                case TouchPhase.Ended:
-                case TouchPhase.Canceled:
-                    selectedHeroManager.Drop();
-                    isTouching = false;
-                    break;
-            }
+                        case TouchPhase.Moved:
+                            if (isTouching && Vector3.Distance(initialTouchPosition, touchPosition3D) > dragThreshold)
+                            {
+                                selectedHeroManager.Drag();
+                                isTouching = false;  // Prevent duplicate drag calls.
+                            }
+                            break;
+
+                        case TouchPhase.Ended:
+                        case TouchPhase.Canceled:
+                            selectedHeroManager.Drop();
+                            isTouching = false;
+                            break;
+                    }
+                }
+                break;
+                #endregion
         }
+
+
+
     }
 }

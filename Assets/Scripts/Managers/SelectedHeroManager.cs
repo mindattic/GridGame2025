@@ -39,9 +39,6 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Focus()
     {
-        if (inputManager.inputMode != InputMode.Gameplay)
-            return;  // ignore normal input when not in Gameplay mode
-
         // Only allow focus selection during the hero's turn and the start phase.
         if (!turnManager.isHeroTurn || !turnManager.isStartPhase)
             return;
@@ -56,7 +53,7 @@ public class SelectedHeroManager : MonoBehaviour
         // If no ActorInstance is found or the actor is not active, exit.
         if (actor == null || !actor.isPlaying) return;
 
-        // If the actor under the mouse is already focused, no further action is needed.
+        // If the actor under the mouse is already focused, no further animate is needed.
         if (focusedActor == actor)
             return;
 
@@ -66,7 +63,7 @@ public class SelectedHeroManager : MonoBehaviour
         sortingManager.OnActorFocus();
 
         if (focusedActor.isHero)
-            abilityButtonManager.ShowAbilityButtons(focusedActor);
+            abilityButtonManager.Show(focusedActor);
 
         // Calculate the offset between the actor's position and the mouse position.
         touchOffset = focusedActor.position - touchPosition3D;
@@ -77,13 +74,10 @@ public class SelectedHeroManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles dragging an actor, setting up movement and updating the turn phase.
+    /// Handles dragging an actor, setting up move and updating the turn phase.
     /// </summary>
     public void Drag()
     {
-        if (inputManager.inputMode != InputMode.Gameplay)
-            return;  // ignore normal input when not in Gameplay mode
-
         // Only proceed if it's the hero's turn, the game is in the start phase,
         // there is a focused actor, and that actor is not an enemy.
         if (!turnManager.isHeroTurn || !turnManager.isStartPhase || !hasFocusedActor || focusedActor.isEnemy)
@@ -102,18 +96,18 @@ public class SelectedHeroManager : MonoBehaviour
         card.Clear();
         focusIndicator.Clear();
 
-        // SpawnPair an audio cue to indicate that the actor has been selected for movement.
+        // SpawnPair an audio cue to indicate that the actor has been selected for move.
         audioManager.Play("Click");
 
-        // Start the movement phase:
-        // - SpawnPair the timer bar animation.
-        // - Check enemy action points (AP) to update available moves.
+        // Start the move phase:
+        // - SpawnPair the timer bar animate.
+        // - Check enemy animate points (AP) to update available moves.
         timerBar.Play();
         actorManager.CheckEnemyAP();
         // Switch the turn phase from Start to Move.
         turnManager.SetPhase(TurnPhase.Move);
 
-        selectedHero.movement.TriggerMoveTowardsCursor();
+        selectedHero.move.TriggerMoveTowardsCursor();
     }
 
     /// <summary>
@@ -121,10 +115,6 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Drop()
     {
-        if (inputManager.inputMode != InputMode.Gameplay)
-            return;  // ignore normal input when not in Gameplay mode
-
-
         // Ensure that it's the hero's turn, the move phase is active,
         // and that there is a selected hero who is currently moving.
         if (!turnManager.isHeroTurn || !turnManager.isMovePhase || !hasSelectedHero || !selectedHero.flags.IsMoving)
@@ -136,7 +126,7 @@ public class SelectedHeroManager : MonoBehaviour
         }
 
         // Snap the selected hero's position to the nearest valid tile location on the grid.
-        selectedHero.movement.SnapToLocation();
+        selectedHero.move.ToLocation();
 
         sortingManager.OnSelectedHeroDrop();
 
@@ -144,10 +134,10 @@ public class SelectedHeroManager : MonoBehaviour
         selectedHero = null;
         focusedActor = null;
 
-        // OnPauseButtonClicked the movement timer, indicating that the move phase has ended.
+        // OnPauseButtonClicked the move timer, indicating that the move phase has ended.
         timerBar.Pause();
 
-        // Check for any potential pincer results by the hero's team now that movement is complete.
+        // Check for any potential pincer results by the hero's team now that move is complete.
         attackManager.Check(Team.Hero);
     }
 }

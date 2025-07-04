@@ -90,24 +90,24 @@ public class DebugManager : MonoBehaviour
     public void BumpTest()
     {
         var direction = Random.Direction;
-        hero1.action.TriggerBump(direction);
+        hero1.animate.TriggerBump(direction);
     }
 
     public void ShakeTest()
     {
         var intensity = Random.ShakeIntensityLevel();
         var duration = Random.Float(Interval.HalfSecond, Interval.TwoSeconds);
-        hero1.action.TriggerShake(intensity, duration);
+        hero1.animate.TriggerShake(intensity, duration);
     }
 
     public void DodgeTest()
     {
-        hero1.action.TriggerDodge();
+        hero1.animate.TriggerDodge();
     }
 
     public void SpinTest()
     {
-        hero1.action.TriggerSpin360();
+        hero1.animate.TriggerSpin360();
     }
 
     public void SupportLineTest()

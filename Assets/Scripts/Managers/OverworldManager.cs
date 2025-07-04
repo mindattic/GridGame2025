@@ -137,7 +137,7 @@ public class OverworldManager : MonoBehaviour
 
         Vector2 targetPosition = new Vector2(targetX, targetY);
 
-        // Smooth movement loop
+        // Smooth move loop
         while (Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > snapThreshold)
         {
             scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * speed);
@@ -174,7 +174,7 @@ public class OverworldManager : MonoBehaviour
 
     //    Vector2 targetPosition = new Vector2(targetX, targetY);
 
-    //    // Smooth movement loop
+    //    // Smooth move loop
     //    float progress = 0f;
     //    Vector2 startPosition = scrollRect.normalizedPosition;
 

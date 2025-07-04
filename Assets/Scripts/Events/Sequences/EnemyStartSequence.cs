@@ -5,22 +5,19 @@ namespace Assets.Scripts.Events
 {
     public class EnemyStartSequence : SequenceEvent
     {
-       //Quick Reference Properties
+        #region Game Properies
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
-
-        public EnemyStartSequence()
-        {
-        }
+        #endregion
 
         public override IEnumerator Execute()
         {
-            // Ensure this action only runs during enemy turns.
+            // Ensure this animate only runs during enemy turns.
             if (!turnManager.isEnemyTurn)
                 yield break;
 
             // (Optional) Log or perform any setup needed at the very start of the enemy turn.
-            //Debug.Log("EnemyStartAction executing: preparing enemy movement.");
+            //Debug.Log("EnemyStartAction executing: preparing enemy move.");
 
             sequenceManager.Add(new EnemyMoveSequence());
             turnManager.SetPhase(TurnPhase.Move);

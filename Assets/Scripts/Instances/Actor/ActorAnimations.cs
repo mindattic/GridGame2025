@@ -8,18 +8,19 @@ namespace Assets.Scripts.Instances.Actor
     // ActorActions encapsulates a collection of animated actions for an actor actors,
     // such as shaking, dodging, bumping, growing, spinning, fading in, and weapon wiggle.
     // These actions are implemented using coroutines that interpolate values over time.
-    public class ActorActions
+    public class ActorAnimations
     {
-        // Quick Reference Properties:
-        // Provides convenient access to the selected hero, rendering module, actor stats, and more.
+        #region Game Properies
         protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
+        #endregion
+
+
         protected ActorRenderers render => instance.render;
         protected ActorStats stats => instance.stats;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
         protected float percent33 => Constants.percent33;
         protected float tileSize => GameManager.instance.tileSize;
-        // Shortcuts to the actor's transform properties.
         private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
@@ -28,7 +29,7 @@ namespace Assets.Scripts.Instances.Actor
         // Fields:
         // The parent actor actors this actions module is controlling.
         private ActorInstance instance;
-        // Parameters for the weapon wiggle animation.
+        // Parameters for the weapon wiggle animate.
         private float wiggleFocus;
         private float wiggleAmplitude;
 
@@ -46,7 +47,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a shake animation on the actor's thumbnail.
+        /// Triggers a shake animate on the actor's thumbnail.
         /// A TriggerEvent parameter can specify intensity and duration.
         /// </summary>
         public void TriggerShake(float intensity, float duration = 0, TriggerEvent trigger = default)
@@ -111,7 +112,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers the dodge animation.
+        /// Triggers the dodge animate.
         /// </summary>
         public void TriggerDodge(TriggerEvent trigger = default)
         {
@@ -126,7 +127,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Dodge coroutine: Executes a two-phase dodge animation where the actor twists forward
+        /// Dodge coroutine: Executes a two-phase dodge animate where the actor twists forward
         /// then returns to the original orientation and scale.
         /// </summary>
         public IEnumerator Dodge(TriggerEvent trigger = default)
@@ -134,7 +135,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Define animation curves for rotation and scaling.
+            // Define animate curves for rotation and scaling.
             var rotationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
             var scaleCurve = AnimationCurve.EaseInOut(0, 1, 1, 0.9f);
             // Duration for forward twist and for return.
@@ -201,7 +202,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a bump animation in the given direction.
+        /// Triggers a bump animate in the given direction.
         /// </summary>
         public void TriggerBump(Direction direction, TriggerEvent trigger = default)
         {
@@ -293,7 +294,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a growth animation, increasing the actor's scale up to a maximum size.
+        /// Triggers a growth animate, increasing the actor's scale up to a maximum size.
         /// </summary>
         public void TriggerGrow(float maxSize = 0f, TriggerEvent trigger = default)
         {
@@ -336,7 +337,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a shrink animation, decreasing the actor's scale down to a minimum size.
+        /// Triggers a shrink animate, decreasing the actor's scale down to a minimum size.
         /// </summary>
         public void TriggerShrink(float minSize = 0f, TriggerEvent trigger = default)
         {
@@ -379,7 +380,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a 90-degree spin animation.
+        /// Triggers a 90-degree spin animate.
         /// </summary>
         public void TriggerSpin90(TriggerEvent trigger = default)
         {
@@ -431,7 +432,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a 360-degree spin animation.
+        /// Triggers a 360-degree spin animate.
         /// </summary>
         public void TriggerSpin360(TriggerEvent trigger = default)
         {
@@ -480,7 +481,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a fade-in animation by gradually increasing the actor's render alpha.
+        /// Triggers a fade-in animate by gradually increasing the actor's render alpha.
         /// </summary>
         public void TriggerFadeIn(float delay = 0f, TriggerEvent trigger = default)
         {
@@ -528,7 +529,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a weapon wiggle animation when the actor's action points are full.
+        /// Triggers a weapon wiggle animate when the actor's animate points are full.
         /// </summary>
         public void TriggerWeaponWiggle(TriggerEvent trigger = default)
         {
@@ -573,7 +574,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a wiggle animation on the turn delay textarea to indicate a delay before the actor's turn.
+        /// Triggers a wiggle animate on the turn delay textarea to indicate a delay before the actor's turn.
         /// </summary>
         public void TriggerTurnDelayWiggle(TriggerEvent trigger = default)
         {

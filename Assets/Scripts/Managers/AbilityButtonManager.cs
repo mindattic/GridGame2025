@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using UnityEditor.Playables;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 public enum AbilityType
@@ -13,23 +11,16 @@ public enum AbilityType
     Self
 }
 
-[System.Serializable]
-public class AbilityData
-{
-    public string name;
-    public AbilityType type;
-    public UnityEngine.Events.UnityEvent<ActorInstance> onTargetSelected;
-}
-
 
 public class AbilityButtonManager : MonoBehaviour
 {
-  
+    #region Game Properies
     protected InputManager inputManager => GameManager.instance.inputManager;
     protected TargetLineManager targetLineManager => GameManager.instance.targetLineManager;
 
     private GameObject abilityButtonPrefab;
     private Transform abilityButtonContainer;
+    #endregion
 
     public void Awake()
     {
@@ -37,13 +28,12 @@ public class AbilityButtonManager : MonoBehaviour
         abilityButtonPrefab = PrefabRepo.Prefabs["AbilityButtonPrefab"];
     }
 
+    private List<AbilityButton> buttons = new();
 
-    
-    private List<AbilityButton> spawnedButtons = new();
-
-    public void ShowAbilityButtons(ActorInstance actor)
+    public void Show(ActorInstance actor)
     {
-        ClearButtons();
+        Hide();
+
 
         var abilities = new List<Ability>();
         var a1 = new Ability()
@@ -56,16 +46,16 @@ public class AbilityButtonManager : MonoBehaviour
         foreach (var ability in abilities)
         {
 
-            var buttonGO = Instantiate(abilityButtonPrefab, abilityButtonContainer);
-            var instance = buttonGO.GetComponent<AbilityButton>();
+            var prefab = Instantiate(abilityButtonPrefab, abilityButtonContainer);
+            var instance = prefab.GetComponent<AbilityButton>();
             instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
-            instance.Initialize(ability, () => OnAbilityClicked(actor, ability));
-            spawnedButtons.Add(instance);
+            instance.Initialize(ability, () => OnClick(actor, ability));
+            buttons.Add(instance);
 
         }
     }
 
-    private void OnAbilityClicked(ActorInstance actor, Ability ability)
+    private void OnClick(ActorInstance actor, Ability ability)
     {
         if (ability.requiresTarget)
         {
@@ -90,11 +80,11 @@ public class AbilityButtonManager : MonoBehaviour
     }
 
 
-    public void ClearButtons()
+    public void Hide()
     {
-        foreach (var btn in spawnedButtons)
+        foreach (var btn in buttons)
             Destroy(btn.gameObject);
 
-        spawnedButtons.Clear();
+        buttons.Clear();
     }
 }

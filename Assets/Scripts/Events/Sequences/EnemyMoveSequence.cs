@@ -7,14 +7,12 @@ namespace Assets.Scripts.Events
 {
     public class EnemyMoveSequence : SequenceEvent
     {
-        //Quick Reference Properties
+        #region Game Properies
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
         protected List<ActorInstance> actors = GameManager.instance.actors;
         protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-
-        //Constructor
-        public EnemyMoveSequence() { }
+        #endregion
 
         public override IEnumerator Execute()
         {
@@ -32,17 +30,17 @@ namespace Assets.Scripts.Events
 
             //actors.ForEach(x => x.sortingOrder = SortingOrder.Default);
 
-            //Wait for a predetermined waitDuration before enemy movement starts.
+            //Wait for a predetermined waitDuration before enemy move starts.
             yield return Wait.For(Intermission.Before.Enemy.Move);
 
-            //For each ready enemy, calculate its attackResult strategy and movement it to its destination.
+            //For each ready enemy, calculate its attackResult strategy and move it to its destination.
             foreach (var enemy in readyEnemies)
             {
                 enemy.CalculateAttackStrategy();
-                yield return enemy.movement.MoveTowardDestination();
+                yield return enemy.move.TowardDestination();
             }
 
-            //After moving, add the enemy attackResult action.
+            //After moving, add the enemy attackResult animate.
             sequenceManager.Add(new DirectAttackSequence());
             turnManager.SetPhase(TurnPhase.Attack);
         }

@@ -101,7 +101,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         float startY = Random.Float(yMin, yMax);
         rect.anchoredPosition = new Vector2(startX, startY);
 
-        // SelectProfile random rotation speed, movement, and scale
+        // SelectProfile random rotation speed, move, and scale
         float rotRange = Random.Float(rotationFocusMin, rotationFocusMax);
         float rotWildcard = Random.Int(1, 3) == 1 ? Random.Float(1, 3f) : 1f;
         float rotDirection = Random.Boolean ? -1f : 1f;

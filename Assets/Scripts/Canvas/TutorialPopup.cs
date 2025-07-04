@@ -8,14 +8,11 @@ namespace Assets.Scripts.GUI
 {
     public class TutorialPopup : MonoBehaviour
     {
-       //Quick Reference Properties
+        #region Game Properies
         protected DebugManager debugManager => GameManager.instance.debugManager;
+        #endregion
 
-        //Internal properties
-        bool hasPages => pages != null && pages.Count > 0;
-        int lastPage => pages?.Count - 1 ?? 0;
-
-        //Fields
+        //Components
         [SerializeField] public GameObject panel;
         [SerializeField] public Image image;
         [SerializeField] public TextMeshProUGUI title;
@@ -23,8 +20,15 @@ namespace Assets.Scripts.GUI
         [SerializeField] public Button previousButton;
         [SerializeField] public Button nextButton;
         [SerializeField] public Button closeButton;
+
+        //Fields
         private List<TutorialPage> pages = new List<TutorialPage>();
         private int currentPage = 0;
+
+        //Properties
+        bool hasPages => pages != null && pages.Count > 0;
+        int lastPage => pages?.Count - 1 ?? 0;
+
 
         private void Start()
         {

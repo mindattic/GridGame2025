@@ -402,11 +402,11 @@ public class PartyManager : MonoBehaviour
 
         float targetWidth = backImage.rectTransform.rect.width * (value / maxValue);
 
-        // Cancel any existing animation on this row
+        // Cancel any existing animate on this row
         if (barAnimations.TryGetValue(row, out Coroutine running))
             StopCoroutine(running);
 
-        // Start new animation
+        // Start new animate
         barAnimations[row] = StartCoroutine(AnimateBarFill(row, fillImage.rectTransform, targetWidth));
 
     }

@@ -4,9 +4,10 @@ using UnityEngine.UI;
 
 public class CoinBar : MonoBehaviour
 {
-    //Quick Reference Properties
+    #region Game Properies
     protected Vector3 tileScale => GameManager.instance.tileScale;
     protected int totalCoins => GameManager.instance.totalCoins;
+    #endregion
 
     //Fields
     [SerializeField] public AnimationCurve glowCurve;
@@ -25,11 +26,6 @@ public class CoinBar : MonoBehaviour
         mainCamera = Camera.main;
     }
 
-    void Start()
-    {
-
-    }
-
     void FixedUpdate()
     {
         UpdateGlow();
@@ -42,7 +38,7 @@ public class CoinBar : MonoBehaviour
 
     private void UpdateGlow()
     {
-        // Make glow pulse based on the animation curve
+        // Make glow pulse based on the animate curve
         float glowScale = maxGlowScale * glowCurve.Evaluate(Time.time % glowCurve.length);
         glow.rectTransform.localScale = new Vector3(
             icon.rectTransform.localScale.x * glowScale,

@@ -190,13 +190,13 @@
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityButtonManager.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\SingleAttackTrigger.cs" />
-    <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\PortraitInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasOverlay.cs" />
+    <Compile Include="Assets\Scripts\Instances\Actor\ActorAnimations.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PincerAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
@@ -218,7 +218,6 @@
     <Compile Include="Assets\Scripts\Instances\CoinInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\StageManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorThumbnail.cs" />
-    <Compile Include="Assets\Scripts\Instances\Actor\ActorAbilities.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PortraitPopInSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Canvas2DInstance.cs" />
     <Compile Include="Assets\Scripts\Repository\SpriteRepo.cs" />

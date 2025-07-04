@@ -9,12 +9,13 @@ namespace Assets.Scripts.Events
     //SequenceEvent for processing a single attacking PincerAttackPair
     public class PincerAttackSequence : SequenceEvent
     {
-        //Quick Reference Properties
+        #region Game Properies
 
         protected List<ActorInstance> actors = GameManager.instance.actors;
         protected PortraitManager portraitManager = GameManager.instance.portraitManager;
         protected SortingManager sortingManager = GameManager.instance.sortingManager;
         protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
+        #endregion
 
         //Fields
         private PincerAttackPair pair;
@@ -41,13 +42,13 @@ namespace Assets.Scripts.Events
             // "Grow" both attackers, then "shrink" them:
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
-                pair.attacker1.action.Grow(),
-                pair.attacker2.action.Grow()
+                pair.attacker1.animate.Grow(),
+                pair.attacker2.animate.Grow()
             );
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
-                pair.attacker1.action.Shrink(),
-                pair.attacker2.action.Shrink()
+                pair.attacker1.animate.Shrink(),
+                pair.attacker2.animate.Shrink()
             );
 
             // Determine direction to first opponent
@@ -66,13 +67,13 @@ namespace Assets.Scripts.Events
 
             // Attacker 1: Bump and trigger attackResult
             var trigger1 = new MultiAttackTrigger(pair.attacker1, attacker1Results);
-            yield return pair.attacker1.action.Bump(direction1, trigger1);
+            yield return pair.attacker1.animate.Bump(direction1, trigger1);
 
             yield return Wait.For(Interval.QuarterSecond); // Optional pause
 
             // Attacker 2: Bump and trigger attackResult
             var trigger2 = new MultiAttackTrigger(pair.attacker2, attacker2Results);
-            yield return pair.attacker2.action.Bump(direction2, trigger2);
+            yield return pair.attacker2.animate.Bump(direction2, trigger2);
 
             // Trigger death animations after both attacks
             yield return DeathHelper.Process();

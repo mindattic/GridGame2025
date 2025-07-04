@@ -13,7 +13,7 @@ using UnityEngine;
 public class PincerAttackManager : MonoBehaviour
 {
     // Quick reference properties to easily access various managers and lists from the GameManager singleton.
-    // These properties provide shortcuts to other systems such as turn management, action handling, and board overlays.
+    // These properties provide shortcuts to other systems such as turn management, animate handling, and board overlays.
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;

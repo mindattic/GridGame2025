@@ -695,7 +695,7 @@ public static class AnimationCurveHelper
     public static AnimationCurve EaseInOut => AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     /// <summary>
-    /// A linear movement curve, maintaining a constant speed from start to finish.
+    /// A linear move curve, maintaining a constant speed from start to finish.
     /// </summary>
     public static AnimationCurve Linear => new AnimationCurve(
         new Keyframe(0, 0),
@@ -764,7 +764,7 @@ public static class AnimationCurveHelper
     );
 
     /// <summary>
-    /// An elastic movement that springs back and forth before settling.
+    /// An elastic move that springs back and forth before settling.
     /// </summary>
     public static AnimationCurve Elastic => new AnimationCurve(
         new Keyframe(0, 0),
@@ -788,7 +788,7 @@ public static class AnimationCurveHelper
 public static class BezierCurveHelper
 {
     /// <summary>
-    /// Generates control points for a gentle S-curve movement.
+    /// Generates control points for a gentle S-curve move.
     /// Ensures the perpendicular wave follows the travel direction properly.
     /// </summary>
     public static List<Vector3> Gentle(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 1.2f)

@@ -695,7 +695,7 @@ public class DebugWindow : EditorWindow
     // Moves to the next stage.
     //private void OnNextStageClick() => stageManager.Next();
 
-    // Keyboard control methods for actor movement.
+    // Keyboard control methods for actor move.
     private void OnKeyUp() => GameManager.instance.focusedActor?.Move(Vector2Int.down);
     private void OnKeyDown() => GameManager.instance.focusedActor?.Move(Vector2Int.up);
     private void OnKeyLeft() => GameManager.instance.focusedActor?.Move(Vector2Int.left);

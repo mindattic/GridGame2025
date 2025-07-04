@@ -20,7 +20,7 @@ public class HitOrMissTrigger : TriggerEvent
         else
         {
             // AttackMiss returns an IEnumerator we *do* want to yield,
-            // because it has its own dodge animation.
+            // because it has its own dodge animate.
             yield return attackResult.Opponent.AttackMiss();
         }
     }

@@ -5,9 +5,12 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorGlow
     {
-       //Quick Reference Properties
+        #region Game Properies
         protected TurnManager turnManager => GameManager.instance.turnManager;
         protected Vector3 tileScale => GameManager.instance.tileScale;
+        #endregion
+
+
         protected ActorRenderers render => instance.render;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;

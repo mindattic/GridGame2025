@@ -75,6 +75,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 34808164e446fee4ca64571b52a48665
+    m_Address: Sprites/Backgrounds/CandleLitPath/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38046f430cc691342aaaab1202d2de9e
     m_Address: Sprites/WeaponTypes/Sword
     m_ReadOnly: 0
@@ -132,6 +137,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f37be176d63e8d4fb3a83b7021d59f0
     m_Address: Sprites/Leaves/MapleLeaf1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f51185b7a920154ca6ebd00c9ccc37a
+    m_Address: Sprites/Backgrounds/CandleLitPath/01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -200,6 +210,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa3bbd61e9256f643b7a87dbaa631c92
+    m_Address: Sprites/Backgrounds/CandleLitPath/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b5393b208835cd649b137cfa74eb31e9
     m_Address: Sprites/WeaponTypes/Shuriken
     m_ReadOnly: 0
@@ -225,11 +240,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cf346e2648c5d7e4f821c7b14f1d6ac4
-    m_Address: Sprites/Backgrounds/CandleLitPath
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d07afbf831712b34e9dc7689a931acf6
     m_Address: Sprites/WeaponTypes/Scythe
     m_ReadOnly: 0
@@ -252,6 +262,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e6445dce8ae655e4598f47e5f6eef956
     m_Address: Sprites/Seamless/Swords2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e79a0af8b5d9b6c4099deee2b7e2aedf
+    m_Address: Sprites/Backgrounds/CandleLitPath/02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
