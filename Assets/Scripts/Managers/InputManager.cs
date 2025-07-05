@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum InputMode
 {
-    Gameplay,
+    HeroTurn,
+    EnemyTurn,
     AbilityTarget
 }
 
@@ -24,16 +25,12 @@ public class InputManager : MonoBehaviour
     protected float tileSize => GameManager.instance.tileSize;
     protected TargetLineManager targetLineManager => GameManager.instance.targetLineManager;
 
-
-    private bool isTouching = false;
     private Vector3 initialTouchPosition;
     public float dragThreshold;
 
-
-
     // Fired whenever inputMode changes
     public event Action<InputMode> OnInputModeChanged;
-    private InputMode _inputMode = InputMode.Gameplay;
+    private InputMode _inputMode = InputMode.HeroTurn;
     public InputMode inputMode
     {
         get => _inputMode;
@@ -65,7 +62,7 @@ public class InputManager : MonoBehaviour
 
                 if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                 {
-                    var touch = Input.GetTouch(0);
+                    Touch touch = Input.GetTouch(0);
                     Vector3 worldPos = Camera.main.ScreenToWorldPoint(touch.position);
                     worldPos.z = 0f;
 
@@ -81,10 +78,17 @@ public class InputManager : MonoBehaviour
             #endregion
 
 
-            #region GamePlay
+            #region Enemy Turn
+            case InputMode.EnemyTurn:
+                if (Input.touchCount > 0)
+                {
+                    Touch touch = Input.GetTouch(0);
+                }
+                break;
+            #endregion
 
-            case InputMode.Gameplay:
-            default:
+            #region Hero Turn
+            case InputMode.HeroTurn:
                 if (Input.touchCount > 0)
                 {
                     Touch touch = Input.GetTouch(0);
@@ -93,22 +97,18 @@ public class InputManager : MonoBehaviour
                         case TouchPhase.Began:
                             // Attempt to focus on an actor under the touch.
                             selectedHeroManager.Focus();
-                            isTouching = true;
+
                             initialTouchPosition = touchPosition3D;
                             break;
 
                         case TouchPhase.Moved:
-                            if (isTouching && Vector3.Distance(initialTouchPosition, touchPosition3D) > dragThreshold)
-                            {
+                            if (Vector3.Distance(initialTouchPosition, touchPosition3D) > dragThreshold)
                                 selectedHeroManager.Drag();
-                                isTouching = false;  // Prevent duplicate drag calls.
-                            }
                             break;
 
                         case TouchPhase.Ended:
                         case TouchPhase.Canceled:
                             selectedHeroManager.Drop();
-                            isTouching = false;
                             break;
                     }
                 }

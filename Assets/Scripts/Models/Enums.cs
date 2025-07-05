@@ -30,15 +30,6 @@ public enum Axis
     Vertical
 }
 
-public enum TurnPhase
-{
-    Start,
-    Move,
-    PreAttack,
-    Attack,
-    PostAttack,
-    End
-}
 
 
 public enum Status

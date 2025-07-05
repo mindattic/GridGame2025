@@ -35,7 +35,7 @@ public class TargetModeOverlay : MonoBehaviour
     {
         switch (mode)
         {
-            case InputMode.Gameplay:
+            case InputMode.HeroTurn:
                 this.gameObject.SetActive(false);
                 break;
 

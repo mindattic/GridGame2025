@@ -109,6 +109,7 @@
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
+    <Compile Include="Assets\Scripts\Events\Sequences\EnemyAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Models\ActorModels.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />
@@ -141,7 +142,6 @@
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
-    <Compile Include="Assets\Scripts\Events\Sequences\DirectAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Managers\ProjectileManager.cs" />

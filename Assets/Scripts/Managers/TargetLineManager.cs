@@ -103,6 +103,6 @@ public class TargetLineManager : MonoBehaviour
         lastClicked = null;
 
         // restore normal input
-        inputManager.inputMode = InputMode.Gameplay;
+        inputManager.inputMode = InputMode.HeroTurn;
     }
 }

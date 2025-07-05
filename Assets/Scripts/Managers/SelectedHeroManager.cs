@@ -5,13 +5,14 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-// SelectedPlayerManager handles input and state changes for selecting, dragging, and dropping heroes.
-// It interacts with multiple core game systems via the GameManager singleton.
+/// <summary>
+/// Handles selection, dragging, and dropping of heroes during the correct turn/phase.
+/// Interacts with multiple core game systems via the GameManager singleton.
+/// </summary>
 public class SelectedHeroManager : MonoBehaviour
 {
     // Quick reference properties for accessing core game systems
     protected InputManager inputManager => GameManager.instance.inputManager;
-
     protected AbilityButtonManager abilityButtonManager => GameManager.instance.abilityButtonManager;
     protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
     protected ActorManager actorManager => GameManager.instance.actorManager;
@@ -36,76 +37,71 @@ public class SelectedHeroManager : MonoBehaviour
 
     /// <summary>
     /// Selects an actor under the mouse cursor, updating the focus indicator and actor card UI.
+    /// Allowed ONLY during the hero's turn and at the start of their phase.
     /// </summary>
     public void Focus()
     {
-        // Only allow focus selection during the hero's turn and the start phase.
-        if (!turnManager.isHeroTurn || !turnManager.isStartPhase)
+        // Only allow focus selection during the hero's turn and Start phase.
+        if (!turnManager.isHeroTurn || turnManager.currentPhase != TurnPhase.Start)
             return;
 
-        //Retrieve the ActorInstance component from the collider
         var collisions = Physics2D.OverlapPointAll(touchPosition3D);
         if (collisions == null) return;
         var collider = collisions.FirstOrDefault(x => x.CompareTag(Tag.Actor));
         if (collider == null) return;
         var actor = collider.gameObject.GetComponent<ActorInstance>();
 
-        // If no ActorInstance is found or the actor is not active, exit.
         if (actor == null || !actor.isPlaying) return;
 
-        // If the actor under the mouse is already focused, no further animate is needed.
         if (focusedActor == actor)
             return;
 
-        // Save the focused actor to the one under the mouse.
         focusedActor = actor;
-
         sortingManager.OnActorFocus();
 
         if (focusedActor.isHero)
             abilityButtonManager.Show(focusedActor);
 
-        // Calculate the offset between the actor's position and the mouse position.
         touchOffset = focusedActor.position - touchPosition3D;
 
-        // Save the UI elements
         focusIndicator.Assign();
         card.Assign();
     }
 
     /// <summary>
-    /// Handles dragging an actor, setting up move and updating the turn phase.
+    /// Handles dragging an actor, setting up move. Starts Move phase if at Start, otherwise continues drag in Move phase.
     /// </summary>
     public void Drag()
     {
-        // Only proceed if it's the hero's turn, the game is in the start phase,
-        // there is a focused actor, and that actor is not an enemy.
-        if (!turnManager.isHeroTurn || !turnManager.isStartPhase || !hasFocusedActor || focusedActor.isEnemy)
+        // Only proceed if it's the hero's turn, a hero is focused, and that actor is not an enemy.
+        if (!turnManager.isHeroTurn || !hasFocusedActor || focusedActor.isEnemy)
             return;
 
-        // Assign the selected hero to be the focused actor.
-        selectedHero = focusedActor;
+        // Accept drag ONLY if we are in Start or Move phase:
+        if (turnManager.currentPhase != TurnPhase.Start && turnManager.currentPhase != TurnPhase.Move)
+            return;
 
+        // If at Start, this drag triggers the transition to Move phase:
+        if (turnManager.currentPhase == TurnPhase.Start)
+        {
+            turnManager.SetPhase(TurnPhase.Move);
+            // Optional: if you want to only allow drag *after* Move phase started, return here
+            // return;
+        }
+
+        selectedHero = focusedActor;
         sortingManager.OnSelectedHeroDrag();
 
         // If the selected hero is already moving, do not process further drag logic.
         if (selectedHero.flags.IsMoving)
             return;
 
-        // Clear UI elements
         card.Clear();
         focusIndicator.Clear();
 
-        // SpawnPair an audio cue to indicate that the actor has been selected for move.
         audioManager.Play("Click");
-
-        // Start the move phase:
-        // - SpawnPair the timer bar animate.
-        // - Check enemy animate points (AP) to update available moves.
         timerBar.Play();
         actorManager.CheckEnemyAP();
-        // Switch the turn phase from Start to Move.
-        turnManager.SetPhase(TurnPhase.Move);
 
         selectedHero.move.TriggerMoveTowardsCursor();
     }
@@ -115,29 +111,23 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Drop()
     {
-        // Ensure that it's the hero's turn, the move phase is active,
-        // and that there is a selected hero who is currently moving.
-        if (!turnManager.isHeroTurn || !turnManager.isMovePhase || !hasSelectedHero || !selectedHero.flags.IsMoving)
+        // Only proceed if it's the hero's turn, Move phase is active, and there's a selected hero currently moving.
+        if (!turnManager.isHeroTurn || turnManager.currentPhase != TurnPhase.Move || !hasSelectedHero || !selectedHero.flags.IsMoving)
         {
-            // If an actor was focused but not moved, reset its position to the tile it was originally on.
             if (hasFocusedActor)
                 focusedActor.position = focusedActor.currentTile.position;
             return;
         }
 
-        // Snap the selected hero's position to the nearest valid tile location on the grid.
         selectedHero.move.ToLocation();
-
         sortingManager.OnSelectedHeroDrop();
 
-        //Clear the CurrentProfile selection and focused actor references
         selectedHero = null;
         focusedActor = null;
 
-        // OnPauseButtonClicked the move timer, indicating that the move phase has ended.
         timerBar.Pause();
-
-        // Check for any potential pincer results by the hero's team now that move is complete.
         attackManager.Check(Team.Hero);
+
+        // Do NOT advance phase here—TurnManager/UI is responsible for that!
     }
 }

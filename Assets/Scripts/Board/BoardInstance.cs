@@ -26,8 +26,8 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     public void Initialize()
     {    
-        CalculateOffset();
-        CalculateBounds();
+        AssignPosition();
+        AssignBounds();
         GenerateTiles();
     }
 
@@ -35,7 +35,7 @@ public class BoardInstance : MonoBehaviour
     /// Calculates the offset for the board based on the tile size and desired board centering.
     /// The offset is then applied to the board's transform position.
     /// </summary>
-    private void CalculateOffset()
+    private void AssignPosition()
     {
         // Calculate x-offset so that the board is centered horizontally.
         // Here, -(tileSize * 3) shifts left by three tiles and subtracts half a tile.
@@ -52,7 +52,7 @@ public class BoardInstance : MonoBehaviour
     /// Calculates the bounds of the board based on the offset, tile size, and board dimensions.
     /// Also calculates the center of the board.
     /// </summary>
-    private void CalculateBounds()
+    private void AssignBounds()
     {
         bounds = new RectFloat();
         // Top bound: offset y minus half a tile.
@@ -117,29 +117,29 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     /// <param name="point">The board point to convert.</param>
     /// <returns>A Vector2 representing the screen position.</returns>
-    public Vector2 ScreenPosition(BoardPoint point)
-    {
-        // Calculate the world position based on the board point using a switch expression.
-        Vector3 worldPosition = point switch
-        {
-            BoardPoint.TopLeft => new Vector3(bounds.Left, bounds.Top, 0),
-            BoardPoint.TopCenter => new Vector3(center.x, bounds.Top, 0),
-            BoardPoint.TopRight => new Vector3(bounds.Right, bounds.Top, 0),
-            BoardPoint.MiddleLeft => new Vector3(bounds.Left, center.y, 0),
-            BoardPoint.MiddleCenter => new Vector3(center.x, center.y, 0),
-            BoardPoint.MiddleRight => new Vector3(bounds.Right, center.y, 0),
-            BoardPoint.BottomLeft => new Vector3(bounds.Left, bounds.Bottom, 0),
-            BoardPoint.BottomCenter => new Vector3(center.x, bounds.Bottom, 0),
-            BoardPoint.BottomRight => new Vector3(bounds.Right, bounds.Bottom, 0),
-            _ => Vector3.zero // Fallback case returns (0,0,0).
-        };
+    //public Vector2 ScreenPosition(BoardPoint point)
+    //{
+    //    // Calculate the world position based on the board point using a switch expression.
+    //    Vector3 worldPosition = point switch
+    //    {
+    //        BoardPoint.TopLeft => new Vector3(bounds.Left, bounds.Top, 0),
+    //        BoardPoint.TopCenter => new Vector3(center.x, bounds.Top, 0),
+    //        BoardPoint.TopRight => new Vector3(bounds.Right, bounds.Top, 0),
+    //        BoardPoint.MiddleLeft => new Vector3(bounds.Left, center.y, 0),
+    //        BoardPoint.MiddleCenter => new Vector3(center.x, center.y, 0),
+    //        BoardPoint.MiddleRight => new Vector3(bounds.Right, center.y, 0),
+    //        BoardPoint.BottomLeft => new Vector3(bounds.Left, bounds.Bottom, 0),
+    //        BoardPoint.BottomCenter => new Vector3(center.x, bounds.Bottom, 0),
+    //        BoardPoint.BottomRight => new Vector3(bounds.Right, bounds.Bottom, 0),
+    //        _ => Vector3.zero // Fallback case returns (0,0,0).
+    //    };
 
-        // Convert the world position to screen space using the main camera.
-        Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+    //    // Convert the world position to screen space using the main camera.
+    //    Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
 
-        // Return only the X and Y components as a Vector2.
-        return new Vector2(screenPosition.x, screenPosition.y);
-    }
+    //    // Return only the X and Y components as a Vector2.
+    //    return new Vector2(screenPosition.x, screenPosition.y);
+    //}
 
     /// <summary>
     /// Checks whether a given grid location is within the bounds of the board.

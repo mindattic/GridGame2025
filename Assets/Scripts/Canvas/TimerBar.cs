@@ -46,7 +46,7 @@ public class TimerBar : MonoBehaviour
     {
         switch (mode)
         {
-            case InputMode.Gameplay:
+            case InputMode.HeroTurn:
                 this.gameObject.SetActive(true);
                 break;
 

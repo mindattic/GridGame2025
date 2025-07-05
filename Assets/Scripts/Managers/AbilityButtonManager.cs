@@ -69,7 +69,7 @@ public class AbilityButtonManager : MonoBehaviour
             targetLineManager.BeginTargeting(worldPos, target =>
             {
                 // restore gameplay mode
-                inputManager.inputMode = InputMode.Gameplay;
+                inputManager.inputMode = InputMode.HeroTurn;
                 ability.Activate(actor, target);
             });
         }
