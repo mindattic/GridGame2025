@@ -22,16 +22,31 @@ public class SelectedHeroManager : MonoBehaviour
     protected TileManager tileManager => GameManager.instance.tileManager;
     protected TimerBar timerBar => GameManager.instance.timerBar;
     protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected ActorInstance focusedActor { get => GameManager.instance.focusedActor; set => GameManager.instance.focusedActor = value; }
-    protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
+    protected ActorInstance focusedActor { 
+        get => GameManager.instance.focusedActor; 
+        set => GameManager.instance.focusedActor = value; 
+    }
     protected bool hasFocusedActor => focusedActor != null;
+    protected ActorInstance targetActor
+    {
+        get => GameManager.instance.targetActor;
+        set => GameManager.instance.targetActor = value;
+    }
+    protected bool hasTargetActor => targetActor != null;
+
+    protected ActorInstance selectedHero { 
+        get => GameManager.instance.selectedHero; 
+        set => GameManager.instance.selectedHero = value; 
+    }
     protected bool hasSelectedHero => selectedHero != null;
-    protected ActorInstance selectedHero { get => GameManager.instance.selectedHero; set => GameManager.instance.selectedHero = value; }
+
     protected Card card => GameManager.instance.card;
     protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
     protected Vector3 touchOffset { get => GameManager.instance.touchOffset; set => GameManager.instance.touchOffset = value; }
     protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
     protected float tileSize => GameManager.instance.tileSize;
+    protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
+
     protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
     protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
 
@@ -130,4 +145,5 @@ public class SelectedHeroManager : MonoBehaviour
 
         // Do NOT advance phase here—TurnManager/UI is responsible for that!
     }
+
 }

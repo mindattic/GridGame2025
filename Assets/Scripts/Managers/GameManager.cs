@@ -60,6 +60,7 @@ public class GameManager : Singleton<GameManager>
     //Board
     [HideInInspector] public BoardOverlay boardOverlay;
     [HideInInspector] public FocusIndicator focusIndicator;
+    [HideInInspector] public TargetIndicator targetIndicator;
 
     //Canvas
     [HideInInspector] public CanvasOverlay canvasOverlay;
@@ -91,6 +92,9 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public bool hasFocusedActor => focusedActor != null;
     [HideInInspector] public ActorInstance selectedHero;
     [HideInInspector] public bool hasSelectedPlayer => selectedHero != null;
+
+    [HideInInspector] public ActorInstance targetActor;
+    [HideInInspector] public bool hasTargetActor => targetActor != null;
 
     //Instances
     [HideInInspector] public FadeInstance fade;
@@ -127,12 +131,12 @@ public class GameManager : Singleton<GameManager>
         tileSize = oneSixth;
         tileScale = new Vector3(tileSize, tileSize, 1f);
 
- 
+
         cursorFocus = tileSize * 0.5f;
         swapFocus = tileSize * 0.1666f;
         moveFocus = tileSize * 0.125f;
         bumpFocus = tileSize * 0.08f;
-  
+
         dragThreshold = tileSize * 0.125f;
         ShakeIntensity.Initialize(tileSize);
 
@@ -156,9 +160,10 @@ public class GameManager : Singleton<GameManager>
         board = GameObject.Find(GameObjectHelper.Game.Board.Root).GetComponent<BoardInstance>();
         boardOverlay = GameObject.Find(GameObjectHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
         focusIndicator = GameObject.Find(GameObjectHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>();
+        targetIndicator = GameObject.Find(GameObjectHelper.Game.Board.TargetIndicator).GetComponent<TargetIndicator>();
 
         var game = GameObject.Find("Game"); // No helper constant provided for the root "Game" object
- 
+
         //Audio
         soundSource = game.GetComponents<AudioSource>()[Constants.SoundSourceIndex];
         musicSource = game.GetComponents<AudioSource>()[Constants.MusicSourceIndex];
@@ -235,8 +240,9 @@ public class GameManager : Singleton<GameManager>
         board.Initialize();             //01
         stageManager.Initialize();      //02
         focusIndicator.Initialize();    //03
-        targetModeOverlay.Initialize(); //04
-        timerBar.Initialize(); //05
+        targetIndicator.Initialize();   //04
+        targetModeOverlay.Initialize(); //05
+        timerBar.Initialize();          //06
     }
 
 }

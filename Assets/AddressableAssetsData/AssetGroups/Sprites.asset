@@ -40,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 170482c518ea30d4ea3acb519978c357
+    m_Address: Assets/Sprites/target-indicator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 19f246ecbab868947801f8c6ea101569
     m_Address: Sprites/Backgrounds/CrystalDesert/01
     m_ReadOnly: 0
@@ -282,6 +287,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9f0f639a249386446aff26158e7b7fb0
     m_Address: Sprites/Seamless/Background.DarkBlue
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9f26d6f1e4284eb44ae224bc2ef7abd6
+    m_Address: Assets/Sprites/focus-indicator
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

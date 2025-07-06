@@ -66,7 +66,7 @@ public class TargetLineManager : MonoBehaviour
     /// </summary>
     public void OnTargetTouch(ActorInstance hero)
     {
-        if (inputManager.inputMode != InputMode.AbilityTarget || activeLine == null)
+        if (inputManager.inputMode != InputMode.AbilityTarget)
             return;
 
         if (hero == lastClicked)

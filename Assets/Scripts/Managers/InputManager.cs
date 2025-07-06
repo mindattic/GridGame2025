@@ -1,3 +1,4 @@
+using Assets.Scripts.Repositories;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -24,6 +25,14 @@ public class InputManager : MonoBehaviour
     protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
     protected float tileSize => GameManager.instance.tileSize;
     protected TargetLineManager targetLineManager => GameManager.instance.targetLineManager;
+    protected ActorInstance targetActor
+    {
+        get => GameManager.instance.targetActor;
+        set => GameManager.instance.targetActor = value;
+    }
+    protected bool hasTargetActor => GameManager.instance.hasTargetActor;
+    protected TargetIndicator targetIndicator => GameManager.instance.targetIndicator;
+    
 
     private Vector3 initialTouchPosition;
     public float dragThreshold;
@@ -44,9 +53,11 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    private RectTransform canvas2D;
 
     private void Awake()
     {
+        canvas2D = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
         dragThreshold = tileSize * 0.125f;
     }
 
@@ -55,43 +66,68 @@ public class InputManager : MonoBehaviour
         if (pauseManager.IsPaused)
             return;
 
-        switch (inputMode)
+        if (Input.touchCount > 0)
         {
-            case InputMode.AbilityTarget:
-                #region AbilityTarget
+            Touch touch = Input.GetTouch(0);
 
-                if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-                {
-                    Touch touch = Input.GetTouch(0);
-                    Vector3 worldPos = Camera.main.ScreenToWorldPoint(touch.position);
-                    worldPos.z = 0f;
+            switch (inputMode)
+            {
+                case InputMode.AbilityTarget:
+                    #region AbilityTarget
 
-                    // Find the hero under the touch
-                    var tappedHero = GameManager.instance.actors
-                        .Where(a => Vector3.Distance(a.position, worldPos) < dragThreshold)
-                        .OrderBy(a => Vector3.Distance(a.position, worldPos))
-                        .FirstOrDefault();
+                    switch (touch.phase)
+                    {
+                        case TouchPhase.Began:
 
-                    targetLineManager.OnTargetTouch(tappedHero);
-                }
-                break;
-            #endregion
+                            var collisions = Physics2D.OverlapPointAll(touchPosition3D);
+                            if (collisions == null) return;
+                            var collider = collisions.FirstOrDefault(x => x.CompareTag(Tag.Actor));
+                            if (collider == null) return;
+                            var actor = collider.gameObject.GetComponent<ActorInstance>();
+
+                            if (actor == null || !actor.isPlaying) return;
+
+                            if (targetActor == actor)
+                            {
+                                //This is a double click...
+
+                                ConfirmationDialog.Show(canvas2D, "Are you sure?", onSubmit: (value) =>
+                                {
+                                    if (value)
+                                    {
+                                        Debug.Log("You targetted: " + targetActor.characterName);
+                                    }
+                                });
 
 
-            #region Enemy Turn
-            case InputMode.EnemyTurn:
-                if (Input.touchCount > 0)
-                {
-                    Touch touch = Input.GetTouch(0);
-                }
-                break;
-            #endregion
 
-            #region Hero Turn
-            case InputMode.HeroTurn:
-                if (Input.touchCount > 0)
-                {
-                    Touch touch = Input.GetTouch(0);
+                                return;
+                            }
+                               
+
+                            targetActor = actor;
+                            targetIndicator.Assign();
+                            break;
+
+                        case TouchPhase.Moved:
+
+                            break;
+
+                        case TouchPhase.Ended:
+                        case TouchPhase.Canceled:
+
+                            break;
+                    }
+                    #endregion
+                    break;
+
+                case InputMode.EnemyTurn:
+                    #region Enemy Turn
+                    #endregion
+                    break;
+
+                case InputMode.HeroTurn:
+                    #region Hero Turn
                     switch (touch.phase)
                     {
                         case TouchPhase.Began:
@@ -111,12 +147,9 @@ public class InputManager : MonoBehaviour
                             selectedHeroManager.Drop();
                             break;
                     }
-                }
-                break;
-                #endregion
+                    #endregion
+                    break;
+            }
         }
-
-
-
     }
 }

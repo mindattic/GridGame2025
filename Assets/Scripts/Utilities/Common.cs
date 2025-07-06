@@ -102,8 +102,9 @@ public static class GameObjectHelper
         public static class Board
         {
             public const string Root = "Board";
-            public const string BoardOverlay = "BoardOverlay";
-            public const string FocusIndicator = "FocusIndicator";
+            public const string BoardOverlay = "Board/BoardOverlay";
+            public const string FocusIndicator = "Board/FocusIndicator";
+            public const string TargetIndicator = "Board/TargetIndicator";
         }
 
         public static class Card
