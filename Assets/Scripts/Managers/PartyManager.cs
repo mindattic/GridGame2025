@@ -82,15 +82,15 @@ public class PartyManager : MonoBehaviour
 
         slidePrefab = PrefabRepo.Prefabs["RosterSlidePrefab"];
 
-        title = GameObject.Find(ComponentHelper.PartyManager.Title).GetComponent<RectTransform>();
-        rosterPanel = GameObject.Find(ComponentHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
-        addRemovePartyMemberButton = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButton).GetComponent<RectTransform>();
-        addRemovePartyMemberLabel = GameObject.Find(ComponentHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<Label>();
-        partyMemberCountLabel = GameObject.Find(ComponentHelper.PartyManager.PartyMemberCountLabel).GetComponent<Label>();
-        //statsDisplay = GameObject.Find(ComponentHelper.PartyManager.StatsDisplay).GetComponent<StatsDisplay>();
+        title = GameObject.Find(GameObjectHelper.PartyManager.Title).GetComponent<RectTransform>();
+        rosterPanel = GameObject.Find(GameObjectHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
+        addRemovePartyMemberButton = GameObject.Find(GameObjectHelper.PartyManager.AddRemovePartyMemberButton).GetComponent<RectTransform>();
+        addRemovePartyMemberLabel = GameObject.Find(GameObjectHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<Label>();
+        partyMemberCountLabel = GameObject.Find(GameObjectHelper.PartyManager.PartyMemberCountLabel).GetComponent<Label>();
+        //statsDisplay = GameObject.Find(GameObjectHelper.PartyManager.StatsDisplay).GetComponent<StatsDisplay>();
 
 
-        var statsDisplay = GameObject.Find(ComponentHelper.PartyManager.StatsDisplay).GetComponent<RectTransform>();
+        var statsDisplay = GameObject.Find(GameObjectHelper.PartyManager.StatsDisplay).GetComponent<RectTransform>();
         var panel = statsDisplay.transform.GetChild("Panel").GetComponent<RectTransform>();
         levelRow = panel.transform.GetChild("LVL").GetComponent<RectTransform>();
         hpRow = panel.transform.GetChild("HP").GetComponent<RectTransform>();

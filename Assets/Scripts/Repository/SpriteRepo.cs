@@ -87,17 +87,13 @@ public static class SpriteRepo
         }
     }
 
+
+
     private static void Load()
     {
         if (isLoaded) return;
 
-        backgrounds = new Dictionary<string, Sprite>
-        {
-            { "CandleLitPath.00", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath/00") },
-            { "CandleLitPath.01", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath/01") },
-            { "CandleLitPath.02", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath/02") },
-            { "CandleLitPath.03", AssetHelper.LoadAsset<Sprite>("Sprites/Backgrounds/CandleLitPath/03") },
-        };
+        LoadBackgrounds();
 
         gui = new Dictionary<string, Sprite>
         {
@@ -176,4 +172,31 @@ public static class SpriteRepo
 
         isLoaded = true;
     }
+
+    private static void LoadBackgrounds()
+    {
+        backgrounds = new Dictionary<string, Sprite>();
+
+        var backgroundSets = new (BackgroundSet set, int count)[]
+        {
+            (BackgroundSet.BrutalistPond, 8),
+            (BackgroundSet.CandleLitPath, 4),
+            (BackgroundSet.CrystalDesert, 4),
+            (BackgroundSet.Moors, 9),
+            (BackgroundSet.RedThorns, 4),
+            (BackgroundSet.UnderTheBridge, 4),
+        };
+
+        foreach (var (set, count) in backgroundSets)
+        {
+            string name = set.ToString();
+            for (int i = 0; i < count; i++)
+            {
+                var key = $"{name}.{i:D2}";
+                var path = $"Sprites/Backgrounds/{name}/{i:D2}";
+                backgrounds[key] = AssetHelper.LoadAsset<Sprite>(path);
+            }
+        }
+    }
+
 }

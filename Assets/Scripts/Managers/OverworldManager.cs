@@ -31,14 +31,14 @@ public class OverworldManager : MonoBehaviour
         if (!ProfileRepo.HasProfiles())
             return;
 
-        canvas2D = GameObjectHelper.Find(ComponentHelper.Overworld.Canvas2D).GetComponent<RectTransform>();
-        scrollView = GameObjectHelper.Find(ComponentHelper.Overworld.ScrollView).GetComponent<RectTransform>();
-        scrollRect = GameObjectHelper.Find(ComponentHelper.Overworld.ScrollView).GetComponent<ScrollRect>();
-        viewport = GameObjectHelper.Find(ComponentHelper.Overworld.Viewport).GetComponent<RectTransform>();
-        content = GameObjectHelper.Find(ComponentHelper.Overworld.Content).GetComponent<RectTransform>();
-        map = GameObjectHelper.Find(ComponentHelper.Overworld.Map).GetComponent<RectTransform>();
-        hero = GameObjectHelper.Find(ComponentHelper.Overworld.Hero).GetComponent<PlayerStageMover>();
-        fade = GameObjectHelper.Find(ComponentHelper.Overworld.Fade).GetComponent<FadeInstance>();
+        canvas2D = GameObject.Find(GameObjectHelper.Overworld.Canvas2D).GetComponent<RectTransform>();
+        scrollView = GameObject.Find(GameObjectHelper.Overworld.ScrollView).GetComponent<RectTransform>();
+        scrollRect = GameObject.Find(GameObjectHelper.Overworld.ScrollView).GetComponent<ScrollRect>();
+        viewport = GameObject.Find(GameObjectHelper.Overworld.Viewport).GetComponent<RectTransform>();
+        content = GameObject.Find(GameObjectHelper.Overworld.Content).GetComponent<RectTransform>();
+        map = GameObject.Find(GameObjectHelper.Overworld.Map).GetComponent<RectTransform>();
+        hero = GameObject.Find(GameObjectHelper.Overworld.Hero).GetComponent<PlayerStageMover>();
+        fade = GameObject.Find(GameObjectHelper.Overworld.Fade).GetComponent<FadeInstance>();
 
         //startX = canvas2D.rect.width;
         //startY = canvas2D.rect.height;

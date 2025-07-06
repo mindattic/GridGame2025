@@ -33,12 +33,12 @@ public class Card : MonoBehaviour
 
     private void Awake()
     {
-        canvas2D = GameObject.Find(ComponentHelper.Game.Canvas2D).GetComponent<RectTransform>();
-        card = GameObject.Find(ComponentHelper.Game.Card.Root).GetComponent<RectTransform>();
-        backdrop = GameObject.Find(ComponentHelper.Game.Card.Backdrop).GetComponent<RectTransform>();
-        portrait = GameObject.Find(ComponentHelper.Game.Card.Portrait).GetComponent<RectTransform>();
-        title = GameObject.Find(ComponentHelper.Game.Card.Title).GetComponent<RectTransform>();
-        details = GameObject.Find(ComponentHelper.Game.Card.Details).GetComponent<RectTransform>();
+        canvas2D = GameObject.Find(GameObjectHelper.Game.Canvas2D).GetComponent<RectTransform>();
+        card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<RectTransform>();
+        backdrop = GameObject.Find(GameObjectHelper.Game.Card.Backdrop).GetComponent<RectTransform>();
+        portrait = GameObject.Find(GameObjectHelper.Game.Card.Portrait).GetComponent<RectTransform>();
+        title = GameObject.Find(GameObjectHelper.Game.Card.Title).GetComponent<RectTransform>();
+        details = GameObject.Find(GameObjectHelper.Game.Card.Details).GetComponent<RectTransform>();
 
         portraitSize = canvas2D.rect.width;
         slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);

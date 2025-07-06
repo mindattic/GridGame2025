@@ -2,7 +2,6 @@ using Game.Behaviors.Actor;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static ComponentHelper.Game;
 
 public class PortraitInstance : MonoBehaviour
 {

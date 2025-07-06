@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Models;
-using Assets.Scripts.Repositories;
-using Game.Models;
+﻿using Game.Models;
 using Game.Models.Profile;
 using System;
 using System.Collections;
@@ -12,9 +10,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static ComponentHelper;
 
 public static class SceneHelper
 {
@@ -32,7 +28,7 @@ public static class SceneHelper
 
 }
 
-public static class ComponentHelper
+public static class GameObjectHelper
 {
     public static class Actor
     {
@@ -84,7 +80,6 @@ public static class ComponentHelper
         public const string Content = "Canvas2D/ScrollView/Viewport/Content";
         public const string Textarea = "Canvas2D/ScrollView/Viewport/Content/Textarea";
     }
-
     public static class Game
     {
         public const string Canvas2D = "Canvas2D";
@@ -98,6 +93,11 @@ public static class ComponentHelper
         public const string CoinBar = "Canvas2D/CoinBar";
         public const string TutorialPopup = "Canvas2D/TutorialPopup";
         public const string TargetModeOverlay = "Canvas2D/TargetModeOverlay";
+
+        public static class Background
+        {
+            public const string Root = "Background";
+        }
 
         public static class Board
         {
@@ -390,41 +390,41 @@ public static class ScreenHelper
     }
 }
 
-public static class GameObjectHelper
-{
-    public static GameObject GetChildGameObjectByName(GameObject parent, string childName)
-    {
-        //Find the child Transform by name
-        Transform childTransform = parent.transform.Find(childName);
+//public static class GameObjectHelper
+//{
+//    public static GameObject GetChildGameObjectByName(GameObject parent, string childName)
+//    {
+//        //Find the child Transform by name
+//        Transform childTransform = parent.transform.Find(childName);
 
-        //Return the child GameObject if found, otherwise null
-        return childTransform != null ? childTransform.gameObject : null;
-    }
+//        //Return the child GameObject if found, otherwise null
+//        return childTransform != null ? childTransform.gameObject : null;
+//    }
 
 
-    public static GameObject Find(string path)
-    {
-        if (string.IsNullOrWhiteSpace(path))
-            return null;
+//    public static GameObject Find(string path)
+//    {
+//        if (string.IsNullOrWhiteSpace(path))
+//            return null;
 
-        string[] names = path.Split('/');
-        GameObject current = GameObject.Find(names[0]);
+//        string[] names = path.Split('/');
+//        GameObject current = GameObject.Find(names[0]);
 
-        if (current == null)
-            return null;
+//        if (current == null)
+//            return null;
 
-        for (int i = 1; i < names.Length; i++)
-        {
-            Transform child = current.transform.Find(names[i]);
-            if (child == null)
-                return null;
+//        for (int i = 1; i < names.Length; i++)
+//        {
+//            Transform child = current.transform.Find(names[i]);
+//            if (child == null)
+//                return null;
 
-            current = child.gameObject;
-        }
+//            current = child.gameObject;
+//        }
 
-        return current;
-    }
-}
+//        return current;
+//    }
+//}
 
 
 public static class RotationHelper

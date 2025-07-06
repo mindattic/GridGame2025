@@ -644,6 +644,7 @@ public class DebugWindow : EditorWindow
             case DebugOptions.TutorialTest: debugManager.TooltipTest(); break;
             case DebugOptions.FireballTest: debugManager.FireballTest(); break;
             case DebugOptions.HealTest: debugManager.HealTest(); break;
+            case DebugOptions.RandomizeBackground: debugManager.RandomizeBackground(); break;
             default: Debug.LogWarning("OnDebugOptionRunClick failed."); break;
         }
     }

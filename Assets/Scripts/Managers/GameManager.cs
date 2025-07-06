@@ -55,6 +55,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TargetLineManager targetLineManager;
     [HideInInspector] public AbilityButtonManager abilityButtonManager;
 
+    [HideInInspector] public BackgroundInstance background;
+
     //Board
     [HideInInspector] public BoardOverlay boardOverlay;
     [HideInInspector] public FocusIndicator focusIndicator;
@@ -136,25 +138,27 @@ public class GameManager : Singleton<GameManager>
 
         totalCoins = 0;
 
-        //Canvas
-        tutorialPopup = GameObject.Find(ComponentHelper.Game.TutorialPopup).GetComponent<TutorialPopup>();
-        card = GameObject.Find(ComponentHelper.Game.Card.Root).GetComponent<Card>();
-        fade = GameObject.Find(ComponentHelper.Game.Fade).GetComponent<FadeInstance>();
-        canvas2D = GameObject.Find(ComponentHelper.Game.Canvas2D).GetComponent<Canvas>();
-        canvas3D = GameObject.Find(ComponentHelper.Game.Canvas3D).GetComponent<Canvas>();
-        timerBar = GameObject.Find(ComponentHelper.Game.TimerBar).GetComponent<TimerBar>();
-        coinBar = GameObject.Find(ComponentHelper.Game.CoinBar).GetComponent<CoinBar>();
-        waveAnnouncement = GameObject.Find(ComponentHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
-        canvasOverlay = GameObject.Find(ComponentHelper.Game.CanvasOverlay).GetComponent<CanvasOverlay>();
-        targetModeOverlay = GameObject.Find(ComponentHelper.Game.TargetModeOverlay).GetComponent<TargetModeOverlay>();
+        //Canvas2D
+        tutorialPopup = GameObject.Find(GameObjectHelper.Game.TutorialPopup).GetComponent<TutorialPopup>();
+        card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<Card>();
+        fade = GameObject.Find(GameObjectHelper.Game.Fade).GetComponent<FadeInstance>();
+        canvas2D = GameObject.Find(GameObjectHelper.Game.Canvas2D).GetComponent<Canvas>();
+        canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
+        timerBar = GameObject.Find(GameObjectHelper.Game.TimerBar).GetComponent<TimerBar>();
+        coinBar = GameObject.Find(GameObjectHelper.Game.CoinBar).GetComponent<CoinBar>();
+        waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
+        canvasOverlay = GameObject.Find(GameObjectHelper.Game.CanvasOverlay).GetComponent<CanvasOverlay>();
+        targetModeOverlay = GameObject.Find(GameObjectHelper.Game.TargetModeOverlay).GetComponent<TargetModeOverlay>();
+
+        background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
         //Board
-        board = GameObject.Find(ComponentHelper.Game.Board.Root).GetComponent<BoardInstance>();
-        boardOverlay = GameObject.Find(ComponentHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
-        focusIndicator = GameObject.Find(ComponentHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>();
+        board = GameObject.Find(GameObjectHelper.Game.Board.Root).GetComponent<BoardInstance>();
+        boardOverlay = GameObject.Find(GameObjectHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
+        focusIndicator = GameObject.Find(GameObjectHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>();
 
-        var game = GameObject.Find(Constants.Game);
-
+        var game = GameObject.Find("Game"); // No helper constant provided for the root "Game" object
+ 
         //Audio
         soundSource = game.GetComponents<AudioSource>()[Constants.SoundSourceIndex];
         musicSource = game.GetComponents<AudioSource>()[Constants.MusicSourceIndex];

@@ -13,9 +13,9 @@ public class ProfileCreateManager : MonoBehaviour
 
     private void Awake()
     {
-        canvas2D = GameObject.Find(ComponentHelper.ProfileCreate.Canvas2D).GetComponent<RectTransform>();
-        background = GameObject.Find(ComponentHelper.ProfileCreate.Background).GetComponent<RectTransform>();
-        fade = GameObject.Find(ComponentHelper.ProfileCreate.Fade).GetComponent<FadeInstance>();
+        canvas2D = GameObject.Find(GameObjectHelper.ProfileCreate.Canvas2D).GetComponent<RectTransform>();
+        background = GameObject.Find(GameObjectHelper.ProfileCreate.Background).GetComponent<RectTransform>();
+        fade = GameObject.Find(GameObjectHelper.ProfileCreate.Fade).GetComponent<FadeInstance>();
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;

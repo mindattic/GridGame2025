@@ -26,12 +26,10 @@ public class StageSelectManager : MonoBehaviour
 
         buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
 
-        canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>() ?? throw new UnityException("Canvas2D is null");
-        //header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>() ?? throw new UnityException("Label is null");
-        //scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>() ?? throw new UnityException("ScrollView is null");
-        content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>() ?? throw new UnityException("Content is null");
-        //verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>() ?? throw new UnityException("VerticalLayoutGroup is null");
-        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>() ?? throw new UnityException("FadeInstance is null");
+        canvas2D = GameObject.Find(GameObjectHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
+        content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
+
+        fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
         //startX = canvas2D.rect.width;
         //startY = canvas2D.rect.height;

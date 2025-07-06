@@ -24,6 +24,7 @@ public class DebugManager : MonoBehaviour
     protected StageManager stageManager => GameManager.instance.stageManager;
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected TurnManager turnManager => GameManager.instance.turnManager;
+    protected BackgroundInstance background => GameManager.instance.background;
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
@@ -580,4 +581,12 @@ public class DebugManager : MonoBehaviour
         projectileManager.EnqueueHeal(source, target);
         sequenceManager.TriggerExecute();
     }
+
+
+    public void RandomizeBackground()
+    {
+        background.Randomize();
+    }
+
+
 }

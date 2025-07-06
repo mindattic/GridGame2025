@@ -24,10 +24,10 @@ public class PauseManager : MonoBehaviour
 
     void Awake()
     {
-        pauseButton = GameObject.Find(ComponentHelper.Game.PauseButton);
+        pauseButton = GameObject.Find(GameObjectHelper.Game.PauseButton);
         pauseButtonImage = pauseButton.GetComponent<Image>();
-        pauseMenu = GameObject.Find(ComponentHelper.Game.PauseMenu).gameObject;
-        fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
+        pauseMenu = GameObject.Find(GameObjectHelper.Game.PauseMenu).gameObject;
+        fade = GameObject.Find(GameObjectHelper.Game.Fade).GetComponent<FadeInstance>();
     }
 
     private void Start()

@@ -28,12 +28,12 @@ public class ProfileSelectManager : MonoBehaviour
 
         buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
 
-        canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
-        header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>();
-        scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
-        content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<RectTransform>();
+        canvas2D = GameObject.Find(GameObjectHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
+        header = GameObject.Find(GameObjectHelper.StageSelect.Title).GetComponent<Label>();
+        scrollView = GameObject.Find(GameObjectHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
+        content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<RectTransform>();
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
-        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>();
+        fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
         screenWidth = canvas2D.rect.width;
         screenHeight = canvas2D.rect.height;

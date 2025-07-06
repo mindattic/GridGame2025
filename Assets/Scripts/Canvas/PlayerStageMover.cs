@@ -27,7 +27,7 @@ public class PlayerStageMover : MonoBehaviour
 
     private void Start()
     {
-        fade = GameObject.Find(ComponentHelper.Overworld.Fade).GetComponent<FadeInstance>();
+        fade = GameObject.Find(GameObjectHelper.Overworld.Fade).GetComponent<FadeInstance>();
     }
 
     public void MoveToStage(Button stageButton)

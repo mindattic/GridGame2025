@@ -30,8 +30,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0e5b52c15665dfa429567653007579b3
+    m_Address: Sprites/Backgrounds/RedThorns/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1352dc0ad19aee0419020f6a45351a21
     m_Address: Sprites/Seamless/Background.Menu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 19f246ecbab868947801f8c6ea101569
+    m_Address: Sprites/Backgrounds/CrystalDesert/01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -45,8 +55,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1bdf6fa4994adab48b8d6f562cf4e679
+    m_Address: Sprites/Backgrounds/BrutalistPond/04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1cbcbf2795bc96441952b0a623beaeac
     m_Address: Sprites/TutorialPages/Tutorial.1-2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e775b28298cdaf47ad366d1b7adc30c
+    m_Address: Sprites/Backgrounds/BrutalistPond/02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -62,6 +82,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 24139eefbfe09f749b543d1055acc7bc
     m_Address: Sprites/Pause
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2af776829fc73ed4c813882d5d1f2128
+    m_Address: Sprites/Backgrounds/Moors/08
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -85,8 +110,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38cefd3b1dd26af4fb26b36b7cf29f27
+    m_Address: Sprites/Backgrounds/Moors/07
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a126e79cbb37a94bbb8d5fbfc4247e5
+    m_Address: Sprites/Backgrounds/Moors/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a58aecf2db4b2a419324856087c2e7a
+    m_Address: Sprites/Backgrounds/Moors/05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3ab6f42876f744d4e94691fd9b1721d9
     m_Address: Sprites/Seamless/Fire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3b2b351515a84c144aee0f5fa50a0826
+    m_Address: Sprites/Backgrounds/RedThorns/00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -100,13 +145,28 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47b7895a753e71249be6df85c734efec
+    m_Address: Sprites/Backgrounds/BrutalistPond/05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4808e864b93a90b47ad6c86204ac174a
     m_Address: Sprites/Seamless/BlackFire1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cdb83b0d902c374686fa49f9741451e
+    m_Address: Sprites/Backgrounds/UnderTheBridge/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4d0c4234de2d46049a85ddb2b89ef944
     m_Address: Sprites/WeaponTypes/Hammer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52adffe321c466a47802fe14b3a6415e
+    m_Address: Sprites/Backgrounds/CrystalDesert/00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -125,8 +185,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e6921fa47753ea46b3f6437d5f476ab
+    m_Address: Sprites/Backgrounds/RedThorns/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 689440e14c4f7a1438b5682c0ecb66ea
     m_Address: Sprites/GUI/BackButton
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 68a87cc41d1dedc479be4de38f19c0a4
+    m_Address: Sprites/Backgrounds/CrystalDesert/03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -145,6 +215,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f7ce7872d7738f498b073b76f336190
+    m_Address: Sprites/Backgrounds/RedThorns/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7188e9a019e6bdb40aadb43e75fb62f2
     m_Address: Sprites/GUI/Button.256x64
     m_ReadOnly: 0
@@ -152,6 +227,16 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7d138ee776549614f96c88c0457703d0
     m_Address: Sprites/WeaponTypes/Crossbow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d4668c41329aad4dbfee6bc8b2aaf4e
+    m_Address: Sprites/Backgrounds/BrutalistPond/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80b84c47eb036d94c9e351e9532f0a19
+    m_Address: Sprites/Backgrounds/Moors/03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -175,6 +260,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92939528aeee80f489e21212462fa258
+    m_Address: Sprites/Backgrounds/CrystalDesert/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 96a963b79ecbeda4a8ddcd843268c79f
     m_Address: Sprites/Leaves/MapleLeaf2
     m_ReadOnly: 0
@@ -182,6 +272,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 98745ca6abc132544813043cf430e256
     m_Address: Sprites/GUI/Button.1024x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9d0a35509febc8b4ba704ea28f64eb43
+    m_Address: Sprites/Backgrounds/RedThorns/04
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -200,6 +295,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a473a22dc5aadbd45bb94323875960c3
+    m_Address: Sprites/Backgrounds/UnderTheBridge/00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a5eb8ff48f1d64849aacb60a01d80021
     m_Address: Sprites/WeaponTypes/Spear
     m_ReadOnly: 0
@@ -215,13 +315,33 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab1aa18b6731aa84fb36777a4f9fcb35
+    m_Address: Sprites/Backgrounds/BrutalistPond/07
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b03c31237f2073f4b91cf5a3eda47129
+    m_Address: Sprites/Backgrounds/BrutalistPond/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b5393b208835cd649b137cfa74eb31e9
     m_Address: Sprites/WeaponTypes/Shuriken
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7550198cfd5e9b44a8ddbca3e064252
+    m_Address: Sprites/Backgrounds/UnderTheBridge/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b7a0627510abd3041926697c69156fd7
     m_Address: Sprites/Seamless/Swords1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7b85153065fffa44a5a02f725000401
+    m_Address: Sprites/Backgrounds/Moors/04
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -240,8 +360,33 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c8601886ebfbc264181191d0dd25b4ea
+    m_Address: Sprites/Backgrounds/Moors/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c873a695795e7ce4598717431aef3ef7
+    m_Address: Sprites/Backgrounds/Moors/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cce878b833b5f5a45b3a088fbbd8c0bd
+    m_Address: Sprites/Backgrounds/BrutalistPond/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d07afbf831712b34e9dc7689a931acf6
     m_Address: Sprites/WeaponTypes/Scythe
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3f6c83dc63f6e6408431a256bc66e66
+    m_Address: Sprites/Backgrounds/Moors/06
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d47af17ff7dccc24480d708d5a0bcd5e
+    m_Address: Sprites/Backgrounds/UnderTheBridge/02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -292,6 +437,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fedb31964b6f37b45b3abf945fd97637
     m_Address: Sprites/WeaponTypes/Pistol
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ff77758a68e30ca44a6a5b9bfec88a16
+    m_Address: Sprites/Backgrounds/BrutalistPond/06
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -140,7 +140,8 @@ public enum DebugOptions
     TooltipTest,
     TutorialTest,
     FireballTest,
-    HealTest
+    HealTest,
+    RandomizeBackground
 }
 
 public enum VFX
@@ -242,3 +243,12 @@ public enum TooltipTextAlignment
     TopLeft
 }
 
+public enum BackgroundSet
+{
+    BrutalistPond,
+    CandleLitPath,
+    CrystalDesert,
+    Moors,
+    RedThorns,
+    UnderTheBridge,
+}

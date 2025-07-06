@@ -37,25 +37,10 @@ public class SaveFileSelectManager : MonoBehaviour
     {
         buttonPrefab = PrefabRepo.Prefabs["SaveFileButtonPrefab"];
 
-        // Use appropriate ComponentHelper names or adjust as needed
-        canvas2D = GameObject.Find(ComponentHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
-        //header = GameObject.Find(ComponentHelper.StageSelect.Title).GetComponent<Label>();
-        //scrollView = GameObject.Find(ComponentHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
-        content = GameObject.Find(ComponentHelper.StageSelect.Content).GetComponent<Transform>();
-        //verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
-        fade = GameObject.Find(ComponentHelper.StageSelect.Fade).GetComponent<FadeInstance>();
+        canvas2D = GameObject.Find(GameObjectHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
+        content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
+        fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
-        //startX = canvas2D.rect.width;
-        //startY = canvas2D.rect.height;
-        //buttonWidth = 0.9f * startX;
-        //buttonHeight = startY / 16f;
-        //fontSize = buttonHeight / 2;
-        //rowSpacing = 0.01f * startY;
-
-        //header.fontSize = fontSize;
-        //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
-
-        //verticalLayoutGroup.spacing = rowSpacing;
     }
 
     private void Start()

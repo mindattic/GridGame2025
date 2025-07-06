@@ -24,10 +24,10 @@ public class TitleScreenManager : MonoBehaviour
         if (!ProfileRepo.HasProfiles())
             return;
 
-        canvas2D = GameObject.Find(ComponentHelper.TitleScreen.Canvas2D).GetComponent<RectTransform>();
+        canvas2D = GameObject.Find(GameObjectHelper.TitleScreen.Canvas2D).GetComponent<RectTransform>();
 
-        profileButtonLabel = GameObject.Find(ComponentHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
-        fade = GameObject.Find(ComponentHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
+        profileButtonLabel = GameObject.Find(GameObjectHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
+        fade = GameObject.Find(GameObjectHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
 
         profileButtonLabel.GetComponent<Label>().text = ProfileRepo.CurrentProfile.Key;
     }

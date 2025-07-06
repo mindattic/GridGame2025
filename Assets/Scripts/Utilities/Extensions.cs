@@ -7,6 +7,41 @@ using System.Reflection;
 using UnityEngine;
 
 
+public static class GameObjectExtensions
+{
+    // Gets a direct child by name (not recursive)
+    public static GameObject GetChildByName(this GameObject parent, string childName)
+    {
+        if (parent == null || string.IsNullOrEmpty(childName))
+            return null;
+
+        var childTransform = parent.transform.Find(childName);
+        return childTransform != null ? childTransform.gameObject : null;
+    }
+
+    // Finds a descendant GameObject by slash-delimited path, starting from any GameObject in the scene
+    public static GameObject FindByPath(this GameObject root, string path)
+    {
+        if (string.IsNullOrWhiteSpace(path) || root == null)
+            return null;
+
+        string[] names = path.Split('/');
+        GameObject current = root.name == names[0] ? root : GameObject.Find(names[0]);
+        if (current == null)
+            return null;
+
+        for (int i = (current == root ? 1 : 1); i < names.Length; i++)
+        {
+            Transform child = current.transform.Find(names[i]);
+            if (child == null)
+                return null;
+
+            current = child.gameObject;
+        }
+
+        return current;
+    }
+}
 
 public static class StringExtensions
 {

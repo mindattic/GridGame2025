@@ -26,9 +26,9 @@ public class SettingsManager : MonoBehaviour
 
     private void Awake()
     {
-        canvas2D = GameObject.Find(ComponentHelper.Settings.Canvas2D).GetComponent<RectTransform>();
-        fade = GameObject.Find(ComponentHelper.Settings.Fade).GetComponent<FadeInstance>();
-        actorPanMultiplier = GameObject.Find(ComponentHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
+        canvas2D = GameObject.Find(GameObjectHelper.Settings.Canvas2D).GetComponent<RectTransform>();
+        fade = GameObject.Find(GameObjectHelper.Settings.Fade).GetComponent<FadeInstance>();
+        actorPanMultiplier = GameObject.Find(GameObjectHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
 
     }
     private void Start()

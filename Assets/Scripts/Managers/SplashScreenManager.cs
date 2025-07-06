@@ -10,7 +10,7 @@ public class SplashScreenManager : MonoBehaviour
 
     private void Awake()
     {
-        fade = GameObject.Find(ComponentHelper.SplashScreen.Fade).GetComponent<FadeInstance>();
+        fade = GameObject.Find(GameObjectHelper.SplashScreen.Fade).GetComponent<FadeInstance>();
     }
 
     void Start()

@@ -32,11 +32,11 @@ public class ConfirmationDialogInstance : MonoBehaviour
     /// <param name="onSubmitCallback">Callback for handling Yes/No result.</param>
     private void Setup()
     {
-        canvas2D = GameObject.Find(ComponentHelper.ConfirmationDialog.Canvas2D).GetComponent<RectTransform>();
-        panel = GameObject.Find(ComponentHelper.ConfirmationDialog.Panel).GetComponent<RectTransform>();
-        prompt = GameObject.Find(ComponentHelper.ConfirmationDialog.Prompt).GetComponent<RectTransform>();
-        buttonYes = GameObject.Find(ComponentHelper.ConfirmationDialog.ButtonYes).GetComponent<RectTransform>();
-        buttonNo = GameObject.Find(ComponentHelper.ConfirmationDialog.ButtonNo).GetComponent<RectTransform>();
+        canvas2D = GameObject.Find(GameObjectHelper.ConfirmationDialog.Canvas2D).GetComponent<RectTransform>();
+        panel = GameObject.Find(GameObjectHelper.ConfirmationDialog.Panel).GetComponent<RectTransform>();
+        prompt = GameObject.Find(GameObjectHelper.ConfirmationDialog.Prompt).GetComponent<RectTransform>();
+        buttonYes = GameObject.Find(GameObjectHelper.ConfirmationDialog.ButtonYes).GetComponent<RectTransform>();
+        buttonNo = GameObject.Find(GameObjectHelper.ConfirmationDialog.ButtonNo).GetComponent<RectTransform>();
     }
 
     /// <summary>

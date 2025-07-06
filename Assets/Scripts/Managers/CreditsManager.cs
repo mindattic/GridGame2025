@@ -15,12 +15,12 @@ public class CreditsManager : MonoBehaviour
 
     private void Awake()
     {
-        canvas2D = GameObject.Find(ComponentHelper.Credits.Canvas2D).GetComponent<RectTransform>();
-        //title = GameObject.Find(ComponentHelper.Credits.Title).GetComponent<RectTransform>();
-        //scrollView = GameObject.Find(ComponentHelper.Credits.ScrollView).GetComponent<RectTransform>();
-        //content = GameObject.Find(ComponentHelper.Credits.Content).GetComponent<RectTransform>();
-        textarea = GameObject.Find(ComponentHelper.Credits.Textarea).GetComponent<RectTransform>();
-        fade = GameObject.Find(ComponentHelper.Credits.Fade).GetComponent<FadeInstance>();
+        canvas2D = GameObject.Find(GameObjectHelper.Credits.Canvas2D).GetComponent<RectTransform>();
+        //title = GameObject.Find(GameObjectHelper.Credits.Title).GetComponent<RectTransform>();
+        //scrollView = GameObject.Find(GameObjectHelper.Credits.ScrollView).GetComponent<RectTransform>();
+        //content = GameObject.Find(GameObjectHelper.Credits.Content).GetComponent<RectTransform>();
+        textarea = GameObject.Find(GameObjectHelper.Credits.Textarea).GetComponent<RectTransform>();
+        fade = GameObject.Find(GameObjectHelper.Credits.Fade).GetComponent<FadeInstance>();
 
         //var startX = canvas2D.rect.width;
         //var startY = canvas2D.rect.height;

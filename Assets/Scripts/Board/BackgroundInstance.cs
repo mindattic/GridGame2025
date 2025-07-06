@@ -26,15 +26,15 @@ public class BackgroundInstance : MonoBehaviour
     //Start is called once before the first execution of Save after the MonoBehaviour is created
     void Start()
     {
-        initialPosition = transform.position; 
+        initialPosition = transform.position;
+
+        Randomize();
 
         //Get screen dimensions in world units
         float screenHeight = Camera.main.orthographicSize * 2f;
         float screenWidth = screenHeight * Camera.main.aspect;
 
         //Get the sprite's size in world units
-        var key = $"CandleLitPath.{Random.Int(0, 3).ToString("D2")}";
-        spriteRenderer.sprite = SpriteRepo.Backgrounds[key]; 
         Bounds spriteBounds = spriteRenderer.sprite.bounds;
         Vector2 spriteSize = spriteBounds.size;
 
@@ -45,8 +45,6 @@ public class BackgroundInstance : MonoBehaviour
 
         amplitude = new Vector2(padding.x, padding.y);
         speed = new Vector2(0.2f, 0.2f);
-
-        //Execute(MoveToRandomPositions());
 
     }
 
@@ -60,4 +58,9 @@ public class BackgroundInstance : MonoBehaviour
         transform.position = new Vector3(x, y, initialPosition.z);
     }
 
+
+    public void Randomize()
+    {
+        spriteRenderer.sprite = Random.Background();
+    }
 }

@@ -122,73 +122,73 @@ public class KeyboardDialogInstance : MonoBehaviour
 
     private void Setup()
     {
-        canvas2D = GameObject.Find(ComponentHelper.KeyboardDialog.Canvas2D).GetComponent<RectTransform>();
-        panel = GameObject.Find(ComponentHelper.KeyboardDialog.Panel).GetComponent<RectTransform>();
-        prompt = GameObject.Find(ComponentHelper.KeyboardDialog.Prompt).GetComponent<RectTransform>();
-        inputBackdrop = GameObject.Find(ComponentHelper.KeyboardDialog.InputBackdrop).GetComponent<RectTransform>();
-        inputLabel = GameObject.Find(ComponentHelper.KeyboardDialog.InputLabel).GetComponent<RectTransform>();
-        keysContainer = GameObject.Find(ComponentHelper.KeyboardDialog.KeysContainer).GetComponent<RectTransform>();
+        canvas2D = GameObject.Find(GameObjectHelper.KeyboardDialog.Canvas2D).GetComponent<RectTransform>();
+        panel = GameObject.Find(GameObjectHelper.KeyboardDialog.Panel).GetComponent<RectTransform>();
+        prompt = GameObject.Find(GameObjectHelper.KeyboardDialog.Prompt).GetComponent<RectTransform>();
+        inputBackdrop = GameObject.Find(GameObjectHelper.KeyboardDialog.InputBackdrop).GetComponent<RectTransform>();
+        inputLabel = GameObject.Find(GameObjectHelper.KeyboardDialog.InputLabel).GetComponent<RectTransform>();
+        keysContainer = GameObject.Find(GameObjectHelper.KeyboardDialog.KeysContainer).GetComponent<RectTransform>();
 
         //Row1
-        row1 = GameObject.Find(ComponentHelper.KeyboardDialog.Row1).GetComponent<RectTransform>();
-        key1 = GameObject.Find(ComponentHelper.KeyboardDialog.Key1).GetComponent<RectTransform>();
-        key2 = GameObject.Find(ComponentHelper.KeyboardDialog.Key2).GetComponent<RectTransform>();
-        key3 = GameObject.Find(ComponentHelper.KeyboardDialog.Key3).GetComponent<RectTransform>();
-        key4 = GameObject.Find(ComponentHelper.KeyboardDialog.Key4).GetComponent<RectTransform>();
-        key5 = GameObject.Find(ComponentHelper.KeyboardDialog.Key5).GetComponent<RectTransform>();
-        key6 = GameObject.Find(ComponentHelper.KeyboardDialog.Key6).GetComponent<RectTransform>();
-        key7 = GameObject.Find(ComponentHelper.KeyboardDialog.Key7).GetComponent<RectTransform>();
-        key8 = GameObject.Find(ComponentHelper.KeyboardDialog.Key8).GetComponent<RectTransform>();
-        key9 = GameObject.Find(ComponentHelper.KeyboardDialog.Key9).GetComponent<RectTransform>();
-        key0 = GameObject.Find(ComponentHelper.KeyboardDialog.Key0).GetComponent<RectTransform>();
+        row1 = GameObject.Find(GameObjectHelper.KeyboardDialog.Row1).GetComponent<RectTransform>();
+        key1 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key1).GetComponent<RectTransform>();
+        key2 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key2).GetComponent<RectTransform>();
+        key3 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key3).GetComponent<RectTransform>();
+        key4 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key4).GetComponent<RectTransform>();
+        key5 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key5).GetComponent<RectTransform>();
+        key6 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key6).GetComponent<RectTransform>();
+        key7 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key7).GetComponent<RectTransform>();
+        key8 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key8).GetComponent<RectTransform>();
+        key9 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key9).GetComponent<RectTransform>();
+        key0 = GameObject.Find(GameObjectHelper.KeyboardDialog.Key0).GetComponent<RectTransform>();
 
         //Row2
-        row2 = GameObject.Find(ComponentHelper.KeyboardDialog.Row2).GetComponent<RectTransform>();
-        keyQ = GameObject.Find(ComponentHelper.KeyboardDialog.KeyQ).GetComponent<RectTransform>();
-        keyW = GameObject.Find(ComponentHelper.KeyboardDialog.KeyW).GetComponent<RectTransform>();
-        keyE = GameObject.Find(ComponentHelper.KeyboardDialog.KeyE).GetComponent<RectTransform>();
-        keyR = GameObject.Find(ComponentHelper.KeyboardDialog.KeyR).GetComponent<RectTransform>();
-        keyT = GameObject.Find(ComponentHelper.KeyboardDialog.KeyT).GetComponent<RectTransform>();
-        keyY = GameObject.Find(ComponentHelper.KeyboardDialog.KeyY).GetComponent<RectTransform>();
-        keyU = GameObject.Find(ComponentHelper.KeyboardDialog.KeyU).GetComponent<RectTransform>();
-        keyI = GameObject.Find(ComponentHelper.KeyboardDialog.KeyI).GetComponent<RectTransform>();
-        keyO = GameObject.Find(ComponentHelper.KeyboardDialog.KeyO).GetComponent<RectTransform>();
-        keyP = GameObject.Find(ComponentHelper.KeyboardDialog.KeyP).GetComponent<RectTransform>();
+        row2 = GameObject.Find(GameObjectHelper.KeyboardDialog.Row2).GetComponent<RectTransform>();
+        keyQ = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyQ).GetComponent<RectTransform>();
+        keyW = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyW).GetComponent<RectTransform>();
+        keyE = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyE).GetComponent<RectTransform>();
+        keyR = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyR).GetComponent<RectTransform>();
+        keyT = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyT).GetComponent<RectTransform>();
+        keyY = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyY).GetComponent<RectTransform>();
+        keyU = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyU).GetComponent<RectTransform>();
+        keyI = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyI).GetComponent<RectTransform>();
+        keyO = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyO).GetComponent<RectTransform>();
+        keyP = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyP).GetComponent<RectTransform>();
 
         //Row3
-        row3 = GameObject.Find(ComponentHelper.KeyboardDialog.Row3).GetComponent<RectTransform>();
-        keyA = GameObject.Find(ComponentHelper.KeyboardDialog.KeyA).GetComponent<RectTransform>();
-        keyS = GameObject.Find(ComponentHelper.KeyboardDialog.KeyS).GetComponent<RectTransform>();
-        keyD = GameObject.Find(ComponentHelper.KeyboardDialog.KeyD).GetComponent<RectTransform>();
-        keyF = GameObject.Find(ComponentHelper.KeyboardDialog.KeyF).GetComponent<RectTransform>();
-        keyG = GameObject.Find(ComponentHelper.KeyboardDialog.KeyG).GetComponent<RectTransform>();
-        keyH = GameObject.Find(ComponentHelper.KeyboardDialog.KeyH).GetComponent<RectTransform>();
-        keyJ = GameObject.Find(ComponentHelper.KeyboardDialog.KeyJ).GetComponent<RectTransform>();
-        keyK = GameObject.Find(ComponentHelper.KeyboardDialog.KeyK).GetComponent<RectTransform>();
-        keyL = GameObject.Find(ComponentHelper.KeyboardDialog.KeyL).GetComponent<RectTransform>();
+        row3 = GameObject.Find(GameObjectHelper.KeyboardDialog.Row3).GetComponent<RectTransform>();
+        keyA = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyA).GetComponent<RectTransform>();
+        keyS = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyS).GetComponent<RectTransform>();
+        keyD = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyD).GetComponent<RectTransform>();
+        keyF = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyF).GetComponent<RectTransform>();
+        keyG = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyG).GetComponent<RectTransform>();
+        keyH = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyH).GetComponent<RectTransform>();
+        keyJ = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyJ).GetComponent<RectTransform>();
+        keyK = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyK).GetComponent<RectTransform>();
+        keyL = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyL).GetComponent<RectTransform>();
 
         //Row4
-        row4 = GameObject.Find(ComponentHelper.KeyboardDialog.Row4).GetComponent<RectTransform>();    
-        keyZ = GameObject.Find(ComponentHelper.KeyboardDialog.KeyZ).GetComponent<RectTransform>();
-        keyX = GameObject.Find(ComponentHelper.KeyboardDialog.KeyX).GetComponent<RectTransform>();
-        keyC = GameObject.Find(ComponentHelper.KeyboardDialog.KeyC).GetComponent<RectTransform>();
-        keyV = GameObject.Find(ComponentHelper.KeyboardDialog.KeyV).GetComponent<RectTransform>();
-        keyB = GameObject.Find(ComponentHelper.KeyboardDialog.KeyB).GetComponent<RectTransform>();
-        keyN = GameObject.Find(ComponentHelper.KeyboardDialog.KeyN).GetComponent<RectTransform>();
-        keyM = GameObject.Find(ComponentHelper.KeyboardDialog.KeyM).GetComponent<RectTransform>();
+        row4 = GameObject.Find(GameObjectHelper.KeyboardDialog.Row4).GetComponent<RectTransform>();    
+        keyZ = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyZ).GetComponent<RectTransform>();
+        keyX = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyX).GetComponent<RectTransform>();
+        keyC = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyC).GetComponent<RectTransform>();
+        keyV = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyV).GetComponent<RectTransform>();
+        keyB = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyB).GetComponent<RectTransform>();
+        keyN = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyN).GetComponent<RectTransform>();
+        keyM = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyM).GetComponent<RectTransform>();
         
         //Row5
-        row5 = GameObject.Find(ComponentHelper.KeyboardDialog.Row5).GetComponent<RectTransform>();
-        keyCapsLock = GameObject.Find(ComponentHelper.KeyboardDialog.KeyCapsLock).GetComponent<RectTransform>();
-        keySpace = GameObject.Find(ComponentHelper.KeyboardDialog.KeySpace).GetComponent<RectTransform>();
-        keyEnter = GameObject.Find(ComponentHelper.KeyboardDialog.KeyEnter).GetComponent<RectTransform>();
-        keyBackspace = GameObject.Find(ComponentHelper.KeyboardDialog.KeyBackspace).GetComponent<RectTransform>();
+        row5 = GameObject.Find(GameObjectHelper.KeyboardDialog.Row5).GetComponent<RectTransform>();
+        keyCapsLock = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyCapsLock).GetComponent<RectTransform>();
+        keySpace = GameObject.Find(GameObjectHelper.KeyboardDialog.KeySpace).GetComponent<RectTransform>();
+        keyEnter = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyEnter).GetComponent<RectTransform>();
+        keyBackspace = GameObject.Find(GameObjectHelper.KeyboardDialog.KeyBackspace).GetComponent<RectTransform>();
 
         //Confirmation
-        confirmationContainer = GameObject.Find(ComponentHelper.KeyboardDialog.ConfirmationContainer).GetComponent<RectTransform>();
-        confirmation = GameObject.Find(ComponentHelper.KeyboardDialog.Confirmation).GetComponent<RectTransform>();
-        buttonYes = GameObject.Find(ComponentHelper.KeyboardDialog.ButtonYes).GetComponent<RectTransform>();
-        buttonNo = GameObject.Find(ComponentHelper.KeyboardDialog.ButtonNo).GetComponent<RectTransform>();
+        confirmationContainer = GameObject.Find(GameObjectHelper.KeyboardDialog.ConfirmationContainer).GetComponent<RectTransform>();
+        confirmation = GameObject.Find(GameObjectHelper.KeyboardDialog.Confirmation).GetComponent<RectTransform>();
+        buttonYes = GameObject.Find(GameObjectHelper.KeyboardDialog.ButtonYes).GetComponent<RectTransform>();
+        buttonNo = GameObject.Find(GameObjectHelper.KeyboardDialog.ButtonNo).GetComponent<RectTransform>();
     }
 
     private void ResizeUI()

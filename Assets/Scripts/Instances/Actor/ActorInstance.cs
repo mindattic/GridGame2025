@@ -223,7 +223,7 @@ public class ActorInstance : MonoBehaviour
         actionBar.Initialize(this);
         glow.Initialize(this);
         parallax.Initialize(this);
-        thumbnail = this.transform.Find(ComponentHelper.Actor.Front.Thumbnail).GetComponent<ActorThumbnail>();
+        thumbnail = this.transform.Find(GameObjectHelper.Actor.Front.Thumbnail).GetComponent<ActorThumbnail>();
  
     }
 
