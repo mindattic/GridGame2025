@@ -18,7 +18,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator Execute()
         {
             // 1) Portrait pops in
-            yield return new PortraitPopInSequence(source).Execute();
+            //yield return new PortraitPopInSequence(source).Execute();
 
             // 2) Fire the heal projectile
             var healSettings = new ProjectileSettings
@@ -35,7 +35,7 @@ namespace Assets.Scripts.Events
             yield return new FireProjectileSequence(healSettings).Execute();
 
             // 3) Portrait pops out
-            yield return new PortraitPopOutSequence(source).Execute();
+            //yield return new PortraitPopOutSequence(source).Execute();
         }
     }
 }

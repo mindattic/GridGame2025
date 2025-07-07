@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine;
 
 // The PincerAttackManager class is responsible for managing the pincer attackResult mechanics.
-// It coordinates identifying valid pincer attackResult setups, chaining the resulting results, 
+// It coordinates identifying valid pincer attackResult setups, chaining the resulting attackResults, 
 // supporting the attacking units, and then executing the queued actions.
 public class PincerAttackManager : MonoBehaviour
 {
@@ -28,13 +28,13 @@ public class PincerAttackManager : MonoBehaviour
     /// If any valid pairs (bookends) are found, the method starts a coroutine to process and execute them.
     /// Otherwise, it simply advances to the next turn.
     /// </summary>
-    /// <param name="team">The team for which to check pincer results.</param>
+    /// <param name="team">The team for which to check pincer attackResults.</param>
     public void Check(Team team)
     {
         // Retrieve all valid pincer attackResult pair (pairs of attackers with valid enemy opponents in between)
         var participants = GetParticipants(team);
 
-        // If no valid pairs exist, there are no pincer results to perform,
+        // If no valid pairs exist, there are no pincer attackResults to perform,
         // so we immediately move to the next turn.
         if (!participants.pair.Any())
         {
@@ -42,7 +42,7 @@ public class PincerAttackManager : MonoBehaviour
             return;
         }
 
-        // If one or more pairs exist, start a coroutine that will enqueue and process the results.
+        // If one or more pairs exist, start a coroutine that will enqueue and process the attackResults.
         StartCoroutine(Enqueue(participants));
     }
 
@@ -120,13 +120,13 @@ public class PincerAttackManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Recursively chains results starting from the specified attacker.
+    /// Recursively chains attackResults starting from the specified attacker.
     /// For the CurrentProfile attacker, opponents are sorted by distance so that closer opponents are processed first.
     /// If any opponent is also found as the primary attacker (attacker1) in another valid pair, their chain is processed recursively.
     /// </summary>
     /// <param name="attacker">The starting attacker for the chain.</param>
     /// <param name="pair">List of all valid pincer attackResult pairs.</param>
-    /// <returns>A list of AttackResult objects representing the chain of results.</returns>
+    /// <returns>A list of AttackResult objects representing the chain of attackResults.</returns>
     private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pairs)
     {
         var attackResults = new List<AttackResult>();

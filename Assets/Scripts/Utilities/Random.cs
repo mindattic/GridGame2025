@@ -22,7 +22,7 @@ static class Random
 
     public static TileInstance Tile => tiles.Shuffle().First();
 
-    public static TileInstance UnoccupiedTile => tiles.Where(x => !x.IsOccupied).Shuffle().First();
+    public static TileInstance UnoccupiedTile => tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
 
     public static Vector2Int Location => new Vector2Int(Int(1, columnCount), Int(1, rowCount));
 
@@ -83,7 +83,7 @@ static class Random
         //}
 
 
-        //TODO: SpawnActor in weighted value so some results are more common that others...
+        //TODO: SpawnActor in weighted value so some attackResults are more common that others...
 
         //int result = Int(0, ratios.Sum());
 

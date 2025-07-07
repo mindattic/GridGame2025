@@ -28,7 +28,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            // If no results were computed, exit early.
+            // If no attackResults were computed, exit early.
             if (pair.results == null || !pair.results.Any())
                 yield break;
 
@@ -56,7 +56,7 @@ namespace Assets.Scripts.Events
             var direction1 = pair.attacker1.GetDirectionTo(firstOpponent);
             var direction2 = pair.attacker2.GetDirectionTo(firstOpponent);
 
-            // Split results by attacker
+            // Split attackResults by attacker
             var attacker1Results = pair.results
                 .Where(r => r.Attacker == pair.attacker1)
                 .ToList();

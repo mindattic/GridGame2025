@@ -246,7 +246,7 @@ public static class ActorRepo
                     Details = new ActorDetails
                     {
                         Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
-                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy attackResults",
                         Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                     }
                 }
@@ -303,7 +303,7 @@ public static class ActorRepo
                     Details = new ActorDetails
                     {
                         Description = "A holy knight honor bound to defend the Lightbearer Orthodoxy.",
-                        Card = "Intermittently uses <color=#FF0000>[Taunt]</color> to force enemies to focus their results.",
+                        Card = "Intermittently uses <color=#FF0000>[Taunt]</color> to force enemies to focus their attackResults.",
                         Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                     }
                 }
@@ -360,7 +360,7 @@ public static class ActorRepo
                     Details = new ActorDetails
                     {
                         Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
-                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy attackResults",
                         Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                     }
                 }
@@ -417,7 +417,7 @@ public static class ActorRepo
                     Details = new ActorDetails
                     {
                         Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
-                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy attackResults",
                         Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                     }
                 }
@@ -474,7 +474,7 @@ public static class ActorRepo
                     Details = new ActorDetails
                     {
                         Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
-                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy attackResults",
                         Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                     }
                 }
@@ -702,7 +702,7 @@ public static class ActorRepo
                     Details = new ActorDetails
                     {
                         Description = "A stealthy assassin raised in the shadows; trained to dispatch Lightbearers.",
-                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy results",
+                        Card = "Intermittently enters <color=#0000FF>[Stealth]</color> to avoid enemy attackResults",
                         Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
                     }
                 }

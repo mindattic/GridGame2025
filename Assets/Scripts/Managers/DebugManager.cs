@@ -511,6 +511,41 @@ public class DebugManager : MonoBehaviour
         actors.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
     }
 
+    //public void PincerScenario()
+    //{
+    //    // Spawn exactly four slimes for our test
+    //    for (int i = 0; i < 4; i++)
+    //        SpawnSlime();
+
+    //    // Grab the four newly spawned enemies
+    //    var enemy1 = enemies.ElementAtOrDefault(0);
+    //    var enemy2 = enemies.ElementAtOrDefault(1);
+    //    var enemy3 = enemies.ElementAtOrDefault(2);
+    //    var enemy4 = enemies.ElementAtOrDefault(3);
+
+    //    // Position the two pincer attackers at (1,3) and (6,3)
+    //    hero1?.Teleport(new Vector2Int(1, 3));
+    //    hero2?.Teleport(new Vector2Int(6, 3));
+
+    //    // Move the remaining heroes out of the way:
+    //    // one up in the top-left corner, one down in the bottom-right
+    //    hero3?.Teleport(new Vector2Int(1, 1));
+    //    hero4?.Teleport(new Vector2Int(6, 8));
+
+    //    // Line up the four monsters between them at row 3, cols 2-5
+    //    enemy1?.Teleport(new Vector2Int(2, 3));
+    //    enemy2?.Teleport(new Vector2Int(3, 3));
+    //    enemy3?.Teleport(new Vector2Int(4, 3));
+    //    enemy4?.Teleport(new Vector2Int(5, 3));
+
+    //    // Send any other actors off to random free spots
+    //    var group = new[] { hero1, hero2, hero3, hero4, enemy1, enemy2, enemy3, enemy4 };
+    //    actors
+    //      .Except(group)
+    //      .ToList()
+    //      .ForEach(x => x.Teleport(Random.UnoccupiedLocation));
+    //}
+
 
 
     public void CoinTest()
@@ -588,5 +623,5 @@ public class DebugManager : MonoBehaviour
         background.Randomize();
     }
 
-
+  
 }

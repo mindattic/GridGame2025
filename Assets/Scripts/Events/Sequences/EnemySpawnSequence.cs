@@ -16,7 +16,9 @@ namespace Assets.Scripts.Events
             var spawnableEnemies = enemies.Where(x => x.isSpawnable).ToList();
             foreach (var enemy in spawnableEnemies)
             {
-                enemy.Spawn(Random.UnoccupiedLocation);
+                var unoccupiedLocation = Random.UnoccupiedLocation;
+                if (unoccupiedLocation != null)
+                    enemy.Spawn(unoccupiedLocation);
             }
             yield return Wait.UntilNextFrame();
         }

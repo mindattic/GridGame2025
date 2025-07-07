@@ -199,7 +199,7 @@ public class ActorInstance : MonoBehaviour
             Vector2Int checkPos = location;
             switch (direction)
             {
-                case Direction.NorthEast: checkPos += new Vector2Int(i, -i); break; 
+                case Direction.NorthEast: checkPos += new Vector2Int(i, -i); break;
                 case Direction.NorthWest: checkPos += new Vector2Int(-i, -i); break;
                 case Direction.SouthEast: checkPos += new Vector2Int(i, i); break;
                 case Direction.SouthWest: checkPos += new Vector2Int(-i, i); break;
@@ -224,13 +224,13 @@ public class ActorInstance : MonoBehaviour
         glow.Initialize(this);
         parallax.Initialize(this);
         thumbnail = this.transform.Find(GameObjectHelper.Actor.Front.Thumbnail).GetComponent<ActorThumbnail>();
- 
+
     }
 
     // OnDestroy: Clean up event subscriptions if necessary to prevent memory leaks.
     private void OnDestroy()
     {
-  
+
     }
 
     // Assign: Initializes and spawns the actor at the specified start location.
@@ -302,7 +302,7 @@ public class ActorInstance : MonoBehaviour
         }
     }
 
-     // CalculateAttackStrategy: Chooses an attackResult strategy based on weighted randomness and sets the target location.
+    // CalculateAttackStrategy: Chooses an attackResult strategy based on weighted randomness and sets the target location.
     public void CalculateAttackStrategy()
     {
         // Define weights for different strategies.
@@ -508,6 +508,10 @@ public class ActorInstance : MonoBehaviour
     //Teleport: Moves the actor instantly to a new grid location if within board bounds.
     public void Teleport(Vector2Int newLocation)
     {
+
+        if (newLocation == null)
+            newLocation = LocationHelper.Nowhere;
+
         //Abort if the new location is out of bounds.
         if (!board.InBounds(newLocation))
             return;

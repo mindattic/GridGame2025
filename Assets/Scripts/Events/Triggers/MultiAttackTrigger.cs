@@ -8,24 +8,29 @@ namespace Assets.Scripts.Events
     // Runs multiple attackResult events (like a pincer) as a single TriggerEvent
     public class MultiAttackTrigger : TriggerEvent
     {
-        private List<AttackResult> results;
+        private List<AttackResult> attackResults;
         private ActorInstance attacker;
 
         public MultiAttackTrigger(ActorInstance attacker, List<AttackResult> results)
         {
             this.attacker = attacker;
-            this.results = results;
+            this.attackResults = results;
         }
 
         public override IEnumerator Run()
         {
-            foreach (var result in results)
+            foreach (var attackResult in attackResults)
             {
-                var attack = new SingleAttackTrigger(result, attacker.vfx.Attack);
-                yield return attack.Execute(attacker); // Run damage + VFX
+                var attack = new SingleAttackTrigger(attackResult, attacker.vfx.Attack);
 
-                yield return Wait.For(Interval.QuarterSecond); // Add spacing between hits
+                // start this attack running in the background
+                attack.ExecuteAsync(attacker);
+
+                // then wait a quarter-second before launching the next one
+                yield return Wait.For(Interval.QuarterSecond);
             }
         }
+
+
     }
 }

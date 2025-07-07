@@ -60,7 +60,7 @@ public static class Formulas
     public static float Offense(ActorStats stats)
     {
 
-        float weapon = 10; // placeholder
+        float weapon = 75; // placeholder
         float luck = LuckModifier(stats);
 
         float baseDamage = stats.Strength * 2f * luck;

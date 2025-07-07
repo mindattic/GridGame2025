@@ -122,7 +122,7 @@ public class SelectedHeroManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles dropping a dragged hero, snapping them to the grid and checking for results.
+    /// Handles dropping a dragged hero, snapping them to the grid and checking for attackResults.
     /// </summary>
     public void Drop()
     {
