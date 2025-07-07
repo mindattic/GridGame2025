@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Sprites
   m_GUID: 5399e47a23a1a8948ba2de9bda8e0bfa
   m_SerializeEntries:
+  - m_GUID: 001ce54d7d155d9468688f787ced41e8
+    m_Address: Sprites/Backgrounds/CyberNecropolis/09
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 014efbe6c64d33d4199aa5ac4c996dc8
     m_Address: Sprites/Logos/Mindattic.256x256
     m_ReadOnly: 0
@@ -110,6 +115,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 362ea71bb513df34ea4c121c30d55fdd
+    m_Address: Sprites/Backgrounds/CyberNecropolis/08
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38046f430cc691342aaaab1202d2de9e
     m_Address: Sprites/WeaponTypes/Sword
     m_ReadOnly: 0
@@ -117,6 +127,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38cefd3b1dd26af4fb26b36b7cf29f27
     m_Address: Sprites/Backgrounds/Moors/07
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39e9c1e34bd792640a78fe18b498ec06
+    m_Address: Sprites/Backgrounds/CyberNecropolis/07
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -140,6 +155,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3c320f4264670fc40a7430a75f12bec9
+    m_Address: Sprites/Backgrounds/CyberNecropolis/16
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3e16de365aa680b469f9945c3dd96d2c
     m_Address: Sprites/WeaponTypes/Staff
     m_ReadOnly: 0
@@ -147,6 +167,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f3d2278569a15e4fa7543570bff6a11
     m_Address: Sprites/WeaponTypes/Shield
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43036b4f7295ec447a8091ee2d3012c5
+    m_Address: Sprites/Backgrounds/CyberNecropolis/00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -170,6 +195,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 51264a35d9ce6cc46b79a18b9d12166c
+    m_Address: Sprites/Backgrounds/CyberNecropolis/11
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 52adffe321c466a47802fe14b3a6415e
     m_Address: Sprites/Backgrounds/CrystalDesert/00
     m_ReadOnly: 0
@@ -177,6 +207,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 556091e6bd2e8d7499cc3f80e8479d37
     m_Address: Sprites/WeaponTypes/Bow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 596a0c093539bb54b8d15e3b1f3c7097
+    m_Address: Sprites/Backgrounds/CyberNecropolis/06
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -245,6 +280,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80dce75ed53c6a34382d60a8bc72f9b2
+    m_Address: Sprites/Backgrounds/CyberNecropolis/04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 85b00e2c9a932d84f9982c115f97e6a7
     m_Address: Sprites/Leaves/Leaf2
     m_ReadOnly: 0
@@ -252,6 +292,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8835a6000aa9d124db4d980461277199
     m_Address: Sprites/WeaponTypes/Wand
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8c2a44c355e0c4c4a8b26de5df0aed2e
+    m_Address: Sprites/Backgrounds/CyberNecropolis/12
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -360,6 +405,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c036617c0127f45439cb49d4638c3ae9
+    m_Address: Sprites/Backgrounds/CyberNecropolis/14
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c58c2cfe4cd204f4e9bacee1a0685ec3
     m_Address: Sprites/WeaponTypes/Mace
     m_ReadOnly: 0
@@ -380,6 +430,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbf6684cf85acbe4db9eb17c4a446fd8
+    m_Address: Sprites/Backgrounds/CyberNecropolis/05
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cce878b833b5f5a45b3a088fbbd8c0bd
     m_Address: Sprites/Backgrounds/BrutalistPond/01
     m_ReadOnly: 0
@@ -395,6 +450,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4797be892b2a074fa3973edf70300cb
+    m_Address: Sprites/Backgrounds/CyberNecropolis/13
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d47af17ff7dccc24480d708d5a0bcd5e
     m_Address: Sprites/Backgrounds/UnderTheBridge/02
     m_ReadOnly: 0
@@ -402,6 +462,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d494bec28e68e8d4a966f4ded22a613f
     m_Address: Sprites/TutorialPages/Tutorial.1-3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d4a70c7dc6d224448b5ddbbf711df8ea
+    m_Address: Sprites/Backgrounds/CyberNecropolis/01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d540a5242f11c0f44a94c0331f2f345d
+    m_Address: Sprites/Backgrounds/CyberNecropolis/10
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5625f17c8b64674fa077f1339346b70
+    m_Address: Sprites/Backgrounds/CyberNecropolis/02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -430,6 +505,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ea450473e902002409e974d13a430738
+    m_Address: Sprites/Backgrounds/CyberNecropolis/15
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ec90b83af9bd6a946a01cffd9f5dce36
     m_Address: Sprites/Seamless/RedFire1
     m_ReadOnly: 0
@@ -442,6 +522,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f61ad0ebb0999354785fb74215bedf61
     m_Address: Sprites/Logos/Mindattic.64x64
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f62841f7f7ba9ee479c76a5f1f723698
+    m_Address: Sprites/Backgrounds/CyberNecropolis/03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

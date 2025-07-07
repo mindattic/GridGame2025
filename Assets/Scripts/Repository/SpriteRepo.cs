@@ -185,6 +185,7 @@ public static class SpriteRepo
             (BackgroundSet.Moors, 9),
             (BackgroundSet.RedThorns, 4),
             (BackgroundSet.UnderTheBridge, 4),
+            (BackgroundSet.CyberNecropolis, 17),
         };
 
         foreach (var (set, count) in backgroundSets)

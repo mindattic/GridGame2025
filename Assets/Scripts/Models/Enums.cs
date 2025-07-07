@@ -251,4 +251,5 @@ public enum BackgroundSet
     Moors,
     RedThorns,
     UnderTheBridge,
+    CyberNecropolis,
 }
