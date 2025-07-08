@@ -62,8 +62,16 @@ namespace Assets.Scripts.Events
             var trigger2 = new MultiAttackTrigger(pair.attacker2, pair.results2);
             pair.attacker2.animate.TriggerBump(direction2, trigger2);
 
+
+            //if (isDying)
+            //    TriggerDie();
+
             // Trigger death animations after both attacks
             yield return DeathHelper.Process();
+
+
+
+
         }
 
 

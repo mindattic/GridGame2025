@@ -60,13 +60,13 @@ public static class Formulas
     public static float Offense(ActorStats stats)
     {
 
-        float weapon = 75; // placeholder
+        float weapon = Random.Float(25, 75); // placeholder....
         float luck = LuckModifier(stats);
 
-        float baseDamage = stats.Strength * 2f * luck;
-        float focusBonus = stats.Wisdom * 0.5f * luck; // accuracy improves quality of attackResult
+        float baseDamage = stats.Strength * 2f + (stats.Strength * luck);
+        //float focusBonus = stats.Wisdom * 0.5f * luck; // accuracy improves quality of attackResult
        
-        return Mathf.FloorToInt(baseDamage + weapon + focusBonus);
+        return Mathf.FloorToInt(baseDamage + weapon);
     }
 
     public static float Defense(ActorStats stats)

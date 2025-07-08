@@ -13,7 +13,7 @@ public class TrailManager : MonoBehaviour
     //Fields
     Dictionary<string, TrailInstance> trailEffects = new Dictionary<string, TrailInstance>();
 
-    public void TriggerSpawn(TrailEffectAsset resource, Vector3 position, TriggerEvent trigger = default)
+    public void SpawnAsync(TrailEffectAsset resource, Vector3 position, TriggerEvent trigger = default)
     {
         if (trigger == default)
             trigger = new TriggerEvent();

@@ -1042,6 +1042,11 @@ public static class DeathHelper
         var dyingActors = GameManager.instance.actors.Where(x => x.isDying).ToList();
         if (dyingActors.Any())
             yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
+
+        //dyingActors.ForEach(x => x.TriggerDie());
+        //if (isDying)
+        //    TriggerDie();
+
     }
 }
 

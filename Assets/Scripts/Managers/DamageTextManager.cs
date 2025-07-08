@@ -18,7 +18,7 @@ public class DamageTextManager : MonoBehaviour
         DamageTextPrefab = PrefabRepo.Prefabs["DamageTextPrefab"];
     }
 
-    public void Spawn(string text, Vector3 position, DamageTextStyle style = DamageTextStyle.Oscillate)
+    public void Spawn(string text, Vector3 position, TextMotionStyle style = TextMotionStyle.Oscillate)
     {
         var prefab = Instantiate(DamageTextPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<DamageTextInstance>();

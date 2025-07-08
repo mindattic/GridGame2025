@@ -13,7 +13,7 @@ public class VFXManager : MonoBehaviour
     //Fields
     Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();
 
-    public void TriggerSpawn(VisualEffectAsset resource, Vector3 position, TriggerEvent trigger = default)
+    public void SpawnAsync(VisualEffectAsset resource, Vector3 position, TriggerEvent trigger = default)
     {
         if (trigger == default)
             trigger = new TriggerEvent();

@@ -382,7 +382,7 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
 
         // Toggle to show or hide actor name tags.
-        onCheckChanged = EditorGUILayout.Toggle("Show Actor Name?", debugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Spawn Actor Name?", debugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.showActorNameTag != onCheckChanged)
         {
             debugManager.showActorNameTag = onCheckChanged;
@@ -390,7 +390,7 @@ public class DebugWindow : EditorWindow
         }
 
         // Toggle to show or hide actor frames.
-        onCheckChanged = EditorGUILayout.Toggle("Show Actor Frames?", debugManager.showActorFrame, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Spawn Actor Frames?", debugManager.showActorFrame, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.showActorFrame != onCheckChanged)
         {
             debugManager.showActorFrame = onCheckChanged;
@@ -398,7 +398,7 @@ public class DebugWindow : EditorWindow
         }
 
         // Toggle to show or hide tutorial popups.
-        onCheckChanged = EditorGUILayout.Toggle("Show Tutorials", debugManager.showTutorials, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Spawn Tutorials", debugManager.showTutorials, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.showTutorials != onCheckChanged)
         {
             debugManager.showTutorials = onCheckChanged;
@@ -538,7 +538,7 @@ public class DebugWindow : EditorWindow
     private void RenderSpawnControls()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("TriggerSpawn", GUILayout.Width(Screen.width));
+        GUILayout.Label("Spawn", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
 
         bool isClicked;
@@ -634,8 +634,7 @@ public class DebugWindow : EditorWindow
             case DebugOptions.CoinTest: debugManager.CoinTest(); break;
             case DebugOptions.PortraitSlideIn: debugManager.PortraitSlideIn(); break;
             case DebugOptions.PortraitPopIn: debugManager.PortraitPopIn(); break;
-            case DebugOptions.DamageTextTest: debugManager.DamageTextTest(); break;
-            case DebugOptions.DamageTextBounceTest: debugManager.DamageTextBounceTest(); break;
+            case DebugOptions.SpawnDamageText: debugManager.SpawnDamageText(); break;
             case DebugOptions.BumpTest: debugManager.BumpTest(); break;
             case DebugOptions.SupportLineTest: debugManager.SupportLineTest(); break;
             case DebugOptions.AttackLineTest: debugManager.AttackLineTest(); break;

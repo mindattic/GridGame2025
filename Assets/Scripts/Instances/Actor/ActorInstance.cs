@@ -385,11 +385,13 @@ public class ActorInstance : MonoBehaviour
         }
 
         // Immediately display damage textarea and play sound.
+        //var fontSize = Math.Clamp(attack.Damage, 24f, 32f);
+
         damageTextManager.Spawn(attack.Damage.ToString(), position);
         audioManager.Play($"Slash{Random.Int(1, 7)}");
 
-        if (isDying)
-            TriggerDie();
+        //if (isDying)
+        //    TriggerDie();
 
         // Start the damage animate as a separate coroutine so it doesn't block.
         //Execute(DamageTaken(attackResult));

@@ -132,7 +132,7 @@ public enum DebugOptions
     CoinTest,
     PortraitSlideIn,
     PortraitPopIn,
-    DamageTextTest,
+    SpawnDamageText,
     DamageTextBounceTest,
     SupportLineTest,
     AttackLineTest,
@@ -212,15 +212,13 @@ public enum ProjectilePath
     BezierCurve
 }
 
-public enum DamageTextStyle
+public enum TextMotionStyle
 {
     None,
     Float,
     Oscillate,
     Bounce
 }
-
-
 
 public enum TooltipPlacement
 {

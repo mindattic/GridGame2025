@@ -269,7 +269,7 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             // Optional short pause to emphasize impact
-            yield return Wait.OneTick();
+            //yield return Wait.OneTick();
 
             // Run attackResult logic/VFX while actor is "bumped"
             trigger.ExecuteAsync(instance);

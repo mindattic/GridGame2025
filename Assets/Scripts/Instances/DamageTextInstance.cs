@@ -12,7 +12,7 @@ public class DamageTextInstance : MonoBehaviour
     [SerializeField] AnimationCurve riseCurve;
     public TextMeshPro textMesh;
     public Vector3 speed;
-    public DamageTextStyle style = DamageTextStyle.Oscillate;
+    public TextMotionStyle style = TextMotionStyle.Oscillate;
 
     //Properties
     public Transform parent
@@ -34,21 +34,24 @@ public class DamageTextInstance : MonoBehaviour
         speed = new Vector3(tileSize, tileSize / 32, 0);
     }
 
-    public void Spawn(string text, Vector3 position, DamageTextStyle style = DamageTextStyle.Oscillate)
+    public void Spawn(string text, Vector3 position, TextMotionStyle style = TextMotionStyle.Oscillate)
     {
         this.style = style;
         textMesh.text = text;
-        transform.position = new Vector3(position.x, position.y + tileSize / 4, 0);
+        transform.position = new Vector3(
+            position.x + Random.Range(tileSize / 4), 
+            position.y + tileSize / 4, 
+            0);
 
         switch (style)
         {
-            case DamageTextStyle.Float:
+            case TextMotionStyle.Float:
                 StartCoroutine(Float());
                 break;
-            case DamageTextStyle.Oscillate:
+            case TextMotionStyle.Oscillate:
                 StartCoroutine(Oscillate());
                 break;
-            case DamageTextStyle.Bounce:
+            case TextMotionStyle.Bounce:
                 StartCoroutine(Bounce());
                 break;
             default:
