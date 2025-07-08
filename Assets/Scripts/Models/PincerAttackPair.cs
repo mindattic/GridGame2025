@@ -17,7 +17,8 @@ namespace Assets.Scripts.Models
         public List<ActorInstance> opponents = new();
 
         // Attack result actors stored here, so PincerAttackAction can see it
-        public List<AttackResult> results = new();
+        public List<AttackResult> results1 = new();
+        public List<AttackResult> results2 = new();
 
         // Potential same-team supporters who have Clear line of sight to each attacker
         public List<ActorInstance> supporters1 = new();

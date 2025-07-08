@@ -28,13 +28,9 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            // If no attackResults were computed, exit early.
-            if (pair.results == null || !pair.results.Any())
+            // If either wave has no attack results, exit early
+            if (pair.results1?.Any() != true || pair.results2?.Any() != true) 
                 yield break;
-
-            // Optional: show portraits
-            // sequenceManager.Add(new PortraitPopInEvent(pair.attacker1));
-            // sequenceManager.Add(new PortraitPopInEvent(pair.attacker2));
 
             var actorPair = new ActorPair(pair.attacker1, pair.attacker2);
             yield return portraitManager.SpawnPair(actorPair);
@@ -52,28 +48,19 @@ namespace Assets.Scripts.Events
             );
 
             // Determine direction to first opponent
-            var firstOpponent = pair.results.First().Opponent;
+            var firstOpponent = pair.results1.First().Opponent;
             var direction1 = pair.attacker1.GetDirectionTo(firstOpponent);
             var direction2 = pair.attacker2.GetDirectionTo(firstOpponent);
 
-            // Split attackResults by attacker
-            var attacker1Results = pair.results
-                .Where(r => r.Attacker == pair.attacker1)
-                .ToList();
-
-            var attacker2Results = pair.results
-                .Where(r => r.Attacker == pair.attacker2)
-                .ToList();
-
             // Attacker 1: Bump and trigger attackResult
-            var trigger1 = new MultiAttackTrigger(pair.attacker1, attacker1Results);
-            yield return pair.attacker1.animate.Bump(direction1, trigger1);
+            var trigger1 = new MultiAttackTrigger(pair.attacker1, pair.results1);
+            pair.attacker1.animate.TriggerBump(direction1, trigger1);
 
-            yield return Wait.For(Interval.QuarterSecond); // Optional pause
+            //yield return Wait.For(Interval.QuarterSecond); // Optional pause
 
             // Attacker 2: Bump and trigger attackResult
-            var trigger2 = new MultiAttackTrigger(pair.attacker2, attacker2Results);
-            yield return pair.attacker2.animate.Bump(direction2, trigger2);
+            var trigger2 = new MultiAttackTrigger(pair.attacker2, pair.results2);
+            pair.attacker2.animate.TriggerBump(direction2, trigger2);
 
             // Trigger death animations after both attacks
             yield return DeathHelper.Process();

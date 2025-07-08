@@ -471,8 +471,38 @@ public class DebugManager : MonoBehaviour
         vfxManager.TriggerSpawn(vfx, hero2.position);
     }
 
+    public void SingleCombo()
+    {
+        //Assign exactly nine slimes
+        for (int i = 0; i < 6; i++)
+            SpawnSlime();
 
-    public void AlignTest()
+        //SelectProfile specific enemies for teleportation
+        var enemy1 = enemies.ElementAtOrDefault(0);
+        var enemy2 = enemies.ElementAtOrDefault(1);
+        var enemy3 = enemies.ElementAtOrDefault(2);
+        var enemy4 = enemies.ElementAtOrDefault(3);
+        var enemy5 = enemies.ElementAtOrDefault(4);
+        var enemy6 = enemies.ElementAtOrDefault(5);
+   
+        //Define the group to remain aligned
+        var group = new[] { hero1, hero2, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6 };
+
+        //Teleport actors in the group to specific positions
+        hero1.Teleport(new Vector2Int(3, 1));
+        enemy1.Teleport(new Vector2Int(3, 2));
+        enemy2.Teleport(new Vector2Int(3, 3));
+        enemy3.Teleport(new Vector2Int(3, 4));
+        enemy4.Teleport(new Vector2Int(3, 5));
+        enemy5.Teleport(new Vector2Int(3, 6));
+        enemy6.Teleport(new Vector2Int(3, 7));
+        hero2.Teleport(new Vector2Int(3, 8));
+ 
+        //Move all other actors to unoccupied locations
+        actors.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
+    }
+
+    public void TripleCombo()
     {
         //Assign exactly nine slimes
         for (int i = 0; i < 9; i++)
@@ -493,19 +523,19 @@ public class DebugManager : MonoBehaviour
         var group = new[] { hero1, hero2, hero3, hero4, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9 };
 
         //Teleport actors in the group to specific positions
-        hero1?.Teleport(new Vector2Int(1, 1));
-        enemy1?.Teleport(new Vector2Int(1, 2));
-        enemy2?.Teleport(new Vector2Int(1, 3));
-        hero2?.Teleport(new Vector2Int(1, 4));
-        enemy3?.Teleport(new Vector2Int(2, 4));
-        enemy4?.Teleport(new Vector2Int(3, 4));
-        enemy5?.Teleport(new Vector2Int(4, 4));
-        enemy6?.Teleport(new Vector2Int(5, 4));
-        hero3?.Teleport(new Vector2Int(6, 4));
-        enemy7?.Teleport(new Vector2Int(6, 5));
-        enemy8?.Teleport(new Vector2Int(6, 6));
-        enemy9?.Teleport(new Vector2Int(6, 7));
-        hero4?.Teleport(new Vector2Int(6, 8));
+        hero1.Teleport(new Vector2Int(1, 1));
+        enemy1.Teleport(new Vector2Int(1, 2));
+        enemy2.Teleport(new Vector2Int(1, 3));
+        hero2.Teleport(new Vector2Int(1, 4));
+        enemy3.Teleport(new Vector2Int(2, 4));
+        enemy4.Teleport(new Vector2Int(3, 4));
+        enemy5.Teleport(new Vector2Int(4, 4));
+        enemy6.Teleport(new Vector2Int(5, 4));
+        hero3.Teleport(new Vector2Int(6, 4));
+        enemy7.Teleport(new Vector2Int(6, 5));
+        enemy8.Teleport(new Vector2Int(6, 6));
+        enemy9.Teleport(new Vector2Int(6, 7));
+        hero4.Teleport(new Vector2Int(6, 8));
 
         //Move all other actors to unoccupied locations
         actors.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));

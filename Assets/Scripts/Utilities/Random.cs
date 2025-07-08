@@ -26,7 +26,7 @@ static class Random
 
     public static Vector2Int Location => new Vector2Int(Int(1, columnCount), Int(1, rowCount));
 
-    public static Vector2Int UnoccupiedLocation => UnoccupiedTile.location;
+    public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
 
     public static int Int(int min, int max) => rng.Next(min, max + 1);
 

@@ -216,21 +216,9 @@ public class PincerAttackManager : MonoBehaviour
         // --- 4. Queue: PincerAttackActions (core attackResult logic)
         foreach (var pair in participants.pair)
         {
-
-            var attacker1Results = ChainAttacks(pair.attacker1, participants.pair);
-            var attacker2Results = ChainAttacks(pair.attacker2, participants.pair);
-
-            pair.results.AddRange(attacker1Results);
-            pair.results.AddRange(attacker2Results);
-
-
-
-            //sequenceManager.Add(new PortraitPopInEvent(pair.attacker1));
-            //sequenceManager.Add(new PortraitPopInEvent(pair.attacker2));
+            pair.results1.AddRange(ChainAttacks(pair.attacker1, participants.pair));
+            pair.results2.AddRange(ChainAttacks(pair.attacker2, participants.pair));
             sequenceManager.Add(new PincerAttackSequence(pair));
-            //sequenceManager.Add(new PortraitPopOutEvent(pair.attacker1));
-            //sequenceManager.Add(new PortraitPopOutEvent(pair.attacker2));
-
         }
 
         // --- 5. Queue: PopOut for all supporters (after attackResult)
