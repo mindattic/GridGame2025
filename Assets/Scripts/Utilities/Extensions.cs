@@ -1,10 +1,15 @@
-﻿using System;
+﻿using Game.Behaviors;
+using Game.Manager;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using game = GameManagerHelper;
+
+
 
 
 public static class GameObjectExtensions
@@ -337,7 +342,7 @@ static class StopwatchExtensions
          * (TimeTaken / linesProcessed) * linesLeft=timeLeft
          * so we have
          * (10/100) * 200 = 20 Seconds now 10 seconds go past
-         * (20/100) * 200 = 40 Seconds left now 10 more seconds and we process 100 more lines
+         * (20/100) * 200 = 40 Seconds left now 10 more seconds and we process 100 more supportLines'
          * (30/200) * 100 = 15 Seconds and now we all see why the copy file dialog jumps from 3 hours to 30 minutes :-)
          * 
          * pulled from http://stackoverflow.com/questions/473355/calculate-time-remaining/473369#473369

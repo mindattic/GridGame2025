@@ -2,7 +2,7 @@ using Game.Behaviors.Actor;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-
+using game = GameManagerHelper;
 public class PortraitInstance : MonoBehaviour
 {
     // Quick Reference Properties

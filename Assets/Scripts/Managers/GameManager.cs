@@ -1,11 +1,14 @@
 using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
 using Game.Behaviors;
+using Game.Instances;
 using Game.Manager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Tilemaps;
+using game = GameManagerHelper;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -102,7 +105,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TimerBar timerBar;
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
-    [HideInInspector] public List<SupportLineInstance> lines;
+    [HideInInspector] public List<SupportLineInstance> supportLines;
+    [HideInInspector] public List<AttackLineInstance> attackLines;
 
     //Coins
     [HideInInspector] public CoinBar coinBar;
@@ -130,7 +134,7 @@ public class GameManager : Singleton<GameManager>
 
         tileSize = oneSixth;
         tileScale = new Vector3(tileSize, tileSize, 1f);
-
+        tileMap = new TileMap();
 
         cursorFocus = tileSize * 0.5f;
         swapFocus = tileSize * 0.1666f;

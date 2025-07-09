@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Models;
 using UnityEngine;
+using game = GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {

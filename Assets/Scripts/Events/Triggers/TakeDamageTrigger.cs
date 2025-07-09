@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using System.Collections;
-
+using game = GameManagerHelper;
 public class TakeDamageTriggerEvent : TriggerEvent
 {
     private AttackResult attackResult;

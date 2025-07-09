@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-
+using game = GameManagerHelper;
 public class TriggerEvent
 {
     protected MonoBehaviour context;

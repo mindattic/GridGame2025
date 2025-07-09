@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using game = GameManagerHelper;
 
 /// <summary>
 /// A TriggerEvent that spawns a specified VFX at a given position, 
@@ -7,17 +8,17 @@ using UnityEngine;
 /// </summary>
 public class SpawnVFXTriggerEvent : TriggerEvent
 {
-    private VisualEffectAsset vfx;
+    private VFXAsset vfx;
     private Vector3 position;
     private TriggerEvent chainedTrigger;
 
     /// <summary>
     /// Constructor for SpawnVFXTriggerEvent.
     /// </summary>
-    /// <param name="vfx">The VisualEffectAsset to spawn.</param>
+    /// <param name="vfx">The VFXAsset to spawn.</param>
     /// <param name="position">The position at which to spawn the VFX.</param>
     /// <param name="chainedTrigger">An optional TriggerEvent to execute after spawning the VFX.</param>
-    public SpawnVFXTriggerEvent(VisualEffectAsset vfx, Vector3 position, TriggerEvent chainedTrigger = null)
+    public SpawnVFXTriggerEvent(VFXAsset vfx, Vector3 position, TriggerEvent chainedTrigger = null)
     {
         this.vfx = vfx;
         this.position = position;

@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using game = GameManagerHelper;
 
 // This static class is responsible for triggering the debug window when the Game scene loads.
 // It uses a runtime initialization attribute to automatically run after the scene loads.

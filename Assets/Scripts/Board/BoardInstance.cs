@@ -3,15 +3,16 @@ using Game.Models;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using game = GameManagerHelper;
 
 // BoardInstance represents the game board grid, handling tile generation, board bounds calculation,
 // and conversion between board and screen positions. It also holds a reference to the TileMap.
 public class BoardInstance : MonoBehaviour
 {
-    #region Game Properies
-    protected float tileSize => GameManager.instance.tileSize;
-    protected TileMap tileMap { get => GameManager.instance.tileMap; set => GameManager.instance.tileMap = value; }
-    #endregion
+    //#region Game Properies
+    //protected float tileSize => GameManager.instance.tileSize;
+    //protected TileMap tileMap { get => GameManager.instance.tileMap; set => GameManager.instance.tileMap = value; }
+    //#endregion
 
 
     //Fields
@@ -39,10 +40,10 @@ public class BoardInstance : MonoBehaviour
     {
         // Calculate x-offset so that the board is centered horizontally.
         // Here, -(tileSize * 3) shifts left by three tiles and subtracts half a tile.
-        var x = -(tileSize * 3) - tileSize / 2;
+        var x = -(game.TileSize * 3) - game.TileSize / 2;
         // Calculate y-offset to position the board vertically.
         // Here, (tileSize * 4) + tileSize * 2 positions the board using 6 tiles' height.
-        var y = (tileSize * 4) + tileSize / 2;
+        var y = (game.TileSize * 4) + game.TileSize / 2;
         offset = new Vector2(x, y) ;
         // Assign the board's world position to the calculated offset.
         transform.position = offset;
@@ -56,13 +57,13 @@ public class BoardInstance : MonoBehaviour
     {
         bounds = new RectFloat();
         // Top bound: offset y minus half a tile.
-        bounds.Top = offset.y - tileSize / 2;
+        bounds.Top = offset.y - game.TileSize / 2;
         // Right bound: offset x plus the width of all columns plus half a tile.
-        bounds.Right = offset.x + (tileSize * columnCount) + tileSize / 2;
+        bounds.Right = offset.x + (game.TileSize * columnCount) + game.TileSize / 2;
         // Bottom bound: offset y minus the height of all rows minus half a tile.
-        bounds.Bottom = offset.y - (tileSize * rowCount) - tileSize / 2;
+        bounds.Bottom = offset.y - (game.TileSize * rowCount) - game.TileSize / 2;
         // Left bound: offset x plus half a tile.
-        bounds.Left = offset.x + tileSize / 2;
+        bounds.Left = offset.x + game.TileSize / 2;
         // Calculate center as the average of left/right and top/bottom bounds.
         center = new Vector2(
             (bounds.Left + bounds.Right) / 2,
@@ -77,9 +78,6 @@ public class BoardInstance : MonoBehaviour
     private void GenerateTiles()
     {
         var TilePrefab = PrefabRepo.Prefabs["TilePrefab"];
-
-        // Create a new TileMap to store the board's tiles.
-        tileMap = new TileMap();
 
         // Loop over each column and row to generate tiles.
         for (int col = 1; col <= columnCount; col++)
@@ -97,14 +95,14 @@ public class BoardInstance : MonoBehaviour
                 // Assign the tile with its column and row positions.
                 instance.Initialize(col, row);
                 // Add the tile to the TileMap.
-                tileMap.Add(instance);
+                game.TileMap.Add(instance);
             }
         }
 
         // Assign the grid origin of the TileMap to the position of the tile at grid (1,1).
-        tileMap.gridOrigin = tileMap.GetTile(new Vector2Int(1, 1)).position;
+        game.TileMap.gridOrigin = game.TileMap.GetTile(new Vector2Int(1, 1)).position;
         // Assign the tile size in the TileMap.
-        tileMap.tileSize = tileSize;
+        game.TileMap.tileSize = game.TileSize;
 
         // Find all GameObjects tagged as "Tile" and add their TileInstance components to the global GameManager's tiles list.
         GameObject.FindGameObjectsWithTag(Tag.Tile).ToList()

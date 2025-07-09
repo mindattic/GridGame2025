@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TrailInstance : MonoBehaviour
 {
-   //Quick Reference Properties
+    //Quick Reference Properties
     protected TrailManager trailManager => GameManager.instance.trailManager;
     protected Vector3 tileScale => GameManager.instance.tileScale;
 
@@ -36,19 +36,13 @@ public class TrailInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 position, TriggerEvent trigger = default)
+    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 position, TriggerEvent trigger = null)
     {
-        if (trigger == default)
-            trigger = new TriggerEvent();
-
-        //Translate, rotate, and relativeScale relative to tile dimensions (determined by device)
-        //var offset = Geometry.Tile.Relative.Translation(trailInstance.RelativeOffset);
-        //var scale = Geometry.Tile.Relative.Scale(trailInstance.RelativeScale);
-        //var rotation = Geometry.Rotation(trailInstance.AngularRotation);
-
-        //this.position = position + trailInstance.RelativeOffset;
         this.position = position;
-        this.scale = tileScale.MultiplyBy(trail.RelativeScale);
+        transform.localPosition = trail.RelativeOffset;
+        transform.localEulerAngles = trail.AngularRotation;
+        transform.localScale = tileScale.MultiplyBy(trail.RelativeScale);
+
 
         SetLooping(trail.IsLoop);
 
@@ -57,7 +51,8 @@ public class TrailInstance : MonoBehaviour
             yield return new WaitForSeconds(trail.Delay);
 
         // Run TriggerEvent (if applicable)
-        yield return trigger.Execute(this);
+        if (trigger != null)
+            yield return trigger.Execute(this);
 
         //Wait until VFX duration completes
         if (trail.Duration != 0f)

@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using game = GameManagerHelper;
 
 public class VFXManager : MonoBehaviour
 {
@@ -13,23 +14,17 @@ public class VFXManager : MonoBehaviour
     //Fields
     Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();
 
-    public void SpawnAsync(VisualEffectAsset resource, Vector3 position, TriggerEvent trigger = default)
+    public void SpawnAsync(VFXAsset resource, Vector3 position, TriggerEvent trigger = null)
     {
-        if (trigger == default)
-            trigger = new TriggerEvent();
-
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
         instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
         visualEffects.Add(instance.name, instance);
-        StartCoroutine(instance.Spawn(resource, position, trigger));
+        instance.SpawnAsync(resource, position, trigger);
     }
 
-    public IEnumerator Spawn(VisualEffectAsset resource, Vector3 position, TriggerEvent trigger = default)
+    public IEnumerator Spawn(VFXAsset resource, Vector3 position, TriggerEvent trigger = null)
     {
-        if (trigger == default)
-            trigger = new TriggerEvent();
-
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
         instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";

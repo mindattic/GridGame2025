@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using game = GameManagerHelper;
 public class StageManager : MonoBehaviour
 {
     // Quick Reference Properties:
@@ -129,7 +129,7 @@ public class StageManager : MonoBehaviour
             SpawnActor(stageActor);
         }
 
-        // Assign dotted lines for this wave
+        // Assign dotted supportLines' for this wave
         foreach (var stageDottedLine in wave.DottedLines)
         {
             var segment = stageDottedLine.Segment;

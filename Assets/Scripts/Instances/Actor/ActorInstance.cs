@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using game = GameManagerHelper;
 
 // ActorInstance represents a game characterName (either hero or enemy) and encapsulates
 // its state, behaviors, rendering, move, and interactions with game systems.
@@ -348,10 +349,6 @@ public class ActorInstance : MonoBehaviour
     //TakeDamageAsync: Begins the process for this actor to take damage from an attackResult.
     public void TakeDamageAsync(AttackResult attack)
     {
-        // If the actor is not active or alive, abort.
-        if (!isActive || !isAlive)
-            return;
-
         StartCoroutine(TakeDamage(attack));
     }
 

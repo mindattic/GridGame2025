@@ -1,11 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using game = GameManagerHelper;
 
 public class TargetModeOverlay : MonoBehaviour
 {
-    #region Game Properies
-    protected InputManager inputManager => GameManager.instance.inputManager;
-    #endregion
 
     //Components
     private Image image;
@@ -18,17 +16,17 @@ public class TargetModeOverlay : MonoBehaviour
     public void Initialize()
     {
         // subscribe
-        inputManager.OnInputModeChanged += HandleModeChanged;
+        game.Input.OnInputModeChanged += HandleModeChanged;
 
         // initial state
-        HandleModeChanged(inputManager.inputMode);
+        HandleModeChanged(game.Input.inputMode);
     }
 
     private void OnDestroy()
     {
         // unsubscribe
-        if (inputManager != null)
-            inputManager.OnInputModeChanged -= HandleModeChanged;
+        if (game.Input != null)
+            game.Input.OnInputModeChanged -= HandleModeChanged;
     }
 
     private void HandleModeChanged(InputMode mode)

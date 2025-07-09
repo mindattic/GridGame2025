@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
+using game = GameManagerHelper;
 
 public static class SpriteRepo
 {

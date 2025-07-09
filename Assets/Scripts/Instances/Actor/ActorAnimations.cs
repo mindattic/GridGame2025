@@ -2,6 +2,7 @@
 using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
+using game = GameManagerHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
@@ -10,10 +11,10 @@ namespace Assets.Scripts.Instances.Actor
     // These actions are implemented using coroutines that interpolate values over time.
     public class ActorAnimations
     {
-        #region Game Properies
-        protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-        protected VFXManager vfxManager => GameManager.instance.vfxManager;
-        #endregion
+        //#region Game Properies
+        //protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
+        //protected VFXManager vfxManager => GameManager.instance.vfxManager;
+        //#endregion
 
 
         protected ActorRenderers render => instance.render;

@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using Assets.Scripts.Events;
-
+using game = GameManagerHelper;
 public class TargetLineManager : MonoBehaviour
 {
     protected InputManager inputManager => GameManager.instance.inputManager;

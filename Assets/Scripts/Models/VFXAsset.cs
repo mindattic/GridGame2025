@@ -1,12 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using game = GameManagerHelper;
 
 [Serializable]
-public class VisualEffectAsset
+public class VFXAsset
 {
-    public VisualEffectAsset() { }
+    public VFXAsset() { }
 
-    public VisualEffectAsset(VisualEffectAsset other)
+    public VFXAsset(VFXAsset other)
     {
         Name = other.Name;
         Prefab = other.Prefab;

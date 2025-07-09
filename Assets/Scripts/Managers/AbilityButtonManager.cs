@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using game = GameManagerHelper;
 
 
 public class AbilityButtonManager : MonoBehaviour

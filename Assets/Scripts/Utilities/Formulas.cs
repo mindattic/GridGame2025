@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using Game.Behaviors;
 using UnityEngine;
-
+using game = GameManagerHelper;
 public static class Formulas
 {
     private static LogManager log => GameManager.instance.logManager;

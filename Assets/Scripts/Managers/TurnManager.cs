@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using game = GameManagerHelper;
 
 /// <summary>
 /// Enum for all possible turn phases.
@@ -17,17 +18,17 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     // Manager property shortcuts
-    protected AttackLineManager attackLineManager => GameManager.instance.attackLineManager;
-    protected AudioManager audioManager => GameManager.instance.audioManager;
-    protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
-    protected PortraitManager portraitManager => GameManager.instance.portraitManager;
-    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
-    protected HeroManager heroManager => GameManager.instance.heroManager;
-    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
-    protected TimerBar timerBar => GameManager.instance.timerBar;
-    protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
-    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
+    //protected AttackLineManager attackLineManager => GameManager.instance.attackLineManager;
+    //protected AudioManager audioManager => GameManager.instance.audioManager;
+    //protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
+    //protected PortraitManager portraitManager => GameManager.instance.portraitManager;
+    //protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
+    //protected HeroManager heroManager => GameManager.instance.heroManager;
+    //protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
+    //protected TimerBar timerBar => GameManager.instance.timerBar;
+    //protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
+    //protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
+    //protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
 
     // State
     public int currentTurn = 0;
@@ -44,15 +45,15 @@ public class TurnManager : MonoBehaviour
     private void OnEnable()
     {
         OnTurnPhaseChanged += HandlePhaseChanged;
-        if (sequenceManager != null)
-            sequenceManager.OnSequenceComplete += OnSequenceComplete;
+        if (game.Sequences != null)
+            game.Sequences.OnSequenceComplete += OnSequenceComplete;
     }
 
     private void OnDisable()
     {
         OnTurnPhaseChanged -= HandlePhaseChanged;
-        if (sequenceManager != null)
-            sequenceManager.OnSequenceComplete -= OnSequenceComplete;
+        if (game.Sequences != null)
+            game.Sequences.OnSequenceComplete -= OnSequenceComplete;
     }
 
     /// <summary>
@@ -66,13 +67,13 @@ public class TurnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Advances to the next team's turn and resets overlays/lines.
+    /// Advances to the next team's turn and resets overlays/supportLines'.
     /// </summary>
     public void NextTurn()
     {
         currentTeam = isHeroTurn ? Team.Enemy : Team.Hero;
-        supportLineManager.Clear();
-        attackLineManager.DespawnAll();
+        game.SupportLines.Clear();
+        //game.AttackLines.DespawnAll();
         SetPhase(TurnPhase.Start);
     }
 
@@ -109,26 +110,26 @@ public class TurnManager : MonoBehaviour
         if (isHeroTurn)
         {
             currentTurn++;
-            timerBar.Refill();
-            heroManager.TriggerGlow();
+            game.TimerBar.Refill();
+            GameManager.instance.heroManager.TriggerGlow();
             // Wait for player to trigger next phase via UI
         }
         else if (isEnemyTurn)
         {
-            timerBar.Lock();
-            sequenceManager.Add(new EnemySpawnSequence());
+            game.TimerBar.Lock();
+            game.Sequences.Add(new EnemySpawnSequence());
 
-            bool anyReadyEnemies = enemies.Any(x => x.isPlaying && x.hasMaxAP);
+            bool anyReadyEnemies = game.Actors.Enemies.Any(x => x.isPlaying && x.hasMaxAP);
             if (!anyReadyEnemies)
             {
                 // No enemies to act; finish up and advance turn
-                sequenceManager.TriggerExecute();
+                game.Sequences.TriggerExecute();
                 NextTurn();
                 return;
             }
 
-            sequenceManager.Add(new EnemyStartSequence());
-            sequenceManager.TriggerExecute();
+            game.Sequences.Add(new EnemyStartSequence());
+            game.Sequences.TriggerExecute();
             // Do NOT call SetPhase here; OnSequenceComplete will handle advance to Move
         }
     }
@@ -145,14 +146,11 @@ public class TurnManager : MonoBehaviour
         else if (isEnemyTurn)
         {
             // Enqueue move sequences for all ready enemies.
-            foreach (var enemy in enemies)
+            foreach (var enemy in game.Actors.Enemies.Where(x => x.isPlaying && x.hasMaxAP))
             {
-                if (enemy.hasMaxAP)
-                {
-                    sequenceManager.Add(new EnemyMoveSequence(enemy));
-                }
+                game.Sequences.Add(new EnemyMoveSequence(enemy));
             }
-            sequenceManager.TriggerExecute();
+            game.Sequences.TriggerExecute();
             // Do NOT call SetPhase here; OnSequenceComplete will handle advance to PreAttack
         }
     }
@@ -187,9 +185,9 @@ public class TurnManager : MonoBehaviour
         else if (isEnemyTurn)
         {
             // Queue up one attack sequence per attacking enemy
-            var attackingEnemies = enemies.Where(x => x.isPlaying && x.hasMaxAP).ToList();
-            attackingEnemies.ForEach(x => sequenceManager.Add(new EnemyAttackSequence(x)));
-            sequenceManager.TriggerExecute();
+            var attackingEnemies = game.Actors.Enemies.Where(x => x.isPlaying && x.hasMaxAP).ToList();
+            attackingEnemies.ForEach(x => game.Sequences.Add(new EnemyAttackSequence(x)));
+            game.Sequences.TriggerExecute();
         }
     }
 

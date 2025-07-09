@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using game = GameManagerHelper;
 
 namespace Game.Instances
 {

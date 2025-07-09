@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
-
+using game = GameManagerHelper;
 public class ProcessAttackTrigger : TriggerEvent
 {
     private ActorInstance attacker;

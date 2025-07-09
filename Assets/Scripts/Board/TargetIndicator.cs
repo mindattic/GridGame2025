@@ -1,5 +1,6 @@
 ﻿using Game.Behaviors;
 using UnityEngine;
+using game = GameManagerHelper;
 
 // TargetIndicator is a MonoBehaviour responsible for displaying an indicator
 // that highlights the currently targeted actor (if any) on the game board.

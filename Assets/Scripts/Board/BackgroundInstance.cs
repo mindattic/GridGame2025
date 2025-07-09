@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
+using game = GameManagerHelper;
 
 public class BackgroundInstance : MonoBehaviour
 {

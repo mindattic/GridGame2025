@@ -2,12 +2,13 @@ using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class VFXInstance : MonoBehaviour
 {
 
-   //Quick Reference Properties
+    //Quick Reference Properties
     protected VFXManager vfxManager => GameManager.instance.vfxManager;
     protected Vector3 tileScale => GameManager.instance.tileScale;
 
@@ -37,14 +38,19 @@ public class VFXInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
-    public IEnumerator Spawn(VisualEffectAsset vfx, Vector3 position, TriggerEvent trigger = null)
-    {
-        if (trigger == null)
-            trigger = new TriggerEvent(null);
 
-        // Setup the position and scale based on the VFX resource.
+    public void SpawnAsync(VFXAsset vfx, Vector3 position, TriggerEvent trigger = null)
+    {
+        StartCoroutine(Spawn(vfx, position, trigger));
+    }
+
+    public IEnumerator Spawn(VFXAsset vfx, Vector3 position, TriggerEvent trigger = null)
+    {
         this.position = position;
-        this.scale = tileScale.MultiplyBy(vfx.RelativeScale);
+        transform.localPosition = vfx.RelativeOffset;
+        transform.localEulerAngles = vfx.AngularRotation;
+        transform.localScale = tileScale.MultiplyBy(vfx.RelativeScale);
+
         SetLooping(vfx.IsLoop);
 
         // Optionally wait for a delay before starting.
@@ -52,7 +58,8 @@ public class VFXInstance : MonoBehaviour
             yield return new WaitForSeconds(vfx.Delay);
 
         // Run TriggerEvent (if applicable)
-        yield return trigger.Execute(this);
+        if (trigger != null)
+            yield return trigger.Execute(this);
 
         // Wait until the VFX duration completes.
         if (vfx.Duration != 0f)

@@ -21,7 +21,7 @@ public class SupportLineInstance : MonoBehaviour
     protected BoardInstance board => GameManager.instance.board;
 
     /// <summary>
-    /// Retrieves the manager responsible for support lines from GameManager singleton
+    /// Retrieves the manager responsible for support supportLines' from GameManager singleton
     /// </summary>
     protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
     protected SortingManager sortingManager => GameManager.instance.sortingManager;

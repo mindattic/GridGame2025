@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using System.Collections;
+using game = GameManagerHelper;
 
 public class SingleAttackTrigger : TriggerEvent
 {
@@ -9,9 +10,9 @@ public class SingleAttackTrigger : TriggerEvent
     #endregion
 
     private AttackResult attackResult;
-    private VisualEffectAsset attackVFX;
+    private VFXAsset attackVFX;
 
-    public SingleAttackTrigger(AttackResult attack, VisualEffectAsset attackVFX)
+    public SingleAttackTrigger(AttackResult attack, VFXAsset attackVFX)
     {
         this.attackResult = attack;
         this.attackVFX = attackVFX;

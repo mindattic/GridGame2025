@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using game = GameManagerHelper;
 
 public class ProjectileInstance : MonoBehaviour
 {
@@ -60,21 +60,19 @@ public class ProjectileInstance : MonoBehaviour
         endPosition = projectile.target.position;
         transform.position = startPosition;
 
-        TrailEffectAsset trailResource = TrailEffectRepo.TrailEffects[projectile.trailKey];
-        trailInstance = Instantiate(trailResource.Prefab, transform.position, Quaternion.identity);
-        //trailInstance.transform.parent = board.transform;
-        trailInstance.transform.localPosition = trailResource.RelativeOffset;
-        trailInstance.transform.localEulerAngles = trailResource.AngularRotation;
-        trailInstance.transform.localScale = tileScale.MultiplyBy(trailResource.RelativeScale);
+        TrailEffectAsset asset = TrailEffectRepo.TrailEffects[projectile.trailKey];
+        trailInstance = Instantiate(asset.Prefab, transform.position, Quaternion.identity);
+     
+        trailInstance.transform.localPosition = asset.RelativeOffset;
+        trailInstance.transform.localEulerAngles = asset.AngularRotation;
+        trailInstance.transform.localScale = tileScale.MultiplyBy(asset.RelativeScale);
 
         switch (projectile.path)
         {
-            case ProjectilePath.AnimationCurve:
-                yield return StartCoroutine(MoveAlongCurve());
-                break;
             case ProjectilePath.BezierCurve:
                 yield return StartCoroutine(MoveAlongBezierCurve());
                 break;
+            case ProjectilePath.AnimationCurve:
             default:
                 yield return StartCoroutine(MoveAlongCurve());
                 break;
@@ -226,7 +224,7 @@ public class ProjectileInstance : MonoBehaviour
         //TODO: Differnet trail hides? Hide, FadeInstance, Shrink, etc...
         trailInstance.SetActive(false); //Hide trail until end
 
-        VisualEffectAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];
+        VFXAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];
         yield return vfxManager.Spawn(vfxResource, projectile.target.position, projectile.trigger);
     }
 

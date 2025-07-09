@@ -1,4 +1,5 @@
 ﻿using System;
+using game = GameManagerHelper;
 
 public enum AbilityType
 {
