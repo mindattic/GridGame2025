@@ -21,15 +21,19 @@ namespace Assets.Scripts.Events
         {
             foreach (var attackResult in attackResults)
             {
-                var attack = new SingleAttackTrigger(attackResult, attacker.vfx.Attack);
+                // SingleAttackTrigger spawns VFX and applies damage via HitOrMissTrigger
+                var singleAttack = new SingleAttackTrigger(attackResult, attacker.vfx.Attack);
 
-                // start this attack running in the background
-                attack.ExecuteAsync(attacker);
+                // Execute each attack fully before next
+                yield return singleAttack.Run();
 
-                // then wait a quarter-second before launching the next one
+                // Wait briefly before next attack in sequence
                 yield return Wait.For(Interval.QuarterSecond);
             }
+
+            HasExecuted = true;
         }
+
 
 
     }

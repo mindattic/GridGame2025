@@ -1,5 +1,3 @@
-// Import required namespaces from the Assets project and Unity.
-// These include scripts for actions, models, utilities, and Unity's standard collections and engine.
 using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using System.Collections;
@@ -7,13 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// The PincerAttackManager class is responsible for managing the pincer attackResult mechanics.
-// It coordinates identifying valid pincer attackResult setups, chaining the resulting attackResults, 
-// supporting the attacking units, and then executing the queued actions.
+// Manages identifying and executing pincer attacks (two attackers pinning enemies between them).
 public class PincerAttackManager : MonoBehaviour
 {
-    // Quick reference properties to easily access various managers and lists from the GameManager singleton.
-    // These properties provide shortcuts to other systems such as turn management, animate handling, and board overlays.
+    // Quick-access to various managers and the actor list.
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
@@ -22,304 +17,197 @@ public class PincerAttackManager : MonoBehaviour
     protected List<ActorInstance> actors => GameManager.instance.actors;
     protected SortingManager sortingManager => GameManager.instance.sortingManager;
 
-
     /// <summary>
-    /// Checks for any valid pincer attackResult opportunities for the given team.
-    /// If any valid pairs (bookends) are found, the method starts a coroutine to process and execute them.
-    /// Otherwise, it simply advances to the next turn.
+    /// Check for any valid pincer pairs on this team; either enqueue them or advance the turn.
     /// </summary>
-    /// <param name="team">The team for which to check pincer attackResults.</param>
     public void Check(Team team)
     {
-        // Retrieve all valid pincer attackResult pair (pairs of attackers with valid enemy opponents in between)
         var participants = GetParticipants(team);
-
-        // If no valid pairs exist, there are no pincer attackResults to perform,
-        // so we immediately move to the next turn.
         if (!participants.pair.Any())
         {
             turnManager.NextTurn();
             return;
         }
 
-        // If one or more pairs exist, start a coroutine that will enqueue and process the attackResults.
         StartCoroutine(Enqueue(participants));
     }
 
     /// <summary>
-    /// Gathers all "bookend pairs" for the given team. A bookend pair is a pair of same-team actors
-    /// that are aligned on the same row or column with only enemy actors (and no gaps) between them.
-    /// For each valid pair, the method records the pair's opponents and any supporting actors.
+    /// Find all bookend pairs (sameteam actors with only enemies between them).
     /// </summary>
-    /// <param name="team">The team to gather pincer attackResult pair for.</param>
-    /// <returns>A PincerAttackParticipants object containing all identified valid pairs.</returns>
     public PincerAttackParticipants GetParticipants(Team team)
     {
-        // Create a new container for storing valid pincer attackResult pairs.
         var participants = new PincerAttackParticipants();
 
-        // Filter and gather all actors that are actively playing and belong to the specified team.
         var teamActors = actors
             .Where(x => x.isPlaying && x.team == team)
             .ToList();
 
-        // Create an indexed list to iterate through team actors without duplicating pairs.
-        var indexedTeamActors = teamActors.Select((actor, index) => (actor, index));
-        foreach (var (actor1, i) in indexedTeamActors)
+        // Avoid duplicate pairs by indexing
+        var indexed = teamActors.Select((actor, idx) => (actor, idx));
+        foreach (var (actor1, i) in indexed)
         {
-            // Skip all actors before or at the CurrentProfile index to avoid double-checking pairs.
-            var remainingTeamActors = teamActors.Skip(i + 1);
-            foreach (var actor2 in remainingTeamActors)
+            foreach (var actor2 in teamActors.Skip(i + 1))
             {
-                // The two actors must share either the same row or column to be considered a potential pair.
+                // Must align on row or column
                 if (!actor1.IsSameRow(actor2.location) && !actor1.IsSameColumn(actor2.location))
-                    continue; // Not aligned, so skip this combination.
+                    continue;
 
-                // Calculate all board locations between the two potential attackers.
-                var locationsBetweenAttackers = Geometry.GetLocationsBetween(actor1.location, actor2.location);
-
-                // Find any actors that occupy the positions between the two attackers.
-                var actorsBetweenAttackers = actors
-                    .Where(x => x.isPlaying)
-                    .Where(x => locationsBetweenAttackers.Contains(x.location))
+                var betweenLocs = Geometry.GetLocationsBetween(actor1.location, actor2.location);
+                var betweenActors = actors
+                    .Where(x => x.isPlaying && betweenLocs.Contains(x.location))
                     .ToList();
 
-                // Conditions for a valid pincer attackResult:
-                // 1. There must be at least one enemy between the attackers.
-                // 2. All actors between the attackers must be opponents (i.e., not on the same team).
-                // 3. There should be no empty spaces between the attackers (the count of positions must match the count of actors).
-                bool hasEnemyBetweenAttackers = actorsBetweenAttackers.Any(x => x.team != team);
-                bool onlyOpponentsBetweenAttackers = actorsBetweenAttackers.All(x => x.isPlaying && x.team != team);
-                bool hasNoGapBetweenAttackers = (locationsBetweenAttackers.Count == actorsBetweenAttackers.Count);
+                bool hasEnemy = betweenActors.Any(x => x.team != team);
+                bool allOpponents = betweenActors.All(x => x.isPlaying && x.team != team);
+                bool noGap = betweenLocs.Count == betweenActors.Count;
 
-                if (hasEnemyBetweenAttackers && onlyOpponentsBetweenAttackers && hasNoGapBetweenAttackers)
+                if (hasEnemy && allOpponents && noGap)
                 {
-                    // At this point, we have a valid pair. Record the attackers and their respective supporting actors.
-                    var attacker1 = actor1;
-                    var attacker2 = actor2;
-                    var opponents = actorsBetweenAttackers.Where(x => x.isPlaying && x.team != team).ToList();
-
-                    var p = new PincerAttackPair
+                    var opponents = betweenActors.Where(x => x.team != team).ToList();
+                    participants.pair.Add(new PincerAttackPair
                     {
-                        attacker1 = attacker1,
-                        attacker2 = attacker2,
+                        attacker1 = actor1,
+                        attacker2 = actor2,
                         opponents = opponents,
-                        // Find same-team actors that can support each attacker along the unobstructed row/column.
-                        supporters1 = FindSupporters(attacker1),
-                        supporters2 = FindSupporters(attacker2)
-                    };
-
-                    // Add the valid pair to the participants.
-                    participants.pair.Add(p);
+                        supporters1 = FindSupporters(actor1),
+                        supporters2 = FindSupporters(actor2)
+                    });
                 }
             }
         }
 
-        // Return all identified pincer attackResult pairs.
         return participants;
     }
 
     /// <summary>
-    /// Recursively chains attackResults starting from the specified attacker.
-    /// For the CurrentProfile attacker, opponents are sorted by distance so that closer opponents are processed first.
-    /// If any opponent is also found as the primary attacker (attacker1) in another valid pair, their chain is processed recursively.
+    /// Recursively build a list of AttackResults, chaining through pairs.
     /// </summary>
-    /// <param name="attacker">The starting attacker for the chain.</param>
-    /// <param name="pair">List of all valid pincer attackResult pairs.</param>
-    /// <returns>A list of AttackResult objects representing the chain of attackResults.</returns>
     private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pairs)
     {
-        var attackResults = new List<AttackResult>();
+        var results = new List<AttackResult>();
+        var pair = pairs.FirstOrDefault(p => p.attacker1 == attacker || p.attacker2 == attacker);
+        if (pair == null) return results;
 
-        // Identify the pair where this actor is involved (either attacker1 or attacker2)
-        var p = pairs.FirstOrDefault(p => p.attacker1 == attacker || p.attacker2 == attacker);
-        if (p == null)
-            return attackResults;
-
-        // Sort the opponents by their distance to this attacker
-        var sortedOpponents = p.opponents
-            .OrderBy(x => Vector2.Distance(attacker.location, x.location))
+        // Sort opponents closest first
+        var sortedOpponents = pair.opponents
+            .OrderBy(o => Vector2.Distance(attacker.location, o.location))
             .ToList();
 
-        foreach (var opponent in sortedOpponents)
+        foreach (var opp in sortedOpponents)
         {
-            bool isHit = Formulas.IsHit(attacker, opponent);
-            bool isCritical = Formulas.IsCriticalHit(attacker, opponent);
-            int damage = isHit
-                ? Formulas.CalculateDamage(opponent, attacker)
-                : 0;
+            bool hit = Formulas.IsHit(attacker, opp);
+            bool crit = Formulas.IsCriticalHit(attacker, opp);
+            int dmg = hit ? Formulas.CalculateDamage(opp, attacker) : 0;
 
-            attackResults.Add(new AttackResult
+            results.Add(new AttackResult
             {
                 Attacker = attacker,
-                Opponent = opponent,
-                IsHit = isHit,
-                IsCriticalHit = isCritical,
-                Damage = damage
+                Opponent = opp,
+                IsHit = hit,
+                IsCriticalHit = crit,
+                Damage = dmg
             });
 
-            // If this opponent also appears as an attacker in another pair, chain their attackResults too
-            var nextPair = pairs.FirstOrDefault(q => q.attacker1 == opponent || q.attacker2 == opponent);
-            if (nextPair != null)
-                attackResults.AddRange(ChainAttacks(opponent, pairs));
+            // Chain if this opponent is also an attacker in another pair
+            var next = pairs.FirstOrDefault(q => q.attacker1 == opp || q.attacker2 == opp);
+            if (next != null)
+                results.AddRange(ChainAttacks(opp, pairs));
         }
 
-        return attackResults;
+        return results;
     }
 
     /// <summary>
-    /// Enqueues both support and pincer attackResult actions, then executes the queued actions with visual effects.
-    /// This coroutine sets up highlighting, queues up support and attackResult actions, executes them,
-    /// resets the board state, clears the pair, and finally advances the turn.
+    /// Enqueue supporter visuals and pincer attacks, then execute the sequence.
     /// </summary>
-    /// <param name="participants">The participants of valid pincer attackResult pair.</param>
     private IEnumerator Enqueue(PincerAttackParticipants participants)
     {
         sortingManager.OnPincerAttackStart(participants);
 
-     
-        // --- 1. Gather all unique supporters (no duplicates)
+        // Gather and fade in supporters
         var allSupporters = participants.pair
-            .SelectMany(pair => pair.supporters1.Concat(pair.supporters2))
+            .SelectMany(p => p.supporters1.Concat(p.supporters2))
             .Distinct()
             .ToList();
-
         yield return boardOverlay.FadeIn();
 
-        // --- 2. Queue: PopInOut for all supporters
-        //foreach (var supporter in allSupporters)
-        //{
-        //    sequenceManager.Add(new PortraitPopInSequence(supporter));
-        //}
-
-        // --- 3. Queue: AttackSupportActions and support lines (before attackResult)
-        foreach (var pair in participants.pair)
+        // Queue support sequences
+        foreach (var p in participants.pair)
         {
-            foreach (var supporter in pair.supporters1)
+            foreach (var sup in p.supporters1)
             {
-                supportLineManager.Spawn(supporter, pair.attacker1);
-
-                //sequenceManager.Add(new PortraitPopInSequence(supporter));
-                sequenceManager.Add(new PincerAttackSupportSequence(pair.attacker1, supporter));
-                //sequenceManager.Add(new PortraitPopOutSequence(supporter));
+                supportLineManager.Spawn(sup, p.attacker1);
+                sequenceManager.Add(new PincerAttackSupportSequence(p.attacker1, sup));
             }
-            foreach (var supporter in pair.supporters2)
+            foreach (var sup in p.supporters2)
             {
-                supportLineManager.Spawn(supporter, pair.attacker2);
-
-                //sequenceManager.Add(new PortraitPopInSequence(supporter));
-                sequenceManager.Add(new PincerAttackSupportSequence(pair.attacker2, supporter));
-                //sequenceManager.Add(new PortraitPopOutSequence(supporter));
+                supportLineManager.Spawn(sup, p.attacker2);
+                sequenceManager.Add(new PincerAttackSupportSequence(p.attacker2, sup));
             }
         }
 
-        // --- 4. Queue: PincerAttackActions (core attackResult logic)
-        foreach (var pair in participants.pair)
+        // Queue pincer attacks with closestfirst ordering baked in
+        foreach (var p in participants.pair)
         {
-            pair.results1.AddRange(ChainAttacks(pair.attacker1, participants.pair));
-            pair.results2.AddRange(ChainAttacks(pair.attacker2, participants.pair));
-            sequenceManager.Add(new PincerAttackSequence(pair));
+            // Clear any old results
+            p.results1.Clear();
+            p.results2.Clear();
+
+            // Build and sort attack results at creation time
+            var raw1 = ChainAttacks(p.attacker1, participants.pair);
+            p.results1.AddRange(
+                raw1.OrderBy(r => Vector2.Distance(p.attacker1.location, r.Opponent.location))
+            );
+
+            var raw2 = ChainAttacks(p.attacker2, participants.pair);
+            p.results2.AddRange(
+                raw2.OrderBy(r => Vector2.Distance(p.attacker2.location, r.Opponent.location))
+            );
+
+            sequenceManager.Add(new PincerAttackSequence(p));
         }
 
-        // --- 5. Queue: PopOut for all supporters (after attackResult)
-        //foreach (var supporter in allSupporters)
-        //{
-        //    sequenceManager.Add(new PortraitPopOutSequence(supporter));
-        //}
-
-        // --- 6. Execute sequence
-
+        // Execute all queued sequences, then fade out and advance turn
         yield return sequenceManager.Execute();
         yield return boardOverlay.FadeOut();
-        
+
         participants.Clear();
         turnManager.NextTurn();
     }
 
     /// <summary>
-    /// Returns a list containing two actors ordered by their row or column positions.
-    /// The actor that comes first (lowest value) in the relevant coordinate (x for columns, y for rows)
-    /// is placed first in the list.
+    /// Find sameteam supporters aligned with the attacker and not blocked.
     /// </summary>
-    /// <param name="a">First actor.</param>
-    /// <param name="b">Second actor.</param>
-    /// <returns>A list of two actors sorted by position.</returns>
-    private List<ActorInstance> OrderByRowOrColumn(ActorInstance a, ActorInstance b)
-    {
-        // If the actors share the same column (x-coordinate), order them by the row (y-coordinate).
-        if (a.location.x == b.location.x)
-        {
-            return a.location.y < b.location.y
-                ? new List<ActorInstance> { a, b }
-                : new List<ActorInstance> { b, a };
-        }
-        else
-        {
-            // Otherwise, order them by the x-coordinate.
-            return a.location.x < b.location.x
-                ? new List<ActorInstance> { a, b }
-                : new List<ActorInstance> { b, a };
-        }
-    }
-
-    /// <summary>
-    /// Finds and returns a list of same-team supporters for a given attacker.
-    /// Supporters must be aligned in the same row or column with an unobstructed path from the attacker.
-    /// </summary>
-    /// <param name="attacker">The attacking actor for whom supporters are being found.</param>
-    /// <returns>A list of supporting ActorInstances.</returns>
     public List<ActorInstance> FindSupporters(ActorInstance attacker)
     {
-        // Filter potential supporters:
-        // They must be playing, on the same team, not be the attacker,
-        // and share either the same row or column with the attacker.
-        var potential = actors
+        var candidates = actors
             .Where(x => x.isPlaying && x.team == attacker.team && x != attacker)
             .Where(x => x.IsSameRow(attacker.location) || x.IsSameColumn(attacker.location))
             .ToList();
 
-        // For each potential supporter, verify that there is an unobstructed path between them and the attacker.
-        var results = new List<ActorInstance>();
-        foreach (var p in potential)
-        {
-            if (!IsActorBlocked(attacker, p))
-                results.Add(p);
-        }
-        return results;
+        var result = new List<ActorInstance>();
+        foreach (var c in candidates)
+            if (!IsActorBlocked(attacker, c))
+                result.Add(c);
+
+        return result;
     }
 
     /// <summary>
-    /// Determines whether the support between two actors (a and b) is blocked.
-    /// Blocking occurs if there is any actor in between (on the path) that belongs to the enemy team,
-    /// or is one of the endpoints, or if they are not aligned at all.
+    /// Check if any actor blocks the straight line between a and b.
     /// </summary>
-    /// <param name="a">The reference actor (typically the attacker).</param>
-    /// <param name="b">The potential supporter.</param>
-    /// <returns>True if the support line is blocked; otherwise, false.</returns>
     private bool IsActorBlocked(ActorInstance a, ActorInstance b)
     {
-        // If they’re not aligned, we consider it “blocked” (i.e. no support).
         if (!a.IsSameRow(b.location) && !a.IsSameColumn(b.location))
             return true;
 
-        // Get only the cells *between* a and b
         var between = Geometry
             .GetLocationsBetween(a.location, b.location)
             .Where(loc => !loc.Equals(a.location) && !loc.Equals(b.location));
 
-        // If any playing actor sits on one of those cells, the path is blocked.
-        return actors
-            .Any(x => x.isPlaying && between.Contains(x.location));
+        return actors.Any(x => x.isPlaying && between.Contains(x.location));
     }
 
 
-    /// <summary>
-    /// Resets the sorting order for all actors that are currently playing,
-    /// reverting them to the default visual layer.
-    /// </summary>
-    private void ResetSortingOrder()
-    {
-        //foreach (var actor in actors.Where(x => x.isPlaying))
-        //    actor.sortingOrder = SortingOrder.Default;
-    }
 }

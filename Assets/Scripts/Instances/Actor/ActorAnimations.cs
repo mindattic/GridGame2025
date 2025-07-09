@@ -201,9 +201,8 @@ namespace Assets.Scripts.Instances.Actor
             scale = tileScale;
             rotation = Geometry.Rotation(Vector3.zero);
         }
-
         /// <summary>
-        /// Triggers a bump animate in the given direction.
+        /// Initiates a bump animation in the specified direction.
         /// </summary>
         public void BumpAsync(Direction direction, TriggerEvent trigger = default)
         {
@@ -217,44 +216,46 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Bump coroutine: Simulates a bump by moving the actor slightly backward (windup),
-        /// then forward with a rotation, and finally returning to the original position.
+        /// Executes a bump animation coroutine:
+        /// 1. Moves actor slightly backward (windup).
+        /// 2. Moves actor forward into bump apex (triggers VFX precisely at apex).
+        /// 3. Returns actor smoothly to original position.
         /// </summary>
         public IEnumerator Bump(Direction direction, TriggerEvent trigger = default)
         {
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Define easing curves for each phase.
-            var windupCurve = AnimationCurve.EaseInOut(0, 0, 0.5f, 1);
-            var bumpCurve = AnimationCurve.EaseInOut(0, 0, 0.5f, 1);
+            // Animation curves for smooth transitions.
+            var windupCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+            var bumpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
             var returnCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
             var windupDuration = 0.15f;
             var bumpDuration = 0.1f;
             var returnDuration = 0.3f;
 
-            // Starting position of the actor
+            // Define key positions for animation phases.
             var startPosition = instance.currentTile.position;
-
-            // Calculate positions
             var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), tileSize * percent33);
             var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, tileSize * percent33);
 
-            float elapsedTime = 0f;
+            float elapsedTime;
 
-            // Phase 1: Windup
+            // Phase 1: Windup (move backward slightly)
+            elapsedTime = 0f;
             while (elapsedTime < windupDuration)
             {
                 elapsedTime += Time.deltaTime;
                 float progress = Mathf.Clamp01(elapsedTime / windupDuration);
-                float curveValue = windupCurve.Evaluate(progress);
-
-                position = Vector3.Lerp(startPosition, windupPosition, curveValue);
+                position = Vector3.Lerp(startPosition, windupPosition, windupCurve.Evaluate(progress));
                 yield return Wait.OneTick();
             }
 
-            // Phase 2: Bump forward
+            // Ensure exact windup position
+            position = windupPosition;
+
+            // Phase 2: Bump forward into apex position
             elapsedTime = 0f;
             float targetRotationZ = (direction == Direction.East) ? -15f : 15f;
 
@@ -262,42 +263,38 @@ namespace Assets.Scripts.Instances.Actor
             {
                 elapsedTime += Time.deltaTime;
                 float progress = Mathf.Clamp01(elapsedTime / bumpDuration);
-                float curveValue = bumpCurve.Evaluate(progress);
-
-                position = Vector3.Lerp(windupPosition, bumpPosition, curveValue);
+                position = Vector3.Lerp(windupPosition, bumpPosition, bumpCurve.Evaluate(progress));
                 rotation = Quaternion.Euler(0, 0, Mathf.Lerp(0, targetRotationZ, progress));
                 yield return Wait.OneTick();
             }
 
-            // Optional short pause to emphasize impact
-            yield return Wait.OneTick();
+            // Explicitly set position and rotation at apex before VFX.
+            position = bumpPosition;
+            rotation = Quaternion.Euler(0, 0, targetRotationZ);
 
-            // Run attackResult logic/VFX while actor is at apex of bump
-            //trigger.ExecuteAsync(instance);
-            // Spawn the attack VFX at the apex; it will invoke `trigger.Run()` internally at the right timestamp
-            vfxManager.Spawn(
-                instance.vfx.Attack, 
-                instance.currentTile.position, 
-                trigger);
+            trigger.ExecuteAsync(instance);
+            // Spawn VFX at precise apex position.
+            //vfxManager.Spawn(
+            //    instance.vfx.Attack,
+            //    instance.currentTile.position,
+            //    trigger);
 
-            // Phase 3: Return to original position
+            // Phase 3: Return smoothly to original position
             elapsedTime = 0f;
-
             while (elapsedTime < returnDuration)
             {
                 elapsedTime += Time.deltaTime;
                 float progress = Mathf.Clamp01(elapsedTime / returnDuration);
-                float curveValue = returnCurve.Evaluate(progress);
-
-                position = Vector3.Lerp(bumpPosition, startPosition, curveValue);
+                position = Vector3.Lerp(bumpPosition, startPosition, returnCurve.Evaluate(progress));
                 rotation = Quaternion.Euler(0, 0, Mathf.Lerp(targetRotationZ, 0, progress));
                 yield return Wait.OneTick();
             }
 
-            // Ensure clean final position
+            // Ensure final clean state
             position = startPosition;
             rotation = Quaternion.identity;
         }
+
 
         /// <summary>
         /// Triggers a growth animate, increasing the actor's scale up to a maximum size.

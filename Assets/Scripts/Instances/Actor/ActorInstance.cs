@@ -345,8 +345,8 @@ public class ActorInstance : MonoBehaviour
         //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
     }
 
-    //TriggerTakeDamage: Begins the process for this actor to take damage from an attackResult.
-    public void TriggerTakeDamage(AttackResult attack)
+    //TakeDamageAsync: Begins the process for this actor to take damage from an attackResult.
+    public void TakeDamageAsync(AttackResult attack)
     {
         // If the actor is not active or alive, abort.
         if (!isActive || !isAlive)

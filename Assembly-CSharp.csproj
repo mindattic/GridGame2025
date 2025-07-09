@@ -99,6 +99,7 @@
     <Compile Include="Assets\Scripts\Models\VisualEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
+    <Compile Include="Assets\Scripts\Events\Triggers\SpawnVFXTrigger.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\EnemySpawnSequence.cs" />
@@ -121,7 +122,6 @@
     <Compile Include="Assets\Scripts\Canvas\ScrollingBackground.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Models\TrailEffectAsset.cs" />
-    <Compile Include="Assets\Scripts\Events\Triggers\HitOrMissTrigger.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
@@ -201,6 +201,7 @@
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PincerAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
+    <Compile Include="Assets\Scripts\Events\Triggers\TakeDamageTrigger.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
