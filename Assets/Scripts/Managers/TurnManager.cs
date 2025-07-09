@@ -9,15 +9,6 @@ using UnityEngine;
 /// <summary>
 /// Enum for all possible turn phases.
 /// </summary>
-public enum TurnPhase
-{
-    Start,
-    Move,
-    PreAttack,
-    Attack,
-    PostAttack,
-    End
-}
 
 /// <summary>
 /// Handles the turn-based phase system for both hero and enemy teams.

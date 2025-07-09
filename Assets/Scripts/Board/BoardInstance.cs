@@ -155,15 +155,3 @@ public class BoardInstance : MonoBehaviour
 
 // BoardPoint is an enumeration used to specify key reference points on the board,
 // such as corners, edges, or the center. This is used for UI positioning.
-public enum BoardPoint
-{
-    TopLeft,
-    TopCenter,
-    TopRight,
-    MiddleLeft,
-    MiddleCenter,
-    MiddleRight,
-    BottomLeft,
-    BottomCenter,
-    BottomRight
-}

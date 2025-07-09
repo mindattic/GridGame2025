@@ -2,15 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum AbilityType
-{
-    Passive,
-    TargetAlly,
-    TargetOpponent,
-    TargetAny,
-    Self
-}
-
 
 public class AbilityButtonManager : MonoBehaviour
 {

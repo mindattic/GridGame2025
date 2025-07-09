@@ -391,7 +391,7 @@ public class ActorInstance : MonoBehaviour
         audioManager.Play($"Slash{Random.Int(1, 7)}");
 
         //if (isDying)
-        //    TriggerDie();
+        //    DieAsync();
 
         // Start the damage animate as a separate coroutine so it doesn't block.
         //Execute(DamageTaken(attackResult));
@@ -408,19 +408,19 @@ public class ActorInstance : MonoBehaviour
 
     //    while (ticks < duration)
     //    {
-    //        animate.TriggerGrow(); // Flinch effect.
+    //        animate.GrowAsync(); // Flinch effect.
     //        if (attackResult.IsCriticalHit)
-    //            animate.TriggerShake(ShakeIntensity.Medium);
+    //            animate.ShakeAsync(ShakeIntensity.Medium);
     //        ticks += Interval.OneTick;
     //        yield return Wait.For(Interval.OneTick);
     //    }
 
     //    // Reset animations.
     //    animate.TriggerShrink();
-    //    animate.TriggerShake(ShakeIntensity.Stop);
+    //    animate.ShakeAsync(ShakeIntensity.Stop);
 
     //    if (isDying)
-    //        TriggerDie();
+    //        DieAsync();
 
     //    yield break;
     //}
@@ -433,8 +433,8 @@ public class ActorInstance : MonoBehaviour
         yield return animate.Dodge();
     }
 
-    //TriggerDie: Initiates the actor's death sequence.
-    public void TriggerDie()
+    //DieAsync: Initiates the actor's death sequence.
+    public void DieAsync()
     {
         StartCoroutine(Die());
     }

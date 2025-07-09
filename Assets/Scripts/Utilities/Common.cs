@@ -1038,17 +1038,26 @@ public static class DeathHelper
 {
     public static IEnumerator Process()
     {
-        //Wait until all dying actorData's HP bars are fully drained
-        var dyingActors = GameManager.instance.actors.Where(x => x.isDying).ToList();
-        if (dyingActors.Any())
-            yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
+        // find everyone who’s flagged as dying
+        var dyingActors = GameManager.instance
+            .actors
+            .Where(x => x.isDying)
+            .ToList();
 
-        //dyingActors.ForEach(x => x.TriggerDie());
-        //if (isDying)
-        //    TriggerDie();
+        if (!dyingActors.Any())
+            yield break;
 
+        // wait until all their HP‐bars are empty
+        yield return new WaitUntil(() => dyingActors.All(x => x.healthBar.isEmpty));
+
+        // now actually kill them
+        foreach (var actor in dyingActors)
+        {
+            actor.DieAsync();
+        }
     }
 }
+
 
 public static class MenuHelper
 {
@@ -1312,11 +1321,6 @@ public static class CharacterHelper
     public const string Thief = "Thief";
     public const string Vampire = "Vampire";
     public const string Yeti = "Yeti";
-}
-
-public enum Characters
-{
-    Barbarian, Bat, Cleric, GreenNinja, Paladin, PandaGirl, RedNinja, Scorpion, Slime, Thief, Vampire, Yeti
 }
 
 

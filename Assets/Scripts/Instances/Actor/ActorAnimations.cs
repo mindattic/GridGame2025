@@ -12,6 +12,7 @@ namespace Assets.Scripts.Instances.Actor
     {
         #region Game Properies
         protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
+        protected VFXManager vfxManager => GameManager.instance.vfxManager;
         #endregion
 
 
@@ -50,7 +51,7 @@ namespace Assets.Scripts.Instances.Actor
         /// Triggers a shake animate on the actor's thumbnail.
         /// A TriggerEvent parameter can specify intensity and duration.
         /// </summary>
-        public void TriggerShake(float intensity, float duration = 0, TriggerEvent trigger = default)
+        public void ShakeAsync(float intensity, float duration = 0, TriggerEvent trigger = default)
         {
             if (!isActive || !isAlive)
                 return;
@@ -114,7 +115,7 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers the dodge animate.
         /// </summary>
-        public void TriggerDodge(TriggerEvent trigger = default)
+        public void DodgeAsync(TriggerEvent trigger = default)
         {
             if (!isActive || !isAlive)
                 return;
@@ -204,7 +205,7 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a bump animate in the given direction.
         /// </summary>
-        public void TriggerBump(Direction direction, TriggerEvent trigger = default)
+        public void BumpAsync(Direction direction, TriggerEvent trigger = default)
         {
             if (!isActive || !isAlive)
                 return;
@@ -269,10 +270,15 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             // Optional short pause to emphasize impact
-            //yield return Wait.OneTick();
+            yield return Wait.OneTick();
 
-            // Run attackResult logic/VFX while actor is "bumped"
-            trigger.ExecuteAsync(instance);
+            // Run attackResult logic/VFX while actor is at apex of bump
+            //trigger.ExecuteAsync(instance);
+            // Spawn the attack VFX at the apex; it will invoke `trigger.Run()` internally at the right timestamp
+            vfxManager.Spawn(
+                instance.vfx.Attack, 
+                instance.currentTile.position, 
+                trigger);
 
             // Phase 3: Return to original position
             elapsedTime = 0f;
@@ -296,7 +302,7 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a growth animate, increasing the actor's scale up to a maximum size.
         /// </summary>
-        public void TriggerGrow(float maxSize = 0f, TriggerEvent trigger = default)
+        public void GrowAsync(float maxSize = 0f, TriggerEvent trigger = default)
         {
             if (trigger == default)
                 trigger = new TriggerEvent();

@@ -68,11 +68,4 @@ public class CustomPlayBehaviour
         //this will run just before play mode
     }
 
-    public enum PlayStateProcess
-    {
-        Editing,
-        PreStarting,
-        Starting,
-        Ready
-    }
 }

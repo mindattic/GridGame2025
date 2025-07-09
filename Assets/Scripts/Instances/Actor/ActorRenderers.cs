@@ -341,39 +341,5 @@ public class ActorRenderers
         armorWest.color = armorColor;
     }
 
-    //float timer = 0.0f;
-    //ActionBarColorCycle cycle = ActionBarColorCycle.Phase1;
-
-    //public void CycleActionBarColor()
-    //{
-    //    const float duration = 0.2f;
-    //    timer += Time.deltaTime / duration;
-
-    //    switch (cycle)
-    //    {
-    //        case ActionBarColorCycle.Phase1: actionBarColor = ColorHelper.ActionBar.Yellow; break;
-    //        case ActionBarColorCycle.Phase2: actionBarColor = ColorHelper.ActionBar.Pink; break;
-    //        case ActionBarColorCycle.Phase3: actionBarColor = ColorHelper.ActionBar.White; break;
-    //        case ActionBarColorCycle.Phase4: actionBarColor = ColorHelper.ActionBar.Blue; break;
-    //    }
-
-    //    if (timer >= 1f)
-    //    {
-    //        timer = 0f;
-    //        cycle = cycle.Next();
-    //    }
-
-    //    actionBarFill.color = actionBarColor;
-    //}
 
 }
-
-
-//public enum ActionBarColorCycle
-//{
-//    Phase1,
-//    Phase2,
-//    Phase3,
-//    Phase4
-//}
-

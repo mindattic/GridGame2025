@@ -4,211 +4,143 @@ using UnityEngine;
 
 public class DamageTextInstance : MonoBehaviour
 {
-    //Quick Reference Properties
+    // Quick reference to tile size from GameManager
     protected float tileSize => GameManager.instance.tileSize;
 
-
-    //Fields
     [SerializeField] AnimationCurve riseCurve;
     public TextMeshPro textMesh;
     public Vector3 speed;
     public TextMotionStyle style = TextMotionStyle.Oscillate;
 
-    //Properties
+    // Transform parent property
     public Transform parent
     {
-        get => gameObject.transform.parent;
-        set => gameObject.transform.SetParent(value, true);
+        get => transform.parent;
+        set => transform.SetParent(value, true);
     }
 
+    // Transform position property
     public Vector3 position
     {
-        get => gameObject.transform.position;
-        set => gameObject.transform.position = value;
+        get => transform.position;
+        set => transform.position = value;
     }
 
-    //Method which is used for initialization tasks that need to occur before the game starts 
+    // Called before the first frame update
     void Awake()
     {
         textMesh = GetComponent<TextMeshPro>();
         speed = new Vector3(tileSize, tileSize / 32, 0);
     }
 
-    public void Spawn(string text, Vector3 position, TextMotionStyle style = TextMotionStyle.Oscillate)
+    /// <summary>
+    /// Spawns the floating damage text with a given style and position
+    /// </summary>
+    public void Spawn(string text, Vector3 pos, TextMotionStyle style = TextMotionStyle.Oscillate)
     {
         this.style = style;
         textMesh.text = text;
-        transform.position = new Vector3(
-            position.x + Random.Range(tileSize / 4), 
-            position.y + tileSize / 4, 
-            0);
+        transform.position = new Vector3(pos.x + Random.Range(tileSize / 4), pos.y + tileSize / 4, 0);
 
-        switch (style)
+        // Start the motion coroutine based on selected style
+        StartCoroutine(style switch
         {
-            case TextMotionStyle.Float:
-                StartCoroutine(Float());
-                break;
-            case TextMotionStyle.Oscillate:
-                StartCoroutine(Oscillate());
-                break;
-            case TextMotionStyle.Bounce:
-                StartCoroutine(Bounce());
-                break;
-            default:
-                StartCoroutine(Float());
-                break;
-        }
-
+            TextMotionStyle.Float => Float(),
+            TextMotionStyle.Oscillate => Oscillate(),
+            TextMotionStyle.Bounce => Bounce(),
+            _ => Float(),
+        });
     }
 
+    // Floats the text upward while fading out
     private IEnumerator Float()
     {
-
-        //Before:
         float alpha = 1;
         Color color = ColorHelper.Solid.White;
-        Vector3 initialPosition = transform.position;
-        float timer = 0f;
-        
-        //During:
+        Vector3 startPos = transform.position;
+
         while (textMesh.color.a > 0)
         {
-            alpha -= Increment.OnePercent * 3;
-            alpha = Mathf.Max(alpha, 0);
-
-            if (alpha < 0.5)
+            alpha = Mathf.Max(alpha - Increment.OnePercent * 3, 0);
+            if (alpha < 0.5f)
             {
                 color.a = alpha;
                 textMesh.color = color;
             }
 
-            timer += Time.deltaTime;
-
-            var x = initialPosition.x;
-            var y = position.y + speed.y;
-
-            transform.position = new Vector3(x, y, 0);
+            // Move upward
+            transform.position = new Vector3(startPos.x, position.y + speed.y, 0);
             yield return Wait.For(Interval.OneTick);
         }
-
-        //After:
         Destroy(gameObject);
     }
 
+    // Oscillates the text horizontally while rising and fading out
     private IEnumerator Oscillate()
     {
-
-        //Before:
         float alpha = 1;
         Color color = ColorHelper.Solid.White;
-        Vector3 initialPosition = transform.position;
-        float timer = 0f;
-        float duration = 0.25f; //Time for one complete back-and-forth loop
+        Vector3 startPos = transform.position;
+        float timer = 0f, duration = 0.25f;
 
-        //During:
         while (textMesh.color.a > 0)
         {
-            alpha -= Increment.OnePercent * 3;
-            alpha = Mathf.Max(alpha, 0);
-
-            if (alpha < 0.5)
+            alpha = Mathf.Max(alpha - Increment.OnePercent * 3, 0);
+            if (alpha < 0.5f)
             {
                 color.a = alpha;
                 textMesh.color = color;
             }
 
             timer += Time.deltaTime;
+            float normalized = (timer % duration) / duration;
+            float curve = riseCurve.Evaluate(normalized) * tileSize / 8;
 
-            //Calculate the normalized time (0 to 1) based on the duration
-            float normalizedTime = (timer % duration) / duration;
-
-            //Use the travelCurve to determine the horizontal boardPosition
-            float curveValue = riseCurve.Evaluate(normalizedTime) * tileSize / 8;
-
-            var x = initialPosition.x + curveValue;
-            var y = position.y + speed.y;
-
-            transform.position = new Vector3(x, y, 0);
+            transform.position = new Vector3(startPos.x + curve, position.y + speed.y, 0);
             yield return Wait.For(Interval.OneTick);
         }
-
-        //After:
         Destroy(gameObject);
-
     }
+
+    // Bounces the text and fades it out after the first bounce
     private IEnumerator Bounce()
     {
-        //Before:
         float alpha = 1f;
         Color color = ColorHelper.Solid.White;
-        Vector3 initialPosition = transform.position;
+        Vector3 startPos = transform.position;
 
-        // Setup bounce physics parameters
-        float vY = tileSize * 6;                    // Initial upward velocity
-        float gravity = -tileSize * 18f;           // Gravity pulling the textarea down
-        float bounceDamping = 0.5f;                // Reduces bounce height after each impact
-        float groundY = initialPosition.y;         // The starting y position is treated as ground level
-        float bounceEnd = tileSize * 0.1f;         // Threshold below which bouncing stops
-        float horizontalFocus = tileSize * Constants.percent33 * Random.Float(-1f, 1f);
+        float vY = tileSize * 6, gravity = -tileSize * 18f;
+        float bounceDamping = 0.5f, groundY = startPos.y, bounceEnd = tileSize * 0.1f;
+        float hFocus = tileSize * Constants.percent33 * Random.Float(-1f, 1f);
         int bounceCount = 0;
-
-        // Flag to determine when the fade should start (once the first bounce occurs)
         bool fadeStarted = false;
 
-        // Bounce Phase: simulate bouncing until fully faded out
         while (alpha > 0)
         {
-            // Apply gravity to vertical velocity
             vY += gravity * Time.deltaTime;
+            Vector3 pos = transform.position;
+            pos.y += vY * Time.deltaTime;
+            if (bounceCount <= 3) pos.x += hFocus * Time.deltaTime;
 
-            // Save the CurrentProfile position based on vertical velocity and horizontal move
-            Vector3 position = transform.position;
-            position.y += vY * Time.deltaTime;
-            position.x += bounceCount <= 3 ? horizontalFocus * Time.deltaTime : 0;
-
-            // Check if the textarea has hit (or gone below) the ground level
-            if (position.y <= groundY)
+            if (pos.y <= groundY)
             {
-                position.y = groundY;
-
-                // Start fading as soon as the first bounce occurs
-                if (!fadeStarted)
-                {
-                    fadeStarted = true;
-                }
-
-                // Bounce logic: if the bounce energy is too low, set velocity to zero;
-                // otherwise, reverse the velocity with damping to simulate a bounce.
-                if (Mathf.Abs(vY) < bounceEnd)
-                {
-                    vY = 0;
-                }
-                else
-                {
-                    vY = -vY * bounceDamping;
-                    bounceCount++;
-                }
+                pos.y = groundY;
+                if (!fadeStarted) fadeStarted = true;
+                if (Mathf.Abs(vY) < bounceEnd) vY = 0;
+                else { vY = -vY * bounceDamping; bounceCount++; }
             }
 
-            // Apply the updated position to the object
-            transform.position = position;
+            transform.position = pos;
 
-            // If fading has started, reduce the alpha concurrently with bouncing
             if (fadeStarted)
             {
-                alpha -= Increment.OnePercent * 3;
-                alpha = Mathf.Max(alpha, 0);
+                alpha = Mathf.Max(alpha - Increment.OnePercent * 3, 0);
                 color.a = alpha;
                 textMesh.color = color;
             }
 
             yield return Wait.For(Interval.OneTick);
         }
-
-        //After:
         Destroy(gameObject);
     }
-
-
-
 }

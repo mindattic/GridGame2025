@@ -175,14 +175,7 @@ namespace Assets.Scripts.Models
         }
     }
 
-    [Serializable]
-    public enum StageCompletionCondition
-    {
-        DefeatAllEnemies,
-        CollectCoins,
-        SurviveTurns
-    }
-
+   
 
 
   

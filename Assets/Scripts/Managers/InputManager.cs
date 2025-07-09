@@ -3,12 +3,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 
-public enum InputMode
-{
-    HeroTurn,
-    EnemyTurn,
-    AbilityTarget
-}
+
 
 
 // InputManager handles hero touch input and delegates focus, drag, and drop actions

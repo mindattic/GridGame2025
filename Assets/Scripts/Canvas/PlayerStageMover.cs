@@ -16,15 +16,7 @@ public class PlayerStageMover : MonoBehaviour
     private string targetStageName; // Stores the name of the target stage
     private FadeInstance fade; // Reference to fade manager
 
-    private enum MoveDirection
-    {
-        Idle = 0,
-        Up = 1,
-        Right = 2,
-        Down = 3,
-        Left = 4
-    }
-
+  
     private void Start()
     {
         fade = GameObject.Find(GameObjectHelper.Overworld.Fade).GetComponent<FadeInstance>();

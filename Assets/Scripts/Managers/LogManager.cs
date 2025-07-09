@@ -7,16 +7,7 @@ using UnityEngine;
 namespace Game.Behaviors
 {
 
-    public enum LogLevel
-    {
-        None = 0,
-        Info = 1,
-        Success = 2,
-        Warning = 3,
-        Error = 4,
-        Fatal = 5
-    }
-
+  
 
     public class LogManager : MonoBehaviour
     {

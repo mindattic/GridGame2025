@@ -1,96 +1,12 @@
-﻿
-using NUnit.Framework;
+﻿using System;
 
-public enum Team
+public enum AbilityType
 {
-    Hero,
-    Enemy,
-    Neutral
-}
-
-
-public enum Direction
-{
-    None,
-    North,
-    East,
-    South,
-    West,
-    NorthWest,
-    NorthEast,
-    SouthEast,
-    SouthWest,
-    Up,
-    Down
-}
-
-public enum Axis
-{
-    Horizontal,
-    Vertical
-}
-
-
-
-public enum Status
-{
-    None,
-    Poisoned,
-    Cursed,
-    Sleeping,
-    Doom
-}
-
-
-
-//public enum GlowState
-//{
-//   Off,
-//   On
-//}
-
-
-public enum Glow
-{
-    None,
-    White,
-    Red,
-    Green,
-    Blue
-}
-
-public enum Shadow
-{
-    None,
-    White,
-    Red,
-    Green,
-    Blue
-}
-
-public enum AttackStrategy
-{
-    AttackClosest,
-    AttackWeakest,
-    AttackStrongest,
-    AttackRandom,
-    MoveAnywhere
-}
-
-//public enum BumpStage
-//{
-//   Execute,
-//   MoveToward,
-//   MoveAway,
-//   End
-//}
-
-public enum DodgeStage
-{
-    Start,
-    TwistForward,
-    TwistBackward,
-    End
+    Passive,
+    Self,
+    TargetAlly,
+    TargetAny,
+    TargetOpponent
 }
 
 public enum AttackOutcome
@@ -101,83 +17,130 @@ public enum AttackOutcome
     CriticalHit = 3
 }
 
-public enum CoinState
+public enum AttackStrategy
 {
-    Start,
-    Move,
-    Stop,
-    Destroy
+    AttackClosest,
+    AttackRandom,
+    AttackStrongest,
+    AttackWeakest,
+    MoveAnywhere
 }
 
-public enum WeaponType
+public enum Axis
 {
-    Dagger,
-    Hammer,
-    Katana,
-    Mace,
-    Spear, 
-    Sword,
-    Wand
+    Horizontal,
+    Vertical
+}
+
+public enum BackgroundSet
+{
+    BrutalistPond,
+    CandleLitPath,
+    CrystalDesert,
+    CyberNecropolis,
+    Moors,
+    RedThorns,
+    UnderTheBridge,
+}
+
+public enum BoardPoint
+{
+    BottomCenter,
+    BottomLeft,
+    BottomRight,
+    MiddleCenter,
+    MiddleLeft,
+    MiddleRight,
+    TopCenter,
+    TopLeft,
+    TopRight
+}
+
+public enum Characters
+{
+    Barbarian,
+    Bat,
+    Cleric,
+    GreenNinja,
+    Paladin,
+    PandaGirl,
+    RedNinja,
+    Scorpion,
+    Slime,
+    Thief,
+    Vampire,
+    Yeti
+}
+
+public enum CoinState
+{
+    Destroy,
+    Move,
+    Start,
+    Stop
 }
 
 public enum DebugOptions
 {
     None,
-    DodgeTest,
-    SpinTest,
-    ShakeTest,
-    BumpTest,
-    SingleCombo,
-    TripleCombo,
-    CoinTest,
-    PortraitSlideIn,
-    PortraitPopIn,
-    SpawnDamageText,
-    DamageTextBounceTest,
-    SupportLineTest,
     AttackLineTest,
+    BumpTest,
+    CoinTest,
+    DamageTextBounceTest,
+    DodgeTest,
     EnemyAttackTest,
-    TitleTest,
-    TooltipTest,
-    TutorialTest,
     FireballTest,
     HealTest,
-    RandomizeBackground
+    PortraitPopIn,
+    PortraitSlideIn,
+    RandomizeBackground,
+    ShakeTest,
+    SingleCombo,
+    SpawnDamageText,
+    SpinTest,
+    SupportLineTest,
+    TitleTest,
+    TooltipTest,
+    TripleCombo,
+    TutorialTest
 }
 
-public enum VFX
+public enum Direction
 {
+    Down,
+    East,
+    North,
+    NorthEast,
+    NorthWest,
     None,
-    BlueSlash1,
-    BlueSlash2,
-    BlueSlash3,
-    BlueSword,
-    BlueSword4X,
-    BloodClaw,
-    LevelUp,
-    YellowHit,
-    DoubleClaw,
-    LightningExplosion,
-    BuffLife,
-    RotaryKnife,
-    AirSlash,
-    FireRain,
-    VFXTest_Ray_Blast,
-    LightningStrike,
-    PuffyExplosion,
-    RedSlash2X,
-    GodRays,
-    AcidSplash,
-    GreenBuff,
-    GoldBuff,
-    HexShield,
-    ToxicCloud,
-    OrangeSlash,
-    MoonFeather,
-    PinkSpark,
-    BlueYellowSword,
-    BlueYellowSword3X,
-    RedSword
+    South,
+    SouthEast,
+    SouthWest,
+    Up,
+    West
+}
+
+public enum DodgeStage
+{
+    End,
+    Start,
+    TwistBackward,
+    TwistForward
+}
+
+public enum DottedLineSegment
+{
+    ArrowDown,
+    ArrowLeft,
+    ArrowRight,
+    ArrowUp,
+    Horizontal,
+    None,
+    TurnBottomLeft,
+    TurnBottomRight,
+    TurnTopLeft,
+    TurnTopRight,
+    Vertical
 }
 
 public enum GameFocusOption
@@ -190,20 +153,53 @@ public enum GameFocusOption
     Faster = 5
 }
 
-
-public enum DottedLineSegment
+public enum Glow
 {
+    Blue,
+    Green,
     None,
-    Vertical,
-    Horizontal,
-    TurnTopLeft,
-    TurnTopRight,
-    TurnBottomLeft,
-    TurnBottomRight,
-    ArrowUp,
-    ArrowDown,
-    ArrowLeft,
-    ArrowRight
+    Red,
+    White
+}
+
+//public enum GlowState
+//{
+//    Off,
+//    On
+//}
+
+public enum InputMode
+{
+    AbilityTarget,
+    EnemyTurn,
+    HeroTurn
+}
+
+public enum LogLevel
+{
+    None = 0,
+    Info = 1,
+    Success = 2,
+    Warning = 3,
+    Error = 4,
+    Fatal = 5
+}
+
+public enum MoveDirection
+{
+    Idle = 0,
+    Up = 1,
+    Right = 2,
+    Down = 3,
+    Left = 4
+}
+
+public enum PlayStateProcess
+{
+    Editing,
+    PreStarting,
+    Ready,
+    Starting
 }
 
 public enum ProjectilePath
@@ -212,28 +208,52 @@ public enum ProjectilePath
     BezierCurve
 }
 
-public enum TextMotionStyle
+public enum Shadow
+{
+    Blue,
+    Green,
+    None,
+    Red,
+    White
+}
+
+public enum StageCompletionCondition
+{
+    CollectCoins,
+    DefeatAllEnemies,
+    SurviveTurns
+}
+
+public enum Status
 {
     None,
+    Poisoned,
+    Cursed,
+    Sleeping,
+    Doom
+}
+
+public enum Team
+{
+    Enemy,
+    Hero,
+    Neutral
+}
+
+public enum TextMotionStyle
+{
+    Bounce,
     Float,
-    Oscillate,
-    Bounce
+    None,
+    Oscillate
 }
 
 public enum TooltipPlacement
 {
-    Top,
-    Right,
     Bottom,
-    Left
-}
-
-
-
-public enum TypewriterMode
-{
-    CharacterByCharacter,
-    LineByLine
+    Left,
+    Right,
+    Top
 }
 
 public enum TooltipTextAlignment
@@ -242,13 +262,64 @@ public enum TooltipTextAlignment
     TopLeft
 }
 
-public enum BackgroundSet
+public enum TurnPhase
 {
-    BrutalistPond,
-    CandleLitPath,
-    CrystalDesert,
-    Moors,
-    RedThorns,
-    UnderTheBridge,
-    CyberNecropolis,
+    Attack,
+    End,
+    Move,
+    PostAttack,
+    PreAttack,
+    Start
+}
+
+public enum TypewriterMode
+{
+    CharacterByCharacter,
+    LineByLine
+}
+
+public enum VFX
+{
+    AcidSplash,
+    AirSlash,
+    BloodClaw,
+    BlueSlash1,
+    BlueSlash2,
+    BlueSlash3,
+    BlueSword,
+    BlueSword4X,
+    BlueYellowSword,
+    BlueYellowSword3X,
+    BuffLife,
+    DoubleClaw,
+    FireRain,
+    GodRays,
+    GoldBuff,
+    GreenBuff,
+    HexShield,
+    LevelUp,
+    LightningExplosion,
+    LightningStrike,
+    MoonFeather,
+    None,
+    OrangeSlash,
+    PinkSpark,
+    PuffyExplosion,
+    RedSlash2X,
+    RedSword,
+    RotaryKnife,
+    ToxicCloud,
+    VFXTest_Ray_Blast,
+    YellowHit
+}
+
+public enum WeaponType
+{
+    Dagger,
+    Hammer,
+    Katana,
+    Mace,
+    Spear,
+    Sword,
+    Wand
 }
