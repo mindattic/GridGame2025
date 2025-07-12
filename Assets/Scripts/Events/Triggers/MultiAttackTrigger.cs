@@ -23,13 +23,14 @@ namespace Assets.Scripts.Events
             foreach (var attackResult in attackResults)
             {
                 // SingleAttackTrigger spawns VFX and applies damage via HitOrMissTrigger
-                var singleAttack = new SingleAttackTrigger(attackResult, attacker.vfx.Attack);
+                //var singleAttack = new SingleAttackTrigger(attackResult, attacker.vfx.Attack);
+                var takeDamage = new TakeDamageTriggerEvent(attackResult);
 
                 // Execute each attack fully before next
-                yield return singleAttack.Run();
+                yield return takeDamage.Run();
 
                 // Wait briefly before next attack in sequence
-                yield return Wait.For(Interval.QuarterSecond);
+                yield return Wait.For(Interval.TenthSecond);
             }
 
             HasExecuted = true;

@@ -369,9 +369,6 @@ public class ActorInstance : MonoBehaviour
     //TakeDamage: Coroutine that processes damage application, triggers VFX and animations, and updates HP.
     public IEnumerator TakeDamage(AttackResult attack)
     {
-        if (!isPlaying)
-            yield break;
-
         // Immediately apply damage and update health.
         if (!isInvincible)
         {
@@ -384,7 +381,7 @@ public class ActorInstance : MonoBehaviour
         // Immediately display damage textarea and play sound.
         //var fontSize = Math.Clamp(attack.Damage, 24f, 32f);
 
-        damageTextManager.Spawn(attack.Damage.ToString(), position);
+        damageTextManager.Spawn(attack.Damage.ToString(), position, TextMotionStyle.Bounce);
         audioManager.Play($"Slash{Random.Int(1, 7)}");
 
         //if (isDying)

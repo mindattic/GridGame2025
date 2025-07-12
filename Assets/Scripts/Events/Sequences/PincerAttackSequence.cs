@@ -24,7 +24,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            if (pair.results1?.Any() != true || pair.results2?.Any() != true)
+            if (pair.attackResults1?.Any() != true || pair.attackResults2?.Any() != true)
                 yield break;
 
             // Display attackers
@@ -47,17 +47,17 @@ namespace Assets.Scripts.Events
             );
 
             // Determine bump directions
-            var firstOpponent = pair.results1.First().Opponent;
+            var firstOpponent = pair.attackResults1.First().Opponent;
             var dir1 = pair.attacker1.GetDirectionTo(firstOpponent);
             var dir2 = pair.attacker2.GetDirectionTo(firstOpponent);
 
             // Create MultiAttackTriggers
-            var trigger1 = new MultiAttackTrigger(pair.attacker1, pair.results1);
-            var trigger2 = new MultiAttackTrigger(pair.attacker2, pair.results2);
+            var trigger1 = new MultiAttackTrigger(pair.attacker1, pair.attackResults1);
+            var trigger2 = new MultiAttackTrigger(pair.attacker2, pair.attackResults2);
 
             // Start bumps, attaching MultiAttackTriggers
-            pair.attacker1.animate.BumpAsync(dir1, trigger1);
-            pair.attacker2.animate.BumpAsync(dir2, trigger2);
+            yield return pair.attacker1.animate.Bump(dir1, trigger1);
+            yield return pair.attacker2.animate.Bump(dir2, trigger2);
 
             // Wait until both triggers complete all logic (VFX and damage)
             yield return CoroutineHelper.WaitForAll(

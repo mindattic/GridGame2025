@@ -86,22 +86,18 @@ public class PincerAttackManager : MonoBehaviour
     /// </summary>
     private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pairs)
     {
-        var results = new List<AttackResult>();
+        var attackResults = new List<AttackResult>();
         var pair = pairs.FirstOrDefault(p => p.attacker1 == attacker || p.attacker2 == attacker);
-        if (pair == null) return results;
+        if (pair == null) 
+            return attackResults;
 
-        // Sort opponents closest first
-        var sortedOpponents = pair.opponents
-            .OrderBy(o => Vector2.Distance(attacker.location, o.location))
-            .ToList();
-
-        foreach (var opp in sortedOpponents)
+        foreach (var opp in pair.opponents)
         {
             bool hit = Formulas.IsHit(attacker, opp);
             bool crit = Formulas.IsCriticalHit(attacker, opp);
             int dmg = hit ? Formulas.CalculateDamage(opp, attacker) : 0;
 
-            results.Add(new AttackResult
+            attackResults.Add(new AttackResult
             {
                 Attacker = attacker,
                 Opponent = opp,
@@ -110,13 +106,13 @@ public class PincerAttackManager : MonoBehaviour
                 Damage = dmg
             });
 
-            // Chain if this opponent is also an attacker in another pair
+            // Chain if this attacker is also an attacker in another pair
             var next = pairs.FirstOrDefault(q => q.attacker1 == opp || q.attacker2 == opp);
             if (next != null)
-                results.AddRange(ChainAttacks(opp, pairs));
+                attackResults.AddRange(ChainAttacks(opp, pairs));
         }
 
-        return results;
+        return attackResults;
     }
 
     /// <summary>
@@ -151,20 +147,20 @@ public class PincerAttackManager : MonoBehaviour
         // Queue pincer attacks with closestfirst ordering baked in
         foreach (var p in participants.pair)
         {
-            // Clear any old results
-            p.results1.Clear();
-            p.results2.Clear();
+            // Clear any old attackResults
+            p.attackResults1.Clear();
+            p.attackResults2.Clear();
 
-            // Build and sort attack results at creation time
-            var raw1 = ChainAttacks(p.attacker1, participants.pair);
-            p.results1.AddRange(
-                raw1.OrderBy(r => Vector2.Distance(p.attacker1.location, r.Opponent.location))
-            );
+            // Build and sort attack attackResults at creation time
+            var attacks1
+                = ChainAttacks(p.attacker1, participants.pair)
+                .OrderBy(r => Vector2.Distance(p.attacker1.location, r.Opponent.location));
+            p.attackResults1.AddRange(attacks1);
 
-            var raw2 = ChainAttacks(p.attacker2, participants.pair);
-            p.results2.AddRange(
-                raw2.OrderBy(r => Vector2.Distance(p.attacker2.location, r.Opponent.location))
-            );
+            var attacks2
+                = ChainAttacks(p.attacker2, participants.pair)
+                .OrderBy(r => Vector2.Distance(p.attacker2.location, r.Opponent.location));
+            p.attackResults2.AddRange(attacks2);
 
             sequenceManager.Add(new PincerAttackSequence(p));
         }
