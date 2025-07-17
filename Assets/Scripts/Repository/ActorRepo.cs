@@ -693,8 +693,8 @@ public static class ActorRepo
 
                        ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.7f, -1.5f, 0f),
-                        Scale = new Vector3(5f, 5f, 0),
+    Position = new Vector3(0.71f, -1.5f, 0f),
+    Scale = new Vector3(5f, 5f, 0f),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier}/00"),
@@ -750,8 +750,8 @@ public static class ActorRepo
 
                        ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.7f, -1.5f, 0f),
-                        Scale = new Vector3(5f, 5f, 0),
+      Position = new Vector3(0.5f, -1.4f, 0f),
+    Scale = new Vector3(5f, 5f, 0f),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier}/01"),
@@ -807,8 +807,8 @@ public static class ActorRepo
 
                        ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.7f, -1.5f, 0f),
-                        Scale = new Vector3(5f, 5f, 0),
+    Position = new Vector3(0.55f, -1.5f, 0f),
+    Scale = new Vector3(5f, 5f, 0f),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier}/02"),
@@ -864,8 +864,8 @@ public static class ActorRepo
 
                        ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.7f, -1.5f, 0f),
-                        Scale = new Vector3(5f, 5f, 0),
+        Position = new Vector3(0.7f, -1.4f, 0f),
+    Scale = new Vector3(5f, 5f, 0f),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier}/03"),
@@ -921,8 +921,8 @@ public static class ActorRepo
 
                     ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.5f, -1.4f, 0),
-                        Scale = new Vector3(5f, 5f, 0),
+    Position = new Vector3(0.7f, -1.2f, 0f),
+    Scale = new Vector3(5.3f, 5.3f, 0f),
                     },
 
                     Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Thief}"),

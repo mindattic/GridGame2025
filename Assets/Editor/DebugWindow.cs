@@ -498,41 +498,85 @@ public class DebugWindow : EditorWindow
 
     private void RenderThumbnailSettings()
     {
-        // First horizontal row: the header label.
+#if UNITY_EDITOR
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Thumbnail Settings", GUILayout.Width(Screen.width));
+        GUILayout.Label("Thumbnail Settings", EditorStyles.boldLabel);
         GUILayout.EndHorizontal();
 
-        // Second horizontal row: the controls.
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("pX:", GUILayout.Width(20));
-        thumbnailPositionX = GUILayout.TextField(thumbnailPositionX, GUILayout.Width(64));
-        GUILayout.Label("pY:", GUILayout.Width(20));
-        thumbnailPositionY = GUILayout.TextField(thumbnailPositionY, GUILayout.Width(64));
-        GUILayout.Label("sX:", GUILayout.Width(20));
-        thumbnailScaleX = GUILayout.TextField(thumbnailScaleX, GUILayout.Width(64));
-        GUILayout.Label("sY:", GUILayout.Width(20));
-        thumbnailScaleY = GUILayout.TextField(thumbnailScaleY, GUILayout.Width(64));
+        // Parse existing string values to floats
+        float.TryParse(thumbnailPositionX, out float pX);
+        float.TryParse(thumbnailPositionY, out float pY);
+        float.TryParse(thumbnailScaleX, out float sX);
+        float.TryParse(thumbnailScaleY, out float sY);
 
-        // Generate button.
-        if (GUILayout.Button("Generate", GUILayout.Width(64)))
+        // Store old values for comparison
+        float oldPX = pX;
+        float oldPY = pY;
+        float oldSX = sX;
+        float oldSY = sY;
+
+        // Input fields
+        Rect pxRect = GUILayoutUtility.GetRect(200, EditorGUIUtility.singleLineHeight);
+        pX = EditorGUI.FloatField(pxRect, "pX", pX);
+
+        Rect pyRect = GUILayoutUtility.GetRect(200, EditorGUIUtility.singleLineHeight);
+        pY = EditorGUI.FloatField(pyRect, "pY", pY);
+
+        Rect sxRect = GUILayoutUtility.GetRect(200, EditorGUIUtility.singleLineHeight);
+        sX = EditorGUI.FloatField(sxRect, "sX", sX);
+
+        Rect syRect = GUILayoutUtility.GetRect(200, EditorGUIUtility.singleLineHeight);
+        sY = EditorGUI.FloatField(syRect, "sY", sY);
+
+        // If anything changed, run the Try logic
+        if (!Mathf.Approximately(pX, oldPX) ||
+            !Mathf.Approximately(pY, oldPY) ||
+            !Mathf.Approximately(sX, oldSX) ||
+            !Mathf.Approximately(sY, oldSY))
         {
-            // Try parsing the inputs to integers.
-            if (GameManager.instance.focusedActor != null &&
-                float.TryParse(thumbnailPositionX, out float pX) &&
-                float.TryParse(thumbnailPositionY, out float pY) &&
-                float.TryParse(thumbnailScaleX, out float sX) &&
-                float.TryParse(thumbnailScaleY, out float sY))
+            if (GameManager.instance.focusedActor != null)
             {
                 var position = new Vector3(pX, pY, 0f);
                 var scale = new Vector3(sX, sY, 1f);
-                var thumbnailSettings = new ThumbnailSettings(position, scale);
                 GameManager.instance.focusedActor.thumbnail.Set(position, scale);
             }
         }
+
+        // Save current values back to strings
+        thumbnailPositionX = pX.ToString("F2");
+        thumbnailPositionY = pY.ToString("F2");
+        thumbnailScaleX = sX.ToString("F2");
+        thumbnailScaleY = sY.ToString("F2");
+
+        // Manual Try/Export buttons
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("Try", GUILayout.Width(64)))
+        {
+            if (GameManager.instance.focusedActor != null)
+            {
+                var position = new Vector3(pX, pY, 0f);
+                var scale = new Vector3(sX, sY, 1f);
+                GameManager.instance.focusedActor.thumbnail.Set(position, scale);
+            }
+        }
+
+        if (GUILayout.Button("Export", GUILayout.Width(64)))
+        {
+            string exportText =
+                $"    Position = new Vector3({pX}f, {pY}f, 0f),\n" +
+                $"    Scale = new Vector3({sX}f, {sY}f, 0f),";
+            EditorGUIUtility.systemCopyBuffer = exportText;
+            Debug.Log($"Copied `{GameManager.instance.focusedActor.characterName}` ThumbnailSettings to clipboard.");
+        }
+
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
+#endif
     }
+
+
+
 
 
     // RenderSpawnControls renders buttons to spawn various enemy types.
