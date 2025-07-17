@@ -709,12 +709,12 @@ public static class Increment
 
     public static class HealthBar
     {
-        public static float Drain = 1.0f;
+        public static float Drain = 0.05f;
     }
 
     public static class ActionBar
     {
-        public static float Drain = 1.0f;
+        public static float Drain = 0.05f;
     }
 }
 
@@ -1420,6 +1420,7 @@ public static class CharacterHelper
     public const string Ronin = "Ronin";
     public const string Sellsword = "Sellsword";
     public const string Scorpion = "Scorpion";
+    public const string Soldier = "Soldier";
     public const string Slime = "Slime";
     public const string Thief = "Thief";
     public const string Vampire = "Vampire";

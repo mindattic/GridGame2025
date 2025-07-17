@@ -5536,7 +5536,8 @@ MonoBehaviour:
   timerBar: {fileID: 0}
   board: {fileID: 0}
   tiles: []
-  lines: []
+  supportLines: []
+  attackLines: []
   coinBar: {fileID: 0}
   totalCoins: 0
   previousGameFocus: 0

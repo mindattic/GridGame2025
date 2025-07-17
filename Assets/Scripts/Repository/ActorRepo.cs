@@ -650,7 +650,235 @@ public static class ActorRepo
                     }
                 }
             },
-         
+  
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Soldier 00
+             { $"{CharacterHelper.Soldier}00",
+                new ActorData
+                {
+                    Character = $"{CharacterHelper.Soldier}00",
+                    Description = "A soldier.",
+
+                    BaseStats = new ActorStats
+                    {
+                        Level = 1,
+                        Strength = 1,
+                        Vitality = 1,
+                        Agility = 1,
+                        Intelligence = 1,
+                        Wisdom = 1,
+                        Stamina = 1,
+                        Luck = 1
+                    },
+
+                    StatGrowth = new StatGrowth
+                    {
+                        Strength = 0.2f,
+                        Vitality = 0.3f,
+                        Agility = 0.2f,
+                        Intelligence = 0.2f,
+                        Wisdom = 0.2f,
+                        Stamina = 0.2f,
+                        Luck = 0.2f
+                    },
+
+                    MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                    {
+                        { 5,  new StatGrowth(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f) },
+                        { 10, new StatGrowth(0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f) },
+                        { 20, new StatGrowth(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f) },
+                        { 40, new StatGrowth(1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f) }
+                    },
+
+                    Stats = new ActorStats(),
+
+                       ThumbnailSettings = new ThumbnailSettings
+                    {
+                        Position = new Vector3(0.7f, -1.5f, 0f),
+                        Scale = new Vector3(5f, 5f, 0),
+                    },
+
+                    Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier}/00"),
+
+                    Details = new ActorDetails
+                    {
+                        Description = "A soldier.",
+                        Card = "A soldier.",
+                        Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                    }
+                }
+            },
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Soldier 01
+             { $"{CharacterHelper.Soldier}01",
+                new ActorData
+                {
+                    Character = $"{CharacterHelper.Soldier}01",
+                    Description = "A soldier.",
+
+                    BaseStats = new ActorStats
+                    {
+                        Level = 1,
+                        Strength = 1,
+                        Vitality = 1,
+                        Agility = 1,
+                        Intelligence = 1,
+                        Wisdom = 1,
+                        Stamina = 1,
+                        Luck = 1
+                    },
+
+                    StatGrowth = new StatGrowth
+                    {
+                        Strength = 0.2f,
+                        Vitality = 0.3f,
+                        Agility = 0.2f,
+                        Intelligence = 0.2f,
+                        Wisdom = 0.2f,
+                        Stamina = 0.2f,
+                        Luck = 0.2f
+                    },
+
+                    MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                    {
+                        { 5,  new StatGrowth(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f) },
+                        { 10, new StatGrowth(0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f) },
+                        { 20, new StatGrowth(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f) },
+                        { 40, new StatGrowth(1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f) }
+                    },
+
+                    Stats = new ActorStats(),
+
+                       ThumbnailSettings = new ThumbnailSettings
+                    {
+                        Position = new Vector3(0.7f, -1.5f, 0f),
+                        Scale = new Vector3(5f, 5f, 0),
+                    },
+
+                    Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier}/01"),
+
+                    Details = new ActorDetails
+                    {
+                        Description = "A soldier.",
+                        Card = "A soldier.",
+                        Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                    }
+                }
+            },
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Soldier 02
+             { $"{CharacterHelper.Soldier}02",
+                new ActorData
+                {
+                    Character = $"{CharacterHelper.Soldier}02",
+                    Description = "A soldier.",
+
+                    BaseStats = new ActorStats
+                    {
+                        Level = 1,
+                        Strength = 1,
+                        Vitality = 1,
+                        Agility = 1,
+                        Intelligence = 1,
+                        Wisdom = 1,
+                        Stamina = 1,
+                        Luck = 1
+                    },
+
+                    StatGrowth = new StatGrowth
+                    {
+                        Strength = 0.2f,
+                        Vitality = 0.3f,
+                        Agility = 0.2f,
+                        Intelligence = 0.2f,
+                        Wisdom = 0.2f,
+                        Stamina = 0.2f,
+                        Luck = 0.2f
+                    },
+
+                    MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                    {
+                        { 5,  new StatGrowth(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f) },
+                        { 10, new StatGrowth(0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f) },
+                        { 20, new StatGrowth(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f) },
+                        { 40, new StatGrowth(1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f) }
+                    },
+
+                    Stats = new ActorStats(),
+
+                       ThumbnailSettings = new ThumbnailSettings
+                    {
+                        Position = new Vector3(0.7f, -1.5f, 0f),
+                        Scale = new Vector3(5f, 5f, 0),
+                    },
+
+                    Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier}/02"),
+
+                    Details = new ActorDetails
+                    {
+                        Description = "A soldier.",
+                        Card = "A soldier.",
+                        Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                    }
+                }
+            },
+
+            // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Soldier 03
+             { $"{CharacterHelper.Soldier}03",
+                new ActorData
+                {
+                    Character = $"{CharacterHelper.Soldier}03",
+                    Description = "A soldier.",
+
+                    BaseStats = new ActorStats
+                    {
+                        Level = 1,
+                        Strength = 1,
+                        Vitality = 1,
+                        Agility = 1,
+                        Intelligence = 1,
+                        Wisdom = 1,
+                        Stamina = 1,
+                        Luck = 1
+                    },
+
+                    StatGrowth = new StatGrowth
+                    {
+                        Strength = 0.2f,
+                        Vitality = 0.3f,
+                        Agility = 0.2f,
+                        Intelligence = 0.2f,
+                        Wisdom = 0.2f,
+                        Stamina = 0.2f,
+                        Luck = 0.2f
+                    },
+
+                    MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                    {
+                        { 5,  new StatGrowth(0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f) },
+                        { 10, new StatGrowth(0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f) },
+                        { 20, new StatGrowth(1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f) },
+                        { 40, new StatGrowth(1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f, 1.5f) }
+                    },
+
+                    Stats = new ActorStats(),
+
+                       ThumbnailSettings = new ThumbnailSettings
+                    {
+                        Position = new Vector3(0.7f, -1.5f, 0f),
+                        Scale = new Vector3(5f, 5f, 0),
+                    },
+
+                    Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier}/03"),
+
+                    Details = new ActorDetails
+                    {
+                        Description = "A soldier.",
+                        Card = "A soldier.",
+                        Lore = new List<string> { "Likes jerky", "Hates Reptiles" }
+                    }
+                }
+            },
+
             // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| Thief
             { CharacterHelper.Thief,
                 new ActorData

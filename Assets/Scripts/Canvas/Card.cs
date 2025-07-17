@@ -1,3 +1,4 @@
+using Assets.Scripts.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -70,8 +71,8 @@ public class Card : MonoBehaviour
         backdrop.gameObject.SetActive(true);
         portrait.gameObject.SetActive(true);
 
-        string address = $"Actor-Portraits/{focusedActor.characterName}";
-        portrait.GetComponent<Image>().sprite = AssetHelper.LoadAsset<Sprite>(address);
+        if (ActorRepo.Actors.ContainsKey(focusedActor.characterName))
+            portrait.GetComponent<Image>().sprite = ActorRepo.Actors[focusedActor.characterName].Portrait;
         title.GetComponent<Label>().text = focusedActor.characterName;
 
         // Format the actor's stats for display:

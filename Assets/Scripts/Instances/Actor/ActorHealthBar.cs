@@ -45,7 +45,7 @@ public class ActorHealthBar
 
     private IEnumerator Drain()
     {
-        //TriggerEnqueueAttacks abort conditions
+        //Check abort conditions
         if (stats.PreviousHP == stats.HP)
             yield break;
 

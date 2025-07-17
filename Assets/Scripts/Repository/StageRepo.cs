@@ -36,8 +36,11 @@ public static class StageRepo
                         {
                             Actors = new List<StageActor>
                             {
-                                new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy, Location = new Vector2Int(5, 6) }
-                            },
+                                new StageActor { characterName = $"{CharacterHelper.Soldier}00", Team = Team.Enemy },
+                                new StageActor { characterName = $"{CharacterHelper.Soldier}01", Team = Team.Enemy },
+                                new StageActor { characterName = $"{CharacterHelper.Soldier}02", Team = Team.Enemy },
+                                new StageActor { characterName = $"{CharacterHelper.Soldier}03", Team = Team.Enemy }
+                            }
                             //DottedLines = new List<StageDottedLine>
                             //{
                             //    new StageDottedLine { Segment = DottedLineSegment.Vertical, Location = new Vector2Int(2, 3) },
