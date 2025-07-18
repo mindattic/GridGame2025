@@ -330,7 +330,7 @@ public class PortraitInstance : MonoBehaviour
             position = startPosition;
             position += new Vector3(Random.Range(ShakeIntensity.Medium), Random.Range(ShakeIntensity.Medium), 1);
             transform.localScale *= 0.99f;
-            alpha -= Increment.OnePercent;
+            alpha -= Increment.Percent1;
             alpha = Mathf.Clamp(alpha, 0, 1);
             spriteRenderer.color = new Color(1, 1, 1, alpha);
             yield return Wait.UntilNextFrame();

@@ -227,7 +227,7 @@ public class ActorRenderers
 
     public void SetHealthBarAlpha(float alpha)
     {
-        healthBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Percent70));
+        healthBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
         var drain = healthBarDrainColor;
         healthBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);
         var fill = healthBarColor;
@@ -237,7 +237,7 @@ public class ActorRenderers
 
     public void SetActionBarAlpha(float alpha)
     {
-        actionBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Percent70));
+        actionBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
         actionBarDrain.color = new Color(1, 0, 0, alpha);
         var drain = actionBarDrainColor;
         actionBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);
@@ -255,7 +255,7 @@ public class ActorRenderers
 
     public void SetRadialAlpha(float alpha)
     {
-        radialBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Percent70));
+        radialBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
         radial.color = new Color(1, 1, 1, alpha);
         radialText.color = new Color(1, 1, 1, alpha);
     }

@@ -20,8 +20,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cd7696cbee86d6458747275dd4f09c0
+    m_Address: Actor-Portraits/Captain00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1bb3a715744e4de44bb3a2e077c527c4
-    m_Address: Actor-Portraits/Soldier/03
+    m_Address: Actor-Portraits/Soldier03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -61,7 +66,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 793ffdc69cb706a42be2396bf149f91c
-    m_Address: Actor-Portraits/Soldier/01
+    m_Address: Actor-Portraits/Soldier01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -86,12 +91,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a334c211257faed43b0ab488d068af33
-    m_Address: Actor-Portraits/Soldier/02
+    m_Address: Actor-Portraits/Soldier02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a399d5d81c8ef6b4dac3dba8c9864e22
-    m_Address: Actor-Portraits/Soldier/00
+    m_Address: Actor-Portraits/Soldier00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

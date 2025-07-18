@@ -270,13 +270,13 @@ public class ActorInstance : MonoBehaviour
         }
         else if (isEnemy)
         {
-            render.SetOpaqueColor(ColorHelper.Solid.Red);
-            render.SetQualityColor(ColorHelper.Solid.Red);
-            render.SetGlowColor(ColorHelper.Solid.Red);
+            render.SetOpaqueColor(ColorHelper.Solid.Black);
+            render.SetQualityColor(ColorHelper.Solid.GunMetal);
+            render.SetGlowColor(ColorHelper.Solid.GunMetal);
             render.SetParallaxSprite(SpriteRepo.Seamless["RedFire1"]);
             render.SetParallaxMaterial(MaterialRepo.Materials["EnemyParallax"], thumbnail.texture);
             render.SetParallaxAlpha(Opacity.Percent50);
-            render.SetFrameColor(ColorHelper.Solid.Red);
+            render.SetFrameColor(ColorHelper.Solid.GunMetal);
             vfx.Attack = VisualEffectRepo.VisualEffects["DoubleClaw"];
         }
 
@@ -459,8 +459,8 @@ public class ActorInstance : MonoBehaviour
         var hasSpawnedCoins = false;
         while (alpha > 0f)
         {
-            alpha -= Increment.OnePercent;
-            alpha = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
+            alpha -= Increment.Percent1;
+            alpha = Mathf.Clamp(alpha, Increment.Transparent, Opacity.Opaque);
             render.SetAlpha(alpha);
 
             //Assign coins when enemy fades below 10% opacity, if not already spawned.

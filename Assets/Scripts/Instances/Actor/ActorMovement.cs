@@ -12,7 +12,6 @@ namespace Assets.Scripts.Instances.Actor
     public class ActorMovement
     {
         //Quick Reference Properties
-        protected float percent33 => Constants.percent33;
         protected Vector3 tileScale => GameManager.instance.tileScale;
         protected ActorInstance focusedActor => GameManager.instance.focusedActor;
         protected List<ActorInstance> actors => GameManager.instance.actors;

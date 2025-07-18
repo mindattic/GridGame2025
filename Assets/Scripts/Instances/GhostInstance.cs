@@ -70,7 +70,7 @@ public class GhostInstance : MonoBehaviour
 
         while (alpha > 0)
         {
-            alpha -= Increment.FivePercent;
+            alpha -= Increment.Percent5;
             alpha = Mathf.Max(alpha, 0f);
             color.a = alpha;
             renderers.thumbnail.color = color;

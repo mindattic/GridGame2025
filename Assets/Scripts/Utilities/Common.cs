@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Instances;
-using Game.Manager;
 using Game.Models;
 using Game.Models.Profile;
 using System;
@@ -34,9 +33,9 @@ public static class GameManagerHelper
     public static GhostManager Ghost => gameManager.ghostManager;
     public static PortraitManager Portrait => gameManager.portraitManager;
     //public static ActorManager Actors => gameManager.actorManager;
-   // public static SelectedHeroManager SelectedHero => gameManager.selectedHeroManager;
+    // public static SelectedHeroManager SelectedHero => gameManager.selectedHeroManager;
     //public static HeroManager Heroes => gameManager.heroManager;
-   // public static EnemyManager Enemies => gameManager.enemyManager;
+    // public static EnemyManager Enemies => gameManager.enemyManager;
     public static TileManager Tiles => gameManager.tileManager;
     public static FootstepManager Footstep => gameManager.footstepManager;
     public static AudioManager Audio => gameManager.audioManager;
@@ -95,7 +94,7 @@ public static class GameManagerHelper
         public static bool HasTargetActor => gameManager.hasTargetActor;
     }
 
-  
+
     // World instances
     public static FadeInstance Fade => gameManager.fade;
     public static TileMap TileMap => gameManager.tileMap;
@@ -110,7 +109,7 @@ public static class GameManagerHelper
     public static int TotalCoins => gameManager.totalCoins;
 
 
-  
+
 }
 
 
@@ -397,25 +396,17 @@ public static class Constants
     //Date formats
     public const string dateFormat = "yyyy.MM.dd.HH.mm.ss";
 
-    //Percent
-    public const float percent10 = 0.1f;
-    public const float percent16 = 0.166666f;
-    public const float percent25 = 0.25f;
-    public const float percent33 = 0.333333f;
-    public const float percent50 = 0.5f;
-    public const float percent66 = 0.666666f;
-    public const float percent75 = 0.75f;
-    public const float percent100 = 1.0f;
 
     //Size
-    public static readonly Vector2 size10 = new Vector2(percent10, percent10);
-    public static readonly Vector2 size16 = new Vector2(percent16, percent16);
-    public static readonly Vector2 size25 = new Vector2(percent25, percent25);
-    public static readonly Vector2 size33 = new Vector2(percent33, percent33);
-    public static readonly Vector2 size50 = new Vector2(percent50, percent50);
-    public static readonly Vector2 size66 = new Vector2(percent66, percent66);
-    public static readonly Vector2 size75 = new Vector2(percent75, percent75);
-    public static readonly Vector2 size100 = new Vector2(percent100, percent100);
+    public static readonly Vector2 Size10 = new Vector2(Increment.Percent10, Increment.Percent10);
+    public static readonly Vector2 Size16 = new Vector2(Increment.Percent16, Increment.Percent16);
+    public static readonly Vector2 Size25 = new Vector2(Increment.Percent25, Increment.Percent25);
+    public static readonly Vector2 Size33 = new Vector2(Increment.Percent33, Increment.Percent33);
+    public static readonly Vector2 Size50 = new Vector2(Increment.Percent50, Increment.Percent50);
+    public static readonly Vector2 Size66 = new Vector2(Increment.Percent66, Increment.Percent66);
+    public static readonly Vector2 Size75 = new Vector2(Increment.Percent75, Increment.Percent75);
+    public static readonly Vector2 Size100 = new Vector2(Increment.Percent100, Increment.Percent100);
+
 
 
     //Card
@@ -593,6 +584,7 @@ public static class ColorHelper
         public static Color LightRed = RGB(255, 128, 128);
         public static Color Red = RGB(255, 0, 0);
         public static Color Green = RGB(0, 255, 0);
+        public static Color GunMetal = RGB(42, 52, 57);
     }
 
     public static class HealthBar
@@ -621,6 +613,7 @@ public static class ColorHelper
         public static Color Red = RGBA(255, 0, 0, 128);
         public static Color Green = RGBA(0, 255, 0, 128);
         public static Color Yellow = RGBA(255, 255, 0, 128);
+        public static Color GunMetal = RGBA(42, 52, 57, 128);
     }
 
     public static class Transparent
@@ -655,20 +648,6 @@ public static class CoroutineHelper
 
 }
 
-public static class Opacity
-{
-    public static float Opaque = 1f;
-    public static float Percent90 = 0.90f;
-    public static float Percent80 = 0.80f;
-    public static float Percent70 = 0.70f;
-    public static float Percent60 = 0.60f;
-    public static float Percent50 = 0.50f;
-    public static float Percent40 = 0.40f;
-    public static float Percent30 = 0.30f;
-    public static float Percent20 = 0.20f;
-    public static float Percent10 = 0.10f;
-    public static float Transparent = 0f;
-}
 
 public static class Rarities
 {
@@ -679,6 +658,7 @@ public static class Rarities
     public static Rarity Epic = new Rarity("Epic", ColorHelper.RGB(163, 53, 238));
     public static Rarity Legendary = new Rarity("Legendary", ColorHelper.RGB(255, 128, 0));
 }
+
 
 public static class Interval
 {
@@ -697,26 +677,74 @@ public static class Interval
 
 }
 
+public static class Opacity
+{
+    // Standard opacity levels
+    public const float Opaque = 1f;
+    public const float Percent90 = 0.90f;
+    public const float Percent80 = 0.80f;
+    public const float Percent70 = 0.70f;
+    public const float Percent60 = 0.60f;
+    public const float Percent50 = 0.50f;
+    public const float Percent40 = 0.40f;
+    public const float Percent30 = 0.30f;
+    public const float Percent20 = 0.20f;
+    public const float Percent10 = 0.10f;
+    public const float Transparent = 0f;
+
+    // Opacity values based on byte alpha (0–255)
+    public static class Translucent
+    {
+        public const float Alpha196 = 0.76862745f;
+        public const float Alpha128 = 0.50196078f;
+        public const float Alpha64 = 0.25098039f;
+        public const float Alpha32 = 0.12549020f;
+    }
+}
+
 public static class Increment
 {
-    public static float OnePercent = 0.01f;
-    public static float TwoPercent = 0.02f;
-    public static float FivePercent = 0.05f;
-    public static float TenPercent = 0.1f;
-    public static float FiftyPercent = 0.5f;
-    public static float HundredPercent = 1.0f;
+    // Common Percent Constants
+    public const float Percent1 = 0.01f;
+    public const float Percent2 = 0.02f;
+    public const float Percent3 = 0.03f;
+    public const float Percent4 = 0.04f;
+    public const float Percent5 = 0.05f;
+    public const float Percent6 = 0.06f;
+    public const float Percent7 = 0.07f;
+    public const float Percent8 = 0.08f;
+    public const float Percent9 = 0.09f;
+    public const float Percent10 = 0.1f;
+    public const float Percent16 = 0.16666667f;
+    public const float Percent20 = 0.2f;
+    public const float Percent25 = 0.25f;
+    public const float Percent30 = 0.3f;
+    public const float Percent33 = 0.33333334f;
+    public const float Percent40 = 0.4f;
+    public const float Percent50 = 0.5f;
+    public const float Percent60 = 0.6f;
+    public const float Percent66 = 0.6666667f;
+    public const float Percent70 = 0.7f;
+    public const float Percent75 = 0.75f;
+    public const float Percent80 = 0.8f;
+    public const float Percent90 = 0.9f;
+    public const float Percent100 = 1.0f;
 
+    // Opacity Values
+    public const float Opaque = 1f;
+    public const float Transparent = 0f;
 
     public static class HealthBar
     {
-        public static float Drain = 1.0f;
+        public const float Drain = 1.0f;
     }
 
     public static class ActionBar
     {
-        public static float Drain = 1.0f;
+        public const float Drain = 1.0f;
     }
 }
+
 
 public static class Intermission
 {

@@ -804,7 +804,7 @@ public static class ActorRepo
                     Stats = new ActorStats(),
                     ThumbnailSettings = new ThumbnailSettings
                     {
-                        Position = new Vector3(0.55f, -1.5f, 0f),
+                        Position = new Vector3(0.56f, -1.5f, 0f),
                         Scale = new Vector3(5f, 5f, 0f),
                     },
                     Portrait = AssetHelper.LoadAsset<Sprite>(

@@ -74,7 +74,7 @@ public class FootstepInstance : MonoBehaviour
 
         while (alpha > 0)
         {
-            alpha -= Increment.OnePercent;
+            alpha -= Increment.Percent1;
             alpha = Mathf.Max(alpha, 0f);
             spriteRenderer.color = new Color(1, 1, 1, alpha);
 

@@ -65,7 +65,7 @@ public class DamageTextInstance : MonoBehaviour
 
         while (textMesh.color.a > 0)
         {
-            alpha = Mathf.Max(alpha - Increment.OnePercent * 3, 0);
+            alpha = Mathf.Max(alpha - Increment.Percent3, 0);
             if (alpha < 0.5f)
             {
                 color.a = alpha;
@@ -89,7 +89,7 @@ public class DamageTextInstance : MonoBehaviour
 
         while (textMesh.color.a > 0)
         {
-            alpha = Mathf.Max(alpha - Increment.OnePercent * 3, 0);
+            alpha = Mathf.Max(alpha - Increment.Percent3, 0);
             if (alpha < 0.5f)
             {
                 color.a = alpha;
@@ -115,7 +115,7 @@ public class DamageTextInstance : MonoBehaviour
 
         float vY = game.TileSize * 6, gravity = -game.TileSize * 18f;
         float bounceDamping = 0.5f, groundY = startPos.y, bounceEnd = game.TileSize * 0.1f;
-        float hFocus = game.TileSize * Constants.percent33 * Random.Float(-1f, 1f);
+        float hFocus = game.TileSize * Increment.Percent33 * Random.Float(-1f, 1f);
         int bounceCount = 0;
         bool fadeStarted = false;
 
@@ -138,7 +138,7 @@ public class DamageTextInstance : MonoBehaviour
 
             if (fadeStarted)
             {
-                alpha = Mathf.Max(alpha - Increment.OnePercent * 3, 0);
+                alpha = Mathf.Max(alpha - Increment.Percent3, 0);
                 color.a = alpha;
                 textMesh.color = color;
             }

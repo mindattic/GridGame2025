@@ -324,38 +324,38 @@ public class DebugWindow : EditorWindow
         bool isClicked;
 
         GUILayout.BeginHorizontal();
-        isClicked = GUILayout.Button("SplashScreen Screen", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("SplashScreen Screen", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             SceneRepo.LoadScene(SceneHelper.SplashScreen);
 
-        isClicked = GUILayout.Button("TitleScreen Screen", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("TitleScreen Screen", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             SceneRepo.LoadScene(SceneHelper.TitleScreen);
 
-        isClicked = GUILayout.Button("Settings", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Settings", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             SceneRepo.LoadScene(SceneHelper.Settings);
 
-        isClicked = GUILayout.Button("Stage Select", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Stage Select", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             SceneRepo.LoadScene(SceneHelper.StageSelect);
 
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
-        isClicked = GUILayout.Button("Load Profile", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Load Profile", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             SceneRepo.LoadScene(SceneHelper.ProfileSelect);
 
-        isClicked = GUILayout.Button("Load Save", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Load Save", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             SceneRepo.LoadScene(SceneHelper.SaveFileSelect);
 
-        isClicked = GUILayout.Button("Overworld", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Overworld", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             SceneRepo.LoadScene(SceneHelper.Overworld);
 
-        isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             SceneRepo.LoadScene(SceneHelper.Game);
 
@@ -394,7 +394,7 @@ public class DebugWindow : EditorWindow
         }
 
         // Toggle to show or hide actor frames.
-        onCheckChanged = EditorGUILayout.Toggle("Spawn Actor Frames?", debugManager.showActorFrame, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Show Actor Frame?", debugManager.showActorFrame, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.showActorFrame != onCheckChanged)
         {
             debugManager.showActorFrame = onCheckChanged;
@@ -402,7 +402,7 @@ public class DebugWindow : EditorWindow
         }
 
         // Toggle to show or hide tutorial popups.
-        onCheckChanged = EditorGUILayout.Toggle("Spawn Tutorials", debugManager.showTutorials, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("Show Tutorials", debugManager.showTutorials, GUILayout.Width(Screen.width * 0.25f));
         if (debugManager.showTutorials != onCheckChanged)
         {
             debugManager.showTutorials = onCheckChanged;
@@ -480,7 +480,7 @@ public class DebugWindow : EditorWindow
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Load", GUILayout.Width(Screen.width * Constants.percent33)))
+        if (GUILayout.Button("Load", GUILayout.Width(Screen.width * Increment.Percent33)))
             OnReloadStageClick();
 
         //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.thumbnailScaleX * Constants.percent33)))
@@ -513,7 +513,7 @@ public class DebugWindow : EditorWindow
             gameManager.reloadThumbnailSettings = false;
         }
 
-        float containerWidth = EditorGUIUtility.currentViewWidth * 0.5f;
+        float containerWidth = EditorGUIUtility.currentViewWidth * Increment.Percent33;
 
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical(GUILayout.Width(containerWidth));
@@ -589,19 +589,19 @@ public class DebugWindow : EditorWindow
         bool isClicked;
         GUILayout.BeginHorizontal();
 
-        isClicked = GUILayout.Button("Slime", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Slime", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             debugManager.SpawnSlime();
 
-        isClicked = GUILayout.Button("Bat", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Bat", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             debugManager.SpawnBat();
 
-        isClicked = GUILayout.Button("Scorpion", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Scorpion", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             debugManager.SpawnScorpion();
 
-        isClicked = GUILayout.Button("Yeti", GUILayout.Width(Screen.width * Constants.percent25));
+        isClicked = GUILayout.Button("Yeti", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
             debugManager.SpawnYeti();
 

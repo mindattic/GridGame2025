@@ -50,11 +50,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 19f246ecbab868947801f8c6ea101569
-    m_Address: Sprites/Backgrounds/CrystalDesert/01
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1ab6fc6396a111c46bdaefbcdcc388bc
     m_Address: Sprites/Logos/Mindattic.1024x1024
     m_ReadOnly: 0
@@ -65,18 +60,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1bdf6fa4994adab48b8d6f562cf4e679
-    m_Address: Sprites/Backgrounds/BrutalistPond/04
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1cbcbf2795bc96441952b0a623beaeac
     m_Address: Sprites/TutorialPages/Tutorial.1-2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1e775b28298cdaf47ad366d1b7adc30c
-    m_Address: Sprites/Backgrounds/BrutalistPond/02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -95,8 +80,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2af776829fc73ed4c813882d5d1f2128
-    m_Address: Sprites/Backgrounds/Moors/08
+  - m_GUID: 29f60d0067842244e84aa3807c626e23
+    m_Address: Sprites/Backgrounds/ElectricWasteland/01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -110,11 +95,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 34808164e446fee4ca64571b52a48665
-    m_Address: Sprites/Backgrounds/CandleLitPath/00
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 362ea71bb513df34ea4c121c30d55fdd
     m_Address: Sprites/Backgrounds/CyberNecropolis/08
     m_ReadOnly: 0
@@ -125,11 +105,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 38cefd3b1dd26af4fb26b36b7cf29f27
-    m_Address: Sprites/Backgrounds/Moors/07
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 39e9c1e34bd792640a78fe18b498ec06
     m_Address: Sprites/Backgrounds/CyberNecropolis/07
     m_ReadOnly: 0
@@ -137,11 +112,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3a126e79cbb37a94bbb8d5fbfc4247e5
     m_Address: Sprites/Backgrounds/Moors/00
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3a58aecf2db4b2a419324856087c2e7a
-    m_Address: Sprites/Backgrounds/Moors/05
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -165,6 +135,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e9430e6c7b5df14b869ee49ad9c5adf
+    m_Address: Sprites/Backgrounds/ElectricWasteland/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3f3d2278569a15e4fa7543570bff6a11
     m_Address: Sprites/WeaponTypes/Shield
     m_ReadOnly: 0
@@ -172,11 +147,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 43036b4f7295ec447a8091ee2d3012c5
     m_Address: Sprites/Backgrounds/CyberNecropolis/00
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 47b7895a753e71249be6df85c734efec
-    m_Address: Sprites/Backgrounds/BrutalistPond/05
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -197,11 +167,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 51264a35d9ce6cc46b79a18b9d12166c
     m_Address: Sprites/Backgrounds/CyberNecropolis/11
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 52adffe321c466a47802fe14b3a6415e
-    m_Address: Sprites/Backgrounds/CrystalDesert/00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -235,11 +200,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 68a87cc41d1dedc479be4de38f19c0a4
-    m_Address: Sprites/Backgrounds/CrystalDesert/03
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f27d800d92dc01458cc0c90ccb3c652
     m_Address: Sprites/Forest
     m_ReadOnly: 0
@@ -247,11 +207,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f37be176d63e8d4fb3a83b7021d59f0
     m_Address: Sprites/Leaves/MapleLeaf1
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6f51185b7a920154ca6ebd00c9ccc37a
-    m_Address: Sprites/Backgrounds/CandleLitPath/01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -267,11 +222,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7d138ee776549614f96c88c0457703d0
     m_Address: Sprites/WeaponTypes/Crossbow
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7d4668c41329aad4dbfee6bc8b2aaf4e
-    m_Address: Sprites/Backgrounds/BrutalistPond/00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -307,11 +257,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8d84dfdba620a0145829a4855d50b252
     m_Address: Sprites/Black16x16
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 92939528aeee80f489e21212462fa258
-    m_Address: Sprites/Backgrounds/CrystalDesert/02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -362,21 +307,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: aa206f6bf08484c459dac22687c29209
     m_Address: Sprites/Paused
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: aa3bbd61e9256f643b7a87dbaa631c92
-    m_Address: Sprites/Backgrounds/CandleLitPath/03
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ab1aa18b6731aa84fb36777a4f9fcb35
-    m_Address: Sprites/Backgrounds/BrutalistPond/07
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: b03c31237f2073f4b91cf5a3eda47129
-    m_Address: Sprites/Backgrounds/BrutalistPond/03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -435,8 +365,8 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cce878b833b5f5a45b3a088fbbd8c0bd
-    m_Address: Sprites/Backgrounds/BrutalistPond/01
+  - m_GUID: cefb2d09d790403479355ab9e84a01d9
+    m_Address: Sprites/Backgrounds/ElectricWasteland/00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -445,8 +375,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d3f6c83dc63f6e6408431a256bc66e66
-    m_Address: Sprites/Backgrounds/Moors/06
+  - m_GUID: d1361732497ed0e40882683c2f94fb7e
+    m_Address: Sprites/Backgrounds/ElectricWasteland/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d3c448bb595bb884b982655060b20427
+    m_Address: Sprites/Backgrounds/ElectricWasteland/04
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -495,11 +430,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e79a0af8b5d9b6c4099deee2b7e2aedf
-    m_Address: Sprites/Backgrounds/CandleLitPath/02
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e9a768e7cc448e64c893a1d3a069f20d
     m_Address: Sprites/WeaponTypes/Grenade
     m_ReadOnly: 0
@@ -532,11 +462,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: fedb31964b6f37b45b3abf945fd97637
     m_Address: Sprites/WeaponTypes/Pistol
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ff77758a68e30ca44a6a5b9bfec88a16
-    m_Address: Sprites/Backgrounds/BrutalistPond/06
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

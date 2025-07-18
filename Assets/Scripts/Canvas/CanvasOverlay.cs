@@ -13,7 +13,7 @@ public class CanvasOverlay : MonoBehaviour
 
     [SerializeField] private float fadeDuration = 0.25f; // Duration of fade effect
     [SerializeField] private float minAlpha = Opacity.Transparent; // Fully transparent
-    [SerializeField] private float maxAlpha = Opacity.Percent70; // Maximum opacity
+    [SerializeField] private float maxAlpha = Opacity.Translucent.Alpha196; // Maximum opacity
 
     private void Awake()
     {

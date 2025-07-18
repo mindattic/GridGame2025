@@ -21,7 +21,6 @@ namespace Assets.Scripts.Instances.Actor
         protected ActorStats stats => instance.stats;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
-        protected float percent33 => Constants.percent33;
         protected float tileSize => GameManager.instance.tileSize;
         private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
@@ -238,8 +237,8 @@ namespace Assets.Scripts.Instances.Actor
 
             // Define key positions for animation phases.
             var startPosition = instance.currentTile.position;
-            var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), tileSize * percent33);
-            var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, tileSize * percent33);
+            var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), tileSize * Increment.Percent33);
+            var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, tileSize * Increment.Percent33);
 
             float elapsedTime;
 

@@ -136,8 +136,8 @@ public class ScalableControl : MonoBehaviour
         // Background (fills inside border)
         if (background)
         {
-            float bgMinAnchor = cornerSize * 0.333f / root.rect.width;
-            float bgMinAnchorY = cornerSize * 0.3333f / root.rect.height;
+            float bgMinAnchor = cornerSize * Increment.Percent33 / root.rect.width;
+            float bgMinAnchorY = cornerSize * Increment.Percent33 / root.rect.height;
 
             background.anchorMin = new Vector2(bgMinAnchor, bgMinAnchorY);
             background.anchorMax = new Vector2(1 - bgMinAnchor, 1 - bgMinAnchorY);
