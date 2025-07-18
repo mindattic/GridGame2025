@@ -94,7 +94,30 @@ public static class SpriteRepo
     {
         if (isLoaded) return;
 
-        LoadBackgrounds();
+        #region Backgrounds
+
+        backgrounds = new Dictionary<string, Sprite>();
+        var backgroundSets = new (BackgroundSet set, int count)[]
+        {
+            (BackgroundSet.Moors, 5),
+            (BackgroundSet.RedThorns, 5),
+            (BackgroundSet.UnderTheBridge, 4),
+            (BackgroundSet.CyberNecropolis, 17),
+            (BackgroundSet.ElectricWasteland, 5),
+        };
+
+        foreach (var (set, count) in backgroundSets)
+        {
+            string name = set.ToString();
+            for (int i = 0; i < count; i++)
+            {
+                var key = $"{name}.{i:D2}";
+                var path = $"Sprites/Backgrounds/{name}/{i:D2}";
+                backgrounds[key] = AssetHelper.LoadAsset<Sprite>(path);
+            }
+        }
+
+        #endregion
 
         gui = new Dictionary<string, Sprite>
         {
@@ -174,28 +197,6 @@ public static class SpriteRepo
         isLoaded = true;
     }
 
-    private static void LoadBackgrounds()
-    {
-        backgrounds = new Dictionary<string, Sprite>();
 
-        var backgroundSets = new (BackgroundSet set, int count)[]
-        {
-            (BackgroundSet.Moors, 5),
-            (BackgroundSet.RedThorns, 5),
-            (BackgroundSet.UnderTheBridge, 4),
-            (BackgroundSet.CyberNecropolis, 17),
-        };
-
-        foreach (var (set, count) in backgroundSets)
-        {
-            string name = set.ToString();
-            for (int i = 0; i < count; i++)
-            {
-                var key = $"{name}.{i:D2}";
-                var path = $"Sprites/Backgrounds/{name}/{i:D2}";
-                backgrounds[key] = AssetHelper.LoadAsset<Sprite>(path);
-            }
-        }
-    }
 
 }

@@ -39,6 +39,7 @@ public enum BackgroundSet
     Moors,
     RedThorns,
     UnderTheBridge,
+    ElectricWasteland
 }
 
 public enum BoardPoint

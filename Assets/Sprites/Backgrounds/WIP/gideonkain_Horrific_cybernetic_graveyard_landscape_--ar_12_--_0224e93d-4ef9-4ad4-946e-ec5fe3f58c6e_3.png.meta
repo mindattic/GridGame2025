@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gideonkain_Horrific_cybernetic_graveyard_landscape_--ar_12_--_0224e93d-4ef9-4ad4-946e-ec5fe3f58c6e_3_0: 8806050625010878140
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
