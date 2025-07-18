@@ -180,11 +180,8 @@ public static class SpriteRepo
 
         var backgroundSets = new (BackgroundSet set, int count)[]
         {
-            (BackgroundSet.BrutalistPond, 8),
-            (BackgroundSet.CandleLitPath, 4),
-            (BackgroundSet.CrystalDesert, 4),
-            (BackgroundSet.Moors, 9),
-            (BackgroundSet.RedThorns, 4),
+            (BackgroundSet.Moors, 5),
+            (BackgroundSet.RedThorns, 5),
             (BackgroundSet.UnderTheBridge, 4),
             (BackgroundSet.CyberNecropolis, 17),
         };

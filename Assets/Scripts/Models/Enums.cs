@@ -35,9 +35,6 @@ public enum Axis
 
 public enum BackgroundSet
 {
-    BrutalistPond,
-    CandleLitPath,
-    CrystalDesert,
     CyberNecropolis,
     Moors,
     RedThorns,
