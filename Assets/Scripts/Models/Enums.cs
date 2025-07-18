@@ -84,6 +84,7 @@ public enum CoinState
 public enum DebugOptions
 {
     None,
+    KillEnemies,
     AttackLineTest,
     BumpTest,
     CoinTest,

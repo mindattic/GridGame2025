@@ -6,7 +6,7 @@ using UnityEngine;
 public class ActorThumbnail : MonoBehaviour
 {
     private ActorInstance instance;
-    private ThumbnailSettings thumbnailSettings;
+    public ThumbnailSettings thumbnailSettings;
     private SpriteRenderer spriteRenderer;
 
     public float rangeMultiplier;

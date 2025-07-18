@@ -116,6 +116,9 @@ public class GameManager : Singleton<GameManager>
     public float gameFocus { get => Time.timeScale; set => Time.timeScale = value; }
     public float previousGameFocus;
 
+    //Debug Window
+    public bool reloadThumbnailSettings = false;
+
     private void Awake()
     {
         if (!ProfileRepo.HasProfiles())

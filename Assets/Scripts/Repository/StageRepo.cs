@@ -36,10 +36,10 @@ public static class StageRepo
                         {
                             Actors = new List<StageActor>
                             {
-                                new StageActor { characterName = $"{CharacterHelper.Soldier}00", Team = Team.Enemy },
-                                new StageActor { characterName = $"{CharacterHelper.Soldier}01", Team = Team.Enemy },
-                                new StageActor { characterName = $"{CharacterHelper.Soldier}02", Team = Team.Enemy },
-                                new StageActor { characterName = $"{CharacterHelper.Soldier}03", Team = Team.Enemy }
+                                new StageActor { characterName = CharacterHelper.Soldier00, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier01, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier02, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier03, Team = Team.Enemy }
                             }
                             //DottedLines = new List<StageDottedLine>
                             //{
@@ -65,21 +65,22 @@ public static class StageRepo
                         {
                             Actors = new List<StageActor>
                             {
-                                new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy },
-                                new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy },
-                                new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy }
+                                new StageActor { characterName = CharacterHelper.Soldier00, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier01, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier02, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier03, Team = Team.Enemy }
                             }
                         },
                         new StageWave
                         {
                             Actors = new List<StageActor>
                             {
-                                new StageActor { characterName = CharacterHelper.Slime, Team = Team.Enemy },
-                                new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy },
-                                new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy },
-                                new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 2 },
-                                new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 3 },
-                                new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy, SpawnTurn = 4 }
+                                new StageActor { characterName = CharacterHelper.Soldier00, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier01, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier02, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Soldier03, Team = Team.Enemy },
+                                new StageActor { characterName = CharacterHelper.Captain00, Team = Team.Enemy },
+
                             }
                         }
                     }

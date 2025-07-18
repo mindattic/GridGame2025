@@ -13,6 +13,8 @@ using game = GameManagerHelper;
 public class SelectedHeroManager : MonoBehaviour
 {
     // Quick reference properties for accessing core game systems
+
+
     protected InputManager inputManager => GameManager.instance.inputManager;
     protected AbilityButtonManager abilityButtonManager => GameManager.instance.abilityButtonManager;
     protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
@@ -82,6 +84,11 @@ public class SelectedHeroManager : MonoBehaviour
 
         focusIndicator.Assign();
         card.Assign();
+
+        // Notify editor to reload
+#if UNITY_EDITOR
+        GameManager.instance.reloadThumbnailSettings = true;
+#endif
     }
 
     /// <summary>

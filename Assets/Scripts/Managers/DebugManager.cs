@@ -84,7 +84,7 @@ public class DebugManager : MonoBehaviour
         damageTextManager.Spawn(text, hero1.position, style);
     }
 
-   
+
 
     public void BumpTest()
     {
@@ -243,6 +243,25 @@ public class DebugManager : MonoBehaviour
         var tutorial = TutorialRepo.Tutorials["Tutorial1"];
         tutorialPopup.Load(tutorial);
     }
+
+    public void KillEnemies()
+    {
+        var playingEnemires = enemies.Where(x => x.isPlaying).ToList();
+        foreach (var enemy in playingEnemires)
+        {
+            var attackResult = new AttackResult()
+            {
+                Attacker = hero1,
+                Opponent = enemy,
+                IsHit = true,
+                IsCriticalHit = false,
+                Damage = 9999
+            };
+
+            enemy.TakeDamageAsync(attackResult);
+        }
+    }
+
 
     public void VFXTest_BlueSlash1()
     {
@@ -482,7 +501,7 @@ public class DebugManager : MonoBehaviour
         var enemy4 = enemies.ElementAtOrDefault(3);
         var enemy5 = enemies.ElementAtOrDefault(4);
         var enemy6 = enemies.ElementAtOrDefault(5);
-   
+
         //Define the group to remain aligned
         var group = new[] { hero1, hero2, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6 };
 
@@ -495,7 +514,7 @@ public class DebugManager : MonoBehaviour
         enemy5.Teleport(new Vector2Int(3, 6));
         enemy6.Teleport(new Vector2Int(3, 7));
         hero2.Teleport(new Vector2Int(3, 8));
- 
+
         //Move all other actors to unoccupied locations
         actors.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
     }
@@ -651,5 +670,5 @@ public class DebugManager : MonoBehaviour
         background.Randomize();
     }
 
-  
+
 }
