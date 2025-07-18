@@ -503,10 +503,10 @@ public class DebugWindow : EditorWindow
         if (gameManager.reloadThumbnailSettings && gameManager.focusedActor != null)
         {
             var t = gameManager.focusedActor.thumbnail;
-            thumbnailPositionX = t.thumbnailSettings.Position.x.ToString("F2");
-            thumbnailPositionY = t.thumbnailSettings.Position.y.ToString("F2");
-            thumbnailScaleX = t.thumbnailSettings.Scale.x.ToString("F2");
-            thumbnailScaleY = t.thumbnailSettings.Scale.y.ToString("F2");
+            thumbnailPositionX = t.settings.Position.x.ToString("F2");
+            thumbnailPositionY = t.settings.Position.y.ToString("F2");
+            thumbnailScaleX = t.settings.Scale.x.ToString("F2");
+            thumbnailScaleY = t.settings.Scale.y.ToString("F2");
             gameManager.reloadThumbnailSettings = false;
         }
 

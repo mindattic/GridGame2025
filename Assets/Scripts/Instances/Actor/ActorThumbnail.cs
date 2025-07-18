@@ -6,7 +6,7 @@ using UnityEngine;
 public class ActorThumbnail : MonoBehaviour
 {
     private ActorInstance instance;
-    public ThumbnailSettings thumbnailSettings;
+    public ThumbnailSettings settings;
     private SpriteRenderer spriteRenderer;
 
     public float rangeMultiplier;
@@ -33,7 +33,7 @@ public class ActorThumbnail : MonoBehaviour
         noiseSeed = new Vector2(Random.Float(0f, 100f), Random.Float(0f, 100f));
 
         // Scale multiplier proportionally
-        float baseTextureSize = 1024f;
+        float baseTextureSize = 4096f;
         float textureSize = Mathf.Max(texture.width, texture.height);
         rangeMultiplier = 0.05f * (textureSize / baseTextureSize);
 
@@ -58,9 +58,9 @@ public class ActorThumbnail : MonoBehaviour
 
     public void Set(Vector3 position, Vector3 scale)
     {
-        thumbnailSettings = new ThumbnailSettings(position, scale);
-        transform.localPosition = thumbnailSettings.Position;
-        transform.localScale = thumbnailSettings.Scale;
+        settings = new ThumbnailSettings(position, scale);
+        transform.localPosition = settings.Position;
+        transform.localScale = settings.Scale;
     }
 
     public void Initialize(ActorInstance parentInstance)
@@ -72,9 +72,9 @@ public class ActorThumbnail : MonoBehaviour
         spriteRenderer.sprite = actorData.Portrait;
         spriteRenderer.material.SetTexture("_MainTex", spriteRenderer.sprite.texture);
 
-        thumbnailSettings = new ThumbnailSettings(actorData.ThumbnailSettings);
-        transform.localPosition = thumbnailSettings.Position;
-        transform.localScale = thumbnailSettings.Scale;
+        settings = new ThumbnailSettings(actorData.ThumbnailSettings);
+        transform.localPosition = settings.Position;
+        transform.localScale = settings.Scale;
 
         // Dynamic range based on texture size
         float textureSize = Mathf.Max(texture.width, texture.height);
@@ -87,8 +87,8 @@ public class ActorThumbnail : MonoBehaviour
 
     private void Update()
     {
-        float fullWidth = Mathf.Max(thumbnailSettings.Scale.x * range.x, 0.0001f);
-        float fullHeight = Mathf.Max(thumbnailSettings.Scale.y * range.y, 0.0001f);
+        float fullWidth = Mathf.Max(settings.Scale.x * range.x, 0.0001f);
+        float fullHeight = Mathf.Max(settings.Scale.y * range.y, 0.0001f);
 
         Vector2 maxOffset = new Vector2(range.x / fullWidth, range.y / fullHeight);
 
