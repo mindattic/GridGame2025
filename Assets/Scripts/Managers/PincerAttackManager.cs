@@ -169,7 +169,9 @@ public class PincerAttackManager : MonoBehaviour
         yield return sequenceManager.Execute();
         yield return boardOverlay.FadeOut();
 
+        supportLineManager.Clear();
         participants.Clear();
+
         turnManager.NextTurn();
     }
 

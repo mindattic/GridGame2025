@@ -258,15 +258,15 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginVertical();
 
         // Render individual UI sections.
-        RenderKeyboard();
-        RenderScenes();
         RenderStats();
-        RenderCheckboxes();
+        RenderThumbnailSettings();
         RenderGameFocusDropdown();
         RenderDebugOptionsDropdown();
         RenderVFXDropdown();
+        RenderKeyboard();    
+        RenderCheckboxes();
         RenderLevelControls();
-        RenderThumbnailSettings();
+        RenderScenes();
         RenderSpawnControls();
         RenderActorStats();
 
@@ -367,6 +367,9 @@ public class DebugWindow : EditorWindow
     private void RenderStats()
     {
         GUILayout.BeginHorizontal();
+
+
+        GUILayout.Label($"Focused Actor: {(gameManager.focusedActor ? gameManager.focusedActor.characterName : "-")}", GUILayout.Width(Screen.width * 0.25f));
         //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
         GUILayout.Label($"Turn: {(turnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Phase: {turnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));

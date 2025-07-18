@@ -62,7 +62,7 @@ public class ActorHealthBar
             stats.PreviousHP = Mathf.Clamp(stats.PreviousHP, stats.HP, stats.MaxHP);
             scale = GetScale(stats.PreviousHP);
             render.healthBarDrain.transform.localScale = scale;
-            yield return Wait.OneTick();
+            yield return Wait.UntilNextFrame();
         }
 
         //After:

@@ -259,7 +259,9 @@ public class DebugManager : MonoBehaviour
             };
 
             enemy.TakeDamageAsync(attackResult);
+         
         }
+        StartCoroutine(DeathHelper.Process());
     }
 
 
