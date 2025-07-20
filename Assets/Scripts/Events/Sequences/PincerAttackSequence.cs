@@ -51,7 +51,7 @@ namespace Assets.Scripts.Events
             var dir1 = pair.attacker1.GetDirectionTo(firstOpponent);
             var dir2 = pair.attacker2.GetDirectionTo(firstOpponent);
 
-            // Create MultiAttackTriggers
+            // Data MultiAttackTriggers
             var trigger1 = new MultiAttackTrigger(pair.attacker1, pair.attackResults1);
             var trigger2 = new MultiAttackTrigger(pair.attacker2, pair.attackResults2);
 

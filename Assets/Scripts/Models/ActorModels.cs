@@ -6,21 +6,19 @@ using game = GameManagerHelper;
 
 namespace Assets.Scripts.Models
 {
-
     public class BaseStats
     {
-        public float Strength;          //Physical damage output
-        public float Agility;           //Crit, Dodge, block, parry 
-        public float Intelligence;      //Magic damage output 
-        public float Wisdom;             //Accuracy, crit chance, and precision
-        public float Vitality;          //Max HP and survivability
-        public float Stamina;           //AP regen, animate economy
-        public float Luck;              //Determines random effects 
+        public float Strength;      // Physical damage output
+        public float Vitality;      // Max HP and survivability
+        public float Agility;       // Crit, Dodge, block, parry 
+        public float Stamina;       // AP regen, animate economy
+        public float Intelligence;  // Magic damage output 
+        public float Wisdom;        // Accuracy, crit chance, and precision  
+        public float Luck;          // Determines random effects 
     }
 
-
     [Serializable]
-    public class ActorStats: BaseStats
+    public class ActorStats : BaseStats
     {
         public float Level = 1;
         public float PreviousHP;
@@ -41,52 +39,52 @@ namespace Assets.Scripts.Models
             PreviousAP = 0;
             AP = 0;
             MaxAP = 100;
+
             Strength = other.Strength;
-            Agility = other.Agility;
-            Intelligence = other.Intelligence;  
-            Wisdom = other.Wisdom;
             Vitality = other.Vitality;
+            Agility = other.Agility;
             Stamina = other.Stamina;
+            Intelligence = other.Intelligence;
+            Wisdom = other.Wisdom;
             Luck = other.Luck;
         }
     }
-
 
     [Serializable]
     public class StatGrowth : BaseStats
     {
         public StatGrowth() { }
 
-        public StatGrowth(float strength, float agility, float intelligence, float focus, float vitality, float stamina, float luck)
+        public StatGrowth(float strength, float vitality, float agility, float stamina, float intelligence, float wisdom, float luck)
         {
             Strength = strength;
-            Agility = agility;
-            Intelligence = intelligence;
-            Wisdom = focus;
             Vitality = vitality;
+            Agility = agility;
             Stamina = stamina;
+            Intelligence = intelligence;
+            Wisdom = wisdom;
             Luck = luck;
         }
 
         public StatGrowth(StatGrowth other)
         {
             Strength = other.Strength;
+            Vitality = other.Vitality;
             Agility = other.Agility;
+            Stamina = other.Stamina;
             Intelligence = other.Intelligence;
             Wisdom = other.Wisdom;
-            Vitality = other.Vitality;
-            Stamina = other.Stamina;
             Luck = other.Luck;
         }
 
         public static StatGrowth operator +(StatGrowth a, StatGrowth b) => new StatGrowth
         {
             Strength = a.Strength + b.Strength,
+            Vitality = a.Vitality + b.Vitality,
             Agility = a.Agility + b.Agility,
+            Stamina = a.Stamina + b.Stamina,
             Intelligence = a.Intelligence + b.Intelligence,
             Wisdom = a.Wisdom + b.Wisdom,
-            Vitality = a.Vitality + b.Vitality,
-            Stamina = a.Stamina + b.Stamina,
             Luck = a.Luck + b.Luck
         };
     }
@@ -98,11 +96,11 @@ namespace Assets.Scripts.Models
         public string Character;
         public string Description;
 
-        public ActorStats BaseStats; // Template baseline
-        public ActorStats Stats;     // Final calculated stats
+        public ActorStats BaseStats;
+        public ActorStats Stats;
 
-        public StatGrowth StatGrowth = new();  // Default per-level growth
-        public Dictionary<int, StatGrowth> MilestoneStatGrowth = new(); // Level-based boosts
+        public StatGrowth StatGrowth = new();
+        public Dictionary<int, StatGrowth> MilestoneStatGrowth = new();
 
         public ThumbnailSettings ThumbnailSettings;
         public ActorDetails Details;
@@ -139,45 +137,35 @@ namespace Assets.Scripts.Models
         {
             if (level < 1) level = 1;
 
-            var status = new ActorStats(BaseStats); // Clone base
+            var status = new ActorStats(BaseStats);
 
             for (int lvl = 2; lvl <= level; lvl++)
             {
-                // Always apply default growth
                 status.Strength += Mathf.FloorToInt(StatGrowth.Strength);
+                status.Vitality += Mathf.FloorToInt(StatGrowth.Vitality);
                 status.Agility += Mathf.FloorToInt(StatGrowth.Agility);
+                status.Stamina += Mathf.FloorToInt(StatGrowth.Stamina);
                 status.Intelligence += Mathf.FloorToInt(StatGrowth.Intelligence);
                 status.Wisdom += Mathf.FloorToInt(StatGrowth.Wisdom);
-                status.Vitality += Mathf.FloorToInt(StatGrowth.Vitality);
-                status.Stamina += Mathf.FloorToInt(StatGrowth.Stamina);
                 status.Luck += Mathf.FloorToInt(StatGrowth.Luck);
 
-                // Then apply any milestone boost (if applicable)
                 if (MilestoneStatGrowth.TryGetValue(lvl, out var boost))
                 {
                     status.Strength += Mathf.FloorToInt(boost.Strength);
+                    status.Vitality += Mathf.FloorToInt(boost.Vitality);
                     status.Agility += Mathf.FloorToInt(boost.Agility);
+                    status.Stamina += Mathf.FloorToInt(boost.Stamina);
                     status.Intelligence += Mathf.FloorToInt(boost.Intelligence);
                     status.Wisdom += Mathf.FloorToInt(boost.Wisdom);
-                    status.Vitality += Mathf.FloorToInt(boost.Vitality);
-                    status.Stamina += Mathf.FloorToInt(boost.Stamina);
                     status.Luck += Mathf.FloorToInt(boost.Luck);
-                }          
+                }
             }
 
-            //Assign current level
             status.Level = level;
-
-            //Calculate health based on stats
             status.HP = Formulas.Health(status);
             status.MaxHP = status.HP;
 
             return status;
         }
     }
-
-   
-
-
-  
 }

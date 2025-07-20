@@ -85,7 +85,7 @@ public class Card : MonoBehaviour
 
         var LCK = $"{focusedActor.stats.Luck,4}";
 
-        // Create a formatted stats table string.
+        // Data a formatted stats table string.
         var stats =
             $"HP       STR  VIT  AGI  INT  WIS  LCK{Environment.NewLine}" +
             $"{HP}   {STR}{VIT}{AGI}{INT}{WIS}{LCK}{Environment.NewLine}";

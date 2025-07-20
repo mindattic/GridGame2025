@@ -91,7 +91,7 @@ public class ProfileSelectManager : MonoBehaviour
         button.onClick.AddListener(() => OnCreateNewProfileButtonClicked());
 
         Label label = instance.GetComponentInChildren<Label>();
-        label.text = "Create New Profile";
+        label.text = "Data New Profile";
     }
 
     public void AddProfileSelectButton(Profile item)

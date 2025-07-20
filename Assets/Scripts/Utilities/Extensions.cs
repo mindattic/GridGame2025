@@ -1,13 +1,10 @@
-﻿using Game.Behaviors;
-using Game.Manager;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using game = GameManagerHelper;
 
 
 
@@ -104,29 +101,13 @@ public static class EnumExtensions
 }
 
 
-public static class IEnumerableExtensions
-{
-    public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> list)
-    {
-        return list.OrderBy(x => Guid.NewGuid());
-    }
-}
-
-public static class ArrayExtensions
-{
-    public static T[] Shuffle<T>(this T[] array)
-    {
-        return array.OrderBy(x => Guid.NewGuid()).ToArray();
-    }
-
-    public static T ShuffleFirst<T>(this T[] array)
-    {
-        return array.OrderBy(x => Guid.NewGuid()).First();
-    }
-}
-
 public static class ListExtensions
 {
+    public static bool IsNullOrEmpty<T>(this IList<T> list)
+    {
+        return list == null || list.Count == 0;
+    }
+
     public static List<T> Shuffle<T>(this List<T> list)
     {
         return list.OrderBy(x => Guid.NewGuid()).ToList();
@@ -155,6 +136,34 @@ public static class ListExtensions
         list.AddRange(items);
     }
 }
+
+
+public static class IEnumerableExtensions
+{
+    public static bool IsNullOrEmpty<T>(this IEnumerable<T> source)
+    {
+        return source == null || !source.Any();
+    }
+
+    public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> list)
+    {
+        return list.OrderBy(x => Guid.NewGuid());
+    }
+}
+
+public static class ArrayExtensions
+{
+    public static T[] Shuffle<T>(this T[] array)
+    {
+        return array.OrderBy(x => Guid.NewGuid()).ToArray();
+    }
+
+    public static T ShuffleFirst<T>(this T[] array)
+    {
+        return array.OrderBy(x => Guid.NewGuid()).First();
+    }
+}
+
 
 public static class Vector2IntExtensions
 {

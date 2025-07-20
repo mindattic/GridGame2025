@@ -20,7 +20,7 @@ public class SingleAttackTrigger : TriggerEvent
 
     public override IEnumerator Run()
     {
-        // Create damage trigger
+        // Data damage trigger
         var takeDamage = new TakeDamageTriggerEvent(attackResult);
 
         // Spawn VFX, and chain damage trigger afterward

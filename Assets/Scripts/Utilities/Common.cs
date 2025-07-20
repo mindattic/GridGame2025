@@ -1470,7 +1470,7 @@ public static class TextureHelper
         int rectWidth = Mathf.Clamp((int)rect.width, 0, originalTexture.width - rectX);
         int rectHeight = Mathf.Clamp((int)rect.height, 0, originalTexture.height - rectY);
 
-        // Create a new texture with the specified dimensions
+        // Data a new texture with the specified dimensions
         Texture2D newTexture = new Texture2D(rectWidth, rectHeight);
 
         // Copy the pixel actors from the original texture to the new texture
