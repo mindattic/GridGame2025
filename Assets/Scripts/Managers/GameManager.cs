@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -17,7 +17,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public int targetFramerate = 60;  //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-targetFrameRate.html
     [HideInInspector] public int vSyncCount = 2;        //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/QualitySettings-vSyncCount.html
 
-    //Audio
+    //AudioManager
     [HideInInspector] public AudioSource soundSource;
     [HideInInspector] public AudioSource musicSource;
 
@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
 
     [HideInInspector] public BackgroundInstance background;
 
-    //Board
+    //BoardManager
     [HideInInspector] public BoardOverlay boardOverlay;
     [HideInInspector] public FocusIndicator focusIndicator;
     [HideInInspector] public TargetIndicator targetIndicator;
@@ -108,7 +108,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public List<SupportLineInstance> supportLines;
     [HideInInspector] public List<AttackLineInstance> attackLines;
 
-    //Coins
+    //CoinManager
     [HideInInspector] public CoinBar coinBar;
     [HideInInspector] public int totalCoins;
 
@@ -163,7 +163,7 @@ public class GameManager : Singleton<GameManager>
 
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
-        //Board
+        //BoardManager
         board = GameObject.Find(GameObjectHelper.Game.Board.Root).GetComponent<BoardInstance>();
         boardOverlay = GameObject.Find(GameObjectHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
         focusIndicator = GameObject.Find(GameObjectHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>();
@@ -171,7 +171,7 @@ public class GameManager : Singleton<GameManager>
 
         var game = GameObject.Find("Game"); // No helper constant provided for the root "Game" object
 
-        //Audio
+        //AudioManager
         soundSource = game.GetComponents<AudioSource>()[Constants.SoundSourceIndex];
         musicSource = game.GetComponents<AudioSource>()[Constants.MusicSourceIndex];
 

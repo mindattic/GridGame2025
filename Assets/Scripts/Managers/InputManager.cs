@@ -2,7 +2,7 @@ using Assets.Scripts.Repositories;
 using System;
 using System.Linq;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 
 

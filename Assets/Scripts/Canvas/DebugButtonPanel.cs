@@ -1,16 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.GUI
 {
     public class DebugButtonPanel : MonoBehaviour
     {
-        #region Game Properies
-        protected BoardInstance board => GameManager.instance.board;
-        protected StageManager stageManager => GameManager.instance.stageManager;
-        protected DebugManager debugManager => GameManager.instance.debugManager;
-        #endregion
-
         //Fields
         [SerializeField] private RectTransform PanelRect;
         [SerializeField] private Button ReloadStageButton;
@@ -38,7 +33,7 @@ namespace Assets.Scripts.GUI
 
         private void OnReloadStageButtonClicked()
         {
-            stageManager.RestartStage();
+            g.StageManager.RestartStage();
         }
 
         //private void OnPreviousStageButtonClicked()
@@ -53,7 +48,7 @@ namespace Assets.Scripts.GUI
 
         private void OnSpawnRandomEnemyButtonClicked()
         {
-            debugManager.SpawnRandomEnemy();
+            g.DebugManager.SpawnRandomEnemy();
         }
     }
 }

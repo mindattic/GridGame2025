@@ -30,7 +30,7 @@ public static class SoundEffectRepo
             { "Move6",        AssetHelper.LoadAsset<AudioClip>("SoundEffects/Move6") },
             { "NextTurn",     AssetHelper.LoadAsset<AudioClip>("SoundEffects/NextTurn") },
             { "PlayerGlow",   AssetHelper.LoadAsset<AudioClip>("SoundEffects/PlayerGlow") },
-            { "Portrait",     AssetHelper.LoadAsset<AudioClip>("SoundEffects/Portrait") },
+            { "PortraitManager",     AssetHelper.LoadAsset<AudioClip>("SoundEffects/PortraitManager") },
             { "Rumble",       AssetHelper.LoadAsset<AudioClip>("SoundEffects/Rumble") },
             { "Slash1",       AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash1") },
             { "Slash2",       AssetHelper.LoadAsset<AudioClip>("SoundEffects/Slash2") },

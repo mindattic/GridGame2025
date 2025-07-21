@@ -1,15 +1,11 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
     public class FireProjectileSequence : SequenceEvent
     {
-        #region Game Properies
-        protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
-        #endregion
-
         //Fields
         private ProjectileSettings projectile;
 
@@ -23,7 +19,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator Execute()
         {
 
-            yield return projectileManager.Spawn(projectile);
+            yield return g.ProjectileManager.Spawn(projectile);
         }
     }
 }

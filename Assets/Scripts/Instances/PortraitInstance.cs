@@ -2,7 +2,7 @@ using Game.Behaviors.Actor;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 public class PortraitInstance : MonoBehaviour
 {
     // Quick Reference Properties
@@ -60,8 +60,8 @@ public class PortraitInstance : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        //startY = Camera.main.orthographicSize * 2;
-        //startX = startY * Camera.main.aspect;
+        //startY = CameraManager.main.orthographicSize * 2;
+        //startX = startY * CameraManager.main.aspect;
 
         startY = 10f;
         startX = 10f;

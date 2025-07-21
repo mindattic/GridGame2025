@@ -2,7 +2,7 @@
 using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
@@ -11,12 +11,6 @@ namespace Assets.Scripts.Instances.Actor
     // These actions are implemented using coroutines that interpolate values over time.
     public class ActorAnimations
     {
-        //#region Game Properies
-        //protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-        //protected VFXManager vfxManager => GameManager.instance.vfxManager;
-        //#endregion
-
-
         protected ActorRenderers render => instance.render;
         protected ActorStats stats => instance.stats;
         private bool isActive => instance.isActive;
@@ -218,7 +212,7 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Executes a bump animation coroutine:
         /// 1. Moves actor slightly backward (windup).
-        /// 2. Moves actor forward into bump apex (triggers VFX precisely at apex).
+        /// 2. Moves actor forward into bump apex (triggers VfxManager precisely at apex).
         /// 3. Returns actor smoothly to original position.
         /// </summary>
         public IEnumerator Bump(Direction direction, TriggerEvent trigger = default)
@@ -268,12 +262,12 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            // Explicitly set position and rotation at apex before VFX.
+            // Explicitly set position and rotation at apex before VfxManager.
             position = bumpPosition;
             rotation = Quaternion.Euler(0, 0, targetRotationZ);
 
             trigger.ExecuteAsync(instance);
-            // Spawn VFX at precise apex position.
+            // Spawn VfxManager at precise apex position.
             //vfxManager.Spawn(
             //    instance.vfx.Attack,
             //    instance.currentTile.position,

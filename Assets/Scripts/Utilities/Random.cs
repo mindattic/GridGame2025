@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 static class Random
 {
     [ThreadStatic] public static System.Random rng = new System.Random();

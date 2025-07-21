@@ -49,7 +49,7 @@ namespace Game.Behaviors
             //value.textarea = ""
             //   + $"{fps} FPS" + Environment.NewLine 
             //   + $"Runtime: {Time.time}" + Environment.NewLine
-            //   + $"   Turn: {turn}" + Environment.NewLine
+            //   + $"   TurnManager: {turn}" + Environment.NewLine
             //   + $"  Phase: {phase}" + Environment.NewLine
             //   + "";
 

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 public class TrailManager : MonoBehaviour
 {
     protected BoardInstance board => GameManager.instance.board;

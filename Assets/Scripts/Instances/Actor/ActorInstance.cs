@@ -10,40 +10,40 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 // ActorInstance represents a game characterName (either hero or enemy) and encapsulates
 // its state, behaviors, rendering, move, and interactions with game systems.
 public class ActorInstance : MonoBehaviour
 {
-    #region Game Properies
-    protected List<ActorInstance> actors => GameManager.instance.actors;
-    protected AudioManager audioManager => GameManager.instance.audioManager;
-    protected BoardInstance board => GameManager.instance.board;
-    protected CoinManager coinManager => GameManager.instance.coinManager;
-    protected DamageTextManager damageTextManager => GameManager.instance.damageTextManager;
-    protected DebugManager debugManager => GameManager.instance.debugManager;
-    protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-    protected bool hasFocusedActor => focusedActor != null;
-    protected bool hasSelectedPlayer => selectedPlayer != null;
-    protected float moveFocus => GameManager.instance.moveFocus;
-    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
-    protected PortraitManager portraitManager => GameManager.instance.portraitManager;
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-    protected float snapThreshold => GameManager.instance.actorManager.snapTheshold;
-    protected StageManager stageManager => GameManager.instance.stageManager;
-    protected TileMap tileMap => GameManager.instance.tileMap;
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected float tileSize => GameManager.instance.tileSize;
-    protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected VFXManager vfxManager => GameManager.instance.vfxManager;
-    protected TileManager tileManager => GameManager.instance.tileManager;
-    #endregion
+    //#region Game Properies
+    //protected List<ActorInstance> actors => GameManager.instance.actors;
+    //protected AudioManager audioManager => GameManager.instance.audioManager;
+    //protected BoardInstance board => GameManager.instance.board;
+    //protected CoinManager coinManager => GameManager.instance.coinManager;
+    //protected DamageTextManager damageTextManager => GameManager.instance.damageTextManager;
+    //protected DebugManager debugManager => GameManager.instance.debugManager;
+    //protected ActorInstance focusedActor => GameManager.instance.focusedActor;
+    //protected bool hasFocusedActor => focusedActor != null;
+    //protected bool hasSelectedPlayer => selectedPlayer != null;
+    //protected float moveFocus => GameManager.instance.moveFocus;
+    //protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
+    //protected PortraitManager portraitManager => GameManager.instance.portraitManager;
+    //protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
+    //protected float snapThreshold => GameManager.instance.actorManager.snapTheshold;
+    //protected StageManager stageManager => GameManager.instance.stageManager;
+    //protected TileMap tileMap => GameManager.instance.tileMap;
+    //protected Vector3 tileScale => GameManager.instance.tileScale;
+    //protected float tileSize => GameManager.instance.tileSize;
+    //protected TurnManager turnManager => GameManager.instance.turnManager;
+    //protected VfxManager vfxManager => GameManager.instance.vfxManager;
+    //protected TileManager tileManager => GameManager.instance.tileManager;
+    //#endregion
 
 
 
     #region Instance Properies
-    public TileInstance currentTile => tileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
+    public TileInstance currentTile => g.TileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
     public bool isHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
     public bool isEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an enemy.
     public bool isActive => isActiveAndEnabled;                   // Checks if the GameObject is active.
@@ -51,7 +51,7 @@ public class ActorInstance : MonoBehaviour
     public bool isPlaying => isActive && isAlive;                 // Actor is active in the game (alive and enabled).
     public bool isDying => isActive && stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
     public bool isDead => !isActive && !isAlive;                  // Actor is dead when not active and HP is 0.
-    public bool isSpawnable => !flags.HasSpawned && spawnTurn <= turnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
+    public bool isSpawnable => !flags.HasSpawned && spawnTurn <= g.TurnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
     public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum animate points.
 
 
@@ -68,7 +68,7 @@ public class ActorInstance : MonoBehaviour
     public bool IsSouthWestOf(Vector2Int other) => location.x == other.x - 1 && location.y == other.y + 1;
     public bool IsSouthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y + 1;
     // Determines if the actor is invincible based on team-specific debug settings.
-    public bool isInvincible => (isEnemy && debugManager.isEnemyInvincible) || (isHero && debugManager.isHeroInvincible);
+    public bool isInvincible => (isEnemy && g.DebugManager.isEnemyInvincible) || (isHero && g.DebugManager.isHeroInvincible);
 
     // Transform-related properties for position, rotation, scale and parent management.
     public Transform parent
@@ -122,7 +122,7 @@ public class ActorInstance : MonoBehaviour
     public Vector3 previousPosition;                    // World position before the last move.
     public Vector2Int location;                         // CurrentProfile grid location.
     public Team team = Team.Neutral;                    // Actor's team affiliation.
-    public int spawnTurn = 0;                           // Turn number when the actor is eligible to spawn.
+    public int spawnTurn = 0;                           // TurnManager number when the actor is eligible to spawn.
     public string characterName;                                // characterName actors for this actor.
 
 
@@ -184,7 +184,7 @@ public class ActorInstance : MonoBehaviour
                 case Direction.East: checkPos += new Vector2Int(i, 0); break;
                 case Direction.West: checkPos += new Vector2Int(-i, 0); break;
             }
-            if (actors.Any(actor => actor.isPlaying && actor.location == checkPos))
+            if (g.Actors.All.Any(actor => actor.isPlaying && actor.location == checkPos))
                 return true;
         }
         return false;
@@ -205,7 +205,7 @@ public class ActorInstance : MonoBehaviour
                 case Direction.SouthEast: checkPos += new Vector2Int(i, i); break;
                 case Direction.SouthWest: checkPos += new Vector2Int(-i, i); break;
             }
-            if (actors.Any(actor => actor.isPlaying && actor.location == checkPos))
+            if (g.Actors.All.Any(actor => actor.isPlaying && actor.location == checkPos))
                 return true;
         }
         return false;
@@ -282,7 +282,7 @@ public class ActorInstance : MonoBehaviour
 
         // Assign name tag textarea and toggle its visibility based on debug settings.
         render.SetNameTagText(characterName);
-        render.SetNameTagEnabled(isEnabled: debugManager.showActorNameTag);
+        render.SetNameTagEnabled(isEnabled: g.DebugManager.showActorNameTag);
 
         // Save health and animate bars.
         healthBar.Update();
@@ -317,17 +317,17 @@ public class ActorInstance : MonoBehaviour
         {
             case AttackStrategy.AttackClosest:
                 // Choose the closest hero.
-                var targetPlayer = heroes.Where(x => x.isPlaying).OrderBy(x => Vector3.Distance(x.position, position)).FirstOrDefault();
+                var targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderBy(x => Vector3.Distance(x.position, position)).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackWeakest:
                 // Choose the hero with the lowest HP.
-                targetPlayer = heroes.Where(x => x.isPlaying).OrderBy(x => x.stats.HP).FirstOrDefault();
+                targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderBy(x => x.stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackStrongest:
                 // Choose the hero with the highest HP.
-                targetPlayer = heroes.Where(x => x.isPlaying).OrderByDescending(x => x.stats.HP).FirstOrDefault();
+                targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderByDescending(x => x.stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackRandom:
@@ -355,18 +355,18 @@ public class ActorInstance : MonoBehaviour
     //FireDamage: Coroutine to display fire damage textarea and wait until the next frame.
     public IEnumerator FireDamage(float amount)
     {
-        damageTextManager.Spawn($"Fireball: - {amount} HP", position);
+        g.DamageTextManager.Spawn($"Fireball: - {amount} HP", position);
         yield return Wait.UntilNextFrame();
     }
 
     //Heal: Coroutine to display healing textarea and wait until the next frame.
     public IEnumerator Heal(float amount)
     {
-        damageTextManager.Spawn($"Heal: +{amount} HP", position);
+        g.DamageTextManager.Spawn($"Heal: +{amount} HP", position);
         yield return Wait.UntilNextFrame();
     }
 
-    //TakeDamage: Coroutine that processes damage application, triggers VFX and animations, and updates HP.
+    //TakeDamage: Coroutine that processes damage application, triggers VfxManager and animations, and updates HP.
     public IEnumerator TakeDamage(int damage)
     {
         //var vfx = attackResult.Attacker.vfx.Attack;
@@ -385,8 +385,8 @@ public class ActorInstance : MonoBehaviour
         // Immediately display damage textarea and play sound.
         //var fontSize = Math.Clamp(attackResult.Damage, 24f, 32f);
 
-        damageTextManager.Spawn(damage.ToString(), position, TextMotionStyle.Bounce);
-        audioManager.Play($"Slash{Random.Int(1, 7)}");
+        g.DamageTextManager.Spawn(damage.ToString(), position, TextMotionStyle.Bounce);
+        g.AudioManager.Play($"Slash{Random.Int(1, 7)}");
 
         //if (isDying)
         //    DieAsync();
@@ -427,7 +427,7 @@ public class ActorInstance : MonoBehaviour
     //AttackMiss: Coroutine to display a miss message and attackResult a dodge animate.
     public IEnumerator AttackMiss()
     {
-        damageTextManager.Spawn("Miss", position);
+        g.DamageTextManager.Spawn("Miss", position);
         yield return animate.Dodge();
     }
 
@@ -453,8 +453,8 @@ public class ActorInstance : MonoBehaviour
             yield return new WaitUntil(() => healthBar.isEmpty);
 
         //TriggerEvent portrait dissolve effect and play death sound.
-        portraitManager.Dissolve(this);
-        audioManager.Play("Death");
+        g.PortraitManager.Dissolve(this);
+        g.AudioManager.Play("Death");
 
         //Assign sorting order to maximum so that the death sequence renders on top.
         //sortingOrder = SortingOrder.Max;
@@ -482,7 +482,7 @@ public class ActorInstance : MonoBehaviour
         location = LocationHelper.Nowhere;
         position = PositionHelper.Nowhere;
         gameObject.SetActive(false);
-        stageManager.OnActorDeath();
+        g.StageManager.OnActorDeath();
     }
 
     //TriggerSpawnCoins: Helper function to begin spawning coins upon enemy death.
@@ -498,7 +498,7 @@ public class ActorInstance : MonoBehaviour
         var i = 0;
         do
         {
-            coinManager.Spawn(position);
+            g.CoinManager.Spawn(position);
             i++;
         } while (i < amount);
 
@@ -513,7 +513,7 @@ public class ActorInstance : MonoBehaviour
             newLocation = LocationHelper.Nowhere;
 
         //Abort if the new location is out of bounds.
-        if (!board.InBounds(newLocation))
+        if (!g.Board.InBounds(newLocation))
             return;
 
         this.location = newLocation;
@@ -524,7 +524,7 @@ public class ActorInstance : MonoBehaviour
     public void Move(Vector2Int direction)
     {
         //Abort if the new location (CurrentProfile location + direction) is out of bounds.
-        if (!board.InBounds(location + direction))
+        if (!g.Board.InBounds(location + direction))
             return;
 
         var newLocation = location + direction;

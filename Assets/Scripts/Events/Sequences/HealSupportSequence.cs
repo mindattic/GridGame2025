@@ -1,7 +1,7 @@
 ﻿
 using Assets.Scripts.Models;
 using System.Collections;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -18,7 +18,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            // 1) Portrait pops in
+            // 1) PortraitManager pops in
             //yield return new PortraitPopInSequence(source).Execute();
 
             // 2) Fire the heal projectile
@@ -35,7 +35,7 @@ namespace Assets.Scripts.Events
             };
             yield return new FireProjectileSequence(healSettings).Execute();
 
-            // 3) Portrait pops out
+            // 3) PortraitManager pops out
             //yield return new PortraitPopOutSequence(source).Execute();
         }
     }

@@ -3,14 +3,10 @@ using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using g = GameManagerHelper;
 
 public class TrailInstance : MonoBehaviour
 {
-    //Quick Reference Properties
-    protected TrailManager trailManager => GameManager.instance.trailManager;
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-
-
     //Properties
     public Transform parent
     {
@@ -41,7 +37,7 @@ public class TrailInstance : MonoBehaviour
         this.position = position;
         transform.localPosition = trail.RelativeOffset;
         transform.localEulerAngles = trail.AngularRotation;
-        transform.localScale = tileScale.MultiplyBy(trail.RelativeScale);
+        transform.localScale = g.TileScale.MultiplyBy(trail.RelativeScale);
 
 
         SetLooping(trail.IsLoop);
@@ -54,11 +50,11 @@ public class TrailInstance : MonoBehaviour
         if (trigger != null)
             yield return trigger.Execute(this);
 
-        //Wait until VFX duration completes
+        //Wait until VfxManager duration completes
         if (trail.Duration != 0f)
             yield return Wait.For(trail.Duration);
 
-        //Destroy VFX
+        //Destroy VfxManager
         Despawn(name);
     }
 
@@ -89,7 +85,7 @@ public class TrailInstance : MonoBehaviour
 
     private void Despawn(string name)
     {
-        trailManager.Despawn(name);
+        g.TrailManager.Despawn(name);
     }
 
 }

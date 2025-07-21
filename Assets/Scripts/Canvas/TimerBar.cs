@@ -1,16 +1,10 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using g = GameManagerHelper;
 
 public class TimerBar : MonoBehaviour
 {
-    #region Game Properies
-    protected InputManager inputManager => GameManager.instance.inputManager;
-    protected DebugManager debugManager => GameManager.instance.debugManager;
-    protected float tileSize => GameManager.instance.tileSize;
-    protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
-    #endregion
-
     //Components
     private Image back;
     private Image bar;
@@ -36,10 +30,10 @@ public class TimerBar : MonoBehaviour
     public void Initialize()
     {
         // subscribe
-        inputManager.OnInputModeChanged += HandleModeChanged;
+        g.InputManager.OnInputModeChanged += HandleModeChanged;
 
         // initial state
-        HandleModeChanged(inputManager.inputMode);
+        HandleModeChanged(g.InputManager.inputMode);
     }
 
     private void HandleModeChanged(InputMode mode)
@@ -64,7 +58,7 @@ public class TimerBar : MonoBehaviour
         while (timeRemaining > 0)
         {
             //If debug mode has the timer infinite, simply wait
-            if (debugManager.isTimerInfinite)
+            if (g.DebugManager.isTimerInfinite)
             {
                 yield return Wait.UntilNextFrame();
                 continue;
@@ -77,7 +71,7 @@ public class TimerBar : MonoBehaviour
         }
 
         //When the timer expires, force drop the selected hero
-        selectedHeroManager.Drop();
+        g.SelectedHeroManager.Drop();
     }
 
     /// <summary>

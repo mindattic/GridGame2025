@@ -1,19 +1,9 @@
-using Game.Behaviors;
-using Game.Instances.Actor;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static Intermission.Before;
+using g = GameManagerHelper;
 
 public class DottedLineInstance : MonoBehaviour
 {
-   //Quick Reference Properties
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
-    protected LogManager logManager => GameManager.instance.logManager;
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-    protected bool hasSelectedPlayer => selectedPlayer != null;
-
     //Fields
     SpriteRenderer spriteRenderer;
     public Vector2Int location;
@@ -84,7 +74,7 @@ public class DottedLineInstance : MonoBehaviour
         this.segment = segment;
         this.location = location;
         this.position = Geometry.GetPositionByLocation(this.location);
-        this.spriteRenderer.transform.localScale = tileScale;
+        this.spriteRenderer.transform.localScale = g.TileScale;
 
         //Assign resources
         var line = SpriteRepo.Sprites["DottedLine"];
@@ -157,7 +147,7 @@ public class DottedLineInstance : MonoBehaviour
                 break;
 
             default:
-                logManager.Warning($"Unhandled segment type: {segment}");
+                g.LogManager.Warning($"Unhandled segment type: {segment}");
                 break;
         }
     }
@@ -165,7 +155,7 @@ public class DottedLineInstance : MonoBehaviour
     public void Despawn()
     {
         StopAllCoroutines();
-        dottedLineManager.Despawn(this);
+        g.DottedLineManager.Despawn(this);
     }
 }
 

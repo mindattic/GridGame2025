@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Assets.Scripts.Models;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {

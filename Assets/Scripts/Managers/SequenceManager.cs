@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Assets.Scripts.Events;
 using System;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 public class SequenceManager : MonoBehaviour
 {
     //Quick Reference Properties

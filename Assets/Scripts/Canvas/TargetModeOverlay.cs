@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public class TargetModeOverlay : MonoBehaviour
 {
@@ -16,17 +16,17 @@ public class TargetModeOverlay : MonoBehaviour
     public void Initialize()
     {
         // subscribe
-        game.Input.OnInputModeChanged += HandleModeChanged;
+        g.InputManager.OnInputModeChanged += HandleModeChanged;
 
         // initial state
-        HandleModeChanged(game.Input.inputMode);
+        HandleModeChanged(g.InputManager.inputMode);
     }
 
     private void OnDestroy()
     {
         // unsubscribe
-        if (game.Input != null)
-            game.Input.OnInputModeChanged -= HandleModeChanged;
+        if (g.InputManager != null)
+            g.InputManager.OnInputModeChanged -= HandleModeChanged;
     }
 
     private void HandleModeChanged(InputMode mode)

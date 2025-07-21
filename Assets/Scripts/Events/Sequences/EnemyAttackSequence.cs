@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -12,11 +12,6 @@ namespace Assets.Scripts.Events
     /// </summary>
     public class EnemyAttackSequence : SequenceEvent
     {
-        #region Game Properties
-        protected TurnManager turnManager => GameManager.instance.turnManager;
-        protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
-        #endregion
-
         private ActorInstance enemy;
 
         public EnemyAttackSequence(ActorInstance enemy)
@@ -27,7 +22,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator Execute()
         {
             // Only proceed if it's the enemy's turn and attack phase.
-            if (!turnManager.isEnemyTurn || turnManager.currentPhase != TurnPhase.Attack)
+            if (!g.TurnManager.isEnemyTurn || g.TurnManager.currentPhase != TurnPhase.Attack)
                 yield break;
 
             // Only attack if this enemy is valid and has max AP.
@@ -37,7 +32,7 @@ namespace Assets.Scripts.Events
             yield return Wait.For(Intermission.Before.Enemy.Attack);
 
             // Find all adjacent heroes to this enemy
-            var defendingHeroes = heroes
+            var defendingHeroes = g.Actors.Heroes
                 .Where(x => x.isPlaying && x.IsAdjacentTo(enemy.location))
                 .ToList();
 

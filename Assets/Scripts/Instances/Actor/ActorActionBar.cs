@@ -2,7 +2,7 @@ using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 // ActorActionBar is responsible for managing and updating the visual representation 
 // of an actor's animate points (AP) in the UI. It handles the fill and drain animations 
@@ -107,7 +107,7 @@ public class ActorActionBar
         // - The actor is not playing,
         // - The actor already has max AP, or
         // - The actor is currently gaining AP.
-        if (game.Debug.isEnemyStunned || !hasSelectedPlayer || !instance.isEnemy || !instance.isPlaying || instance.hasMaxAP || flags.isGainingAP)
+        if (g.DebugManager.isEnemyStunned || !hasSelectedPlayer || !instance.isEnemy || !instance.isPlaying || instance.hasMaxAP || flags.isGainingAP)
             yield break;
 
         // Before starting, mark that the actor is gaining AP and calculate the increment amount.

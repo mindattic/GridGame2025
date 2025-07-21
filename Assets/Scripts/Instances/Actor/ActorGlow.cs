@@ -1,17 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
     public class ActorGlow
     {
-        //#region Game Properies
-        //protected TurnManager turnManager => GameManager.instance.turnManager;
-        //protected Vector3 tileScale => GameManager.instance.tileScale;
-        //#endregion
-
-
         protected ActorRenderers render => instance.render;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
@@ -30,7 +24,7 @@ namespace Assets.Scripts.Instances.Actor
         {
             this.instance = parentInstance;
 
-            initialScale = game.TileScale;
+            initialScale = g.TileScale;
             maxIntensity = 1.5f;
             speed = 1.5f;
         }
@@ -38,8 +32,8 @@ namespace Assets.Scripts.Instances.Actor
 
         private bool IsGlowing => 
             instance.isPlaying 
-            && game.Turn.currentPhase == TurnPhase.Start
-            && (game.Turn.isHeroTurn && isPlayer) || (game.Turn.isEnemyTurn && isEnemy);
+            && g.TurnManager.currentPhase == TurnPhase.Start
+            && (g.TurnManager.isHeroTurn && isPlayer) || (g.TurnManager.isEnemyTurn && isEnemy);
 
 
         public void TriggerGlow()

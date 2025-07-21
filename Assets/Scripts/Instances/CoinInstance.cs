@@ -1,16 +1,8 @@
 using UnityEngine;
+using g = GameManagerHelper;
 
 public class CoinInstance : MonoBehaviour
 {
-   //Quick Reference Properties
-    protected float tileSize => GameManager.instance.tileSize;
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected CoinBar coinBar => GameManager.instance.coinBar;
-    protected int totalCoins { get => GameManager.instance.totalCoins; set => GameManager.instance.totalCoins = value; }
-    protected AudioManager audioManager => GameManager.instance.audioManager;
-
-
-
     //Fields
     [SerializeField] public AnimationCurve linearCurve;
     [SerializeField] public AnimationCurve slopeCurve;
@@ -59,13 +51,13 @@ public class CoinInstance : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         particles = GetComponent<ParticleSystem>();
 
-        transform.localScale = tileScale * scaleMultiplier;
+        transform.localScale = g.TileScale * scaleMultiplier;
     }
 
     public void Spawn(Vector3 position)
     {
-        start = position.RandomizeOffset(tileSize * 0.25f);
-        end = position.RandomizeOffset(tileSize * 1.5f);
+        start = position.RandomizeOffset(g.TileSize * 0.25f);
+        end = position.RandomizeOffset(g.TileSize * 1.5f);
         timeElapsed = 0;
         startDuration += Random.Float(0, 0.2f);
         moveDuration += Random.Float(0, 0.2f);
@@ -99,7 +91,7 @@ public class CoinInstance : MonoBehaviour
                 {
                     timeElapsed = 0;
                     start = transform.position;
-                    end = coinBar.GetIconWorldPosition();
+                    end = g.CoinBar.GetIconWorldPosition();
                     state = CoinState.Move;
                 }
                 break;
@@ -120,9 +112,9 @@ public class CoinInstance : MonoBehaviour
             case CoinState.Stop:
                 spriteRenderer.enabled = false;
                 particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-                totalCoins++;
-                coinBar.value.text = totalCoins.ToString("D7");
-                audioManager.Play($"Move{Random.Int(1, 6)}");
+                g.TotalCoins++;
+                g.CoinBar.value.text = g.TotalCoins.ToString("D7");
+                g.AudioManager.Play($"Move{Random.Int(1, 6)}");
                 state = CoinState.Destroy;
                 break;
 

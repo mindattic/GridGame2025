@@ -3,18 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
     // SequenceEvent for processing a single attacking PincerAttackPair
     public class PincerAttackSequence : SequenceEvent
     {
-        #region Game Properties
-
-        protected PortraitManager portraitManager = GameManager.instance.portraitManager;
-        #endregion
-
         private PincerAttackPair pair;
 
         public PincerAttackSequence(PincerAttackPair pair)
@@ -28,7 +23,7 @@ namespace Assets.Scripts.Events
                 yield break;
 
             // Display attackers
-            yield return portraitManager.SpawnPair(
+            yield return g.PortraitManager.SpawnPair(
                 new ActorPair(pair.attacker1, pair.attacker2)
             );
 
@@ -59,7 +54,7 @@ namespace Assets.Scripts.Events
             yield return pair.attacker1.animate.Bump(dir1, trigger1);
             yield return pair.attacker2.animate.Bump(dir2, trigger2);
 
-            //// Wait until both triggers complete all logic (VFX and damage)
+            //// Wait until both triggers complete all logic (VfxManager and damage)
             //yield return CoroutineHelper.WaitForAll(
             //    GameManager.instance,
             //    trigger1.Run(),

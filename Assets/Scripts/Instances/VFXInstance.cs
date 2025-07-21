@@ -4,15 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
+using g = GameManagerHelper;
 
 public class VFXInstance : MonoBehaviour
 {
-
-    //Quick Reference Properties
-    protected VFXManager vfxManager => GameManager.instance.vfxManager;
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-
-
     //Properties
     public Transform parent
     {
@@ -49,7 +44,7 @@ public class VFXInstance : MonoBehaviour
         this.position = position;
         transform.localPosition = vfx.RelativeOffset;
         transform.localEulerAngles = vfx.AngularRotation;
-        transform.localScale = tileScale.MultiplyBy(vfx.RelativeScale);
+        transform.localScale = g.TileScale.MultiplyBy(vfx.RelativeScale);
 
         SetLooping(vfx.IsLoop);
 
@@ -61,11 +56,11 @@ public class VFXInstance : MonoBehaviour
         if (trigger != null)
             yield return trigger.Execute(this);
 
-        // Wait until the VFX duration completes.
+        // Wait until the VfxManager duration completes.
         if (vfx.Duration != 0f)
             yield return new WaitForSeconds(vfx.Duration);
 
-        // Destroy the VFX after completion.
+        // Destroy the VfxManager after completion.
         Despawn(name);
     }
 

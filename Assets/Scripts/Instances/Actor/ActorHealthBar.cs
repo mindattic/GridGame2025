@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class ActorHealthBar
 {
-    #region Game Properies
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-    #endregion
-
     //Fields
     private ActorInstance instance;
     public bool isDraining;

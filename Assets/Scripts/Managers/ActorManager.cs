@@ -1,40 +1,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using g = GameManagerHelper;
 
 namespace Game.Manager
 {
     public class ActorManager : MonoBehaviour
     {
-        //Quick Reference Properties
-        protected List<ActorInstance> actors => GameManager.instance.actors;
-        protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
-        protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-
-        protected float tileSize => GameManager.instance.tileSize;
-
         public float snapTheshold;
 
         private void Awake()
         {
-            snapTheshold = tileSize * 0.125f * 1.01f;
+            snapTheshold = g.TileSize * 0.125f * 1.01f;
         }
 
         public void CheckEnemyAP()
         {
-            var notReadyEnemies = enemies.Where(x => x.isPlaying && !x.hasMaxAP).ToList();
+            var notReadyEnemies = g.Actors.Enemies.Where(x => x.isPlaying && !x.hasMaxAP).ToList();
             notReadyEnemies.ForEach(x => x.actionBar.TriggerFill());
         }
 
         public void Clear()
         {
-            if (actors != null && actors.Count > 0)
+            if (g.Actors.All != null && g.Actors.All.Count > 0)
             {
-                foreach (var actor in actors)
+                foreach (var actor in g.Actors.All)
                 {
                     Destroy(actor.gameObject);
                 }
-                actors.Clear();
+                g.Actors.All.Clear();
             }
         }
 

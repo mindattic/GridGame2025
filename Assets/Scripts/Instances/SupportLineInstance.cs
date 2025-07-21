@@ -3,6 +3,7 @@ using System.Collections;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.Rendering;
+using g = GameManagerHelper;
 
 /// <summary>
 /// Draws a curved support line (arc) between two ActorInstances,
@@ -10,23 +11,7 @@ using UnityEngine.Rendering;
 /// </summary>
 public class SupportLineInstance : MonoBehaviour
 {
-    /// <summary>
-    /// Retrieves the size of each tile from the GameManager singleton
-    /// </summary>
-    protected float tileSize => GameManager.instance.tileSize;
-
-    /// <summary>
-    /// Retrieves the board instance from the GameManager singleton
-    /// </summary>
-    protected BoardInstance board => GameManager.instance.board;
-
-    /// <summary>
-    /// Retrieves the manager responsible for support supportLines' from GameManager singleton
-    /// </summary>
-    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
-    protected SortingManager sortingManager => GameManager.instance.sortingManager;
-
-    /// <summary>
+      /// <summary>
     /// Quick reference to the parent transform;
     /// setting this moves the GameObject under the board in the hierarchy
     /// </summary>
@@ -98,8 +83,8 @@ public class SupportLineInstance : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
 
         // Set width of the line relative to tile size
-        lineRenderer.startWidth = tileSize * 0.25f;
-        lineRenderer.endWidth = tileSize * 0.25f;
+        lineRenderer.startWidth = g.TileSize * 0.25f;
+        lineRenderer.endWidth = g.TileSize * 0.25f;
 
         // Ensure alignment faces camera
         lineRenderer.alignment = LineAlignment.View;
@@ -122,14 +107,14 @@ public class SupportLineInstance : MonoBehaviour
         this.attacker = attacker;
 
         // Parent under the board for organization
-        parent = board.transform;
+        parent = g.Board.transform;
 
         // Unique name for debugging
         name = $"SupportLine_{Guid.NewGuid():N}";
         lineRenderer.SetPosition(0, supporter.position);
         lineRenderer.SetPosition(1, attacker.position);
 
-        sortingManager.OnSupportLineSpawn(this);
+        g.SortingManager.OnSupportLineSpawn(this);
 
         // Begin fade-in effect
         StartCoroutine(FadeIn());
@@ -188,7 +173,7 @@ public class SupportLineInstance : MonoBehaviour
         UpdateLineAlpha(alpha);
 
         // Inform manager to clean up references
-        supportLineManager.Destroy(supporter, attacker);
+        g.SupportLineManager.Destroy(supporter, attacker);
     }
 
     /// <summary>

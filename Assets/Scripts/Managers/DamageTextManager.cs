@@ -3,13 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public class DamageTextManager : MonoBehaviour
 {
-    //Quick Reference Properties
-    protected Canvas canvas3D => GameManager.instance.canvas3D;
-
+   
 
     //Fields
     private GameObject DamageTextPrefab;
@@ -24,7 +22,7 @@ public class DamageTextManager : MonoBehaviour
         var prefab = Instantiate(DamageTextPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<DamageTextInstance>();
         instance.name = $"DamageText_{Guid.NewGuid():N}";
-        instance.parent = canvas3D.transform;
+        instance.parent = g.Canvas3D.transform;
         instance.Spawn(text, position, style);
     }
 

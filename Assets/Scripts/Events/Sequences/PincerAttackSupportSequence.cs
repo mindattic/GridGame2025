@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {

@@ -5,11 +5,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public class VFXManager : MonoBehaviour
 {
-    protected BoardInstance board => GameManager.instance.board;
 
     //Fields
     Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();
@@ -28,7 +27,7 @@ public class VFXManager : MonoBehaviour
         var prefab = Instantiate(resource.Prefab, position, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
         instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
-        instance.parent = board.transform;
+        instance.parent = g.Board.transform;
         visualEffects.Add(instance.name, instance);
 
         yield return instance.Spawn(resource, position, trigger);

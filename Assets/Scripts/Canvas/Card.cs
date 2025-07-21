@@ -5,19 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
-
+using g = GameManagerHelper;
 
 // The Card class manages the UI card display that shows details about a focused actor.
 // It handles initialization, assignment of actors (such as portrait, name, and stats),
 // and provides an animate to slide the portrait into view.
 public class Card : MonoBehaviour
 {
-    #region Game Properies
-    protected List<ActorInstance> actors => GameManager.instance.actors;
-    protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
-    protected bool hasFocusedActor => GameManager.instance.hasFocusedActor;
-    protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-    #endregion
 
     private RectTransform canvas2D;
     RectTransform card;
@@ -64,34 +58,35 @@ public class Card : MonoBehaviour
     public void Assign()
     {
         // If no actor is focused, exit without making changes.
-        if (!hasFocusedActor)
+        if (!g.HasFocusedActor)
             return;
 
         // Enable the backdrop and portrait images.
         backdrop.gameObject.SetActive(true);
         portrait.gameObject.SetActive(true);
 
-        if (ActorRepo.Actors.ContainsKey(focusedActor.characterName))
-            portrait.GetComponent<Image>().sprite = ActorRepo.Actors[focusedActor.characterName].Portrait;
-        title.GetComponent<Label>().text = focusedActor.characterName;
+        if (ActorRepo.Actors.ContainsKey(g.FocusedActor.characterName))
+            portrait.GetComponent<Image>().sprite = ActorRepo.Actors[g.FocusedActor.characterName].Portrait;
+        title.GetComponent<Label>().text = g.FocusedActor.characterName;
 
         // Format the actor's stats for display:
-        var HP = $"{focusedActor.stats.HP,2}/{focusedActor.stats.MaxHP,-3}";
-        var STR = $"{focusedActor.stats.Strength,4}";
-        var VIT = $"{focusedActor.stats.Vitality,4}";
-        var AGI = $"{focusedActor.stats.Agility,4}";
-        var INT = $"{focusedActor.stats.Intelligence,4}";
-        var WIS = $"{focusedActor.stats.Wisdom,4}";
+        var HP = $"{g.FocusedActor.stats.HP,2}/{g.FocusedActor.stats.MaxHP,-3}";
+        var STR = $"{g.FocusedActor.stats.Strength,4}";
+        var VIT = $"{g.FocusedActor.stats.Vitality,4}";
+        var AGI = $"{g.FocusedActor.stats.Agility,4}";
+        var STA = $"{g.FocusedActor.stats.Stamina,4}";
+        var INT = $"{g.FocusedActor.stats.Intelligence,4}";
+        var WIS = $"{g.FocusedActor.stats.Wisdom,4}";
 
-        var LCK = $"{focusedActor.stats.Luck,4}";
+        var LCK = $"{g.FocusedActor.stats.Luck,4}";
 
         // Data a formatted stats table string.
         var stats =
-            $"HP       STR  VIT  AGI  INT  WIS  LCK{Environment.NewLine}" +
-            $"{HP}   {STR}{VIT}{AGI}{INT}{WIS}{LCK}{Environment.NewLine}";
+            $"HP       STR  VIT  AGI  STA  INT  WIS  LCK{Environment.NewLine}" +
+            $"{HP}   {STR}{VIT}{AGI}{STA}{INT}{WIS}{LCK}{Environment.NewLine}";
 
         // Assign the details textarea combining the stats table with extra details from DataManager.
-        details.GetComponent<Label>().text = stats + ActorRepo.Actors[focusedActor.characterName].Details.Card;
+        details.GetComponent<Label>().text = stats + ActorRepo.Actors[g.FocusedActor.characterName].Details.Card;
 
         // Begin the slide-in animate for the portrait.
         TriggerSlideIn();

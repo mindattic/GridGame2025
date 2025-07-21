@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public static class SpriteRepo
 {
@@ -158,7 +158,7 @@ public static class SpriteRepo
             { "DottedLine", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLine") },
             { "DottedLineArrow", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineArrow") },
             { "DottedLineTurn", AssetHelper.LoadAsset<Sprite>("Sprites/DottedLineTurn") },
-            { "Footstep", AssetHelper.LoadAsset<Sprite>("Sprites/Footstep") },
+            { "FootstepManager", AssetHelper.LoadAsset<Sprite>("Sprites/FootstepManager") },
             { "Pause", AssetHelper.LoadAsset<Sprite>("Sprites/Pause") },
             { "Paused", AssetHelper.LoadAsset<Sprite>("Sprites/Paused") },
             { "Forest", AssetHelper.LoadAsset<Sprite>("Sprites/Forest") },

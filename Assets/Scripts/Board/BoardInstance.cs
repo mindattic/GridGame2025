@@ -3,22 +3,16 @@ using Game.Models;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 // BoardInstance represents the game board grid, handling tile generation, board bounds calculation,
 // and conversion between board and screen positions. It also holds a reference to the TileMap.
 public class BoardInstance : MonoBehaviour
 {
-    //#region Game Properies
-    //protected float tileSize => GameManager.instance.tileSize;
-    //protected TileMap tileMap { get => GameManager.instance.tileMap; set => GameManager.instance.tileMap = value; }
-    //#endregion
-
-
     //Fields
     [HideInInspector] public int columnCount = 6;      // Index of columns on the board.
     [HideInInspector] public int rowCount = 8;         // Index of rows on the board.
-    [HideInInspector] public Vector2 offset;           // Board offset (used to position the board in world space).
+    [HideInInspector] public Vector2 offset;           // BoardManager offset (used to position the board in world space).
     [HideInInspector] public RectFloat bounds;         // Bounds of the board, calculated from the offset and dimensions.
     [HideInInspector] public Vector2 center;           // Center point of the board bounds.
 
@@ -40,10 +34,10 @@ public class BoardInstance : MonoBehaviour
     {
         // Calculate x-offset so that the board is centered horizontally.
         // Here, -(tileSize * 3) shifts left by three tiles and subtracts half a tile.
-        var x = -(game.TileSize * 3) - game.TileSize / 2;
+        var x = -(g.TileSize * 3) - g.TileSize / 2;
         // Calculate y-offset to position the board vertically.
         // Here, (tileSize * 4) + tileSize * 2 positions the board using 6 tiles' height.
-        var y = (game.TileSize * 4) + game.TileSize / 2;
+        var y = (g.TileSize * 4) + g.TileSize / 2;
         offset = new Vector2(x, y) ;
         // Assign the board's world position to the calculated offset.
         transform.position = offset;
@@ -57,13 +51,13 @@ public class BoardInstance : MonoBehaviour
     {
         bounds = new RectFloat();
         // Top bound: offset y minus half a tile.
-        bounds.Top = offset.y - game.TileSize / 2;
+        bounds.Top = offset.y - g.TileSize / 2;
         // Right bound: offset x plus the width of all columns plus half a tile.
-        bounds.Right = offset.x + (game.TileSize * columnCount) + game.TileSize / 2;
+        bounds.Right = offset.x + (g.TileSize * columnCount) + g.TileSize / 2;
         // Bottom bound: offset y minus the height of all rows minus half a tile.
-        bounds.Bottom = offset.y - (game.TileSize * rowCount) - game.TileSize / 2;
+        bounds.Bottom = offset.y - (g.TileSize * rowCount) - g.TileSize / 2;
         // Left bound: offset x plus half a tile.
-        bounds.Left = offset.x + game.TileSize / 2;
+        bounds.Left = offset.x + g.TileSize / 2;
         // Calculate center as the average of left/right and top/bottom bounds.
         center = new Vector2(
             (bounds.Left + bounds.Right) / 2,
@@ -95,14 +89,14 @@ public class BoardInstance : MonoBehaviour
                 // Assign the tile with its column and row positions.
                 instance.Initialize(col, row);
                 // Add the tile to the TileMap.
-                game.TileMap.Add(instance);
+                g.TileMap.Add(instance);
             }
         }
 
         // Assign the grid origin of the TileMap to the position of the tile at grid (1,1).
-        game.TileMap.gridOrigin = game.TileMap.GetTile(new Vector2Int(1, 1)).position;
+        g.TileMap.gridOrigin = g.TileMap.GetTile(new Vector2Int(1, 1)).position;
         // Assign the tile size in the TileMap.
-        game.TileMap.tileSize = game.TileSize;
+        g.TileMap.tileSize = g.TileSize;
 
         // Find all GameObjects tagged as "Tile" and add their TileInstance components to the global GameManager's tiles list.
         GameObject.FindGameObjectsWithTag(Tag.Tile).ToList()
@@ -133,7 +127,7 @@ public class BoardInstance : MonoBehaviour
     //    };
 
     //    // Convert the world position to screen space using the main camera.
-    //    Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+    //    Vector3 screenPosition = CameraManager.main.WorldToScreenPoint(worldPosition);
 
     //    // Return only the X and Y components as a Vector2.
     //    return new Vector2(screenPosition.x, screenPosition.y);

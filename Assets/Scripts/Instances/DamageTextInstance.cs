@@ -1,13 +1,10 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public class DamageTextInstance : MonoBehaviour
 {
-    // Quick reference to tile size from GameManager
-    //protected float tileSize => GameManager.instance.tileSize;
-
     [SerializeField] AnimationCurve riseCurve;
     public TextMeshPro textMesh;
     public Vector3 speed;
@@ -31,7 +28,7 @@ public class DamageTextInstance : MonoBehaviour
     void Awake()
     {
         textMesh = GetComponent<TextMeshPro>();
-        speed = new Vector3(game.TileSize, game.TileSize / 32, 0);
+        speed = new Vector3(g.TileSize, g.TileSize / 32, 0);
     }
 
     /// <summary>
@@ -42,8 +39,8 @@ public class DamageTextInstance : MonoBehaviour
         this.style = style;
         textMesh.text = text;
         transform.position = new Vector3(
-            pos.x + Random.Range(game.TileSize / 4), 
-            pos.y + game.TileSize / 4, 
+            pos.x + Random.Range(g.TileSize / 4), 
+            pos.y + g.TileSize / 4, 
             0);
 
         // Start the motion coroutine based on selected style
@@ -98,7 +95,7 @@ public class DamageTextInstance : MonoBehaviour
 
             timer += Time.deltaTime;
             float normalized = (timer % duration) / duration;
-            float curve = riseCurve.Evaluate(normalized) * game.TileSize / 8;
+            float curve = riseCurve.Evaluate(normalized) * g.TileSize / 8;
 
             transform.position = new Vector3(startPos.x + curve, position.y + speed.y, 0);
             yield return Wait.For(Interval.OneTick);
@@ -113,9 +110,9 @@ public class DamageTextInstance : MonoBehaviour
         Color color = ColorHelper.Solid.White;
         Vector3 startPos = transform.position;
 
-        float vY = game.TileSize * 6, gravity = -game.TileSize * 18f;
-        float bounceDamping = 0.5f, groundY = startPos.y, bounceEnd = game.TileSize * 0.1f;
-        float hFocus = game.TileSize * Increment.Percent33 * Random.Float(-1f, 1f);
+        float vY = g.TileSize * 6, gravity = -g.TileSize * 18f;
+        float bounceDamping = 0.5f, groundY = startPos.y, bounceEnd = g.TileSize * 0.1f;
+        float hFocus = g.TileSize * Increment.Percent33 * Random.Float(-1f, 1f);
         int bounceCount = 0;
         bool fadeStarted = false;
 

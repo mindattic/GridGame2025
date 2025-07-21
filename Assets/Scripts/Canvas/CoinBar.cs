@@ -1,13 +1,11 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using g = GameManagerHelper;
 
 public class CoinBar : MonoBehaviour
 {
-    #region Game Properies
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected int totalCoins => GameManager.instance.totalCoins;
-    #endregion
+
 
     //Fields
     [SerializeField] public AnimationCurve glowCurve;
@@ -20,8 +18,8 @@ public class CoinBar : MonoBehaviour
     // Initialization tasks before the game starts
     void Awake()
     {
-        icon = transform.GetChild("Icon").GetComponent<Image>();    
-        glow = transform.GetChild("Glow").GetComponent<Image>();  
+        icon = transform.GetChild("Icon").GetComponent<Image>();
+        glow = transform.GetChild("Glow").GetComponent<Image>();
         value = transform.GetChild("Value").GetComponent<TextMeshProUGUI>();
         mainCamera = Camera.main;
     }
@@ -33,7 +31,7 @@ public class CoinBar : MonoBehaviour
 
     public void Refresh()
     {
-        value.text = totalCoins.ToString("D7"); // Displays coin count with leading zeros
+        value.text = g.TotalCoins.ToString("D7"); // Displays coin count with leading zeros
     }
 
     private void UpdateGlow()

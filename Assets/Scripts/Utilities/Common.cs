@@ -19,97 +19,102 @@ using UnityEngine.UI;
 public static class GameManagerHelper
 {
     // Direct access to GameManager
-    public static GameManager gameManager => GameManager.instance;
+    public static GameManager GameManager => GameManager.instance;
 
     // Component properties
-    public static InputManager Input => gameManager.inputManager;
-    public static CameraManager Camera => gameManager.cameraManager;
-    public static StageManager Stage => gameManager.stageManager;
-    public static BoardManager Board => gameManager.boardManager;
-    public static TurnManager Turn => gameManager.turnManager;
-    public static SupportLineManager SupportLine => gameManager.supportLineManager;
-    public static AttackLineManager AttackLine => gameManager.attackLineManager;
-    public static DamageTextManager DamageText => gameManager.damageTextManager;
-    public static GhostManager Ghost => gameManager.ghostManager;
-    public static PortraitManager Portrait => gameManager.portraitManager;
-    //public static ActorManager Actors => gameManager.actorManager;
-    // public static SelectedHeroManager SelectedHero => gameManager.selectedHeroManager;
-    //public static HeroManager Heroes => gameManager.heroManager;
-    // public static EnemyManager Enemies => gameManager.enemyManager;
-    public static TileManager Tiles => gameManager.tileManager;
-    public static FootstepManager Footstep => gameManager.footstepManager;
-    public static AudioManager Audio => gameManager.audioManager;
-    public static VFXManager VFX => gameManager.vfxManager;
-    public static TrailManager Trails => gameManager.trailManager;
-    public static CoinManager Coins => gameManager.coinManager;
-    public static PauseManager Pause => gameManager.pauseManager;
-    public static DebugManager Debug => gameManager.debugManager;
-    public static ConsoleManager Console => gameManager.consoleManager;
-    public static LogManager Log => gameManager.logManager;
-    public static DottedLineManager DottedLine => gameManager.dottedLineManager;
-    public static ProjectileManager Projectiles => gameManager.projectileManager;
-    public static SequenceManager Sequences => gameManager.sequenceManager;
-    public static PincerAttackManager PincerAttacks => gameManager.pincerAttackManager;
-    public static SortingManager Sorting => gameManager.sortingManager;
-    public static TargetLineManager TargetLines => gameManager.targetLineManager;
-    public static AbilityButtonManager AbilityButtons => gameManager.abilityButtonManager;
+    public static InputManager InputManager => GameManager.inputManager;
+    public static CameraManager CameraManager => GameManager.cameraManager;
+    public static StageManager StageManager => GameManager.stageManager;
+    public static BoardManager BoardManager => GameManager.boardManager;
+    public static TurnManager TurnManager => GameManager.turnManager;
+    public static SupportLineManager SupportLineManager => GameManager.supportLineManager;
+    public static AttackLineManager AttackLineManager => GameManager.attackLineManager;
+    public static DamageTextManager DamageTextManager => GameManager.damageTextManager;
+    public static GhostManager GhostManager => GameManager.ghostManager;
+    public static PortraitManager PortraitManager => GameManager.portraitManager;
+    // public static ActorManager ActorManager => GameManager.actorManager;
+    // public static SelectedHeroManager SelectedHeroManager => GameManager.selectedHeroManager;
+    // public static HeroManager HeroManager => GameManager.heroManager;
+    // public static EnemyManager EnemyManager => GameManager.enemyManager;
+    public static TileManager TileManager => GameManager.tileManager;
+    public static FootstepManager FootstepManager => GameManager.footstepManager;
+    public static AudioManager AudioManager => GameManager.audioManager;
+    public static VFXManager VfxManager => GameManager.vfxManager;
+    public static TrailManager TrailManager => GameManager.trailManager;
+    public static CoinManager CoinManager => GameManager.coinManager;
+    public static PauseManager PauseManager => GameManager.pauseManager;
+    public static DebugManager DebugManager => GameManager.debugManager;
+    public static ConsoleManager ConsoleManager => GameManager.consoleManager;
+    public static LogManager LogManager => GameManager.logManager;
 
-    // Board visuals and overlays
-    public static BackgroundInstance Background => gameManager.background;
-    public static BoardOverlay BoardOverlay => gameManager.boardOverlay;
-    public static FocusIndicator FocusIndicator => gameManager.focusIndicator;
-    public static TargetIndicator TargetIndicator => gameManager.targetIndicator;
+    public static SelectedHeroManager SelectedHeroManager => GameManager.selectedHeroManager;
+    public static DottedLineManager DottedLineManager => GameManager.dottedLineManager;
+    public static ProjectileManager ProjectileManager => GameManager.projectileManager;
+    public static SequenceManager SequenceManager => GameManager.sequenceManager;
+    public static PincerAttackManager PincerAttackManager => GameManager.pincerAttackManager;
+    public static SortingManager SortingManager => GameManager.sortingManager;
+    public static TargetLineManager TargetLineManager => GameManager.targetLineManager;
+    public static AbilityButtonManager AbilityButtonManager => GameManager.abilityButtonManager;
+ 
+
+    // BoardManager visuals and overlays
+    public static BackgroundInstance Background => GameManager.background;
+    public static BoardOverlay BoardOverlay => GameManager.boardOverlay;
+    public static FocusIndicator FocusIndicator => GameManager.focusIndicator;
+    public static TargetIndicator TargetIndicator => GameManager.targetIndicator;
 
     // Canvas and UI
-    public static CanvasOverlay CanvasOverlay => gameManager.canvasOverlay;
-    public static Vector2 Viewport => gameManager.viewport;
-    public static float TileSize => gameManager.tileSize;
-    public static Vector3 TileScale => gameManager.tileScale;
-    public static Canvas Canvas2D => gameManager.canvas2D;
-    public static Canvas Canvas3D => gameManager.canvas3D;
-    public static WaveAnnouncement WaveAnnouncement => gameManager.waveAnnouncement;
-    public static TargetModeOverlay TargetModeOverlay => gameManager.targetModeOverlay;
+    public static CanvasOverlay CanvasOverlay => GameManager.canvasOverlay;
+    public static Vector2 Viewport => GameManager.viewport;
+    public static float TileSize => GameManager.tileSize;
+    public static Vector3 TileScale => GameManager.tileScale;
+    public static Canvas Canvas2D => GameManager.canvas2D;
+    public static Canvas Canvas3D => GameManager.canvas3D;
+    public static WaveAnnouncement WaveAnnouncement => GameManager.waveAnnouncement;
+    public static TargetModeOverlay TargetModeOverlay => GameManager.targetModeOverlay;
 
     // Mouse-related fields
-    public static Vector3 TouchPosition2D => gameManager.touchPosition2D;
-    public static Vector3 TouchPosition3D => gameManager.touchPosition3D;
-    public static Vector3 TouchOffset => gameManager.touchOffset;
-    public static float CursorFocus => gameManager.cursorFocus;
-    public static float SwapFocus => gameManager.swapFocus;
-    public static float MoveFocus => gameManager.moveFocus;
-    public static float DragThreshold => gameManager.dragThreshold;
-    public static float BumpFocus => gameManager.bumpFocus;
+    public static Vector3 TouchPosition2D => GameManager.touchPosition2D;
+    public static Vector3 TouchPosition3D => GameManager.touchPosition3D;
+    public static Vector3 TouchOffset => GameManager.touchOffset;
+    public static float CursorFocus => GameManager.cursorFocus;
+    public static float SwapFocus => GameManager.swapFocus;
+    public static float MoveFocus => GameManager.moveFocus;
+    public static float DragThreshold => GameManager.dragThreshold;
+    public static float BumpFocus => GameManager.bumpFocus;
 
     // Actor references
     public static class Actors
     {
-        public static List<ActorInstance> All => gameManager.actors;
-        public static IEnumerable<ActorInstance> Heroes => gameManager.heroes;
-        public static IEnumerable<ActorInstance> Enemies => gameManager.enemies;
-        public static ActorInstance FocusedActor => gameManager.focusedActor;
-        public static bool HasFocusedActor => gameManager.hasFocusedActor;
-        public static ActorInstance SelectedHero => gameManager.selectedHero;
-        public static bool HasSelectedHero => gameManager.hasSelectedPlayer;
-        public static ActorInstance TargetActor => gameManager.targetActor;
-        public static bool HasTargetActor => gameManager.hasTargetActor;
+        public static List<ActorInstance> All => GameManager.actors;
+        public static IEnumerable<ActorInstance> Heroes => GameManager.heroes;
+        public static IEnumerable<ActorInstance> Enemies => GameManager.enemies;
+        public static ActorInstance FocusedActor => GameManager.focusedActor;
+        public static bool HasFocusedActor => GameManager.hasFocusedActor;
+        public static ActorInstance SelectedHero => GameManager.selectedHero;
+        public static bool HasSelectedHero => GameManager.hasSelectedPlayer;
+        public static ActorInstance TargetActor => GameManager.targetActor;
+        public static bool HasTargetActor => GameManager.hasTargetActor;
     }
 
-
     // World instances
-    public static FadeInstance Fade => gameManager.fade;
-    public static TileMap TileMap => gameManager.tileMap;
-    public static TimerBar TimerBar => gameManager.timerBar;
-    public static BoardInstance BoardInstance => gameManager.board;
-    public static List<TileInstance> TileList => gameManager.tiles;
-    public static List<SupportLineInstance> SupportLines => gameManager.supportLines;
-    public static List<AttackLineInstance> AttackLines => gameManager.attackLines;
+    public static FadeInstance Fade => GameManager.fade;
+    public static TileMap TileMap => GameManager.tileMap;
+    public static TimerBar TimerBar => GameManager.timerBar;
+    public static BoardInstance Board => GameManager.instance.board;
 
-    // Coins
-    public static CoinBar CoinBar => gameManager.coinBar;
-    public static int TotalCoins => gameManager.totalCoins;
+    public static bool HasTargetActor => GameManager.hasTargetActor;
+    public static ActorInstance TargetActor => GameManager.targetActor;
+    public static bool HasFocusedActor => GameManager.hasFocusedActor;
+    public static ActorInstance FocusedActor => GameManager.focusedActor;
 
-
-
+    // CoinManager
+    public static CoinBar CoinBar => GameManager.coinBar;
+    public static int TotalCoins
+    {
+        get => GameManager.totalCoins;
+        set => GameManager.totalCoins = value;
+    }
 }
 
 
@@ -203,17 +208,17 @@ public static class GameObjectHelper
 
         public static class Board
         {
-            public const string Root = "Board";
-            public const string BoardOverlay = "Board/BoardOverlay";
-            public const string FocusIndicator = "Board/FocusIndicator";
-            public const string TargetIndicator = "Board/TargetIndicator";
+            public const string Root = "BoardManager";
+            public const string BoardOverlay = "BoardManager/BoardOverlay";
+            public const string FocusIndicator = "BoardManager/FocusIndicator";
+            public const string TargetIndicator = "BoardManager/TargetIndicator";
         }
 
         public static class Card
         {
             public const string Root = "Canvas2D/Card";
             public const string Backdrop = "Canvas2D/Card/Backdrop";
-            public const string Portrait = "Canvas2D/Card/Portrait";
+            public const string Portrait = "Canvas2D/Card/PortraitManager";
             public const string Title = "Canvas2D/Card/Title";
             public const string Details = "Canvas2D/Card/Details";
         }
@@ -411,11 +416,11 @@ public static class Constants
 
     //Card
     public const string CardBackdrop = "Card/Backdrop";
-    public const string CardPortrait = "Card/Portrait";
+    public const string CardPortrait = "Card/PortraitManager";
     public const string CardTitle = "Card/Title";
     public const string CardDetails = "Card/Details";
 
-    //Audio sources
+    //AudioManager sources
     public const int SoundSourceIndex = 0;
     public const int MusicSourceIndex = 1;
 
@@ -424,21 +429,21 @@ public static class Constants
 
 public static class Tag
 {
-    public static string Board = "Board";
+    public static string Board = "BoardManager";
     public static string Tile = "Tile";
     public static string Actor = "Actor";
     public static string SupportLine = "SupportLineAbove";
-    public static string AttackLine = "AttackLine";
+    public static string AttackLine = "AttackLineManager";
     public static string Trail = "Trail";
     public static string Select = "SelectProfile";
-    public static string DamageText = "DamageText";
+    public static string DamageText = "DamageTextManager";
     public static string AnnouncementText = "AnnouncementText";
     public static string Portrait = "ActorPortrait";
-    public static string Ghost = "Ghost";
-    public static string Footstep = "Footstep";
+    public static string Ghost = "GhostManager";
+    public static string Footstep = "FootstepManager";
     public static string Wall = "Wall";
     public static string Tooltip = "Tooltip";
-    public static string VFX = "VFX";
+    public static string VFX = "VfxManager";
     public static string DottedLine = "DottedLine";
 }
 
@@ -813,7 +818,7 @@ public static class Wait
 //    public const int Opponent = 120;
 //    public const int Supporter = 140;
 //    public const int Attacker = 150;
-//    public const int AttackLine = 200;
+//    public const int AttackLineManager = 200;
 //    public const int Moving = 900;
 //    public const int Max = 999;
 //}

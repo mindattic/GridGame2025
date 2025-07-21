@@ -1,17 +1,11 @@
 using Game.Behaviors;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 // FocusIndicator is a MonoBehaviour responsible for displaying an indicator
 // that highlights the currently focused actor (if any) on the game board.
 public class FocusIndicator : MonoBehaviour
 {
-    #region Game Properies
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected bool hasFocusedActor => GameManager.instance.hasFocusedActor;
-    protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-    #endregion
-
     private SpriteRenderer spriteRenderer;
 
     #region Instance Properties
@@ -45,7 +39,7 @@ public class FocusIndicator : MonoBehaviour
     public void Initialize()
     {
         // Scale the indicator based on the tile scale, making it 10% larger than the standard tile.
-        scale = tileScale * 1.1f;
+        scale = g.TileScale * 1.1f;
         // Hide the sprite so that it is not visible until explicitly assigned.
         spriteRenderer.enabled = false;
     }
@@ -54,10 +48,10 @@ public class FocusIndicator : MonoBehaviour
     public void Assign()
     {
         // Enable the sprite only if there is a focused actor.
-        spriteRenderer.enabled = hasFocusedActor;
+        spriteRenderer.enabled = g.HasFocusedActor;
         // PositionHelper the indicator on the focused actor's position if available;
         // otherwise, place it at a designated 'Nowhere' location.
-        position = hasFocusedActor ? focusedActor.position : PositionHelper.Nowhere;
+        position = g.HasFocusedActor ? g.FocusedActor.position : PositionHelper.Nowhere;
     }
 
     // Clear deactivates the FocusIndicator and moves it off-screen.

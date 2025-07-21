@@ -3,15 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.GUI
 {
     public class TutorialPopup : MonoBehaviour
     {
-        #region Game Properies
-        protected DebugManager debugManager => GameManager.instance.debugManager;
-        #endregion
-
         //Components
         [SerializeField] public GameObject panel;
         [SerializeField] public Image image;
@@ -40,12 +37,12 @@ namespace Assets.Scripts.GUI
             //rect = image.GetComponent<RectTransform>();
             //rect.sizeDelta = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
-            panel.SetActive(debugManager.showTutorials);
+            panel.SetActive(g.DebugManager.showTutorials);
         }
 
         public void Load(Tutorial tutorial, bool show = true)
         {
-            if (!debugManager.showTutorials || tutorial == null || tutorial.Pages.Count < 1) return;
+            if (!g.DebugManager.showTutorials || tutorial == null || tutorial.Pages.Count < 1) return;
 
             this.pages = tutorial.Pages;
             currentPage = 0;
@@ -56,7 +53,7 @@ namespace Assets.Scripts.GUI
 
         public void Show(int currentPage = 0)
         {
-            if (!debugManager.showTutorials || !hasPages) return;
+            if (!g.DebugManager.showTutorials || !hasPages) return;
 
             //Time.timeScale = 0f;
             this.currentPage = currentPage;
@@ -66,7 +63,7 @@ namespace Assets.Scripts.GUI
 
         private void Navigate()
         {
-            if (!debugManager.showTutorials || !hasPages) return;
+            if (!g.DebugManager.showTutorials || !hasPages) return;
 
             image.sprite = SpriteRepo.TutorialPages[pages[currentPage].TextureKey];
             title.text = pages[currentPage].Title;

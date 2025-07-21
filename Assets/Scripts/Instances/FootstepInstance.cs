@@ -1,11 +1,8 @@
 using System.Collections;
 using UnityEngine;
-
+using g = GameManagerHelper;
 public class FootstepInstance : MonoBehaviour
 {
-    //Quick Reference Properties
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-    
 
     //Inernal properties
     public string Name
@@ -50,7 +47,7 @@ public class FootstepInstance : MonoBehaviour
     //Method which is used for initialization tasks that need to occur before the game starts 
     private void Awake()
     {
-        transform.localScale = tileScale / 2;
+        transform.localScale = g.TileScale / 2;
         spriteRenderer = GetComponent<SpriteRenderer>();
         Duration = Interval.OneSecond * 10;
 

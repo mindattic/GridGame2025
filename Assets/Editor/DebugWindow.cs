@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 // This static class is responsible for triggering the debug window when the Game scene loads.
 // It uses a runtime initialization attribute to automatically run after the scene loads.
@@ -85,7 +85,7 @@ public class DebugWindow : EditorWindow
 
 
 
-    // Debug window UI selections for game speed, debug options, and VFX testing.
+    // Debug window UI selections for game speed, debug options, and VfxManager testing.
     private GameFocusOption selectedGameFocus = GameFocusOption.Normal;
     private DebugOptions selectedOption = DebugOptions.None;
     private VFX selectedVfx = VFX.None;
@@ -360,8 +360,8 @@ public class DebugWindow : EditorWindow
         //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
 
 
-        GUILayout.Label($"Input Mode: {inputManager.inputMode.ToString()}", GUILayout.Width(Screen.width * 0.25f));
-        GUILayout.Label($"Turn: {(turnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label($"InputManager Mode: {inputManager.inputMode.ToString()}", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label($"TurnManager: {(turnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Phase: {turnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
         //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
         GUILayout.EndHorizontal();
@@ -450,11 +450,11 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    // RenderVFXDropdown renders a dropdown to select a VFX option and a Start button.
+    // RenderVFXDropdown renders a dropdown to select a VfxManager option and a Start button.
     private void RenderVFXDropdown()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("VFX", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label("VfxManager", GUILayout.Width(Screen.width * 0.25f));
         selectedVfx = (VFX)EditorGUILayout.EnumPopup(selectedVfx, GUILayout.Width(Screen.width * 0.5f));
         if (GUILayout.Button("Start", GUILayout.Width(Screen.width * 0.25f)))
             OnPlayVFXClick();
@@ -518,7 +518,7 @@ public class DebugWindow : EditorWindow
 
         float oldPX = pX, oldPY = pY, oldSX = sX, oldSY = sY;
 
-        // Input fields
+        // InputManager fields
         pX = EditorGUILayout.FloatField("pX", pX);
         pY = EditorGUILayout.FloatField("pY", pY);
         sX = EditorGUILayout.FloatField("sX", sX);
@@ -685,7 +685,7 @@ public class DebugWindow : EditorWindow
         }
     }
 
-    // OnPlayVFXClick triggers a visual effects test based on the selected VFX option.
+    // OnPlayVFXClick triggers a visual effects test based on the selected VfxManager option.
     private void OnPlayVFXClick()
     {
         switch (selectedVfx)

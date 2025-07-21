@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public class ActorRenderers
 {

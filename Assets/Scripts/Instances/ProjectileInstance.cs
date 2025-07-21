@@ -2,19 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public class ProjectileInstance : MonoBehaviour
 {
-   //Quick Reference Properties
-    protected BoardInstance board => GameManager.instance.board;
-    
-    protected VFXManager vfxManager => GameManager.instance.vfxManager;
-    protected ProjectileManager projectileManager => GameManager.instance.projectileManager;
-    protected float tileSize => GameManager.instance.tileSize;
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-
-
     public Transform parent
     {
         get => gameObject.transform.parent;
@@ -51,7 +42,7 @@ public class ProjectileInstance : MonoBehaviour
         this.projectile = projectile;
         yield return SpawnTrail();
         yield return SpawnVFX();
-        projectileManager.Despawn(gameObject.name);
+        g.ProjectileManager.Despawn(gameObject.name);
     }
 
     private IEnumerator SpawnTrail()
@@ -65,7 +56,7 @@ public class ProjectileInstance : MonoBehaviour
      
         trailInstance.transform.localPosition = asset.RelativeOffset;
         trailInstance.transform.localEulerAngles = asset.AngularRotation;
-        trailInstance.transform.localScale = tileScale.MultiplyBy(asset.RelativeScale);
+        trailInstance.transform.localScale = g.TileScale.MultiplyBy(asset.RelativeScale);
 
         switch (projectile.path)
         {
@@ -225,7 +216,7 @@ public class ProjectileInstance : MonoBehaviour
         trailInstance.SetActive(false); //Hide trail until end
 
         VFXAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];
-        yield return vfxManager.Spawn(vfxResource, projectile.target.position, projectile.trigger);
+        yield return g.VfxManager.Spawn(vfxResource, projectile.target.position, projectile.trigger);
     }
 
 

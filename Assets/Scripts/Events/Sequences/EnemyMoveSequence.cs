@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -11,14 +11,6 @@ namespace Assets.Scripts.Events
     /// </summary>
     public class EnemyMoveSequence : SequenceEvent
     {
-        #region Game Properties
-        protected TurnManager turnManager => GameManager.instance.turnManager;
-        // You can use these if needed for advanced logic
-        // protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
-        // protected List<ActorInstance> actors => GameManager.instance.actors;
-        // protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-        #endregion
-
         private ActorInstance enemy;
 
         public EnemyMoveSequence(ActorInstance enemy)
@@ -29,7 +21,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator Execute()
         {
             // Only proceed if it is the enemy's turn and this enemy is valid.
-            if (!turnManager.isEnemyTurn)
+            if (!g.TurnManager.isEnemyTurn)
                 yield break;
 
             if (enemy == null || !enemy.isPlaying || !enemy.hasMaxAP)

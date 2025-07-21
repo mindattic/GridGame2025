@@ -1,16 +1,11 @@
 ﻿using Game.Behaviors;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 // TargetIndicator is a MonoBehaviour responsible for displaying an indicator
 // that highlights the currently targeted actor (if any) on the game board.
 public class TargetIndicator : MonoBehaviour
 {
-    #region Game Properies
-    protected Vector3 tileScale => GameManager.instance.tileScale;
-    protected bool hasTargetActor => GameManager.instance.hasTargetActor;
-    protected ActorInstance targetActor => GameManager.instance.targetActor;
-    #endregion
 
     private SpriteRenderer spriteRenderer;
 
@@ -44,15 +39,15 @@ public class TargetIndicator : MonoBehaviour
 
     public void Initialize()
     {
-        scale = tileScale * 1.1f;
+        scale = g.TileScale * 1.1f;
         spriteRenderer.enabled = false;
     }
 
     // Activates and positions the TargetIndicator based on whether a focused actor exists.
     public void Assign()
     {
-        spriteRenderer.enabled = hasTargetActor;
-        position = hasTargetActor ? targetActor.position : PositionHelper.Nowhere;
+        spriteRenderer.enabled = g.HasTargetActor;
+        position = g.HasTargetActor ? g.TargetActor.position : PositionHelper.Nowhere;
     }
 
     // Clear deactivates the TargetIndicator and moves it off-screen.

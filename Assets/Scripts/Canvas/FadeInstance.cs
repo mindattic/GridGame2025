@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 public class FadeInstance : MonoBehaviour
 {
     private Image image;

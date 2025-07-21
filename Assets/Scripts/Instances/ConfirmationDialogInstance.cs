@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using Label = TMPro.TextMeshProUGUI;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 public class ConfirmationDialogInstance : MonoBehaviour
 {

@@ -1,15 +1,12 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 namespace Game.Instances
 {
     public class AttackLineInstance : MonoBehaviour
     {
-        // Quick Reference Properties
-        protected float tileSize => GameManager.instance.tileSize;
-        protected BoardInstance board => GameManager.instance.board;
         public Transform parent { get => gameObject.transform.parent; set => gameObject.transform.SetParent(value, true); }
         public Vector3 position { get => gameObject.transform.position; set => gameObject.transform.position = value; }
         public int sortingOrder { get => lineRenderer.sortingOrder; set => lineRenderer.sortingOrder = value; }
@@ -29,7 +26,7 @@ namespace Game.Instances
 
         private void Awake()
         {
-            thickness = tileSize * 0.02f;
+            thickness = g.TileSize * 0.02f;
             alpha = 0f;
             maxAlpha = 1f;
             baseColor = ColorHelper.RGBA(100, 195, 200, 0);
@@ -44,14 +41,14 @@ namespace Game.Instances
 
         public void Spawn(ActorPair actorPair)
         {
-            parent = board.transform;
+            parent = g.Board.transform;
             name = $"AttackLine_{Guid.NewGuid():N}";
 
             startPosition = actorPair.startActor.position;
             endPosition = actorPair.endActor.position;
 
             Vector3 ul, ur, lr, ll;
-            float offset = tileSize / 2;
+            float offset = g.TileSize / 2;
             Vector3[] points = { };
 
             if (actorPair.axis == Axis.Vertical)

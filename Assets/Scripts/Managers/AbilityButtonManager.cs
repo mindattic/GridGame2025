@@ -1,17 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
-using game = GameManagerHelper;
+using g = GameManagerHelper;
 
 
 public class AbilityButtonManager : MonoBehaviour
 {
-    #region Game Properies
-    protected InputManager inputManager => GameManager.instance.inputManager;
-    protected TargetLineManager targetLineManager => GameManager.instance.targetLineManager;
-
     private GameObject abilityButtonPrefab;
     private Transform abilityButtonContainer;
-    #endregion
 
     public void Awake()
     {
@@ -51,10 +46,10 @@ public class AbilityButtonManager : MonoBehaviour
         if (ability.requiresTarget)
         {
             // switch into target mode
-            inputManager.inputMode = InputMode.AbilityTarget;
+            g.InputManager.inputMode = InputMode.AbilityTarget;
 
             //// record the origin and callback
-            //Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //Vector3 worldPos = CameraManager.main.ScreenToWorldPoint(InputManager.mousePosition);
             //worldPos.z = 0f;
 
             //targetLineManager.BeginTargeting(worldPos, target =>

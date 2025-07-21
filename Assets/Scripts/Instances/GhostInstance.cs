@@ -1,10 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using g = GameManagerHelper;
 
 public class GhostInstance : MonoBehaviour
 {
-   //Quick Reference Properties
-    protected float tileSize => GameManager.instance.tileSize;
     public Transform parent
     {
         get => gameObject.transform.parent;
@@ -46,7 +45,7 @@ public class GhostInstance : MonoBehaviour
         //TODO: Fix later...
         this.renderers.frame.enabled = false;
 
-        this.renderers.thumbnail.size = new Vector2(tileSize, tileSize);
+        this.renderers.thumbnail.size = new Vector2(g.TileSize, g.TileSize);
         //this.render.frame.size = new Vector2(tileSize, tileSize);
         this.renderers.thumbnail.color = ColorHelper.RGBA(255, 255, 255, 64);
         //this.render.frame.color = ScreenHelper.ColorRGBA(255, 255, 255, 100);

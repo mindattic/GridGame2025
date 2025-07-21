@@ -26,8 +26,8 @@ public class PointerManager : MonoBehaviour, IPointerMoveHandler, IPointerDownHa
 
     public void OnPointerMove(PointerEventData eventData)
     {
-        //GameManager.db.touchPosition2D = Input.mousePosition;
-        //GameManager.db.touchPosition3D = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //GameManager.db.touchPosition2D = InputManager.mousePosition;
+        //GameManager.db.touchPosition3D = CameraManager.main.ScreenToWorldPoint(InputManager.mousePosition);
     }
 
     public void OnPointerDown(PointerEventData eventData)
