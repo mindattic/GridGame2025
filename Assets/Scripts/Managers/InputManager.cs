@@ -91,6 +91,11 @@ public class InputManager : MonoBehaviour
                                     if (value)
                                     {
                                         Debug.Log("You targetted: " + targetActor.characterName);
+                                        //TODO: Add sequence and exectue....
+                                        inputMode = InputMode.HeroTurn; 
+                                    } else
+                                    {
+
                                     }
                                 });
 

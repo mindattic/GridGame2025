@@ -74,13 +74,16 @@ public class DebugWindow : EditorWindow
     private float updateInterval = 1.0f;
 
     // References to various game systems retrieved from GameManager.
-    private GameManager gameManager;
-    private DebugManager debugManager;
-    private ConsoleManager consoleManager;
-    private TurnManager turnManager;
-    private StageManager stageManager;
-    private LogManager logManager;
-    private SelectedHeroManager selectedHeroManager;
+    protected GameManager gameManager => GameManager.instance;
+    protected DebugManager debugManager => GameManager.instance.debugManager;
+    protected ConsoleManager consoleManager => GameManager.instance.consoleManager;
+    protected TurnManager turnManager => GameManager.instance.turnManager;
+    protected StageManager stageManager => GameManager.instance.stageManager;
+    protected LogManager logManager => GameManager.instance.logManager;
+    protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
+    protected InputManager inputManager => GameManager.instance.inputManager;
+
+
 
     // Debug window UI selections for game speed, debug options, and VFX testing.
     private GameFocusOption selectedGameFocus = GameFocusOption.Normal;
@@ -187,15 +190,6 @@ public class DebugWindow : EditorWindow
         isOpen = true;
         lastUpdateTime = DateTime.Now;
 
-        // Retrieve references from the GameManager.
-        gameManager = GameManager.instance;
-        debugManager = gameManager.debugManager;
-        consoleManager = gameManager.consoleManager;
-        turnManager = gameManager.turnManager;
-        stageManager = gameManager.stageManager;
-        logManager = gameManager.logManager;
-        selectedHeroManager = gameManager.selectedHeroManager;
-
         // Assign initial debug flag values.
         debugManager.showActorNameTag = false;
         debugManager.showActorFrame = false;
@@ -235,14 +229,7 @@ public class DebugWindow : EditorWindow
     private void OnGUI()
     {
         // If not playing or missing essential references, exit.
-        if (!EditorApplication.isPlaying ||
-            gameManager == null ||
-            debugManager == null ||
-            consoleManager == null ||
-            turnManager == null ||
-            stageManager == null ||
-            logManager == null ||
-            selectedHeroManager == null)
+        if (!EditorApplication.isPlaying)
             return;
 
         // Wrap all content inside a scroll view.
@@ -371,6 +358,9 @@ public class DebugWindow : EditorWindow
 
         GUILayout.Label($"Focused Actor: {(gameManager.focusedActor ? gameManager.focusedActor.characterName : "-")}", GUILayout.Width(Screen.width * 0.25f));
         //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
+
+
+        GUILayout.Label($"Input Mode: {inputManager.inputMode.ToString()}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Turn: {(turnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.Label($"Phase: {turnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
         //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
