@@ -59,12 +59,18 @@ namespace Assets.Scripts.Events
             yield return pair.attacker1.animate.Bump(dir1, trigger1);
             yield return pair.attacker2.animate.Bump(dir2, trigger2);
 
-            // Wait until both triggers complete all logic (VFX and damage)
-            yield return CoroutineHelper.WaitForAll(
-                GameManager.instance,
-                trigger1.Run(),
-                trigger2.Run()
-            );
+            //// Wait until both triggers complete all logic (VFX and damage)
+            //yield return CoroutineHelper.WaitForAll(
+            //    GameManager.instance,
+            //    trigger1.Run(),
+            //    trigger2.Run()
+            //);
+
+            //yield return CoroutineHelper.WaitForAll(
+            //    GameManager.instance,
+            //    pair.attacker1.animate.Bump(dir1, trigger1),
+            //    pair.attacker2.animate.Bump(dir2, trigger2)
+            //);
 
             // Process deaths afterward
             yield return DeathHelper.Process();

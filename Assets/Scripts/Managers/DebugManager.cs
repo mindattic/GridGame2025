@@ -249,17 +249,9 @@ public class DebugManager : MonoBehaviour
         var playingEnemires = enemies.Where(x => x.isPlaying).ToList();
         foreach (var enemy in playingEnemires)
         {
-            var attackResult = new AttackResult()
-            {
-                Attacker = hero1,
-                Opponent = enemy,
-                IsHit = true,
-                IsCriticalHit = false,
-                Damage = 9999
-            };
 
-            enemy.TakeDamageAsync(attackResult);
-         
+            enemy.TakeDamageAsync(9999);
+
         }
         StartCoroutine(DeathHelper.Process());
     }
@@ -284,7 +276,7 @@ public class DebugManager : MonoBehaviour
         }
 
         var vfx = VisualEffectRepo.VisualEffects["BlueSlash1"];
-        var trigger = new TriggerEvent(hero1.TakeDamage(attack));
+        var trigger = new TriggerEvent(hero1.TakeDamage(attack.Damage));
         vfxManager.SpawnAsync(vfx, hero1.position, trigger);
     }
 

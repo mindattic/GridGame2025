@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using game = GameManagerHelper;
 
 namespace Assets.Scripts.Events
@@ -47,16 +48,29 @@ namespace Assets.Scripts.Events
             {
                 var direction = enemy.GetDirectionTo(hero);
 
-                // Use ProcessAttackTrigger (handles damage, vfx, death, etc.)
-                var processAttack = new ProcessAttackTrigger(enemy, hero);
-                yield return enemy.animate.Bump(direction, processAttack);
+
+                var isHit = Formulas.IsHit(enemy, hero);
+                var isCriticalHit = Formulas.IsCriticalHit(enemy, hero);
+                var damage = Formulas.CalculateDamage(enemy, hero);
+
+                var attackResult = new AttackResult
+                {
+                    Attacker = enemy,
+                    Opponent = hero,
+                    IsHit = isHit,
+                    IsCriticalHit = isCriticalHit,
+                    Damage = damage
+                };
+
+                var attack = new SingleAttackTrigger(attackResult);
+                yield return enemy.animate.Bump(direction, attack);
+                yield return DeathHelper.Process();
+
             }
 
             // Reset the action bar for this enemy after attacking.
             enemy.actionBar.Reset();
 
-            // Do NOT call turnManager.NextTurn() here!
-            // Let TurnManager/OnSequenceComplete advance phase after all attacks.
         }
     }
 }

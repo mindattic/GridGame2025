@@ -1,36 +1,23 @@
-﻿using Assets.Scripts.Models;
-using System.Collections;
-using game = GameManagerHelper;
-public class ProcessAttackTrigger : TriggerEvent
-{
-    private ActorInstance attacker;
-    private ActorInstance opponent;
+﻿//using Assets.Scripts.Events;
+//using Assets.Scripts.Models;
+//using System.Collections;
+//using game = GameManagerHelper;
+//public class ProcessAttackTrigger : TriggerEvent
+//{
+//    private AttackResult attackResult;
+  
+//    public ProcessAttackTrigger(AttackResult attackResult)
+//    {
+//        this.attackResult = attackResult;
+ 
+//    }
 
-    public ProcessAttackTrigger(ActorInstance attacker, ActorInstance opponent)
-    {
-        this.attacker = attacker;
-        this.opponent = opponent;
-    }
+//    public override IEnumerator Run()
+//    {
+//        var vfx = attackResult.Attacker.vfx.Attack;
+//        yield return new SingleAttackTrigger(attackResult, vfx).Run();
 
-    public override IEnumerator Run()
-    {
-        var isHit = Formulas.IsHit(attacker, opponent);
-        var isCriticalHit = Formulas.IsCriticalHit(attacker, opponent);
-        var damage = Formulas.CalculateDamage(opponent, attacker);
+//        yield return DeathHelper.Process();
+//    }
 
-        var result = new AttackResult
-        {
-            Attacker = attacker,
-            Opponent = opponent,
-            IsHit = isHit,
-            IsCriticalHit = isCriticalHit,
-            Damage = damage
-        };
-
-        var attack = new SingleAttackTrigger(result, attacker.vfx.Attack);
-        yield return attack.Execute(attacker);
-
-        yield return DeathHelper.Process();
-    }
-
-}
+//}

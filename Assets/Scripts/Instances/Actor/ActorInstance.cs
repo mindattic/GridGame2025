@@ -347,9 +347,9 @@ public class ActorInstance : MonoBehaviour
     }
 
     //TakeDamageAsync: Begins the process for this actor to take damage from an attackResult.
-    public void TakeDamageAsync(AttackResult attack)
+    public void TakeDamageAsync(int damage)
     {
-        StartCoroutine(TakeDamage(attack));
+        StartCoroutine(TakeDamage(damage));
     }
 
     //FireDamage: Coroutine to display fire damage textarea and wait until the next frame.
@@ -367,21 +367,25 @@ public class ActorInstance : MonoBehaviour
     }
 
     //TakeDamage: Coroutine that processes damage application, triggers VFX and animations, and updates HP.
-    public IEnumerator TakeDamage(AttackResult attack)
+    public IEnumerator TakeDamage(int damage)
     {
+        //var vfx = attackResult.Attacker.vfx.Attack;
+        //var pos = attackResult.Attacker.position;
+        //vfxManager.SpawnAsync(vfx, pos); //TODO: inject damage below into vfx trigger???...
+
         // Immediately apply damage and update health.
         if (!isInvincible)
         {
             stats.PreviousHP = stats.HP;
-            stats.HP -= attack.Damage;
+            stats.HP -= damage;
             stats.HP = Mathf.Clamp(stats.HP, 0, stats.MaxHP);
             healthBar.Update();
         }
 
         // Immediately display damage textarea and play sound.
-        //var fontSize = Math.Clamp(attack.Damage, 24f, 32f);
+        //var fontSize = Math.Clamp(attackResult.Damage, 24f, 32f);
 
-        damageTextManager.Spawn(attack.Damage.ToString(), position, TextMotionStyle.Bounce);
+        damageTextManager.Spawn(damage.ToString(), position, TextMotionStyle.Bounce);
         audioManager.Play($"Slash{Random.Int(1, 7)}");
 
         //if (isDying)

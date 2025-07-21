@@ -65,9 +65,9 @@ static class Random
         //int ratio4 = ratio3 + ratios[4];
         //int ratio5 = ratio4 + ratios[5];
 
-        //int result = Int(0, sum);
+        //int attackResult = Int(0, sum);
 
-        //if ((result -= ratio0) < 0) return Strategy.AttackClosest;
+        //if ((attackResult -= ratio0) < 0) return Strategy.AttackClosest;
 
         //{
         //   do_something1();
@@ -85,7 +85,7 @@ static class Random
 
         //TODO: SpawnActor in weighted value so some attackResults are more common that others...
 
-        //int result = Int(0, ratios.Sum());
+        //int attackResult = Int(0, ratios.Sum());
 
         /*
         int RATIO_CHANCE_A = 10;
@@ -114,8 +114,8 @@ static class Random
 
 
 
-        //var result = Int(1, 5);
-        //return result switch
+        //var attackResult = Int(1, 5);
+        //return attackResult switch
         //{
         //   1 => Strategy.MoveAnywhere,
         //   2 => Strategy.AttackClosest,

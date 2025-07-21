@@ -16,7 +16,7 @@ public class VFXManager : MonoBehaviour
 
     public void SpawnAsync(VFXAsset resource, Vector3 position, TriggerEvent trigger = null)
     {
-        var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
+        var prefab = Instantiate(resource.Prefab, position, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
         instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
         visualEffects.Add(instance.name, instance);
@@ -25,7 +25,7 @@ public class VFXManager : MonoBehaviour
 
     public IEnumerator Spawn(VFXAsset resource, Vector3 position, TriggerEvent trigger = null)
     {
-        var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
+        var prefab = Instantiate(resource.Prefab, position, Quaternion.identity);
         var instance = prefab.GetComponent<VFXInstance>();
         instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
         instance.parent = board.transform;

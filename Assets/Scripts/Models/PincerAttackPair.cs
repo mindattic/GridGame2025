@@ -17,7 +17,7 @@ namespace Assets.Scripts.Models
         // Enemies (opponents) in between attacker1 and attacker2
         public List<ActorInstance> opponents = new();
 
-        // Attack result actors stored here, so PincerAttackAction can see it
+        // Attack attackResult actors stored here, so PincerAttackAction can see it
         public List<AttackResult> attackResults1 = new();
         public List<AttackResult> attackResults2 = new();
 

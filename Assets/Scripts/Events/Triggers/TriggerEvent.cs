@@ -17,7 +17,7 @@ public class TriggerEvent
 
     //Blocking version — must be used with `yield return`
     //e.g.:
-    //yield return new ActorAttackEvent(result, vfx.Attack).Execute(this);
+    //yield return new ActorAttackEvent(attackResult, vfx.Attack).Execute(this);
 
     public virtual IEnumerator Execute(MonoBehaviour context)
     {
@@ -31,7 +31,7 @@ public class TriggerEvent
 
     //Fire-and-forget version — runs without yield
     //e.g.:
-    //new ActorAttackEvent(result, vfx.Attack).ExecuteAsync(this);
+    //new ActorAttackEvent(attackResult, vfx.Attack).ExecuteAsync(this);
     public void ExecuteAsync(MonoBehaviour context)
     {
         if (context == null)

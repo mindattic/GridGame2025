@@ -30,7 +30,7 @@ public class ConfirmationDialogInstance : MonoBehaviour
     /// Call this method to initialize the dialog after instantiating the prefab.
     /// </summary>
     /// <param name="text">CreditsLabel to display to the user.</param>
-    /// <param name="onSubmitCallback">Callback for handling Yes/No result.</param>
+    /// <param name="onSubmitCallback">Callback for handling Yes/No attackResult.</param>
     private void Setup()
     {
         canvas2D = GameObject.Find(GameObjectHelper.ConfirmationDialog.Canvas2D).GetComponent<RectTransform>();

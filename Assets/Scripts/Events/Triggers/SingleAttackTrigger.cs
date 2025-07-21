@@ -1,32 +1,41 @@
-﻿using Assets.Scripts.Events;
+﻿using System.Collections;
+using UnityEngine;
 using Assets.Scripts.Models;
-using System.Collections;
-using game = GameManagerHelper;
+using System.Collections.Generic;
+using UnityEngine.VFX;
 
-public class SingleAttackTrigger : TriggerEvent
+namespace Assets.Scripts.Events
 {
-    #region Game Properties
-    protected VFXManager vfxManager => GameManager.instance.vfxManager;
-    #endregion
 
-    private AttackResult attackResult;
-    private VFXAsset attackVFX;
-
-    public SingleAttackTrigger(AttackResult attack, VFXAsset attackVFX)
+    public class SingleAttackTrigger : TriggerEvent
     {
-        this.attackResult = attack;
-        this.attackVFX = attackVFX;
-    }
+        protected VFXManager vfxManager => GameManager.instance.vfxManager;
 
-    public override IEnumerator Run()
-    {
-        // Data damage trigger
-        var takeDamage = new TakeDamageTriggerEvent(attackResult);
+        private readonly AttackResult attackResult;
 
-        // Spawn VFX, and chain damage trigger afterward
-        vfxManager.SpawnAsync(attackVFX, attackResult.Opponent.position, takeDamage);
+        public SingleAttackTrigger(AttackResult attackResult)
+        {
+            this.attackResult = attackResult;
+        }
 
-        yield return null;
-        HasExecuted = true;
+        public override IEnumerator Run()
+        {
+
+            //var vfx = attackResult.Attacker.vfx.Attack;
+            //var opponent = attackResult.Opponent;
+            var damage = attackResult.Damage;
+            //var trigger = new TriggerEvent(opponent.TakeDamage(damage));
+            //vfxManager.SpawnAsync(vfx, opponent.position, trigger);
+
+            attackResult.Opponent.TakeDamageAsync(damage);
+
+            //if (attackResult.IsHit)
+            //    attackResult.Opponent.TakeDamageAsync(attackResult);
+            //else
+            //    attackResult.Opponent.animate.DodgeAsync();
+
+            yield return null;
+            HasExecuted = true;
+        }
     }
 }

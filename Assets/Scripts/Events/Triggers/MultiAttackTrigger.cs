@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Assets.Scripts.Models;
 using UnityEngine;
 using game = GameManagerHelper;
@@ -22,12 +23,10 @@ namespace Assets.Scripts.Events
         {
             foreach (var attackResult in attackResults)
             {
-                // SingleAttackTrigger spawns VFX and applies damage via HitOrMissTrigger
-                //var singleAttack = new SingleAttackTrigger(attackResult, attacker.vfx.Attack);
-                var takeDamage = new TakeDamageTriggerEvent(attackResult);
 
                 // Execute each attack fully before next
-                yield return takeDamage.Run();
+                yield return new SingleAttackTrigger(attackResult).Run();
+                //yield return DeathHelper.Process();
 
                 // Wait briefly before next attack in sequence
                 yield return Wait.For(Interval.TenthSecond);

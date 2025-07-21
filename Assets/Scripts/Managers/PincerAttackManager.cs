@@ -4,12 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using game = GameManagerHelper;
 
-// Manages identifying and executing pincer attacks (two attackers pinning enemies between them).
 public class PincerAttackManager : MonoBehaviour
 {
-    // Quick-access to various managers and the actor list.
     protected TurnManager turnManager => GameManager.instance.turnManager;
     protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
     protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
@@ -18,9 +15,6 @@ public class PincerAttackManager : MonoBehaviour
     protected List<ActorInstance> actors => GameManager.instance.actors;
     protected SortingManager sortingManager => GameManager.instance.sortingManager;
 
-    /// <summary>
-    /// Check for any valid pincer pairs on this team; either enqueue them or advance the turn.
-    /// </summary>
     public void Check(Team team)
     {
         var participants = GetParticipants(team);
@@ -29,13 +23,9 @@ public class PincerAttackManager : MonoBehaviour
             turnManager.NextTurn();
             return;
         }
-
         StartCoroutine(Enqueue(participants));
     }
 
-    /// <summary>
-    /// Find all bookend pairs (sameteam actors with only enemies between them).
-    /// </summary>
     public PincerAttackParticipants GetParticipants(Team team)
     {
         var participants = new PincerAttackParticipants();
@@ -44,13 +34,11 @@ public class PincerAttackManager : MonoBehaviour
             .Where(x => x.isPlaying && x.team == team)
             .ToList();
 
-        // Avoid duplicate pairs by indexing
         var indexed = teamActors.Select((actor, idx) => (actor, idx));
         foreach (var (actor1, i) in indexed)
         {
             foreach (var actor2 in teamActors.Skip(i + 1))
             {
-                // Must align on row or column
                 if (!actor1.IsSameRow(actor2.location) && !actor1.IsSameColumn(actor2.location))
                     continue;
 
@@ -78,24 +66,52 @@ public class PincerAttackManager : MonoBehaviour
             }
         }
 
+        // Reorder the pairs using the "snake" chain order
+        participants.pair = OrderPairsSnake(participants.pair);
+
         return participants;
     }
 
     /// <summary>
-    /// Recursively build a list of AttackResults, chaining through pairs.
+    /// Orders pairs: start with the top-leftmost, follow chain where attacker2==attacker1 of next pair, etc.
     /// </summary>
+    private List<PincerAttackPair> OrderPairsSnake(List<PincerAttackPair> pairs)
+    {
+        var ordered = new List<PincerAttackPair>();
+        var remaining = new HashSet<PincerAttackPair>(pairs);
+
+        // Helper to sort by (y, x)
+        System.Func<PincerAttackPair, (int y, int x)> pos = p => (p.attacker1.location.y, p.attacker1.location.x);
+
+        while (remaining.Any())
+        {
+            // Start with top-leftmost among those not already ordered
+            var start = remaining.OrderBy(pos).First();
+            var curr = start;
+
+            // Chain follow attacker2==attacker1, as long as possible
+            while (curr != null)
+            {
+                ordered.Add(curr);
+                remaining.Remove(curr);
+                // Find the next pair where attacker1 == curr.attacker2 and it's still unprocessed
+                curr = remaining.FirstOrDefault(p => p.attacker1 == ordered.Last().attacker2);
+            }
+        }
+        return ordered;
+    }
+
     private List<AttackResult> ChainAttacks(ActorInstance attacker, List<PincerAttackPair> pairs)
     {
         var attackResults = new List<AttackResult>();
         var pair = pairs.FirstOrDefault(p => p.attacker1 == attacker || p.attacker2 == attacker);
-        if (pair == null) 
-            return attackResults;
+        if (pair == null) return attackResults;
 
         foreach (var opp in pair.opponents)
         {
             bool hit = Formulas.IsHit(attacker, opp);
             bool crit = Formulas.IsCriticalHit(attacker, opp);
-            int dmg = hit ? Formulas.CalculateDamage(opp, attacker) : 0;
+            int dmg = hit ? Formulas.CalculateDamage(attacker, opp) : 0;
 
             attackResults.Add(new AttackResult
             {
@@ -106,30 +122,17 @@ public class PincerAttackManager : MonoBehaviour
                 Damage = dmg
             });
 
-            // Chain if this attacker is also an attacker in another pair
-            var next = pairs.FirstOrDefault(q => q.attacker1 == opp || q.attacker2 == opp);
-            if (next != null)
-                attackResults.AddRange(ChainAttacks(opp, pairs));
+            // NO recursive chaining—each pincer acts independently!
         }
-
         return attackResults;
     }
 
-    /// <summary>
-    /// Enqueue supporter visuals and pincer attacks, then execute the sequence.
-    /// </summary>
     private IEnumerator Enqueue(PincerAttackParticipants participants)
     {
         sortingManager.OnPincerAttackStart(participants);
 
-        // Gather and fade in supporters
-        var allSupporters = participants.pair
-            .SelectMany(p => p.supporters1.Concat(p.supporters2))
-            .Distinct()
-            .ToList();
         yield return boardOverlay.FadeIn();
 
-        // Queue support sequences
         foreach (var p in participants.pair)
         {
             foreach (var sup in p.supporters1)
@@ -144,40 +147,58 @@ public class PincerAttackManager : MonoBehaviour
             }
         }
 
-        // Queue pincer attacks with closestfirst ordering baked in
         foreach (var p in participants.pair)
         {
-            // Clear any old attackResults
             p.attackResults1.Clear();
             p.attackResults2.Clear();
 
-            // Build and sort attack attackResults at creation time
-            var attacks1
-                = ChainAttacks(p.attacker1, participants.pair)
-                .OrderBy(r => Vector2.Distance(p.attacker1.location, r.Opponent.location));
-            p.attackResults1.AddRange(attacks1);
+            // Always sort from "left/top to right/bottom" for attacker1, reverse for attacker2
+            bool vertical = p.attacker1.location.x == p.attacker2.location.x;
+            bool horizontal = p.attacker1.location.y == p.attacker2.location.y;
 
-            var attacks2
-                = ChainAttacks(p.attacker2, participants.pair)
-                .OrderBy(r => Vector2.Distance(p.attacker2.location, r.Opponent.location));
-            p.attackResults2.AddRange(attacks2);
+            if (vertical)
+            {
+                var sorted = p.opponents.OrderBy(o => o.location.y).ToList();
+                var sortedRev = sorted.AsEnumerable().Reverse().ToList();
+
+                p.attackResults1.AddRange(sorted.Select(opp => CreateAttackResult(p.attacker1, opp)));
+                p.attackResults2.AddRange(sortedRev.Select(opp => CreateAttackResult(p.attacker2, opp)));
+            }
+            else if (horizontal)
+            {
+                var sorted = p.opponents.OrderBy(o => o.location.x).ToList();
+                var sortedRev = sorted.AsEnumerable().Reverse().ToList();
+
+                p.attackResults1.AddRange(sorted.Select(opp => CreateAttackResult(p.attacker1, opp)));
+                p.attackResults2.AddRange(sortedRev.Select(opp => CreateAttackResult(p.attacker2, opp)));
+            }
 
             sequenceManager.Add(new PincerAttackSequence(p));
         }
 
-        // Execute all queued sequences, then fade out and advance turn
         yield return sequenceManager.Execute();
         yield return boardOverlay.FadeOut();
 
         supportLineManager.Clear();
         participants.Clear();
-
         turnManager.NextTurn();
     }
 
-    /// <summary>
-    /// Find sameteam supporters aligned with the attacker and not blocked.
-    /// </summary>
+    private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opp)
+    {
+        bool hit = Formulas.IsHit(attacker, opp);
+        bool crit = Formulas.IsCriticalHit(attacker, opp);
+        int dmg = hit ? Formulas.CalculateDamage(attacker, opp) : 0;
+        return new AttackResult
+        {
+            Attacker = attacker,
+            Opponent = opp,
+            IsHit = hit,
+            IsCriticalHit = crit,
+            Damage = dmg
+        };
+    }
+
     public List<ActorInstance> FindSupporters(ActorInstance attacker)
     {
         var candidates = actors
@@ -193,9 +214,6 @@ public class PincerAttackManager : MonoBehaviour
         return result;
     }
 
-    /// <summary>
-    /// Check if any actor blocks the straight line between a and b.
-    /// </summary>
     private bool IsActorBlocked(ActorInstance a, ActorInstance b)
     {
         if (!a.IsSameRow(b.location) && !a.IsSameColumn(b.location))
@@ -207,6 +225,4 @@ public class PincerAttackManager : MonoBehaviour
 
         return actors.Any(x => x.isPlaying && between.Contains(x.location));
     }
-
-
 }

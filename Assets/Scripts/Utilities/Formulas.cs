@@ -46,16 +46,16 @@ public static class Formulas
         return agility + staminaBonus + luck;
     }
 
-    public static bool IsHit(ActorInstance attacker, ActorInstance defender)
+    public static bool IsHit(ActorInstance attacker, ActorInstance target)
     {
         float accuracy = Accuracy(attacker.stats);
-        float evade = Evasion(defender.stats);
+        float evade = Evasion(target.stats);
         float chance = accuracy - evade;
         float roll = Random.Float(0, 100);
         return roll < Mathf.Clamp(chance, 5f, 95f);
     }
 
-    public static bool IsCriticalHit(ActorInstance attacker)
+    public static bool IsCriticalHit(ActorInstance attacker, ActorInstance target)
     {
         float baseCrit = 5f;
         float focus = attacker.stats.Wisdom * 0.4f;
@@ -101,13 +101,13 @@ public static class Formulas
         return resistance * luck;
     }
 
-    public static int CalculateDamage(ActorInstance attacker, ActorInstance defender, float weaponPower = 0f, float armorRating = 0f, ElementalDamageType element = ElementalDamageType.Physical, float resistance = 0f)
+    public static int CalculateDamage(ActorInstance attacker, ActorInstance target, float weaponPower = 0f, float armorRating = 0f, ElementalDamageType element = ElementalDamageType.Physical, float resistance = 0f)
     {
         float offense = Offense(attacker.stats, weaponPower);
-        float defense = Defense(defender.stats, armorRating);
+        float defense = Defense(target.stats, armorRating);
         float rawDamage = offense - defense;
 
-        if (IsCriticalHit(attacker))
+        if (IsCriticalHit(attacker, target))
             rawDamage *= 1.5f;
 
         float adjusted = ApplyResistance(rawDamage, resistance);
