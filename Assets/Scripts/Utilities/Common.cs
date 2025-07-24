@@ -315,9 +315,7 @@ public static class Constants
     public const string CardTitle = "Card/Title";
     public const string CardDetails = "Card/Details";
 
-    //AudioManager sources
-    public const int SoundSourceIndex = 0;
-    public const int MusicSourceIndex = 1;
+
 
     public const int MaxPartyMemberCount = 6;
 }

@@ -9,6 +9,7 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+
     //Device
     [HideInInspector] public string deviceType;
     [HideInInspector] public int targetFramerate = 60;  //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-targetFrameRate.html
@@ -109,6 +110,10 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public CoinBar coinBar;
     [HideInInspector] public int totalCoins;
 
+    //AudioManager sources
+    [HideInInspector] public const int SoundSourceIndex = 0;
+    [HideInInspector] public const int MusicSourceIndex = 1;
+
     //Properties
     public float gameFocus { get => Time.timeScale; set => Time.timeScale = value; }
     public float previousGameFocus;
@@ -170,8 +175,8 @@ public class GameManager : Singleton<GameManager>
         var game = GameObject.Find("Game"); // No helper constant provided for the root "Game" object
 
         //AudioManager
-        soundSource = game.GetComponents<AudioSource>()[Constants.SoundSourceIndex];
-        musicSource = game.GetComponents<AudioSource>()[Constants.MusicSourceIndex];
+        soundSource = game.GetComponents<AudioSource>()[SoundSourceIndex];
+        musicSource = game.GetComponents<AudioSource>()[MusicSourceIndex];
 
         //Managers
         cameraManager = game.GetComponent<CameraManager>();
