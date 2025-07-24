@@ -6,8 +6,6 @@ using Game.Manager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Tilemaps;
 
 public class GameManager : Singleton<GameManager>
 {
