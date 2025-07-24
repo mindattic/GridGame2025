@@ -41,8 +41,8 @@ public static class Scorpion
             Stats = new ActorStats(),
             ThumbnailSettings = new ThumbnailSettings
             {
-                Position = new Vector3(0.5f, -0.15f, 0f),
-                Scale = new Vector3(2f, 2f, 0f)
+                Position = new Vector3(0.5f, 0.28f, 0f),
+                Scale = new Vector3(2f, 2f, 0f),
             },
             Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Scorpion}"),
             Details = new ActorDetails

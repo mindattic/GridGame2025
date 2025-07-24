@@ -30,6 +30,7 @@ public static class ActorRepo
             { CharacterHelper.Pugilist, Pugilist.Data() },
             { CharacterHelper.RedNinja, RedNinja.Data() },
             { CharacterHelper.Ronin, Ronin.Data() },
+            { CharacterHelper.Scorpion, Scorpion.Data() },
             { CharacterHelper.Sellsword, Sellsword.Data() },
             { CharacterHelper.Slime, Slime.Data() },
             { CharacterHelper.Soldier00, Soldier00.Data() },
