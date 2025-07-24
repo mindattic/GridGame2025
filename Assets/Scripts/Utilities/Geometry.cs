@@ -5,18 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class Geometry
 {
-    // Quick Reference Properties:
-    // Retrieve global board and tile settings from the GameManager singleton.
-    private static BoardInstance board => GameManager.instance.board;           // Reference to the game board.
-    private static float tileSize => GameManager.instance.tileSize;               // Size of each tile in world units.
-    private static Vector3 tileScale => GameManager.instance.tileScale;           // Scale factor for tiles.
-    private static TileMap tileMap => GameManager.instance.tileMap;               // The TileMap actors storing tile actors.
-    private static List<ActorInstance> actors => GameManager.instance.actors;       // List of all actor instances.
-    private static List<TileInstance> tiles => GameManager.instance.tiles;          // List of all tile instances.
-
     // Default constructor (not used but provided for completeness).
     public Geometry() { }
 
@@ -28,9 +20,9 @@ public class Geometry
     public static Vector3 CalculatePositionByLocation(Vector2Int location)
     {
         // Calculate x position: start from board offset and add tileSize multiplied by the x coordinate.
-        float x = board.offset.x + (tileSize * location.x);
+        float x = g.Board.offset.x + (g.TileSize * location.x);
         // Calculate y position: start from board offset and subtract tileSize multiplied by the y coordinate.
-        float y = board.offset.y + -(tileSize * location.y);
+        float y = g.Board.offset.y + -(g.TileSize * location.y);
         return new Vector3(x, y, 0);
     }
 
@@ -41,7 +33,7 @@ public class Geometry
     /// <returns>World position (Vector3) of the tile.</returns>
     public static Vector3 GetPositionByLocation(Vector2Int location)
     {
-        return tileMap.GetPosition(location);
+        return g.TileMap.GetPosition(location);
     }
 
     /// <summary>
@@ -51,7 +43,7 @@ public class Geometry
     /// <returns>Grid coordinates (Vector2Int) of the tile.</returns>
     public static Vector2Int GetLocationByPosition(Vector3 position)
     {
-        return tileMap.GetLocation(position);
+        return g.TileMap.GetLocation(position);
     }
 
     /// <summary>
@@ -61,7 +53,7 @@ public class Geometry
     /// <returns>The closest TileInstance based on Euclidean distance.</returns>
     public static TileInstance GetClosestTile(Vector3 position)
     {
-        return tiles.OrderBy(x => Vector3.Distance(x.transform.position, position)).First();
+        return g.Tiles.OrderBy(x => Vector3.Distance(x.transform.position, position)).First();
     }
 
     /// <summary>
@@ -72,7 +64,7 @@ public class Geometry
     public static TileInstance GetClosestTile(Vector2Int location)
     {
         // Return the first tile with an exact match of the location.
-        return tiles.First(x => x.location == location);
+        return g.Tiles.First(x => x.location == location);
         // Alternatively, you could order by distance if needed.
         // return tiles.OrderBy(x => Vector2Int.Distance(x.boardLocation, boardLocation)).First();
     }
@@ -163,7 +155,7 @@ public class Geometry
     /// </summary>
     public static TileInstance GetClosestUnoccupiedTileByLocation(Vector2Int other)
     {
-        return tiles.FirstOrDefault(x => !x.IsOccupied && Vector2Int.Distance(x.location, other) == 1);
+        return g.Tiles.FirstOrDefault(x => !x.IsOccupied && Vector2Int.Distance(x.location, other) == 1);
     }
 
     /// <summary>
@@ -171,7 +163,7 @@ public class Geometry
     /// </summary>
     public static TileInstance GetClosestUnoccupiedAdjacentTileByLocation(Vector2Int other)
     {
-        return tiles.FirstOrDefault(x => !x.IsOccupied && x.IsAdjacentTo(other));
+        return g.Tiles.FirstOrDefault(x => !x.IsOccupied && x.IsAdjacentTo(other));
     }
 
     /// <summary>
@@ -179,7 +171,7 @@ public class Geometry
     /// </summary>
     public static TileInstance GetClosestAdjacentTileByLocation(Vector2Int other)
     {
-        return tiles.FirstOrDefault(x => x.IsAdjacentTo(other));
+        return g.Tiles.FirstOrDefault(x => x.IsAdjacentTo(other));
     }
 
     /// <summary>
@@ -203,10 +195,10 @@ public class Geometry
     /// </summary>
     public static bool IsInCorner(Vector2Int location)
     {
-        return location == tileMap.GetLocation(1, 1)   // Top-left (A1)
-            || location == tileMap.GetLocation(1, 6)   // Bottom-left (A6)
-            || location == tileMap.GetLocation(8, 1)   // Top-right (H1)
-            || location == tileMap.GetLocation(8, 6);  // Bottom-right (H6)
+        return location == g.TileMap.GetLocation(1, 1)   // Top-left (A1)
+            || location == g.TileMap.GetLocation(1, 6)   // Bottom-left (A6)
+            || location == g.TileMap.GetLocation(8, 1)   // Top-right (H1)
+            || location == g.TileMap.GetLocation(8, 6);  // Bottom-right (H6)
     }
 
     /// <summary>
@@ -279,9 +271,9 @@ public class Geometry
             public static Vector3 Translation(float x, float y, float z)
             {
                 return new Vector3(
-                    tileSize * (x / tileSize),
-                    tileSize * (y / tileSize),
-                    tileSize * (z / tileSize));
+                    g.TileSize * (x / g.TileSize),
+                    g.TileSize * (y / g.TileSize),
+                    g.TileSize * (z / g.TileSize));
             }
             public static Vector3 Translation(Vector3 v) => Translation(v.x, v.y, v.z);
 
@@ -291,16 +283,16 @@ public class Geometry
             public static Vector3 Scale(float x, float y, float z)
             {
                 return new Vector3(
-                    tileSize * x,
-                    tileSize * y,
-                    tileSize * z);
+                    g.TileSize * x,
+                    g.TileSize * y,
+                    g.TileSize * z);
             }
             public static Vector3 Scale(Vector3 v) => Scale(v.x, v.y, v.z);
         }
     }
 
     /// <summary>
-    /// Determines the starting actor (i.e., the one who should initiate an animate) between two actors.
+    /// Determines the starting actor (i.e., the one who should initiate an animate) between two g.Actors.All.
     /// The decision is based on the dominant axis difference: vertical if the y difference is greater,
     /// or horizontal otherwise.
     /// </summary>

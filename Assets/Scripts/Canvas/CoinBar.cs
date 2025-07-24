@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class CoinBar : MonoBehaviour
 {

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 public class SettingsManager : MonoBehaviour
 {
     //Fields

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 // The Card class manages the UI card display that shows details about a focused actor.
 // It handles initialization, assignment of actors (such as portrait, name, and stats),
@@ -122,7 +122,7 @@ public class Card : MonoBehaviour
         portrait.anchoredPosition = destination;
     }
 
-    // Clear resets the card UI to a hidden state, clearing all displayed actors.
+    // Clear resets the card UI to a hidden state, clearing all displayed g.Actors.All.
     public void Clear()
     {
         // Disable visual components of the card.

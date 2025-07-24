@@ -1,12 +1,11 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
+using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
     public class PortraitPopOutSequence : SequenceEvent
     {
-        private PortraitManager portraitManager => GameManager.instance.portraitManager;
-
         private ActorInstance actor;
         public PortraitPopOutSequence(ActorInstance actor)
         {
@@ -15,7 +14,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            yield return portraitManager.PopOut(actor);
+            yield return g.PortraitManager.PopOut(actor);
         }
     }
 

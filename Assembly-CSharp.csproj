@@ -223,6 +223,7 @@
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
+    <Compile Include="Assets\Helpers\GameManagerHelper.cs" />
     <Compile Include="Assets\Scripts\Repository\VisualEffectRepo.cs" />
     <Compile Include="Assets\Scripts\Utilities\ConvertString.cs" />
     <Compile Include="Assets\Scripts\Canvas\TargetModeOverlay.cs" />

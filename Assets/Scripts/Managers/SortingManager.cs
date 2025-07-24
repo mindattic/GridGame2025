@@ -2,25 +2,10 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-
-
-
+using g = Assets.Helpers.GameManagerHelper;
 
 public class SortingManager : MonoBehaviour
 {
-    protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
-    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
-    protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
-    protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-
-    protected ActorInstance selectedHero => GameManager.instance.selectedHero;
-
-    protected bool hasFocusedActor => focusedActor != null;
-    protected bool hasSelectedHero => selectedHero != null;
-
-    protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
-    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
 
 
     //Sorting layers
@@ -56,25 +41,25 @@ public class SortingManager : MonoBehaviour
 
     public void OnActorFocus()
     {
-        if (!hasFocusedActor) return;
-        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
-        focusedActor.SetSorting(SortingLayer.ActorAbove);
+        if (!g.Actors.HasFocusedActor) return;
+        g.Actors.All.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+        g.Actors.FocusedActor.SetSorting(SortingLayer.ActorAbove);
     }
 
     public void OnSelectedHeroDrag()
     {
-        if (!hasSelectedHero) return;
-        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
-        selectedHero.SetSorting(SortingLayer.ActorAbove);
+        if (!g.Actors.HasSelectedHero) return;
+        g.Actors.All.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+        g.Actors.SelectedHero.SetSorting(SortingLayer.ActorAbove);
     }
 
 
     public void OnSelectedHeroLocationChanged(Vector2Int newLocation)
     {
-        foreach (var actor in actors)
+        foreach (var actor in g.Actors.All)
         {
 
-            if (actor == selectedHero)
+            if (actor == g.Actors.SelectedHero)
             {
                 actor.SetSorting(SortingLayer.ActorAbove, SortingOrder.Max);
             }
@@ -90,12 +75,12 @@ public class SortingManager : MonoBehaviour
 
     public void OnSelectedHeroDrop()
     {
-        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+        g.Actors.All.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
     }
 
     public void OnActorMoving(ActorInstance actor)
     {
-        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+        g.Actors.All.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
         actor.SetSorting(SortingLayer.ActorAbove, 0);
     }
 
@@ -113,7 +98,7 @@ public class SortingManager : MonoBehaviour
     public void OnPincerAttackStart(PincerAttackParticipants participants)
     {
 
-        actors.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
+        g.Actors.All.ForEach(x => x.SetSorting(SortingLayer.ActorBelow));
 
         // Iterate over each valid pair and assign the appropriate sorting order.
         foreach (var pair in participants.pair)

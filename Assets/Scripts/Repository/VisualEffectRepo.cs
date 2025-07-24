@@ -2,7 +2,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 
 public static class VisualEffectRepo

@@ -43,8 +43,8 @@ namespace Game.Behaviors
         private void FixedUpdate()
         {
             //string fps = $@"{fpsMonitor.currentFps}";
-            //string turn = turnManager.isHeroTurn ? "Hero" : "Opponent";
-            //string phase = turnManager.currentPhase.ToString();
+            //string turn = g.TurnManager.isHeroTurn ? "Hero" : "Opponent";
+            //string phase = g.TurnManager.currentPhase.ToString();
 
             //value.textarea = ""
             //   + $"{fps} FPS" + Environment.NewLine 
@@ -62,8 +62,8 @@ namespace Game.Behaviors
             //string attackers = battle.attackers.Any() ? $"[{string.Join(",", battle.attackers.Get(x => x.characterName))}]" : "-";
             //string supports = battle.supporters.Any() ? $"[{string.Join(",", battle.supporters.Get(x => x.characterName))}]" : "-";
             //string defenders = battle.defenders.Any() ? $"[{string.Join(",", battle.defenders.Get(x => x.characterName))}]" : "-";
-            //string currentTeam = turnManager != null ? turnManager.currentTeam.ToString() : "-";
-            //string currentPhase = turnManager != null ? turnManager.currentPhase.ToString() : "-";
+            //string currentTeam = turnManager != null ? g.TurnManager.currentTeam.ToString() : "-";
+            //string currentPhase = turnManager != null ? g.TurnManager.currentPhase.ToString() : "-";
 
 
             //string a0 = actors[0] != null ? $"{actors[0].name}: {actors[0].HP}{Environment.NewLine}": $"{Environment.NewLine}";

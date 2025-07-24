@@ -2,7 +2,7 @@
 using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
@@ -15,11 +15,9 @@ namespace Assets.Scripts.Instances.Actor
         protected ActorStats stats => instance.stats;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
-        protected float tileSize => GameManager.instance.tileSize;
         private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
-        protected Vector3 tileScale => GameManager.instance.tileScale;
 
         // Fields:
         // The parent actor actors this actions module is controlling.
@@ -37,7 +35,7 @@ namespace Assets.Scripts.Instances.Actor
             this.instance = parentInstance;
 
             // Determine wiggle speed and amplitude based on tile size.
-            wiggleFocus = tileSize * 48f;
+            wiggleFocus = g.TileSize * 48f;
             wiggleAmplitude = 15f; // Maximum deviation (in degrees) for the weapon wiggle.
         }
 
@@ -160,7 +158,7 @@ namespace Assets.Scripts.Instances.Actor
 
                 // Evaluate the scale curve to slightly reduce the size.
                 float scaleFactor = scaleCurve.Evaluate(progress);
-                scale = tileScale * scaleFactor;
+                scale = g.TileScale * scaleFactor;
 
                 // Save the actor's rotation based on the computed rotation vector.
                 rotation = Geometry.Rotation(currentRotation);
@@ -181,7 +179,7 @@ namespace Assets.Scripts.Instances.Actor
                 currentRotation.Scale(randomDirection);
 
                 float scaleFactor = Mathf.LerpUnclamped(0.9f, 1f, progress);
-                scale = tileScale * scaleFactor;
+                scale = g.TileScale * scaleFactor;
 
                 rotation = Geometry.Rotation(currentRotation);
 
@@ -192,7 +190,7 @@ namespace Assets.Scripts.Instances.Actor
             yield return trigger.Execute(instance);
 
             // Reset the actor's scale and rotation.
-            scale = tileScale;
+            scale = g.TileScale;
             rotation = Geometry.Rotation(Vector3.zero);
         }
         /// <summary>
@@ -231,8 +229,8 @@ namespace Assets.Scripts.Instances.Actor
 
             // Define key positions for animation phases.
             var startPosition = instance.currentTile.position;
-            var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), tileSize * Increment.Percent33);
-            var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, tileSize * Increment.Percent33);
+            var windupPosition = Geometry.GetDirectionalPosition(startPosition, direction.Opposite(), g.TileSize * Increment.Percent33);
+            var bumpPosition = Geometry.GetDirectionalPosition(startPosition, direction, g.TileSize * Increment.Percent33);
 
             float elapsedTime;
 
@@ -268,7 +266,7 @@ namespace Assets.Scripts.Instances.Actor
 
             trigger.ExecuteAsync(instance);
             // Spawn VfxManager at precise apex position.
-            //vfxManager.Spawn(
+            //g.VfxManager.Spawn(
             //    instance.vfx.Attack,
             //    instance.currentTile.position,
             //    trigger);
@@ -311,9 +309,9 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new TriggerEvent();
 
             // Before: determine target max size (default is 110% of tile size) and initial scale.
-            float maxSize = tileSize * 1.1f;
+            float maxSize = g.TileSize * 1.1f;
             float minSize = scale.x;
-            float increment = tileSize * 0.01f;
+            float increment = g.TileSize * 0.01f;
             float size = minSize;
             scale = new Vector3(size, size, 0);
 
@@ -354,9 +352,9 @@ namespace Assets.Scripts.Instances.Actor
                 trigger = new TriggerEvent();
 
             // Before: determine target minimum size (default is tileSize) and CurrentProfile scale.
-            float minSize = tileSize;
+            float minSize = g.TileSize;
             float maxSize = scale.x;
-            float increment = tileSize * 0.01f;
+            float increment = g.TileSize * 0.01f;
             float size = maxSize;
             scale = new Vector3(size, size, 0);
 
@@ -401,7 +399,7 @@ namespace Assets.Scripts.Instances.Actor
             // Before: Assign variables for rotation.
             bool isDone = false;
             var rotY = 0f;
-            var spinFocus = tileSize * 24f;
+            var spinFocus = g.TileSize * 24f;
             rotation = Geometry.Rotation(0, rotY, 0);
 
             // During: Rotate until reaching 90 degrees, then reverse until back at 0.
@@ -453,7 +451,7 @@ namespace Assets.Scripts.Instances.Actor
             // Before: Assign rotation variables.
             bool isDone = false;
             var rotY = 0f;
-            var speed = tileSize * 24f;
+            var speed = g.TileSize * 24f;
             rotation = Geometry.Rotation(0, rotY, 0);
 
             // During: Increment rotation until a full 360-degree spin is completed.

@@ -1,12 +1,11 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
+using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
     public class PortraitPopInSequence : SequenceEvent
     {
-        private PortraitManager portraitManager => GameManager.instance.portraitManager;
-
         private ActorInstance actor;
         public PortraitPopInSequence(ActorInstance actor)
         {
@@ -24,7 +23,7 @@ namespace Assets.Scripts.Events
             else
                 scale = 0.1666f;
 
-            yield return portraitManager.PopIn(actor, scale);
+            yield return g.PortraitManager.PopIn(actor, scale);
         }
     }
 

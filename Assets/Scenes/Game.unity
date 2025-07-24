@@ -5402,11 +5402,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1751276276}
+  - component: {fileID: 1751276277}
   - component: {fileID: 1751276293}
   - component: {fileID: 1751276292}
   - component: {fileID: 1751276301}
   - component: {fileID: 1751276282}
-  - component: {fileID: 1751276277}
   - component: {fileID: 1751276278}
   - component: {fileID: 1751276291}
   - component: {fileID: 1751276279}
@@ -5473,6 +5473,7 @@ MonoBehaviour:
   deviceType: 
   targetFramerate: 60
   vSyncCount: 0
+  reloadThumbnailSettings: 0
   soundSource: {fileID: 0}
   musicSource: {fileID: 0}
   card: {fileID: 0}
@@ -5540,7 +5541,7 @@ MonoBehaviour:
   attackLines: []
   coinBar: {fileID: 0}
   totalCoins: 0
-  previousGameFocus: 0
+  previousGameSpeed: 0
 --- !u!114 &1751276278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5926,7 +5927,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1751276275}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8089513e7560fe240b3c81142a13b9a5, type: 3}
   m_Name: 

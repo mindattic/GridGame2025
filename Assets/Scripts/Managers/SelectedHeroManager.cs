@@ -4,55 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 /// <summary>
-/// Handles selection, dragging, and dropping of heroes during the correct turn/phase.
+/// Handles selection, dragging, and dropping of g.Actors.Heroes during the correct turn/phase.
 /// Interacts with multiple core game systems via the GameManager singleton.
 /// </summary>
 public class SelectedHeroManager : MonoBehaviour
 {
-    // Quick reference properties for accessing core game systems
-
-
-    protected InputManager inputManager => GameManager.instance.inputManager;
-    protected AbilityButtonManager abilityButtonManager => GameManager.instance.abilityButtonManager;
-    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
-    protected ActorManager actorManager => GameManager.instance.actorManager;
-    protected AudioManager audioManager => GameManager.instance.audioManager;
-    protected SortingManager sortingManager => GameManager.instance.sortingManager;
-    protected PincerAttackManager attackManager => GameManager.instance.pincerAttackManager;
-    protected TileManager tileManager => GameManager.instance.tileManager;
-    protected TimerBar timerBar => GameManager.instance.timerBar;
-    protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected ActorInstance focusedActor { 
-        get => GameManager.instance.focusedActor; 
-        set => GameManager.instance.focusedActor = value; 
-    }
-    protected bool hasFocusedActor => focusedActor != null;
-    protected ActorInstance targetActor
-    {
-        get => GameManager.instance.targetActor;
-        set => GameManager.instance.targetActor = value;
-    }
-    protected bool hasTargetActor => targetActor != null;
-
-    protected ActorInstance selectedHero { 
-        get => GameManager.instance.selectedHero; 
-        set => GameManager.instance.selectedHero = value; 
-    }
-    protected bool hasSelectedHero => selectedHero != null;
-
-    protected Card card => GameManager.instance.card;
-    protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
-    protected Vector3 touchOffset { get => GameManager.instance.touchOffset; set => GameManager.instance.touchOffset = value; }
-    protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
-    protected float tileSize => GameManager.instance.tileSize;
-    protected List<ActorInstance> actors { get => GameManager.instance.actors; set => GameManager.instance.actors = value; }
-
-    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
-
     /// <summary>
     /// Selects an actor under the mouse cursor, updating the focus indicator and actor card UI.
     /// Allowed ONLY during the hero's turn and at the start of their phase.
@@ -60,10 +19,10 @@ public class SelectedHeroManager : MonoBehaviour
     public void Focus()
     {
         // Only allow focus selection during the hero's turn and Start phase.
-        if (!turnManager.isHeroTurn || turnManager.currentPhase != TurnPhase.Start)
+        if (!g.TurnManager.isHeroTurn || g.TurnManager.currentPhase != TurnPhase.Start)
             return;
 
-        var collisions = Physics2D.OverlapPointAll(touchPosition3D);
+        var collisions = Physics2D.OverlapPointAll(g.TouchPosition3D);
         if (collisions == null) return;
         var collider = collisions.FirstOrDefault(x => x.CompareTag(Tag.Actor));
         if (collider == null) return;
@@ -71,19 +30,19 @@ public class SelectedHeroManager : MonoBehaviour
 
         if (actor == null || !actor.isPlaying) return;
 
-        if (focusedActor == actor)
+        if (g.Actors.FocusedActor == actor)
             return;
 
-        focusedActor = actor;
-        sortingManager.OnActorFocus();
+        g.Actors.FocusedActor = actor;
+        g.SortingManager.OnActorFocus();
 
-        if (focusedActor.isHero)
-            abilityButtonManager.Show(focusedActor);
+        if (g.Actors.FocusedActor.isHero)
+            g.AbilityButtonManager.Show(g.Actors.FocusedActor);
 
-        touchOffset = focusedActor.position - touchPosition3D;
+        g.TouchOffset = g.Actors.FocusedActor.position - g.TouchPosition3D;
 
-        focusIndicator.Assign();
-        card.Assign();
+        g.FocusIndicator.Assign();
+        g.Card.Assign();
 
         // Notify editor to reload
 #if UNITY_EDITOR
@@ -97,36 +56,36 @@ public class SelectedHeroManager : MonoBehaviour
     public void Drag()
     {
         // Only proceed if it's the hero's turn, a hero is focused, and that actor is not an enemy.
-        if (!turnManager.isHeroTurn || !hasFocusedActor || focusedActor.isEnemy)
+        if (!g.TurnManager.isHeroTurn || !g.Actors.HasFocusedActor || g.Actors.FocusedActor.isEnemy)
             return;
 
         // Accept drag ONLY if we are in Start or Move phase:
-        if (turnManager.currentPhase != TurnPhase.Start && turnManager.currentPhase != TurnPhase.Move)
+        if (g.TurnManager.currentPhase != TurnPhase.Start && g.TurnManager.currentPhase != TurnPhase.Move)
             return;
 
         // If at Start, this drag triggers the transition to Move phase:
-        if (turnManager.currentPhase == TurnPhase.Start)
+        if (g.TurnManager.currentPhase == TurnPhase.Start)
         {
-            turnManager.SetPhase(TurnPhase.Move);
+            g.TurnManager.SetPhase(TurnPhase.Move);
             // Optional: if you want to only allow drag *after* Move phase started, return here
             // return;
         }
 
-        selectedHero = focusedActor;
-        sortingManager.OnSelectedHeroDrag();
+        g.Actors.SelectedHero = g.Actors.FocusedActor;
+        g.SortingManager.OnSelectedHeroDrag();
 
         // If the selected hero is already moving, do not process further drag logic.
-        if (selectedHero.flags.IsMoving)
+        if (g.Actors.SelectedHero.flags.IsMoving)
             return;
 
-        card.Clear();
-        focusIndicator.Clear();
+        g.Card.Clear();
+        g.FocusIndicator.Clear();
 
-        audioManager.Play("Click");
-        timerBar.Play();
-        actorManager.CheckEnemyAP();
+        g.AudioManager.Play("Click");
+        g.TimerBar.Play();
+        g.ActorManager.CheckEnemyAP();
 
-        selectedHero.move.TriggerMoveTowardsCursor();
+        g.Actors.SelectedHero.move.TriggerMoveTowardsCursor();
     }
 
     /// <summary>
@@ -135,21 +94,26 @@ public class SelectedHeroManager : MonoBehaviour
     public void Drop()
     {
         // Only proceed if it's the hero's turn, Move phase is active, and there's a selected hero currently moving.
-        if (!turnManager.isHeroTurn || turnManager.currentPhase != TurnPhase.Move || !hasSelectedHero || !selectedHero.flags.IsMoving)
+
+
+
+        if (!g.TurnManager.isHeroTurn 
+            || g.TurnManager.currentPhase != TurnPhase.Move 
+            || !g.Actors.HasSelectedHero || !g.Actors.SelectedHero.flags.IsMoving)
         {
-            if (hasFocusedActor)
-                focusedActor.position = focusedActor.currentTile.position;
+            if (g.Actors.HasFocusedActor)
+                g.Actors.FocusedActor.position = g.Actors.FocusedActor.currentTile.position;
             return;
         }
 
-        selectedHero.move.ToLocation();
-        sortingManager.OnSelectedHeroDrop();
+        g.Actors.SelectedHero.move.ToLocation();
+        g.SortingManager.OnSelectedHeroDrop();
 
-        selectedHero = null;
-        focusedActor = null;
+        g.Actors.SelectedHero = null;
+        g.Actors.FocusedActor = null;
 
-        timerBar.Pause();
-        attackManager.Check(Team.Hero);
+        g.TimerBar.Pause();
+        g.PincerAttackManager.Check(Team.Hero);
 
         // Do NOT advance phase here—TurnManager/UI is responsible for that!
     }

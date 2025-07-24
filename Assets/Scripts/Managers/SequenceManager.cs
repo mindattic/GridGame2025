@@ -3,12 +3,10 @@ using System.Collections;
 using UnityEngine;
 using Assets.Scripts.Events;
 using System;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
+
 public class SequenceManager : MonoBehaviour
 {
-    //Quick Reference Properties
-    protected TurnManager turnManager => GameManager.instance.turnManager;
-
     //Fields
     private QueueCollection<SequenceEvent> queue = new QueueCollection<SequenceEvent>();
 

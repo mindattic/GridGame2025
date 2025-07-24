@@ -1,17 +1,10 @@
 using Assets.Scripts.Repositories;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class PauseManager : MonoBehaviour
 {
-    //Quick Reference Properties
-    protected DebugManager debugManager => GameManager.instance.debugManager;
-    protected StageManager stageManager => GameManager.instance.stageManager;
-
-
-    protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
     public bool IsPaused => Time.timeScale == 0f;
 
     //Fields
@@ -35,7 +28,7 @@ public class PauseManager : MonoBehaviour
         pause = SpriteRepo.Sprites["Pause"];
         paused = SpriteRepo.Sprites["Paused"];
         pauseButtonImage.sprite = pause;
-        canvasOverlay.Hide();
+        g.CanvasOverlay.Hide();
         pauseMenu.SetActive(false);
     }
 
@@ -56,7 +49,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         pauseButtonImage.sprite = paused;
-        canvasOverlay.Show();
+        g.CanvasOverlay.Show();
         pauseMenu.SetActive(true);
 
     }
@@ -65,7 +58,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         pauseButtonImage.sprite = pause;
-        canvasOverlay.Hide();
+        g.CanvasOverlay.Hide();
         pauseMenu.SetActive(false);
     }
 
@@ -87,7 +80,7 @@ public class PauseManager : MonoBehaviour
 
     public void OnRestartStageButtonClicked()
     {
-        stageManager.RestartStage();
+        g.StageManager.RestartStage();
         Resume();
     }
 
@@ -100,14 +93,14 @@ public class PauseManager : MonoBehaviour
 
     public void OnSpawnEnemyButtonClicked()
     {
-        debugManager.SpawnRandomEnemy();
+        g.DebugManager.SpawnRandomEnemy();
     }
 
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.StageSelect)));   
+        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.StageSelect)));
     }
 
     public void OnSettingsButtonClicked()

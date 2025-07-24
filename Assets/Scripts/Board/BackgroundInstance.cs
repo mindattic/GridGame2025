@@ -2,12 +2,10 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class BackgroundInstance : MonoBehaviour
 {
-    //Quick Reference Properties
-
     //Fields
     private bool isMoving;
     private Vector3 initialPosition;

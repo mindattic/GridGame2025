@@ -4,23 +4,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public class PincerAttackManager : MonoBehaviour
 {
-    protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
-    protected BoardOverlay boardOverlay => GameManager.instance.boardOverlay;
-    protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
-    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
-    protected List<ActorInstance> actors => GameManager.instance.actors;
-    protected SortingManager sortingManager => GameManager.instance.sortingManager;
-
     public void Check(Team team)
     {
         var participants = GetParticipants(team);
         if (!participants.pair.Any())
         {
-            turnManager.NextTurn();
+            g.TurnManager.NextTurn();
             return;
         }
         StartCoroutine(Enqueue(participants));
@@ -30,7 +22,7 @@ public class PincerAttackManager : MonoBehaviour
     {
         var participants = new PincerAttackParticipants();
 
-        var teamActors = actors
+        var teamActors = g.Actors.All
             .Where(x => x.isPlaying && x.team == team)
             .ToList();
 
@@ -43,7 +35,7 @@ public class PincerAttackManager : MonoBehaviour
                     continue;
 
                 var betweenLocs = Geometry.GetLocationsBetween(actor1.location, actor2.location);
-                var betweenActors = actors
+                var betweenActors = g.Actors.All
                     .Where(x => x.isPlaying && betweenLocs.Contains(x.location))
                     .ToList();
 
@@ -129,21 +121,21 @@ public class PincerAttackManager : MonoBehaviour
 
     private IEnumerator Enqueue(PincerAttackParticipants participants)
     {
-        sortingManager.OnPincerAttackStart(participants);
+        g.SortingManager.OnPincerAttackStart(participants);
 
-        yield return boardOverlay.FadeIn();
+        yield return g.BoardOverlay.FadeIn();
 
         foreach (var p in participants.pair)
         {
             foreach (var sup in p.supporters1)
             {
-                supportLineManager.Spawn(sup, p.attacker1);
-                sequenceManager.Add(new PincerAttackSupportSequence(p.attacker1, sup));
+                g.SupportLineManager.Spawn(sup, p.attacker1);
+                g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker1, sup));
             }
             foreach (var sup in p.supporters2)
             {
-                supportLineManager.Spawn(sup, p.attacker2);
-                sequenceManager.Add(new PincerAttackSupportSequence(p.attacker2, sup));
+                g.SupportLineManager.Spawn(sup, p.attacker2);
+                g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker2, sup));
             }
         }
 
@@ -173,15 +165,15 @@ public class PincerAttackManager : MonoBehaviour
                 p.attackResults2.AddRange(sortedRev.Select(opp => CreateAttackResult(p.attacker2, opp)));
             }
 
-            sequenceManager.Add(new PincerAttackSequence(p));
+            g.SequenceManager.Add(new PincerAttackSequence(p));
         }
 
-        yield return sequenceManager.Execute();
-        yield return boardOverlay.FadeOut();
+        yield return g.SequenceManager.Execute();
+        yield return g.BoardOverlay.FadeOut();
 
-        supportLineManager.Clear();
+        g.SupportLineManager.Clear();
         participants.Clear();
-        turnManager.NextTurn();
+        g.TurnManager.NextTurn();
     }
 
     private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opp)
@@ -201,7 +193,7 @@ public class PincerAttackManager : MonoBehaviour
 
     public List<ActorInstance> FindSupporters(ActorInstance attacker)
     {
-        var candidates = actors
+        var candidates = g.Actors.All
             .Where(x => x.isPlaying && x.team == attacker.team && x != attacker)
             .Where(x => x.IsSameRow(attacker.location) || x.IsSameColumn(attacker.location))
             .ToList();
@@ -223,6 +215,6 @@ public class PincerAttackManager : MonoBehaviour
             .GetLocationsBetween(a.location, b.location)
             .Where(loc => !loc.Equals(a.location) && !loc.Equals(b.location));
 
-        return actors.Any(x => x.isPlaying && between.Contains(x.location));
+        return g.Actors.All.Any(x => x.isPlaying && between.Contains(x.location));
     }
 }

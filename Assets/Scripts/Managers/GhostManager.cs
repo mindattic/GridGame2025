@@ -3,12 +3,11 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class GhostManager : MonoBehaviour
 {
-    //Quick Reference Properties
-    protected float tileSize => GameManager.instance.tileSize;
-    protected BoardInstance board => GameManager.instance.board;
+
 
     //Fields
     private GameObject ghostPrefab;
@@ -23,7 +22,7 @@ public class GhostManager : MonoBehaviour
 
 
     void Start() {
-        threshold = tileSize / 12;
+        threshold = g.TileSize / 12;
     }
 
 
@@ -61,7 +60,7 @@ public class GhostManager : MonoBehaviour
         var instance = prefab.GetComponent<GhostInstance>();
         //trailInstance.settings = actor.settings;
         instance.name = $"Ghost_{Guid.NewGuid():N}";
-        instance.parent = board.transform;
+        instance.parent = g.Board.transform;
         instance.Spawn(actor);
     }
 

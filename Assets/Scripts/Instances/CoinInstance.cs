@@ -1,5 +1,5 @@
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class CoinInstance : MonoBehaviour
 {

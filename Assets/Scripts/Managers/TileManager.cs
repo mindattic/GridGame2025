@@ -1,8 +1,7 @@
 using Assets.Scripts.Models;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.FilePathAttribute;
+using g = Assets.Helpers.GameManagerHelper;
 
 /// <summary>
 /// TileManager is responsible for managing tile-specific behaviors on the board.
@@ -10,45 +9,9 @@ using static UnityEditor.FilePathAttribute;
 /// </summary>
 public class TileManager : MonoBehaviour
 {
-    // Quick Reference Properties:
-    // These properties provide shortcuts to the list of tiles and the tile map,
-    // which are stored in the GameManager singleton.
-
-    /// <summary>
-    /// Gets the list of all TileInstance objects managed by the game.
-    /// </summary>
-    protected List<TileInstance> tiles => GameManager.instance.tiles;
-
-    /// <summary>
-    /// Gets the TileMap that contains mappings between grid locations and TileInstances.
-    /// </summary>
-    protected TileMap tileMap => GameManager.instance.tileMap;
-
-    /// <summary>
-    /// Awake is called when the script actors is being loaded.
-    /// It is currently empty but can be used for early initialization if needed.
-    /// </summary>
-    public void Awake()
-    {
-        // Initialization code can be added here.
-    }
-
-    /// <summary>
-    /// Start is called before the first frame update.
-    /// It is currently empty but can be used for initialization after Awake.
-    /// </summary>
-    public void Start()
-    {
-        // Initialization code that depends on other GameObjects being initialized can be added here.
-    }
-
-    /// <summary>
-    /// Resets the color of all tiles to their default translucent white.
-    /// This can be used to clear any visual highlights on the board.
-    /// </summary>
     public void Reset()
     {
-        foreach (var tile in tiles)
+        foreach (var tile in g.Tiles)
         {
             // Reset each tile's sprite color to a translucent white.
             tile.spriteRenderer.color = ColorHelper.Tile.White;
@@ -73,7 +36,7 @@ public class TileManager : MonoBehaviour
 
     public void Hightlight(Vector2Int previous, Vector2Int current)
     {
-        tileMap.GetTile(previous).color = ColorHelper.Translucent.White;
-        tileMap.GetTile(current).color = ColorHelper.Translucent.Yellow;
+        g.TileMap.GetTile(previous).color = ColorHelper.Tile.White;
+        g.TileMap.GetTile(current).color = ColorHelper.Tile.Yellow;
     }
 }

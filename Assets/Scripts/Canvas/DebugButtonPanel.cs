@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.GUI
 {
@@ -38,12 +38,12 @@ namespace Assets.Scripts.GUI
 
         //private void OnPreviousStageButtonClicked()
         //{
-        //    stageManager.Previous();
+        //    g.StageManager.Previous();
         //}
 
         //private void OnNextStageButtonClicked()
         //{
-        //    stageManager.Next();
+        //    g.StageManager.Next();
         //}
 
         private void OnSpawnRandomEnemyButtonClicked()

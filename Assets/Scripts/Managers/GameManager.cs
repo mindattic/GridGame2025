@@ -8,7 +8,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
-using g = GameManagerHelper;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -118,6 +117,7 @@ public class GameManager : Singleton<GameManager>
 
     //Debug Window
     public bool reloadThumbnailSettings = false;
+    public float gameSpeed = 1.0f;
 
     private void Awake()
     {

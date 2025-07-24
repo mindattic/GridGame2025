@@ -3,43 +3,14 @@ using Assets.Scripts.Models;
 using Game.Manager;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
+
 public class StageManager : MonoBehaviour
 {
-    // Quick Reference Properties:
-    protected FadeInstance fade => GameManager.instance.fade;
-    
-    public int totalCoins
-    {
-        get => GameManager.instance.totalCoins;
-        set => GameManager.instance.totalCoins = value;
-    }
-    protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected ActorManager actorManager => GameManager.instance.actorManager;
-    protected DottedLineManager dottedLineManager => GameManager.instance.dottedLineManager;
-    protected CoinBar coinBar => GameManager.instance.coinBar;
-    protected CanvasOverlay canvasOverlay => GameManager.instance.canvasOverlay;
-    protected BoardInstance board => GameManager.instance.board;
-    protected TutorialPopup tutorialPopup => GameManager.instance.tutorialPopup;
-    protected SupportLineManager supportLineManager => GameManager.instance.supportLineManager;
-    protected TileManager tileManager => GameManager.instance.tileManager;
-    protected WaveAnnouncement waveAnnouncement => GameManager.instance.waveAnnouncement;
-
-    protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
-    protected IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-
-    // Access the list of actors from the GameManager.
-    protected List<ActorInstance> actors
-    {
-        get => GameManager.instance.actors;
-        set => GameManager.instance.actors = value;
-    }
-
     // Internal property:
-    public int enemyCount => actors.FindAll(x => x.isEnemy).Count;
+    public int enemyCount => g.Actors.All.FindAll(x => x.isEnemy).Count;
 
     // Fields:
     private GameObject actorPrefab;
@@ -65,7 +36,7 @@ public class StageManager : MonoBehaviour
         }
 
 
-     
+
 
         currentStage = StageRepo.Get(latestSave.Stage.CurrentStage);
         RestartStage();
@@ -79,12 +50,12 @@ public class StageManager : MonoBehaviour
     {
         // Reset everything for a new stage.
         currentWave = ProfileRepo.CurrentProfile.CurrentSave.Stage.CurrentWave;
-        actorManager.Clear();
-        dottedLineManager.Clear();
-        supportLineManager.Clear();
-        coinBar.Refresh();
-        tileManager.Reset();
-        turnManager.Initialize();
+        g.ActorManager.Clear();
+        g.DottedLineManager.Clear();
+        g.SupportLineManager.Clear();
+        g.CoinBar.Refresh();
+        g.TileManager.Reset();
+        g.TurnManager.Initialize();
 
         // Assign persistent hero actors from ProfileRepo
         foreach (var partyMember in ProfileRepo.CurrentProfile.CurrentSave.Party.Members)
@@ -94,8 +65,8 @@ public class StageManager : MonoBehaviour
             SpawnActor(stageActor);
         }
 
-        //HACK: For some reason enemies might spawn on top of heroes because they aren't loaded at same time...
-        //actors.ForEach(x => x.flags.HasSpawned = true);
+        //HACK: For some reason enemies might spawn on top of g.Actors.Heroes because they aren't loaded at same time...
+        //g.Actors.All.ForEach(x => x.flags.HasSpawned = true);
 
         // Load the wave based on currentWave.
         if (currentStage.Waves.Count > 0)
@@ -107,7 +78,7 @@ public class StageManager : MonoBehaviour
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
 
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(g.Fade.FadeIn());
     }
 
     /// <summary>
@@ -134,10 +105,10 @@ public class StageManager : MonoBehaviour
         {
             var segment = stageDottedLine.Segment;
             var location = stageDottedLine.Location;
-            dottedLineManager.Spawn(segment, location);
+            g.DottedLineManager.Spawn(segment, location);
         }
 
-        waveAnnouncement.Show(waveIndex + 1, currentStage.Waves.Count);
+        g.WaveAnnouncement.Show(waveIndex + 1, currentStage.Waves.Count);
     }
 
     /// <summary>
@@ -147,7 +118,7 @@ public class StageManager : MonoBehaviour
     {
         var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<ActorInstance>();
-        instance.transform.parent = board.transform;
+        instance.transform.parent = g.Board.transform;
 
         instance.name = $"{stageActor.characterName}_{Guid.NewGuid():N}";
         instance.characterName = stageActor.characterName;
@@ -163,7 +134,7 @@ public class StageManager : MonoBehaviour
 
         instance.Spawn(stageActor.Location.Value);
 
-        actors.Add(instance);
+        g.Actors.All.Add(instance);
     }
 
 
@@ -181,7 +152,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void CheckWaveCompletion()
     {
-        bool allEnemiesDead = enemies.All(x => x.flags.HasSpawned && x.isDead);
+        bool allEnemiesDead = g.Actors.Enemies.All(x => x.flags.HasSpawned && x.isDead);
         if (!allEnemiesDead)
             return;
 
@@ -212,7 +183,7 @@ public class StageManager : MonoBehaviour
             yield return null;
         }
 
-        StartCoroutine(fade.FadeOut(loadNextStage()));
+        StartCoroutine(g.Fade.FadeOut(loadNextStage()));
     }
 
     /// <summary>
@@ -220,7 +191,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void CheckGameOver()
     {
-        bool allPlayersDead = heroes.All(x => x.flags.HasSpawned && x.isDead);
+        bool allPlayersDead = g.Actors.Heroes.All(x => x.flags.HasSpawned && x.isDead);
         if (!allPlayersDead)
             return;
 
@@ -230,7 +201,7 @@ public class StageManager : MonoBehaviour
             yield return null;
         }
 
-        StartCoroutine(fade.FadeOut(reloadStage()));
+        StartCoroutine(g.Fade.FadeOut(reloadStage()));
     }
 
 

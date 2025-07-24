@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.VersionControl;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class VFXInstance : MonoBehaviour
 {
@@ -92,7 +92,7 @@ public class VFXInstance : MonoBehaviour
 
     private void Despawn(string name)
     {
-        vfxManager.Despawn(name);
+        g.VfxManager.Despawn(name);
     }
 
 }

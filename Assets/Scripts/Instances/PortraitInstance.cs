@@ -2,12 +2,9 @@ using Game.Behaviors.Actor;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 public class PortraitInstance : MonoBehaviour
 {
-    // Quick Reference Properties
-    private PortraitManager portraitManager => GameManager.instance.portraitManager;
-
     public Transform parent
     {
         get => gameObject.transform.parent;
@@ -208,7 +205,7 @@ public class PortraitInstance : MonoBehaviour
         
         Transform front = actor.render.front.transform;
         Vector3 originalFrontPos = front.position;
-        float yOffset = -GameManager.instance.tileSize * 0.33f; // Lowered by 33%
+        float yOffset = -g.TileSize * 0.33f; // Lowered by 33%
 
         float y = Random.Float(20f, 25f);
         popInRotY = Random.Float() < 0.5f ? -y : y;

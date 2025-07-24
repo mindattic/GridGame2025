@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class TargetModeOverlay : MonoBehaviour
 {

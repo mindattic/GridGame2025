@@ -1,12 +1,8 @@
-using Game.Behaviors;
 using UnityEngine;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class AudioManager : MonoBehaviour
 {
-    //Quick Reference Properties
-    protected AudioSource soundSource => GameManager.instance.soundSource;
-
-
     public void Play(string sfx)
     {
         var soundEffect = SoundEffectRepo.SoundEffects[sfx];
@@ -16,7 +12,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        soundSource.PlayOneShot(soundEffect);
+        g.SoundSource.PlayOneShot(soundEffect);
     }
 
 

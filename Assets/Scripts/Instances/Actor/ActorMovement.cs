@@ -5,24 +5,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
     public class ActorMovement
     {
-        //Quick Reference Properties
-        protected Vector3 tileScale => GameManager.instance.tileScale;
-        protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-        protected List<ActorInstance> actors => GameManager.instance.actors;
-        protected AudioManager audioManager => GameManager.instance.audioManager;
-        protected BoardInstance board => GameManager.instance.board;
-        protected float moveFocus => GameManager.instance.moveFocus;
-
-        protected float snapThreshold => GameManager.instance.actorManager.snapTheshold;
-        protected float tileSize => GameManager.instance.tileSize;
-        protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
-        protected Vector3 touchOffset => GameManager.instance.touchOffset;
         protected ActorFlags flags => instance.flags;
         protected ActorRenderers render => instance.render;
         protected ActorStats stats => instance.stats;
@@ -35,14 +23,8 @@ namespace Assets.Scripts.Instances.Actor
         protected Vector3 previousPosition { get => instance.previousPosition; set => instance.previousPosition = value; }
         private Vector3 position { get => instance.position; set => instance.position = value; }
         private Vector3 scale { get => instance.scale; set => instance.scale = value; }
-        protected ActorInstance selectedHero => GameManager.instance.selectedHero;
-        protected bool hasSelectedHero => GameManager.instance.hasSelectedPlayer;
-        protected bool isSelectedHero => hasSelectedHero && selectedHero == instance;
-        protected FocusIndicator focusIndicator => GameManager.instance.focusIndicator;
-        protected Card card => GameManager.instance.card;
-        protected TileManager tileManager => GameManager.instance.tileManager;
-        protected TileMap tileMap => GameManager.instance.tileMap;
-        protected SortingManager sortingManager => GameManager.instance.sortingManager;
+
+        protected bool isSelectedHero => g.Actors.HasSelectedHero && g.Actors.SelectedHero == instance;
 
 
 
@@ -80,7 +62,7 @@ namespace Assets.Scripts.Instances.Actor
             while (flags.IsMoving)
             {
                 previousPosition = instance.position;
-                instance.position = touchPosition3D + touchOffset;
+                instance.position = g.TouchPosition3D + g.TouchOffset;
                 ApplyTilt(instance.position - previousPosition, tiltFactor, rotationFocus, resetFocus, Vector3.zero);
                 CheckLocationChanged();
 
@@ -102,20 +84,20 @@ namespace Assets.Scripts.Instances.Actor
 
 
             flags.IsMoving = true;
-            audioManager.Play("Slide");
+            g.AudioManager.Play("Slide");
             //instance.sortingOrder = SortingOrder.Moving;
 
             //Determine the destination based on the actor's grid location.
             Vector3 destination = Geometry.GetPositionByLocation(location);
 
             //--- Horizontal Movement ---
-            if (Mathf.Abs(position.x - destination.x) > snapThreshold)
+            if (Mathf.Abs(position.x - destination.x) > g.SnapThreshold)
             {
                 //Opponent position for horizontal move.
                 Vector3 horizontalTarget = new Vector3(destination.x, position.y, position.z);
-                while (Mathf.Abs(position.x - destination.x) > snapThreshold)
+                while (Mathf.Abs(position.x - destination.x) > g.SnapThreshold)
                 {
-                    position = Vector3.MoveTowards(position, horizontalTarget, moveFocus);
+                    position = Vector3.MoveTowards(position, horizontalTarget, g.MoveFocus);
 
                     //if (flags.IsSwapping)
                     //{
@@ -133,13 +115,13 @@ namespace Assets.Scripts.Instances.Actor
             }
 
             //--- Vertical Movement ---
-            if (Mathf.Abs(position.y - destination.y) > snapThreshold)
+            if (Mathf.Abs(position.y - destination.y) > g.SnapThreshold)
             {
                 //Opponent position for vertical move.
                 Vector3 verticalTarget = new Vector3(position.x, destination.y, position.z);
-                while (Mathf.Abs(position.y - destination.y) > snapThreshold)
+                while (Mathf.Abs(position.y - destination.y) > g.SnapThreshold)
                 {
-                    position = Vector3.MoveTowards(position, verticalTarget, moveFocus);
+                    position = Vector3.MoveTowards(position, verticalTarget, g.MoveFocus);
 
                     //if (flags.IsSwapping)
                     //{
@@ -159,7 +141,7 @@ namespace Assets.Scripts.Instances.Actor
             //After: finished moving.
             flags.IsMoving = false;
             flags.IsSwapping = false;
-            scale = tileScale;
+            scale = g.TileScale;
             rotation = Geometry.Rotation(0, 0, 0);
         }
 
@@ -167,9 +149,9 @@ namespace Assets.Scripts.Instances.Actor
         public void ToLocation()
         {
             flags.IsMoving = false;
-            var closestTile = GameManager.instance.tileMap.GetTile(selectedHero.location);
-            selectedHero.location = closestTile.location;
-            selectedHero.position = closestTile.position;
+            var closestTile = g.TileMap.GetTile(g.Actors.SelectedHero.location);
+            g.Actors.SelectedHero.location = closestTile.location;
+            g.Actors.SelectedHero.position = closestTile.position;
         }
 
         ///<summary>
@@ -205,21 +187,21 @@ namespace Assets.Scripts.Instances.Actor
             location = closestTile.location;
 
             if (isSelectedHero)
-                tileManager.Hightlight(previousLocation, location);
+                g.TileManager.Hightlight(previousLocation, location);
 
             //Determine if there is an actor overlapping location
-            ActorInstance overlappingActor = actors.FirstOrDefault(x =>
+            ActorInstance overlappingActor = g.Actors.All.FirstOrDefault(x =>
                 x != instance &&
                 x.isPlaying &&
                 x.location == location);
 
             if (overlappingActor == null)
             {
-                sortingManager.OnActorMoving(this.instance);
+                g.SortingManager.OnActorMoving(this.instance);
             }
             else
             {
-                sortingManager.OnActorOverlap(this.instance, overlappingActor);
+                g.SortingManager.OnActorOverlap(this.instance, overlappingActor);
                 overlappingActor.move.HandleOverlap(previousLocation);
             }
 
@@ -239,7 +221,7 @@ namespace Assets.Scripts.Instances.Actor
             if (flags.IsSwapping)
                 return;
 
-            var currentTile = tileMap.GetTile(targetLocation);
+            var currentTile = g.TileMap.GetTile(targetLocation);
 
             if (currentTile.IsOccupied)
             {

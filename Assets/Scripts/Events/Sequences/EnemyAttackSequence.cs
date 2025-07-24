@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Events
 
             yield return Wait.For(Intermission.Before.Enemy.Attack);
 
-            // Find all adjacent heroes to this enemy
+            // Find all adjacent g.Actors.Heroes to this enemy
             var defendingHeroes = g.Actors.Heroes
                 .Where(x => x.isPlaying && x.IsAdjacentTo(enemy.location))
                 .ToList();

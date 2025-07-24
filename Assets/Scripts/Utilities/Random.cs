@@ -3,28 +3,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
+
 static class Random
 {
     [ThreadStatic] public static System.Random rng = new System.Random();
 
-    //Properties
-    private static IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
-    private static IEnumerable<ActorInstance> enemies => GameManager.instance.enemies;
-    private static List<ActorInstance> actors => GameManager.instance.actors;
-    private static List<TileInstance> tiles => GameManager.instance.tiles;
-    private static int columnCount => GameManager.instance.board.columnCount;
-    private static int rowCount => GameManager.instance.board.rowCount;
+    public static ActorInstance Hero => g.Actors.Heroes.Where(x => x.isPlaying).Shuffle().First();
 
-    public static ActorInstance Hero => heroes.Where(x => x.isPlaying).Shuffle().First();
+    public static ActorInstance Enemy => g.Actors.Enemies.Where(x => x.isPlaying).Shuffle().First();
 
-    public static ActorInstance Enemy => enemies.Where(x => x.isPlaying).Shuffle().First();
+    public static TileInstance Tile => g.Tiles.Shuffle().First();
 
-    public static TileInstance Tile => tiles.Shuffle().First();
+    public static TileInstance UnoccupiedTile => g.Tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
 
-    public static TileInstance UnoccupiedTile => tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
-
-    public static Vector2Int Location => new Vector2Int(Int(1, columnCount), Int(1, rowCount));
+    public static Vector2Int Location => new Vector2Int(Int(1, g.Board.columnCount), Int(1, g.Board.rowCount));
 
     public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
 

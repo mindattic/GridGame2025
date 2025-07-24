@@ -3,7 +3,7 @@ using System.Collections;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 /// <summary>
 /// Draws a curved support line (arc) between two ActorInstances,

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.GUI
 {
@@ -37,7 +37,7 @@ namespace Assets.Scripts.GUI
             //rect = image.GetComponent<RectTransform>();
             //rect.sizeDelta = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
 
-            panel.SetActive(g.DebugManager.showTutorials);
+            panel.SetActive(GameManager.instance.debugManager.showTutorials);
         }
 
         public void Load(Tutorial tutorial, bool show = true)

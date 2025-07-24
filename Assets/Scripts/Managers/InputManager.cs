@@ -1,8 +1,7 @@
-using Assets.Scripts.Repositories;
 using System;
 using System.Linq;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 
 
@@ -10,25 +9,6 @@ using g = GameManagerHelper;
 // to the SelectedHeroManager, while also considering the game's paused state.
 public class InputManager : MonoBehaviour
 {
-    protected PauseManager pauseManager => GameManager.instance.pauseManager;
-    protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-    protected bool hasSelectedActor => focusedActor != null;
-    protected bool hasSelectedPlayer => selectedPlayer != null;
-    protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
-    protected StageManager stageManager => GameManager.instance.stageManager;
-    protected Vector3 touchPosition3D => GameManager.instance.touchPosition3D;
-    protected float tileSize => GameManager.instance.tileSize;
-    protected TargetLineManager targetLineManager => GameManager.instance.targetLineManager;
-    protected ActorInstance targetActor
-    {
-        get => GameManager.instance.targetActor;
-        set => GameManager.instance.targetActor = value;
-    }
-    protected bool hasTargetActor => GameManager.instance.hasTargetActor;
-    protected TargetIndicator targetIndicator => GameManager.instance.targetIndicator;
-    
-
     private Vector3 initialTouchPosition;
     public float dragThreshold;
 
@@ -53,12 +33,15 @@ public class InputManager : MonoBehaviour
     private void Awake()
     {
         canvas2D = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
-        dragThreshold = tileSize * 0.125f;
+        dragThreshold = GameManager.instance.tileSize * 0.125f;
     }
 
     void Update()
     {
-        if (pauseManager.IsPaused)
+        if (GameManager.instance.inputManager == null)
+            return;
+
+        if (g.PauseManager.IsPaused)
             return;
 
         if (Input.touchCount > 0)
@@ -74,7 +57,7 @@ public class InputManager : MonoBehaviour
                     {
                         case TouchPhase.Began:
 
-                            var collisions = Physics2D.OverlapPointAll(touchPosition3D);
+                            var collisions = Physics2D.OverlapPointAll(g.TouchPosition3D);
                             if (collisions == null) return;
                             var collider = collisions.FirstOrDefault(x => x.CompareTag(Tag.Actor));
                             if (collider == null) return;
@@ -82,7 +65,7 @@ public class InputManager : MonoBehaviour
 
                             if (actor == null || !actor.isPlaying) return;
 
-                            if (targetActor == actor)
+                            if (g.Actors.TargetActor == actor)
                             {
                                 //This is a double click...
 
@@ -90,10 +73,11 @@ public class InputManager : MonoBehaviour
                                 {
                                     if (value)
                                     {
-                                        Debug.Log("You targetted: " + targetActor.characterName);
+                                        Debug.Log("You targetted: " + g.Actors.TargetActor.characterName);
                                         //TODO: Add sequence and exectue....
-                                        inputMode = InputMode.HeroTurn; 
-                                    } else
+                                        inputMode = InputMode.HeroTurn;
+                                    }
+                                    else
                                     {
 
                                     }
@@ -103,10 +87,10 @@ public class InputManager : MonoBehaviour
 
                                 return;
                             }
-                               
 
-                            targetActor = actor;
-                            targetIndicator.Assign();
+
+                            g.Actors.TargetActor = actor;
+                            g.TargetIndicator.Assign();
                             break;
 
                         case TouchPhase.Moved:
@@ -132,19 +116,19 @@ public class InputManager : MonoBehaviour
                     {
                         case TouchPhase.Began:
                             // Attempt to focus on an actor under the touch.
-                            selectedHeroManager.Focus();
+                            g.SelectedHeroManager.Focus();
 
-                            initialTouchPosition = touchPosition3D;
+                            initialTouchPosition = g.TouchPosition3D;
                             break;
 
                         case TouchPhase.Moved:
-                            if (Vector3.Distance(initialTouchPosition, touchPosition3D) > dragThreshold)
-                                selectedHeroManager.Drag();
+                            if (Vector3.Distance(initialTouchPosition, g.TouchPosition3D) > dragThreshold)
+                                g.SelectedHeroManager.Drag();
                             break;
 
                         case TouchPhase.Ended:
                         case TouchPhase.Canceled:
-                            selectedHeroManager.Drop();
+                            g.SelectedHeroManager.Drop();
                             break;
                     }
                     #endregion

@@ -5,11 +5,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 public class TrailManager : MonoBehaviour
 {
-    protected BoardInstance board => GameManager.instance.board;
-
     //Fields
     Dictionary<string, TrailInstance> trailEffects = new Dictionary<string, TrailInstance>();
 
@@ -33,7 +31,7 @@ public class TrailManager : MonoBehaviour
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<TrailInstance>();
         instance.name = $"Trail_{resource.Name}_{Guid.NewGuid():N}";
-        instance.parent = board.transform;
+        instance.parent = g.Board.transform;
         trailEffects.Add(instance.name, instance);
 
         yield return instance.Spawn(resource, position, trigger);

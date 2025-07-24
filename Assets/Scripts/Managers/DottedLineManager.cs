@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class DottedLineManager : MonoBehaviour
 {
-    protected float tileSize => GameManager.instance.tileSize;
-    protected BoardInstance board => GameManager.instance.board;
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-    protected bool hasSelectedPlayer => GameManager.instance.hasSelectedPlayer;
-  
 
     //Fields
     private GameObject DottedLinePrefab;
@@ -38,7 +34,7 @@ public class DottedLineManager : MonoBehaviour
         GameObject prefab = Instantiate(DottedLinePrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<DottedLineInstance>();
         instance.name = $"DottedLine_{Guid.NewGuid():N}";
-        instance.parent = board.transform;
+        instance.parent = g.Board.transform;
         instance.Spawn(segment, location);
         dottedLines.Add(instance);
     }

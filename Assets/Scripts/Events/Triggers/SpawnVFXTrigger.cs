@@ -1,6 +1,6 @@
 ﻿//using System.Collections;
 //using UnityEngine;
-//using g = GameManagerHelper;
+//using g = Assets.Helpers.GameManagerHelper;
 
 ///// <summary>
 ///// A TriggerEvent that spawns a specified VfxManager at a given position, 
@@ -27,7 +27,7 @@
 
 //    public override IEnumerator Run()
 //    {
-//        GameManager.instance.vfxManager.Spawn(vfx, position);
+//        g.VfxManager.Spawn(vfx, position);
 
 //        if (chainedTrigger != null)
 //            yield return chainedTrigger.Run();

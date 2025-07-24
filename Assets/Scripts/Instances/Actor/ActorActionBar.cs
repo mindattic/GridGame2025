@@ -2,7 +2,7 @@ using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 // ActorActionBar is responsible for managing and updating the visual representation 
 // of an actor's animate points (AP) in the UI. It handles the fill and drain animations 
@@ -10,10 +10,8 @@ using g = GameManagerHelper;
 public class ActorActionBar
 {
     protected ActorFlags flags => instance.flags;
-    protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
     protected ActorRenderers render => instance.render;
     protected ActorStats stats => instance.stats;
-    protected bool hasSelectedPlayer => selectedPlayer != null;
 
     private Vector3 initialScale => render.actionBarBack.transform.localScale;
 
@@ -107,7 +105,7 @@ public class ActorActionBar
         // - The actor is not playing,
         // - The actor already has max AP, or
         // - The actor is currently gaining AP.
-        if (g.DebugManager.isEnemyStunned || !hasSelectedPlayer || !instance.isEnemy || !instance.isPlaying || instance.hasMaxAP || flags.isGainingAP)
+        if (g.DebugManager.isEnemyStunned || !g.Actors.HasSelectedHero|| !instance.isEnemy || !instance.isPlaying || instance.hasMaxAP || flags.isGainingAP)
             yield break;
 
         // Before starting, mark that the actor is gaining AP and calculate the increment amount.
@@ -115,7 +113,7 @@ public class ActorActionBar
         float amount = stats.Intelligence * 0.1f;
 
         // During: Gradually increase AP until max AP is reached.
-        while (hasSelectedPlayer && instance.isEnemy && instance.isPlaying && !instance.hasMaxAP)
+        while (g.Actors.HasSelectedHero && instance.isEnemy && instance.isPlaying && !instance.hasMaxAP)
         {
             stats.AP += amount;
             stats.AP = Mathf.Clamp(stats.AP, 0, stats.MaxAP);

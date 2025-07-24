@@ -1,9 +1,9 @@
-﻿namespace Assets.Scripts.Instances.Actor
+﻿using g = Assets.Helpers.GameManagerHelper;
+
+namespace Assets.Scripts.Instances.Actor
 {
     public class ActorParallax
     {
-        //External properies
-        protected float tileSize => GameManager.instance.tileSize;
 
         //Fields
         private ActorInstance instance;
@@ -17,7 +17,7 @@
         {
             this.instance = parentInstance;
 
-            maxFocus = tileSize * 10f;
+            maxFocus = g.TileSize * 10f;
         }
 
         public void Assign(Direction attackerDirection)

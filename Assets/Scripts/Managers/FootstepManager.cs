@@ -3,13 +3,10 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class FootstepManager : MonoBehaviour
 {
-    //Quick Reference Properties
-    protected float tileSize => GameManager.instance.tileSize;
-    protected BoardInstance board => GameManager.instance.board;
-
     //Fields
     private GameObject FootstepPrefab;
     ActorInstance actor;
@@ -25,7 +22,7 @@ public class FootstepManager : MonoBehaviour
 
     void Start()
     {
-        threshold = tileSize / 4;
+        threshold = g.TileSize / 4;
     }
 
     public void Play(ActorInstance actor)
@@ -64,7 +61,7 @@ public class FootstepManager : MonoBehaviour
         var instance = prefab.GetComponent<FootstepInstance>();
         instance.sprite = SpriteRepo.Sprites["FootstepManager"];
         instance.name = $"Footstep_{Guid.NewGuid():N}";
-        instance.parent = board.transform;
+        instance.parent = g.Board.transform;
         instance.Spawn(actor.position, RotationHelper.ByDirection(actor.position, previousPosition), isRightFoot);
         previousPosition = actor.position;
         isRightFoot = !isRightFoot;

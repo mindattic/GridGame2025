@@ -4,21 +4,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class ProjectileManager : MonoBehaviour
 {
-    //Quick Reference
-    protected BoardInstance board => GameManager.instance.board;
-    protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected SequenceManager sequenceManager => GameManager.instance.sequenceManager;
-
     //Fields
-
     private GameObject projectilePrefab;
-
-    Dictionary<string, ProjectileInstance> projectiles = new Dictionary<string, ProjectileInstance>();
-
-
+    public Dictionary<string, ProjectileInstance> projectiles = new Dictionary<string, ProjectileInstance>();
 
     public void Awake()
     {
@@ -32,7 +24,7 @@ public class ProjectileManager : MonoBehaviour
         var prefab = Instantiate(projectilePrefab, projectile.source.position, Quaternion.identity);
         var instance = prefab.GetComponent<ProjectileInstance>();
         instance.name = $"Projectile_{projectile.friendlyName}_{Guid.NewGuid():N}";
-        instance.parent = board.transform;
+        instance.parent = g.Board.transform;
         projectiles.Add(instance.name, instance);
         yield return instance.Spawn(projectile);
     }
@@ -58,14 +50,14 @@ public class ProjectileManager : MonoBehaviour
             trigger = new TriggerEvent(target.Heal(10))
         };
 
-        sequenceManager.Add(new PortraitPopInSequence(source));
-        sequenceManager.Add(new FireProjectileSequence(heal));
-        sequenceManager.Add(new PortraitPopOutSequence(source));
+        g.SequenceManager.Add(new PortraitPopInSequence(source));
+        g.SequenceManager.Add(new FireProjectileSequence(heal));
+        g.SequenceManager.Add(new PortraitPopOutSequence(source));
 
         //if (castBeforeAttack)
-        //    sequenceManager.AddFirst(e);
+        //    g.SequenceManager.AddFirst(e);
         //else
-        //    sequenceManager.Add(e);
+        //    g.SequenceManager.Add(e);
     }
 
 
@@ -83,14 +75,14 @@ public class ProjectileManager : MonoBehaviour
             trigger = new TriggerEvent(target.FireDamage(10))
         };
 
-        sequenceManager.Add(new PortraitPopInSequence(source));
-        sequenceManager.Add(new FireProjectileSequence(fireball));
-        sequenceManager.Add(new PortraitPopOutSequence(source));
+        g.SequenceManager.Add(new PortraitPopInSequence(source));
+        g.SequenceManager.Add(new FireProjectileSequence(fireball));
+        g.SequenceManager.Add(new PortraitPopOutSequence(source));
 
         //if (castBeforeAttack)
-        //    sequenceManager.AddFirst(animate);
+        //    g.SequenceManager.AddFirst(animate);
         //else
-        //    sequenceManager.Add(animate);
+        //    g.SequenceManager.Add(animate);
     }
 
 }

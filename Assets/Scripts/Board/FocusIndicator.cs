@@ -1,6 +1,6 @@
 using Game.Behaviors;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 // FocusIndicator is a MonoBehaviour responsible for displaying an indicator
 // that highlights the currently focused actor (if any) on the game board.

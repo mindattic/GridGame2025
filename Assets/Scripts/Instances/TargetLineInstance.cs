@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections;
+using g = Assets.Helpers.GameManagerHelper;
 
 /// <summary>
 /// Draws a curved arc between a fixed button position and a dynamic cursor/hero position.
@@ -8,8 +9,6 @@ using System.Collections;
 /// </summary>
 public class TargetLineInstance : MonoBehaviour
 {
-    protected float tileSize => GameManager.instance.tileSize;
-    protected BoardInstance board => GameManager.instance.board;
 
     public Transform parent
     {
@@ -36,7 +35,7 @@ public class TargetLineInstance : MonoBehaviour
     private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
-        float width = tileSize * 0.25f;
+        float width = g.TileSize * 0.25f;
         lineRenderer.startWidth = width;
         lineRenderer.endWidth = width;
         lineRenderer.numCapVertices = 8;

@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 [Serializable]
 public class TrailEffectAsset

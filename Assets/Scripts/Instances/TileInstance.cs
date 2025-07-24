@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class TileInstance : MonoBehaviour
 {
@@ -82,6 +82,6 @@ public class TileInstance : MonoBehaviour
     {
         location = new Vector2Int(col, row);
         position = Geometry.CalculatePositionByLocation(location);
-        transform.localScale = tileScale;
+        transform.localScale = g.TileScale;
     }
 }

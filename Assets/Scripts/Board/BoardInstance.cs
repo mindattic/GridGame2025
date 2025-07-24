@@ -3,7 +3,7 @@ using Game.Models;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 // BoardInstance represents the game board grid, handling tile generation, board bounds calculation,
 // and conversion between board and screen positions. It also holds a reference to the TileMap.
@@ -100,7 +100,7 @@ public class BoardInstance : MonoBehaviour
 
         // Find all GameObjects tagged as "Tile" and add their TileInstance components to the global GameManager's tiles list.
         GameObject.FindGameObjectsWithTag(Tag.Tile).ToList()
-            .ForEach(x => GameManager.instance.tiles.Add(x.GetComponent<TileInstance>()));
+            .ForEach(x => g.Tiles.Add(x.GetComponent<TileInstance>()));
     }
 
     /// <summary>

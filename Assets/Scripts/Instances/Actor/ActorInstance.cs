@@ -10,38 +10,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 // ActorInstance represents a game characterName (either hero or enemy) and encapsulates
 // its state, behaviors, rendering, move, and interactions with game systems.
 public class ActorInstance : MonoBehaviour
 {
-    //#region Game Properies
-    //protected List<ActorInstance> actors => GameManager.instance.actors;
-    //protected AudioManager audioManager => GameManager.instance.audioManager;
-    //protected BoardInstance board => GameManager.instance.board;
-    //protected CoinManager coinManager => GameManager.instance.coinManager;
-    //protected DamageTextManager damageTextManager => GameManager.instance.damageTextManager;
-    //protected DebugManager debugManager => GameManager.instance.debugManager;
-    //protected ActorInstance focusedActor => GameManager.instance.focusedActor;
-    //protected bool hasFocusedActor => focusedActor != null;
-    //protected bool hasSelectedPlayer => selectedPlayer != null;
-    //protected float moveFocus => GameManager.instance.moveFocus;
-    //protected IEnumerable<ActorInstance> heroes => GameManager.instance.heroes;
-    //protected PortraitManager portraitManager => GameManager.instance.portraitManager;
-    //protected ActorInstance selectedPlayer => GameManager.instance.selectedHero;
-    //protected float snapThreshold => GameManager.instance.actorManager.snapTheshold;
-    //protected StageManager stageManager => GameManager.instance.stageManager;
-    //protected TileMap tileMap => GameManager.instance.tileMap;
-    //protected Vector3 tileScale => GameManager.instance.tileScale;
-    //protected float tileSize => GameManager.instance.tileSize;
-    //protected TurnManager turnManager => GameManager.instance.turnManager;
-    //protected VfxManager vfxManager => GameManager.instance.vfxManager;
-    //protected TileManager tileManager => GameManager.instance.tileManager;
-    //#endregion
-
-
-
     #region Instance Properies
     public TileInstance currentTile => g.TileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
     public bool isHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
@@ -213,7 +187,7 @@ public class ActorInstance : MonoBehaviour
 
 
 
-    // Awake: Initialization of the actor actors. Sets up modules and subscribes to events.
+    // Awake: Initialization of the actor g.Actors.All. Sets up modules and subscribes to events.
     private void Awake()
     {
         // Assign modules with this actor actors context.
@@ -371,7 +345,7 @@ public class ActorInstance : MonoBehaviour
     {
         //var vfx = attackResult.Attacker.vfx.Attack;
         //var pos = attackResult.Attacker.position;
-        //vfxManager.SpawnAsync(vfx, pos); //TODO: inject damage below into vfx trigger???...
+        //g.VfxManager.SpawnAsync(vfx, pos); //TODO: inject damage below into vfx trigger???...
 
         // Immediately apply damage and update health.
         if (!isInvincible)
@@ -528,7 +502,7 @@ public class ActorInstance : MonoBehaviour
             return;
 
         var newLocation = location + direction;
-        var tile = GameManager.instance.tileMap.GetTile(newLocation);
+        var tile = g.TileMap.GetTile(newLocation);
         if (tile == null) return;
         // Teleport to the new tile's location.
         Teleport(tile.location);

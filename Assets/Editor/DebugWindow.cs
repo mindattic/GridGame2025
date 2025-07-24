@@ -1,12 +1,10 @@
-﻿using Assets.Scripts.Models;
-using Assets.Scripts.Repositories;
-using Game.Behaviors;
+﻿using Assets.Scripts.Repositories;
 using System;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 // This static class is responsible for triggering the debug window when the Game scene loads.
 // It uses a runtime initialization attribute to automatically run after the scene loads.
@@ -73,20 +71,8 @@ public class DebugWindow : EditorWindow
     // Interval between UI updates (in seconds).
     private float updateInterval = 1.0f;
 
-    // References to various game systems retrieved from GameManager.
-    protected GameManager gameManager => GameManager.instance;
-    protected DebugManager debugManager => GameManager.instance.debugManager;
-    protected ConsoleManager consoleManager => GameManager.instance.consoleManager;
-    protected TurnManager turnManager => GameManager.instance.turnManager;
-    protected StageManager stageManager => GameManager.instance.stageManager;
-    protected LogManager logManager => GameManager.instance.logManager;
-    protected SelectedHeroManager selectedHeroManager => GameManager.instance.selectedHeroManager;
-    protected InputManager inputManager => GameManager.instance.inputManager;
-
-
-
     // Debug window UI selections for game speed, debug options, and VfxManager testing.
-    private GameFocusOption selectedGameFocus = GameFocusOption.Normal;
+    private GameSpeedOption selectedGameFocus = GameSpeedOption.Normal;
     private DebugOptions selectedOption = DebugOptions.None;
     private VFX selectedVfx = VFX.None;
 
@@ -191,13 +177,13 @@ public class DebugWindow : EditorWindow
         lastUpdateTime = DateTime.Now;
 
         // Assign initial debug flag values.
-        debugManager.showActorNameTag = false;
-        debugManager.showActorFrame = false;
-        debugManager.showTutorials = false;
-        debugManager.isHeroInvincible = false;
-        debugManager.isEnemyInvincible = false;
-        debugManager.isTimerInfinite = false;
-        debugManager.isEnemyStunned = false;
+        GameManager.instance.debugManager.showActorNameTag = false;
+        GameManager.instance.debugManager.showActorFrame = false;
+        GameManager.instance.debugManager.showTutorials = false;
+        GameManager.instance.debugManager.isHeroInvincible = false;
+        GameManager.instance.debugManager.isEnemyInvincible = false;
+        GameManager.instance.debugManager.isTimerInfinite = false;
+        GameManager.instance.debugManager.isEnemyStunned = false;
 
         // Register the update method so that the window repaints regularly.
         EditorApplication.update += OnEditorUpdate;
@@ -247,10 +233,10 @@ public class DebugWindow : EditorWindow
         // Render individual UI sections.
         RenderStats();
         RenderThumbnailSettings();
-        RenderGameFocusDropdown();
+        RenderGameSpeedDropdown();
         RenderDebugOptionsDropdown();
         RenderVFXDropdown();
-        RenderKeyboard();    
+        RenderKeyboard();
         RenderCheckboxes();
         RenderLevelControls();
         RenderScenes();
@@ -259,6 +245,24 @@ public class DebugWindow : EditorWindow
 
         GUILayout.EndVertical();
         GUILayout.EndScrollView();
+    }
+
+    // RenderStats displays key game statistics such as FPS, turn info, phase, and runtime.
+    private void RenderStats()
+    {
+        GUILayout.BeginHorizontal();
+
+
+        GUILayout.Label($"Focused Actor: {(g.FocusedActor ? g.FocusedActor.characterName : "-")}", GUILayout.Width(Screen.width * 0.25f));
+        //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
+
+
+        GUILayout.Label($"InputManager Mode: {g.InputManager.inputMode.ToString()}", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label($"TurnManager: {(g.TurnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label($"Phase: {g.TurnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
+        //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
+        GUILayout.EndHorizontal();
+        GUILayout.Space(10);
     }
 
     // RenderKeyboard draws UI buttons that simulate keyboard arrow keys.
@@ -350,23 +354,6 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    // RenderStats displays key game statistics such as FPS, turn info, phase, and runtime.
-    private void RenderStats()
-    {
-        GUILayout.BeginHorizontal();
-
-
-        GUILayout.Label($"Focused Actor: {(gameManager.focusedActor ? gameManager.focusedActor.characterName : "-")}", GUILayout.Width(Screen.width * 0.25f));
-        //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
-
-
-        GUILayout.Label($"InputManager Mode: {inputManager.inputMode.ToString()}", GUILayout.Width(Screen.width * 0.25f));
-        GUILayout.Label($"TurnManager: {(turnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
-        GUILayout.Label($"Phase: {turnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
-        //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
-        GUILayout.EndHorizontal();
-        GUILayout.Space(10);
-    }
 
     // RenderCheckboxes provides several toggles for various debug options.
     private void RenderCheckboxes()
@@ -376,64 +363,64 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
 
         // Toggle to show or hide actor name tags.
-        onCheckChanged = EditorGUILayout.Toggle("Spawn Actor Name?", debugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
-        if (debugManager.showActorNameTag != onCheckChanged)
+        onCheckChanged = EditorGUILayout.Toggle("Spawn Actor Name?", g.DebugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
+        if (g.DebugManager.showActorNameTag != onCheckChanged)
         {
-            debugManager.showActorNameTag = onCheckChanged;
-            gameManager.actors.ForEach(x => x.render.SetNameTagEnabled(onCheckChanged));
+            g.DebugManager.showActorNameTag = onCheckChanged;
+            g.Actors.All.ForEach(x => x.render.SetNameTagEnabled(onCheckChanged));
         }
 
         // Toggle to show or hide actor frames.
-        onCheckChanged = EditorGUILayout.Toggle("Show Actor Frame?", debugManager.showActorFrame, GUILayout.Width(Screen.width * 0.25f));
-        if (debugManager.showActorFrame != onCheckChanged)
+        onCheckChanged = EditorGUILayout.Toggle("Show Actor Frame?", g.DebugManager.showActorFrame, GUILayout.Width(Screen.width * 0.25f));
+        if (g.DebugManager.showActorFrame != onCheckChanged)
         {
-            debugManager.showActorFrame = onCheckChanged;
-            gameManager.actors.ForEach(x => x.render.SetFrameEnabled(onCheckChanged));
+            g.DebugManager.showActorFrame = onCheckChanged;
+            g.Actors.All.ForEach(x => x.render.SetFrameEnabled(onCheckChanged));
         }
 
         // Toggle to show or hide tutorial popups.
-        onCheckChanged = EditorGUILayout.Toggle("Show Tutorials", debugManager.showTutorials, GUILayout.Width(Screen.width * 0.25f));
-        if (debugManager.showTutorials != onCheckChanged)
+        onCheckChanged = EditorGUILayout.Toggle("Show Tutorials", g.DebugManager.showTutorials, GUILayout.Width(Screen.width * 0.25f));
+        if (g.DebugManager.showTutorials != onCheckChanged)
         {
-            debugManager.showTutorials = onCheckChanged;
-            gameManager.tutorialPopup.gameObject.SetActive(debugManager.showTutorials);
+            g.DebugManager.showTutorials = onCheckChanged;
+            g.TutorialPopup.gameObject.SetActive(g.DebugManager.showTutorials);
         }
 
         // Toggle for hero invincibility.
-        onCheckChanged = EditorGUILayout.Toggle("Are Heroes Invincible?", debugManager.isHeroInvincible, GUILayout.Width(Screen.width * 0.25f));
-        if (debugManager.isHeroInvincible != onCheckChanged)
-            debugManager.isHeroInvincible = onCheckChanged;
+        onCheckChanged = EditorGUILayout.Toggle("Are Heroes Invincible?", g.DebugManager.isHeroInvincible, GUILayout.Width(Screen.width * 0.25f));
+        if (g.DebugManager.isHeroInvincible != onCheckChanged)
+            g.DebugManager.isHeroInvincible = onCheckChanged;
 
         // Toggle for enemy invincibility.
-        onCheckChanged = EditorGUILayout.Toggle("Are Enemies Invincible?", debugManager.isEnemyInvincible, GUILayout.Width(Screen.width * 0.25f));
-        if (debugManager.isEnemyInvincible != onCheckChanged)
-            debugManager.isEnemyInvincible = onCheckChanged;
+        onCheckChanged = EditorGUILayout.Toggle("Are Enemies Invincible?", g.DebugManager.isEnemyInvincible, GUILayout.Width(Screen.width * 0.25f));
+        if (g.DebugManager.isEnemyInvincible != onCheckChanged)
+            g.DebugManager.isEnemyInvincible = onCheckChanged;
 
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
         // Toggle for infinite timer.
-        onCheckChanged = EditorGUILayout.Toggle("Is Timer Infinite?", debugManager.isTimerInfinite, GUILayout.Width(Screen.width * 0.25f));
-        if (debugManager.isTimerInfinite != onCheckChanged)
-            debugManager.isTimerInfinite = onCheckChanged;
+        onCheckChanged = EditorGUILayout.Toggle("Is Timer Infinite?", g.DebugManager.isTimerInfinite, GUILayout.Width(Screen.width * 0.25f));
+        if (g.DebugManager.isTimerInfinite != onCheckChanged)
+            g.DebugManager.isTimerInfinite = onCheckChanged;
 
         // Toggle for enemy stunned state.
-        onCheckChanged = EditorGUILayout.Toggle("Is Opponent Stunned?", debugManager.isEnemyStunned, GUILayout.Width(Screen.width * 0.25f));
-        if (debugManager.isEnemyStunned != onCheckChanged)
-            debugManager.isEnemyStunned = onCheckChanged;
+        onCheckChanged = EditorGUILayout.Toggle("Is Opponent Stunned?", g.DebugManager.isEnemyStunned, GUILayout.Width(Screen.width * 0.25f));
+        if (g.DebugManager.isEnemyStunned != onCheckChanged)
+            g.DebugManager.isEnemyStunned = onCheckChanged;
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
 
-    // RenderGameFocusDropdown renders a dropdown to select the game speed and an Apply button.
-    private void RenderGameFocusDropdown()
+    // RenderGameSpeedDropdown renders a dropdown to select the game speed and an Apply button.
+    private void RenderGameSpeedDropdown()
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Game Speed", GUILayout.Width(Screen.width * 0.25f));
-        selectedGameFocus = (GameFocusOption)EditorGUILayout.EnumPopup(selectedGameFocus, GUILayout.Width(Screen.width * 0.5f));
+        selectedGameFocus = (GameSpeedOption)EditorGUILayout.EnumPopup(selectedGameFocus, GUILayout.Width(Screen.width * 0.5f));
         if (GUILayout.Button("Apply", GUILayout.Width(Screen.width * 0.25f)))
-            OnGameFocusChange();
+            OnGameSpeedChange();
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
@@ -493,14 +480,14 @@ public class DebugWindow : EditorWindow
     {
 #if UNITY_EDITOR
 
-        if (gameManager.reloadThumbnailSettings && gameManager.focusedActor != null)
+        if (g.ReloadThumbnailSettings && g.Actors.HasFocusedActor)
         {
-            var t = gameManager.focusedActor.thumbnail;
+            var t = g.Actors.FocusedActor.thumbnail;
             thumbnailPositionX = t.settings.Position.x.ToString("F2");
             thumbnailPositionY = t.settings.Position.y.ToString("F2");
             thumbnailScaleX = t.settings.Scale.x.ToString("F2");
             thumbnailScaleY = t.settings.Scale.y.ToString("F2");
-            gameManager.reloadThumbnailSettings = false;
+            g.ReloadThumbnailSettings = false;
         }
 
         float containerWidth = EditorGUIUtility.currentViewWidth * Increment.Percent33;
@@ -581,19 +568,19 @@ public class DebugWindow : EditorWindow
 
         isClicked = GUILayout.Button("Slime", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            debugManager.SpawnSlime();
+            g.DebugManager.SpawnSlime();
 
         isClicked = GUILayout.Button("Bat", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            debugManager.SpawnBat();
+            g.DebugManager.SpawnBat();
 
         isClicked = GUILayout.Button("Scorpion", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            debugManager.SpawnScorpion();
+            g.DebugManager.SpawnScorpion();
 
         isClicked = GUILayout.Button("Yeti", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            debugManager.SpawnYeti();
+            g.DebugManager.SpawnYeti();
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
@@ -607,7 +594,7 @@ public class DebugWindow : EditorWindow
         GUILayout.EndHorizontal();
 
         // Display hero stats sorted by name.
-        foreach (var x in gameManager.heroes.OrderBy(x => x.name))
+        foreach (var x in g.Actors.Heroes.OrderBy(x => x.name))
         {
             GUILayout.BeginHorizontal();
             string stats = $"{x.name}, IsAlive? {x.isAlive}, IsActive? {x.isActive}";
@@ -618,7 +605,7 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
 
         // Display enemy stats sorted by name.
-        foreach (var x in gameManager.enemies.OrderBy(x => x.name))
+        foreach (var x in g.Actors.Enemies.OrderBy(x => x.name))
         {
             GUILayout.BeginHorizontal();
             string stats = $"{x.name}, IsAlive? {x.isAlive}, IsActive? {x.isActive}";
@@ -630,28 +617,28 @@ public class DebugWindow : EditorWindow
     }
 
 
-    // OnGameFocusChange adjusts the game speed based on the selected option.
-    private void OnGameFocusChange()
+    // OnGameSpeedChange adjusts the game speed based on the selected option.
+    private void OnGameSpeedChange()
     {
         switch (selectedGameFocus)
         {
-            case GameFocusOption.Paused:
-                gameManager.gameFocus = 0f;
+            case GameSpeedOption.Paused:
+                g.GameSpeed = 0f;
                 break;
-            case GameFocusOption.Slower:
-                gameManager.gameFocus = 0.25f;
+            case GameSpeedOption.Slower:
+                g.GameSpeed = 0.25f;
                 break;
-            case GameFocusOption.Slow:
-                gameManager.gameFocus = 0.5f;
+            case GameSpeedOption.Slow:
+                g.GameSpeed = 0.5f;
                 break;
-            case GameFocusOption.Normal:
-                gameManager.gameFocus = 1f;
+            case GameSpeedOption.Normal:
+                g.GameSpeed = 1f;
                 break;
-            case GameFocusOption.Fast:
-                gameManager.gameFocus = 2f;
+            case GameSpeedOption.Fast:
+                g.GameSpeed = 2f;
                 break;
-            case GameFocusOption.Faster:
-                gameManager.gameFocus = 4f;
+            case GameSpeedOption.Faster:
+                g.GameSpeed = 4f;
                 break;
         }
     }
@@ -661,26 +648,26 @@ public class DebugWindow : EditorWindow
     {
         switch (selectedOption)
         {
-            case DebugOptions.KillEnemies: debugManager.KillEnemies(); break;
-            case DebugOptions.DodgeTest: debugManager.DodgeTest(); break;
-            case DebugOptions.SpinTest: debugManager.SpinTest(); break;
-            case DebugOptions.ShakeTest: debugManager.ShakeTest(); break;
-            case DebugOptions.SingleCombo: debugManager.SingleCombo(); break;
-            case DebugOptions.TripleCombo: debugManager.TripleCombo(); break;
-            case DebugOptions.CoinTest: debugManager.CoinTest(); break;
-            case DebugOptions.PortraitSlideIn: debugManager.PortraitSlideIn(); break;
-            case DebugOptions.PortraitPopIn: debugManager.PortraitPopIn(); break;
-            case DebugOptions.SpawnDamageText: debugManager.SpawnDamageText(); break;
-            case DebugOptions.BumpTest: debugManager.BumpTest(); break;
-            case DebugOptions.SupportLineTest: debugManager.SupportLineTest(); break;
-            case DebugOptions.AttackLineTest: debugManager.AttackLineTest(); break;
-            case DebugOptions.EnemyAttackTest: debugManager.EnemyAttackTest(); break;
-            case DebugOptions.TitleTest: debugManager.TitleTest(); break;
-            case DebugOptions.TooltipTest: debugManager.TooltipTest(); break;
-            case DebugOptions.TutorialTest: debugManager.TooltipTest(); break;
-            case DebugOptions.FireballTest: debugManager.FireballTest(); break;
-            case DebugOptions.HealTest: debugManager.HealTest(); break;
-            case DebugOptions.RandomizeBackground: debugManager.RandomizeBackground(); break;
+            case DebugOptions.KillEnemies: g.DebugManager.KillEnemies(); break;
+            case DebugOptions.DodgeTest: g.DebugManager.DodgeTest(); break;
+            case DebugOptions.SpinTest: g.DebugManager.SpinTest(); break;
+            case DebugOptions.ShakeTest: g.DebugManager.ShakeTest(); break;
+            case DebugOptions.SingleCombo: g.DebugManager.SingleCombo(); break;
+            case DebugOptions.TripleCombo: g.DebugManager.TripleCombo(); break;
+            case DebugOptions.CoinTest: g.DebugManager.CoinTest(); break;
+            case DebugOptions.PortraitSlideIn: g.DebugManager.PortraitSlideIn(); break;
+            case DebugOptions.PortraitPopIn: g.DebugManager.PortraitPopIn(); break;
+            case DebugOptions.SpawnDamageText: g.DebugManager.SpawnDamageText(); break;
+            case DebugOptions.BumpTest: g.DebugManager.BumpTest(); break;
+            case DebugOptions.SupportLineTest: g.DebugManager.SupportLineTest(); break;
+            case DebugOptions.AttackLineTest: g.DebugManager.AttackLineTest(); break;
+            case DebugOptions.EnemyAttackTest: g.DebugManager.EnemyAttackTest(); break;
+            case DebugOptions.TitleTest: g.DebugManager.TitleTest(); break;
+            case DebugOptions.TooltipTest: g.DebugManager.TooltipTest(); break;
+            case DebugOptions.TutorialTest: g.DebugManager.TooltipTest(); break;
+            case DebugOptions.FireballTest: g.DebugManager.FireballTest(); break;
+            case DebugOptions.HealTest: g.DebugManager.HealTest(); break;
+            case DebugOptions.RandomizeBackground: g.DebugManager.RandomizeBackground(); break;
             default: Debug.LogWarning("OnDebugOptionRunClick failed."); break;
         }
     }
@@ -690,51 +677,51 @@ public class DebugWindow : EditorWindow
     {
         switch (selectedVfx)
         {
-            case VFX.BlueSlash1: debugManager.VFXTest_BlueSlash1(); break;
-            case VFX.BlueSlash2: debugManager.VFXTest_BlueSlash2(); break;
-            case VFX.BlueSlash3: debugManager.VFXTest_BlueSlash3(); break;
-            case VFX.BlueSword: debugManager.VFXTest_BlueSword(); break;
-            case VFX.BlueSword4X: debugManager.VFXTest_BlueSword4X(); break;
-            case VFX.BloodClaw: debugManager.VFXTest_BloodClaw(); break;
-            case VFX.LevelUp: debugManager.VFXTest_LevelUp(); break;
-            case VFX.YellowHit: debugManager.VFXTest_YellowHit(); break;
-            case VFX.DoubleClaw: debugManager.VFXTest_DoubleClaw(); break;
-            case VFX.LightningExplosion: debugManager.VFXTest_LightningExplosion(); break;
-            case VFX.BuffLife: debugManager.VFXTest_BuffLife(); break;
-            case VFX.RotaryKnife: debugManager.VFXTest_RotaryKnife(); break;
-            case VFX.AirSlash: debugManager.VFXTest_AirSlash(); break;
-            case VFX.FireRain: debugManager.VFXTest_FireRain(); break;
-            case VFX.VFXTest_Ray_Blast: debugManager.VFXTest_RayBlast(); break;
-            case VFX.LightningStrike: debugManager.VFXTest_LightningStrike(); break;
-            case VFX.PuffyExplosion: debugManager.VFXTest_PuffyExplosion(); break;
-            case VFX.RedSlash2X: debugManager.VFXTest_RedSlash2X(); break;
-            case VFX.GodRays: debugManager.VFXTest_GodRays(); break;
-            case VFX.AcidSplash: debugManager.VFXTest_AcidSplash(); break;
-            case VFX.GreenBuff: debugManager.VFXTest_GreenBuff(); break;
-            case VFX.GoldBuff: debugManager.VFXTest_GoldBuff(); break;
-            case VFX.HexShield: debugManager.VFXTest_HexShield(); break;
-            case VFX.ToxicCloud: debugManager.VFXTest_ToxicCloud(); break;
-            case VFX.OrangeSlash: debugManager.VFXTest_OrangeSlash(); break;
-            case VFX.MoonFeather: debugManager.VFXTest_MoonFeather(); break;
-            case VFX.PinkSpark: debugManager.VFXTest_PinkSpark(); break;
-            case VFX.BlueYellowSword: debugManager.VFXTest_BlueYellowSword(); break;
-            case VFX.BlueYellowSword3X: debugManager.VFXTest_BlueYellowSword3X(); break;
-            case VFX.RedSword: debugManager.VFXTest_RedSword(); break;
+            case VFX.BlueSlash1: g.DebugManager.VFXTest_BlueSlash1(); break;
+            case VFX.BlueSlash2: g.DebugManager.VFXTest_BlueSlash2(); break;
+            case VFX.BlueSlash3: g.DebugManager.VFXTest_BlueSlash3(); break;
+            case VFX.BlueSword: g.DebugManager.VFXTest_BlueSword(); break;
+            case VFX.BlueSword4X: g.DebugManager.VFXTest_BlueSword4X(); break;
+            case VFX.BloodClaw: g.DebugManager.VFXTest_BloodClaw(); break;
+            case VFX.LevelUp: g.DebugManager.VFXTest_LevelUp(); break;
+            case VFX.YellowHit: g.DebugManager.VFXTest_YellowHit(); break;
+            case VFX.DoubleClaw: g.DebugManager.VFXTest_DoubleClaw(); break;
+            case VFX.LightningExplosion: g.DebugManager.VFXTest_LightningExplosion(); break;
+            case VFX.BuffLife: g.DebugManager.VFXTest_BuffLife(); break;
+            case VFX.RotaryKnife: g.DebugManager.VFXTest_RotaryKnife(); break;
+            case VFX.AirSlash: g.DebugManager.VFXTest_AirSlash(); break;
+            case VFX.FireRain: g.DebugManager.VFXTest_FireRain(); break;
+            case VFX.VFXTest_Ray_Blast: g.DebugManager.VFXTest_RayBlast(); break;
+            case VFX.LightningStrike: g.DebugManager.VFXTest_LightningStrike(); break;
+            case VFX.PuffyExplosion: g.DebugManager.VFXTest_PuffyExplosion(); break;
+            case VFX.RedSlash2X: g.DebugManager.VFXTest_RedSlash2X(); break;
+            case VFX.GodRays: g.DebugManager.VFXTest_GodRays(); break;
+            case VFX.AcidSplash: g.DebugManager.VFXTest_AcidSplash(); break;
+            case VFX.GreenBuff: g.DebugManager.VFXTest_GreenBuff(); break;
+            case VFX.GoldBuff: g.DebugManager.VFXTest_GoldBuff(); break;
+            case VFX.HexShield: g.DebugManager.VFXTest_HexShield(); break;
+            case VFX.ToxicCloud: g.DebugManager.VFXTest_ToxicCloud(); break;
+            case VFX.OrangeSlash: g.DebugManager.VFXTest_OrangeSlash(); break;
+            case VFX.MoonFeather: g.DebugManager.VFXTest_MoonFeather(); break;
+            case VFX.PinkSpark: g.DebugManager.VFXTest_PinkSpark(); break;
+            case VFX.BlueYellowSword: g.DebugManager.VFXTest_BlueYellowSword(); break;
+            case VFX.BlueYellowSword3X: g.DebugManager.VFXTest_BlueYellowSword3X(); break;
+            case VFX.RedSword: g.DebugManager.VFXTest_RedSword(); break;
             default: Debug.LogWarning("OnPlayVFXClick failed."); break;
         }
     }
 
     // Stage control methods:
     // Reloads the CurrentProfile stage.
-    private void OnReloadStageClick() => stageManager.RestartStage();
+    private void OnReloadStageClick() => g.StageManager.RestartStage();
     // Moves to the previous stage.
-    //private void OnPreviousStageClick() => stageManager.Previous();
+    //private void OnPreviousStageClick() => g.StageManager.Previous();
     // Moves to the next stage.
-    //private void OnNextStageClick() => stageManager.Next();
+    //private void OnNextStageClick() => g.StageManager.Next();
 
     // Keyboard control methods for actor move.
-    private void OnKeyUp() => GameManager.instance.focusedActor?.Move(Vector2Int.down);
-    private void OnKeyDown() => GameManager.instance.focusedActor?.Move(Vector2Int.up);
-    private void OnKeyLeft() => GameManager.instance.focusedActor?.Move(Vector2Int.left);
-    private void OnKeyRight() => GameManager.instance.focusedActor?.Move(Vector2Int.right);
+    private void OnKeyUp() => g.Actors.FocusedActor?.Move(Vector2Int.down);
+    private void OnKeyDown() => g.Actors.FocusedActor?.Move(Vector2Int.up);
+    private void OnKeyLeft() => g.Actors.FocusedActor?.Move(Vector2Int.left);
+    private void OnKeyRight() => g.Actors.FocusedActor?.Move(Vector2Int.right);
 }

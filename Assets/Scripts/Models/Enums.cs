@@ -1,5 +1,5 @@
 ﻿using System;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 public enum AbilityType
 {
@@ -143,7 +143,7 @@ public enum DottedLineSegment
     Vertical
 }
 
-public enum GameFocusOption
+public enum GameSpeedOption
 {
     Paused = 0,
     Slower = 1,

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = GameManagerHelper;
+using g = Assets.Helpers.GameManagerHelper;
 
 /// <summary>
 /// Enum for all possible turn phases.
@@ -132,7 +132,7 @@ public class TurnManager : MonoBehaviour
         }
         else if (isEnemyTurn)
         {
-            // Enqueue move sequences for all ready enemies.
+            // Enqueue move sequences for all ready g.Actors.Enemies.
             foreach (var enemy in g.Actors.Enemies.Where(x => x.isPlaying && x.hasMaxAP))
             {
                 g.SequenceManager.Add(new EnemyMoveSequence(enemy));
