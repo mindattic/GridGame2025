@@ -73,7 +73,7 @@ namespace Assets.Helpers
         public static AbilityButtonManager AbilityButtonManager => GameManager.instance.abilityButtonManager;
 
 
-        // BoardManager visuals and overlays
+        // Board visuals and overlays
         public static BackgroundInstance Background => GameManager.instance.background;
         public static BoardOverlay BoardOverlay => GameManager.instance.boardOverlay;
         public static FocusIndicator FocusIndicator => GameManager.instance.focusIndicator;

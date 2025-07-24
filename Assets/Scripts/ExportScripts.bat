@@ -1,8 +1,19 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Delete the existing ExportedScripts.txt file if it exists
-if exist ExportedScripts.txt del ExportedScripts.txt
+:: Setup
+set OutputFile=ExportedScripts.txt
 
-:: Append all .cs files recursively to ExportedScripts.txt
-for /r %%f in (*.cs) do type "%%f" >> ExportedScripts.txt
+:: Delete old file
+if exist "%OutputFile%" del "%OutputFile%"
+
+:: Loop through all .cs files recursively
+for /r %%f in (*.cs) do (
+    rem Skip ExportedScripts.txt to avoid recursion
+    if /I not "%%~nxf"=="%OutputFile%" (
+        echo --- File: %%f --- >> "%OutputFile%"
+        type "%%f" >> "%OutputFile%"
+        echo. >> "%OutputFile%"
+        echo. >> "%OutputFile%"
+    )
+)

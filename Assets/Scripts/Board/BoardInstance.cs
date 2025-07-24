@@ -12,7 +12,7 @@ public class BoardInstance : MonoBehaviour
     //Fields
     [HideInInspector] public int columnCount = 6;      // Index of columns on the board.
     [HideInInspector] public int rowCount = 8;         // Index of rows on the board.
-    [HideInInspector] public Vector2 offset;           // BoardManager offset (used to position the board in world space).
+    [HideInInspector] public Vector2 offset;           // Board offset (used to position the board in world space).
     [HideInInspector] public RectFloat bounds;         // Bounds of the board, calculated from the offset and dimensions.
     [HideInInspector] public Vector2 center;           // Center point of the board bounds.
 
