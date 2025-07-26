@@ -34,7 +34,7 @@ public class PlayerStageMover : MonoBehaviour
         RectTransform targetTransform = stageButton.GetComponent<RectTransform>();
         targetPosition = ConvertToLocalSpace(targetTransform);
 
-        // Determine direction and set animate
+        // Determine direction and set action
         Vector2 direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;
         SetAnimation(direction);
 
@@ -46,9 +46,9 @@ public class PlayerStageMover : MonoBehaviour
     {
         isMoving = true;
 
-        // Calculate direction again to ensure animate is correct
+        // Calculate direction again to ensure action is correct
         Vector2 direction = (targetPosition - hero.anchoredPosition).normalized;
-        SetAnimation(direction); // Ensure animate is set before moving
+        SetAnimation(direction); // Ensure action is set before moving
 
         float snapThreshold = 0.24f;
 
@@ -56,7 +56,7 @@ public class PlayerStageMover : MonoBehaviour
         {
             hero.anchoredPosition = Vector2.MoveTowards(hero.anchoredPosition, targetPosition, moveFocus * Time.deltaTime);
 
-            // Continuously update animate while moving
+            // Continuously update action while moving
             direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;
             SetAnimation(direction);
 

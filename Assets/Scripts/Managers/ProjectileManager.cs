@@ -80,9 +80,9 @@ public class ProjectileManager : MonoBehaviour
         g.SequenceManager.Add(new PortraitPopOutSequence(source));
 
         //if (castBeforeAttack)
-        //    g.SequenceManager.AddFirst(animate);
+        //    g.SequenceManager.AddFirst(action);
         //else
-        //    g.SequenceManager.Add(animate);
+        //    g.SequenceManager.Add(action);
     }
 
 }

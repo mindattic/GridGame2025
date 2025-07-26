@@ -5,7 +5,7 @@ using g = Assets.Helpers.GameManagerHelper;
 
 
 
-// InputManager handles hero touch input and delegates focus, drag, and drop actions
+// InputManager handles hero touch input and delegates focus, drag, and drop action
 // to the SelectedHeroManager, while also considering the game's paused state.
 public class InputManager : MonoBehaviour
 {

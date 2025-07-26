@@ -36,7 +36,7 @@ public class CoinBar : MonoBehaviour
 
     private void UpdateGlow()
     {
-        // Make glow pulse based on the animate curve
+        // Make glow pulse based on the action curve
         float glowScale = maxGlowScale * glowCurve.Evaluate(Time.time % glowCurve.length);
         glow.rectTransform.localScale = new Vector3(
             icon.rectTransform.localScale.x * glowScale,

@@ -11,7 +11,7 @@ namespace Assets.Scripts.Models
         public float Strength;      // Physical damage output
         public float Vitality;      // Max HP and survivability
         public float Agility;       // Crit, Dodge, block, parry 
-        public float Stamina;       // AP regen, animate economy
+        public float Stamina;       // AP regen, action economy
         public float Intelligence;  // Magic damage output 
         public float Wisdom;        // Accuracy, crit chance, and precision  
         public float Luck;          // Determines random effects 

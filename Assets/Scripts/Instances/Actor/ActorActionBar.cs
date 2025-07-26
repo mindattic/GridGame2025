@@ -5,8 +5,8 @@ using UnityEngine;
 using g = Assets.Helpers.GameManagerHelper;
 
 // ActorActionBar is responsible for managing and updating the visual representation 
-// of an actor's animate points (AP) in the UI. It handles the fill and drain animations 
-// for the animate bar based on the actor's CurrentProfile and maximum AP.
+// of an actor's action points (AP) in the UI. It handles the fill and drain animations 
+// for the action bar based on the actor's CurrentProfile and maximum AP.
 public class ActorActionBar
 {
     protected ActorFlags flags => instance.flags;
@@ -15,7 +15,7 @@ public class ActorActionBar
 
     private Vector3 initialScale => render.actionBarBack.transform.localScale;
 
-    // Field to store the parent actor actors that this animate bar is associated with.
+    // Field to store the parent actor actors that this action bar is associated with.
     private ActorInstance instance;
 
     // Assign sets up the ActionBar by linking it to its parent ActorInstance.
@@ -24,7 +24,7 @@ public class ActorActionBar
         this.instance = parentInstance;
     }
 
-    // GetScale calculates the scaled width for the animate bar elements based on a given AP value.
+    // GetScale calculates the scaled width for the action bar elements based on a given AP value.
     // It scales the x-component proportionally to the fraction of AP relative to MaxAP and clamps it between 0 and the initial width.
     private Vector3 GetScale(float value)
     {
@@ -34,9 +34,9 @@ public class ActorActionBar
             initialScale.z);
     }
 
-    // Save refreshes the animate bar UI to reflect the actor's CurrentProfile AP values.
-    // It adjusts the fill and drain bar scales, updates the textarea display, triggers a weapon wiggle animate,
-    // and initiates the drain animate.
+    // Save refreshes the action bar UI to reflect the actor's CurrentProfile AP values.
+    // It adjusts the fill and drain bar scales, updates the textarea display, triggers a weapon wiggle action,
+    // and initiates the drain action.
     public void Update()
     {
         render.actionBarDrain.transform.localScale = GetScale(stats.PreviousAP);
@@ -44,12 +44,12 @@ public class ActorActionBar
         render.actionBarText.text = $@"{stats.AP}/{stats.MaxAP}";
 
         // TriggerEvent visual feedback on the actor's weapon.
-        instance.animate.TriggerWeaponWiggle();
-        // Start the drain animate if needed.
+        instance.action.TriggerWeaponWiggle();
+        // Start the drain action if needed.
         TriggerDrain();
     }
 
-    // TriggerDrain starts the drain coroutine to animate the reduction of the drain bar,
+    // TriggerDrain starts the drain coroutine to action the reduction of the drain bar,
     // but only if the actor actors is active.
     private void TriggerDrain()
     {
@@ -69,7 +69,7 @@ public class ActorActionBar
         // Local variable to hold the computed scale.
         Vector3 scale;
 
-        // Wait for a pre-defined delay before beginning the drain animate.
+        // Wait for a pre-defined delay before beginning the drain action.
         yield return Wait.For(Intermission.Before.ActionBar.Drain);
 
         // Gradually decrease PreviousAP until it matches the CurrentProfile AP.
@@ -87,7 +87,7 @@ public class ActorActionBar
         render.healthBarDrain.transform.localScale = scale;
     }
 
-    // TriggerFill starts the coroutine that fills the animate bar (increasing AP) if conditions are met.
+    // TriggerFill starts the coroutine that fills the action bar (increasing AP) if conditions are met.
     public void TriggerFill()
     {
         if (instance.isActive)
@@ -128,7 +128,7 @@ public class ActorActionBar
         flags.isGainingAP = false;
     }
 
-    // Reset sets the actor's AP values to zero and refreshes the animate bar UI.
+    // Reset sets the actor's AP values to zero and refreshes the action bar UI.
     public void Reset()
     {
         stats.AP = 0;

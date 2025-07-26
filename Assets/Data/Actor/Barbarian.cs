@@ -34,12 +34,12 @@
                     Luck = 0.6f
                 },
                 MilestoneStatGrowth = new Dictionary<int, StatGrowth>
-            {
-                { 5, new StatGrowth { Strength = 2.5f, Vitality = 2f, Agility = 1f, Stamina = 1.5f, Intelligence = 0.3f, Wisdom = 0.4f, Luck = 0.5f } },
-                { 10, new StatGrowth { Strength = 3f, Vitality = 2.5f, Agility = 1.2f, Stamina = 2f, Intelligence = 0.5f, Wisdom = 0.5f, Luck = 0.6f } },
-                { 15, new StatGrowth { Strength = 3.5f, Vitality = 3f, Agility = 1.5f, Stamina = 2.5f, Intelligence = 0.6f, Wisdom = 0.6f, Luck = 0.8f } },
-                { 20, new StatGrowth { Strength = 4f, Vitality = 3.5f, Agility = 1.7f, Stamina = 3f, Intelligence = 0.8f, Wisdom = 0.7f, Luck = 1f } },
-            },
+                {
+                    { 5, new StatGrowth { Strength = 2.5f, Vitality = 2f, Agility = 1f, Stamina = 1.5f, Intelligence = 0.3f, Wisdom = 0.4f, Luck = 0.5f } },
+                    { 10, new StatGrowth { Strength = 3f, Vitality = 2.5f, Agility = 1.2f, Stamina = 2f, Intelligence = 0.5f, Wisdom = 0.5f, Luck = 0.6f } },
+                    { 15, new StatGrowth { Strength = 3.5f, Vitality = 3f, Agility = 1.5f, Stamina = 2.5f, Intelligence = 0.6f, Wisdom = 0.6f, Luck = 0.8f } },
+                    { 20, new StatGrowth { Strength = 4f, Vitality = 3.5f, Agility = 1.7f, Stamina = 3f, Intelligence = 0.8f, Wisdom = 0.7f, Luck = 1f } },
+                },
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
                 {

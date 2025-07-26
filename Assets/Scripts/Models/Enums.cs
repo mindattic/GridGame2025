@@ -107,17 +107,15 @@ public enum DebugOptions
 
 public enum Direction
 {
-    Down,
-    East,
+    None,
     North,
     NorthEast,
-    NorthWest,
-    None,
-    South,
+    East,
     SouthEast,
+    South,
     SouthWest,
-    Up,
-    West
+    West,
+    NorthWest,
 }
 
 public enum DodgeStage

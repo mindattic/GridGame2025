@@ -21,6 +21,30 @@ static class Random
 
     public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
 
+
+    public static Vector2Int UnoccupiedInteriorLocation
+    {
+        get
+        {
+            // pick any unoccupied tile that isn't on the board's edge
+            var tile = g.Tiles
+                .Where(t =>
+                    !t.IsOccupied &&
+                    t.location.x > 1 && t.location.x < g.Board.columnCount &&
+                    t.location.y > 1 && t.location.y < g.Board.rowCount
+                )
+                .Shuffle()
+                .FirstOrDefault();
+
+            return tile == null
+                ? LocationHelper.Nowhere
+                : tile.location;
+        }
+    }
+
+
+
+
     public static int Int(int min, int max) => rng.Next(min, max + 1);
 
     public static float Float(float min = 0f, float max = 1f) => (float)rng.NextDouble() * (max - min) + min;
@@ -31,7 +55,7 @@ static class Random
 
     public static bool Boolean => Int(1, 2) == 1;
 
-    public static Direction Direction
+    public static Direction AdjacentDirection
     {
         get
         {
@@ -41,6 +65,26 @@ static class Random
                 2 => Direction.East,
                 3 => Direction.South,
                 _ => Direction.West,
+            };
+        }
+    }
+
+    public static Direction Direction
+    {
+        get
+        {
+            // Pick a random integer from 1 to 8 inclusive
+            var result = Int(1, 8);
+            return result switch
+            {
+                1 => Direction.North,
+                2 => Direction.NorthEast,
+                3 => Direction.East,
+                4 => Direction.SouthEast,
+                5 => Direction.South,
+                6 => Direction.SouthWest,
+                7 => Direction.West,
+                _ => Direction.NorthWest
             };
         }
     }

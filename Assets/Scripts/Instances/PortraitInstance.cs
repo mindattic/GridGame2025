@@ -79,19 +79,19 @@ public class PortraitInstance : MonoBehaviour
 
     //    switch (direction)
     //    {
-    //        case Direction.North:
+    //        case AdjacentDirection.North:
     //            this.position = new Vector3(1, -startY, 1);
     //            destination = new Vector3(1, startY, 1);
     //            break;
-    //        case Direction.East:
+    //        case AdjacentDirection.East:
     //            this.position = new Vector3(-startX, 1, 1);
     //            destination = new Vector3(startX, 1, 1);
     //            break;
-    //        case Direction.South:
+    //        case AdjacentDirection.South:
     //            this.position = new Vector3(-1, startY, 1);
     //            destination = new Vector3(-1, -startY, 1);
     //            break;
-    //        case Direction.West:
+    //        case AdjacentDirection.West:
     //            this.position = new Vector3(startX, -1, 1);
     //            destination = new Vector3(-startX, -1, 1);
     //            break;

@@ -121,7 +121,7 @@ public class PincerAttackManager : MonoBehaviour
 
     private IEnumerator Enqueue(PincerAttackParticipants participants)
     {
-        g.SortingManager.OnPincerAttackStart(participants);
+        g.SortingManager.OnPincerAttack(participants);
 
         yield return g.BoardOverlay.FadeIn();
 

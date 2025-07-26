@@ -13,7 +13,7 @@ using g = Assets.Helpers.GameManagerHelper;
 
 public class DebugManager : MonoBehaviour
 {
-    
+
     //DEBUG: No gaurentee these values exist, define and use inside tests...
     ActorInstance hero1 => g.Actors.Heroes.Skip(0).Take(1).First();
     ActorInstance hero2 => g.Actors.Heroes.Skip(1).Take(1).First();
@@ -42,7 +42,7 @@ public class DebugManager : MonoBehaviour
     public void PortraitSlideIn()
     {
         var hero = Random.Hero;
-        var direction = Random.Direction;
+        var direction = Random.AdjacentDirection;
         g.PortraitManager.TriggerSlideIn(hero, direction);
     }
 
@@ -67,25 +67,37 @@ public class DebugManager : MonoBehaviour
 
     public void BumpTest()
     {
-        var direction = Random.Direction;
-        hero1.animate.BumpAsync(direction);
+        var hero = Random.Hero;
+        hero.Teleport(Random.UnoccupiedLocation);
+
+        // 3) try to find an enemy already adjacent
+        var enemy = Geometry.GetAdjacentOpponent(hero);
+        if (!enemy.Exists())
+            enemy = Random.Enemy;
+
+        var location = Geometry.GetClosestUnoccupiedAdjacentTileByLocation(hero.location).location;
+        if (!location.Exists())
+            location = Geometry.GetAdjacentLocationInDirection(hero.location, Random.AdjacentDirection);
+ 
+        enemy.Teleport(location);
+        hero.action.BumpAsync(enemy);
     }
 
     public void ShakeTest()
     {
         var intensity = Random.ShakeIntensityLevel();
         var duration = Random.Float(Interval.HalfSecond, Interval.TwoSeconds);
-        hero1.animate.ShakeAsync(intensity, duration);
+        hero1.action.ShakeAsync(intensity, duration);
     }
 
     public void DodgeTest()
     {
-        hero1.animate.DodgeAsync();
+        hero1.action.DodgeAsync();
     }
 
     public void SpinTest()
     {
-        hero1.animate.TriggerSpin360();
+        hero1.action.TriggerSpin360();
     }
 
     public void SupportLineTest()

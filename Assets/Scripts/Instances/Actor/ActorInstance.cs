@@ -1,9 +1,6 @@
 using Assets.Scripts.Behaviors.Actor;
-using Assets.Scripts.Events;
 using Assets.Scripts.Instances.Actor;
 using Assets.Scripts.Models;
-using Game.Instances.Actor;
-using Game.Manager;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -26,7 +23,7 @@ public class ActorInstance : MonoBehaviour
     public bool isDying => isActive && stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
     public bool isDead => !isActive && !isAlive;                  // Actor is dead when not active and HP is 0.
     public bool isSpawnable => !flags.HasSpawned && spawnTurn <= g.TurnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
-    public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum animate points.
+    public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum action points.
 
 
 
@@ -81,17 +78,127 @@ public class ActorInstance : MonoBehaviour
     }
     #endregion
 
+    #region Sorting
 
-
-
+    /// <summary>
+    /// Sets sorting layer and order.
+    /// </summary>
+    /// <param name="sortingLayer">Layer name.</param>
+    /// <param name="sortingOrder">Order number.</param>
     public void SetSorting(string sortingLayer, int sortingOrder = 0)
     {
         sortingGroup.sortingLayerID = SortingLayer.NameToID(sortingLayer);
         sortingGroup.sortingOrder = sortingOrder;
     }
 
+    /// <summary>
+    /// Subscribe to global sort requests.
+    /// </summary>
+    private void OnEnable()
+    {
+        SortingManager.OnSortRequested += HandleSortEvent;
+    }
+
+    /// <summary>
+    /// Unsubscribe to prevent memory leaks.
+    /// </summary>
+    private void OnDisable()
+    {
+        SortingManager.OnSortRequested -= HandleSortEvent;
+    }
+
+    /// <summary>
+    /// Respond to sort requests by applying layer/order based on event type.
+    /// </summary>
+    /// <param name="e">Sort event context.</param>
+    private void HandleSortEvent(SortEvent e)
+    {
+        switch (e.Type)
+        {
+            case SortEventType.Focus:
+                // Focused actor on top, others below
+                if (this == e.Initiator)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else
+                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                break;
+
+            case SortEventType.Drag:
+                // Dragged actor on top
+                if (this == e.Initiator)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else
+                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                break;
+
+            case SortEventType.LocationChanged:
+                // Location change: selected hero above all
+                if (this == e.Initiator)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else
+                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                break;
+
+            case SortEventType.Drop:
+                // Reset all actors to below
+                SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                break;
+
+            case SortEventType.ActorMoving:
+                // Moving actor slightly above
+                if (this == e.Initiator)
+                    SetSorting(SortingHelper.Layer.ActorAbove, 0);
+                else
+                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                break;
+
+            case SortEventType.Overlap:
+                // Initiator on top, target below
+                if (this == e.Initiator)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else if (this == e.Target)
+                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                break;
+
+            case SortEventType.PincerAttack:
+                // Determine role in participants
+                bool isAttacker = e.Participants.pair
+                                    .Any(p => p.attacker1 == this || p.attacker2 == this);
+                bool isOpponent = e.Participants.pair
+                                    .SelectMany(p => p.opponents)
+                                    .Contains(this);
+                bool isSupporter = e.Participants.pair
+                                    .SelectMany(p => p.supporters1.Concat(p.supporters2))
+                                    .Contains(this);
+
+                if (isAttacker)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Attacker);
+                else if (isOpponent)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Opponent);
+                else if (isSupporter)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Supporter);
+                else
+                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                break;
+
+            case SortEventType.Bump:
+                if (this == e.Initiator)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else if (this == e.Target)
+                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Min);
+                break;
+
+            default:
+                // Default fallback for all actors
+                SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                break;
+        }
+    }
+
+    #endregion
+
     // Fields: Core actors fields representing characterName stats, state, and modules.
-    [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow animate behavior.
+    [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow action behavior.
     public Vector2Int previousLocation;                 // Grid location before the last move.
     public Vector3 previousPosition;                    // World position before the last move.
     public Vector2Int location;                         // CurrentProfile grid location.
@@ -106,7 +213,7 @@ public class ActorInstance : MonoBehaviour
     public ActorFlags flags = new ActorFlags();
     public ActorVFX vfx = new ActorVFX();
     public ActorWeapon weapon = new ActorWeapon();
-    public ActorAnimations animate = new ActorAnimations();
+    public ActorActions action = new ActorActions();
     public ActorMovement move = new ActorMovement();
     public ActorHealthBar healthBar = new ActorHealthBar();
     public ActorActionBar actionBar = new ActorActionBar();
@@ -116,9 +223,8 @@ public class ActorInstance : MonoBehaviour
     public List<Ability> abilities = new List<Ability>();
 
 
-
     // Determines the cardinal/diagonal direction from this actor to another.
-    // If 'mustBeAdjacent' is true, returns Direction.None if the other actor is not adjacent.
+    // If 'mustBeAdjacent' is true, returns AdjacentDirection.None if the other actor is not adjacent.
     public Direction GetDirectionTo(ActorInstance other, bool mustBeAdjacent = false)
     {
         if (mustBeAdjacent && !IsAdjacentTo(other.location))
@@ -192,7 +298,7 @@ public class ActorInstance : MonoBehaviour
     {
         // Assign modules with this actor actors context.
         render.Initialize(this);
-        animate.Initialize(this);
+        action.Initialize(this);
         move.Initialize(this);
         healthBar.Initialize(this);
         actionBar.Initialize(this);
@@ -258,7 +364,7 @@ public class ActorInstance : MonoBehaviour
         render.SetNameTagText(characterName);
         render.SetNameTagEnabled(isEnabled: g.DebugManager.showActorNameTag);
 
-        // Save health and animate bars.
+        // Save health and action bars.
         healthBar.Update();
         actionBar.Reset();
 
@@ -268,8 +374,8 @@ public class ActorInstance : MonoBehaviour
             gameObject.SetActive(true);
             flags.HasSpawned = true;
             // TriggerEvent fade-in and spin animations for visual feedback.
-            animate.TriggerFadeIn();
-            animate.TriggerSpin360();
+            action.TriggerFadeIn();
+            action.TriggerSpin360();
         }
         else
         {
@@ -365,7 +471,7 @@ public class ActorInstance : MonoBehaviour
         //if (isDying)
         //    DieAsync();
 
-        // Start the damage animate as a separate coroutine so it doesn't block.
+        // Start the damage action as a separate coroutine so it doesn't block.
         //Execute(DamageTaken(attackResult));
 
         // Return immediately.
@@ -380,16 +486,16 @@ public class ActorInstance : MonoBehaviour
 
     //    while (ticks < duration)
     //    {
-    //        animate.GrowAsync(); // Flinch effect.
+    //        action.GrowAsync(); // Flinch effect.
     //        if (attackResult.IsCriticalHit)
-    //            animate.ShakeAsync(ShakeIntensity.Medium);
+    //            action.ShakeAsync(ShakeIntensity.Medium);
     //        ticks += Interval.OneTick;
     //        yield return Wait.For(Interval.OneTick);
     //    }
 
     //    // Reset animations.
-    //    animate.TriggerShrink();
-    //    animate.ShakeAsync(ShakeIntensity.Stop);
+    //    action.TriggerShrink();
+    //    action.ShakeAsync(ShakeIntensity.Stop);
 
     //    if (isDying)
     //        DieAsync();
@@ -398,11 +504,11 @@ public class ActorInstance : MonoBehaviour
     //}
 
 
-    //AttackMiss: Coroutine to display a miss message and attackResult a dodge animate.
+    //AttackMiss: Coroutine to display a miss message and attackResult a dodge action.
     public IEnumerator AttackMiss()
     {
         g.DamageTextManager.Spawn("Miss", position);
-        yield return animate.Dodge();
+        yield return action.Dodge();
     }
 
     //DieAsync: Initiates the actor's death sequence.
@@ -482,13 +588,16 @@ public class ActorInstance : MonoBehaviour
     //Teleport: Moves the actor instantly to a new grid location if within board bounds.
     public void Teleport(Vector2Int newLocation)
     {
-
-        if (newLocation == null)
-            newLocation = LocationHelper.Nowhere;
+        //if (newLocation == null)
+        //    newLocation = LocationHelper.Nowhere;
 
         //Abort if the new location is out of bounds.
         if (!g.Board.InBounds(newLocation))
             return;
+
+        var occupant = g.Actors.All.FirstOrDefault(x => x.isPlaying && x.location == newLocation);
+        if (occupant.Exists())
+            occupant.Teleport(Random.Location);
 
         this.location = newLocation;
         transform.position = Geometry.GetPositionByLocation(this.location);
@@ -508,7 +617,7 @@ public class ActorInstance : MonoBehaviour
         Teleport(tile.location);
     }
 
-    //SetReady: Resets the enemy actor's animate points for a new turn.
+    //SetReady: Resets the enemy actor's action points for a new turn.
     public void SetReady()
     {
         //Abort if the actor is not active, not alive, or not an enemy.
@@ -518,7 +627,7 @@ public class ActorInstance : MonoBehaviour
         stats.AP = stats.MaxAP;
         stats.PreviousAP = stats.MaxAP;
 
-        //Save the animate bar UI to reflect the refreshed animate points.
+        //Save the action bar UI to reflect the refreshed action points.
         actionBar.Update();
     }
 }

@@ -16,6 +16,5 @@ namespace Assets.Scripts.Behaviors.Actor
         public bool isGainingAP;
         public bool IsRedirecting;
         public bool HasSpawned;
-        //public bool hasMaxAP;
     }
 }

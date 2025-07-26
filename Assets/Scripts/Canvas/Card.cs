@@ -9,7 +9,7 @@ using g = Assets.Helpers.GameManagerHelper;
 
 // The Card class manages the UI card display that shows details about a focused actor.
 // It handles initialization, assignment of actors (such as portrait, name, and stats),
-// and provides an animate to slide the portrait into view.
+// and provides an action to slide the portrait into view.
 public class Card : MonoBehaviour
 {
 
@@ -20,9 +20,9 @@ public class Card : MonoBehaviour
     RectTransform title;
     RectTransform details;
     Vector3 offscreenPosition;       // Starting offscreen position for the portrait.
-    Vector3 destination;             // Final destination position for the portrait during slide-in animate. 
-    AnimationCurve slideInCurve;     // Easing curve for slide-in animate.
-    float slideDuration;            // Duration of the slide-in animate in seconds.
+    Vector3 destination;             // Final destination position for the portrait during slide-in action. 
+    AnimationCurve slideInCurve;     // Easing curve for slide-in action.
+    float slideDuration;            // Duration of the slide-in action in seconds.
     float portraitSize;
 
 
@@ -88,11 +88,11 @@ public class Card : MonoBehaviour
         // Assign the details textarea combining the stats table with extra details from DataManager.
         details.GetComponent<Label>().text = stats + ActorRepo.Actors[g.FocusedActor.characterName].Details.Card;
 
-        // Begin the slide-in animate for the portrait.
+        // Begin the slide-in action for the portrait.
         TriggerSlideIn();
     }
 
-    // TriggerSlideIn starts the coroutine to animate the portrait sliding in from offscreen.
+    // TriggerSlideIn starts the coroutine to action the portrait sliding in from offscreen.
     private void TriggerSlideIn()
     {
         StartCoroutine(SlideIn());
@@ -118,7 +118,7 @@ public class Card : MonoBehaviour
             yield return Wait.OneTick(); // Wait for the next frame.
         }
 
-        // Ensure the portrait is exactly at the destination position after the animate.
+        // Ensure the portrait is exactly at the destination position after the action.
         portrait.anchoredPosition = destination;
     }
 

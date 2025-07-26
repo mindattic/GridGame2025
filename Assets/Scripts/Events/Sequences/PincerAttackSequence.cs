@@ -30,29 +30,27 @@ namespace Assets.Scripts.Events
             // Grow both attackers simultaneously
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
-                pair.attacker1.animate.Grow(),
-                pair.attacker2.animate.Grow()
+                pair.attacker1.action.Grow(),
+                pair.attacker2.action.Grow()
             );
 
             // Shrink both attackers simultaneously
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
-                pair.attacker1.animate.Shrink(),
-                pair.attacker2.animate.Shrink()
+                pair.attacker1.action.Shrink(),
+                pair.attacker2.action.Shrink()
             );
 
             // Determine bump directions
             var firstOpponent = pair.attackResults1.First().Opponent;
-            var dir1 = pair.attacker1.GetDirectionTo(firstOpponent);
-            var dir2 = pair.attacker2.GetDirectionTo(firstOpponent);
-
+  
             // Data MultiAttackTriggers
             var trigger1 = new MultiAttackTrigger(pair.attacker1, pair.attackResults1);
             var trigger2 = new MultiAttackTrigger(pair.attacker2, pair.attackResults2);
 
             // Start bumps, attaching MultiAttackTriggers
-            yield return pair.attacker1.animate.Bump(dir1, trigger1);
-            yield return pair.attacker2.animate.Bump(dir2, trigger2);
+            yield return pair.attacker1.action.Bump(firstOpponent, trigger1);
+            yield return pair.attacker2.action.Bump(firstOpponent, trigger2);
 
             //// Wait until both triggers complete all logic (VfxManager and damage)
             //yield return CoroutineHelper.WaitForAll(
@@ -63,8 +61,8 @@ namespace Assets.Scripts.Events
 
             //yield return CoroutineHelper.WaitForAll(
             //    GameManager.instance,
-            //    pair.attacker1.animate.Bump(dir1, trigger1),
-            //    pair.attacker2.animate.Bump(dir2, trigger2)
+            //    pair.attacker1.action.Bump(dir1, trigger1),
+            //    pair.attacker2.action.Bump(dir2, trigger2)
             //);
 
             // Process deaths afterward

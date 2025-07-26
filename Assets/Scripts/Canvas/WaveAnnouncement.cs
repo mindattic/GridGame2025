@@ -3,7 +3,7 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// Displays "Wave X/Y" textarea with an animate that rotates it into view,
+/// Displays "Wave X/Y" textarea with an action that rotates it into view,
 /// holds for 3 seconds, and then rotates it out.
 /// </summary>
 public class WaveAnnouncement : MonoBehaviour
@@ -31,7 +31,7 @@ public class WaveAnnouncement : MonoBehaviour
         gameObject.SetActive(true);
         label.text = $"Wave {currentWave}/{totalWaves}";
 
-        // Start animate sequence
+        // Start action sequence
         StartCoroutine(AnimateWaveText());
     }
 
@@ -44,7 +44,7 @@ public class WaveAnnouncement : MonoBehaviour
         yield return new WaitForSeconds(3f); // Hold for 3 seconds
         yield return RotateTo(-90f); // Rotate out of view
 
-        gameObject.SetActive(false); // Hide after animate
+        gameObject.SetActive(false); // Hide after action
     }
 
     /// <summary>

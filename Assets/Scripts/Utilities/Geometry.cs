@@ -100,7 +100,7 @@ public class Geometry
 
     /// <summary>
     /// Given two adjacent ActorInstances, returns the direction from actor 'a' to actor 'b'.
-    /// If not adjacent, returns Direction.None.
+    /// If not adjacent, returns AdjacentDirection.None.
     /// Note: The returned direction is opposite to the relative position of 'a' (i.e., if 'a' is north of 'b', return South).
     /// </summary>
     public static Direction AdjacentDirectionTo(ActorInstance a, ActorInstance b)
@@ -167,6 +167,20 @@ public class Geometry
     }
 
     /// <summary>
+    /// Returns a playing actor on the opposite team who is adjacent; 
+    /// if none found, returns a random actor from the opposite team.
+    /// </summary>
+    public static ActorInstance GetAdjacentOpponent(ActorInstance actor)
+    {
+        if (actor == null)
+            return null;
+
+        var opponent = g.Actors.All.FirstOrDefault(x => x.isPlaying && x.team != actor.team && IsAdjacentTo(x.location, actor.location));
+
+        return opponent.Exists() ? opponent : null;
+    }
+
+    /// <summary>
     /// Returns the first tile that is adjacent (occupied or not) to the specified grid location.
     /// </summary>
     public static TileInstance GetClosestAdjacentTileByLocation(Vector2Int other)
@@ -199,6 +213,17 @@ public class Geometry
             || location == g.TileMap.GetLocation(1, 6)   // Bottom-left (A6)
             || location == g.TileMap.GetLocation(8, 1)   // Top-right (H1)
             || location == g.TileMap.GetLocation(8, 6);  // Bottom-right (H6)
+    }
+
+
+    /// <summary>
+    /// Determines if a given grid location is at one of the four corners of the board.
+    /// This uses hardcoded corner definitions based on the TileMap.
+    /// </summary>
+    public static bool IsInBounds(Vector2Int location)
+    {
+        return location.x >= 1 && location.x <= g.Board.columnCount
+            && location.y >= 1 && location.y <= g.Board.rowCount;
     }
 
     /// <summary>
@@ -258,6 +283,47 @@ public class Geometry
         return result;
     }
 
+
+    /// <summary>
+    /// Returns the grid location one step from `location` in the given `direction`.
+    /// If direction is None or unrecognized, returns the original location.
+    /// </summary>
+    public static Vector2Int GetAdjacentLocationInDirection(Vector2Int location, Direction direction)
+    {
+        Vector2Int offset = direction switch
+        {
+            Direction.North => Vector2Int.up,
+            Direction.East => Vector2Int.right,
+            Direction.South => Vector2Int.down,
+            Direction.West => Vector2Int.left,
+            _ => Vector2Int.zero
+        };
+
+        return location + offset;
+    }
+
+    /// <summary>
+    /// Returns the grid location one step from `location` in the given `direction`.
+    /// If direction is None or unrecognized, returns the original location.
+    /// </summary>
+    public static Vector2Int GetLocationInDirection(Vector2Int location, Direction direction)
+    {
+        Vector2Int offset = direction switch
+        {
+            Direction.North => Vector2Int.up,                           // ( 0,  1)
+            Direction.NorthEast => Vector2Int.up + Vector2Int.right,    // ( 1,  1)
+            Direction.East => Vector2Int.right,                         // ( 1,  0)
+            Direction.SouthEast => Vector2Int.down + Vector2Int.right,  // ( 1, -1)
+            Direction.South => Vector2Int.down,                         // ( 0, -1)
+            Direction.SouthWest => Vector2Int.down + Vector2Int.left,   // (-1, -1)
+            Direction.West => Vector2Int.left,                          // (-1,  0)
+            Direction.NorthWest => Vector2Int.up + Vector2Int.left,     // (-1,  1)
+            _ => Vector2Int.zero
+        };
+        return location + offset;
+    }
+
+
     ///<summary>
     /// Nested classes for calculating values relative to tiles, considering factors like device aspect ratio and screen size.
     ///</summary>
@@ -292,7 +358,7 @@ public class Geometry
     }
 
     /// <summary>
-    /// Determines the starting actor (i.e., the one who should initiate an animate) between two g.Actors.All.
+    /// Determines the starting actor (i.e., the one who should initiate an action) between two g.Actors.All.
     /// The decision is based on the dominant axis difference: vertical if the y difference is greater,
     /// or horizontal otherwise.
     /// </summary>

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 
 
 
@@ -101,6 +101,82 @@ public static class EnumExtensions
 }
 
 
+
+public static class TileInstanceExtensions
+{
+    public static bool Exists(this TileInstance tile)
+        => tile != null;
+
+}
+
+    /// <summary>
+    /// Extension methods for ActorInstance to simplify common property checks.
+    /// </summary>
+    public static class ActorInstanceExtensions
+{
+    /// <summary>
+    /// Determines if this actor belongs to the hero's team.
+    /// </summary>
+    public static bool IsHero(this ActorInstance actor)
+        => actor != null && actor.team == Team.Hero;
+
+    /// <summary>
+    /// Determines if this actor belongs to the enemy's team.
+    /// </summary>
+    public static bool IsEnemy(this ActorInstance actor)
+        => actor != null && actor.team == Team.Enemy;
+
+    /// <summary>
+    /// Checks if the GameObject is active and enabled.
+    /// </summary>
+    public static bool IsActive(this ActorInstance actor)
+        => actor != null && actor.isActiveAndEnabled;
+
+    /// <summary>
+    /// Actor is alive if HP is above zero.
+    /// </summary>
+    public static bool IsAlive(this ActorInstance actor)
+        => actor != null && actor.stats.HP > 0;
+
+    /// <summary>
+    /// Actor is active in the game (alive and enabled).
+    /// </summary>
+    public static bool IsPlaying(this ActorInstance actor)
+        => actor.IsActive() && actor.IsAlive();
+
+    /// <summary>
+    /// Actor is in the process of dying (active but HP below 1).
+    /// </summary>
+    public static bool IsDying(this ActorInstance actor)
+        => actor.IsActive() && actor.stats.HP < 1;
+
+    /// <summary>
+    /// Actor is dead when not active and HP is zero.
+    /// </summary>
+    public static bool IsDead(this ActorInstance actor)
+        => !actor.IsActive() && !actor.IsAlive();
+
+    /// <summary>
+    /// Actor can spawn if not already spawned and the spawn turn has arrived.
+    /// </summary>
+    public static bool IsSpawnable(this ActorInstance actor)
+        => actor != null && !actor.flags.HasSpawned
+           && actor.spawnTurn <= g.TurnManager.currentTurn;
+
+    /// <summary>
+    /// Actor has maximum action points.
+    /// </summary>
+    public static bool HasMaxAP(this ActorInstance actor)
+        => actor != null && actor.stats.AP == actor.stats.MaxAP;
+
+    /// <summary>
+    /// Null-safe existence check for the actor.
+    /// </summary>
+    public static bool Exists(this ActorInstance actor)
+        => actor != null;
+}
+
+
 public static class ListExtensions
 {
     public static bool IsNullOrEmpty<T>(this IList<T> list)
@@ -163,10 +239,21 @@ public static class ArrayExtensions
         return array.OrderBy(x => Guid.NewGuid()).First();
     }
 }
-
-
+/// <summary>
+/// Extension methods for Vector2Int to simplify common grid location checks.
+/// </summary>
 public static class Vector2IntExtensions
 {
+    /// <summary>
+    /// Determines whether the vector represents a valid board location.
+    /// Returns true if x and y are within the board's column and row bounds (inclusive).
+    /// </summary>
+    public static bool Exists(this Vector2Int v)
+    {
+        return v.x >= 1 && v.x <= g.Board.columnCount
+            && v.y >= 1 && v.y <= g.Board.rowCount;
+    }
+
     public static void Shift(this ref Vector2Int v, int x, int y)
     {
         v.x += x;

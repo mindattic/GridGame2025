@@ -13,7 +13,7 @@ public static class Thief
             BaseStats = new ActorStats
             {
                 Level = 1,
-                Strength = 3,
+                Strength = 5,
                 Vitality = 2,
                 Agility = 6,
                 Stamina = 2,

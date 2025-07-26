@@ -41,7 +41,7 @@ namespace Assets.Scripts.Events
 
             foreach (var hero in defendingHeroes)
             {
-                var direction = enemy.GetDirectionTo(hero);
+               
 
 
                 var isHit = Formulas.IsHit(enemy, hero);
@@ -58,7 +58,7 @@ namespace Assets.Scripts.Events
                 };
 
                 var attack = new SingleAttackTrigger(attackResult);
-                yield return enemy.animate.Bump(direction, attack);
+                yield return enemy.action.Bump(hero, attack);
                 yield return DeathHelper.Process();
 
             }
