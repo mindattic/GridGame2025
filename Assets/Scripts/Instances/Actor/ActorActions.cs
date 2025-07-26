@@ -435,7 +435,7 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Triggers a 360-degree spin action.
         /// </summary>
-        public void TriggerSpin360(TriggerEvent trigger = default)
+        public void Spin360Async(TriggerEvent trigger = default)
         {
             if (!isActive || !isAlive)
                 return;

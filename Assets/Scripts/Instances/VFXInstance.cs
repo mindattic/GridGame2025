@@ -39,30 +39,30 @@ public class VFXInstance : MonoBehaviour
         StartCoroutine(Spawn(vfx, position, trigger));
     }
 
-    public IEnumerator Spawn(VFXAsset vfx, Vector3 position, TriggerEvent trigger = null)
+    public IEnumerator Spawn(VFXAsset vfx, Vector3 worldPosition, TriggerEvent trigger = null)
     {
-        this.position = position;
-        transform.localPosition = vfx.RelativeOffset;
-        transform.localEulerAngles = vfx.AngularRotation;
+        // 1) place in world space (preserves your hero1.position)
+        transform.position = worldPosition + vfx.RelativeOffset;
+
+        // 2) set rotation+scale as before
+        transform.eulerAngles = vfx.AngularRotation;
         transform.localScale = g.TileScale.MultiplyBy(vfx.RelativeScale);
 
         SetLooping(vfx.IsLoop);
 
-        // Optionally wait for a delay before starting.
         if (vfx.Delay != 0f)
             yield return new WaitForSeconds(vfx.Delay);
 
-        // Run TriggerEvent (if applicable)
         if (trigger != null)
             yield return trigger.Execute(this);
 
-        // Wait until the VfxManager duration completes.
         if (vfx.Duration != 0f)
             yield return new WaitForSeconds(vfx.Duration);
 
-        // Destroy the VfxManager after completion.
         Despawn(name);
     }
+
+
 
 
     private void SetLooping(bool isLoop)

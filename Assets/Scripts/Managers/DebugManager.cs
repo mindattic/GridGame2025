@@ -97,7 +97,7 @@ public class DebugManager : MonoBehaviour
 
     public void SpinTest()
     {
-        hero1.action.TriggerSpin360();
+        hero1.action.Spin360Async();
     }
 
     public void SupportLineTest()

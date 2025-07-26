@@ -1,5 +1,3 @@
-using Assets.Scripts.Events;
-using Assets.Scripts.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,30 +7,33 @@ using g = Assets.Helpers.GameManagerHelper;
 
 public class VFXManager : MonoBehaviour
 {
-
     //Fields
-    Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();
+    readonly Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();
 
-    public void SpawnAsync(VFXAsset resource, Vector3 position, TriggerEvent trigger = null)
+    private VFXInstance CreateInstance(VFXAsset asset, Vector3 position)
     {
-        var prefab = Instantiate(resource.Prefab, position, Quaternion.identity);
+        var prefab = Instantiate(asset.Prefab, position, Quaternion.identity);
+        prefab.transform.SetParent(g.Board.transform, worldPositionStays: true);
+
         var instance = prefab.GetComponent<VFXInstance>();
-        instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
+        instance.name = $"VFX_{asset.Name}_{Guid.NewGuid():N}";
         visualEffects.Add(instance.name, instance);
-        instance.SpawnAsync(resource, position, trigger);
+        return instance;
     }
 
-    public IEnumerator Spawn(VFXAsset resource, Vector3 position, TriggerEvent trigger = null)
+    // fire-and-forget
+    public void SpawnAsync(VFXAsset asset, Vector3 worldPos, TriggerEvent trigger = null)
     {
-        var prefab = Instantiate(resource.Prefab, position, Quaternion.identity);
-        var instance = prefab.GetComponent<VFXInstance>();
-        instance.name = $"VFX_{resource.Name}_{Guid.NewGuid():N}";
-        instance.parent = g.Board.transform;
-        visualEffects.Add(instance.name, instance);
-
-        yield return instance.Spawn(resource, position, trigger);
+        var instance = CreateInstance(asset, worldPos);
+        instance.SpawnAsync(asset, worldPos, trigger);
     }
 
+    // coroutine you can yield
+    public IEnumerator Spawn(VFXAsset asset, Vector3 worldPos, TriggerEvent trigger = null)
+    {
+        var instance = CreateInstance(asset, worldPos);
+        yield return instance.Spawn(asset, worldPos, trigger);
+    }
 
     public void Despawn(string name)
     {
@@ -44,5 +45,4 @@ public class VFXManager : MonoBehaviour
     {
         GameObject.FindGameObjectsWithTag(Tag.VFX).ToList().ForEach(x => Destroy(x));
     }
-
 }

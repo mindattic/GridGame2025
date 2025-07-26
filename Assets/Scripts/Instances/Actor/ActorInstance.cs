@@ -375,7 +375,7 @@ public class ActorInstance : MonoBehaviour
             flags.HasSpawned = true;
             // TriggerEvent fade-in and spin animations for visual feedback.
             action.TriggerFadeIn();
-            action.TriggerSpin360();
+            action.Spin360Async();
         }
         else
         {

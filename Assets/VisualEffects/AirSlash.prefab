@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4075695007516961727}
   - component: {fileID: 3282832854153056691}
   - component: {fileID: 8871542890870072006}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Tonado_Center (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4784,7 +4784,7 @@ GameObject:
   - component: {fileID: 7722012840972351993}
   - component: {fileID: 3422016969926314413}
   - component: {fileID: 2719931284468690080}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash01b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9705,7 +9705,7 @@ GameObject:
   - component: {fileID: 2556590093981362621}
   - component: {fileID: 8130543095482985791}
   - component: {fileID: 618142855261540520}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Air
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14569,7 +14569,7 @@ GameObject:
   - component: {fileID: 8176160414971009801}
   - component: {fileID: 5116723826545396762}
   - component: {fileID: 4036822768574623484}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19588,7 +19588,7 @@ GameObject:
   - component: {fileID: 929102089113880403}
   - component: {fileID: 2806881873571263758}
   - component: {fileID: 2831351712889995314}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: aura03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24558,7 +24558,7 @@ GameObject:
   - component: {fileID: 8500883565787837362}
   - component: {fileID: 8782115843712896532}
   - component: {fileID: 4076159618204863927}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29403,7 +29403,7 @@ GameObject:
   - component: {fileID: 4176068896119963131}
   - component: {fileID: 2327453942099739804}
   - component: {fileID: 9037620550107677526}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34248,7 +34248,7 @@ GameObject:
   - component: {fileID: 5816449591738159540}
   - component: {fileID: 3376728860347081489}
   - component: {fileID: 3876196052728186110}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: aura02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39219,7 +39219,7 @@ GameObject:
   - component: {fileID: 874194707074199087}
   - component: {fileID: 4818414242622511074}
   - component: {fileID: -6272002173867808078}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: AirSlash
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -44080,7 +44080,7 @@ GameObject:
   - component: {fileID: 3493653706529998149}
   - component: {fileID: 5260539389175311210}
   - component: {fileID: 544525124752450176}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: aura01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49050,7 +49050,7 @@ GameObject:
   - component: {fileID: 1397635144745002658}
   - component: {fileID: 2348247219282956322}
   - component: {fileID: 2936856256775576334}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Tonado_Center (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53823,7 +53823,7 @@ GameObject:
   - component: {fileID: 7938478180400149203}
   - component: {fileID: 8640992060312351992}
   - component: {fileID: 9217182420316024459}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Tonado_Center (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58596,7 +58596,7 @@ GameObject:
   - component: {fileID: 7484910308226556269}
   - component: {fileID: 7460411252392177311}
   - component: {fileID: 2957911600366418870}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63500,7 +63500,7 @@ GameObject:
   - component: {fileID: 6744847467004021540}
   - component: {fileID: 8264194166699819125}
   - component: {fileID: 2321736418530100026}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68345,7 +68345,7 @@ GameObject:
   - component: {fileID: 2841320276243115955}
   - component: {fileID: 2294273846655536212}
   - component: {fileID: 2205867847252849281}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73249,7 +73249,7 @@ GameObject:
   - component: {fileID: 7233311681099100654}
   - component: {fileID: 917955948637550605}
   - component: {fileID: 1005510401788941159}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash01b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78170,7 +78170,7 @@ GameObject:
   - component: {fileID: 22453049672819932}
   - component: {fileID: 2018294547106454516}
   - component: {fileID: 6222981051140855609}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash01 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83074,7 +83074,7 @@ GameObject:
   - component: {fileID: 8492840575768124896}
   - component: {fileID: 8369319431068983598}
   - component: {fileID: 7536748019574046399}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash01b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
