@@ -63,8 +63,6 @@ public class VFXInstance : MonoBehaviour
     }
 
 
-
-
     private void SetLooping(bool isLoop)
     {
         var particleSystems = new List<ParticleSystem>();

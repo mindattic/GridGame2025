@@ -67,7 +67,7 @@ public static class VisualEffectRepo
                 Name = "BlueSlash1",
                 Prefab = AssetHelper.LoadAsset<GameObject>($"VisualEffects/BlueSlash1"),
                 RelativeOffset = new Vector3(0f, 0f, 0f),
-                AngularRotation = new Vector3(45f, 0f, -45f),
+                AngularRotation = new Vector3(0, 0f, 0),
                 RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                 Delay = 0.12f,
                 Duration = 2f,
