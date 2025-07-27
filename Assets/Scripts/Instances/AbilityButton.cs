@@ -4,12 +4,12 @@ using UnityEngine.UI;
 
 public class AbilityButton : MonoBehaviour
 {
-    public Button button;                         // Assign in Inspector or dynamically
-    public TMP_Text label;                        // Assign in Inspector or dynamically
+    public Button button;                         // Show in Inspector or dynamically
+    public TMP_Text label;                        // Show in Inspector or dynamically
 
     private void Awake()
     {
-        // Assign missing references if not set in Inspector
+        // Show missing references if not set in Inspector
         if (button == null)
             button = GetComponent<Button>();
 

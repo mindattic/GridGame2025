@@ -821,10 +821,10 @@ public static class BezierCurveHelper
     /// Generates control points for a gentle S-curve move.
     /// Ensures the perpendicular wave follows the travel direction properly.
     /// </summary>
-    public static List<Vector3> Gentle(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 1.2f)
+    public static List<Vector3> Gentle(Vector3 startPosition, ActorInstance target, float travelModifier = 1f, float waveModifier = 1.2f)
     {
         List<Vector3> controlPoints = new List<Vector3>();
-        Vector3 start = source.position;
+        Vector3 start = startPosition;
         Vector3 end = target.position;
 
         float distance = Vector3.Distance(start, end);
@@ -858,10 +858,10 @@ public static class BezierCurveHelper
     /// Generates control points for an overshooting arc.
     /// The projectile overshoots the target before curving back.
     /// </summary>
-    public static List<Vector3> Overshooting(ActorInstance source, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
+    public static List<Vector3> Overshooting(Vector3 startPosition, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
     {
         List<Vector3> controlPoints = new List<Vector3>();
-        Vector3 start = source.position;
+        Vector3 start = startPosition;
         Vector3 end = target.position;
 
         float distance = Vector3.Distance(start, end);
@@ -893,10 +893,10 @@ public static class BezierCurveHelper
         return controlPoints;
     }
 
-    public static List<Vector3> OvershootingWave(ActorInstance source, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
+    public static List<Vector3> OvershootingWave(Vector3 startPosition, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
     {
         List<Vector3> controlPoints = new List<Vector3>();
-        Vector3 start = source.position;
+        Vector3 start = startPosition;
         Vector3 end = target.position;
 
         float distance = Vector3.Distance(start, end);
@@ -934,10 +934,10 @@ public static class BezierCurveHelper
     /// Generates control points for a lobbed arc.
     /// Similar to how a grenade or fireball might travel.
     /// </summary>
-    public static List<Vector3> LobbedArc(ActorInstance source, ActorInstance target, float travelModifier = 0.8f, float waveModifier = 1.5f)
+    public static List<Vector3> LobbedArc(Vector3 startPosition, ActorInstance target, float travelModifier = 0.8f, float waveModifier = 1.5f)
     {
         List<Vector3> controlPoints = new List<Vector3>();
-        Vector3 start = source.position;
+        Vector3 start = startPosition;
         Vector3 end = target.position;
 
         float distance = Vector3.Distance(start, end);
@@ -963,10 +963,10 @@ public static class BezierCurveHelper
     /// Generates control points for a reverse boomerang arc.
     /// The projectile overshoots the target and curves back dramatically.
     /// </summary>
-    public static List<Vector3> Boomerang(ActorInstance source, ActorInstance target, float travelModifier = 1.2f, float waveModifier = 0.8f)
+    public static List<Vector3> Boomerang(Vector3 startPosition, ActorInstance target, float travelModifier = 1.2f, float waveModifier = 0.8f)
     {
         List<Vector3> controlPoints = new List<Vector3>();
-        Vector3 start = source.position;
+        Vector3 start = startPosition;
         Vector3 end = target.position;
 
         float distance = Vector3.Distance(start, end);
@@ -997,10 +997,10 @@ public static class BezierCurveHelper
     /// Generates control points for a homing spiral effect.
     /// The projectile moves in a corkscrew pattern toward the target.
     /// </summary>
-    public static List<Vector3> HomingSpiral(ActorInstance source, ActorInstance target, float travelModifier = 1f, float waveModifier = 2f)
+    public static List<Vector3> HomingSpiral(Vector3 startPosition, ActorInstance target, float travelModifier = 1f, float waveModifier = 2f)
     {
         List<Vector3> controlPoints = new List<Vector3>();
-        Vector3 start = source.position;
+        Vector3 start = startPosition;
         Vector3 end = target.position;
 
         float distance = Vector3.Distance(start, end);
@@ -1029,10 +1029,10 @@ public static class BezierCurveHelper
     /// Generates control points for a zig-zag dash.
     /// The projectile moves erratically toward the target.
     /// </summary>
-    public static List<Vector3> ZigZagDash(ActorInstance source, ActorInstance target, float travelModifier = 1.1f, float waveModifier = 1.2f)
+    public static List<Vector3> ZigZagDash(Vector3 startPosition, ActorInstance target, float travelModifier = 1.1f, float waveModifier = 1.2f)
     {
         List<Vector3> controlPoints = new List<Vector3>();
-        Vector3 start = source.position;
+        Vector3 start = startPosition;
         Vector3 end = target.position;
 
         float distance = Vector3.Distance(start, end);

@@ -21,7 +21,7 @@ namespace Assets.Scripts.Models
         public List<AttackResult> attackResults1 = new();
         public List<AttackResult> attackResults2 = new();
 
-        // Potential same-team supporters who have Clear line of sight to each attacker
+        // Potential same-team supporters who have Hide line of sight to each attacker
         public List<ActorInstance> supporters1 = new();
         public List<ActorInstance> supporters2 = new();
     }

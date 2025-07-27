@@ -14,31 +14,33 @@ public class AbilityButtonManager : MonoBehaviour
         abilityButtonPrefab = PrefabRepo.Prefabs["AbilityButtonPrefab"];
     }
 
-    private List<AbilityButton> buttons = new();
+    public List<AbilityButton> buttons = new();
 
     public void Show(ActorInstance actor)
     {
         Hide();
 
-
-        var abilities = new List<Ability>();
-        var a1 = new Ability()
+        if (actor.characterName == CharacterHelper.Cleric)
         {
-            name = "Spark of Healing",
-            type = AbilityType.TargetAlly
-        };
-        abilities.Add(a1);
+            var abilities = new List<Ability>();
+            var a1 = new Ability()
+            {
+                name = "Spark of Healing",
+                type = AbilityType.TargetAlly
+            };
+            abilities.Add(a1);
 
-        foreach (var ability in abilities)
-        {
+            foreach (var ability in abilities)
+            {
 
-            var prefab = Instantiate(abilityButtonPrefab, abilityButtonContainer);
-            var instance = prefab.GetComponent<AbilityButton>();
-            instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
-            instance.Initialize(ability, () => OnClick(actor, ability));
-            buttons.Add(instance);
-
+                var prefab = Instantiate(abilityButtonPrefab, abilityButtonContainer);
+                var instance = prefab.GetComponent<AbilityButton>();
+                instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
+                buttons.Add(instance);
+                instance.Initialize(ability, () => OnClick(actor, ability));
+            }
         }
+
     }
 
     private void OnClick(ActorInstance actor, Ability ability)

@@ -246,7 +246,7 @@ public class GameManager : Singleton<GameManager>
             return;
 
 
-        //Assign in specific order:
+        //Show in specific order:
         board.Initialize();             //01
         stageManager.Initialize();      //02
         focusIndicator.Initialize();    //03

@@ -182,7 +182,7 @@ namespace Assets.Scripts.Instances.Actor
 
             //At this point, a location change has occured...
 
-            //Assign variables
+            //Show variables
             previousLocation = location;
             location = closestTile.location;
 

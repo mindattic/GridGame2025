@@ -18,7 +18,7 @@ public class ActorActionBar
     // Field to store the parent actor actors that this action bar is associated with.
     private ActorInstance instance;
 
-    // Assign sets up the ActionBar by linking it to its parent ActorInstance.
+    // Show sets up the ActionBar by linking it to its parent ActorInstance.
     public void Initialize(ActorInstance parentInstance)
     {
         this.instance = parentInstance;

@@ -64,7 +64,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void Reload()
     {
-        //Clear existing content
+        //Hide existing content
         Clear();
 
         AddCreateNewProfileButton();

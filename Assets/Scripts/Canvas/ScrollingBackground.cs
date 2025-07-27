@@ -16,7 +16,7 @@ public class ScrollingBackground : MonoBehaviour
             Debug.LogError("ScrollingUITexture: No RawImage component found!");
         }
 
-        // Assign uvRect
+        // Show uvRect
         uvRect = rawImage.uvRect;
     }
 

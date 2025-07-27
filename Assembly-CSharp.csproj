@@ -217,6 +217,7 @@
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\TakeDamageTrigger.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
+    <Compile Include="Assets\Scripts\Events\Sequences\HideTargetIndicatorSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleInstance.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="Assets\Scripts\Utilities\ConvertString.cs" />
     <Compile Include="Assets\Scripts\Canvas\TargetModeOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
+    <Compile Include="Assets\Scripts\Events\Sequences\HealAbilitySequence.cs" />
     <Compile Include="Assets\Scripts\Models\VFXAsset.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PortraitPopOutSequence.cs" />

@@ -23,7 +23,7 @@ public class TimerBar : MonoBehaviour
         bar = transform.GetChild("Bar").GetComponent<Image>();
         front = transform.GetChild("Front").GetComponent<Image>();
 
-        //Assign maxWidth based on the background image width
+        //Show maxWidth based on the background image width
         maxWidth = back.rectTransform.rect.width; 
     }
 
@@ -133,7 +133,7 @@ public class TimerBar : MonoBehaviour
     /// </summary>
     public void Lock()
     {
-        //Assign colors to translucent red to indicate locked state
+        //Show colors to translucent red to indicate locked state
         back.color = ColorHelper.Translucent.Red;
         bar.color = ColorHelper.Translucent.Red;
         front.color = ColorHelper.Translucent.Red;

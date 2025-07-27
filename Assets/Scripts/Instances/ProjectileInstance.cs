@@ -47,7 +47,7 @@ public class ProjectileInstance : MonoBehaviour
 
     private IEnumerator SpawnTrail()
     {
-        startPosition = projectile.source.position;
+        startPosition = projectile.startPosition;
         endPosition = projectile.target.position;
         transform.position = startPosition;
 

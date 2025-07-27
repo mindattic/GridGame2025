@@ -29,7 +29,7 @@ namespace Assets.Scripts.Instances.Actor
         private float wiggleAmplitude;
 
         /// <summary>
-        /// Assign sets up this action module with its parent actor actors and calculates
+        /// Show sets up this action module with its parent actor actors and calculates
         /// initial parameters for animations.
         /// </summary>
         public void Initialize(ActorInstance parentInstance)
@@ -333,7 +333,7 @@ namespace Assets.Scripts.Instances.Actor
             // Optionally run any trigger-related coroutine.
             yield return trigger.Execute(instance);
 
-            // After: Assign the scale exactly to max size.
+            // After: Show the scale exactly to max size.
             scale = new Vector3(maxSize, maxSize, 0);
         }
 
@@ -402,7 +402,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Before: Assign variables for rotation.
+            // Before: Show variables for rotation.
             bool isDone = false;
             var rotY = 0f;
             var spinFocus = g.TileSize * 24f;
@@ -454,7 +454,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Before: Assign rotation variables.
+            // Before: Show rotation variables.
             bool isDone = false;
             var rotY = 0f;
             var speed = g.TileSize * 24f;
@@ -552,7 +552,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Before: Assign the initial rotation for the weapon icon.
+            // Before: Show the initial rotation for the weapon icon.
             float start = -45f;
             float rotZ = start;
             render.weaponIcon.transform.rotation = Quaternion.Euler(0, 0, rotZ);
@@ -597,7 +597,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Before: Assign variables for oscillation.
+            // Before: Show variables for oscillation.
             float timeElapsed = 0f;
             float amplitude = 10f;
             float dampingRate = 0.99f; // Controls how quickly the wiggle decays.

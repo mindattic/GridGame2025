@@ -165,7 +165,7 @@ public class DebugWindow : EditorWindow
         };
     }
 
-    // Assign sets up references to game systems from the GameManager.
+    // Show sets up references to game systems from the GameManager.
     private void Initialize()
     {
         // If GameManager hasn't been initialized, do not proceed.
@@ -176,7 +176,7 @@ public class DebugWindow : EditorWindow
         isOpen = true;
         lastUpdateTime = DateTime.Now;
 
-        // Assign initial debug flag values.
+        // Show initial debug flag values.
         GameManager.instance.debugManager.showActorNameTag = false;
         GameManager.instance.debugManager.showActorFrame = false;
         GameManager.instance.debugManager.showTutorials = false;

@@ -156,7 +156,7 @@ public class PartyManager : MonoBehaviour
             GameObject slide = Instantiate(slidePrefab, rosterPanel);
             var instance = slide.GetComponent<RosterSlideInstance>();
 
-            // Assign the slide name
+            // Show the slide name
             slide.name = $"RosterSlide_{member.Character}";
 
             // Load the sprite asynchronously
@@ -333,7 +333,7 @@ public class PartyManager : MonoBehaviour
 
         // Update the button functionality
         var button = addRemovePartyMemberButton.GetComponent<Button>();
-        button.onClick.RemoveAllListeners(); // Clear previous listeners
+        button.onClick.RemoveAllListeners(); // Hide previous listeners
         if (isInParty)
         {
             button.onClick.AddListener(() => RemoveFromParty(characterName));

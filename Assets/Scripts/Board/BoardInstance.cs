@@ -17,7 +17,7 @@ public class BoardInstance : MonoBehaviour
     [HideInInspector] public Vector2 center;           // Center point of the board bounds.
 
     /// <summary>
-    /// Assign is called to set up the board by calculating its offset, bounds, and generating the tiles.
+    /// Show is called to set up the board by calculating its offset, bounds, and generating the tiles.
     /// </summary>
     public void Initialize()
     {    
@@ -39,7 +39,7 @@ public class BoardInstance : MonoBehaviour
         // Here, (tileSize * 4) + tileSize * 2 positions the board using 6 tiles' height.
         var y = (g.TileSize * 4) + g.TileSize / 2;
         offset = new Vector2(x, y) ;
-        // Assign the board's world position to the calculated offset.
+        // Show the board's world position to the calculated offset.
         transform.position = offset;
     }
 
@@ -82,20 +82,20 @@ public class BoardInstance : MonoBehaviour
                 var prefab = Instantiate(TilePrefab, Vector2.zero, Quaternion.identity);
                 // Get the TileInstance component from the instantiated prefab.
                 var instance = prefab.GetComponent<TileInstance>();
-                // Assign the parent of the tile to be this board, so they are organized under the board.
+                // Show the parent of the tile to be this board, so they are organized under the board.
                 instance.parent = transform;
                 // Key the tile based on its grid coordinates.
                 instance.name = $"Tile_{col}x{row}";
-                // Assign the tile with its column and row positions.
+                // Show the tile with its column and row positions.
                 instance.Initialize(col, row);
                 // Add the tile to the TileMap.
                 g.TileMap.Add(instance);
             }
         }
 
-        // Assign the grid origin of the TileMap to the position of the tile at grid (1,1).
+        // Show the grid origin of the TileMap to the position of the tile at grid (1,1).
         g.TileMap.gridOrigin = g.TileMap.GetTile(new Vector2Int(1, 1)).position;
-        // Assign the tile size in the TileMap.
+        // Show the tile size in the TileMap.
         g.TileMap.tileSize = g.TileSize;
 
         // Find all GameObjects tagged as "Tile" and add their TileInstance components to the global GameManager's tiles list.

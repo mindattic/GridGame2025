@@ -20,8 +20,8 @@ public class ProjectileManager : MonoBehaviour
     // Spawns a ProjectileInstance configured by type.
     public IEnumerator Spawn(ProjectileSettings projectile)
     {
-        // Instantiate the ProjectileInstance prefab at the source's position.
-        var prefab = Instantiate(projectilePrefab, projectile.source.position, Quaternion.identity);
+        // Instantiate the ProjectileInstance prefab at the startPosition's position.
+        var prefab = Instantiate(projectilePrefab, projectile.startPosition, Quaternion.identity);
         var instance = prefab.GetComponent<ProjectileInstance>();
         instance.name = $"Projectile_{projectile.friendlyName}_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
@@ -36,23 +36,23 @@ public class ProjectileManager : MonoBehaviour
         projectiles.Remove(name);
     }
 
-    public void EnqueueHeal(ActorInstance source, ActorInstance target)
+    public void EnqueueHeal(Vector3 startPosition, ActorInstance target)
     {
         var heal = new ProjectileSettings()
         {
             friendlyName = "Heal",
-            source = source,
+            startPosition = startPosition,
             target = target,
             path = ProjectilePath.BezierCurve,
-            controlPoints = BezierCurveHelper.Gentle(source, target),
+            controlPoints = BezierCurveHelper.Gentle(startPosition, target),
             trailKey = "GreenSparkle",
             vfxKey = "BuffLife",
             trigger = new TriggerEvent(target.Heal(10))
         };
 
-        g.SequenceManager.Add(new PortraitPopInSequence(source));
+        //g.SequenceManager.Add(new PortraitPopInSequence(startPosition));
         g.SequenceManager.Add(new FireProjectileSequence(heal));
-        g.SequenceManager.Add(new PortraitPopOutSequence(source));
+        //g.SequenceManager.Add(new PortraitPopOutSequence(startPosition));
 
         //if (castBeforeAttack)
         //    g.SequenceManager.AddFirst(e);
@@ -61,23 +61,23 @@ public class ProjectileManager : MonoBehaviour
     }
 
 
-    public void EnqueueFireball(ActorInstance source, ActorInstance target)
+    public void EnqueueFireball(Vector3 startPosition, ActorInstance target)
     {
         var fireball = new ProjectileSettings()
         {
             friendlyName = "Fireball",
-            source = source,
+            startPosition = startPosition,
             target = target,
             path = ProjectilePath.BezierCurve,
-            controlPoints = BezierCurveHelper.Overshooting(source, target),
+            controlPoints = BezierCurveHelper.Overshooting(startPosition, target),
             trailKey = "Fireball",
             vfxKey = "PuffyExplosion",
             trigger = new TriggerEvent(target.FireDamage(10))
         };
 
-        g.SequenceManager.Add(new PortraitPopInSequence(source));
+        //g.SequenceManager.Add(new PortraitPopInSequence(startPosition));
         g.SequenceManager.Add(new FireProjectileSequence(fireball));
-        g.SequenceManager.Add(new PortraitPopOutSequence(source));
+        //g.SequenceManager.Add(new PortraitPopOutSequence(startPosition));
 
         //if (castBeforeAttack)
         //    g.SequenceManager.AddFirst(action);

@@ -296,7 +296,7 @@ public class ActorInstance : MonoBehaviour
     // Awake: Initialization of the actor g.Actors.All. Sets up modules and subscribes to events.
     private void Awake()
     {
-        // Assign modules with this actor actors context.
+        // Show modules with this actor actors context.
         render.Initialize(this);
         action.Initialize(this);
         move.Initialize(this);
@@ -314,10 +314,10 @@ public class ActorInstance : MonoBehaviour
 
     }
 
-    // Assign: Initializes and spawns the actor at the specified start location.
+    // Show: Initializes and spawns the actor at the specified start location.
     public void Spawn(Vector2Int startLocation)
     {
-        // Assign CurrentProfile and previous locations.
+        // Show CurrentProfile and previous locations.
         location = startLocation;
         previousLocation = location;
 
@@ -334,7 +334,7 @@ public class ActorInstance : MonoBehaviour
         weapon.Attack = Random.Float(10, 15);
         weapon.Defense = Random.Float(0, 5);
         weapon.Name = $"{weapon.Type}";
-        // Assign the weapon icon using resources.
+        // Show the weapon icon using resources.
         render.weaponIcon.sprite = SpriteRepo.WeaponTypes[weapon.Type.ToString()];
 
         // Configure visual appearance and effects based on team.
@@ -360,7 +360,7 @@ public class ActorInstance : MonoBehaviour
             vfx.Attack = VisualEffectRepo.VisualEffects["DoubleClaw"];
         }
 
-        // Assign name tag textarea and toggle its visibility based on debug settings.
+        // Show name tag textarea and toggle its visibility based on debug settings.
         render.SetNameTagText(characterName);
         render.SetNameTagEnabled(isEnabled: g.DebugManager.showActorNameTag);
 
@@ -420,7 +420,7 @@ public class ActorInstance : MonoBehaviour
                 break;
         }
 
-        //Assign the actor's location to the nearest valid attackResult location relative to the target.
+        //Show the actor's location to the nearest valid attackResult location relative to the target.
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
         //Note: nextPosition is commented out and could be used for future logic.
         //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
@@ -524,7 +524,7 @@ public class ActorInstance : MonoBehaviour
         if (!isDying)
             yield break;
 
-        //Before: Assign actor to fully opaque.
+        //Before: Show actor to fully opaque.
         var alpha = 1f;
         render.SetAlpha(alpha);
 
@@ -536,7 +536,7 @@ public class ActorInstance : MonoBehaviour
         g.PortraitManager.Dissolve(this);
         g.AudioManager.Play("Death");
 
-        //Assign sorting order to maximum so that the death sequence renders on top.
+        //Show sorting order to maximum so that the death sequence renders on top.
         //sortingOrder = SortingOrder.Max;
 
         //During: Gradually reduce the alpha value for a fade-out effect.
@@ -547,7 +547,7 @@ public class ActorInstance : MonoBehaviour
             alpha = Mathf.Clamp(alpha, Increment.Transparent, Opacity.Opaque);
             render.SetAlpha(alpha);
 
-            //Assign coins when enemy fades below 10% opacity, if not already spawned.
+            //Show coins when enemy fades below 10% opacity, if not already spawned.
             if (isEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
             {
                 hasSpawnedCoins = true;

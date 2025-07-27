@@ -68,7 +68,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     private void Reload()
     {
-        //Clear existing content
+        //Hide existing content
         Clear();
 
         //Retrieve all saves in profile
@@ -91,11 +91,11 @@ public class SaveFileSelectManager : MonoBehaviour
         GameObject instance = Instantiate(buttonPrefab, content);
         instance.name = $"Button_{Path.GetFileNameWithoutExtension(item.FileName)}";
 
-        //Assign the button size: 90% of width, 1/16th of height
+        //Show the button size: 90% of width, 1/16th of height
         //RectTransform buttonRect = instance.GetComponent<RectTransform>();
         //buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
-        //Assign the button click event
+        //Show the button click event
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnLoadSaveFileButtonClicked(filePath));
 

@@ -57,7 +57,7 @@ public class StageManager : MonoBehaviour
         g.TileManager.Reset();
         g.TurnManager.Initialize();
 
-        // Assign persistent hero actors from ProfileRepo
+        // Show persistent hero actors from ProfileRepo
         foreach (var partyMember in ProfileRepo.CurrentProfile.CurrentSave.Party.Members)
         {
             var hero = ActorRepo.Actors[partyMember.Character];
@@ -94,13 +94,13 @@ public class StageManager : MonoBehaviour
 
         StageWave wave = currentStage.Waves[waveIndex];
 
-        // Assign actors for this wave
+        // Show actors for this wave
         foreach (var stageActor in wave.Actors)
         {
             SpawnActor(stageActor);
         }
 
-        // Assign dotted supportLines' for this wave
+        // Show dotted supportLines' for this wave
         foreach (var stageDottedLine in wave.DottedLines)
         {
             var segment = stageDottedLine.Segment;
@@ -124,7 +124,7 @@ public class StageManager : MonoBehaviour
         instance.characterName = stageActor.characterName;
         instance.team = stageActor.Team;
 
-        // Assign stats based on characterName and stageActor's level
+        // Show stats based on characterName and stageActor's level
         instance.stats = ActorRepo.Actors[stageActor.characterName].GetStats(stageActor.Level);
 
         instance.transform.localScale = GameManager.instance.tileScale;

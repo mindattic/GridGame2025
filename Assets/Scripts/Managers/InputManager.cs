@@ -1,6 +1,11 @@
+using Assets.Scripts.Events;
 using System;
+using System.Collections;
 using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static GameObjectHelper;
 using g = Assets.Helpers.GameManagerHelper;
 
 
@@ -61,36 +66,30 @@ public class InputManager : MonoBehaviour
                             if (collisions == null) return;
                             var collider = collisions.FirstOrDefault(x => x.CompareTag(Tag.Actor));
                             if (collider == null) return;
-                            var actor = collider.gameObject.GetComponent<ActorInstance>();
+                            var target = collider.gameObject.GetComponent<ActorInstance>();
+                            if (target == null || !target.isPlaying) return;
 
-                            if (actor == null || !actor.isPlaying) return;
-
-                            if (g.Actors.TargetActor == actor)
+                            if (g.Actors.TargetActor == target)
                             {
                                 //This is a double click...
-
                                 ConfirmationDialog.Show(canvas2D, "Are you sure?", onSubmit: (value) =>
                                 {
+                                    var btn = g.AbilityButtonManager.buttons.First();
+                                    var startPosition = g.AbilityButtonManager.buttons.First().transform.localPosition;
+
                                     if (value)
-                                    {
-                                        Debug.Log("You targetted: " + g.Actors.TargetActor.characterName);
-                                        //TODO: Add sequence and exectue....
-                                        inputMode = InputMode.HeroTurn;
-                                    }
-                                    else
-                                    {
+                                        g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
 
-                                    }
+                                    g.SequenceManager.Add(new HideTargetIndicatorSequence());
+                                    g.SequenceManager.TriggerExecute();
                                 });
-
-
-
                                 return;
                             }
 
+                            //This is the initial click
+                            g.Actors.TargetActor = target;
+                            g.TargetIndicator.Show();
 
-                            g.Actors.TargetActor = actor;
-                            g.TargetIndicator.Assign();
                             break;
 
                         case TouchPhase.Moved:
@@ -98,6 +97,11 @@ public class InputManager : MonoBehaviour
                             break;
 
                         case TouchPhase.Ended:
+
+
+                          
+
+                            break;
                         case TouchPhase.Canceled:
 
                             break;
@@ -115,7 +119,7 @@ public class InputManager : MonoBehaviour
                     switch (touch.phase)
                     {
                         case TouchPhase.Began:
-                            // Attempt to focus on an actor under the touch.
+                            // Attempt to focus on an target under the touch.
                             g.SelectedHeroManager.Focus();
 
                             initialTouchPosition = g.TouchPosition3D;

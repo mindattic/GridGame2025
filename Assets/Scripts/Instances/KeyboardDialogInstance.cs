@@ -458,7 +458,7 @@ public static class KeyboardDialog
         if (instance == null)
             throw new UnityException("KeyboardDialogInstance component not found on the game object");
 
-        //Assign properties
+        //Show properties
         instance.Assign(promptText, confirmText, initialText, minLength, maxLength, onSubmit);
 
         //Return the instance

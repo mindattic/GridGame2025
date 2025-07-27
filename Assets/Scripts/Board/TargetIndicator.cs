@@ -44,14 +44,14 @@ public class TargetIndicator : MonoBehaviour
     }
 
     // Activates and positions the TargetIndicator based on whether a focused actor exists.
-    public void Assign()
+    public void Show()
     {
         spriteRenderer.enabled = g.HasTargetActor;
         position = g.HasTargetActor ? g.TargetActor.position : PositionHelper.Nowhere;
     }
 
-    // Clear deactivates the TargetIndicator and moves it off-screen.
-    public void Clear()
+    // Hide deactivates the TargetIndicator and moves it off-screen.
+    public void Hide()
     {
         spriteRenderer.enabled = false;
         position = PositionHelper.Nowhere;

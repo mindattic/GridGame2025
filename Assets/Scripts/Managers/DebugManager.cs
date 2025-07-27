@@ -475,7 +475,7 @@ public class DebugManager : MonoBehaviour
 
     public void SingleCombo()
     {
-        //Assign exactly nine slimes
+        //Show exactly nine slimes
         for (int i = 0; i < 6; i++)
             SpawnSlime();
 
@@ -506,7 +506,7 @@ public class DebugManager : MonoBehaviour
 
     public void TripleCombo()
     {
-        //Assign exactly nine slimes
+        //Show exactly nine slimes
         for (int i = 0; i < 9; i++)
             SpawnSlime();
 
@@ -634,15 +634,15 @@ public class DebugManager : MonoBehaviour
 
     public void FireballTest()
     {
-        var source = hero1;
+        var startPosition = hero1.position;
         var target = g.Actors.Enemies.FirstOrDefault();
-        g.ProjectileManager.EnqueueFireball(source, target);
+        g.ProjectileManager.EnqueueFireball(startPosition, target);
         g.SequenceManager.TriggerExecute();
     }
 
     public void HealTest()
     {
-        var source = hero1;
+        var source = hero1.position;
         var target = hero2;
 
         g.ProjectileManager.EnqueueHeal(source, target);

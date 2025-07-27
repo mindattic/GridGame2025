@@ -54,12 +54,12 @@ public class FocusIndicator : MonoBehaviour
         position = g.HasFocusedActor ? g.FocusedActor.position : PositionHelper.Nowhere;
     }
 
-    // Clear deactivates the FocusIndicator and moves it off-screen.
+    // Hide deactivates the FocusIndicator and moves it off-screen.
     public void Clear()
     {
         // Disable the indicator's sprite.
         spriteRenderer.enabled = false;
-        // Assign its position to 'Nowhere', effectively removing it from the board.
+        // Show its position to 'Nowhere', effectively removing it from the board.
         position = PositionHelper.Nowhere;
     }
 }

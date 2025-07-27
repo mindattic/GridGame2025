@@ -8,7 +8,7 @@ namespace Assets.Scripts.Models
     public class ProjectileSettings
     {
         public string friendlyName;
-        public ActorInstance source;
+        public Vector3 startPosition;
         public ActorInstance target;
         public string trailKey;   // e.g., "GreenSparkle" or "Fireball"
         public string vfxKey;    // e.g., "BuffLife" or "PuffyExplosion"

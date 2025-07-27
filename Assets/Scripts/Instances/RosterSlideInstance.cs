@@ -47,19 +47,19 @@ public class RosterSlideInstance : MonoBehaviour
 
     public void Initialize(string key, Sprite sprite, float width, float height, System.Action onClick, bool isInParty)
     {
-        // Assign key and dimensions
+        // Show key and dimensions
         Key = key;
         Width = width;
         Height = height;
 
-        // Assign the image sprite
+        // Show the image sprite
         image.alphaHitTestMinimumThreshold = alphaThreshold;
         image.sprite = sprite;
 
-        // Assign the onClick event to the image button
+        // Show the onClick event to the image button
         imageButton.onClick.AddListener(() => onClick?.Invoke());
 
-        // Assign the onClick event to the center button
+        // Show the onClick event to the center button
         centerButton.onClick.AddListener(() => onClick?.Invoke());
 
         // Configure the checkmark

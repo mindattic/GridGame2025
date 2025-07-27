@@ -6,12 +6,12 @@ using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
-    public class HealSupportSequence : SequenceEvent
+    public class HealAbilitySequence : SequenceEvent
     {
         private readonly Vector3 source;
         private readonly ActorInstance target;
 
-        public HealSupportSequence(Vector3 source, ActorInstance target)
+        public HealAbilitySequence(Vector3 source, ActorInstance target)
         {
             this.source = source;
             this.target = target;
@@ -19,10 +19,8 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            // 1) PortraitManager pops in
-            //yield return new PortraitPopInSequence(startPosition).Execute();
-
-            // 2) Fire the heal projectile
+   
+            // Fire the heal projectile
             var healSettings = new ProjectileSettings
             {
                 friendlyName = "Heal",

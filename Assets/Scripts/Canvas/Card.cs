@@ -44,7 +44,7 @@ public class Card : MonoBehaviour
 
     private void Start()
     {
-        //Assign the portrait's size
+        //Show the portrait's size
         portrait.sizeDelta = new Vector2(portraitSize, portraitSize);
 
         // Define the offscreen starting position, just outside the screen width.
@@ -85,7 +85,7 @@ public class Card : MonoBehaviour
             $"HP       STR  VIT  AGI  STA  INT  WIS  LCK{Environment.NewLine}" +
             $"{HP}   {STR}{VIT}{AGI}{STA}{INT}{WIS}{LCK}{Environment.NewLine}";
 
-        // Assign the details textarea combining the stats table with extra details from DataManager.
+        // Show the details textarea combining the stats table with extra details from DataManager.
         details.GetComponent<Label>().text = stats + ActorRepo.Actors[g.FocusedActor.characterName].Details.Card;
 
         // Begin the slide-in action for the portrait.
@@ -98,7 +98,7 @@ public class Card : MonoBehaviour
         StartCoroutine(SlideIn());
     }
 
-    // Assign smoothly animates the portrait image from an offscreen position to its destination.
+    // Show smoothly animates the portrait image from an offscreen position to its destination.
     private IEnumerator SlideIn()
     {
         float elapsedTime = 0f;
@@ -122,7 +122,7 @@ public class Card : MonoBehaviour
         portrait.anchoredPosition = destination;
     }
 
-    // Clear resets the card UI to a hidden state, clearing all displayed g.Actors.All.
+    // Hide resets the card UI to a hidden state, clearing all displayed g.Actors.All.
     public void Clear()
     {
         // Disable visual components of the card.
