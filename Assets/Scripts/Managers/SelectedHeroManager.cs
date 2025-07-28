@@ -41,7 +41,7 @@ public class SelectedHeroManager : MonoBehaviour
 
         g.TouchOffset = g.Actors.FocusedActor.position - g.TouchPosition3D;
 
-        g.FocusIndicator.Assign();
+        g.FocusIndicator.Show();
         g.Card.Assign();
 
         // Notify editor to reload
@@ -79,7 +79,7 @@ public class SelectedHeroManager : MonoBehaviour
             return;
 
         g.Card.Clear();
-        g.FocusIndicator.Clear();
+        g.FocusIndicator.Hide();
 
         g.AudioManager.Play("Click");
         g.TimerBar.Play();

@@ -68,7 +68,7 @@ public class InputManager : MonoBehaviour
                             if (collider == null) return;
                             var target = collider.gameObject.GetComponent<ActorInstance>();
                             if (target == null || !target.isPlaying) return;
-
+                           
                             if (g.Actors.TargetActor == target)
                             {
                                 //This is a double click...
@@ -86,10 +86,8 @@ public class InputManager : MonoBehaviour
                                 return;
                             }
 
-                            //This is the initial click
                             g.Actors.TargetActor = target;
                             g.TargetIndicator.Show();
-
                             break;
 
                         case TouchPhase.Moved:

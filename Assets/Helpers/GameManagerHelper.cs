@@ -137,7 +137,7 @@ namespace Assets.Helpers
                 set => GameManager.instance.selectedHero = value;
             }
 
-            public static bool HasSelectedHero => GameManager.instance.hasSelectedPlayer;
+            public static bool HasSelectedHero => GameManager.instance.hasSelectedHero;
 
             public static ActorInstance TargetActor
             {
@@ -152,11 +152,6 @@ namespace Assets.Helpers
         public static TileMap TileMap => GameManager.instance.tileMap;
         public static TimerBar TimerBar => GameManager.instance.timerBar;
         public static BoardInstance Board => GameManager.instance.board;
-
-        public static bool HasTargetActor => GameManager.instance.hasTargetActor;
-        public static ActorInstance TargetActor => GameManager.instance.targetActor;
-        public static bool HasFocusedActor => GameManager.instance.hasFocusedActor;
-        public static ActorInstance FocusedActor => GameManager.instance.focusedActor;
 
         public static List<TileInstance> Tiles => GameManager.instance.tiles;
 

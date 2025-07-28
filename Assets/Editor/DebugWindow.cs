@@ -253,7 +253,7 @@ public class DebugWindow : EditorWindow
         GUILayout.BeginHorizontal();
 
 
-        GUILayout.Label($"Focused Actor: {(g.FocusedActor ? g.FocusedActor.characterName : "-")}", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label($"Focused Actor: {(g.Actors.FocusedActor ? g.Actors.FocusedActor.characterName : "-")}", GUILayout.Width(Screen.width * 0.25f));
         //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
 
 

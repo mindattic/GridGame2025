@@ -49,17 +49,6 @@ public class AbilityButtonManager : MonoBehaviour
         {
             // switch into target mode
             g.InputManager.inputMode = InputMode.AbilityTarget;
-
-            //// record the origin and callback
-            //Vector3 worldPos = CameraManager.main.ScreenToWorldPoint(InputManager.mousePosition);
-            //worldPos.z = 0f;
-
-            //targetLineManager.BeginTargeting(worldPos, target =>
-            //{
-            //    // restore gameplay mode
-            //    inputManager.inputMode = InputMode.HeroTurn;
-            //    ability.Activate(actor, target);
-            //});
         }
         else
         {

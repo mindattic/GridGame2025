@@ -38,28 +38,19 @@ public class FocusIndicator : MonoBehaviour
 
     public void Initialize()
     {
-        // Scale the indicator based on the tile scale, making it 10% larger than the standard tile.
+
         scale = g.TileScale * 1.1f;
-        // Hide the sprite so that it is not visible until explicitly assigned.
-        spriteRenderer.enabled = false;
     }
 
     // SelectProfile activates and positions the FocusIndicator based on whether a focused actor exists.
-    public void Assign()
+    public void Show()
     {
-        // Enable the sprite only if there is a focused actor.
-        spriteRenderer.enabled = g.HasFocusedActor;
-        // PositionHelper the indicator on the focused actor's position if available;
-        // otherwise, place it at a designated 'Nowhere' location.
-        position = g.HasFocusedActor ? g.FocusedActor.position : PositionHelper.Nowhere;
+        position = g.Actors.HasFocusedActor ? g.Actors.FocusedActor.position : PositionHelper.Nowhere;
     }
 
     // Hide deactivates the FocusIndicator and moves it off-screen.
-    public void Clear()
+    public void Hide()
     {
-        // Disable the indicator's sprite.
-        spriteRenderer.enabled = false;
-        // Show its position to 'Nowhere', effectively removing it from the board.
         position = PositionHelper.Nowhere;
     }
 }

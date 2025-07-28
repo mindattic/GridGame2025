@@ -40,20 +40,17 @@ public class TargetIndicator : MonoBehaviour
     public void Initialize()
     {
         scale = g.TileScale * 1.1f;
-        spriteRenderer.enabled = false;
     }
 
     // Activates and positions the TargetIndicator based on whether a focused actor exists.
     public void Show()
     {
-        spriteRenderer.enabled = g.HasTargetActor;
-        position = g.HasTargetActor ? g.TargetActor.position : PositionHelper.Nowhere;
+        position = g.Actors.HasTargetActor ? g.Actors.TargetActor.position : PositionHelper.Nowhere;
     }
 
     // Hide deactivates the TargetIndicator and moves it off-screen.
     public void Hide()
     {
-        spriteRenderer.enabled = false;
         position = PositionHelper.Nowhere;
     }
 }

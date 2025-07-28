@@ -58,27 +58,26 @@ public class Card : MonoBehaviour
     public void Assign()
     {
         // If no actor is focused, exit without making changes.
-        if (!g.HasFocusedActor)
+        if (!g.Actors.HasFocusedActor)
             return;
 
         // Enable the backdrop and portrait images.
         backdrop.gameObject.SetActive(true);
         portrait.gameObject.SetActive(true);
 
-        if (ActorRepo.Actors.ContainsKey(g.FocusedActor.characterName))
-            portrait.GetComponent<Image>().sprite = ActorRepo.Actors[g.FocusedActor.characterName].Portrait;
-        title.GetComponent<Label>().text = g.FocusedActor.characterName;
+        if (ActorRepo.Actors.ContainsKey(g.Actors.FocusedActor.characterName))
+            portrait.GetComponent<Image>().sprite = ActorRepo.Actors[g.Actors.FocusedActor.characterName].Portrait;
+        title.GetComponent<Label>().text = g.Actors.FocusedActor.characterName;
 
         // Format the actor's stats for display:
-        var HP = $"{g.FocusedActor.stats.HP,2}/{g.FocusedActor.stats.MaxHP,-3}";
-        var STR = $"{g.FocusedActor.stats.Strength,4}";
-        var VIT = $"{g.FocusedActor.stats.Vitality,4}";
-        var AGI = $"{g.FocusedActor.stats.Agility,4}";
-        var STA = $"{g.FocusedActor.stats.Stamina,4}";
-        var INT = $"{g.FocusedActor.stats.Intelligence,4}";
-        var WIS = $"{g.FocusedActor.stats.Wisdom,4}";
-
-        var LCK = $"{g.FocusedActor.stats.Luck,4}";
+        var HP = $"{g.Actors.FocusedActor.stats.HP,2}/{g.Actors.FocusedActor.stats.MaxHP,-3}";
+        var STR = $"{g.Actors.FocusedActor.stats.Strength,4}";
+        var VIT = $"{g.Actors.FocusedActor.stats.Vitality,4}";
+        var AGI = $"{g.Actors.FocusedActor.stats.Agility,4}";
+        var STA = $"{g.Actors.FocusedActor.stats.Stamina,4}";
+        var INT = $"{g.Actors.FocusedActor.stats.Intelligence,4}";
+        var WIS = $"{g.Actors.FocusedActor.stats.Wisdom,4}";
+        var LCK = $"{g.Actors.FocusedActor.stats.Luck,4}";
 
         // Data a formatted stats table string.
         var stats =
@@ -86,7 +85,7 @@ public class Card : MonoBehaviour
             $"{HP}   {STR}{VIT}{AGI}{STA}{INT}{WIS}{LCK}{Environment.NewLine}";
 
         // Show the details textarea combining the stats table with extra details from DataManager.
-        details.GetComponent<Label>().text = stats + ActorRepo.Actors[g.FocusedActor.characterName].Details.Card;
+        details.GetComponent<Label>().text = stats + ActorRepo.Actors[g.Actors.FocusedActor.characterName].Details.Card;
 
         // Begin the slide-in action for the portrait.
         TriggerSlideIn();
