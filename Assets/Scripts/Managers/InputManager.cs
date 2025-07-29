@@ -72,17 +72,34 @@ public class InputManager : MonoBehaviour
                             if (g.Actors.TargetActor == target)
                             {
                                 //This is a double click...
-                                ConfirmationDialog.Show(canvas2D, "Are you sure?", onSubmit: (value) =>
-                                {
-                                    var btn = g.AbilityButtonManager.buttons.First();
-                                    var startPosition = g.AbilityButtonManager.buttons.First().transform.localPosition;
+                                //ConfirmationDialog.Show(canvas2D, "Are you sure?", onSubmit: (value) =>
+                                //{
+                                //    var btn = g.AbilityButtonManager.buttons.First();
+                                //    var startPosition = g.AbilityButtonManager.buttons.First().transform.localPosition;
 
-                                    if (value)
-                                        g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
+                                //    if (value)
+                                //        g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
 
-                                    g.SequenceManager.Add(new HideTargetIndicatorSequence());
-                                    g.SequenceManager.TriggerExecute();
-                                });
+                                //    g.SequenceManager.Add(new HideTargetIndicatorSequence());
+                                //    g.SequenceManager.TriggerExecute();
+                                //});
+
+                                //Spawn from avility button
+
+
+                                //Spawn at Actor
+                                //var startPosition = g.Actors.FocusedActor.position;
+
+                                //Spawn at button
+                                //var startPosition = g.AbilityButtonManager.buttons.First().WorldPosition();
+
+                                //Spawn at card portrait
+                                var startPosition = g.Card.PortraitWorldPosition();
+
+                                g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
+                                g.SequenceManager.Add(new HideTargetIndicatorSequence());
+                                g.SequenceManager.TriggerExecute();
+
                                 return;
                             }
 
@@ -117,7 +134,7 @@ public class InputManager : MonoBehaviour
                     switch (touch.phase)
                     {
                         case TouchPhase.Began:
-                            // Attempt to focus on an target under the touch.
+                            // Attempt to focus on an targetActor under the touch.
                             g.SelectedHeroManager.Focus();
 
                             initialTouchPosition = g.TouchPosition3D;

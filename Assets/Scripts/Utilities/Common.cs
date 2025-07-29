@@ -8,6 +8,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.Burst.Intrinsics;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
@@ -350,12 +352,24 @@ public static class PositionHelper
     public static Vector3 Nowhere = new Vector3(-1000, -1000, 0);
 }
 
+/// <summary>
+/// Provides helper utilities for converting between screen, UI, and world space in Unity.
+/// </summary>
 public static class ScreenHelper
 {
-    public static RectFloat ScreenInWorldUnits
+
+    /// <summary>
+    /// Returns an approximate world-space screen rectangle,
+    /// assuming the camera is centered at the origin.
+    /// Use only for symmetric setups (e.g., orthographic camera at (0,0)).
+    /// Not accurate for panned/zoomed or offset cameras.
+    /// </summary>
+    public static RectFloat CenteredScreenWorldRect
     {
         get
         {
+            // Calculates the top-right corner in world space, then doubles to estimate the full width/height.
+            // Assumes world origin is at the center of the screen.
             Vector2 topRightCorner = new Vector2(1f, 1f);
             Vector2 edgeVector = Camera.main.ViewportToWorldPoint(topRightCorner);
             var width = edgeVector.x * 2f;
@@ -364,22 +378,93 @@ public static class ScreenHelper
         }
     }
 
+    /// <summary>
+    /// Returns the exact visible area of the camera in world units, regardless of camera position.
+    /// Uses both bottom-left and top-right viewport corners for full accuracy.
+    /// Works for both orthographic and perspective cameras.
+    /// </summary>
+    public static RectFloat ScreenInWorldUnits
+    {
+        get
+        {
+            // Determine the Z value for projection (0 for ortho, near clip for perspective).
+            float z = Camera.main.orthographic ? 0f : Camera.main.nearClipPlane;
+
+            // Get bottom-left and top-right viewport corners in world space.
+            Vector3 bottomLeft = Camera.main.ViewportToWorldPoint(new Vector3(0f, 0f, z));
+            Vector3 topRight = Camera.main.ViewportToWorldPoint(new Vector3(1f, 1f, z));
+
+            // Calculate actual min/max for all axes.
+            float minX = Mathf.Min(bottomLeft.x, topRight.x);
+            float maxX = Mathf.Max(bottomLeft.x, topRight.x);
+            float minY = Mathf.Min(bottomLeft.y, topRight.y);
+            float maxY = Mathf.Max(bottomLeft.y, topRight.y);
+
+            // Return in standard left/right/top/bottom order.
+            return new RectFloat(minX, maxX, maxY, minY);
+        }
+    }
+
+    /// <summary>
+    /// Returns the screen rectangle in pixel coordinates (origin at bottom-left).
+    /// Useful for calculations in screen/UI space.
+    /// </summary>
     public static RectFloat ScreenInPixels
     {
         get
         {
-            return new RectFloat(0, Screen.width, Screen.height, 0);
+            float left = 0f;
+            float right = Screen.width;
+            float top = Screen.height;
+            float bottom = 0f;
+            return new RectFloat(left, right, top, bottom);
         }
     }
 
+    /// <summary>
+    /// Converts a world-space position to a screen-space position (in pixels).
+    /// </summary>
+    /// <param name="position">World position to convert.</param>
+    /// <returns>Screen-space position (pixels), with origin at bottom-left.</returns>
     public static Vector3 ConvertWorldToScreenPosition(Vector3 position)
     {
         return Camera.main.WorldToScreenPoint(position);
     }
 
+    /// <summary>
+    /// Converts a screen-space position (pixels) to a world-space position.
+    /// 
+    /// For orthographic cameras, the Z component of 'position' should be the target world Z.
+    /// For perspective cameras, it should be the distance from the camera along its forward axis.
+    /// </summary>
+    /// <param name="position">Screen-space position (pixels) with desired Z value.</param>
+    /// <returns>Corresponding world-space position.</returns>
     public static Vector3 ConvertScreenToWorldPosition(Vector3 position)
     {
         return Camera.main.ScreenToWorldPoint(position);
+    }
+
+    /// <summary>
+    /// Converts a UI Transform (e.g., RectTransform from a Canvas) to a world position
+    /// on a specified Z plane in world space.
+    /// Useful for spawning effects or objects at the UI's screen location in 3D space.
+    /// </summary>
+    /// <param name="uiTransform">Transform from a UI element (world, camera, or overlay canvas).</param>
+    /// <param name="worldPlaneZ">Target world Z coordinate (default 0 for most 2D games).</param>
+    /// <returns>Corresponding world-space position at the given Z plane.</returns>
+    public static Vector3 ConvertCanvas2DToWorldPosition(Transform uiTransform, float worldPlaneZ = 0f)
+    {
+        // Convert the UI object's world position to screen-space (pixels).
+        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(null, uiTransform.position);
+
+        // Compute the correct Z distance from the camera to the desired world Z plane.
+        float cameraZ = Camera.main.transform.position.z;
+        float distance = Mathf.Abs(worldPlaneZ - cameraZ);
+
+        // Convert the screen-space position (with Z as distance) to world-space.
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, distance));
+
+        return worldPos;
     }
 }
 
@@ -856,7 +941,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for an overshooting arc.
-    /// The projectile overshoots the target before curving back.
+    /// The projectile overshoots the targetActor before curving back.
     /// </summary>
     public static List<Vector3> Overshooting(Vector3 startPosition, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
     {
@@ -961,7 +1046,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a reverse boomerang arc.
-    /// The projectile overshoots the target and curves back dramatically.
+    /// The projectile overshoots the targetActor and curves back dramatically.
     /// </summary>
     public static List<Vector3> Boomerang(Vector3 startPosition, ActorInstance target, float travelModifier = 1.2f, float waveModifier = 0.8f)
     {
@@ -995,7 +1080,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a homing spiral effect.
-    /// The projectile moves in a corkscrew pattern toward the target.
+    /// The projectile moves in a corkscrew pattern toward the targetActor.
     /// </summary>
     public static List<Vector3> HomingSpiral(Vector3 startPosition, ActorInstance target, float travelModifier = 1f, float waveModifier = 2f)
     {
@@ -1027,7 +1112,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a zig-zag dash.
-    /// The projectile moves erratically toward the target.
+    /// The projectile moves erratically toward the targetActor.
     /// </summary>
     public static List<Vector3> ZigZagDash(Vector3 startPosition, ActorInstance target, float travelModifier = 1.1f, float waveModifier = 1.2f)
     {

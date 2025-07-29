@@ -13,7 +13,7 @@ public class PlayerStageMover : MonoBehaviour
 
     private bool isMoving = false;
     private Vector2 targetPosition;
-    private string targetStageName; // Stores the name of the target stage
+    private string targetStageName; // Stores the name of the targetActor stage
     private FadeInstance fade; // Reference to fade manager
 
   
@@ -30,7 +30,7 @@ public class PlayerStageMover : MonoBehaviour
         TextMeshProUGUI label = stageButton.GetComponentInChildren<TextMeshProUGUI>();
         targetStageName = label.text; // Repositories stage name
 
-        //Get target position
+        //Get targetActor position
         RectTransform targetTransform = stageButton.GetComponent<RectTransform>();
         targetPosition = ConvertToLocalSpace(targetTransform);
 

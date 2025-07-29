@@ -8,29 +8,30 @@ namespace Assets.Scripts.Events
 {
     public class HealAbilitySequence : SequenceEvent
     {
-        private readonly Vector3 source;
-        private readonly ActorInstance target;
+        private readonly Vector3 startPosition;
+        private readonly ActorInstance targetActor;
 
-        public HealAbilitySequence(Vector3 source, ActorInstance target)
+        public HealAbilitySequence(Vector3 startPosition, ActorInstance targetActor)
         {
-            this.source = source;
-            this.target = target;
+            this.startPosition = startPosition;
+            this.targetActor = targetActor;
         }
 
         public override IEnumerator Execute()
         {
-   
+            g.Card.BouncePortrait();
+
             // Fire the heal projectile
             var healSettings = new ProjectileSettings
             {
                 friendlyName = "Heal",
-                startPosition = source,
-                target = target,
+                startPosition = startPosition,
+                target = targetActor,
                 path = ProjectilePath.BezierCurve,
-                controlPoints = BezierCurveHelper.Gentle(source, target),
+                controlPoints = BezierCurveHelper.Gentle(startPosition, targetActor),
                 trailKey = "GreenSparkle",
                 vfxKey = "BuffLife",
-                trigger = new TriggerEvent(target.Heal(10))
+                trigger = new TriggerEvent(targetActor.Heal(10))
             };
             yield return new FireProjectileSequence(healSettings).Execute();
 

@@ -153,7 +153,7 @@ public class ActorInstance : MonoBehaviour
                 break;
 
             case SortEventType.Overlap:
-                // Initiator on top, target below
+                // Initiator on top, targetActor below
                 if (this == e.Initiator)
                     SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
                 else if (this == e.Target)
@@ -383,7 +383,7 @@ public class ActorInstance : MonoBehaviour
         }
     }
 
-    // CalculateAttackStrategy: Chooses an attackResult strategy based on weighted randomness and sets the target location.
+    // CalculateAttackStrategy: Chooses an attackResult strategy based on weighted randomness and sets the targetActor location.
     public void CalculateAttackStrategy()
     {
         // Define weights for different strategies.
@@ -392,7 +392,7 @@ public class ActorInstance : MonoBehaviour
 
         Vector2Int targetLocation = LocationHelper.Nowhere;
 
-        // SelectProfile target based on strategy.
+        // SelectProfile targetActor based on strategy.
         switch (attackStrategy)
         {
             case AttackStrategy.AttackClosest:
@@ -420,7 +420,7 @@ public class ActorInstance : MonoBehaviour
                 break;
         }
 
-        //Show the actor's location to the nearest valid attackResult location relative to the target.
+        //Show the actor's location to the nearest valid attackResult location relative to the targetActor.
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
         //Note: nextPosition is commented out and could be used for future logic.
         //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
@@ -603,7 +603,7 @@ public class ActorInstance : MonoBehaviour
         transform.position = Geometry.GetPositionByLocation(this.location);
     }
 
-    //Move: Attempts to move the actor in the specified direction if the target location is valid.
+    //Move: Attempts to move the actor in the specified direction if the targetActor location is valid.
     public void Move(Vector2Int direction)
     {
         //Abort if the new location (CurrentProfile location + direction) is out of bounds.

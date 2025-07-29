@@ -136,7 +136,7 @@ public class GameManager : Singleton<GameManager>
 
         //DEBUG: Need to add buffer so tile doesn't align to left-most and right-most edge,
         //however this causes actors to not align properly after moving for some reason
-        var oneSixth = ScreenHelper.ScreenInWorldUnits.Width / 6;
+        var oneSixth = ScreenHelper.CenteredScreenWorldRect.Width / 6;
         //var tenPercentOfOneSixth = oneSixth * 0.1f;
         //var fivePercentOfOneSixth = oneSixth * 0.05f;
 

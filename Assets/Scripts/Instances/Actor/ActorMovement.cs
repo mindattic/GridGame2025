@@ -156,7 +156,7 @@ namespace Assets.Scripts.Instances.Actor
 
         ///<summary>
         ///Checks if the actor's CurrentProfile position has moved to a new grid tile.
-        ///If so, it either updates the logical location or, if the target tile is already occupied,
+        ///If so, it either updates the logical location or, if the targetActor tile is already occupied,
         ///triggers an overlap event so that a swap can occur.
         ///</summary>
         private void CheckLocationChanged()

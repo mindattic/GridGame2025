@@ -149,12 +149,12 @@ public class TurnManager : MonoBehaviour
     {
         if (isHeroTurn)
         {
-            // Wait for player to pick target/confirm attack.
+            // Wait for player to pick targetActor/confirm attack.
             // UI/input must call PlayerEndPreAttackPhase when ready.
         }
         else if (isEnemyTurn)
         {
-            // AI pre-attack logic (target selection, prep), then auto-advance:
+            // AI pre-attack logic (targetActor selection, prep), then auto-advance:
             SetPhase(TurnPhase.Attack);
         }
     }

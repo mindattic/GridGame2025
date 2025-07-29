@@ -47,7 +47,7 @@ public class AbilityButtonManager : MonoBehaviour
     {
         if (ability.requiresTarget)
         {
-            // switch into target mode
+            // switch into targetActor mode
             g.InputManager.inputMode = InputMode.AbilityTarget;
         }
         else

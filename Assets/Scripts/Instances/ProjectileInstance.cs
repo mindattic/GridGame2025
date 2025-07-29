@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,11 +50,10 @@ public class ProjectileInstance : MonoBehaviour
     {
         startPosition = projectile.startPosition;
         endPosition = projectile.target.position;
-        transform.position = startPosition;
-
+      
         TrailEffectAsset asset = TrailEffectRepo.TrailEffects[projectile.trailKey];
-        trailInstance = Instantiate(asset.Prefab, transform.position, Quaternion.identity);
-     
+        trailInstance = Instantiate(asset.Prefab, transform.position, Quaternion.identity, transform);
+        trailInstance.name = $"TailEffect_{projectile.friendlyName}_{Guid.NewGuid():N}";
         trailInstance.transform.localPosition = asset.RelativeOffset;
         trailInstance.transform.localEulerAngles = asset.AngularRotation;
         trailInstance.transform.localScale = g.TileScale.MultiplyBy(asset.RelativeScale);
@@ -76,20 +76,21 @@ public class ProjectileInstance : MonoBehaviour
         float elapsed = 0f;
         Vector3 direction = (endPosition - startPosition).normalized; // Travel direction
         Vector3 perpendicular = Vector3.Cross(direction, Vector3.up).normalized; // Perpendicular axis
+        Vector3 position;
 
         while (elapsed < projectile.duration)
         {
             float t = elapsed / projectile.duration;
 
             // Interpolate position along the travel curve
-            Vector3 pos = Vector3.Lerp(startPosition, endPosition, projectile.travelCurve.Evaluate(t));
+            position = Vector3.Lerp(startPosition, endPosition, projectile.travelCurve.Evaluate(t));
 
             // Calculate wave offset along the perpendicular direction
             float waveOffset = projectile.waveCurve.Evaluate(t);
-            pos += perpendicular * waveOffset;
+            position += perpendicular * waveOffset;
 
             // Apply position update
-            trailInstance.transform.position = pos;
+            transform.position = position;
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -105,24 +106,30 @@ public class ProjectileInstance : MonoBehaviour
         }
 
         float elapsed = 0f;
+        float t;
+        Vector3 position;
         while (elapsed < projectile.duration)
         {
-            float t = elapsed / projectile.duration;
-            Vector3 pos = EvaluateBezier(projectile.controlPoints, t);
+            t = elapsed / projectile.duration;
+            position = EvaluateBezier(projectile.controlPoints, t);
 
-            trailInstance.transform.position = pos;
+            // Move the projectile instance, not just the trail!
+            transform.position = position;
+
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         // Snap to final position
-        trailInstance.transform.position = projectile.controlPoints[projectile.controlPoints.Count - 1];
+        transform.position = projectile.controlPoints[projectile.controlPoints.Count - 1];
     }
+
 
     private Vector3 EvaluateBezier(List<Vector3> points, float t)
     {
         if (points.Count == 1)
             return points[0];
+
 
         List<Vector3> newPoints = new List<Vector3>();
         for (int i = 0; i < points.Count - 1; i++)
@@ -217,6 +224,9 @@ public class ProjectileInstance : MonoBehaviour
 
         VFXAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];
         yield return g.VfxManager.Spawn(vfxResource, projectile.target.position, projectile.trigger);
+
+        if (trailInstance != null)
+            Destroy(trailInstance);
     }
 
 

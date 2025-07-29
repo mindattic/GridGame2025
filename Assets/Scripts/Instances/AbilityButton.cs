@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using g = Assets.Helpers.GameManagerHelper;
 
 public class AbilityButton : MonoBehaviour
 {
@@ -34,8 +35,16 @@ public class AbilityButton : MonoBehaviour
             Debug.LogError("AbilityButton.button is null");
         }
     }
-}
 
+
+    public Vector3 WorldPosition()
+    {
+        return ScreenHelper.ConvertCanvas2DToWorldPosition(button.transform);
+    }
+
+
+
+}
 
 
 public class Ability
@@ -49,6 +58,6 @@ public class Ability
     public void Activate(ActorInstance user, ActorInstance target)
     {
         // Implement actual ability logic
-        Debug.Log($"{user.name} used {name} on {(target ? target.name : "no target")}");
+        Debug.Log($"{user.name} used {name} on {(target ? target.name : "no targetActor")}");
     }
 }

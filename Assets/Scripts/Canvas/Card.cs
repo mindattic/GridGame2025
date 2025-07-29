@@ -133,4 +133,56 @@ public class Card : MonoBehaviour
         // Reset the portrait's position to the offscreen starting position.
         portrait.anchoredPosition = offscreenPosition;
     }
+
+
+    public Vector3 PortraitWorldPosition()
+    {
+        return ScreenHelper.ConvertCanvas2DToWorldPosition(portrait.transform);
+    }
+
+
+    /// <summary>
+    /// Triggers a quick bounce animation on the portrait: up, then down.
+    /// </summary>
+    public void BouncePortrait(float bounceDistance = 40f, float bounceDuration = 0.25f)
+    {
+        StartCoroutine(BouncePortraitCoroutine(bounceDistance, bounceDuration));
+    }
+
+    /// <summary>
+    /// Coroutine to animate the portrait bouncing up then back down.
+    /// </summary>
+    private IEnumerator BouncePortraitCoroutine(float bounceDistance, float bounceDuration)
+    {
+        // Store original anchored position
+        Vector2 originalPos = portrait.anchoredPosition;
+        Vector2 upPos = originalPos + Vector2.up * bounceDistance;
+        float halfDuration = bounceDuration / 2f;
+        float elapsed = 0f;
+
+        // Move up
+        while (elapsed < halfDuration)
+        {
+            float t = elapsed / halfDuration;
+            portrait.anchoredPosition = Vector2.Lerp(originalPos, upPos, Mathf.SmoothStep(0f, 1f, t));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        portrait.anchoredPosition = upPos;
+
+        // Move down
+        elapsed = 0f;
+        while (elapsed < halfDuration)
+        {
+            float t = elapsed / halfDuration;
+            portrait.anchoredPosition = Vector2.Lerp(upPos, originalPos, Mathf.SmoothStep(0f, 1f, t));
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        portrait.anchoredPosition = originalPos;
+    }
+
+
+
+
 }

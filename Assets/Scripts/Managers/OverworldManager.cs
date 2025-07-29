@@ -127,7 +127,7 @@ public class OverworldManager : MonoBehaviour
         float offsetX = -viewportSize.x;
         float offsetY = viewportSize.y * 3.33333f;
 
-        // Adjust target position by applying calculated offsets
+        // Adjust targetActor position by applying calculated offsets
         float adjustedX = targetLocalPosition.x + offsetX + viewportSize.x / 2;
         float adjustedY = targetLocalPosition.y + offsetY - viewportSize.y / 2; // Negative Y adjustment due to UI axis
 
@@ -164,7 +164,7 @@ public class OverworldManager : MonoBehaviour
     //    float offsetX = -viewportSize.x;
     //    float offsetY = viewportSize.y * 3.33333f;
 
-    //    // Adjust target position by applying calculated offsets
+    //    // Adjust targetActor position by applying calculated offsets
     //    float adjustedX = targetLocalPosition.x + offsetX + viewportSize.x / 2;
     //    float adjustedY = targetLocalPosition.y + offsetY - viewportSize.y / 2; // Negative Y adjustment due to UI axis
 

@@ -31,9 +31,11 @@ public class ProjectileManager : MonoBehaviour
 
     public void Despawn(string name)
     {
-
-        Destroy(projectiles[name].gameObject);
-        projectiles.Remove(name);
+        if (projectiles.TryGetValue(name, out var instance))
+        {
+            Destroy(instance.gameObject);
+            projectiles.Remove(name);
+        }
     }
 
     public void EnqueueHeal(Vector3 startPosition, ActorInstance target)
