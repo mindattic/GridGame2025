@@ -144,15 +144,16 @@ public class Card : MonoBehaviour
     /// <summary>
     /// Triggers a quick bounce animation on the portrait: up, then down.
     /// </summary>
-    public void BouncePortrait(float bounceDistance = 40f, float bounceDuration = 0.25f)
+    public void BouncePortraitAsync(float percentOfScreenHeight = 0.03f, float bounceDuration = 0.3333f)
     {
-        StartCoroutine(BouncePortraitCoroutine(bounceDistance, bounceDuration));
+        float bounceDistance = Screen.height * percentOfScreenHeight;
+        StartCoroutine(BouncePortrait(bounceDistance, bounceDuration));
     }
 
     /// <summary>
     /// Coroutine to animate the portrait bouncing up then back down.
     /// </summary>
-    private IEnumerator BouncePortraitCoroutine(float bounceDistance, float bounceDuration)
+    private IEnumerator BouncePortrait(float bounceDistance, float bounceDuration)
     {
         // Store original anchored position
         Vector2 originalPos = portrait.anchoredPosition;

@@ -19,7 +19,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            g.Card.BouncePortrait();
+            g.Card.BouncePortraitAsync();
 
             // Fire the heal projectile
             var healSettings = new ProjectileSettings
