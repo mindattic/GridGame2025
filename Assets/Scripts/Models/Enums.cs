@@ -170,7 +170,8 @@ public enum InputMode
 {
     AbilityTarget,
     EnemyTurn,
-    HeroTurn
+    HeroTurn,
+    Cutscene
 }
 
 public enum LogLevel

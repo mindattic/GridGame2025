@@ -433,10 +433,24 @@ public class ActorInstance : MonoBehaviour
     }
 
     //FireDamage: Coroutine to display fire damage textarea and wait until the next frame.
+    public IEnumerator FireDamageAsync(float amount)
+    {
+        StartCoroutine(FireDamage(amount));
+        yield return null;
+    }
+
+    //FireDamage: Coroutine to display fire damage textarea and wait until the next frame.
     public IEnumerator FireDamage(float amount)
     {
         g.DamageTextManager.Spawn($"Fireball: - {amount} HP", position);
         yield return Wait.UntilNextFrame();
+    }
+
+    //Heal: Coroutine to display healing textarea and wait until the next frame.
+    public IEnumerator HealAsync(float amount)
+    {
+        StartCoroutine(Heal(amount));
+        yield return null;
     }
 
     //Heal: Coroutine to display healing textarea and wait until the next frame.

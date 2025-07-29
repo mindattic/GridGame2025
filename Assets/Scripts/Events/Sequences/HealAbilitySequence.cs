@@ -19,6 +19,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
+            g.InputManager.inputMode = InputMode.Cutscene;
             g.Card.BouncePortraitAsync();
 
             // Fire the heal projectile
