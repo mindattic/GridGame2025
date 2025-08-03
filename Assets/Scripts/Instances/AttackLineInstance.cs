@@ -53,10 +53,10 @@ namespace Game.Instances
 
             if (actorPair.axis == Axis.Vertical)
             {
-                ul = new Vector3(startPosition.x - offset, startPosition.y - offset, 0);
-                ur = new Vector3(startPosition.x + offset, startPosition.y - offset, 0);
-                lr = new Vector3(endPosition.x + offset, endPosition.y + offset, 0);
-                ll = new Vector3(endPosition.x - offset, endPosition.y + offset, 0);
+                ul = new Vector3(endPosition.x - offset, endPosition.y + offset, 0);
+                ur = new Vector3(endPosition.x + offset, endPosition.y + offset, 0);
+                lr = new Vector3(startPosition.x + offset, startPosition.y - offset, 0);
+                ll = new Vector3(startPosition.x - offset, startPosition.y - offset, 0);
                 points = new Vector3[] { ul, ur, lr, ll, ul };
             }
             else if (actorPair.axis == Axis.Horizontal)

@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    //Settings
+    public TextureResolution textureResolution = TextureResolution.NormalResolution;
 
     //Device
     [HideInInspector] public string deviceType;
@@ -124,9 +126,7 @@ public class GameManager : Singleton<GameManager>
     public bool reloadThumbnailSettings = false;
     public float gameSpeed = 1.0f;
 
-    //Settings
-    public TextureResolution textureResolution = TextureResolution.NormalResolution;
-
+  
     private void Awake()
     {
         if (!ProfileRepo.HasProfiles())
