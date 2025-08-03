@@ -288,6 +288,7 @@
     <None Include="Assets\Shader\ThirdParty\StartWaveAlphaBlended.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\Scripts\files.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\Shader\ThirdParty\StencilMasked.shader" />
     <None Include="Assets\Shader\ThirdParty\uvnoise.shader" />
