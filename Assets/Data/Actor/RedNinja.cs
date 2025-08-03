@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public static class RedNinja
 {
     public static ActorData Data()
@@ -44,7 +44,7 @@ public static class RedNinja
                 Position = new Vector3(0.5f, -1.4f, 0f),
                 Scale = new Vector3(5f, 5f, 0),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.RedNinja}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.RedNinja}"),
             Details = new ActorDetails
             {
                 Description = "A deadly assassin wielding forbidden arts.",

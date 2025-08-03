@@ -15,18 +15,38 @@ MonoBehaviour:
   m_GroupName: Actor-Portraits
   m_GUID: 3e03276e0d1cefe4c9254557565a9d9f
   m_SerializeEntries:
+  - m_GUID: 0651fe5df9e061b479db0f0db6deb8f5
+    m_Address: 1024/Paladin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 06cb1203e0f062847bd9dc1e1ed3e3eb
+    m_Address: 1024/PandaGirl
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 072c7035075f31a46afbd448bb571a43
-    m_Address: Actor-Portraits/Cleric
+    m_Address: 4096/Cleric
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0cd7696cbee86d6458747275dd4f09c0
-    m_Address: Actor-Portraits/Captain00
+    m_Address: 4096/Captain00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1109e0450f08ba04187607ccf3450294
+    m_Address: 1024/Vampire
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 198845a5fc128394c90f62751bc4552b
+    m_Address: 1024/Captain00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1bb3a715744e4de44bb3a2e077c527c4
-    m_Address: Actor-Portraits/Soldier03
+    m_Address: 4096/Soldier03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -35,8 +55,33 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1ff1d3580ae0daf4bab302f8d818da0c
+    m_Address: 1024/Cleric
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2262c640efa569e46b392011d401017c
-    m_Address: Actor-Portraits/Vampire
+    m_Address: 4096/Vampire
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24c3515e985c3034faca70af0a1812a7
+    m_Address: 1024/Soldier01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 25197a4aaf329454ab2b3236ad1a1127
+    m_Address: 4096/WhiteWitch
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27b945fcdf5911b4093f986178c4b995
+    m_Address: 1024/Yeti
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2e928e89073241d40b1e911f74301e4b
+    m_Address: 1024/BlackWitch
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -45,28 +90,78 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3eb1ace197e3e55449917de4001b6299
+    m_Address: 1024/Thief
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4560c0fd434ee6243b6e31347f7a9e76
+    m_Address: 1024/Soldier00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 504b8afbba1becb45b2828993099c5cb
+    m_Address: 4096/ShieldMaiden.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 518bd1155d0288048b25a7dfb95e8e90
-    m_Address: Actor-Portraits/Scorpion
+    m_Address: 4096/Scorpion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52a4dcfa1a4f08d438901430a6117cf2
+    m_Address: 1024/ShieldMaiden
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5acc714066fcdcd489c1450c04ba1403
+    m_Address: 1024/GreenNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b56915745b034342b3df752a3c88b61
+    m_Address: 1024/Pugilist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c17928f3e5be8842a977d793720632b
+    m_Address: 1024/Scorpion
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d9c31ae13a3f0e4895520df80271803
+    m_Address: 1024/Sellsword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62169cf211d29564dad2396b8f68eb95
+    m_Address: 1024/Engineer
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 62b2bf8fd02edeb4baab8026b6689c28
-    m_Address: Actor-Portraits/Bat
+    m_Address: 4096/Bat
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 650ff7b70e8536740a41c6e6a4f471c9
-    m_Address: Actor-Portraits/Pugilist
+    m_Address: 4096/Pugilist
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6895a8cc98e7e334897d44f67697fd6a
+    m_Address: 1024/Soldier03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 72bef3fdc53d888449c4855675a9dbee
-    m_Address: Actor-Portraits/Barbarian
+    m_Address: 4096/Barbarian
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 793ffdc69cb706a42be2396bf149f91c
-    m_Address: Actor-Portraits/Soldier01
+    m_Address: 4096/Soldier01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -75,58 +170,123 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d9bf3a2285c0dd40a7626286837a625
+    m_Address: 1024/Ronin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81ef1ab232e4b5a47884ee4e44721f30
+    m_Address: 4096/BlackWitch.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8214d801f0e9abe4b9804ea47188e517
+    m_Address: 1024/Bat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 82450d315a87a7b449d3af5d8b729dc1
-    m_Address: Actor-Portraits/Slime
+    m_Address: 4096/Slime
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8c507e947ca00714eb63a958f8c66563
-    m_Address: Actor-Portraits/RedNinja
+    m_Address: 4096/RedNinja
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 90e9568d06ce15c49a6831d07e4ee717
-    m_Address: Actor-Portraits/PandaGirl
+    m_Address: 4096/PandaGirl
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9269238740f94b24f96fad657016cabe
+    m_Address: 1024/WhiteWitch
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dd1e802313025b43bbd98ab8408ca31
+    m_Address: 1024/Slime
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a334c211257faed43b0ab488d068af33
-    m_Address: Actor-Portraits/Soldier02
+    m_Address: 4096/Soldier02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a399d5d81c8ef6b4dac3dba8c9864e22
-    m_Address: Actor-Portraits/Soldier00
+    m_Address: 4096/Soldier00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a9a1220991cd3674887a46429488d42a
-    m_Address: Actor-Portraits/Ronin
+    m_Address: 4096/Ronin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b011d9ffb88d3df48a8c3a4420e7456e
-    m_Address: Actor-Portraits/GreenNinja
+    m_Address: 4096/GreenNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd207ee31b199eb409ea15a7cce48150
+    m_Address: 4096/Engineer.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c4ef9ab115a56c24289b15f8802be7d2
+    m_Address: 4096/BlackNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfe7dabc68fc4e944a3f43be7e2479c6
+    m_Address: 1024/Soldier02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d3b71ea3972ad6e4fb41c7ad7cea2b19
-    m_Address: Actor-Portraits/Sellsword
+    m_Address: 4096/Sellsword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d59cff1210639a743901d71c67865f5b
+    m_Address: 1024/RedNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dadc522990db9d44aba7e34d506fe280
+    m_Address: 1024/BlackNinja
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: df703c1a12fb23a4496807d0328c74df
-    m_Address: Actor-Portraits/Yeti
+    m_Address: 4096/Yeti
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e05ffe7665f763f429173980c11f9e47
-    m_Address: Actor-Portraits/Paladin
+    m_Address: 4096/Paladin
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e52ead1d7ba64504b875e508acf97f9a
+    m_Address: 1024/Barbarian
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e61841d3e59f89d4caf454e7b2b324ee
+    m_Address: 1024/Fighter
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f0e0c3f4a1d67504ab6131b1c8035947
-    m_Address: Actor-Portraits/Thief
+    m_Address: 4096/Thief
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fefd72e3c12f83047b4286be44ed0f96
+    m_Address: 4096/Fighter.png
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

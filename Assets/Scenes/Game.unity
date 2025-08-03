@@ -5543,6 +5543,7 @@ MonoBehaviour:
   previousGameFocus: 0
   reloadThumbnailSettings: 0
   gameSpeed: 1
+  textureResolution: 1024
 --- !u!114 &1751276278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6302,7 +6303,7 @@ GameObject:
   - component: {fileID: 1754065673}
   - component: {fileID: 1754065674}
   - component: {fileID: 1754065675}
-  m_Layer: 15
+  m_Layer: 0
   m_Name: BoardOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6365,8 +6366,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1438895807
-  m_SortingLayer: 4
+  m_SortingLayerID: 1198754983
+  m_SortingLayer: 5
   m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 8d84dfdba620a0145829a4855d50b252, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.76862746}

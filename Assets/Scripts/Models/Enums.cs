@@ -322,3 +322,9 @@ public enum WeaponType
     Sword,
     Wand
 }
+
+public enum TextureResolution
+{
+    NormalResolution = 1024,
+    HighResolution = 4096
+}

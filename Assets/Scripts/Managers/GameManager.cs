@@ -124,6 +124,9 @@ public class GameManager : Singleton<GameManager>
     public bool reloadThumbnailSettings = false;
     public float gameSpeed = 1.0f;
 
+    //Settings
+    public TextureResolution textureResolution = TextureResolution.NormalResolution;
+
     private void Awake()
     {
         if (!ProfileRepo.HasProfiles())

@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public static class Slime
 {
     public static ActorData Data()
@@ -44,7 +44,7 @@ public static class Slime
                 Position = new Vector3(0.5f, 0.5f, 0f),
                 Scale = new Vector3(2f, 2f, 0f)
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Slime}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Slime}"),
             Details = new ActorDetails
             {
                 Description = "A jiggly nuisance barely held together.",

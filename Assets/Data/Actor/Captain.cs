@@ -3,7 +3,7 @@
     using Assets.Scripts.Models;
     using System.Collections.Generic;
     using UnityEngine;
-
+    using g = Assets.Helpers.GameManagerHelper;
     public static class Captain
     {
         public static ActorData Data()
@@ -46,7 +46,7 @@
                     Position = new Vector3(0.41f, -1.5f, 0f),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
-                Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Captain00}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Captain00}"),
                 Details = new ActorDetails
                 {
                     Description = "A captain.",

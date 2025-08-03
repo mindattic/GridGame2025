@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public static class Thief
 {
     public static ActorData Data()
@@ -44,7 +44,7 @@ public static class Thief
                 Position = new Vector3(0.61f, -1.56f, 0f),
                 Scale = new Vector3(5.3f, 5.3f, 0f),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Thief}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Thief}"),
             Details = new ActorDetails
             {
                 Description = "A nimble rogue with sticky fingers.",

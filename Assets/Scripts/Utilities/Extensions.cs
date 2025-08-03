@@ -94,9 +94,26 @@ public static class EnumExtensions
         return attribute == null ? value.ToString() : attribute.Description;
     }
 
+    public static string ToName(this Enum value)
+    {
+        return Enum.GetName(value.GetType(), value);
+    }
+
     public static T ToEnum<T>(this string value, T defaultValue = default) where T : struct, Enum
     {
         return Enum.TryParse(value, true, out T result) ? result : defaultValue;
+    }
+
+    // Convert enum to int
+    public static int ToInt(this Enum value)
+    {
+        return Convert.ToInt32(value);
+    }
+
+    // Convert enum to float
+    public static float ToFloat(this Enum value)
+    {
+        return Convert.ToSingle(value);
     }
 }
 

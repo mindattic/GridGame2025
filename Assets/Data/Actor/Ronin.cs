@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public static class Ronin
 {
     public static ActorData Data()
@@ -44,7 +44,7 @@ public static class Ronin
                 Position = new Vector3(0.35f, -1.34f, 0f),
                 Scale = new Vector3(5f, 5f, 0f),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Ronin}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Ronin}"),
             Details = new ActorDetails
             {
                 Description = "A masterless warrior guided by honor.",

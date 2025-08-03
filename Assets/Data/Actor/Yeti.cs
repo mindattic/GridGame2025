@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public static class Yeti
 {
     public static ActorData Data()
@@ -44,7 +44,7 @@ public static class Yeti
                 Position = new Vector3(1.3f, -1f, 0),
                 Scale = new Vector3(5f, 5f, 0),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Yeti}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Yeti}"),
             Details = new ActorDetails
             {
                 Description = "A towering beast of cold fury.",

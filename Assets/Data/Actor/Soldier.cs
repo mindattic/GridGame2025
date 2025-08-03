@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public static class Soldier00
 {
     public static ActorData Data()
@@ -33,7 +33,7 @@ public static class Soldier00
                 Position = new Vector3(0.71f, -1.5f, 0f),
                 Scale = new Vector3(5f, 5f, 0f),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier00}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Soldier00}"),
             Details = new ActorDetails
             {
                 Description = "A low-ranked fort guard.",
@@ -75,7 +75,7 @@ public static class Soldier01
                 Position = new Vector3(0.5f, -1.4f, 0f),
                 Scale = new Vector3(5f, 5f, 0f),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier01}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Soldier01}"),
             Details = new ActorDetails
             {
                 Description = "A rookie trying too hard.",
@@ -121,7 +121,7 @@ public static class Soldier02
                 Position = new Vector3(0.5f, -0.55f, 0f),
                 Scale = new Vector3(3f, 3f, 0f),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier02}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Soldier02}"),
             Details = new ActorDetails
             {
                 Description = "A jittery scout with sharp eyes.",
@@ -163,7 +163,7 @@ public static class Soldier03
                 Position = new Vector3(0.7f, -1.4f, 0f),
                 Scale = new Vector3(5f, 5f, 0f),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Soldier03}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Soldier03}"),
             Details = new ActorDetails
             {
                 Description = "A washed-up old fighter.",

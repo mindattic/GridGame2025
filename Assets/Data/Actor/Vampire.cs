@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public static class Vampire
 {
     public static ActorData Data()
@@ -44,7 +44,7 @@ public static class Vampire
                 Position = new Vector3(0.5f, -1.4f, 0),
                 Scale = new Vector3(5f, 5f, 0),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Vampire}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Vampire}"),
             Details = new ActorDetails
             {
                 Description = "A shadowy predator who thrives in darkness.",

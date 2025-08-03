@@ -1,6 +1,7 @@
 ﻿
 using Assets.Scripts.Models;
 using UnityEngine;
+using g = Assets.Helpers.GameManagerHelper;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ActorThumbnail : MonoBehaviour
@@ -33,9 +34,8 @@ public class ActorThumbnail : MonoBehaviour
         noiseSeed = new Vector2(Random.Float(0f, 100f), Random.Float(0f, 100f));
 
         // Scale multiplier proportionally
-        float baseTextureSize = 4096f;
         float textureSize = Mathf.Max(texture.width, texture.height);
-        rangeMultiplier = 0.05f * (textureSize / baseTextureSize);
+        rangeMultiplier = 0.05f * (textureSize / g.TextureResolution.ToFloat());
 
 
         panFocus = 0.25f;

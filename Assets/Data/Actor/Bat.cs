@@ -3,7 +3,7 @@
     using Assets.Scripts.Models;
     using System.Collections.Generic;
     using UnityEngine;
-
+    using g = Assets.Helpers.GameManagerHelper;
     public static class Bat
     {
         public static ActorData Data()
@@ -46,7 +46,7 @@
                     Position = new Vector3(0.5f, 0.5f, 0f),
                     Scale = new Vector3(2f, 2f, 0),
                 },
-                Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Bat}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Bat}"),
                 Details = new ActorDetails
                 {
                     Description = "A flying menace.",

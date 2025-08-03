@@ -592,6 +592,10 @@
       <HintPath>Library\PackageCache\com.unity.ext.nunit@031a54704bff\net40\unity-custom\nunit.framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SingularityGroup.HotReload.EditorDependencies">
+      <HintPath>Packages\com.singularitygroup.hotreload\Editor\SingularityGroup.HotReload.EditorDependencies.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Sentry.System.Memory">
       <HintPath>Packages\com.bezi.sidekick\Plugins\Sentry.System.Memory.dll</HintPath>
       <Private>False</Private>
@@ -1396,12 +1400,12 @@
       <HintPath>Library\ScriptAssemblies\Unity.Collections.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="PPv2URPConverters">
-      <HintPath>Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Unity.InternalAPIEditorBridge.001">
       <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.001.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PPv2URPConverters">
+      <HintPath>Library\ScriptAssemblies\PPv2URPConverters.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Addressables">
@@ -1613,6 +1617,10 @@
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}</Project>
       <Name>Assembly-CSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="SingularityGroup.HotReload.Runtime.Public.csproj">
+      <Project>{A7E069DE-F518-4769-82CE-AED846DD8100}</Project>
+      <Name>SingularityGroup.HotReload.Runtime.Public</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

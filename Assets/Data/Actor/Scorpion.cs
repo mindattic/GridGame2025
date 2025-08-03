@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-
+using g = Assets.Helpers.GameManagerHelper;
 public static class Scorpion
 {
     public static ActorData Data()
@@ -44,7 +44,7 @@ public static class Scorpion
                 Position = new Vector3(0.5f, 0.28f, 0f),
                 Scale = new Vector3(2f, 2f, 0f),
             },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Scorpion}"),
+            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
             Details = new ActorDetails
             {
                 Description = "A hulking brute with a barbed tail and armored shell.",

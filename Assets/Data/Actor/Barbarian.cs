@@ -3,6 +3,7 @@
     using Assets.Scripts.Models;
     using System.Collections.Generic;
     using UnityEngine;
+    using g = Assets.Helpers.GameManagerHelper;
 
     public static class Barbarian
     {
@@ -46,7 +47,7 @@
                     Position = new Vector3(0.5f, -1.1f, 0f),
                     Scale = new Vector3(5f, 5f, 0),
                 },
-                Portrait = AssetHelper.LoadAsset<Sprite>($"Actor-Portraits/{CharacterHelper.Barbarian}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Barbarian}"),
                 Details = new ActorDetails
                 {
                     Description = "A warrior driven by rage.",

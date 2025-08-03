@@ -32,6 +32,11 @@ namespace Assets.Helpers
             set => GameManager.instance.gameSpeed = value;
         }
 
+        public static TextureResolution TextureResolution
+        {
+            get => GameManager.instance.textureResolution;
+            set => GameManager.instance.textureResolution = value;
+        }
 
         public static AudioSource SoundSource => GameManager.instance.soundSource;
 
