@@ -94,7 +94,11 @@ public static class GameObjectHelper
         public const string WaveAnnouncement = "Canvas2D/WaveAnnouncement";
         public const string CanvasOverlay = "Canvas2D/CanvasOverlay";
         public const string TimerBar2D = "Canvas2D/TimerBar2D";
-        public const string TimerBar3D = "TimerBar3D";
+
+        public const string Portraits = "Canvas2D/Portraits";
+
+
+        //public const string TimerBar3D = "TimerBar3D";
 
 
         public const string CoinBar = "Canvas2D/CoinBar";
@@ -1353,7 +1357,7 @@ public static class DateTimeHelper
 //public static class ResourceFolderHelper
 //{
 //    public static string Backgrounds = "Backgrounds";
-//    public static string Portraits = "Portraits";
+//    public static string PortraitsContainer = "PortraitsContainer";
 //    public static string SoundEffects = "SoundEffects";
 //    public static string MusicTracks = "MusicTracks";
 //    public static string Materials = "Materials";

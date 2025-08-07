@@ -160,7 +160,7 @@ public class PartyManager : MonoBehaviour
             slide.name = $"RosterSlide_{member.Character}";
 
             // Load the sprite asynchronously
-            string address = $"Actor-Portraits/{member.Character}";
+            string address = $"Actor-PortraitsContainer/{member.Character}";
             var sprite = AssetHelper.LoadAsset<Sprite>(address);
 
             // Load the instance with all required variables

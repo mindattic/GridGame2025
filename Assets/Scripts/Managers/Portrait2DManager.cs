@@ -20,7 +20,7 @@ public class Portrait2DManager : MonoBehaviour
     // For actor lookups
     public ActorInstance actor;
 
-    // Default sorting order for new portraits
+    // Default sorting order for new portraitsContainer
     public int sortingOrder;
 
     private void Awake()
@@ -47,7 +47,7 @@ public class Portrait2DManager : MonoBehaviour
         instance.actor = actor;
         instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
-        instance.parent = g.Canvas2D.transform;
+        instance.parent = g.PortraitsContainer;
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
         instance.scale = new Vector3(1f, 1f, 1f);
         instance.image.color = new Color(1f, 1f, 1f, 1);
@@ -57,7 +57,7 @@ public class Portrait2DManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a pair of portraits sliding in from opposite sides.
+    /// Spawns a pair of portraitsContainer sliding in from opposite sides.
     /// </summary>
     public IEnumerator SpawnPair(ActorPair actorPair)
     {

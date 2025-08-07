@@ -94,7 +94,7 @@ public class Portrait3DManager : MonoBehaviour
         if (instance != null)
         {
             yield return instance.PopOut();
-            //portraits.Remove(instance);
+            //portraitsContainer.Remove(instance);
             //Destroy(instance.gameObject);
         }
         else

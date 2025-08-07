@@ -106,11 +106,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public FadeInstance fade;
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TimerBar2D timerBar2D;
-    [HideInInspector] public TimerBar3D timerBar3D;
-
-
-
-
+    [HideInInspector] public RectTransform portraitsContainer;
+    //[HideInInspector] public TimerBar3D timerBar3D;
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
     [HideInInspector] public List<SupportLineInstance> supportLines;
@@ -169,7 +166,7 @@ public class GameManager : Singleton<GameManager>
         canvas2D = GameObject.Find(GameObjectHelper.Game.Canvas2D).GetComponent<Canvas>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
         timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D).GetComponent<TimerBar2D>();
-
+        portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();
 
         coinBar = GameObject.Find(GameObjectHelper.Game.CoinBar).GetComponent<CoinBar>();
         waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
@@ -226,7 +223,7 @@ public class GameManager : Singleton<GameManager>
 
 
 
-        timerBar3D = GameObject.Find(GameObjectHelper.Game.TimerBar3D).GetComponent<TimerBar3D>();
+        //timerBar3D = GameObject.Find(GameObjectHelper.Game.TimerBar3D).GetComponent<TimerBar3D>();
 
 
         #region Platform Dependent Compilation
