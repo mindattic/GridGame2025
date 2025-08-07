@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Editor\DebugWindow.cs" />
     <Compile Include="Assets\Editor\CustomPlayBehaviour.cs" />
+    <Compile Include="Assets\Editor\TimerBarEditor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages\com.bezi.sidekick\Editor\BeziSidekickInternal.dll" />

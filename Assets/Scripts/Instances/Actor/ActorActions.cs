@@ -7,7 +7,7 @@ using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
-    // ActorActions encapsulates a collection of animated action for an actor actors,
+    // ActorActions encapsulates a textStyles of animated action for an actor actors,
     // such as shaking, dodging, bumping, growing, spinning, fading in, and weapon wiggle.
     // These action are implemented using coroutines that interpolate values over time.
     public class ActorActions

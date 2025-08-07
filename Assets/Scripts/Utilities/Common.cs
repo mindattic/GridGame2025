@@ -717,6 +717,18 @@ public static class Increment
     public const float Opaque = 1f;
     public const float Transparent = 0f;
 
+    //Common fractional constants 
+    public const float Half = 0.5f;
+    public const float OneThird = 0.33333334f;
+    public const float OneFourth = 0.25f;
+    public const float OneFifth = 0.2f;
+    public const float OneSixth = 0.16666667f;
+    public const float OneSeventh = 0.14285715f;
+    public const float OneEighth = 0.125f;
+    public const float OneNinth = 0.11111111f;
+
+
+
     public static class HealthBar
     {
         public const float Drain = 1.0f;

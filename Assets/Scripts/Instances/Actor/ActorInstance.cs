@@ -479,7 +479,7 @@ public class ActorInstance : MonoBehaviour
         // Immediately display damage textarea and play sound.
         //var fontSize = Math.Clamp(attackResult.Damage, 24f, 32f);
 
-        g.DamageTextManager.Spawn(damage.ToString(), position, TextMotionStyle.Bounce);
+        g.DamageTextManager.Spawn(damage.ToString(), position, "Damage");
         g.AudioManager.Play($"Slash{Random.Int(1, 7)}");
 
         //if (isDying)

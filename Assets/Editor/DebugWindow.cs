@@ -648,29 +648,31 @@ public class DebugWindow : EditorWindow
     {
         switch (selectedOption)
         {
+
+            case DebugOptions.ArrangeSingleCombo: g.DebugManager.ArrangeSingleCombo(); break;
+            case DebugOptions.ArrangeTripleCombo: g.DebugManager.ArrangeTripleCombo(); break;
+            case DebugOptions.Bump: g.DebugManager.Bump(); break;
+            case DebugOptions.Dodge: g.DebugManager.Dodge(); break;
+            case DebugOptions.Fireball: g.DebugManager.Fireball(); break;
+            case DebugOptions.Heal: g.DebugManager.Heal(); break;
             case DebugOptions.KillEnemies: g.DebugManager.KillEnemies(); break;
-            case DebugOptions.DodgeTest: g.DebugManager.DodgeTest(); break;
-            case DebugOptions.SpinTest: g.DebugManager.SpinTest(); break;
-            case DebugOptions.ShakeTest: g.DebugManager.ShakeTest(); break;
-            case DebugOptions.SingleCombo: g.DebugManager.SingleCombo(); break;
-            case DebugOptions.TripleCombo: g.DebugManager.TripleCombo(); break;
-            case DebugOptions.CoinTest: g.DebugManager.CoinTest(); break;
-            case DebugOptions.PortraitSlideIn: g.DebugManager.PortraitSlideIn(); break;
             case DebugOptions.PortraitPopIn: g.DebugManager.PortraitPopIn(); break;
-            case DebugOptions.SpawnDamageText: g.DebugManager.SpawnDamageText(); break;
-            case DebugOptions.BumpTest: g.DebugManager.BumpTest(); break;
-            case DebugOptions.SupportLineTest: g.DebugManager.SupportLineTest(); break;
-            case DebugOptions.AttackLineTest: g.DebugManager.AttackLineTest(); break;
-            case DebugOptions.EnemyAttackTest: g.DebugManager.EnemyAttackTest(); break;
-            case DebugOptions.TitleTest: g.DebugManager.TitleTest(); break;
-            case DebugOptions.TooltipTest: g.DebugManager.TooltipTest(); break;
-            case DebugOptions.TutorialTest: g.DebugManager.TooltipTest(); break;
-            case DebugOptions.FireballTest: g.DebugManager.FireballTest(); break;
-            case DebugOptions.HealTest: g.DebugManager.HealTest(); break;
+            case DebugOptions.PortraitSlideIn: g.DebugManager.PortraitSlideIn(); break;
             case DebugOptions.RandomizeBackground: g.DebugManager.RandomizeBackground(); break;
+            case DebugOptions.Shake: g.DebugManager.Shake(); break;   
+            case DebugOptions.SpawnCoins: g.DebugManager.SpawnCoints(); break;
+            case DebugOptions.SpawnDamageText: g.DebugManager.SpawnDamageText(); break;
+            case DebugOptions.SpawnHealText: g.DebugManager.SpawnHealText(); break;
+            case DebugOptions.SpawnSupportLines: g.DebugManager.SpawnSupportLines(); break;
+            case DebugOptions.SpawnTitle: g.DebugManager.TitleTest(); break;
+            case DebugOptions.SpawnTooltip: g.DebugManager.SpawnTooltip(); break;
+            case DebugOptions.Spin: g.DebugManager.Spin(); break;
+            case DebugOptions.TriggerEnemyAttack: g.DebugManager.TriggerEnemyAttack(); break;
+          
             default: Debug.LogWarning("OnDebugOptionRunClick failed."); break;
         }
     }
+
 
     // OnPlayVFXClick triggers a visual effects test based on the selected VfxManager option.
     private void OnPlayVFXClick()

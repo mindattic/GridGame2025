@@ -3,28 +3,38 @@ using TMPro;
 using UnityEngine;
 using g = Assets.Helpers.GameManagerHelper;
 
+/// <summary>
+/// Handles the behavior and animation of a single floating damage text instance.
+/// Configured at spawn time with a TextStyle profile (font, color, size, motion style).
+/// </summary>
 public class DamageTextInstance : MonoBehaviour
 {
     [SerializeField] AnimationCurve riseCurve;
     public TextMeshPro textMesh;
     public Vector3 speed;
-    public TextMotionStyle style = TextMotionStyle.Oscillate;
+    public TextMotion style = TextMotion.Oscillate;
 
-    // Transform parent property
+    /// <summary>
+    /// Parent transform for positioning in the canvas.
+    /// </summary>
     public Transform parent
     {
         get => transform.parent;
         set => transform.SetParent(value, true);
     }
 
-    // Transform position property
+    /// <summary>
+    /// World position property for external access.
+    /// </summary>
     public Vector3 position
     {
         get => transform.position;
         set => transform.position = value;
     }
 
-    // Called before the first frame update
+    /// <summary>
+    /// Initialization
+    /// </summary>
     void Awake()
     {
         textMesh = GetComponent<TextMeshPro>();
@@ -32,32 +42,38 @@ public class DamageTextInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns the floating damage text with a given style and position
+    /// Configures and spawns the floating text using a TextStyle profile.
     /// </summary>
-    public void Spawn(string text, Vector3 pos, TextMotionStyle style = TextMotionStyle.Oscillate)
+    public void Spawn(string text, Vector3 pos, TextStyle profile)
     {
-        this.style = style;
+        style = profile.Motion;
         textMesh.text = text;
+        textMesh.font = profile.Font;
+        textMesh.fontSize = profile.Size;
+        textMesh.color = profile.Color;
+
         transform.position = new Vector3(
-            pos.x + Random.Range(g.TileSize / 4), 
-            pos.y + g.TileSize / 4, 
+            pos.x + Random.Range(g.TileSize / 4),
+            pos.y + g.TileSize / 4,
             0);
 
-        // Start the motion coroutine based on selected style
+        // Start the selected motion coroutine
         StartCoroutine(style switch
         {
-            TextMotionStyle.Float => Float(),
-            TextMotionStyle.Oscillate => Oscillate(),
-            TextMotionStyle.Bounce => Bounce(),
+            TextMotion.Float => Float(),
+            TextMotion.Oscillate => Oscillate(),
+            TextMotion.Bounce => Bounce(),
             _ => Float(),
         });
     }
 
-    // Floats the text upward while fading out
+    /// <summary>
+    /// Floats the text upward while fading out.
+    /// </summary>
     private IEnumerator Float()
     {
         float alpha = 1;
-        Color color = ColorHelper.Solid.White;
+        Color color = textMesh.color;
         Vector3 startPos = transform.position;
 
         while (textMesh.color.a > 0)
@@ -68,7 +84,6 @@ public class DamageTextInstance : MonoBehaviour
                 color.a = alpha;
                 textMesh.color = color;
             }
-
             // Move upward
             transform.position = new Vector3(startPos.x, position.y + speed.y, 0);
             yield return Wait.For(Interval.OneTick);
@@ -76,11 +91,13 @@ public class DamageTextInstance : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Oscillates the text horizontally while rising and fading out
+    /// <summary>
+    /// Oscillates the text horizontally while rising and fading out.
+    /// </summary>
     private IEnumerator Oscillate()
     {
         float alpha = 1;
-        Color color = ColorHelper.Solid.White;
+        Color color = textMesh.color;
         Vector3 startPos = transform.position;
         float timer = 0f, duration = 0.25f;
 
@@ -103,11 +120,13 @@ public class DamageTextInstance : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Bounces the text and fades it out after the first bounce
+    /// <summary>
+    /// Bounces the text and fades it out after the first bounce.
+    /// </summary>
     private IEnumerator Bounce()
     {
         float alpha = 1f;
-        Color color = ColorHelper.Solid.White;
+        Color color = textMesh.color;
         Vector3 startPos = transform.position;
 
         float vY = g.TileSize * 6, gravity = -g.TileSize * 18f;

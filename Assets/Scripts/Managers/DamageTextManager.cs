@@ -7,9 +7,7 @@ using g = Assets.Helpers.GameManagerHelper;
 
 public class DamageTextManager : MonoBehaviour
 {
-   
-
-    //Fields
+    // Fields
     private GameObject DamageTextPrefab;
 
     public void Awake()
@@ -17,13 +15,24 @@ public class DamageTextManager : MonoBehaviour
         DamageTextPrefab = PrefabRepo.Prefabs["DamageTextPrefab"];
     }
 
-    public void Spawn(string text, Vector3 position, TextMotionStyle style = TextMotionStyle.Oscillate)
+    /// <summary>
+    /// Spawns a floating text using a profile key (e.g., "Damage", "Healing", etc.)
+    /// </summary>
+    public void Spawn(string text, Vector3 position, string styleKey = "Damage")
     {
+        var textStyle = TextStyleRepo.Get(styleKey);
+        if (textStyle == null)
+        {
+            Debug.LogError($"Text style '{styleKey}' not found. Falling back to default profile.");
+            textStyle = TextStyleRepo.Get("Damage"); // fallback
+            if (textStyle == null) return;
+        }
+
         var prefab = Instantiate(DamageTextPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<DamageTextInstance>();
         instance.name = $"DamageText_{Guid.NewGuid():N}";
         instance.parent = g.Canvas3D.transform;
-        instance.Spawn(text, position, style);
+        instance.Spawn(text, position, textStyle);
     }
 
     public void Clear()
@@ -31,5 +40,4 @@ public class DamageTextManager : MonoBehaviour
         var gameObjects = GameObject.FindGameObjectsWithTag(Tag.DamageText).ToList();
         gameObjects.ForEach(x => Destroy(x));
     }
-
 }

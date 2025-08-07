@@ -82,28 +82,27 @@ public enum CoinState
 public enum DebugOptions
 {
     None,
+    ArrangeSingleCombo,
+    ArrangeTripleCombo,
+    Bump,
+    Dodge,
+    Fireball,
+    Heal,
     KillEnemies,
-    AttackLineTest,
-    BumpTest,
-    CoinTest,
-    DamageTextBounceTest,
-    DodgeTest,
-    EnemyAttackTest,
-    FireballTest,
-    HealTest,
     PortraitPopIn,
     PortraitSlideIn,
     RandomizeBackground,
-    ShakeTest,
-    SingleCombo,
+    Shake,
+    Spin,
+    SpawnCoins,
     SpawnDamageText,
-    SpinTest,
-    SupportLineTest,
-    TitleTest,
-    TooltipTest,
-    TripleCombo,
-    TutorialTest
+    SpawnHealText,
+    SpawnSupportLines,
+    SpawnTitle,
+    SpawnTooltip,
+    TriggerEnemyAttack,
 }
+
 
 public enum Direction
 {
@@ -239,7 +238,7 @@ public enum Team
     Neutral
 }
 
-public enum TextMotionStyle
+public enum TextMotion
 {
     Bounce,
     Float,

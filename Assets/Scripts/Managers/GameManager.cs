@@ -137,13 +137,12 @@ public class GameManager : Singleton<GameManager>
 
         previousGameFocus = Time.timeScale;
 
-        //DEBUG: Need to add buffer so tile doesn't align to left-most and right-most edge,
-        //however this causes actors to not align properly after moving for some reason
-        var oneSixth = ScreenHelper.CenteredScreenWorldRect.Width / 6;
-        //var tenPercentOfOneSixth = oneSixth * 0.1f;
-        //var fivePercentOfOneSixth = oneSixth * 0.05f;
+        //var oneSixth = ScreenHelper.CenteredScreenWorldRect.Width / 6;
+        var a = ScreenHelper.CenteredScreenWorldRect.Width * Increment.OneSixth;
+        var b = a * 0.03333f;
+        var c = a - b;
 
-        tileSize = oneSixth;
+        tileSize = c;
         tileScale = new Vector3(tileSize, tileSize, 1f);
         tileMap = new TileMap();
 

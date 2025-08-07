@@ -163,6 +163,7 @@
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
+    <Compile Include="Assets\Scripts\Repository\FontRepo.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Repository\TutorialRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
+    <Compile Include="Assets\Scripts\Models\TextStyle.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityButtonManager.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\SingleAttackTrigger.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
@@ -216,6 +218,7 @@
     <Compile Include="Assets\Scripts\Events\Sequences\PincerAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\TakeDamageTrigger.cs" />
+    <Compile Include="Assets\Scripts\Repository\TextStyleRepo.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\HideTargetIndicatorSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />

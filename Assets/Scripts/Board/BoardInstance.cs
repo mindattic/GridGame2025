@@ -17,6 +17,21 @@ public class BoardInstance : MonoBehaviour
     [HideInInspector] public Vector2 center;           // Center point of the board bounds.
 
     /// <summary>
+    /// World-space left edge of the board.
+    /// </summary>
+    public Vector3 WorldLeftEdge => new Vector3(bounds.Left, center.y, 0);
+
+    /// <summary>
+    /// World-space right edge of the board.
+    /// </summary>
+    public Vector3 WorldRightEdge => new Vector3(bounds.Right, center.y, 0);
+
+    /// <summary>
+    /// World-space top edge of the board.
+    /// </summary>
+    public Vector3 WorldTopEdge => new Vector3(center.x, bounds.Top, 0);
+
+    /// <summary>
     /// Show is called to set up the board by calculating its offset, bounds, and generating the tiles.
     /// </summary>
     public void Initialize()

@@ -38,34 +38,77 @@ public class DebugManager : MonoBehaviour
     public bool isTimerInfinite = false;
     public bool isEnemyStunned = false;
 
-
-    public void PortraitSlideIn()
+    public void ArrangeSingleCombo()
     {
-        var hero = Random.Hero;
-        var direction = Random.AdjacentDirection;
-        g.PortraitManager.TriggerSlideIn(hero, direction);
+        //Show exactly nine slimes
+        for (int i = 0; i < 6; i++)
+            SpawnSlime();
+
+        //SelectProfile specific enemies for teleportation
+        var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
+        var enemy2 = g.Actors.Enemies.ElementAtOrDefault(1);
+        var enemy3 = g.Actors.Enemies.ElementAtOrDefault(2);
+        var enemy4 = g.Actors.Enemies.ElementAtOrDefault(3);
+        var enemy5 = g.Actors.Enemies.ElementAtOrDefault(4);
+        var enemy6 = g.Actors.Enemies.ElementAtOrDefault(5);
+
+        //Define the group to remain aligned
+        var group = new[] { hero1, hero2, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6 };
+
+        //Teleport actors in the group to specific positions
+        hero1.Teleport(new Vector2Int(3, 1));
+        enemy1.Teleport(new Vector2Int(3, 2));
+        enemy2.Teleport(new Vector2Int(3, 3));
+        enemy3.Teleport(new Vector2Int(3, 4));
+        enemy4.Teleport(new Vector2Int(3, 5));
+        enemy5.Teleport(new Vector2Int(3, 6));
+        enemy6.Teleport(new Vector2Int(3, 7));
+        hero2.Teleport(new Vector2Int(3, 8));
+
+        //Move all other actors to unoccupied locations
+        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
     }
 
-
-    public void PortraitPopIn()
+    public void ArrangeTripleCombo()
     {
-        var hero = Random.Hero;
-        g.SequenceManager.Add(new PortraitPopInSequence(hero));
-        g.SequenceManager.Add(new PortraitPopOutSequence(hero));
-        StartCoroutine(g.SequenceManager.Execute());
+        //Show exactly nine slimes
+        for (int i = 0; i < 9; i++)
+            SpawnSlime();
+
+        //SelectProfile specific enemies for teleportation
+        var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
+        var enemy2 = g.Actors.Enemies.ElementAtOrDefault(1);
+        var enemy3 = g.Actors.Enemies.ElementAtOrDefault(2);
+        var enemy4 = g.Actors.Enemies.ElementAtOrDefault(3);
+        var enemy5 = g.Actors.Enemies.ElementAtOrDefault(4);
+        var enemy6 = g.Actors.Enemies.ElementAtOrDefault(5);
+        var enemy7 = g.Actors.Enemies.ElementAtOrDefault(6);
+        var enemy8 = g.Actors.Enemies.ElementAtOrDefault(7);
+        var enemy9 = g.Actors.Enemies.ElementAtOrDefault(8);
+
+        //Define the group to remain aligned
+        var group = new[] { hero1, hero2, hero3, hero4, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9 };
+
+        //Teleport actors in the group to specific positions
+        hero1.Teleport(new Vector2Int(1, 1));
+        enemy1.Teleport(new Vector2Int(1, 2));
+        enemy2.Teleport(new Vector2Int(1, 3));
+        hero2.Teleport(new Vector2Int(1, 4));
+        enemy3.Teleport(new Vector2Int(2, 4));
+        enemy4.Teleport(new Vector2Int(3, 4));
+        enemy5.Teleport(new Vector2Int(4, 4));
+        enemy6.Teleport(new Vector2Int(5, 4));
+        hero3.Teleport(new Vector2Int(6, 4));
+        enemy7.Teleport(new Vector2Int(6, 5));
+        enemy8.Teleport(new Vector2Int(6, 6));
+        enemy9.Teleport(new Vector2Int(6, 7));
+        hero4.Teleport(new Vector2Int(6, 8));
+
+        //Move all other actors to unoccupied locations
+        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
     }
 
-
-    public void SpawnDamageText()
-    {
-        var style = Random.EnumValue<TextMotionStyle>();
-        var text = $"{Random.Int(1, 100)}";
-        g.DamageTextManager.Spawn(text, hero1.position, style);
-    }
-
-
-
-    public void BumpTest()
+    public void Bump()
     {
         var hero = Random.Hero;
         hero.Teleport(Random.UnoccupiedLocation);
@@ -78,29 +121,68 @@ public class DebugManager : MonoBehaviour
         var location = Geometry.GetClosestUnoccupiedAdjacentTileByLocation(hero.location).location;
         if (!location.Exists())
             location = Geometry.GetAdjacentLocationInDirection(hero.location, Random.AdjacentDirection);
- 
+
         enemy.Teleport(location);
         hero.action.BumpAsync(enemy);
     }
 
-    public void ShakeTest()
+    public void Dodge()
+    {
+        hero1.action.DodgeAsync();
+    }
+
+    public void KillEnemies()
+    {
+        var playingEnemies = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
+        foreach (var enemy in playingEnemies)
+        {
+            enemy.TakeDamageAsync(9999);
+        }
+        StartCoroutine(DeathHelper.Process());
+    }
+    public void PortraitSlideIn()
+    {
+        var hero = Random.Hero;
+        var direction = Random.AdjacentDirection;
+        g.PortraitManager.TriggerSlideIn(hero, direction);
+    }
+
+    public void PortraitPopIn()
+    {
+        var hero = Random.Hero;
+        g.SequenceManager.Add(new PortraitPopInSequence(hero));
+        g.SequenceManager.Add(new PortraitPopOutSequence(hero));
+        StartCoroutine(g.SequenceManager.Execute());
+    }
+
+    public void SpawnDamageText()
+    {
+        var hero = Random.Hero;
+        var text = $"{Random.Int(1, 100)}";
+        g.DamageTextManager.Spawn(text, hero.position, "Damage");
+    }
+
+    public void SpawnHealText()
+    {
+        var hero = Random.Hero;
+        var text = $"{Random.Int(1, 100)}";
+        g.DamageTextManager.Spawn(text, hero.position, "Heal");
+    }
+
+
+    public void Shake()
     {
         var intensity = Random.ShakeIntensityLevel();
         var duration = Random.Float(Interval.HalfSecond, Interval.TwoSeconds);
         hero1.action.ShakeAsync(intensity, duration);
     }
 
-    public void DodgeTest()
-    {
-        hero1.action.DodgeAsync();
-    }
-
-    public void SpinTest()
+    public void Spin()
     {
         hero1.action.Spin360Async();
     }
 
-    public void SupportLineTest()
+    public void SpawnSupportLines()
     {
         foreach (var attacker in g.Actors.Heroes)
         {
@@ -125,76 +207,24 @@ public class DebugManager : MonoBehaviour
 
         //StartCoroutine(_());
     }
-
-    public void AttackLineTest()
+    public void SpawnTooltip()
     {
-        g.Actors.All.FirstOrDefault(x => x.location == new Vector2Int(3, 1))?.Teleport(new Vector2Int(1, 1));
-        g.Actors.All.FirstOrDefault(x => x.location == new Vector2Int(3, 2))?.Teleport(new Vector2Int(1, 2));
-        g.Actors.All.FirstOrDefault(x => x.location == new Vector2Int(3, 3))?.Teleport(new Vector2Int(1, 3));
-        g.Actors.All.FirstOrDefault(x => x.location == new Vector2Int(3, 4))?.Teleport(new Vector2Int(1, 4));
-        g.Actors.All.FirstOrDefault(x => x.location == new Vector2Int(3, 5))?.Teleport(new Vector2Int(1, 5));
-        g.Actors.All.FirstOrDefault(x => x.location == new Vector2Int(3, 6))?.Teleport(new Vector2Int(1, 6));
-        g.Actors.All.FirstOrDefault(x => x.location == new Vector2Int(3, 7))?.Teleport(new Vector2Int(1, 7));
-        g.Actors.All.FirstOrDefault(x => x.location == new Vector2Int(3, 8))?.Teleport(new Vector2Int(1, 8));
-
-        hero1.Teleport(new Vector2Int(3, 1));
-        enemy1?.Teleport(new Vector2Int(3, 2));
-        enemy2?.Teleport(new Vector2Int(3, 3));
-        enemy3?.Teleport(new Vector2Int(3, 4));
-        enemy4?.Teleport(new Vector2Int(3, 5));
-        enemy5?.Teleport(new Vector2Int(3, 6));
-        enemy6?.Teleport(new Vector2Int(3, 7));
-        hero2.Teleport(new Vector2Int(3, 8));
-
-
-
-
-        var alignedPairs = new HashSet<ActorPair>();
-        foreach (var actor1 in g.Actors.Heroes)
+        var tt = new TooltipSettings()
         {
-            foreach (var actor2 in g.Actors.Heroes)
-            {
-                if (actor1 == null || actor2 == null
-                    || actor1.Equals(actor2)
-                    || !actor1.isActive || !actor1.isAlive
-                    || !actor2.isActive || !actor2.isAlive)
-                    continue;
+            message = "Tap here to confirm",
+            target = hero1.transform,
+            placement = TooltipPlacement.Top,
+            useFade = true,
+            useTypewriter = true,
+            autoDestroy = true,
+            followPointer = false,
+            autoDestroyDelay = 2.5f,
+        };
 
-                if (actor1.IsSameColumn(actor2.location))
-                {
-                    var pair = new ActorPair(actor1, actor2, Axis.Vertical);
-                    alignedPairs.Add(pair);
-                }
-                else if (actor1.IsSameRow(actor2.location))
-                {
-                    var pair = new ActorPair(actor1, actor2, Axis.Horizontal);
-                    alignedPairs.Add(pair);
-                }
-
-            }
-        }
-
-        foreach (var actorPair in alignedPairs)
-        {
-            //actorPair.startActor.sortingOrder = SortingOrder.Attacker;
-            //actorPair.endActor.sortingOrder = SortingOrder.Attacker;
-            g.AttackLineManager.Spawn(actorPair);
-        }
-
-        IEnumerator _()
-        {
-            yield return Wait.For(Interval.ThreeSeconds);
-
-            foreach (var attackLine in g.AttackLineManager.attackLines.Values)
-            {
-                attackLine.TriggerDespawn();
-            }
-        }
-
-        StartCoroutine(_());
+        Tooltip.Show(tt);
     }
 
-    public void EnemyAttackTest()
+    public void TriggerEnemyAttack()
     {
         var attackingEnemies = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
         attackingEnemies.ForEach(x => x.SetReady());
@@ -212,41 +242,81 @@ public class DebugManager : MonoBehaviour
 
     }
 
-    public void TooltipTest()
-    {
-        var tt = new TooltipSettings()
-        {
-            message = "Tap here to confirm",
-            target = hero1.transform,
-            placement = TooltipPlacement.Top,
-            useFade = true,
-            useTypewriter = true,
-            autoDestroy = true,
-            followPointer = false,
-            autoDestroyDelay = 2.5f,
-        };
-
-        Tooltip.Show(tt);
-    }
-
     public void TutorialTest()
     {
         var tutorial = TutorialRepo.Tutorials["Tutorial1"];
         g.TutorialPopup.Load(tutorial);
     }
 
-    public void KillEnemies()
+    public void SpawnCoints()
     {
-        var playingEnemires = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
-        foreach (var enemy in playingEnemires)
+        var vfx = VisualEffectRepo.VisualEffects["YellowHit"];
+
+
+        IEnumerator spawnTenCoins()
         {
+            var i = 0;
+            do
+            {
+                g.CoinManager.Spawn(hero1.position);
+                i++;
+            } while (i < 10);
 
-            enemy.TakeDamageAsync(9999);
-
+            yield return true;
         }
-        StartCoroutine(DeathHelper.Process());
+        var trigger = new TriggerEvent(spawnTenCoins());
+
+        g.VfxManager.SpawnAsync(vfx, hero1.position, trigger);
     }
 
+    public void SpawnSlime()
+    {
+        g.StageManager.AddEnemy(CharacterHelper.Slime);
+    }
+
+    public void SpawnBat()
+    {
+        g.StageManager.AddEnemy(CharacterHelper.Bat);
+    }
+
+    public void SpawnScorpion()
+    {
+        g.StageManager.AddEnemy(CharacterHelper.Scorpion);
+    }
+
+    public void SpawnYeti()
+    {
+        g.StageManager.AddEnemy(CharacterHelper.Yeti);
+    }
+    public void SpawnRandomEnemy()
+    {
+        var r = Random.Int(1, 10);
+        if (r <= 7) SpawnSlime();
+        else if (r == 8) SpawnBat();
+        else if (r == 9) SpawnScorpion();
+        else if (r == 10) SpawnYeti();
+    }
+
+    public void Fireball()
+    {
+        var startPosition = hero1.position;
+        var target = g.Actors.Enemies.FirstOrDefault();
+        g.ProjectileManager.EnqueueFireball(startPosition, target);
+        g.SequenceManager.TriggerExecute();
+    }
+
+    public void Heal()
+    {
+        var source = hero1.position;
+        var target = hero2;
+
+        g.ProjectileManager.EnqueueHeal(source, target);
+        g.SequenceManager.TriggerExecute();
+    }
+    public void RandomizeBackground()
+    {
+        g.Background.Randomize();
+    }
 
     public void VFXTest_BlueSlash1()
     {
@@ -472,188 +542,5 @@ public class DebugManager : MonoBehaviour
         g.VfxManager.SpawnAsync(vfx, hero1.position);
         g.VfxManager.SpawnAsync(vfx, hero2.position);
     }
-
-    public void SingleCombo()
-    {
-        //Show exactly nine slimes
-        for (int i = 0; i < 6; i++)
-            SpawnSlime();
-
-        //SelectProfile specific enemies for teleportation
-        var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
-        var enemy2 = g.Actors.Enemies.ElementAtOrDefault(1);
-        var enemy3 = g.Actors.Enemies.ElementAtOrDefault(2);
-        var enemy4 = g.Actors.Enemies.ElementAtOrDefault(3);
-        var enemy5 = g.Actors.Enemies.ElementAtOrDefault(4);
-        var enemy6 = g.Actors.Enemies.ElementAtOrDefault(5);
-
-        //Define the group to remain aligned
-        var group = new[] { hero1, hero2, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6 };
-
-        //Teleport actors in the group to specific positions
-        hero1.Teleport(new Vector2Int(3, 1));
-        enemy1.Teleport(new Vector2Int(3, 2));
-        enemy2.Teleport(new Vector2Int(3, 3));
-        enemy3.Teleport(new Vector2Int(3, 4));
-        enemy4.Teleport(new Vector2Int(3, 5));
-        enemy5.Teleport(new Vector2Int(3, 6));
-        enemy6.Teleport(new Vector2Int(3, 7));
-        hero2.Teleport(new Vector2Int(3, 8));
-
-        //Move all other actors to unoccupied locations
-        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
-    }
-
-    public void TripleCombo()
-    {
-        //Show exactly nine slimes
-        for (int i = 0; i < 9; i++)
-            SpawnSlime();
-
-        //SelectProfile specific enemies for teleportation
-        var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
-        var enemy2 = g.Actors.Enemies.ElementAtOrDefault(1);
-        var enemy3 = g.Actors.Enemies.ElementAtOrDefault(2);
-        var enemy4 = g.Actors.Enemies.ElementAtOrDefault(3);
-        var enemy5 = g.Actors.Enemies.ElementAtOrDefault(4);
-        var enemy6 = g.Actors.Enemies.ElementAtOrDefault(5);
-        var enemy7 = g.Actors.Enemies.ElementAtOrDefault(6);
-        var enemy8 = g.Actors.Enemies.ElementAtOrDefault(7);
-        var enemy9 = g.Actors.Enemies.ElementAtOrDefault(8);
-
-        //Define the group to remain aligned
-        var group = new[] { hero1, hero2, hero3, hero4, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9 };
-
-        //Teleport actors in the group to specific positions
-        hero1.Teleport(new Vector2Int(1, 1));
-        enemy1.Teleport(new Vector2Int(1, 2));
-        enemy2.Teleport(new Vector2Int(1, 3));
-        hero2.Teleport(new Vector2Int(1, 4));
-        enemy3.Teleport(new Vector2Int(2, 4));
-        enemy4.Teleport(new Vector2Int(3, 4));
-        enemy5.Teleport(new Vector2Int(4, 4));
-        enemy6.Teleport(new Vector2Int(5, 4));
-        hero3.Teleport(new Vector2Int(6, 4));
-        enemy7.Teleport(new Vector2Int(6, 5));
-        enemy8.Teleport(new Vector2Int(6, 6));
-        enemy9.Teleport(new Vector2Int(6, 7));
-        hero4.Teleport(new Vector2Int(6, 8));
-
-        //Move all other actors to unoccupied locations
-        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
-    }
-
-    //public void PincerScenario()
-    //{
-    //    // Spawn exactly four slimes for our test
-    //    for (int i = 0; i < 4; i++)
-    //        SpawnSlime();
-
-    //    // Grab the four newly spawned enemies
-    //    var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
-    //    var enemy2 = g.Actors.Enemies.ElementAtOrDefault(1);
-    //    var enemy3 = g.Actors.Enemies.ElementAtOrDefault(2);
-    //    var enemy4 = g.Actors.Enemies.ElementAtOrDefault(3);
-
-    //    // Position the two pincer attackers at (1,3) and (6,3)
-    //    hero1?.Teleport(new Vector2Int(1, 3));
-    //    hero2?.Teleport(new Vector2Int(6, 3));
-
-    //    // Move the remaining g.Actors.Heroes out of the way:
-    //    // one up in the top-left corner, one down in the bottom-right
-    //    hero3?.Teleport(new Vector2Int(1, 1));
-    //    hero4?.Teleport(new Vector2Int(6, 8));
-
-    //    // Line up the four monsters between them at row 3, cols 2-5
-    //    enemy1?.Teleport(new Vector2Int(2, 3));
-    //    enemy2?.Teleport(new Vector2Int(3, 3));
-    //    enemy3?.Teleport(new Vector2Int(4, 3));
-    //    enemy4?.Teleport(new Vector2Int(5, 3));
-
-    //    // Send any other actors off to random free spots
-    //    var group = new[] { hero1, hero2, hero3, hero4, enemy1, enemy2, enemy3, enemy4 };
-    //    actors
-    //      .Except(group)
-    //      .ToList()
-    //      .ForEach(x => x.Teleport(Random.UnoccupiedLocation));
-    //}
-
-
-
-    public void CoinTest()
-    {
-        var vfx = VisualEffectRepo.VisualEffects["YellowHit"];
-
-
-        IEnumerator spawnTenCoins()
-        {
-            var i = 0;
-            do
-            {
-                g.CoinManager.Spawn(hero1.position);
-                i++;
-            } while (i < 10);
-
-            yield return true;
-        }
-        var trigger = new TriggerEvent(spawnTenCoins());
-
-        g.VfxManager.SpawnAsync(vfx, hero1.position, trigger);
-    }
-
-    public void SpawnSlime()
-    {
-        g.StageManager.AddEnemy(CharacterHelper.Slime);
-    }
-
-    public void SpawnBat()
-    {
-        g.StageManager.AddEnemy(CharacterHelper.Bat);
-    }
-
-    public void SpawnScorpion()
-    {
-        g.StageManager.AddEnemy(CharacterHelper.Scorpion);
-    }
-
-    public void SpawnYeti()
-    {
-        g.StageManager.AddEnemy(CharacterHelper.Yeti);
-    }
-
-
-    public void SpawnRandomEnemy()
-    {
-        var r = Random.Int(1, 10);
-        if (r <= 7) SpawnSlime();
-        else if (r == 8) SpawnBat();
-        else if (r == 9) SpawnScorpion();
-        else if (r == 10) SpawnYeti();
-    }
-
-
-    public void FireballTest()
-    {
-        var startPosition = hero1.position;
-        var target = g.Actors.Enemies.FirstOrDefault();
-        g.ProjectileManager.EnqueueFireball(startPosition, target);
-        g.SequenceManager.TriggerExecute();
-    }
-
-    public void HealTest()
-    {
-        var source = hero1.position;
-        var target = hero2;
-
-        g.ProjectileManager.EnqueueHeal(source, target);
-        g.SequenceManager.TriggerExecute();
-    }
-
-
-    public void RandomizeBackground()
-    {
-        g.Background.Randomize();
-    }
-
 
 }
