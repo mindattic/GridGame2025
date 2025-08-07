@@ -97,13 +97,13 @@ public class TurnManager : MonoBehaviour
         if (isHeroTurn)
         {
             currentTurn++;
-            g.TimerBar.Refill();
+            g.TimerBar2D.Refill();
             GameManager.instance.heroManager.TriggerGlow();
             // Wait for player to trigger next phase via UI
         }
         else if (isEnemyTurn)
         {
-            g.TimerBar.Lock();
+            g.TimerBar2D.Lock();
             g.SequenceManager.Add(new EnemySpawnSequence());
 
             bool anyReadyEnemies = g.Actors.Enemies.Any(x => x.isPlaying && x.hasMaxAP);

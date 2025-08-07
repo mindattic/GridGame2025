@@ -140,11 +140,19 @@ public class DebugManager : MonoBehaviour
         }
         StartCoroutine(DeathHelper.Process());
     }
-    public void PortraitSlideIn()
+
+    public void Portrait2DSlideIn()
     {
         var hero = Random.Hero;
         var direction = Random.AdjacentDirection;
-        g.PortraitManager.TriggerSlideIn(hero, direction);
+        g.Portrait2DManager.TriggerSlideIn(hero, direction);
+    }
+
+    public void Portrait3DSlideIn()
+    {
+        var hero = Random.Hero;
+        var direction = Random.AdjacentDirection;
+        g.Portrait3DManager.TriggerSlideIn(hero, direction);
     }
 
     public void PortraitPopIn()

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using g = Assets.Helpers.GameManagerHelper;
 
-public class TimerBar : MonoBehaviour
+public class TimerBar2D : MonoBehaviour
 {
     //Components
     private Image back;
@@ -24,7 +24,7 @@ public class TimerBar : MonoBehaviour
         front = transform.GetChild("Front").GetComponent<Image>();
 
         //Show maxWidth based on the background image width
-        maxWidth = back.rectTransform.rect.width; 
+        maxWidth = back.rectTransform.rect.width;
     }
 
     public void Initialize()

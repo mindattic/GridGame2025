@@ -82,7 +82,7 @@ public class SelectedHeroManager : MonoBehaviour
         g.FocusIndicator.Hide();
 
         g.AudioManager.Play("Click");
-        g.TimerBar.Play();
+        g.TimerBar2D.Play();
         g.ActorManager.CheckEnemyAP();
 
         g.Actors.SelectedHero.move.TriggerMoveTowardsCursor();
@@ -94,9 +94,6 @@ public class SelectedHeroManager : MonoBehaviour
     public void Drop()
     {
         // Only proceed if it's the hero's turn, Move phase is active, and there's a selected hero currently moving.
-
-
-
         if (!g.TurnManager.isHeroTurn 
             || g.TurnManager.currentPhase != TurnPhase.Move 
             || !g.Actors.HasSelectedHero || !g.Actors.SelectedHero.flags.IsMoving)
@@ -112,7 +109,7 @@ public class SelectedHeroManager : MonoBehaviour
         g.Actors.SelectedHero = null;
         g.Actors.FocusedActor = null;
 
-        g.TimerBar.Pause();
+        g.TimerBar2D.Pause();
         g.PincerAttackManager.Check(Team.Hero);
 
         // Do NOT advance phase here—TurnManager/UI is responsible for that!

@@ -33,9 +33,10 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TurnManager turnManager;
     [HideInInspector] public SupportLineManager supportLineManager;
     [HideInInspector] public AttackLineManager attackLineManager;
-    [HideInInspector] public DamageTextManager damageTextManager;
+    [HideInInspector] public CombatTextManager damageTextManager;
     [HideInInspector] public GhostManager ghostManager;
-    [HideInInspector] public PortraitManager portraitManager;
+    [HideInInspector] public Portrait2DManager portrait2DManager;
+    [HideInInspector] public Portrait3DManager portrait3DManager;
     [HideInInspector] public ActorManager actorManager;
     [HideInInspector] public SelectedHeroManager selectedHeroManager;
     [HideInInspector] public HeroManager heroManager;
@@ -104,7 +105,12 @@ public class GameManager : Singleton<GameManager>
     //Instances
     [HideInInspector] public FadeInstance fade;
     [HideInInspector] public TileMap tileMap;
-    [HideInInspector] public TimerBar timerBar;
+    [HideInInspector] public TimerBar2D timerBar2D;
+    [HideInInspector] public TimerBar3D timerBar3D;
+
+
+
+
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
     [HideInInspector] public List<SupportLineInstance> supportLines;
@@ -162,7 +168,9 @@ public class GameManager : Singleton<GameManager>
         fade = GameObject.Find(GameObjectHelper.Game.Fade).GetComponent<FadeInstance>();
         canvas2D = GameObject.Find(GameObjectHelper.Game.Canvas2D).GetComponent<Canvas>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
-        timerBar = GameObject.Find(GameObjectHelper.Game.TimerBar).GetComponent<TimerBar>();
+        timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D).GetComponent<TimerBar2D>();
+
+
         coinBar = GameObject.Find(GameObjectHelper.Game.CoinBar).GetComponent<CoinBar>();
         waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
         canvasOverlay = GameObject.Find(GameObjectHelper.Game.CanvasOverlay).GetComponent<CanvasOverlay>();
@@ -191,9 +199,10 @@ public class GameManager : Singleton<GameManager>
         actorManager = game.GetComponent<ActorManager>();
         supportLineManager = game.GetComponent<SupportLineManager>();
         attackLineManager = game.GetComponent<AttackLineManager>();
-        damageTextManager = game.GetComponent<DamageTextManager>();
+        damageTextManager = game.GetComponent<CombatTextManager>();
         ghostManager = game.GetComponent<GhostManager>();
-        portraitManager = game.GetComponent<PortraitManager>();
+        portrait2DManager = game.GetComponent<Portrait2DManager>();
+        portrait3DManager = game.GetComponent<Portrait3DManager>();
         selectedHeroManager = game.GetComponent<SelectedHeroManager>();
         heroManager = game.GetComponent<HeroManager>();
         enemyManager = game.GetComponent<EnemyManager>();
@@ -214,6 +223,11 @@ public class GameManager : Singleton<GameManager>
         sortingManager = game.GetComponent<SortingManager>();
         targetLineManager = game.GetComponent<TargetLineManager>();
         abilityButtonManager = game.GetComponent<AbilityButtonManager>();
+
+
+
+        timerBar3D = GameObject.Find(GameObjectHelper.Game.TimerBar3D).GetComponent<TimerBar3D>();
+
 
         #region Platform Dependent Compilation
 
@@ -256,7 +270,7 @@ public class GameManager : Singleton<GameManager>
         focusIndicator.Initialize();    //03
         targetIndicator.Initialize();   //04
         targetModeOverlay.Initialize(); //05
-        timerBar.Initialize();          //06
+        timerBar2D.Initialize();        //06
     }
 
 }

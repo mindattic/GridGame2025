@@ -93,7 +93,10 @@ public static class GameObjectHelper
         public const string PauseMenu = "Canvas2D/PauseMenu";
         public const string WaveAnnouncement = "Canvas2D/WaveAnnouncement";
         public const string CanvasOverlay = "Canvas2D/CanvasOverlay";
-        public const string TimerBar = "Canvas2D/TimerBar";
+        public const string TimerBar2D = "Canvas2D/TimerBar2D";
+        public const string TimerBar3D = "TimerBar3D";
+
+
         public const string CoinBar = "Canvas2D/CoinBar";
         public const string TutorialPopup = "Canvas2D/TutorialPopup";
         public const string TargetModeOverlay = "Canvas2D/TargetModeOverlay";
@@ -313,7 +316,7 @@ public static class Constants
 
     //Card
     public const string CardBackdrop = "Card/Backdrop";
-    public const string CardPortrait = "Card/PortraitManager";
+    public const string CardPortrait = "Card/Portrait3DManager";
     public const string CardTitle = "Card/Title";
     public const string CardDetails = "Card/Details";
 
@@ -1545,7 +1548,7 @@ public static class SortingHelper
         public const string Coin = "Coin";
         public const string DamageText = "DamageTextManager";
         public const string PortraitPopIn = "PortraitPopIn";
-        public const string Portrait = "PortraitManager";
+        public const string Portrait = "Portrait3DManager";
     }
 
     public static class Order

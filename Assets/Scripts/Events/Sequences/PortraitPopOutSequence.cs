@@ -14,7 +14,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            yield return g.PortraitManager.PopOut(actor);
+            yield return g.Portrait3DManager.PopOut(actor);
         }
     }
 

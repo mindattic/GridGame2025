@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3148019040389480657}
   - component: {fileID: 7865826196809108820}
   m_Layer: 9
-  m_Name: DamageTextPrefab
+  m_Name: CombatTextPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

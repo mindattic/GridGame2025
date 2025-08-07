@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
 using g = Assets.Helpers.GameManagerHelper;
-public class PortraitInstance : MonoBehaviour
+public class Portrait3DInstance : MonoBehaviour
 {
     public Transform parent
     {

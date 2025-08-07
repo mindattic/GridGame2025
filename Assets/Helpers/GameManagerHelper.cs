@@ -49,9 +49,11 @@ namespace Assets.Helpers
 
         public static SupportLineManager SupportLineManager => GameManager.instance.supportLineManager;
         public static AttackLineManager AttackLineManager => GameManager.instance.attackLineManager;
-        public static DamageTextManager DamageTextManager => GameManager.instance.damageTextManager;
+        public static CombatTextManager DamageTextManager => GameManager.instance.damageTextManager;
         public static GhostManager GhostManager => GameManager.instance.ghostManager;
-        public static PortraitManager PortraitManager => GameManager.instance.portraitManager;
+
+        public static Portrait2DManager Portrait2DManager => GameManager.instance.portrait2DManager;
+        public static Portrait3DManager Portrait3DManager => GameManager.instance.portrait3DManager;
         // public static ActorManager ActorManager => GameManager.actorManager;
         // public static SelectedHeroManager SelectedHeroManager => GameManager.selectedHeroManager;
         // public static HeroManager HeroManager => GameManager.heroManager;
@@ -155,11 +157,12 @@ namespace Assets.Helpers
         // World instances
         public static FadeInstance Fade => GameManager.instance.fade;
         public static TileMap TileMap => GameManager.instance.tileMap;
-        public static TimerBar TimerBar => GameManager.instance.timerBar;
+        public static TimerBar2D TimerBar2D => GameManager.instance.timerBar2D;
         public static BoardInstance Board => GameManager.instance.board;
 
         public static List<TileInstance> Tiles => GameManager.instance.tiles;
 
+        public static TimerBar3D TimerBar3D => GameManager.instance.timerBar3D;
 
 
         // CoinManager

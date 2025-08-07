@@ -36,7 +36,7 @@ namespace Assets.Scripts.Events
             };
             yield return new FireProjectileSequence(healSettings).Execute();
 
-            // 3) PortraitManager pops out
+            // 3) Portrait3DManager pops out
             //yield return new PortraitPopOutSequence(startPosition).Execute();
         }
     }

@@ -657,7 +657,8 @@ public class DebugWindow : EditorWindow
             case DebugOptions.Heal: g.DebugManager.Heal(); break;
             case DebugOptions.KillEnemies: g.DebugManager.KillEnemies(); break;
             case DebugOptions.PortraitPopIn: g.DebugManager.PortraitPopIn(); break;
-            case DebugOptions.PortraitSlideIn: g.DebugManager.PortraitSlideIn(); break;
+            case DebugOptions.Portrait2DSlideIn: g.DebugManager.Portrait2DSlideIn(); break;
+            case DebugOptions.Portrait3DSlideIn: g.DebugManager.Portrait3DSlideIn(); break;
             case DebugOptions.RandomizeBackground: g.DebugManager.RandomizeBackground(); break;
             case DebugOptions.Shake: g.DebugManager.Shake(); break;   
             case DebugOptions.SpawnCoins: g.DebugManager.SpawnCoints(); break;

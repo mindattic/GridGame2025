@@ -5,14 +5,14 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameManagerHelper;
 
-public class DamageTextManager : MonoBehaviour
+public class CombatTextManager : MonoBehaviour
 {
     // Fields
-    private GameObject DamageTextPrefab;
+    private GameObject CombatTextPrefab;
 
     public void Awake()
     {
-        DamageTextPrefab = PrefabRepo.Prefabs["DamageTextPrefab"];
+        CombatTextPrefab = PrefabRepo.Prefabs["CombatTextPrefab"];
     }
 
     /// <summary>
@@ -28,8 +28,8 @@ public class DamageTextManager : MonoBehaviour
             if (textStyle == null) return;
         }
 
-        var prefab = Instantiate(DamageTextPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<DamageTextInstance>();
+        var prefab = Instantiate(CombatTextPrefab, Vector2.zero, Quaternion.identity);
+        var instance = prefab.GetComponent<CombatTextInstance>();
         instance.name = $"DamageText_{Guid.NewGuid():N}";
         instance.parent = g.Canvas3D.transform;
         instance.Spawn(text, position, textStyle);

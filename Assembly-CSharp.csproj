@@ -61,7 +61,6 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.1.4f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Managers\DamageTextManager.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Repository\SoundEffectRepo.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PincerAttackSupportSequence.cs" />
@@ -75,10 +74,10 @@
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\StageWave.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\EnemyStartSequence.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TimerBar2D.cs" />
     <Compile Include="Assets\Scripts\Models\ShakeIntensity.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
-    <Compile Include="Assets\Scripts\Instances\DamageTextInstance.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\HealSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
@@ -101,8 +100,10 @@
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\SpawnVFXTrigger.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
+    <Compile Include="Assets\Scripts\Instances\CombatTextInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\EnemySpawnSequence.cs" />
+    <Compile Include="Assets\Scripts\Instances\TimerBar3D.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\FireProjectileSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
+    <Compile Include="Assets\Scripts\Instances\Portrait3DInstance.cs" />
     <Compile Include="Assets\Scripts\Repository\ProfileRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
@@ -156,8 +158,8 @@
     <Compile Include="Assets\Data\Actor\Paladin.cs" />
     <Compile Include="Assets\Data\Actor\Bat.cs" />
     <Compile Include="Assets\Scripts\Canvas\FadeInstance.cs" />
+    <Compile Include="Assets\Scripts\Instances\Portrait2DInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
-    <Compile Include="Assets\Scripts\Canvas\TimerBar.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Data\Actor\Barbarian.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
@@ -168,7 +170,7 @@
     <Compile Include="Assets\Scripts\Repository\TutorialRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\Portrait2DManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
@@ -184,6 +186,7 @@
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Repository\SceneRepo.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\SequenceEvent.cs" />
+    <Compile Include="Assets\Scripts\Managers\Portrait3DManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
     <Compile Include="Assets\Data\Actor\Vampire.cs" />
@@ -212,7 +215,7 @@
     <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\PortraitInstance.cs" />
+    <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PincerAttackSequence.cs" />

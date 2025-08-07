@@ -547,7 +547,7 @@ public class ActorInstance : MonoBehaviour
             yield return new WaitUntil(() => healthBar.isEmpty);
 
         //TriggerEvent portrait dissolve effect and play death sound.
-        g.PortraitManager.Dissolve(this);
+        g.Portrait3DManager.Dissolve(this);
         g.AudioManager.Play("Death");
 
         //Show sorting order to maximum so that the death sequence renders on top.

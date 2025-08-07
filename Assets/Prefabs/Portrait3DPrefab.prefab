@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -8534692437993122614}
   - component: {fileID: 8519144795392396887}
   m_Layer: 12
-  m_Name: PortraitPrefab
+  m_Name: Portrait3DPrefab
   m_TagString: Portrait
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

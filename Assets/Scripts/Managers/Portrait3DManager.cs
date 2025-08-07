@@ -5,11 +5,9 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameManagerHelper;
 
-
-public class PortraitManager : MonoBehaviour
+public class Portrait3DManager : MonoBehaviour
 {
-
-    private List<PortraitInstance> portraits = new List<PortraitInstance>();
+    private List<Portrait3DInstance> portraits = new List<Portrait3DInstance>();
 
     // Fields
     private GameObject portraitPrefab;
@@ -18,7 +16,7 @@ public class PortraitManager : MonoBehaviour
 
     public void Awake()
     {
-        portraitPrefab = PrefabRepo.Prefabs["PortraitPrefab"];
+        portraitPrefab = PrefabRepo.Prefabs["Portrait3DPrefab"];
     }
 
     public void TriggerSlideIn(ActorInstance actor, Direction direction)
@@ -34,7 +32,7 @@ public class PortraitManager : MonoBehaviour
     public IEnumerator SlideIn(ActorInstance actor, Direction direction)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<PortraitInstance>();
+        var instance = prefab.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
         instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
@@ -51,7 +49,7 @@ public class PortraitManager : MonoBehaviour
     public IEnumerator PopInOut(ActorInstance actor, float scale = 0.1666f)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<PortraitInstance>();
+        var instance = prefab.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
@@ -76,8 +74,8 @@ public class PortraitManager : MonoBehaviour
         }
 
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<PortraitInstance>();
-        instance.name = $"Portrait_{Guid.NewGuid():N}";
+        var instance = prefab.GetComponent<Portrait3DInstance>();
+        instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         g.SortingManager.OnPortraitPopIn(instance);
         instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
@@ -108,7 +106,7 @@ public class PortraitManager : MonoBehaviour
     public void Dissolve(ActorInstance actor)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<PortraitInstance>();
+        var instance = prefab.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
@@ -147,7 +145,7 @@ public class PortraitManager : MonoBehaviour
                 actorPair.actor2 == actorPair.startActor ? first : second);
     }
 
-    public void Despawn(PortraitInstance portrait)
+    public void Despawn(Portrait3DInstance portrait)
     {
         if (portrait != null && portraits.Contains(portrait))
         {

@@ -7,7 +7,7 @@ using g = Assets.Helpers.GameManagerHelper;
 /// Handles the behavior and animation of a single floating damage text instance.
 /// Configured at spawn time with a TextStyle profile (font, color, size, motion style).
 /// </summary>
-public class DamageTextInstance : MonoBehaviour
+public class CombatTextInstance : MonoBehaviour
 {
     [SerializeField] AnimationCurve riseCurve;
     public TextMeshPro textMesh;

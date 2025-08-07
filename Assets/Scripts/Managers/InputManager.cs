@@ -136,7 +136,6 @@ public class InputManager : MonoBehaviour
                         case TouchPhase.Began:
                             // Attempt to focus on an targetActor under the touch.
                             g.SelectedHeroManager.Focus();
-
                             initialTouchPosition = g.TouchPosition3D;
                             break;
 

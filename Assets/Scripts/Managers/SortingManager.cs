@@ -137,7 +137,7 @@ public class SortingManager : MonoBehaviour
         supportLine.SetSorting(isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow);
     }
 
-    public void OnPortraitPopIn(PortraitInstance portrait)
+    public void OnPortraitPopIn(Portrait3DInstance portrait)
     {
         portrait.SetSorting(SortingHelper.Layer.PortraitPopIn, SortingHelper.Order.Max);
     }
