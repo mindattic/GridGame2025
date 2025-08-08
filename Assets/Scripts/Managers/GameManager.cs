@@ -1,4 +1,5 @@
 using Assets.Scripts.GUI;
+using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Instances;
@@ -269,6 +270,7 @@ public class GameManager : Singleton<GameManager>
         targetIndicator.Initialize();   //04
         targetModeOverlay.Initialize(); //05
         timerBar2D.Initialize();        //06
+        turnManager.Initialize();       //07
     }
 
 }

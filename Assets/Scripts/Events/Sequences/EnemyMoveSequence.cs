@@ -1,41 +1,60 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Moves a single enemy on its turn.
+    /// Moves a single enemy on its turn, then queues its pre-attack step.
+    /// Never leaves the sequence queue idle.
     /// </summary>
     public class EnemyMoveSequence : SequenceEvent
     {
-        private ActorInstance enemy;
+        private readonly ActorInstance enemy;
 
-        public EnemyMoveSequence(ActorInstance enemy)
-        {
-            this.enemy = enemy;
-        }
+        public EnemyMoveSequence(ActorInstance enemy) => this.enemy = enemy;
 
         public override IEnumerator Execute()
         {
-            // Only proceed if it is the enemy's turn and this enemy is valid.
+            // Must be enemy turn
             if (!g.TurnManager.isEnemyTurn)
                 yield break;
 
-            if (enemy == null || !enemy.isPlaying || !enemy.hasMaxAP)
+            // Validate actor
+            if (enemy == null || !enemy.isPlaying)
+            {
+                // Hand off to turn resolution so the queue doesn’t stall
+                g.SequenceManager.Add(new EndTurnSequence());
+                g.SequenceManager.TriggerExecute();
                 yield break;
+            }
 
-            // Wait before starting move (for pacing, animation, or suspense).
+            // If not ready, skip this unit cleanly
+            if (!enemy.isReady)
+            {
+                g.SequenceManager.Add(new EndTurnSequence());
+                g.SequenceManager.TriggerExecute();
+                yield break;
+            }
+
+            // If this unit has no AP to move, still continue the flow into pre-attack
+            if (!enemy.hasMaxAP)
+            {
+                g.SequenceManager.Add(new EnemyPreAttackSequence(enemy));
+                g.SequenceManager.TriggerExecute();
+                yield break;
+            }
+
+            // Pacing before move
             yield return Wait.For(Intermission.Before.Enemy.Move);
 
-            // Calculate move/attack strategy and move the enemy.
+            // Plan and move
             enemy.CalculateAttackStrategy();
             yield return enemy.move.TowardDestination();
 
-            // Do NOT queue attack or change phase here.
-            // Let TurnManager/SequenceManager handle attack phase after all moves complete.
+            // Chain into pre-attack and keep the queue running
+            g.SequenceManager.Add(new EnemyPreAttackSequence(enemy));
+            g.SequenceManager.TriggerExecute();
         }
     }
 }

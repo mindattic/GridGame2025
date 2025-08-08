@@ -110,6 +110,7 @@
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
+    <Compile Include="Assets\Scripts\Events\Sequences\HeroStartSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\EnemyAttackSequence.cs" />
@@ -184,6 +185,7 @@
     <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Repository\SceneRepo.cs" />
+    <Compile Include="Assets\Scripts\Events\Sequences\EndTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\SequenceEvent.cs" />
     <Compile Include="Assets\Scripts\Managers\Portrait3DManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
@@ -225,6 +227,7 @@
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\HideTargetIndicatorSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
+    <Compile Include="Assets\Scripts\Events\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleInstance.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />

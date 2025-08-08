@@ -6,31 +6,39 @@ using g = Assets.Helpers.GameManagerHelper;
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Performs any start-of-turn animation or logic for the enemy team.
-    /// Does not advance phase or add move sequences—TurnManager handles that.
+    /// Performs any start-of-turn logic for the enemy team and schedules their actions.
+    /// Guarantees the sequence queue keeps running even if there are zero ready enemies.
     /// </summary>
     public class EnemyStartSequence : SequenceEvent
     {
         public override IEnumerator Execute()
         {
-            // Only run during enemy turns.
+            // Only run during enemy turns
             if (!g.TurnManager.isEnemyTurn)
                 yield break;
 
-            // Wait for any animations/effects to finish
-            yield return null;
+            // Small pacing
+            yield return Wait.UntilNextFrame();
 
-            // Now enqueue the move sequences for ready enemies
-            foreach (var enemy in g.Actors.Enemies.Where(x => x.isReady))
+            // Snapshot ready enemies once for deterministic ordering
+            var ready = g.Actors.Enemies
+                .Where(x => x != null && x.isPlaying && x.isReady)
+                .ToList();
+
+            if (ready.Count == 0)
             {
-                g.SequenceManager.Add(new EnemyMoveSequence(enemy));
+                // No one can act -> immediately end enemy turn and run the queue
+                g.SequenceManager.Add(new EndTurnSequence());
+                g.SequenceManager.TriggerExecute();
+                yield break;
             }
 
-            g.TurnManager.SetPhase(TurnPhase.PreAttack);
-            yield break;
+            // Enqueue all movers; movement will chain into pre-attack/attack
+            foreach (var e in ready)
+                g.SequenceManager.Add(new EnemyMoveSequence(e));
+
+            // Important: kick the queue now
+            g.SequenceManager.TriggerExecute();
         }
     }
-
-
-
 }

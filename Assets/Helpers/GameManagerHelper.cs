@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.GUI;
+using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;

@@ -1,14 +1,12 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Executes the attack for a single enemy in the attack phase.
+    /// Executes the attack for a single enemy, then queues the next step.
     /// </summary>
     public class EnemyAttackSequence : SequenceEvent
     {
@@ -21,51 +19,81 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            // Only proceed if it's the enemy's turn and attack phase.
-            if (!g.TurnManager.isEnemyTurn || g.TurnManager.currentPhase != TurnPhase.Attack)
+            // Only proceed if it's the enemy's turn
+            if (!g.TurnManager.isEnemyTurn)
                 yield break;
 
-            // Only attack if this enemy is valid and has max AP.
-            if (enemy == null || !enemy.isPlaying || !enemy.hasMaxAP)
+            // Ensure enemy is valid and in play
+            if (enemy == null || !enemy.isPlaying)
                 yield break;
 
+            // Restore AP so the enemy can act
+            //enemy.RestoreAP();
+
+            // If no AP after restore, skip directly to next attacker or end turn
+            if (!enemy.hasMaxAP)
+            {
+                var nextEnemy = g.Actors.Enemies.FirstOrDefault(x => x.isReady && x != enemy);
+                if (nextEnemy != null)
+                    g.SequenceManager.Add(new EnemyAttackSequence(nextEnemy));
+                else
+                    g.SequenceManager.Add(new EndTurnSequence());
+
+                g.SequenceManager.TriggerExecute();
+                yield break;
+            }
+
+            // Wait before attacking (pacing/animation)
             yield return Wait.For(Intermission.Before.Enemy.Attack);
 
-            // Find all adjacent g.Actors.Heroes to this enemy
+            // Find all adjacent heroes to this enemy
             var defendingHeroes = g.Actors.Heroes
                 .Where(x => x.isPlaying && x.IsAdjacentTo(enemy.location))
                 .ToList();
 
-            if (defendingHeroes.Count < 1)
-                yield break;
-
-            foreach (var hero in defendingHeroes)
+            if (defendingHeroes.Count > 0)
             {
-               
-
-
-                var isHit = Formulas.IsHit(enemy, hero);
-                var isCriticalHit = Formulas.IsCriticalHit(enemy, hero);
-                var damage = Formulas.CalculateDamage(enemy, hero);
-
-                var attackResult = new AttackResult
+                foreach (var hero in defendingHeroes)
                 {
-                    Attacker = enemy,
-                    Opponent = hero,
-                    IsHit = isHit,
-                    IsCriticalHit = isCriticalHit,
-                    Damage = damage
-                };
+                    var isHit = Formulas.IsHit(enemy, hero);
+                    var isCriticalHit = Formulas.IsCriticalHit(enemy, hero);
+                    var damage = Formulas.CalculateDamage(enemy, hero);
 
-                var attack = new SingleAttackTrigger(attackResult);
-                yield return enemy.action.Bump(hero, attack);
-                yield return DeathHelper.Process();
+                    var attackResult = new AttackResult
+                    {
+                        Attacker = enemy,
+                        Opponent = hero,
+                        IsHit = isHit,
+                        IsCriticalHit = isCriticalHit,
+                        Damage = damage
+                    };
 
+                    var attack = new SingleAttackTrigger(attackResult);
+                    yield return enemy.action.Bump(hero, attack);
+                    yield return DeathHelper.Process();
+                }
             }
 
-            // Reset the action fill for this enemy after attacking.
+            // Reset the action bar for this enemy after attacking
             enemy.actionBar.Reset();
 
+            // Look for another ready enemy to attack
+            var nextEnemyToAttack = g.Actors.Enemies
+                .FirstOrDefault(x => x.isReady && x != enemy);
+
+            if (nextEnemyToAttack != null)
+            {
+                // Queue the next attack
+                g.SequenceManager.Add(new EnemyAttackSequence(nextEnemyToAttack));
+            }
+            else
+            {
+                // No more attackers → end turn
+                g.SequenceManager.Add(new EndTurnSequence());
+            }
+
+            // Trigger execution so the queued actions run immediately
+            g.SequenceManager.TriggerExecute();
         }
     }
 }

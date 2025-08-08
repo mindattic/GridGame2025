@@ -63,7 +63,6 @@ namespace Game.Behaviors
             //string supports = battle.supporters.Any() ? $"[{string.Join(",", battle.supporters.Get(x => x.characterName))}]" : "-";
             //string defenders = battle.defenders.Any() ? $"[{string.Join(",", battle.defenders.Get(x => x.characterName))}]" : "-";
             //string currentTeam = turnManager != null ? g.TurnManager.currentTeam.ToString() : "-";
-            //string currentPhase = turnManager != null ? g.TurnManager.currentPhase.ToString() : "-";
 
 
             //string a0 = actors[0] != null ? $"{actors[0].name}: {actors[0].HP}{Environment.NewLine}": $"{Environment.NewLine}";

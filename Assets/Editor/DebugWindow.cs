@@ -257,12 +257,17 @@ public class DebugWindow : EditorWindow
         //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
 
 
-        GUILayout.Label($"InputManager Mode: {g.InputManager.inputMode.ToString()}", GUILayout.Width(Screen.width * 0.25f));
-        GUILayout.Label($"TurnManager: {(g.TurnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
-        GUILayout.Label($"Phase: {g.TurnManager.currentPhase}", GUILayout.Width(Screen.width * 0.25f));
-        //GUILayout.Label($"Runtime: {Time.time:F2}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
+        GUILayout.Label($"Input Mode: {g.InputManager.inputMode.ToString()}", GUILayout.Width(Screen.width * 0.25f));
+        GUILayout.Label($"Current Turn: {(g.TurnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
+
+
+
+        GUILayout.BeginHorizontal();
+
+        GUILayout.Label(g.SequenceManager.GetLastActivitySummary(), GUILayout.Width(Screen.width));
+        GUILayout.EndHorizontal();
     }
 
     // RenderKeyboard draws UI buttons that simulate keyboard arrow keys.

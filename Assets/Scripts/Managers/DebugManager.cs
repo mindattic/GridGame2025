@@ -246,7 +246,6 @@ public class DebugManager : MonoBehaviour
     {
         if (g.TurnManager.isHeroTurn)
             g.TurnManager.NextTurn();           // switch to enemy turn
-        g.TurnManager.SetPhase(TurnPhase.Attack); // jump straight to Attack
     }
 
 

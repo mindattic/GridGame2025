@@ -55,7 +55,7 @@ public class StageManager : MonoBehaviour
         g.SupportLineManager.Clear();
         g.CoinCounter.Refresh();
         g.TileManager.Reset();
-        g.TurnManager.Initialize();
+        //g.TurnManager.Initialize();
 
         // Show persistent hero actors from ProfileRepo
         foreach (var partyMember in ProfileRepo.CurrentProfile.CurrentSave.Party.Members)
