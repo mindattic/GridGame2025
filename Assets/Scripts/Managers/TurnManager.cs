@@ -181,7 +181,7 @@ public class TurnManager : MonoBehaviour
             // Enqueue move sequences for each ready enemy.
             int added = 0;
 
-            foreach (var enemy in g.Actors.Enemies.Where(x => x.isPlaying && x.hasMaxAP))
+            foreach (var enemy in g.Actors.Enemies.Where(x => x.isReady))
             {
                 g.SequenceManager.Add(new EnemyMoveSequence(enemy));
                 added++;

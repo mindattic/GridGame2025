@@ -813,7 +813,10 @@ public static class Wait
     public static WaitForSeconds OneTick() => new WaitForSeconds(Interval.OneTick);
     public static WaitForSeconds Ticks(int amount) => new WaitForSeconds(Interval.OneTick * amount);
     public static WaitForSeconds For(float seconds) => new WaitForSeconds(seconds);
-    public static IEnumerator UntilNextFrame() { yield return null; }
+
+    public static readonly WaitForEndOfFrame EndOfFrame = new WaitForEndOfFrame();
+    public static object UntilNextFrame() => null;
+    //public static IEnumerator UntilNextFrame() { yield return null; }
 }
 
 //public static class SortingOrder

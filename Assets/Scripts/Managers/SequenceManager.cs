@@ -5,6 +5,7 @@ using UnityEngine;
 using Assets.Scripts.Events;
 using System;
 using g = Assets.Helpers.GameManagerHelper;
+using Unity.VisualScripting;
 
 public class SequenceManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class SequenceManager : MonoBehaviour
     /// </summary>
     public void Add(SequenceEvent e)
     {
+        Debug.Log($"Sequence Add: {e.GetType().Name}");
         queue.Add(e);
     }
 
@@ -37,6 +39,7 @@ public class SequenceManager : MonoBehaviour
     /// </summary>
     public void AddFirst(SequenceEvent e)
     {
+        Debug.Log($"Sequence AddFirst: {e.GetType().Name}");
         queue.AddFirst(e);
     }
 
@@ -85,16 +88,20 @@ public class SequenceManager : MonoBehaviour
             yield break;
 
         isExecuting = true;
+        SequenceEvent e = null;
 
         try
         {
+            
             // Process until queue is empty
             while (queue.Count > 0)
             {
-                var e = queue.Remove();
+                e = queue.Remove();
 
                 // Run each SequenceEvent to completion
                 // Each SequenceEvent internally yields for any async work
+
+                Debug.Log($"Sequence Execute: {e.GetType().Name}");
                 yield return StartCoroutine(e.Execute());
             }
 
@@ -106,6 +113,7 @@ public class SequenceManager : MonoBehaviour
             // Always reset execution state
             isExecuting = false;
             runningCoroutine = null;
+            Debug.Log($"Sequence Execute finally: {e.GetType().Name}");
         }
     }
 

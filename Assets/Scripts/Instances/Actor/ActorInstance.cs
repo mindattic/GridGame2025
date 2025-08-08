@@ -25,7 +25,7 @@ public class ActorInstance : MonoBehaviour
     public bool isSpawnable => !flags.HasSpawned && spawnTurn <= g.TurnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
     public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum action points.
 
-
+    public bool isReady => isPlaying && hasMaxAP;
 
     public bool IsSameColumn(Vector2Int other) => location.x == other.x;
     public bool IsSameRow(Vector2Int other) => location.y == other.y;
