@@ -1,33 +1,27 @@
-﻿using System.Collections;
+﻿// --- File: Assets/Scripts/Events/Sequences/EndTurnSequence.cs ---
+using System.Collections;
 using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Ends the current team's turn, switches to the next team,
-    /// and starts their turn sequence.
+    /// Ends the current team's turn and flips to the next team.
+    /// Responsibility for enqueuing the next side's start sequence
+    /// belongs to TurnManager.EnterCurrentSide via TurnManager.NextTurn.
     /// </summary>
     public class EndTurnSequence : SequenceEvent
     {
         public override IEnumerator Execute()
         {
-            // Optional pacing before turn change
+            // Small pacing if you want any end-of-turn VFX to finish
             yield return Wait.UntilNextFrame();
 
-            // Swap sides
+            // Flip side. TurnManager.NextTurn will enqueue the appropriate
+            // start sequence and trigger execution. Do not enqueue here.
             g.TurnManager.NextTurn();
 
-            // Start the next side's sequence and RUN it now
-            if (g.TurnManager.isEnemyTurn)
-            {
-                g.SequenceManager.Add(new EnemyStartSequence());
-                g.SequenceManager.TriggerExecute();
-            }
-            else if (g.TurnManager.isHeroTurn)
-            {
-                g.SequenceManager.Add(new HeroStartSequence());
-                g.SequenceManager.TriggerExecute();
-            }
+            // Nothing else to do in this sequence
+            yield break;
         }
     }
 }

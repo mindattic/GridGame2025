@@ -1,11 +1,13 @@
-﻿using Assets.Scripts.Models;
+﻿// --- File: Assets/Scripts/Events/Sequences/HeroStartSequence.cs ---
+using Assets.Scripts.Models;
 using System.Collections;
 using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Performs any start-of-turn animation or logic for the hero team.
+    /// Performs start-of-turn logic for the hero team.
+    /// Refills the hero action timer and makes sure UI is in the right mode.
     /// </summary>
     public class HeroStartSequence : SequenceEvent
     {
@@ -15,14 +17,15 @@ namespace Assets.Scripts.Events
             if (!g.TurnManager.isHeroTurn)
                 yield break;
 
-            // Wait for any animations/effects to finish
+            // Small pacing
             yield return null;
 
-            // Restore AP for all hero-controlled actors
-            //foreach (var hero in g.Actors.Heroes)
-            //{
-            //    hero.RestoreAP();
-            //}
+            // Put input back into hero mode and refill the turn timer UI
+            g.InputManager.inputMode = InputMode.HeroTurn;
+            g.TimerBar2D.Refill();   // resets fill to full and timeRemaining to max
+
+            // If you restore AP on hero start, do it here
+            // foreach (var hero in g.Actors.Heroes) hero.RestoreAP();
 
             yield break;
         }
