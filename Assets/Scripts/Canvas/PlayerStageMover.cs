@@ -60,7 +60,7 @@ public class PlayerStageMover : MonoBehaviour
             direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;
             SetAnimation(direction);
 
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         hero.anchoredPosition = targetPosition;

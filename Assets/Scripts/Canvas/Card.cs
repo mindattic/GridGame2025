@@ -167,7 +167,7 @@ public class Card : MonoBehaviour
             float t = elapsed / halfDuration;
             portrait.anchoredPosition = Vector2.Lerp(originalPos, upPos, Mathf.SmoothStep(0f, 1f, t));
             elapsed += Time.deltaTime;
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         portrait.anchoredPosition = upPos;
 
@@ -178,7 +178,7 @@ public class Card : MonoBehaviour
             float t = elapsed / halfDuration;
             portrait.anchoredPosition = Vector2.Lerp(upPos, originalPos, Mathf.SmoothStep(0f, 1f, t));
             elapsed += Time.deltaTime;
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         portrait.anchoredPosition = originalPos;
     }

@@ -50,7 +50,7 @@ public class SettingsManager : MonoBehaviour
                 }
             });
 
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         StartCoroutine(fade.Show(showConfirm()));

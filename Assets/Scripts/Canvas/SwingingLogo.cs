@@ -65,7 +65,7 @@ public class SwingingLogo : MonoBehaviour
     //            currentYRotation = Mathf.Lerp(currentYRotation, adjustedTarget, Time.deltaTime * windFocusMultiplier);
     //            currentYRotation = Mathf.Clamp(currentYRotation, minAngle, maxAngle);
     //            transform.rotation = Quaternion.Euler(0, currentYRotation, 0f);
-    //            yield return null;
+    //            yield return Wait.UntilNextFrame();
     //        }
 
     //        currentYRotation = targetYRotation;

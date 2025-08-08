@@ -134,7 +134,7 @@ public class TimerBar2D : MonoBehaviour
     {
         switch (mode)
         {
-            case InputMode.HeroTurn:
+            case InputMode.Player:
                 gameObject.SetActive(true);
                 break;
 

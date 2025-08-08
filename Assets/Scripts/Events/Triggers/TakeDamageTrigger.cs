@@ -14,7 +14,7 @@
 //    public override IEnumerator Run()
 //    {
 //        attackResult.Opponent.TakeDamageAsync(attackResult);
-//        yield return null;
+//        yield return Wait.UntilNextFrame();
 
 //        HasExecuted = true;
 //    }

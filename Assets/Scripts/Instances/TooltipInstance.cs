@@ -234,7 +234,7 @@ public class TooltipInstance : MonoBehaviour
             background.localScale = Vector3.Lerp(startScale, endScale, eased);
             background.anchoredPosition = Vector2.Lerp(startPos, endPos, eased);
             elapsed += Time.deltaTime;
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         background.localScale = endScale;
@@ -265,7 +265,7 @@ public class TooltipInstance : MonoBehaviour
             float eased = Mathf.SmoothStep(from, to, t / duration);
             canvasGroup.alpha = eased;
             t += Time.deltaTime;
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         canvasGroup.alpha = to;
     }

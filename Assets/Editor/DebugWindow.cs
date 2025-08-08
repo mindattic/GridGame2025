@@ -266,7 +266,7 @@ public class DebugWindow : EditorWindow
 
         GUILayout.BeginHorizontal();
 
-        GUILayout.Label(g.SequenceManager.GetLastActivitySummary(), GUILayout.Width(Screen.width));
+        GUILayout.Label(g.SequenceManager.GetDetails(), GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
     }
 

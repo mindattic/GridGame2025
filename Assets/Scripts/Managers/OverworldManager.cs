@@ -141,7 +141,7 @@ public class OverworldManager : MonoBehaviour
         while (Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > snapThreshold)
         {
             scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * speed);
-            yield return null; // Wait for next frame
+            yield return Wait.UntilNextFrame();
         }
 
         // Snap to final position
@@ -191,7 +191,7 @@ public class OverworldManager : MonoBehaviour
     //            break;
     //        }
 
-    //        yield return null; // Wait for next frame
+    //        yield return Wait.UntilNextFrame(); // Wait for next frame
     //    }
 
     //    // Smooth final snap

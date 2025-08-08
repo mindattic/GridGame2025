@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
 
     // Fired whenever inputMode changes
     public event Action<InputMode> OnInputModeChanged;
-    private InputMode _inputMode = InputMode.HeroTurn;
+    private InputMode _inputMode = InputMode.Player;
     public InputMode inputMode
     {
         get => _inputMode;
@@ -34,6 +34,8 @@ public class InputManager : MonoBehaviour
     }
 
     private RectTransform canvas2D;
+
+    public bool isDragging => g.Actors.HasSelectedHero && g.Actors.SelectedHero.flags.IsMoving;
 
     private void Awake()
     {
@@ -55,6 +57,10 @@ public class InputManager : MonoBehaviour
 
             switch (inputMode)
             {
+                case InputMode.None:
+                    //Screen receieves no input
+                    break;
+
                 case InputMode.AbilityTarget:
                     #region AbilityTarget
 
@@ -124,12 +130,7 @@ public class InputManager : MonoBehaviour
                     #endregion
                     break;
 
-                case InputMode.EnemyTurn:
-                    #region Enemy Turn
-                    #endregion
-                    break;
-
-                case InputMode.HeroTurn:
+                case InputMode.Player:
                     #region Hero Turn
                     switch (touch.phase)
                     {

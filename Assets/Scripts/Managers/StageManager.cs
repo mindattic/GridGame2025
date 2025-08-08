@@ -180,7 +180,7 @@ public class StageManager : MonoBehaviour
             var stageName = currentStage.NextStage;
             currentStage = StageRepo.Get(stageName);
             RestartStage();
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         StartCoroutine(g.Fade.FadeOut(loadNextStage()));
@@ -198,7 +198,7 @@ public class StageManager : MonoBehaviour
         IEnumerator reloadStage()
         {
             RestartStage();
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         StartCoroutine(g.Fade.FadeOut(reloadStage()));

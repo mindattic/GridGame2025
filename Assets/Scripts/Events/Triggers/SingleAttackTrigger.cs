@@ -19,7 +19,7 @@ namespace Assets.Scripts.Events
             var damage = attackResult.Damage;
             attackResult.Opponent.TakeDamageAsync(damage);
 
-            yield return null;
+            yield return Wait.UntilNextFrame();
             HasExecuted = true;
         }
     }

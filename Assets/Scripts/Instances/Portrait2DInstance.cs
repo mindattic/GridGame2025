@@ -101,7 +101,7 @@ public class Portrait2DInstance : MonoBehaviour
             }
 
             rectTransform.anchoredPosition = pos;
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         Despawn();

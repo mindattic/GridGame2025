@@ -26,7 +26,7 @@ namespace Assets.Scripts.Models
 
         public void AddFirst(T item) => queue.AddFirst(item); // Add to top
 
-      
+
         public void Insert(T item, T node, InsertOrder order = InsertOrder.Before)
         {
             var nodeRef = queue.Find(node);
@@ -45,6 +45,11 @@ namespace Assets.Scripts.Models
             T value = queue.First.Value;
             queue.RemoveFirst();
             return value;
+        }
+
+        public void Clear()
+        {
+            queue.Clear();
         }
 
     }

@@ -169,10 +169,9 @@ public enum Glow
 
 public enum InputMode
 {
+    None,
+    Player,
     AbilityTarget,
-    EnemyTurn,
-    HeroTurn,
-    Cutscene
 }
 
 public enum LogLevel

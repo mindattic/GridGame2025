@@ -85,7 +85,7 @@ namespace Game.Instances
                 elapsedTime += Time.deltaTime;
                 alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
                 SetAlpha(alpha);
-                yield return null;
+                yield return Wait.UntilNextFrame();
             }
 
             alpha = maxAlpha;
@@ -110,7 +110,7 @@ namespace Game.Instances
                 elapsedTime += Time.deltaTime;
                 alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
                 SetAlpha(alpha);
-                yield return null;
+                yield return Wait.UntilNextFrame();
             }
 
             //After:

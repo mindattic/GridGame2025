@@ -92,7 +92,7 @@ public class ProjectileInstance : MonoBehaviour
             // Apply position update
             transform.position = position;
             elapsed += Time.deltaTime;
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         transform.position = endPosition;
@@ -117,7 +117,7 @@ public class ProjectileInstance : MonoBehaviour
             transform.position = position;
 
             elapsed += Time.deltaTime;
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         // Snap to final position

@@ -436,7 +436,7 @@ public class ActorInstance : MonoBehaviour
     public IEnumerator FireDamageAsync(float amount)
     {
         StartCoroutine(FireDamage(amount));
-        yield return null;
+        yield return Wait.UntilNextFrame();
     }
 
     //FireDamage: Coroutine to display fire damage textarea and wait until the next frame.
@@ -450,7 +450,7 @@ public class ActorInstance : MonoBehaviour
     public IEnumerator HealAsync(float amount)
     {
         StartCoroutine(Heal(amount));
-        yield return null;
+        yield return Wait.UntilNextFrame();
     }
 
     //Heal: Coroutine to display healing textarea and wait until the next frame.

@@ -108,7 +108,7 @@ public class Portrait3DInstance : MonoBehaviour
     //        float curveT = slide != null ? slide.Evaluate(t) : t;
     //        this.position = Vector3.Lerp(start, destination, curveT);
     //        elapsed += Time.deltaTime;
-    //        yield return null;
+    //        yield return Wait.UntilNextFrame();
     //    }
 
     //    this.position = destination;
@@ -190,7 +190,7 @@ public class Portrait3DInstance : MonoBehaviour
 
             Vector3 frontAnchorPos = actor.render.front.transform.position;
             AlignPortraitWithFront(frontAnchorPos);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         yield return PopOut(rotateDuration, fadeDuration);
@@ -224,7 +224,7 @@ public class Portrait3DInstance : MonoBehaviour
             Vector3 loweredPos = originalFrontPos + new Vector3(0, yOffset, 0);
             front.position = Vector3.Lerp(originalFrontPos, loweredPos, t);
             AlignPortraitWithFront(front.position);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         front.rotation = targetRot;
         front.position = originalFrontPos + new Vector3(0, yOffset, 0);
@@ -241,7 +241,7 @@ public class Portrait3DInstance : MonoBehaviour
             float alpha = Mathf.Lerp(0, 1, t); // Fade in: 0 -> 1
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
             AlignPortraitWithFront(front.position);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         spriteRenderer.color = new Color(c.r, c.g, c.b, 1f);
         AlignPortraitWithFront(front.position);
@@ -273,7 +273,7 @@ public class Portrait3DInstance : MonoBehaviour
             float alpha = Mathf.Lerp(1, 0, t); // Fade out: 1 -> 0
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
             AlignPortraitWithFront(front.position);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         spriteRenderer.color = new Color(c.r, c.g, c.b, 0f);
         AlignPortraitWithFront(front.position);
@@ -290,7 +290,7 @@ public class Portrait3DInstance : MonoBehaviour
             front.rotation = Quaternion.Slerp(startRot, targetRot, t);
             front.position = Vector3.Lerp(loweredPos, originalPos, t);
             AlignPortraitWithFront(front.position);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         front.rotation = targetRot;
         front.position = originalPos;

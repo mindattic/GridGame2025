@@ -423,7 +423,7 @@ public class PartyManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             float newWidth = Mathf.Lerp(startWidth, targetWidth, t);
             bar.sizeDelta = new Vector2(newWidth, bar.sizeDelta.y);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         bar.sizeDelta = new Vector2(targetWidth, bar.sizeDelta.y);

@@ -134,7 +134,7 @@ public class SupportLineInstance : MonoBehaviour
             elapsedTime += Time.deltaTime;
             alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
             UpdateLineAlpha(alpha);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         alpha = maxAlpha;
@@ -166,7 +166,7 @@ public class SupportLineInstance : MonoBehaviour
             elapsedTime += Time.deltaTime;
             alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
             UpdateLineAlpha(alpha);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         alpha = minAlpha;

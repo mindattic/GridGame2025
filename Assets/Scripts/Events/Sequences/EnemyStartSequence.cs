@@ -17,6 +17,8 @@ namespace Assets.Scripts.Events
             if (!g.TurnManager.isEnemyTurn)
                 yield break;
 
+            g.InputManager.inputMode = InputMode.None;
+
             // Small pacing
             yield return Wait.UntilNextFrame();
 

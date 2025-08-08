@@ -46,7 +46,7 @@ public class CanvasParticleInstance : MonoBehaviour
                 yRotationFocus * Time.deltaTime,
                 zRotationFocus * Time.deltaTime);
 
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         Destroy(gameObject);
     }

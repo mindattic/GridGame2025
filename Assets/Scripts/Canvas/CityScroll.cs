@@ -22,7 +22,7 @@ public class CityScroll : MonoBehaviour
             if (offset.x <= -1f) offset.x += 1f; // Wrap around at -1
 
             rawImage.uvRect = new Rect(offset, rawImage.uvRect.size);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
     }
 }

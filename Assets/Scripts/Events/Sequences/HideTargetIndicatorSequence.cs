@@ -8,8 +8,8 @@ namespace Assets.Scripts.Events
         public override IEnumerator Execute()
         {
             g.TargetIndicator.Hide();
-            g.InputManager.inputMode = InputMode.HeroTurn;
-            yield return null;
+            g.InputManager.inputMode = InputMode.Player;
+            yield return Wait.UntilNextFrame();
         }
     }
 

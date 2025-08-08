@@ -30,7 +30,7 @@ public class ProfileCreateManager : MonoBehaviour
                 StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
             });
 
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         StartCoroutine(fade.FadeIn(showKeyboard()));

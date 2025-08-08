@@ -95,7 +95,7 @@ public class TargetLineInstance : MonoBehaviour
             elapsed += Time.deltaTime;
             alpha = Mathf.Lerp(from, to, elapsed / fadeDuration);
             UpdateLineAlpha(alpha);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
         alpha = to;
         UpdateLineAlpha(alpha);

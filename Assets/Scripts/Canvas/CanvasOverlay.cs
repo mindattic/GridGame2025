@@ -74,7 +74,7 @@ public class CanvasOverlay : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
             SetAlpha(newAlpha);
-            yield return null;
+            yield return Wait.UntilNextFrame();
         }
 
         SetAlpha(targetAlpha);
