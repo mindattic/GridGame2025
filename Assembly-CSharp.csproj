@@ -127,7 +127,6 @@
     <Compile Include="Assets\Data\Actor\Cleric.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
-    <Compile Include="Assets\Scripts\Canvas\CoinBar.cs" />
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\MultiAttackTrigger.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
@@ -222,6 +221,7 @@
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\TakeDamageTrigger.cs" />
     <Compile Include="Assets\Scripts\Repository\TextStyleRepo.cs" />
+    <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\HideTargetIndicatorSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />

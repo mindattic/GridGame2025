@@ -232,7 +232,7 @@ public class DebugManager : MonoBehaviour
         Tooltip.Show(tt);
     }
 
-    public void TriggerEnemyAttack()
+    public void TriggerEnemyMoveAttack()
     {
         var attackingEnemies = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
         attackingEnemies.ForEach(x => x.SetReady());
@@ -241,6 +241,14 @@ public class DebugManager : MonoBehaviour
             g.TurnManager.NextTurn();
 
     }
+
+    public void TriggerEnemyAttack()
+    {
+        if (g.TurnManager.isHeroTurn)
+            g.TurnManager.NextTurn();           // switch to enemy turn
+        g.TurnManager.SetPhase(TurnPhase.Attack); // jump straight to Attack
+    }
+
 
     public void TitleTest()
     {

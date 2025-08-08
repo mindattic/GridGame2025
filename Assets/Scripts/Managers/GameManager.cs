@@ -114,7 +114,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public List<AttackLineInstance> attackLines;
 
     //CoinManager
-    [HideInInspector] public CoinBar coinBar;
+    [HideInInspector] public CoinCounter coinCounter;
     [HideInInspector] public int totalCoins;
 
     //AudioManager sources
@@ -140,12 +140,13 @@ public class GameManager : Singleton<GameManager>
 
         previousGameFocus = Time.timeScale;
 
-        //var oneSixth = ScreenHelper.CenteredScreenWorldRect.Width / 6;
-        var a = ScreenHelper.CenteredScreenWorldRect.Width * Increment.OneSixth;
-        var b = a * 0.03333f;
-        var c = a - b;
+        // Calculate 96% of canvas width
+        float width96Percent = ScreenHelper.CenteredScreenWorldRect.Width * 0.96f;
 
-        tileSize = c;
+        // Divide into sixths
+        tileSize = width96Percent / 6f;
+
+        //tileSize = c;
         tileScale = new Vector3(tileSize, tileSize, 1f);
         tileMap = new TileMap();
 
@@ -165,10 +166,10 @@ public class GameManager : Singleton<GameManager>
         fade = GameObject.Find(GameObjectHelper.Game.Fade).GetComponent<FadeInstance>();
         canvas2D = GameObject.Find(GameObjectHelper.Game.Canvas2D).GetComponent<Canvas>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
-        timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D).GetComponent<TimerBar2D>();
+        timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D.Root).GetComponent<TimerBar2D>();
         portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();
 
-        coinBar = GameObject.Find(GameObjectHelper.Game.CoinBar).GetComponent<CoinBar>();
+        coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
         waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
         canvasOverlay = GameObject.Find(GameObjectHelper.Game.CanvasOverlay).GetComponent<CanvasOverlay>();
         targetModeOverlay = GameObject.Find(GameObjectHelper.Game.TargetModeOverlay).GetComponent<TargetModeOverlay>();

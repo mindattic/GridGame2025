@@ -668,8 +668,9 @@ public class DebugWindow : EditorWindow
             case DebugOptions.SpawnTitle: g.DebugManager.TitleTest(); break;
             case DebugOptions.SpawnTooltip: g.DebugManager.SpawnTooltip(); break;
             case DebugOptions.Spin: g.DebugManager.Spin(); break;
+            case DebugOptions.TriggerEnemyMoveAttack: g.DebugManager.TriggerEnemyMoveAttack(); break;
             case DebugOptions.TriggerEnemyAttack: g.DebugManager.TriggerEnemyAttack(); break;
-          
+
             default: Debug.LogWarning("OnDebugOptionRunClick failed."); break;
         }
     }

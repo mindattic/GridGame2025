@@ -101,6 +101,7 @@ public enum DebugOptions
     SpawnSupportLines,
     SpawnTitle,
     SpawnTooltip,
+    TriggerEnemyMoveAttack,
     TriggerEnemyAttack,
 }
 

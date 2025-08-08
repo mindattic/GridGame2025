@@ -6,7 +6,7 @@ using g = Assets.Helpers.GameManagerHelper;
 
 // ActorActionBar is responsible for managing and updating the visual representation 
 // of an actor's action points (AP) in the UI. It handles the fill and drain animations 
-// for the action bar based on the actor's CurrentProfile and maximum AP.
+// for the action fill based on the actor's CurrentProfile and maximum AP.
 public class ActorActionBar
 {
     protected ActorFlags flags => instance.flags;
@@ -15,7 +15,7 @@ public class ActorActionBar
 
     private Vector3 initialScale => render.actionBarBack.transform.localScale;
 
-    // Field to store the parent actor actors that this action bar is associated with.
+    // Field to store the parent actor actors that this action fill is associated with.
     private ActorInstance instance;
 
     // Show sets up the ActionBar by linking it to its parent ActorInstance.
@@ -24,7 +24,7 @@ public class ActorActionBar
         this.instance = parentInstance;
     }
 
-    // GetScale calculates the scaled width for the action bar elements based on a given AP value.
+    // GetScale calculates the scaled width for the action fill elements based on a given AP value.
     // It scales the x-component proportionally to the fraction of AP relative to MaxAP and clamps it between 0 and the initial width.
     private Vector3 GetScale(float value)
     {
@@ -34,8 +34,8 @@ public class ActorActionBar
             initialScale.z);
     }
 
-    // Save refreshes the action bar UI to reflect the actor's CurrentProfile AP values.
-    // It adjusts the fill and drain bar scales, updates the textarea display, triggers a weapon wiggle action,
+    // Save refreshes the action fill UI to reflect the actor's CurrentProfile AP values.
+    // It adjusts the fill and drain fill scales, updates the textarea display, triggers a weapon wiggle action,
     // and initiates the drain action.
     public void Update()
     {
@@ -49,7 +49,7 @@ public class ActorActionBar
         TriggerDrain();
     }
 
-    // TriggerDrain starts the drain coroutine to action the reduction of the drain bar,
+    // TriggerDrain starts the drain coroutine to action the reduction of the drain fill,
     // but only if the actor actors is active.
     private void TriggerDrain()
     {
@@ -57,9 +57,9 @@ public class ActorActionBar
             instance.StartCoroutine(Drain());
     }
 
-    // Drain is a coroutine that gradually reduces the displayed AP on the drain bar until it matches the CurrentProfile AP.
+    // Drain is a coroutine that gradually reduces the displayed AP on the drain fill until it matches the CurrentProfile AP.
     // It waits for a brief interval before starting, then decreases stats.PreviousAP in increments,
-    // updating the scale of the drain bar each tick.
+    // updating the scale of the drain fill each tick.
     private IEnumerator Drain()
     {
         // Abort if no drain is required (i.e., CurrentProfile AP equals previous AP).
@@ -81,13 +81,13 @@ public class ActorActionBar
             yield return Wait.OneTick();
         }
 
-        // After draining, synchronize PreviousAP with the CurrentProfile AP and update the health bar drain element.
+        // After draining, synchronize PreviousAP with the CurrentProfile AP and update the health fill drain element.
         stats.PreviousAP = stats.AP;
         scale = GetScale(stats.PreviousAP);
         render.healthBarDrain.transform.localScale = scale;
     }
 
-    // TriggerFill starts the coroutine that fills the action bar (increasing AP) if conditions are met.
+    // TriggerFill starts the coroutine that fills the action fill (increasing AP) if conditions are met.
     public void TriggerFill()
     {
         if (instance.isActive)
@@ -128,7 +128,7 @@ public class ActorActionBar
         flags.isGainingAP = false;
     }
 
-    // Reset sets the actor's AP values to zero and refreshes the action bar UI.
+    // Reset sets the actor's AP values to zero and refreshes the action fill UI.
     public void Reset()
     {
         stats.AP = 0;

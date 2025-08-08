@@ -8,64 +8,85 @@ using UnityEngine;
 using g = Assets.Helpers.GameManagerHelper;
 
 /// <summary>
-/// Enum for all possible turn phases.
-/// </summary>
-
-/// <summary>
 /// Handles the turn-based phase system for both hero and enemy teams.
-/// Phases are advanced either by player input (for hero) or by sequences/callbacks (for enemy).
+/// Phases are advanced by player input for heroes and by sequence completion for enemies.
 /// </summary>
 public class TurnManager : MonoBehaviour
 {
+    // ------------------------------------------------------------------------
     // State
+    // ------------------------------------------------------------------------
+
+    // Tracks the turn number. Increments when a new hero turn begins.
     public int currentTurn = 0;
+
+    // Tracks which team is currently active.
     public Team currentTeam = Team.Hero;
+
+    // Tracks the current phase of the active team's turn.
     public TurnPhase currentPhase = TurnPhase.Start;
 
-    // Convenience
+    // Convenience flags for the active team checks.
     public bool isHeroTurn => currentTeam == Team.Hero;
     public bool isEnemyTurn => currentTeam == Team.Enemy;
 
-    // Event for phase changes
+    // ------------------------------------------------------------------------
+    // Events
+    // ------------------------------------------------------------------------
+
+    // Raised when the current phase changes.
     public event Action<TurnPhase> OnTurnPhaseChanged;
 
+    // Subscribes to internal and external events when enabled.
     private void OnEnable()
     {
         OnTurnPhaseChanged += HandlePhaseChanged;
+
         if (g.SequenceManager != null)
             g.SequenceManager.OnSequenceComplete += OnSequenceComplete;
     }
 
+    // Unsubscribes from events when disabled.
     private void OnDisable()
     {
         OnTurnPhaseChanged -= HandlePhaseChanged;
+
         if (g.SequenceManager != null)
             g.SequenceManager.OnSequenceComplete -= OnSequenceComplete;
     }
 
+    // ------------------------------------------------------------------------
+    // Lifecycle
+    // ------------------------------------------------------------------------
+
     /// <summary>
-    /// Initializes the turn system and starts with Hero's Start phase.
+    /// Initializes the turn system and starts with the Hero Start phase.
     /// </summary>
     public void Initialize()
     {
         currentTurn = 0;
         currentTeam = Team.Hero;
+
         SetPhase(TurnPhase.Start);
     }
 
     /// <summary>
-    /// Advances to the next team's turn and resets overlays/supportLines'.
+    /// Advances to the next team's turn and resets transient visuals.
     /// </summary>
     public void NextTurn()
     {
+        // Alternate teams.
         currentTeam = isHeroTurn ? Team.Enemy : Team.Hero;
+
+        // Clear support lines or any other per-turn overlays.
         g.SupportLineManager.Clear();
-        //game.AttackLines.DespawnAll();
+
+        // Begin the next turn at Start.
         SetPhase(TurnPhase.Start);
     }
 
     /// <summary>
-    /// Sets the new phase and fires the event.
+    /// Sets the new phase and fires the phase changed event.
     /// </summary>
     public void SetPhase(TurnPhase nextPhase)
     {
@@ -73,8 +94,12 @@ public class TurnManager : MonoBehaviour
         OnTurnPhaseChanged?.Invoke(currentPhase);
     }
 
+    // ------------------------------------------------------------------------
+    // Phase router
+    // ------------------------------------------------------------------------
+
     /// <summary>
-    /// Responds to phase changes and triggers appropriate logic.
+    /// Responds to phase changes and triggers phase-specific logic.
     /// </summary>
     private void HandlePhaseChanged(TurnPhase phase)
     {
@@ -89,6 +114,10 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    // ------------------------------------------------------------------------
+    // Start phase
+    // ------------------------------------------------------------------------
+
     /// <summary>
     /// Handles logic for the Start phase for both teams.
     /// </summary>
@@ -96,30 +125,45 @@ public class TurnManager : MonoBehaviour
     {
         if (isHeroTurn)
         {
+            // Increment the visible turn counter at the start of the hero turn.
             currentTurn++;
+
+            // Refill the player timer and apply any visual cues.
             g.TimerBar2D.Refill();
             GameManager.instance.heroManager.TriggerGlow();
-            // Wait for player to trigger next phase via UI
+
+            // Wait for player input to move to the next phase.
+            return;
         }
-        else if (isEnemyTurn)
+
+        if (isEnemyTurn)
         {
+            // Lock the timer and spawn any pending enemies.
             g.TimerBar2D.Lock();
             g.SequenceManager.Add(new EnemySpawnSequence());
 
+            // If no enemies are ready, end the enemy turn immediately.
             bool anyReadyEnemies = g.Actors.Enemies.Any(x => x.isPlaying && x.hasMaxAP);
             if (!anyReadyEnemies)
             {
-                // No enemies to act; finish up and advance turn
+                // Execute any spawn visuals then flip to the next turn.
                 g.SequenceManager.TriggerExecute();
                 NextTurn();
                 return;
             }
 
+            // Run any start-of-turn enemy visuals or prep.
             g.SequenceManager.Add(new EnemyStartSequence());
             g.SequenceManager.TriggerExecute();
-            // Do NOT call SetPhase here; OnSequenceComplete will handle advance to Move
+
+            // Do not set phase here. OnSequenceComplete will advance to Move.
+            return;
         }
     }
+
+    // ------------------------------------------------------------------------
+    // Move phase
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Handles the Move phase for both teams.
@@ -128,19 +172,39 @@ public class TurnManager : MonoBehaviour
     {
         if (isHeroTurn)
         {
-            // Player moves; UI or input must call PlayerEndMovePhase when finished.
+            // Player can drag and drop to move. UI calls PlayerEndMovePhase when done.
+            return;
         }
-        else if (isEnemyTurn)
+
+        if (isEnemyTurn)
         {
-            // Enqueue move sequences for all ready g.Actors.Enemies.
+            // Enqueue move sequences for each ready enemy.
+            int added = 0;
+
             foreach (var enemy in g.Actors.Enemies.Where(x => x.isPlaying && x.hasMaxAP))
             {
                 g.SequenceManager.Add(new EnemyMoveSequence(enemy));
+                added++;
             }
-            g.SequenceManager.TriggerExecute();
-            // Do NOT call SetPhase here; OnSequenceComplete will handle advance to PreAttack
+
+            // If at least one move was queued, execute and wait for completion callback.
+            if (added > 0)
+            {
+                g.SequenceManager.TriggerExecute();
+
+                // Do not set phase here. OnSequenceComplete will advance to PreAttack.
+                return;
+            }
+
+            // If no moves were queued, advance to PreAttack to prevent a stall.
+            SetPhase(TurnPhase.PreAttack);
+            return;
         }
     }
+
+    // ------------------------------------------------------------------------
+    // PreAttack phase
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Handles the PreAttack phase for both teams.
@@ -149,15 +213,23 @@ public class TurnManager : MonoBehaviour
     {
         if (isHeroTurn)
         {
-            // Wait for player to pick targetActor/confirm attack.
-            // UI/input must call PlayerEndPreAttackPhase when ready.
+            // Wait for player to select and confirm attacks.
+            // UI calls PlayerEndPreAttackPhase to proceed.
+            return;
         }
-        else if (isEnemyTurn)
+
+        if (isEnemyTurn)
         {
-            // AI pre-attack logic (targetActor selection, prep), then auto-advance:
+            // Enemy AI can preselect targets if needed.
+            // Immediately advance to Attack for automated flow.
             SetPhase(TurnPhase.Attack);
+            return;
         }
     }
+
+    // ------------------------------------------------------------------------
+    // Attack phase
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Handles the Attack phase for both teams.
@@ -166,17 +238,37 @@ public class TurnManager : MonoBehaviour
     {
         if (isHeroTurn)
         {
-            // Wait for player attack resolution/animation.
-            // When done, UI/input calls PlayerEndAttackPhase.
+            // Wait for player attack resolution.
+            // UI calls PlayerEndAttackPhase when complete.
+            return;
         }
-        else if (isEnemyTurn)
+
+        if (isEnemyTurn)
         {
-            // Queue up one attack sequence per attacking enemy
-            var attackingEnemies = g.Actors.Enemies.Where(x => x.isPlaying && x.hasMaxAP).ToList();
-            attackingEnemies.ForEach(x => g.SequenceManager.Add(new EnemyAttackSequence(x)));
+            // Collect enemies that are ready to attack.
+            var attackers = g.Actors.Enemies
+                .Where(x => x.isPlaying && x.hasMaxAP)
+                .ToList();
+
+            // If no attackers are ready, skip to PostAttack to prevent a stall.
+            if (attackers.Count == 0)
+            {
+                SetPhase(TurnPhase.PostAttack);
+                return;
+            }
+
+            // Enqueue an attack for each ready enemy.
+            attackers.ForEach(x => g.SequenceManager.Add(new EnemyAttackSequence(x)));
+
+            // Execute attacks. OnSequenceComplete will advance to PostAttack.
             g.SequenceManager.TriggerExecute();
+            return;
         }
     }
+
+    // ------------------------------------------------------------------------
+    // PostAttack phase
+    // ------------------------------------------------------------------------
 
     /// <summary>
     /// Handles the PostAttack phase for both teams.
@@ -185,54 +277,70 @@ public class TurnManager : MonoBehaviour
     {
         if (isHeroTurn)
         {
-            // Wait for post-attack cleanup.
-            // When done, UI/input calls PlayerEndPostAttackPhase.
+            // Perform any cleanup. UI calls PlayerEndPostAttackPhase to proceed.
+            return;
         }
-        else if (isEnemyTurn)
+
+        if (isEnemyTurn)
         {
-            // Enemy post-attack logic.
+            // Enemy cleanup can be placed here if needed, then end the turn.
             SetPhase(TurnPhase.End);
+            return;
         }
     }
 
+    // ------------------------------------------------------------------------
+    // End phase
+    // ------------------------------------------------------------------------
+
     /// <summary>
-    /// Handles the End phase for both teams.
+    /// Finalizes the current turn and advances to the next team.
     /// </summary>
     private void OnEndPhase()
     {
-        // Wrap up, then immediately move to next turn.
+        // Immediately begin the next team's Start phase.
         NextTurn();
     }
 
+    // ------------------------------------------------------------------------
+    // Sequence completion
+    // ------------------------------------------------------------------------
+
     /// <summary>
-    /// Handles the completion of any sequence. 
-    /// Decides which phase to advance to for enemy turns.
+    /// Handles the completion of a batch of queued sequences.
+    /// Controls enemy phase progression between Start, Move, Attack, and PostAttack.
     /// </summary>
     private void OnSequenceComplete()
     {
-        if (isEnemyTurn)
+        if (!isEnemyTurn)
+            return;
+
+        // Advance enemy phases when a queued batch ends.
+        if (currentPhase == TurnPhase.Start)
         {
-            if (currentPhase == TurnPhase.Start)
-            {
-                SetPhase(TurnPhase.Move);
-            }
-            else if (currentPhase == TurnPhase.Move)
-            {
-                SetPhase(TurnPhase.PreAttack);
-            }
-            else if (currentPhase == TurnPhase.Attack)
-            {
-                SetPhase(TurnPhase.PostAttack);
-            }
+            SetPhase(TurnPhase.Move);
+            return;
+        }
+
+        if (currentPhase == TurnPhase.Move)
+        {
+            SetPhase(TurnPhase.PreAttack);
+            return;
+        }
+
+        if (currentPhase == TurnPhase.Attack)
+        {
+            SetPhase(TurnPhase.PostAttack);
+            return;
         }
     }
 
-    // -----------------------------------------------------------------------
-    // Methods for player input/UI to manually advance phases for hero (player)
-    // -----------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // Hero UI helpers
+    // ------------------------------------------------------------------------
 
     /// <summary>
-    /// Call from UI or board when player finishes move phase.
+    /// Called by UI when the player finishes movement.
     /// </summary>
     public void PlayerEndMovePhase()
     {
@@ -241,7 +349,7 @@ public class TurnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Call from UI or board when player is done with pre-attack selection/confirmation.
+    /// Called by UI when the player confirms attacks.
     /// </summary>
     public void PlayerEndPreAttackPhase()
     {
@@ -250,7 +358,7 @@ public class TurnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Call from UI or after attack animation completes.
+    /// Called by UI when the player's attack resolution finishes.
     /// </summary>
     public void PlayerEndAttackPhase()
     {
@@ -259,7 +367,7 @@ public class TurnManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Call from UI or board when post-attack cleanup is finished.
+    /// Called by UI when post attack cleanup is complete.
     /// </summary>
     public void PlayerEndPostAttackPhase()
     {

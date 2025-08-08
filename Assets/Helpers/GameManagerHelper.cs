@@ -167,7 +167,7 @@ namespace Assets.Helpers
 
 
         // CoinManager
-        public static CoinBar CoinBar => GameManager.instance.coinBar;
+        public static CoinCounter CoinCounter => GameManager.instance.coinCounter;
         public static int TotalCoins
         {
             get => GameManager.instance.totalCoins;

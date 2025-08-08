@@ -3,10 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using g = Assets.Helpers.GameManagerHelper;
 
-public class CoinBar : MonoBehaviour
+public class CoinCounter : MonoBehaviour
 {
-
-
     //Fields
     [SerializeField] public AnimationCurve glowCurve;
     [HideInInspector] public Image icon;

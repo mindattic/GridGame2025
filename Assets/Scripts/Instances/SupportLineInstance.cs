@@ -82,7 +82,7 @@ public class SupportLineInstance : MonoBehaviour
     {
         lineRenderer = GetComponent<LineRenderer>();
 
-        // Set width of the line relative to tile size
+        // UpdateFill width of the line relative to tile size
         lineRenderer.startWidth = g.TileSize * 0.25f;
         lineRenderer.endWidth = g.TileSize * 0.25f;
 

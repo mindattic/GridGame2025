@@ -53,7 +53,7 @@ public class StageManager : MonoBehaviour
         g.ActorManager.Clear();
         g.DottedLineManager.Clear();
         g.SupportLineManager.Clear();
-        g.CoinBar.Refresh();
+        g.CoinCounter.Refresh();
         g.TileManager.Reset();
         g.TurnManager.Initialize();
 

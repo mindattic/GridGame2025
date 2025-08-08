@@ -542,7 +542,7 @@ public class ActorInstance : MonoBehaviour
         var alpha = 1f;
         render.SetAlpha(alpha);
 
-        //Wait until the health bar has finished draining.
+        //Wait until the health fill has finished draining.
         if (healthBar.isDraining)
             yield return new WaitUntil(() => healthBar.isEmpty);
 
@@ -641,7 +641,7 @@ public class ActorInstance : MonoBehaviour
         stats.AP = stats.MaxAP;
         stats.PreviousAP = stats.MaxAP;
 
-        //Save the action bar UI to reflect the refreshed action points.
+        //Save the action fill UI to reflect the refreshed action points.
         actionBar.Update();
     }
 }

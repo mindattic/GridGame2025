@@ -72,18 +72,29 @@ public class Geometry
     // The following methods provide spatial relationship checks between ActorInstances or grid locations.
 
     // ActorInstance overloads:
-    public static bool IsSameColumn(ActorInstance a, ActorInstance b) => a.location.x == b.location.x;
-    public static bool IsSameRow(ActorInstance a, ActorInstance b) => a.location.y == b.location.y;
-    public static bool IsNorthOf(ActorInstance a, ActorInstance b) => IsSameColumn(a, b) && a.location.y == b.location.y - 1;
-    public static bool IsEastOf(ActorInstance a, ActorInstance b) => IsSameRow(a, b) && a.location.x == b.location.x + 1;
-    public static bool IsSouthOf(ActorInstance a, ActorInstance b) => IsSameColumn(a, b) && a.location.y == b.location.y + 1;
-    public static bool IsWestOf(ActorInstance a, ActorInstance b) => IsSameRow(a, b) && a.location.x == b.location.x - 1;
-    public static bool IsNorthWestOf(ActorInstance a, ActorInstance b) => a.location.x == b.location.x - 1 && a.location.y == b.location.y - 1;
-    public static bool IsNorthEastOf(ActorInstance a, ActorInstance b) => a.location.x == b.location.x + 1 && a.location.y == b.location.y - 1;
-    public static bool IsSouthWestOf(ActorInstance a, ActorInstance b) => a.location.x == b.location.x - 1 && a.location.y == b.location.y + 1;
-    public static bool IsSouthEastOf(ActorInstance a, ActorInstance b) => a.location.x == b.location.x + 1 && a.location.y == b.location.y + 1;
-    // Check if two actors are adjacent (either in the same row or column, with a distance of 1 unit).
-    public static bool IsAdjacentTo(ActorInstance a, ActorInstance b) => (IsSameColumn(a, b) || IsSameRow(a, b)) && Vector2Int.Distance(a.location, a.location).Equals(1);
+    public static bool IsSameColumn(ActorInstance a, ActorInstance b) 
+        => a.location.x == b.location.x;
+    public static bool IsSameRow(ActorInstance a, ActorInstance b)
+        => a.location.y == b.location.y;
+    public static bool IsNorthOf(ActorInstance a, ActorInstance b) 
+        => IsSameColumn(a, b) && a.location.y == b.location.y - 1;
+    public static bool IsEastOf(ActorInstance a, ActorInstance b) 
+        => IsSameRow(a, b) && a.location.x == b.location.x + 1;
+    public static bool IsSouthOf(ActorInstance a, ActorInstance b) 
+        => IsSameColumn(a, b) && a.location.y == b.location.y + 1;
+    public static bool IsWestOf(ActorInstance a, ActorInstance b) 
+        => IsSameRow(a, b) && a.location.x == b.location.x - 1;
+    public static bool IsNorthWestOf(ActorInstance a, ActorInstance b) 
+        => a.location.x == b.location.x - 1 && a.location.y == b.location.y - 1;
+    public static bool IsNorthEastOf(ActorInstance a, ActorInstance b) 
+        => a.location.x == b.location.x + 1 && a.location.y == b.location.y - 1;
+    public static bool IsSouthWestOf(ActorInstance a, ActorInstance b) 
+        => a.location.x == b.location.x - 1 && a.location.y == b.location.y + 1;
+    public static bool IsSouthEastOf(ActorInstance a, ActorInstance b) 
+        => a.location.x == b.location.x + 1 && a.location.y == b.location.y + 1;
+ 
+    public static bool IsAdjacentTo(ActorInstance a, ActorInstance b)
+        => (IsSameColumn(a, b) || IsSameRow(a, b)) && Vector2Int.Distance(a.location, b.location).Equals(1);
 
     // Grid location overloads:
     public static bool IsSameColumn(Vector2Int a, Vector2Int b) => a.x == b.x;
@@ -96,7 +107,8 @@ public class Geometry
     public static bool IsNorthEastOf(Vector2Int a, Vector2Int b) => a.x == b.x + 1 && a.y == b.y - 1;
     public static bool IsSouthWestOf(Vector2Int a, Vector2Int b) => a.x == b.x - 1 && a.y == b.y + 1;
     public static bool IsSouthEastOf(Vector2Int a, Vector2Int b) => a.x == b.x + 1 && a.y == b.y + 1;
-    public static bool IsAdjacentTo(Vector2Int a, Vector2Int b) => (IsSameColumn(a, b) || IsSameRow(a, b)) && Vector2Int.Distance(a, b).Equals(1);
+    public static bool IsAdjacentTo(Vector2Int a, Vector2Int b)
+        => (IsSameColumn(a, b) || IsSameRow(a, b)) && Vector2Int.Distance(a, b).Equals(1);
 
     /// <summary>
     /// Given two adjacent ActorInstances, returns the direction from actor 'a' to actor 'b'.

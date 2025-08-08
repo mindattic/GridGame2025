@@ -63,7 +63,7 @@ namespace Assets.Scripts.Events
 
             }
 
-            // Reset the action bar for this enemy after attacking.
+            // Reset the action fill for this enemy after attacking.
             enemy.actionBar.Reset();
 
         }

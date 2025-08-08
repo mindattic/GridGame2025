@@ -259,7 +259,7 @@ public class Portrait3DInstance : MonoBehaviour
         Vector3 loweredPos = front.position;
         Vector3 originalPos = popOutFrontRestorePos;
 
-        // Set fully opaque before fade out
+        // UpdateFill fully opaque before fade out
         Color c = spriteRenderer.color;
         spriteRenderer.color = new Color(c.r, c.g, c.b, 1f);
 

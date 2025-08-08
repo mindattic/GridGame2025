@@ -93,7 +93,16 @@ public static class GameObjectHelper
         public const string PauseMenu = "Canvas2D/PauseMenu";
         public const string WaveAnnouncement = "Canvas2D/WaveAnnouncement";
         public const string CanvasOverlay = "Canvas2D/CanvasOverlay";
-        public const string TimerBar2D = "Canvas2D/TimerBar2D";
+
+
+
+        public static class TimerBar2D
+        {
+            public const string Root = "Canvas2D/TimerBar2D";
+            public const string Back = "Canvas2D/TimerBar2D/Back";
+            public const string Fill = "Canvas2D/TimerBar2D/Fill";
+            public const string Front = "Canvas2D/TimerBar2D/Front";
+        }
 
         public const string Portraits = "Canvas2D/Portraits";
 
@@ -101,7 +110,7 @@ public static class GameObjectHelper
         //public const string TimerBar3D = "TimerBar3D";
 
 
-        public const string CoinBar = "Canvas2D/CoinBar";
+        public const string CoinCounter = "Canvas2D/CoinCounter";
         public const string TutorialPopup = "Canvas2D/TutorialPopup";
         public const string TargetModeOverlay = "Canvas2D/TargetModeOverlay";
 
@@ -351,7 +360,7 @@ public static class Tag
 
 public static class LocationHelper
 {
-    public static Vector2Int Nowhere = new Vector2Int(-1, -1);
+    public static Vector2Int Nowhere = new Vector2Int(-1000, -1000);
 }
 
 public static class PositionHelper
