@@ -9,9 +9,6 @@ public partial class DebugWindow
     // RenderSpawnOptions renders buttons to spawn various enemy types.
     private void RenderSpawnOptions()
     {
-        if (!Application.isPlaying || !SceneHelper.IsGameScene)
-            return;
-
         GUILayout.BeginHorizontal();
         GUILayout.Label("YieldSpawn", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();

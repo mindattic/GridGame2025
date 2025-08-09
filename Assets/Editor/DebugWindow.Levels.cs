@@ -8,9 +8,6 @@ public partial class DebugWindow
     // RenderLevels renders buttons for stage control: Load, Previous, and None.
     private void RenderLevels()
     {
-        if (!Application.isPlaying || !SceneHelper.IsGameScene)
-            return;
-
         GUILayout.BeginHorizontal();
         GUILayout.Label("Level", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();

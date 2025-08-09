@@ -8,9 +8,6 @@ public partial class DebugWindow
     // RenderScenes draws buttons to switch between different game scenes.
     private void RenderScenes()
     {
-        if (!Application.isPlaying || !SceneHelper.IsGameScene)
-            return;
-
         GUILayout.BeginHorizontal();
         GUILayout.Label("Scenes");
         GUILayout.EndHorizontal();

@@ -8,9 +8,6 @@ public partial class DebugWindow
     // RenderKeyboard draws UI buttons that simulate keyboard arrow keys.
     private void RenderKeyboard()
     {
-        if (!Application.isPlaying || !SceneHelper.IsGameScene)
-            return;
-
         GUILayout.BeginVertical();
         GUILayout.BeginHorizontal();
         GUILayout.Label("Keyboard");

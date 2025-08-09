@@ -8,8 +8,6 @@ public partial class DebugWindow
     // RenderCheckboxes provides several toggles for various debug options.
     private void RenderCheckboxes()
     {
-        if (!Application.isPlaying || !SceneHelper.IsGameScene)
-            return;
 
         bool onCheckChanged;
 

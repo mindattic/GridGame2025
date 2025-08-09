@@ -9,9 +9,6 @@ public partial class DebugWindow
     // RenderActorStats displays a list of all hero and enemy actors with basic status info.
     private void RenderActorStats()
     {
-        if (!Application.isPlaying || !SceneHelper.IsGameScene)
-            return;
-
         GUILayout.BeginHorizontal();
         GUILayout.Label("Actors", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();

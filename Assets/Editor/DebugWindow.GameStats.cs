@@ -8,12 +8,6 @@ public partial class DebugWindow
     // Safe during scene switches: avoids HasFocusedActor and null-guards all managers.
     private void RenderGameStats()
     {
-        if (!Application.isPlaying || !SceneHelper.IsGameScene)
-            return;
-
-        if (!SceneHelper.IsGameScene)
-            return;
-
         GUILayout.BeginHorizontal();
 
         var focusedActor = g.Actors.FocusedActor != null ? g.Actors.FocusedActor.characterName : null ?? "-";

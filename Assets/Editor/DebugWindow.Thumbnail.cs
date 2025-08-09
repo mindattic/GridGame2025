@@ -14,8 +14,6 @@ public partial class DebugWindow
 
     private void RenderThumbnailSettings()
     {
-        if (!Application.isPlaying || !SceneHelper.IsGameScene)
-            return;
 
 #if UNITY_EDITOR
 
