@@ -61,8 +61,20 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.1.4f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Editor\DebugWindow.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.Levels.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.ActorStats.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.GameSpeed.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.Core.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.SpawnOptions.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.Keyboard.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.Checkboxes.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.GameStats.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.Scenes.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.VfxOptions.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.Bootstrapper.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.DebugOptions.cs" />
     <Compile Include="Assets\Editor\CustomPlayBehaviour.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.Thumbnail.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Packages\com.bezi.sidekick\Editor\BeziSidekickInternal.dll" />
