@@ -93,24 +93,16 @@ public class BoardInstance : MonoBehaviour
         {
             for (int row = 1; row <= rowCount; row++)
             {
-                // Instantiate a tile prefab at the origin with no rotation.
                 var prefab = Instantiate(TilePrefab, Vector2.zero, Quaternion.identity);
-                // Get the TileInstance component from the instantiated prefab.
                 var instance = prefab.GetComponent<TileInstance>();
-                // Show the parent of the tile to be this board, so they are organized under the board.
                 instance.parent = transform;
-                // Key the tile based on its grid coordinates.
                 instance.name = $"Tile_{col}x{row}";
-                // Show the tile with its column and row positions.
                 instance.Initialize(col, row);
-                // Add the tile to the TileMap.
                 g.TileMap.Add(instance);
             }
         }
 
-        // Show the grid origin of the TileMap to the position of the tile at grid (1,1).
         g.TileMap.gridOrigin = g.TileMap.GetTile(new Vector2Int(1, 1)).position;
-        // Show the tile size in the TileMap.
         g.TileMap.tileSize = g.TileSize;
 
         // Find all GameObjects tagged as "Tile" and add their TileInstance components to the global GameManager's tiles list.
@@ -158,6 +150,44 @@ public class BoardInstance : MonoBehaviour
         return location.x >= 1 && location.x <= columnCount
             && location.y >= 1 && location.y <= rowCount;
     }
+
+
+
+
+
+#if UNITY_EDITOR
+    private void OnDrawGizmosSelected()
+    {
+        // Draw board bounds as a wire rectangle
+        Gizmos.color = Color.yellow;
+
+        var w = bounds.Right - bounds.Left;
+        var h = bounds.Top - bounds.Bottom;
+        var c = new Vector3((bounds.Left + bounds.Right) * 0.5f, (bounds.Top + bounds.Bottom) * 0.5f, 0f);
+
+        // If bounds are not assigned yet, preview from current offset/size
+        if (w <= 0f || h <= 0f)
+        {
+            float left = offset.x + g.TileSize * 0.5f;
+            float right = offset.x + (g.TileSize * columnCount) + g.TileSize * 0.5f;
+            float top = offset.y - g.TileSize * 0.5f;
+            float bottom = offset.y - (g.TileSize * rowCount) - g.TileSize * 0.5f;
+
+            w = right - left;
+            h = top - bottom;
+            c = new Vector3((left + right) * 0.5f, (top + bottom) * 0.5f, 0f);
+        }
+
+        Gizmos.DrawWireCube(c, new Vector3(w, h, 0f));
+    }
+#endif
+
+
+
+
+
+
+
 }
 
 // BoardPoint is an enumeration used to specify key reference points on the board,

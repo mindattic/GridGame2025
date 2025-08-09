@@ -65,7 +65,7 @@ namespace Assets.Scripts.Instances.Actor
             while (flags.IsMoving)
             {
                 previousPosition = instance.position;
-                instance.position = g.TouchPosition3D + g.TouchOffset;
+                instance.position = ClampToBoard(g.TouchPosition3D + g.TouchOffset);
 
                 ApplyTilt(instance.position - previousPosition);
                 CheckLocationChanged();
@@ -76,6 +76,20 @@ namespace Assets.Scripts.Instances.Actor
             // After: clean up
             flags.IsMoving = false;
             instance.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        }
+
+        /// <summary>
+        /// Clamps a world pos to the board’s world-space bounds.
+        /// Board bounds are computed from offset, rows, columns, and tile 
+        /// size
+        /// and already include a half-tile margin on each side, which is ideal for the card center.
+        /// </summary>
+        private static Vector3 ClampToBoard(Vector3 pos)
+        {
+
+            pos.x = Mathf.Clamp(pos.x, g.Board.bounds.Left, g.Board.bounds.Right);
+            pos.y = Mathf.Clamp(pos.y, g.Board.bounds.Bottom, g.Board.bounds.Top);
+            return pos;
         }
 
         // --------------------------------------------------------------------
@@ -92,7 +106,7 @@ namespace Assets.Scripts.Instances.Actor
             flags.IsMoving = true;
             g.AudioManager.Play("Slide");
 
-            // Compute the world position for the current logical location.
+            // Compute the world pos for the current logical location.
             // Note: calling code should have set desired 'location' before starting the move.
             Vector3 destination = Geometry.GetPositionByLocation(location);
 
@@ -103,16 +117,16 @@ namespace Assets.Scripts.Instances.Actor
             int iterations = 0;
 
             // --- Horizontal Movement ---
-            if (Mathf.Abs(position.x - destination.x) > g.SnapThreshold)
+            if (Mathf.Abs(this.position.x - destination.x) > g.SnapThreshold)
             {
-                Vector3 horizontalTarget = new Vector3(destination.x, position.y, position.z);
+                Vector3 horizontalTarget = new Vector3(destination.x, this.position.y, this.position.z);
 
-                while (Mathf.Abs(position.x - destination.x) > g.SnapThreshold)
+                while (Mathf.Abs(this.position.x - destination.x) > g.SnapThreshold)
                 {
                     ApplyTilt(instance.position - previousPosition);
 
                     // Move along X only
-                    position = Vector3.MoveTowards(position, horizontalTarget, g.MoveFocus);
+                    this.position = ClampToBoard(Vector3.MoveTowards(this.position, horizontalTarget, g.MoveFocus));
 
                     // Update grid state and potential overlap behaviors
                     CheckLocationChanged();
@@ -133,7 +147,7 @@ namespace Assets.Scripts.Instances.Actor
 
                 // Snap X into place to guarantee loop exit
                 previousPosition = instance.position;
-                position = new Vector3(destination.x, position.y, position.z);
+                position = ClampToBoard(new Vector3(destination.x, position.y, position.z));
             }
 
             // Reset per-axis watchdog counters before vertical leg
@@ -141,7 +155,7 @@ namespace Assets.Scripts.Instances.Actor
             iterations = 0;
 
             // --- Vertical Movement ---
-            if (Mathf.Abs(position.y - destination.y) > g.SnapThreshold)
+            if (Mathf.Abs(this.position.y - destination.y) > g.SnapThreshold)
             {
                 Vector3 verticalTarget = new Vector3(position.x, destination.y, position.z);
 
@@ -150,7 +164,7 @@ namespace Assets.Scripts.Instances.Actor
                     ApplyTilt(instance.position - previousPosition);
 
                     // Move along Y only
-                    position = Vector3.MoveTowards(position, verticalTarget, g.MoveFocus);
+                    position = ClampToBoard(Vector3.MoveTowards(position, verticalTarget, g.MoveFocus));
 
                     // Update grid state and potential overlap behaviors
                     CheckLocationChanged();
@@ -171,7 +185,7 @@ namespace Assets.Scripts.Instances.Actor
 
                 // Snap Y into place to guarantee loop exit
                 previousPosition = instance.position;
-                position = new Vector3(position.x, destination.y, position.z);
+                position = ClampToBoard(new Vector3(position.x, destination.y, position.z));
             }
 
             // After: finished moving
@@ -198,7 +212,7 @@ namespace Assets.Scripts.Instances.Actor
         // --------------------------------------------------------------------
 
         /// <summary>
-        /// Checks if the actor's position crossed into a new tile.
+        /// Checks if the actor's pos crossed into a new tile.
         /// If so, updates logical location and handles overlap rules.
         /// </summary>
         private void CheckLocationChanged()
@@ -211,8 +225,8 @@ namespace Assets.Scripts.Instances.Actor
             if (flags.IsSwapping)
                 return;
 
-            // Determine closest tile to the current position
-            var closestTile = Geometry.GetClosestTile(position);
+            // Determine closest tile to the current pos
+            var closestTile = Geometry.GetClosestTile(this.position);
 
             // If location is unchanged, nothing to do
             if (location == closestTile.location)

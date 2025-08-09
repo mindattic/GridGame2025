@@ -16,7 +16,7 @@ public class TimerBar2D : MonoBehaviour
     [SerializeField] private float maxDuration = 6f;
 
     // Always use 96% of canvas width for both width and vertical offset, per request.
-    private const float CanvasPercent = 0.96f;
+    private const float CanvasPercent = 0.97f;
 
     private float timeRemaining;
     private float maxWidth;
