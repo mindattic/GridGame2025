@@ -347,7 +347,7 @@ public static class Tag
     public static string AttackLine = "AttackLineManager";
     public static string Trail = "Trail";
     public static string Select = "SelectProfile";
-    public static string DamageText = "DamageTextManager";
+    public static string DamageText = "CombatTextManager";
     public static string AnnouncementText = "AnnouncementText";
     public static string Portrait = "ActorPortrait";
     public static string Ghost = "GhostManager";
@@ -971,7 +971,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for an overshooting arc.
-    /// The projectile overshoots the targetActor before curving back.
+    /// The projectile overshoots the target before curving back.
     /// </summary>
     public static List<Vector3> Overshooting(Vector3 startPosition, ActorInstance target, float travelModifier = 1.6f, float waveModifier = 0.2f, bool overshoot = true)
     {
@@ -1076,7 +1076,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a reverse boomerang arc.
-    /// The projectile overshoots the targetActor and curves back dramatically.
+    /// The projectile overshoots the target and curves back dramatically.
     /// </summary>
     public static List<Vector3> Boomerang(Vector3 startPosition, ActorInstance target, float travelModifier = 1.2f, float waveModifier = 0.8f)
     {
@@ -1110,7 +1110,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a homing spiral effect.
-    /// The projectile moves in a corkscrew pattern toward the targetActor.
+    /// The projectile moves in a corkscrew pattern toward the target.
     /// </summary>
     public static List<Vector3> HomingSpiral(Vector3 startPosition, ActorInstance target, float travelModifier = 1f, float waveModifier = 2f)
     {
@@ -1142,7 +1142,7 @@ public static class BezierCurveHelper
 
     /// <summary>
     /// Generates control points for a zig-zag dash.
-    /// The projectile moves erratically toward the targetActor.
+    /// The projectile moves erratically toward the target.
     /// </summary>
     public static List<Vector3> ZigZagDash(Vector3 startPosition, ActorInstance target, float travelModifier = 1.1f, float waveModifier = 1.2f)
     {
@@ -1561,7 +1561,7 @@ public static class SortingHelper
         public const string ActorAbove = "ActorAbove";
         public const string VFX = "VfxManager";
         public const string Coin = "Coin";
-        public const string DamageText = "DamageTextManager";
+        public const string DamageText = "CombatTextManager";
         public const string PortraitPopIn = "PortraitPopIn";
         public const string Portrait = "Portrait3DManager";
     }

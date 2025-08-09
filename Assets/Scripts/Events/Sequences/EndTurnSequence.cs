@@ -5,22 +5,19 @@ using g = Assets.Helpers.GameManagerHelper;
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Ends the current team's turn and flips to the next team.
-    /// Responsibility for enqueuing the next side's start sequence
-    /// belongs to TurnManager.EnterCurrentSide via TurnManager.NextTurn.
+    /// Ends the current team turn and flips to the next team.
+    /// TurnManager.NextTurn enqueues the appropriate side-start sequence.
     /// </summary>
     public class EndTurnSequence : SequenceEvent
     {
         public override IEnumerator Execute()
         {
-            // Small pacing if you want any end-of-turn VFX to finish
+            // Optional tiny pacing for any end-of-turn visuals
             yield return Wait.UntilNextFrame();
 
-            // Flip side. TurnManager.NextTurn will enqueue the appropriate
-            // start sequence and trigger execution. Do not enqueue here.
+            // Flip sides and let TurnManager enqueue the next side's start sequence
             g.TurnManager.NextTurn();
 
-            // Nothing else to do in this sequence
             yield break;
         }
     }

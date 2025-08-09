@@ -34,7 +34,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TurnManager turnManager;
     [HideInInspector] public SupportLineManager supportLineManager;
     [HideInInspector] public AttackLineManager attackLineManager;
-    [HideInInspector] public CombatTextManager damageTextManager;
+    [HideInInspector] public CombatTextManager combatTextManager;
     [HideInInspector] public GhostManager ghostManager;
     [HideInInspector] public Portrait2DManager portrait2DManager;
     [HideInInspector] public Portrait3DManager portrait3DManager;
@@ -129,8 +129,9 @@ public class GameManager : Singleton<GameManager>
     //Debug Window
     public bool reloadThumbnailSettings = false;
     public float gameSpeed = 1.0f;
+    public bool applyMovementTilt = false;
 
-  
+
     private void Awake()
     {
         if (!ProfileRepo.HasProfiles())
@@ -198,7 +199,7 @@ public class GameManager : Singleton<GameManager>
         actorManager = game.GetComponent<ActorManager>();
         supportLineManager = game.GetComponent<SupportLineManager>();
         attackLineManager = game.GetComponent<AttackLineManager>();
-        damageTextManager = game.GetComponent<CombatTextManager>();
+        combatTextManager = game.GetComponent<CombatTextManager>();
         ghostManager = game.GetComponent<GhostManager>();
         portrait2DManager = game.GetComponent<Portrait2DManager>();
         portrait3DManager = game.GetComponent<Portrait3DManager>();

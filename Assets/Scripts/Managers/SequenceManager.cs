@@ -51,7 +51,7 @@ public class SequenceManager : MonoBehaviour
     /// <summary>
     /// Current queued item count.
     /// </summary>
-    public int QueueCount => queue.Count;
+    public int Count => queue.Count;
 
     // ======================================================================
     // Events
@@ -65,12 +65,12 @@ public class SequenceManager : MonoBehaviour
     /// <summary>
     /// Raised when an individual SequenceEvent begins. Provides the event instance.
     /// </summary>
-    public event Action<SequenceEvent> OnSequenceItemStarted;
+    public event Action<SequenceEvent> OnSequenceEventStarted;
 
     /// <summary>
     /// Raised when an individual SequenceEvent completes. Provides the event instance.
     /// </summary>
-    public event Action<SequenceEvent> OnSequenceItemCompleted;
+    public event Action<SequenceEvent> OnSequenceEventCompleted;
 
     // ======================================================================
     // Queue management
@@ -102,15 +102,21 @@ public class SequenceManager : MonoBehaviour
     // Execution control
     // ======================================================================
 
+    //public void ExecuteAsync(SequenceEvent e)
+    //{
+    //    Add(e);
+    //    ExecuteAsync();
+    //}
+
     /// <summary>
     /// Starts executing queued SequenceEvents if not already running.
     /// Safe to call multiple times.
     /// </summary>
-    public void TriggerExecute()
+    public void ExecuteAsync()
     {
         if (queue.Count == 0)
         {
-            Debug.Log("[SequenceManager] TriggerExecute ignored. Queue is empty.");
+            Debug.Log("[SequenceManager] ExecuteAsync ignored. Queue is empty.");
             return;
         }
 
@@ -123,30 +129,11 @@ public class SequenceManager : MonoBehaviour
         runningCoroutine = StartCoroutine(Execute());
     }
 
-    /// <summary>
-    /// Best-effort nudge to resume execution if items are pending but not running.
-    /// This is safe to call from the outside if you ever suspect a stall.
-    /// </summary>
-    public void EnsureRunning()
-    {
-        if (!isExecuting && queue.Count > 0)
-            TriggerExecute();
-    }
-
-    /// <summary>
-    /// Stops the currently running Execute coroutine, if any, and resets state.
-    /// Pending queued items remain intact.
-    /// </summary>
-    public void CancelCurrentRun()
-    {
-        if (runningCoroutine != null)
-        {
-            StopCoroutine(runningCoroutine);
-            runningCoroutine = null;
-        }
-
-        isExecuting = false;
-    }
+    //public IEnumerator Execute(SequenceEvent e)
+    //{
+    //    Add(e);
+    //    yield return Execute();
+    //}
 
     /// <summary>
     /// Executes all queued SequenceEvents one by one, then raises OnSequenceComplete.
@@ -170,7 +157,7 @@ public class SequenceManager : MonoBehaviour
                 lastStartedSequence = current;
                 lastStartedSequenceName = current?.GetType().Name;
 
-                OnSequenceItemStarted?.Invoke(current);
+                OnSequenceEventStarted?.Invoke(current);
 
                 // Run to completion
                 if (current != null)
@@ -180,7 +167,7 @@ public class SequenceManager : MonoBehaviour
                 lastCompletedSequence = current;
                 lastCompletedSequenceName = current?.GetType().Name;
 
-                OnSequenceItemCompleted?.Invoke(current);
+                OnSequenceEventCompleted?.Invoke(current);
             }
 
             // Batch complete
@@ -192,6 +179,32 @@ public class SequenceManager : MonoBehaviour
             runningCoroutine = null;
         }
     }
+
+    /// <summary>
+    /// Best-effort nudge to resume execution if items are pending but not running.
+    /// This is safe to call from the outside if you ever suspect a stall.
+    /// </summary>
+    //public void EnsureRunning()
+    //{
+    //    if (!isExecuting && queue.Count > 0)
+    //        ExecuteAsync();
+    //}
+
+    /// <summary>
+    /// Stops the currently running Execute coroutine, if any, and resets state.
+    /// Pending queued items remain intact.
+    /// </summary>
+    //public void CancelCurrentRun()
+    //{
+    //    if (runningCoroutine != null)
+    //    {
+    //        StopCoroutine(runningCoroutine);
+    //        runningCoroutine = null;
+    //    }
+
+    //    isExecuting = false;
+    //}
+
 
     // ======================================================================
     // Lifecycle

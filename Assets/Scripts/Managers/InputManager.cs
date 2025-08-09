@@ -87,7 +87,7 @@ public class InputManager : MonoBehaviour
                                 //        g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
 
                                 //    g.SequenceManager.Add(new HideTargetIndicatorSequence());
-                                //    g.SequenceManager.TriggerExecute();
+                                //    g.SequenceManager.ExecuteAsync();
                                 //});
 
                                 //Spawn from avility button
@@ -104,7 +104,7 @@ public class InputManager : MonoBehaviour
 
                                 g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
                                 g.SequenceManager.Add(new HideTargetIndicatorSequence());
-                                g.SequenceManager.TriggerExecute();
+                                g.SequenceManager.ExecuteAsync();
 
                                 return;
                             }
@@ -135,7 +135,7 @@ public class InputManager : MonoBehaviour
                     switch (touch.phase)
                     {
                         case TouchPhase.Began:
-                            // Attempt to focus on an targetActor under the touch.
+                            // Attempt to focus on an target under the touch.
                             g.SelectedHeroManager.Focus();
                             initialTouchPosition = g.TouchPosition3D;
                             break;

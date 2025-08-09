@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Models;
+﻿// --- File: Assets/Scripts/Events/Sequences/EnemyStartSequence.cs ---
+using Assets.Scripts.Models;
 using System.Collections;
 using System.Linq;
 using g = Assets.Helpers.GameManagerHelper;
@@ -6,41 +7,51 @@ using g = Assets.Helpers.GameManagerHelper;
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Performs any start-of-turn logic for the enemy team and schedules their actions.
-    /// Guarantees the sequence queue keeps running even if there are zero ready enemies.
+    /// Builds strict per-enemy order for the enemy team:
+    /// e1.move -> e1.attack -> e2.move -> e2.attack -> ... -> EndTurn
     /// </summary>
     public class EnemyStartSequence : SequenceEvent
     {
         public override IEnumerator Execute()
         {
-            // Only run during enemy turns
+            // Ensure we only run on the enemy turn.
             if (!g.TurnManager.isEnemyTurn)
                 yield break;
 
+            // Disable input during AI resolution.
             g.InputManager.inputMode = InputMode.None;
 
-            // Small pacing
+            // Small pacing to let any visuals settle.
             yield return Wait.UntilNextFrame();
 
-            // Snapshot ready enemies once for deterministic ordering
+            // Collect enemies that are "ready" at turn start.
+            // "isReady" means isPlaying && hasMaxAP, so readiness is already established once.
             var ready = g.Actors.Enemies
-                .Where(x => x != null && x.isPlaying && x.isReady)
+                .Where(x => x.isReady)
                 .ToList();
 
+            // If none are ready, end the turn.
             if (ready.Count == 0)
             {
-                // No one can act -> immediately end enemy turn and run the queue
                 g.SequenceManager.Add(new EndTurnSequence());
-                g.SequenceManager.TriggerExecute();
+                g.SequenceManager.ExecuteAsync();
                 yield break;
             }
 
-            // Enqueue all movers; movement will chain into pre-attack/attack
+            // For each ready enemy, enqueue a move followed immediately by an attack for that same enemy.
             foreach (var e in ready)
+            {
                 g.SequenceManager.Add(new EnemyMoveSequence(e));
+                g.SequenceManager.Add(new EnemyPreAttackSequence(e));
+                g.SequenceManager.Add(new EnemyAttackSequence(e));
+                g.SequenceManager.Add(new EnemyPostAttackSequence(e));
+            }
 
-            // Important: kick the queue now
-            g.SequenceManager.TriggerExecute();
+            // After all per-enemy chains, end the enemy turn.
+            g.SequenceManager.Add(new EndTurnSequence());
+
+            // Run the global queue.
+            g.SequenceManager.ExecuteAsync();
         }
     }
 }

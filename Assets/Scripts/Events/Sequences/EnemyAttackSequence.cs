@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Models;
+﻿// --- File: Assets/Scripts/Events/Sequences/EnemyAttackSequence.cs ---
+using Assets.Scripts.Models;
 using System.Collections;
 using System.Linq;
 using g = Assets.Helpers.GameManagerHelper;
@@ -6,11 +7,12 @@ using g = Assets.Helpers.GameManagerHelper;
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Executes the attack for a single enemy, then queues the next step.
+    /// Executes the attack for a single enemy and then finishes.
+    /// Assumes this enemy was "ready" when its chain began.
     /// </summary>
     public class EnemyAttackSequence : SequenceEvent
     {
-        private ActorInstance enemy;
+        private readonly ActorInstance enemy;
 
         public EnemyAttackSequence(ActorInstance enemy)
         {
@@ -19,42 +21,24 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator Execute()
         {
-            // Only proceed if it's the enemy's turn
-            if (!g.TurnManager.isEnemyTurn)
-                yield break;
-
-            // Ensure enemy is valid and in play
+            // Safety: null or not in play should quietly skip.
             if (enemy == null || !enemy.isPlaying)
                 yield break;
 
-            // Restore AP so the enemy can act
-            //enemy.RestoreAP();
-
-            // If no AP after restore, skip directly to next attacker or end turn
-            if (!enemy.hasMaxAP)
-            {
-                var nextEnemy = g.Actors.Enemies.FirstOrDefault(x => x.isReady && x != enemy);
-                if (nextEnemy != null)
-                    g.SequenceManager.Add(new EnemyAttackSequence(nextEnemy));
-                else
-                    g.SequenceManager.Add(new EndTurnSequence());
-
-                g.SequenceManager.TriggerExecute();
-                yield break;
-            }
-
-            // Wait before attacking (pacing/animation)
+            // Pacing before the attack animation.
             yield return Wait.For(Intermission.Before.Enemy.Attack);
 
-            // Find all adjacent heroes to this enemy
+            // Gather adjacent defenders at attack time.
             var defendingHeroes = g.Actors.Heroes
                 .Where(x => x.isPlaying && x.IsAdjacentTo(enemy.location))
                 .ToList();
 
+            // Resolve one-by-one if anyone is adjacent.
             if (defendingHeroes.Count > 0)
             {
                 foreach (var hero in defendingHeroes)
                 {
+                    // Calculate combat results.
                     var isHit = Formulas.IsHit(enemy, hero);
                     var isCriticalHit = Formulas.IsCriticalHit(enemy, hero);
                     var damage = Formulas.CalculateDamage(enemy, hero);
@@ -68,32 +52,19 @@ namespace Assets.Scripts.Events
                         Damage = damage
                     };
 
+                    // Run bump + damage sequence.
                     var attack = new SingleAttackTrigger(attackResult);
                     yield return enemy.action.Bump(hero, attack);
+
+                    // Process deaths after each strike.
                     yield return DeathHelper.Process();
                 }
             }
 
-            // Reset the action bar for this enemy after attacking
+            // Reset this enemy's action bar after its attack to mark completion.
             enemy.actionBar.Reset();
 
-            // Look for another ready enemy to attack
-            var nextEnemyToAttack = g.Actors.Enemies
-                .FirstOrDefault(x => x.isReady && x != enemy);
-
-            if (nextEnemyToAttack != null)
-            {
-                // Queue the next attack
-                g.SequenceManager.Add(new EnemyAttackSequence(nextEnemyToAttack));
-            }
-            else
-            {
-                // No more attackers → end turn
-                g.SequenceManager.Add(new EndTurnSequence());
-            }
-
-            // Trigger execution so the queued actions run immediately
-            g.SequenceManager.TriggerExecute();
+            // Do not enqueue anything else here. Global queue continues.
         }
     }
 }

@@ -65,7 +65,7 @@ namespace Assets.Scripts.Managers
         {
             // Add end of hero turn sequence to the queue and start executing
             g.SequenceManager.Add(new EndTurnSequence());
-            g.SequenceManager.TriggerExecute();
+            g.SequenceManager.ExecuteAsync();
         }
 
         // --------------------------------------------------------------------
@@ -92,7 +92,7 @@ namespace Assets.Scripts.Managers
             }
 
             // Ensure execution is running (safe no-op if already executing)
-            g.SequenceManager.TriggerExecute();
+            g.SequenceManager.ExecuteAsync();
         }
     }
 }

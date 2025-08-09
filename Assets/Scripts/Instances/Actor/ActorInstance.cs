@@ -153,7 +153,7 @@ public class ActorInstance : MonoBehaviour
                 break;
 
             case SortEventType.Overlap:
-                // Initiator on top, targetActor below
+                // Initiator on top, target below
                 if (this == e.Initiator)
                     SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
                 else if (this == e.Target)
@@ -383,7 +383,7 @@ public class ActorInstance : MonoBehaviour
         }
     }
 
-    // CalculateAttackStrategy: Chooses an attackResult strategy based on weighted randomness and sets the targetActor location.
+    // CalculateAttackStrategy: Chooses an attackResult strategy based on weighted randomness and sets the target location.
     public void CalculateAttackStrategy()
     {
         // Define weights for different strategies.
@@ -392,7 +392,7 @@ public class ActorInstance : MonoBehaviour
 
         Vector2Int targetLocation = LocationHelper.Nowhere;
 
-        // SelectProfile targetActor based on strategy.
+        // SelectProfile target based on strategy.
         switch (attackStrategy)
         {
             case AttackStrategy.AttackClosest:
@@ -420,47 +420,47 @@ public class ActorInstance : MonoBehaviour
                 break;
         }
 
-        //Show the actor's location to the nearest valid attackResult location relative to the targetActor.
+        //Show the actor's location to the nearest valid attackResult location relative to the target.
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
         //Note: nextPosition is commented out and could be used for future logic.
         //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
     }
 
-    //TakeDamageAsync: Begins the process for this actor to take damage from an attackResult.
-    public void TakeDamageAsync(int damage)
+    public void TakeFireDamageAsync(float amount) => StartCoroutine(TakeFireDamage(amount));
+    public IEnumerator TakeFireDamage(float amount)
     {
-        StartCoroutine(TakeDamage(damage));
-    }
-
-    //FireDamage: Coroutine to display fire damage textarea and wait until the next frame.
-    public IEnumerator FireDamageAsync(float amount)
-    {
-        StartCoroutine(FireDamage(amount));
+        g.CombatTextManager.Spawn($"Fireball: - {amount} HP", position);
         yield return Wait.UntilNextFrame();
     }
 
-    //FireDamage: Coroutine to display fire damage textarea and wait until the next frame.
-    public IEnumerator FireDamage(float amount)
+ 
+    public void TakeHealAsync(int amount) => StartCoroutine(TakeHeal(amount));
+    public IEnumerator TakeHeal(int amount)
     {
-        g.DamageTextManager.Spawn($"Fireball: - {amount} HP", position);
-        yield return Wait.UntilNextFrame();
+        // Immediately apply healing and update health.
+        if (!isInvincible)
+        {
+            stats.PreviousHP = stats.HP;
+            stats.HP += amount;
+            stats.HP = Mathf.Clamp(stats.HP, 0, stats.MaxHP);
+            healthBar.Update();
+        }
+
+        // Display healing combat text and play sound.
+        g.CombatTextManager.Spawn(amount.ToString(), position, "Heal");
+        g.AudioManager.Play("Heal"); // Replace with your healing SFX key
+
+        // If you have a healing VFX, spawn it here.
+        // var vfx = vfxManager.HealEffect;
+        // g.VfxManager.SpawnAsync(vfx, position);
+
+        yield break;
     }
 
-    //Heal: Coroutine to display healing textarea and wait until the next frame.
-    public IEnumerator HealAsync(float amount)
-    {
-        StartCoroutine(Heal(amount));
-        yield return Wait.UntilNextFrame();
-    }
 
-    //Heal: Coroutine to display healing textarea and wait until the next frame.
-    public IEnumerator Heal(float amount)
-    {
-        g.DamageTextManager.Spawn($"Heal: +{amount} HP", position);
-        yield return Wait.UntilNextFrame();
-    }
 
     //TakeDamage: Coroutine that processes damage application, triggers VfxManager and animations, and updates HP.
+    public void TakeDamageAsync(int damage) => StartCoroutine(TakeDamage(damage));
     public IEnumerator TakeDamage(int damage)
     {
         //var vfx = attackResult.Attacker.vfx.Attack;
@@ -479,7 +479,7 @@ public class ActorInstance : MonoBehaviour
         // Immediately display damage textarea and play sound.
         //var fontSize = Math.Clamp(attackResult.Damage, 24f, 32f);
 
-        g.DamageTextManager.Spawn(damage.ToString(), position, "Damage");
+        g.CombatTextManager.Spawn(damage.ToString(), position, "Damage");
         g.AudioManager.Play($"Slash{Random.Int(1, 7)}");
 
         //if (isDying)
@@ -521,7 +521,7 @@ public class ActorInstance : MonoBehaviour
     //AttackMiss: Coroutine to display a miss message and attackResult a dodge action.
     public IEnumerator AttackMiss()
     {
-        g.DamageTextManager.Spawn("Miss", position);
+        g.CombatTextManager.Spawn("Miss", position);
         yield return action.Dodge();
     }
 
@@ -617,7 +617,7 @@ public class ActorInstance : MonoBehaviour
         transform.position = Geometry.GetPositionByLocation(this.location);
     }
 
-    //Move: Attempts to move the actor in the specified direction if the targetActor location is valid.
+    //Move: Attempts to move the actor in the specified direction if the target location is valid.
     public void Move(Vector2Int direction)
     {
         //Abort if the new location (CurrentProfile location + direction) is out of bounds.

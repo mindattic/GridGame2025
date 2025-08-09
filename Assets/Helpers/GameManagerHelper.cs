@@ -3,24 +3,14 @@ using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;
-using Game.Models;
-using Game.Models.Profile;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using TMPro;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.UI;
 
 namespace Assets.Helpers
 {
-    public static class GameManagerHelper { 
-    
+    public static class GameManagerHelper
+    {
+
         public static bool ReloadThumbnailSettings
         {
             get => GameManager.instance.reloadThumbnailSettings;
@@ -31,6 +21,12 @@ namespace Assets.Helpers
         {
             get => GameManager.instance.gameSpeed;
             set => GameManager.instance.gameSpeed = value;
+        }
+
+        public static bool ApplyMovementTilt
+        {
+            get => GameManager.instance.applyMovementTilt;
+            set => GameManager.instance.applyMovementTilt = value;
         }
 
         public static TextureResolution TextureResolution
@@ -50,7 +46,7 @@ namespace Assets.Helpers
 
         public static SupportLineManager SupportLineManager => GameManager.instance.supportLineManager;
         public static AttackLineManager AttackLineManager => GameManager.instance.attackLineManager;
-        public static CombatTextManager DamageTextManager => GameManager.instance.damageTextManager;
+        public static CombatTextManager CombatTextManager => GameManager.instance.combatTextManager;
         public static GhostManager GhostManager => GameManager.instance.ghostManager;
 
         public static Portrait2DManager Portrait2DManager => GameManager.instance.portrait2DManager;

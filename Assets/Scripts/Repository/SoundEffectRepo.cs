@@ -20,6 +20,7 @@ public static class SoundEffectRepo
     {
         soundEffects = new Dictionary<string, AudioClip>
         {
+            { "Heal",        AssetHelper.LoadAsset<AudioClip>("SoundEffects/Click") },
             { "Click",        AssetHelper.LoadAsset<AudioClip>("SoundEffects/Click") },
             { "Death",        AssetHelper.LoadAsset<AudioClip>("SoundEffects/Death") },
             { "Move1",        AssetHelper.LoadAsset<AudioClip>("SoundEffects/Move1") },

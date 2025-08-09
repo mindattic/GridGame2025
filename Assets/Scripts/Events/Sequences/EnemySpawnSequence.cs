@@ -22,7 +22,7 @@ namespace Assets.Scripts.Events
 
             // Chain into the enemy start-of-turn and RUN it now
             g.SequenceManager.Add(new EnemyStartSequence());
-            g.SequenceManager.TriggerExecute();
+            g.SequenceManager.ExecuteAsync();
         }
     }
 }

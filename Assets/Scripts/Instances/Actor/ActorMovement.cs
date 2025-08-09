@@ -61,17 +61,13 @@ namespace Assets.Scripts.Instances.Actor
             // Before: set a high sorting order if needed, then mark moving
             flags.IsMoving = true;
 
-            float tiltFactor = 25f;     // How much tilt to apply based on move
-            float rotationFocus = 10f;  // Speed at which the tilt adjusts
-            float resetFocus = 5f;      // Speed at which the rotation resets
-
             // During: while we are in a moving state
             while (flags.IsMoving)
             {
                 previousPosition = instance.position;
                 instance.position = g.TouchPosition3D + g.TouchOffset;
 
-                ApplyTilt(instance.position - previousPosition, tiltFactor, rotationFocus, resetFocus, Vector3.zero);
+                ApplyTilt(instance.position - previousPosition);
                 CheckLocationChanged();
 
                 yield return Wait.UntilNextFrame();
@@ -113,6 +109,8 @@ namespace Assets.Scripts.Instances.Actor
 
                 while (Mathf.Abs(position.x - destination.x) > g.SnapThreshold)
                 {
+                    ApplyTilt(instance.position - previousPosition);
+
                     // Move along X only
                     position = Vector3.MoveTowards(position, horizontalTarget, g.MoveFocus);
 
@@ -134,6 +132,7 @@ namespace Assets.Scripts.Instances.Actor
                 }
 
                 // Snap X into place to guarantee loop exit
+                previousPosition = instance.position;
                 position = new Vector3(destination.x, position.y, position.z);
             }
 
@@ -148,6 +147,8 @@ namespace Assets.Scripts.Instances.Actor
 
                 while (Mathf.Abs(position.y - destination.y) > g.SnapThreshold)
                 {
+                    ApplyTilt(instance.position - previousPosition);
+
                     // Move along Y only
                     position = Vector3.MoveTowards(position, verticalTarget, g.MoveFocus);
 
@@ -169,6 +170,7 @@ namespace Assets.Scripts.Instances.Actor
                 }
 
                 // Snap Y into place to guarantee loop exit
+                previousPosition = instance.position;
                 position = new Vector3(position.x, destination.y, position.z);
             }
 
@@ -274,38 +276,63 @@ namespace Assets.Scripts.Instances.Actor
             }
         }
 
-        // --------------------------------------------------------------------
-        // Tilt effect
-        // --------------------------------------------------------------------
-
         /// <summary>
         /// Applies a tilt effect to the actor based on its move velocity.
+        /// Horizontal motion tilts around Z.
+        /// Vertical motion tilts around both X and Y for a twisting card effect.
         /// </summary>
-        public void ApplyTilt(Vector3 velocity, float tiltFactor, float rotationFocus, float resetFocus, Vector3 baseRotation)
+        public void ApplyTilt(Vector3 velocity)
         {
-            if (velocity.magnitude > 0.01f)
-            {
-                // Determine whether the move is primarily vertical or horizontal
-                bool isMovingVertical = Mathf.Abs(velocity.y) > Mathf.Abs(velocity.x);
-                float velocityFactor = isMovingVertical ? velocity.y : velocity.x;
+            if (!g.ApplyMovementTilt)
+                return;
 
-                float tiltZ = velocityFactor * tiltFactor;
+            // Tunables as vectors
+            Vector3 tiltFactor = new Vector3(5f, 0f, 5f); // X, Y, Z factors
+            Vector3 maxTilt = new Vector3(20f, 0, 20f); // X, Y, Z clamps
+
+            float rotateSpeed = 5f; // Slerp while moving
+            float resetSpeed = 5f; // Slerp when resetting
+
+            if (velocity.sqrMagnitude > 0.0001f)
+            {
+                // Normalize so tilt responds to direction only
+                Vector3 v = velocity.normalized;
+
+                // Horizontal movement -> Z tilt
+                float tiltZ = Mathf.Clamp(v.x * tiltFactor.z, -maxTilt.z, maxTilt.z);
+
+                // Vertical movement -> X tilt
+                float tiltX = Mathf.Clamp(-v.y * tiltFactor.x, -maxTilt.x, maxTilt.x);
+
+                // Y twist = vertical contribution + horizontal coupling for banking
+                //float tiltY = Mathf.Clamp(
+                //    (-v.y * tiltFactor.y) + (v.x * (tiltFactor.y * 0.6f)),
+                //    -maxTilt.y,
+                //    maxTilt.y
+                //);
+
+                Vector3 targetEuler = new Vector3(tiltX, 0, tiltZ);
 
                 instance.transform.localRotation = Quaternion.Slerp(
                     instance.transform.localRotation,
-                    Quaternion.Euler(0, 0, tiltZ),
-                    Time.deltaTime * rotationFocus
+                    Quaternion.Euler(targetEuler),
+                    Time.deltaTime * rotateSpeed
                 );
             }
             else
             {
-                // Smoothly reset rotation when the move slows or stops
+                // Reset smoothly to neutral
                 instance.transform.localRotation = Quaternion.Slerp(
                     instance.transform.localRotation,
-                    Quaternion.Euler(baseRotation),
-                    Time.deltaTime * resetFocus
+                    Quaternion.Euler(Vector3.zero),
+                    Time.deltaTime * resetSpeed
                 );
             }
         }
+
+
+
+
+
     }
 }

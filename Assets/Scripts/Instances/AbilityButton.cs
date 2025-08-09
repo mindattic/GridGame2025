@@ -58,6 +58,6 @@ public class Ability
     public void Activate(ActorInstance user, ActorInstance target)
     {
         // Implement actual ability logic
-        Debug.Log($"{user.name} used {name} on {(target ? target.name : "no targetActor")}");
+        Debug.Log($"{user.name} used {name} on {(target ? target.name : "no target")}");
     }
 }

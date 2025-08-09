@@ -128,6 +128,7 @@
     <Compile Include="Assets\Data\Actor\Cleric.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
+    <Compile Include="Assets\Scripts\Events\Sequences\EnemyPostAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Events\Triggers\MultiAttackTrigger.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />

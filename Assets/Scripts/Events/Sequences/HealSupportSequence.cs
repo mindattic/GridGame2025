@@ -32,7 +32,7 @@ namespace Assets.Scripts.Events
                 controlPoints = BezierCurveHelper.Gentle(source, target),
                 trailKey = "GreenSparkle",
                 vfxKey = "BuffLife",
-                trigger = new TriggerEvent(target.HealAsync(10))
+                trigger = new TriggerEvent(target.TakeHeal(10))
             };
             yield return new FireProjectileSequence(healSettings).Execute();
 

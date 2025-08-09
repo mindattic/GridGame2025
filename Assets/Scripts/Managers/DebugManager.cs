@@ -167,14 +167,14 @@ public class DebugManager : MonoBehaviour
     {
         var hero = Random.Hero;
         var text = $"{Random.Int(1, 100)}";
-        g.DamageTextManager.Spawn(text, hero.position, "Damage");
+        g.CombatTextManager.Spawn(text, hero.position, "Damage");
     }
 
     public void SpawnHealText()
     {
         var hero = Random.Hero;
         var text = $"{Random.Int(1, 100)}";
-        g.DamageTextManager.Spawn(text, hero.position, "Heal");
+        g.CombatTextManager.Spawn(text, hero.position, "Heal");
     }
 
 
@@ -317,7 +317,7 @@ public class DebugManager : MonoBehaviour
         var startPosition = hero1.position;
         var target = g.Actors.Enemies.FirstOrDefault();
         g.ProjectileManager.EnqueueFireball(startPosition, target);
-        g.SequenceManager.TriggerExecute();
+        g.SequenceManager.ExecuteAsync();
     }
 
     public void Heal()
@@ -326,7 +326,7 @@ public class DebugManager : MonoBehaviour
         var target = hero2;
 
         g.ProjectileManager.EnqueueHeal(source, target);
-        g.SequenceManager.TriggerExecute();
+        g.SequenceManager.ExecuteAsync();
     }
     public void RandomizeBackground()
     {

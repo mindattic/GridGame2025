@@ -314,7 +314,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Before: determine targetActor max size (default is 110% of tile size) and initial scale.
+            // Before: determine target max size (default is 110% of tile size) and initial scale.
             float maxSize = g.TileSize * 1.1f;
             float minSize = scale.x;
             float increment = g.TileSize * 0.01f;
@@ -357,7 +357,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Before: determine targetActor minimum size (default is tileSize) and CurrentProfile scale.
+            // Before: determine target minimum size (default is tileSize) and CurrentProfile scale.
             float minSize = g.TileSize;
             float maxSize = scale.x;
             float increment = g.TileSize * 0.01f;
