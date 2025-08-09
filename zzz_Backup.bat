@@ -25,11 +25,22 @@ if exist "%BACKUP_FOLDER%" (
     goto CHECK_FOLDER
 )
 
+:: Confirmation prompt
+echo.
+echo You are about to back up:
+echo   From: %SOURCE%
+echo   To:   %BACKUP_FOLDER%\GridGame2025
+echo.
+set /p "CHOICE=Proceed with backup? (Y/N): "
+if /i not "%CHOICE%"=="Y" (
+    echo Backup aborted by user.
+    pause
+    exit /b
+)
+
 :: Create the new dated folder
 mkdir "%BACKUP_FOLDER%"
 
 :: Copy the project folder
 xcopy "%SOURCE%" "%BACKUP_FOLDER%\GridGame2025\" /E /I /Y
 
-echo Backup completed: %BACKUP_FOLDER%
-pause

@@ -9,9 +9,8 @@ using Label = TMPro.TextMeshProUGUI;
 
 public class OverworldManager : MonoBehaviour
 {
-    //Fields
+    // Fields
     private Label header;
-    private RectTransform canvas;
     private RectTransform scrollView;
     private ScrollRect scrollRect;
     private RectTransform viewport;
@@ -27,11 +26,10 @@ public class OverworldManager : MonoBehaviour
 
     private void Awake()
     {
-        //Verify that game is ready to run
+        // Verify that game is ready to run
         if (!ProfileRepo.HasProfiles())
             return;
 
-        canvas = GameObject.Find(GameObjectHelper.Overworld.Canvas).GetComponent<RectTransform>();
         scrollView = GameObject.Find(GameObjectHelper.Overworld.ScrollView).GetComponent<RectTransform>();
         scrollRect = GameObject.Find(GameObjectHelper.Overworld.ScrollView).GetComponent<ScrollRect>();
         viewport = GameObject.Find(GameObjectHelper.Overworld.Viewport).GetComponent<RectTransform>();
@@ -40,16 +38,6 @@ public class OverworldManager : MonoBehaviour
         hero = GameObject.Find(GameObjectHelper.Overworld.Hero).GetComponent<PlayerStageMover>();
         fade = GameObject.Find(GameObjectHelper.Overworld.Fade).GetComponent<FadeInstance>();
 
-        //startX = canvas.rect.width;
-        //startY = canvas.rect.height;
-
-       // buttonWidth = 64;
-        //buttonHeight = 32;
-
-        //header.fontSize = startY / 16f / 2;
-        //scrollView.sizeDelta = new Vector2(startX, startY);
-
-        //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         FindStageButtons();
         OnCenterOnHeroClicked();
     }
@@ -59,14 +47,17 @@ public class OverworldManager : MonoBehaviour
         StartCoroutine(fade.FadeIn());
     }
 
+    /// <summary>
+    /// Finds all stage buttons in the scene without using tags.
+    /// </summary>
     private void FindStageButtons()
     {
-        GameObject[] stageObjects = GameObject.FindGameObjectsWithTag("StageButton");
+        stageButtons.Clear();
+        var foundButtons = GameObject.FindObjectsByType<Button>(FindObjectsSortMode.None);
 
-        foreach (GameObject obj in stageObjects)
+        foreach (var button in foundButtons)
         {
-            Button button = obj.GetComponent<Button>();
-            if (button != null)
+            if (button.name.Contains("StageButton"))
             {
                 stageButtons.Add(button);
             }
@@ -75,32 +66,10 @@ public class OverworldManager : MonoBehaviour
         Debug.Log($"Found {stageButtons.Count} stage buttons.");
     }
 
-
-    //private void AddStageIcon(Vector2 position, string stageName)
-    //{
-    //    // Instantiate the prefab as a child of the content
-    //    GameObject instance = Instantiate(stageIconPrefab, content);
-    //    instance.name = $"StageIcon_{stageName}";
-
-    //    // Show the button size: 90% of width, 1/16th of height
-    //    RectTransform buttonRect = instance.GetComponent<RectTransform>();
-    //    buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-
-    //    // Show the button's click event
-    //    Button button = instance.GetComponent<Button>();
-    //    button.transform.localPosition = position;
-    //    button.onClick.AddListener(() => OnStageSelectButtonClicked(stageName));
-
-    //    // Show the button textarea
-    //    Label label = instance.GetComponentInChildren<Label>();
-    //    label.textarea = stageName;
-    //}
-
     public void OnStageSelectButtonClicked(Button stageButton)
     {
         hero.MoveToStage(stageButton);
     }
-
 
     public void OnBackButtonClicked()
     {
@@ -119,85 +88,26 @@ public class OverworldManager : MonoBehaviour
 
     private IEnumerator SmoothCentering(Vector2 targetLocalPosition, float speed, float snapThreshold)
     {
-        // GetProfile viewport and content sizes
         Vector2 viewportSize = viewport.rect.size;
         Vector2 contentSize = content.rect.size;
 
-        // Compute offsets dynamically
         float offsetX = -viewportSize.x;
         float offsetY = viewportSize.y * 3.33333f;
 
-        // Adjust target position by applying calculated offsets
         float adjustedX = targetLocalPosition.x + offsetX + viewportSize.x / 2;
-        float adjustedY = targetLocalPosition.y + offsetY - viewportSize.y / 2; // Negative Y adjustment due to UI axis
+        float adjustedY = targetLocalPosition.y + offsetY - viewportSize.y / 2;
 
-        // Normalize values (0 = left/top, 1 = right/bottom)
         float targetX = Mathf.Clamp01(adjustedX / (contentSize.x - viewportSize.x));
-        float targetY = Mathf.Clamp01(1 - (adjustedY / (contentSize.y - viewportSize.y))); // Inverting for UI coordinate system
+        float targetY = Mathf.Clamp01(1 - (adjustedY / (contentSize.y - viewportSize.y)));
 
         Vector2 targetPosition = new Vector2(targetX, targetY);
 
-        // Smooth move loop
         while (Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > snapThreshold)
         {
             scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * speed);
             yield return Wait.None();
         }
 
-        // Snap to final position
         scrollRect.normalizedPosition = targetPosition;
     }
-
-
-    //public void CenterOnPosition(Vector2 targetLocalPosition, float speed = 2f, float snapThreshold = 0.001f)
-    //{
-    //    Execute(SmoothCentering(targetLocalPosition, speed, snapThreshold));
-    //}
-
-    //private IEnumerator SmoothCentering(Vector2 targetLocalPosition, float speed, float snapThreshold)
-    //{
-    //    // GetProfile viewport and content sizes
-    //    Vector2 viewportSize = viewport.rect.size;
-    //    Vector2 contentSize = content.rect.size;
-
-    //    // Compute offsets dynamically
-    //    float offsetX = -viewportSize.x;
-    //    float offsetY = viewportSize.y * 3.33333f;
-
-    //    // Adjust target position by applying calculated offsets
-    //    float adjustedX = targetLocalPosition.x + offsetX + viewportSize.x / 2;
-    //    float adjustedY = targetLocalPosition.y + offsetY - viewportSize.y / 2; // Negative Y adjustment due to UI axis
-
-    //    // Normalize values (0 = left/top, 1 = right/bottom)
-    //    float targetX = Mathf.Clamp01(adjustedX / (contentSize.x - viewportSize.x));
-    //    float targetY = Mathf.Clamp01(1 - (adjustedY / (contentSize.y - viewportSize.y))); // Inverting for UI coordinate system
-
-    //    Vector2 targetPosition = new Vector2(targetX, targetY);
-
-    //    // Smooth move loop
-    //    float progress = 0f;
-    //    Vector2 startPosition = scrollRect.normalizedPosition;
-
-    //    while (progress < 1f)
-    //    {
-    //        progress += Time.deltaTime * speed;
-    //        float smoothProgress = Mathf.SmoothStep(0, 1, progress); // Smooth transition
-
-    //        scrollRect.normalizedPosition = Vector2.Lerp(startPosition, targetPosition, smoothProgress);
-
-    //        // If close enough, reduce speed dynamically
-    //        if (Vector2.Distance(scrollRect.normalizedPosition, targetPosition) < snapThreshold)
-    //        {
-    //            break;
-    //        }
-
-    //        yield return Wait.None(); // Wait for next frame
-    //    }
-
-    //    // Smooth final snap
-    //    scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, 0.2f);
-    //}
-
-
-
 }

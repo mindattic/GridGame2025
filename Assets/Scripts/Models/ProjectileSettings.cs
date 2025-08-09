@@ -1,27 +1,29 @@
-﻿using Assets.Scripts.Events;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Models
 {
-
+    /// <summary>
+    /// Holds all configuration for spawning and animating a projectile.
+    /// The 'trigger' field is an IEnumerator to be started by the caller
+    /// using FireTrigger or yielded via YieldRoutine when appropriate.
+    /// </summary>
     public class ProjectileSettings
     {
         public string friendlyName;
         public Vector3 startPosition;
         public ActorInstance target;
-        public string trailKey;   // e.g., "GreenSparkle" or "Fireball"
-        public string vfxKey;    // e.g., "BuffLife" or "PuffyExplosion"
+        public string trailKey;
+        public string vfxKey;
         public ProjectilePath path = ProjectilePath.AnimationCurve;
         public float duration = 1.0f;
-        public TriggerEvent trigger;
 
-        //AnimationCurve
+        public IEnumerator trigger;
+
         public AnimationCurve travelCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
-        public AnimationCurve waveCurve = AnimationCurve.EaseInOut(0, 0, 1, 0); //Straight: new Keyframe(0, 0), new Keyframe(1, 0));
+        public AnimationCurve waveCurve = AnimationCurve.EaseInOut(0, 0, 1, 0);
 
-
-        //Bezier
         public float travelModifier;
         public float waveModifier;
         public float launchAngle = 180f;
@@ -30,5 +32,4 @@ namespace Assets.Scripts.Models
         public float curveHeightFactor = 1.5f;
         public List<Vector3> controlPoints;
     }
-
 }

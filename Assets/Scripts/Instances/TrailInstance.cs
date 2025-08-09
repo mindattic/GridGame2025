@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Events;
-using Assets.Scripts.Models;
+﻿using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,85 +6,92 @@ using g = Assets.Helpers.GameHelper;
 
 public class TrailInstance : MonoBehaviour
 {
-    //Properties
+    // Convenience transform accessors
     public Transform parent
     {
-        get => gameObject.transform.parent;
-        set => gameObject.transform.SetParent(value, true);
+        get => transform.parent;
+        set => transform.SetParent(value, true);
     }
 
     public Vector3 position
     {
-        get => gameObject.transform.position;
-        set => gameObject.transform.position = value;
+        get => transform.position;
+        set => transform.position = value;
     }
 
     public Quaternion rotation
     {
-        get => gameObject.transform.rotation;
-        set => gameObject.transform.rotation = value;
+        get => transform.rotation;
+        set => transform.rotation = value;
     }
 
     public Vector3 scale
     {
-        get => gameObject.transform.localScale;
-        set => gameObject.transform.localScale = value;
+        get => transform.localScale;
+        set => transform.localScale = value;
     }
 
-    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 position, TriggerEvent trigger = null)
+    /// <summary>
+    /// Spawns a trail effect at a world position, applies relative offsets, optional delay and duration,
+    /// optionally runs a trigger routine, then despawns.
+    /// </summary>
+    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 worldPosition, IEnumerator trigger = null)
     {
-        this.position = position;
+        position = worldPosition;
         transform.localPosition = trail.RelativeOffset;
         transform.localEulerAngles = trail.AngularRotation;
         transform.localScale = g.TileScale.MultiplyBy(trail.RelativeScale);
 
-
         SetLooping(trail.IsLoop);
 
-        //Wait until waitDuration is over
         if (trail.Delay != 0f)
             yield return new WaitForSeconds(trail.Delay);
 
-        // Run TriggerEvent (if applicable)
         if (trigger != null)
-            yield return trigger.Execute(this);
+            yield return this.YieldRoutine(trigger);
 
-        //Wait until VfxManager duration completes
         if (trail.Duration != 0f)
             yield return Wait.For(trail.Duration);
 
-        //Despawn VfxManager
         Despawn(name);
     }
 
+    /// <summary>
+    /// Sets the loop flag on all ParticleSystem components in this hierarchy.
+    /// </summary>
     private void SetLooping(bool isLoop)
     {
         var particleSystems = new List<ParticleSystem>();
         GetRecursively(ref particleSystems, transform);
 
-        //SelectProfile the looping flag for each ParticleSystem
         foreach (var system in particleSystems)
         {
+            if (system == null)
+                continue;
+
             var main = system.main;
             main.loop = isLoop;
         }
     }
 
-    private void GetRecursively(ref List<ParticleSystem> particleSystems, Transform transform)
+    /// <summary>
+    /// Collects ParticleSystem components starting at the given transform and all children.
+    /// </summary>
+    private void GetRecursively(ref List<ParticleSystem> particleSystems, Transform t)
     {
-        //SpawnActor particle system from root transform
-        particleSystems.Add(transform.GetComponent<ParticleSystem>());
+        var ps = t.GetComponent<ParticleSystem>();
+        if (ps != null)
+            particleSystems.Add(ps);
 
-        //Recursively retrieve child particle systems from children transforms
-        foreach (Transform child in transform)
-        {
+        foreach (Transform child in t)
             GetRecursively(ref particleSystems, child);
-        }
     }
 
-    private void Despawn(string name)
+    /// <summary>
+    /// Requests despawn for this trail by name.
+    /// </summary>
+    private void Despawn(string instanceName)
     {
-        g.TrailManager.Despawn(name);
+        g.TrailManager.Despawn(instanceName);
     }
-
 }

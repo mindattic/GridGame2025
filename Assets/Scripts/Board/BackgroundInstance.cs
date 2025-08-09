@@ -1,65 +1,68 @@
-using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
-using g = Assets.Helpers.GameHelper;
 
 public class BackgroundInstance : MonoBehaviour
 {
-    //Fields
-    private bool isMoving;
-    private Vector3 initialPosition;
-    private SpriteRenderer spriteRenderer;
-    private Vector2 padding;
-    private Vector3 scale;
-    private Vector2 amplitude;
-    private Vector2 speed;
-    private float time;
-    private Vector3 targetPosition;
+    // Fields
+    private Vector3 initialPosition;       // Starting position of the background
+    private SpriteRenderer spriteRenderer; // Cached SpriteRenderer reference
+    private Vector2 padding;               // Padding applied to screen fit
+    private Vector3 scale;                 // Calculated scale to fit screen
+    private Vector2 amplitude;             // Amplitude of sine wave movement
+    private Vector2 speed;                  // Speed of sine wave movement
+    private float time;                     // Time accumulator for movement
 
     private void Awake()
     {
+        // Cache the SpriteRenderer component
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    //Bounce is called once before the first execution of Save after the MonoBehaviour is created
-    void Start()
+    private void Start()
     {
+        // Store the initial position
         initialPosition = transform.position;
 
+        // Randomize background sprite
         Randomize();
 
-        //Get screen dimensions in world units
+        // Get screen dimensions in world units
         float screenHeight = Camera.main.orthographicSize * 2f;
         float screenWidth = screenHeight * Camera.main.aspect;
 
-        //Get the sprite's size in world units
+        // Get the sprite's size in world units
         Bounds spriteBounds = spriteRenderer.sprite.bounds;
         Vector2 spriteSize = spriteBounds.size;
 
-        //Calculate scale factors
+        // Calculate padding and scale to fit the screen
         padding = new Vector2(screenWidth * 0.01f, screenHeight * 0.01f);
-        scale = new Vector3(screenWidth / spriteSize.x + padding.x, screenHeight / spriteSize.y + padding.y, 1);
+        scale = new Vector3(
+            screenWidth / spriteSize.x + padding.x,
+            screenHeight / spriteSize.y + padding.y,
+            1
+        );
         transform.localScale = scale;
 
+        // Set movement amplitude and speed
         amplitude = new Vector2(padding.x, padding.y);
         speed = new Vector2(0.2f, 0.2f);
-
     }
 
     private void FixedUpdate()
     {
+        // Update time
         time += Time.deltaTime;
 
-        //Calculate the new position using a sine wave
-        var x = initialPosition.x + Mathf.Sin(time * speed.x) * amplitude.x;
-        var y = initialPosition.y + Mathf.Sin(time * speed.y) * amplitude.y;
+        // Calculate sine wave offset
+        float x = initialPosition.x + Mathf.Sin(time * speed.x) * amplitude.x;
+        float y = initialPosition.y + Mathf.Sin(time * speed.y) * amplitude.y;
+
+        // Apply movement
         transform.position = new Vector3(x, y, initialPosition.z);
     }
 
-
     public void Randomize()
     {
+        // Assign a random background sprite
         spriteRenderer.sprite = RNG.Background();
     }
 }

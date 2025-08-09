@@ -1,98 +1,54 @@
 // --- File: Assets/Scripts/Managers/TurnManager.cs ---
 using Assets.Scripts.Events;
-using Assets.Scripts.Models;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Managers
 {
     /// <summary>
-    /// Owns turn state and is the single place that enqueues the correct "start of side" sequence.
-    /// This prevents stalls caused by missing or misplaced sequencing when turns flip.
+    /// Controls which side is active and triggers each side's start sequence when turns change.
+    /// Keeps turn flow centralized so sequencing cannot stall due to missing or misplaced calls.
     /// </summary>
     public class TurnManager : MonoBehaviour
     {
-        // True when it is the hero side's turn
         public bool isHeroTurn { get; private set; }
-
-        // Convenience flag for the enemy side
         public bool isEnemyTurn => !isHeroTurn;
-
-        // 1-based turn counter for hero turns; increments when hero turn begins
         public int currentTurn = 0;
 
-        // --------------------------------------------------------------------
-        // Initialization
-        // --------------------------------------------------------------------
-
         /// <summary>
-        /// Sets up initial state and kicks off the first side's start sequence.
+        /// Set initial state and kick off the first side's start sequence.
+        /// Heroes begin first and currentTurn remains zero until their next activation.
         /// </summary>
         public void Initialize()
         {
-            // Bounce on hero side by design
             isHeroTurn = true;
-
-            // Make sure the correct side start sequence runs immediately
-            EnterCurrentSide();
+            StartTurn();
         }
 
-        // --------------------------------------------------------------------
-        // Turn flow
-        // --------------------------------------------------------------------
-
         /// <summary>
-        /// Flips the active side and then enqueues that side's start sequence.
+        /// Flip the active side, increment hero turn counter when heroes become active,
+        /// then enqueue that side's start sequence.
         /// </summary>
         public void NextTurn()
         {
-            // Swap active side
             isHeroTurn = !isHeroTurn;
-
-            // If we just landed on hero side, this is a new numbered turn
             if (isHeroTurn)
                 currentTurn++;
 
-            // Always enqueue the correct "start of side" sequence
-            EnterCurrentSide();
+            StartTurn();
         }
 
         /// <summary>
-        /// Called by UI when the player clicks End Turn.
-        /// Enqueues the EndTurnSequence which should perform any cleanup before NextTurn.
+        /// Enqueue the appropriate start sequence for the active side.
+        /// SequenceManager executes items in order, and Execute is safe to call repeatedly.
         /// </summary>
-        public void EndHeroTurn()
+        private void StartTurn()
         {
-            // Add end of hero turn sequence to the queue and start executing
-            g.SequenceManager.Add(new EndTurnSequence());
-            g.SequenceManager.ExecuteAsync();
-        }
+            // Enqueue the correct start sequence for the active side
+            g.SequenceManager.Add(isHeroTurn ? new HeroStartSequence() : new EnemyStartSequence());
 
-        // --------------------------------------------------------------------
-        // Helpers
-        // --------------------------------------------------------------------
-
-        /// <summary>
-        /// Enqueues the appropriate start sequence for whichever side is active.
-        /// This centralizes the responsibility so it cannot be forgotten elsewhere.
-        /// </summary>
-        private void EnterCurrentSide()
-        {
-            // Safety: if something else was mid-run, we simply enqueue to the same queue.
-            // The SequenceManager will drain items in order.
-            if (isHeroTurn)
-            {
-                Debug.Log($"[TurnManager] Enter hero turn. Turn={currentTurn + 1}");
-                g.SequenceManager.Add(new HeroStartSequence());
-            }
-            else
-            {
-                Debug.Log("[TurnManager] Enter enemy turn.");
-                g.SequenceManager.Add(new EnemyStartSequence());
-            }
-
-            // Ensure execution is running (safe no-op if already executing)
-            g.SequenceManager.ExecuteAsync();
+            // Ensure execution is running
+            g.SequenceManager.Execute();
         }
     }
 }

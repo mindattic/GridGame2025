@@ -68,11 +68,15 @@ public class InputManager : MonoBehaviour
 
                             var collisions = Physics2D.OverlapPointAll(g.TouchPosition3D);
                             if (collisions == null) return;
-                            var collider = collisions.FirstOrDefault(x => x.CompareTag(Tag.Actor));
+
+                            // Find the first collider that has an ActorInstance component
+                            var collider = collisions.FirstOrDefault(x => x.GetComponent<ActorInstance>() != null);
                             if (collider == null) return;
-                            var target = collider.gameObject.GetComponent<ActorInstance>();
+
+                            var target = collider.GetComponent<ActorInstance>();
                             if (target == null || !target.isPlaying) return;
-                           
+
+
                             if (g.Actors.TargetActor == target)
                             {
                                 //This is a double click...
@@ -85,24 +89,24 @@ public class InputManager : MonoBehaviour
                                 //        g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
 
                                 //    g.SequenceManager.Add(new HideTargetIndicatorSequence());
-                                //    g.SequenceManager.ExecuteAsync();
+                                //    g.SequenceManager.Execute();
                                 //});
 
-                                //Spawn from avility button
+                                //YieldSpawn from avility button
 
 
-                                //Spawn at Actor
+                                //YieldSpawn at Actor
                                 //var startPosition = g.Actors.FocusedActor.position;
 
-                                //Spawn at button
+                                //YieldSpawn at button
                                 //var startPosition = g.AbilityButtonManager.buttons.First().WorldPosition();
 
-                                //Spawn at card portrait
+                                //YieldSpawn at card portrait
                                 var startPosition = g.Card.PortraitWorldPosition();
 
                                 g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
                                 g.SequenceManager.Add(new HideTargetIndicatorSequence());
-                                g.SequenceManager.ExecuteAsync();
+                                g.SequenceManager.Execute();
 
                                 return;
                             }

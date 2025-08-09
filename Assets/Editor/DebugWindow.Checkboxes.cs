@@ -12,7 +12,7 @@ public partial class DebugWindow
         GUILayout.BeginHorizontal();
 
         // Toggle to show or hide actor name tags.
-        onCheckChanged = EditorGUILayout.Toggle("Spawn Actor Name?", g.DebugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
+        onCheckChanged = EditorGUILayout.Toggle("YieldSpawn Actor Name?", g.DebugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
         if (g.DebugManager.showActorNameTag != onCheckChanged)
         {
             g.DebugManager.showActorNameTag = onCheckChanged;

@@ -168,7 +168,7 @@ public class PincerAttackManager : MonoBehaviour
             g.SequenceManager.Add(new PincerAttackSequence(p));
         }
 
-        yield return g.SequenceManager.Execute();
+        yield return g.SequenceManager.ExecuteTrigger();
         yield return g.BoardOverlay.FadeOut();
 
         g.SupportLineManager.Clear();

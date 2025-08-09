@@ -9,7 +9,7 @@ public partial class DebugWindow
     private void RenderSpawnOptions()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Spawn", GUILayout.Width(Screen.width));
+        GUILayout.Label("YieldSpawn", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
 
         bool isClicked;

@@ -119,12 +119,12 @@ public class DebugManager : MonoBehaviour
             location = Geometry.GetAdjacentLocationInDirection(hero.location, RNG.AdjacentDirection);
 
         enemy.Teleport(location);
-        hero.action.BumpAsync(enemy);
+        hero.action.Bump(enemy);
     }
 
     public void Dodge()
     {
-        hero1.action.DodgeAsync();
+        hero1.action.Dodge();
     }
 
     public void KillEnemies()
@@ -132,7 +132,7 @@ public class DebugManager : MonoBehaviour
         var playingEnemies = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
         foreach (var enemy in playingEnemies)
         {
-            enemy.TakeDamageAsync(9999);
+            enemy.Damage(9999);
         }
         StartCoroutine(DeathHelper.Process());
     }
@@ -156,7 +156,7 @@ public class DebugManager : MonoBehaviour
         var hero = RNG.Hero;
         g.SequenceManager.Add(new PortraitPopInSequence(hero));
         g.SequenceManager.Add(new PortraitPopOutSequence(hero));
-        StartCoroutine(g.SequenceManager.Execute());
+        StartCoroutine(g.SequenceManager.ExecuteTrigger());
     }
 
     public void SpawnDamageText()
@@ -178,12 +178,12 @@ public class DebugManager : MonoBehaviour
     {
         var intensity = RNG.ShakeIntensityLevel();
         var duration = RNG.Float(Interval.HalfSecond, Interval.TwoSeconds);
-        hero1.action.ShakeAsync(intensity, duration);
+        hero1.action.Shake(intensity, duration);
     }
 
     public void Spin()
     {
-        hero1.action.Spin360Async();
+        hero1.action.Spin360();
     }
 
     public void SpawnSupportLines()
@@ -275,9 +275,7 @@ public class DebugManager : MonoBehaviour
 
             yield return true;
         }
-        var trigger = new TriggerEvent(spawnTenCoins());
-
-        g.VfxManager.SpawnAsync(vfx, hero1.position, trigger);
+        g.VfxManager.Spawn(vfx, hero1.position, spawnTenCoins());
     }
 
     public void SpawnSlime()
@@ -313,7 +311,7 @@ public class DebugManager : MonoBehaviour
         var startPosition = hero1.position;
         var target = g.Actors.Enemies.FirstOrDefault();
         g.ProjectileManager.EnqueueFireball(startPosition, target);
-        g.SequenceManager.ExecuteAsync();
+        g.SequenceManager.Execute();
     }
 
     public void Heal()
@@ -322,7 +320,7 @@ public class DebugManager : MonoBehaviour
         var target = hero2;
 
         g.ProjectileManager.EnqueueHeal(source, target);
-        g.SequenceManager.ExecuteAsync();
+        g.SequenceManager.Execute();
     }
     public void RandomizeBackground()
     {
@@ -343,215 +341,214 @@ public class DebugManager : MonoBehaviour
         if (attack.IsCriticalHit)
         {
             var crit = VisualEffectRepo.VisualEffects["YellowHit"];
-            g.VfxManager.SpawnAsync(crit, hero1.position);
+            g.VfxManager.Spawn(crit, hero1.position);
             attack.Damage = (int)Math.Round(attack.Damage * 1.5f);
         }
 
         var vfx = VisualEffectRepo.VisualEffects["BlueSlash1"];
-        var trigger = new TriggerEvent(hero1.TakeDamage(attack.Damage));
-        g.VfxManager.SpawnAsync(vfx, hero1.position, trigger);
+        g.VfxManager.Spawn(vfx, hero1.position, hero1.DamageTrigger(attack.Damage));
     }
 
     public void VFXTest_BlueSlash2()
     {
         var vfx = VisualEffectRepo.VisualEffects["BlueSlash2"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_BlueSlash3()
     {
         var vfx = VisualEffectRepo.VisualEffects["BlueSlash3"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_BlueSword()
     {
         var vfx = VisualEffectRepo.VisualEffects["BlueSword"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_BlueSword4X()
     {
         var vfx = VisualEffectRepo.VisualEffects["BlueSword4X"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_BloodClaw()
     {
         var vfx = VisualEffectRepo.VisualEffects["BloodClaw"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_LevelUp()
     {
         var vfx = VisualEffectRepo.VisualEffects["LevelUp"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_YellowHit()
     {
         var vfx = VisualEffectRepo.VisualEffects["YellowHit"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_DoubleClaw()
     {
         var vfx = VisualEffectRepo.VisualEffects["DoubleClaw"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_LightningExplosion()
     {
         var vfx = VisualEffectRepo.VisualEffects["LightningExplosion"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_BuffLife()
     {
         var vfx = VisualEffectRepo.VisualEffects["BuffLife"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_RotaryKnife()
     {
         var vfx = VisualEffectRepo.VisualEffects["RotaryKnife"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_AirSlash()
     {
         var vfx = VisualEffectRepo.VisualEffects["AirSlash"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_FireRain()
     {
         var vfx = VisualEffectRepo.VisualEffects["FireRain"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_RayBlast()
     {
         var vfx = VisualEffectRepo.VisualEffects["RayBlast"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_LightningStrike()
     {
         var vfx = VisualEffectRepo.VisualEffects["LightningStrike"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_PuffyExplosion()
     {
         var vfx = VisualEffectRepo.VisualEffects["PuffyExplosion"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_RedSlash2X()
     {
         var vfx = VisualEffectRepo.VisualEffects["RedSlash2X"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_GodRays()
     {
         var vfx = VisualEffectRepo.VisualEffects["GodRays"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_AcidSplash()
     {
         var vfx = VisualEffectRepo.VisualEffects["AcidSplash"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
     public void VFXTest_GreenBuff()
     {
         var vfx = VisualEffectRepo.VisualEffects["GreenBuff"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_GoldBuff()
     {
         var vfx = VisualEffectRepo.VisualEffects["GoldBuff"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_HexShield()
     {
         var vfx = VisualEffectRepo.VisualEffects["HexShield"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_ToxicCloud()
     {
         var vfx = VisualEffectRepo.VisualEffects["ToxicCloud"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_OrangeSlash()
     {
         var vfx = VisualEffectRepo.VisualEffects["OrangeSlash"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_MoonFeather()
     {
         var vfx = VisualEffectRepo.VisualEffects["MoonFeather"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_PinkSpark()
     {
         var vfx = VisualEffectRepo.VisualEffects["PinkSpark"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_BlueYellowSword()
     {
         var vfx = VisualEffectRepo.VisualEffects["BlueYellowSword"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_BlueYellowSword3X()
     {
         var vfx = VisualEffectRepo.VisualEffects["BlueYellowSword3X"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
     public void VFXTest_RedSword()
     {
         var vfx = VisualEffectRepo.VisualEffects["RedSword"];
-        g.VfxManager.SpawnAsync(vfx, hero1.position);
-        g.VfxManager.SpawnAsync(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.position);
+        g.VfxManager.Spawn(vfx, hero2.position);
     }
 
 }

@@ -1,34 +1,34 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 using g = Assets.Helpers.GameHelper;
 
 public class DottedLineManager : MonoBehaviour
 {
-
-    //Fields
+    // Fields
     private GameObject DottedLinePrefab;
 
     public List<DottedLineInstance> dottedLines = new List<DottedLineInstance>();
 
- 
-    void Awake()
+    private void Awake()
     {
         DottedLinePrefab = PrefabRepo.Prefabs["DottedLinePrefab"];
     }
 
-
+    /// <summary>
+    /// Resets the color of all dotted lines.
+    /// </summary>
     private void ResetColors()
     {
-        foreach(var dottedLine in dottedLines)
+        foreach (var dottedLine in dottedLines)
         {
             dottedLine.ResetColor();
         }
     }
 
-
+    /// <summary>
+    /// Spawns a dotted line segment at a specific board location.
+    /// </summary>
     public void Spawn(DottedLineSegment segment, Vector2Int location)
     {
         GameObject prefab = Instantiate(DottedLinePrefab, Vector2.zero, Quaternion.identity);
@@ -39,20 +39,24 @@ public class DottedLineManager : MonoBehaviour
         dottedLines.Add(instance);
     }
 
+    /// <summary>
+    /// Removes a specific dotted line instance.
+    /// </summary>
     public void Despawn(DottedLineInstance instance)
     {
         dottedLines.Remove(instance);
         Destroy(instance.gameObject);
     }
 
+    /// <summary>
+    /// Clears all dotted line objects from the scene without using tags.
+    /// </summary>
     public void Clear()
     {
-        GameObject.FindGameObjectsWithTag(Tag.DottedLine).ToList().ForEach(x => Destroy(x));
+        var instances = GameObject.FindObjectsByType<DottedLineInstance>(FindObjectsSortMode.None);
+        foreach (var instance in instances)
+        {
+            Destroy(instance.gameObject);
+        }
     }
-
-    //private void OnDestroy()
-    //{
-    //   if (onSelectedHeroLocationChanged != null)
-    //       onSelectedHeroLocationChanged.RemoveListener(OnSelectedHeroLocationChanged);
-    //}
 }

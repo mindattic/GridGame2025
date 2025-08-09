@@ -1,13 +1,12 @@
 using Game.Behaviors.Actor;
 using System;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 public class FootstepManager : MonoBehaviour
 {
-    //Fields
+    // Fields
     private GameObject FootstepPrefab;
     ActorInstance actor;
     Vector3 previousPosition;
@@ -19,12 +18,14 @@ public class FootstepManager : MonoBehaviour
         FootstepPrefab = PrefabRepo.Prefabs["FootstepPrefab"];
     }
 
-
-    void Start()
+    private void Start()
     {
         threshold = g.TileSize / 4;
     }
 
+    /// <summary>
+    /// Starts playing footstep effects for a given actor.
+    /// </summary>
     public void Play(ActorInstance actor)
     {
         if (!actor.isActive || !actor.isAlive)
@@ -35,12 +36,18 @@ public class FootstepManager : MonoBehaviour
         StartCoroutine(CheckSpawn());
     }
 
+    /// <summary>
+    /// Stops playing footstep effects.
+    /// </summary>
     public void Stop()
     {
         actor = null;
         isRightFoot = false;
     }
 
+    /// <summary>
+    /// Checks the distance traveled by the actor to decide when to spawn footsteps.
+    /// </summary>
     private IEnumerator CheckSpawn()
     {
         while (actor != null && actor.isActive && actor.isAlive)
@@ -55,6 +62,9 @@ public class FootstepManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawns a single footstep instance at the actor's position.
+    /// </summary>
     private void Spawn()
     {
         GameObject prefab = Instantiate(FootstepPrefab, Vector2.zero, Quaternion.identity);
@@ -67,11 +77,15 @@ public class FootstepManager : MonoBehaviour
         isRightFoot = !isRightFoot;
     }
 
-
+    /// <summary>
+    /// Clears all footstep objects from the scene without using tags.
+    /// </summary>
     public void Clear()
     {
-        GameObject.FindGameObjectsWithTag(Tag.Footstep).ToList().ForEach(x => Destroy(x));
+        var instances = GameObject.FindObjectsByType<FootstepInstance>(FindObjectsSortMode.None);
+        foreach (var instance in instances)
+        {
+            Destroy(instance.gameObject);
+        }
     }
-
-
 }

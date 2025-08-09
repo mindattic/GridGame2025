@@ -1,4 +1,5 @@
-﻿using Game.Models;
+﻿using Assets.Scripts.Models;
+using Game.Models;
 using Game.Models.Profile;
 using System;
 using System.Collections;
@@ -12,6 +13,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
 
@@ -344,25 +346,25 @@ public static class Constants
     public const int MaxPartyMemberCount = 6;
 }
 
-public static class Tag
-{
-    public static string Board = "BoardManager";
-    public static string Tile = "Tile";
-    public static string Actor = "Actor";
-    public static string SupportLine = "SupportLineAbove";
-    public static string AttackLine = "AttackLineManager";
-    public static string Trail = "Trail";
-    public static string Select = "SelectProfile";
-    public static string DamageText = "CombatTextManager";
-    public static string AnnouncementText = "AnnouncementText";
-    public static string Portrait = "ActorPortrait";
-    public static string Ghost = "GhostManager";
-    public static string Footstep = "FootstepManager";
-    public static string Wall = "Wall";
-    public static string Tooltip = "Tooltip";
-    public static string VFX = "VfxManager";
-    public static string DottedLine = "DottedLine";
-}
+//public static class Tag
+//{
+//    public static string Board = "BoardManager";
+//    public static string Tile = "Tile";
+//    public static string Actor = "Actor";
+//    public static string SupportLine = "SupportLineAbove";
+//    public static string AttackLine = "AttackLineManager";
+//    public static string Trail = "Trail";
+//    public static string Select = "SelectProfile";
+//    public static string DamageText = "CombatTextManager";
+//    public static string AnnouncementText = "AnnouncementText";
+//    public static string Portrait = "ActorPortrait";
+//    public static string Ghost = "GhostManager";
+//    public static string Footstep = "FootstepManager";
+//    public static string Wall = "Wall";
+//    public static string Tooltip = "Tooltip";
+//    public static string VFX = "VfxManager";
+//    public static string DottedLine = "DottedLine";
+//}
 
 public static class LocationHelper
 {
@@ -556,6 +558,26 @@ public static class ScreenHelper
         }
 
     }
+
+
+
+    /// <summary>
+    /// Places a UI RectTransform so its pivot aligns with a given screen-space point.
+    /// Works for Screen Space - Overlay (uiCam = null) and Screen Space - Camera.
+    /// </summary>
+    public static Vector2 GetScreenPosition(RectTransform rect, Vector2 screenPoint)
+    {
+        Vector2 localPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            c.CanvasRect,
+            screenPoint,
+            null,              // Overlay canvas: must be null
+            out localPos
+        );
+
+        return localPos;
+    }
+
 
     public static class Convert
     {
@@ -1551,7 +1573,7 @@ public static class DeathHelper
         // now actually kill them
         foreach (var actor in dyingActors)
         {
-            actor.DieAsync();
+            actor.Die();
         }
     }
 }
@@ -1932,5 +1954,40 @@ public static class SortingHelper
         public const int Attacker = 300;
         public const int AttackLine = 400;
         public const int Max = 999;
+    }
+}
+
+
+public static class AttackHelper
+{
+    /// <summary>
+    /// Applies damage for a single attack result, then yields once.
+    /// </summary>
+    public static IEnumerator SingleAttackTrigger(AttackResult attackResult)
+    {
+        if (attackResult == null || attackResult.Opponent == null)
+            yield break;
+
+        var damage = attackResult.Damage;
+        attackResult.Opponent.Damage(damage);
+
+        // Preserve original yield
+        yield return Wait.None();
+    }
+
+    /// <summary>
+    /// Runs multiple attacks in sequence. Each attack finishes before the next starts,
+    /// with a brief delay in between.
+    /// </summary>
+    public static IEnumerator MultiAttackTrigger(ActorInstance attacker, List<AttackResult> attackResults)
+    {
+        if (attackResults == null || attackResults.Count == 0)
+            yield break;
+
+        foreach (var attackResult in attackResults)
+        {
+            yield return SingleAttackTrigger(attackResult);
+            yield return Wait.For(Interval.TenthSecond);
+        }
     }
 }

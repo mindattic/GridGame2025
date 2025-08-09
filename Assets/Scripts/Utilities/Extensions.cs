@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -526,5 +527,22 @@ public static class CharactersExtensions
             return result;
         }
         throw new ArgumentException($"Invalid character value: {value}");
+    }
+}
+
+public static class CoroutineExtensions
+{
+    public static void FireTrigger(this MonoBehaviour context, IEnumerator routine)
+    {
+        if (context != null && routine != null)
+            context.StartCoroutine(routine);
+    }
+
+    public static IEnumerator YieldRoutine(this MonoBehaviour context, IEnumerator routine)
+    {
+        if (context == null || routine == null)
+            yield break;
+
+        yield return context.StartCoroutine(routine);
     }
 }

@@ -35,9 +35,15 @@ public class CombatTextManager : MonoBehaviour
         instance.Spawn(text, position, textStyle);
     }
 
+    /// <summary>
+    /// Clears all combat text objects from the scene without using tags.
+    /// </summary>
     public void Clear()
     {
-        var gameObjects = GameObject.FindGameObjectsWithTag(Tag.DamageText).ToList();
-        gameObjects.ForEach(x => Destroy(x));
+        var instances = GameObject.FindObjectsByType<CombatTextInstance>(FindObjectsSortMode.None);
+        foreach (var instance in instances)
+        {
+            Destroy(instance.gameObject);
+        }
     }
 }

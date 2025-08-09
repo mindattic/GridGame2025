@@ -24,9 +24,12 @@ public class SelectedHeroManager : MonoBehaviour
 
         var collisions = Physics2D.OverlapPointAll(g.TouchPosition3D);
         if (collisions == null) return;
-        var collider = collisions.FirstOrDefault(x => x.CompareTag(Tag.Actor));
+
+        // Find the first collider with an ActorInstance component
+        var collider = collisions.FirstOrDefault(x => x.GetComponent<ActorInstance>() != null);
         if (collider == null) return;
-        var actor = collider.gameObject.GetComponent<ActorInstance>();
+
+        var actor = collider.GetComponent<ActorInstance>();
 
         if (actor == null || !actor.isPlaying) return;
 

@@ -368,7 +368,7 @@ public class ActorInstance : MonoBehaviour
             flags.HasSpawned = true;
             // TriggerEvent fade-in and spin animations for visual feedback.
             action.TriggerFadeIn();
-            action.Spin360Async();
+            action.Spin360();
         }
         else
         {
@@ -419,16 +419,16 @@ public class ActorInstance : MonoBehaviour
         //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
     }
 
-    public void TakeFireDamageAsync(float amount) => StartCoroutine(TakeFireDamage(amount));
-    public IEnumerator TakeFireDamage(float amount)
+    public void FireDamage(float amount) => StartCoroutine(FireDamageTrigger(amount));
+    public IEnumerator FireDamageTrigger(float amount)
     {
         g.CombatTextManager.Spawn($"Fireball: - {amount} HP", position);
         yield return Wait.None();
     }
 
 
-    public void TakeHealAsync(int amount) => StartCoroutine(TakeHeal(amount));
-    public IEnumerator TakeHeal(int amount)
+    public void Heal(int amount) => StartCoroutine(HealTrigger(amount));
+    public IEnumerator HealTrigger(int amount)
     {
         // Immediately apply healing and update health.
         if (!isInvincible)
@@ -445,21 +445,17 @@ public class ActorInstance : MonoBehaviour
 
         // If you have a healing VFX, spawn it here.
         // var vfx = vfxManager.HealEffect;
-        // g.VfxManager.SpawnAsync(vfx, position);
+        // g.VfxManager.SpawnTrigger(vfx, position);
 
         yield break;
     }
 
 
 
-    //TakeDamage: Coroutine that processes damage application, triggers VfxManager and animations, and updates HP.
-    public void TakeDamageAsync(int damage) => StartCoroutine(TakeDamage(damage));
-    public IEnumerator TakeDamage(int damage)
+    //DamageTrigger: Coroutine that processes damage application, triggers VfxManager and animations, and updates HP.
+    public void Damage(int damage) => StartCoroutine(DamageTrigger(damage));
+    public IEnumerator DamageTrigger(int damage)
     {
-        //var vfx = attackResult.Attacker.vfx.Attack;
-        //var pos = attackResult.Attacker.position;
-        //g.VfxManager.SpawnAsync(vfx, pos); //TODO: inject damage below into vfx trigger???...
-
         // Immediately apply damage and update health.
         if (!isInvincible)
         {
@@ -475,13 +471,6 @@ public class ActorInstance : MonoBehaviour
         g.CombatTextManager.Spawn(damage.ToString(), position, "Damage");
         g.AudioManager.Play($"Slash{RNG.Int(1, 7)}");
 
-        //if (isDying)
-        //    DieAsync();
-
-        // Bounce the damage action as a separate coroutine so it doesn't block.
-        //Execute(DamageTaken(attackResult));
-
-        // Return immediately.
         yield break;
     }
 
@@ -493,39 +482,39 @@ public class ActorInstance : MonoBehaviour
 
     //    while (ticks < duration)
     //    {
-    //        action.GrowAsync(); // Flinch effect.
+    //        action.Grow(); // Flinch effect.
     //        if (attackResult.IsCriticalHit)
-    //            action.ShakeAsync(ShakeIntensity.Medium);
+    //            action.Shake(ShakeIntensity.Medium);
     //        ticks += Interval.OneTick;
     //        yield return Wait.For(Interval.OneTick);
     //    }
 
     //    // Reset animations.
     //    action.TriggerShrink();
-    //    action.ShakeAsync(ShakeIntensity.Despawn);
+    //    action.Shake(ShakeIntensity.Medium);
 
     //    if (isDying)
-    //        DieAsync();
+    //        Die();
 
     //    yield break;
     //}
 
 
-    //AttackMiss: Coroutine to display a miss message and attackResult a dodge action.
-    public IEnumerator AttackMiss()
+    //AttackMissTrigger: Coroutine to display a miss message and attackResult a dodge action.
+    public IEnumerator AttackMissTrigger()
     {
         g.CombatTextManager.Spawn("Miss", position);
-        yield return action.Dodge();
+        yield return action.DodgeTrigger();
     }
 
-    //DieAsync: Initiates the actor's death sequence.
-    public void DieAsync()
+    //Die: Initiates the actor's death sequence.
+    public void Die()
     {
-        StartCoroutine(Die());
+        StartCoroutine(DieTrigger());
     }
 
-    //Die: Coroutine that handles the actor's death sequence, including fading out, spawning coins, and deactivation.
-    public IEnumerator Die()
+    //DieTrigger: Coroutine that handles the actor's death sequence, including fading out, spawning coins, and deactivation.
+    public IEnumerator DieTrigger()
     {
         //Abort if the actor is not in a dying state.
         if (!isDying)

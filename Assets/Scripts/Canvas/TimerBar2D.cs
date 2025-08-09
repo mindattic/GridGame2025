@@ -16,7 +16,7 @@ public class TimerBar2D : MonoBehaviour
     [Tooltip("Total time in seconds for a full fill to drain to zero.")]
     [SerializeField] private float maxDuration = 6f;
 
-    // Always use 96% of canvas width for both width and vertical offset, per request.
+    // Use 97% of canvas width.
     private const float CanvasPercent = 0.97f;
 
     private float timeRemaining;
@@ -48,15 +48,14 @@ public class TimerBar2D : MonoBehaviour
 
     private void OnDestroy()
     {
-        // Unsubscribe from events
-        //if (g.InputManager != null)
-        //{
-        //    g.InputManager.OnInputModeChanged -= HandleModeChanged;
-        //}
+        // If you subscribe to events, unsubscribe here to avoid leaks.
+        // Example:
+        // if (g.InputManager != null)
+        //     g.InputManager.OnInputModeChanged -= HandleModeChanged;
     }
 
     /// <summary>
-    /// Subscribes to input mode changes and applies the initial visibility state.
+    /// Prepares layout, subscribes to mode changes, and positions the bar.
     /// </summary>
     public void Initialize()
     {
@@ -69,6 +68,15 @@ public class TimerBar2D : MonoBehaviour
 
         // Apply initial state
         HandleModeChanged(g.InputManager.inputMode);
+
+        // Position the bar at the top edge of the board in screen space.
+        // Canvas is Screen Space - Overlay, so screen point maps directly to rectTransform.position.
+        // Pivot at bottom center so the bar grows downward from the top edge.
+        if (rootRect != null && g.Board != null && g.Board.screenEdges != null)
+        {
+            rootRect.pivot = new Vector2(0.5f, 0f);              // bottom center
+            rootRect.position = g.Board.screenEdges.Top;          // place at board top midpoint
+        }
     }
 
     /// <summary>
@@ -83,7 +91,7 @@ public class TimerBar2D : MonoBehaviour
             countdown = null;
         }
 
-        // Bounce new countdown
+        // ExecuteTrigger new countdown
         countdown = StartCoroutine(Countdown());
     }
 
@@ -100,11 +108,11 @@ public class TimerBar2D : MonoBehaviour
     }
 
     /// <summary>
-    /// Refills the fill to full and resets the timer to maxDuration.
+    /// Refills to full and resets the timer to maxDuration.
     /// </summary>
     public void Refill()
     {
-        // Reset colors to white
+        // Reset colors
         back.color = ColorHelper.Solid.White;
         fill.color = ColorHelper.Solid.White;
         front.color = ColorHelper.Solid.White;
@@ -115,7 +123,7 @@ public class TimerBar2D : MonoBehaviour
     }
 
     /// <summary>
-    /// Visually locks the timer by tinting all layers red.
+    /// Tints layers red to indicate the timer is locked.
     /// </summary>
     public void Lock()
     {
@@ -144,7 +152,6 @@ public class TimerBar2D : MonoBehaviour
                 break;
 
             default:
-                // No change for other modes
                 break;
         }
     }
@@ -177,7 +184,6 @@ public class TimerBar2D : MonoBehaviour
         // Time expired, perform drop
         g.SelectedHeroManager.Drop();
 
-
         // Clear handle
         countdown = null;
     }
@@ -202,11 +208,10 @@ public class TimerBar2D : MonoBehaviour
 
     /// <summary>
     /// Computes sizes from the canvas and applies them to background, fill, and front.
-    /// Also offsets the entire timer vertically by 96 percent of the canvas width, in canvas space.
     /// </summary>
     private void SetLayout()
     {
-        // Compute 96 percent of canvas width for sizing
+        // Compute 97 percent of canvas width for sizing
         float targetWidth = Mathf.Max(0f, c.CanvasRect.rect.width * CanvasPercent);
 
         // Keep current height from root
@@ -218,11 +223,7 @@ public class TimerBar2D : MonoBehaviour
             Vector2 selfSize = rootRect.sizeDelta;
             selfSize.x = targetWidth;
             rootRect.sizeDelta = selfSize;
-
-            // Vertical offset currently static
-            Vector2 pos = rootRect.anchoredPosition;
-            pos.y = 745;
-            rootRect.anchoredPosition = pos;
+            rootRect.anchoredPosition = ScreenHelper.GetScreenPosition(rootRect, g.Board.screenEdges.Top);
         }
 
         // Apply to background and front overlays
@@ -236,8 +237,9 @@ public class TimerBar2D : MonoBehaviour
         UpdateFill();
     }
 
+
     /// <summary>
-    /// Sets width and height on a RectTransform using sizeDelta, preserving axis if zero or negative.
+    /// Sets width and height on a RectTransform using sizeDelta.
     /// </summary>
     private static void SetSize(RectTransform rt, float width, float height)
     {

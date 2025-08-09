@@ -436,7 +436,7 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        //Execute(fade.FadeOut(SceneRepo.LoadPreviousScene()));
+        //ExecuteTrigger(fade.FadeOut(SceneRepo.LoadPreviousScene()));
         StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
