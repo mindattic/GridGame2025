@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Assets.Helper;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
@@ -8,6 +9,9 @@ public partial class DebugWindow
     // RenderSpawnOptions renders buttons to spawn various enemy types.
     private void RenderSpawnOptions()
     {
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            return;
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("YieldSpawn", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();

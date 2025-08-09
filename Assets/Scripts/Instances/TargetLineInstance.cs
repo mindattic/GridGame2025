@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
+using Assets.Helper;
 
 /// <summary>
 /// Draws a curved arc between a fixed button position and a dynamic cursor/hero position.

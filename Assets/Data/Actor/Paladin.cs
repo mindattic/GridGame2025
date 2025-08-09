@@ -1,5 +1,6 @@
 ﻿namespace Assets.Data.Actor
 {
+    using Assets.Helpers;
     using Assets.Scripts.Models;
     using System.Collections.Generic;
     using UnityEngine;

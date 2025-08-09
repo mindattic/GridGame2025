@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Helper;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Models

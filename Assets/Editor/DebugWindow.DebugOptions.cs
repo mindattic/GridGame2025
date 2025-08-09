@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Assets.Helper;
+using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
@@ -7,6 +8,9 @@ public partial class DebugWindow
     // RenderDebugOptions renders a dropdown for various debug options and a Run button.
     private void RenderDebugOptions()
     {
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            return;
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("Debug Options", GUILayout.Width(Screen.width * 0.25f));
         selectedOption = (DebugOptions)EditorGUILayout.EnumPopup(selectedOption, GUILayout.Width(Screen.width * 0.5f));

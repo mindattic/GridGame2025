@@ -1,9 +1,8 @@
 ﻿// --- File: Assets/Scripts/Instances/Actor/ActorActions.cs ---
-using Assets.Scripts.Events;
+using Assets.Helper;
 using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
-using static Intermission.Before;
 using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Instances.Actor

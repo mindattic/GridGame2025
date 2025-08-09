@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
+using Assets.Helper;
 
 public class TimerBar3D : MonoBehaviour
 {

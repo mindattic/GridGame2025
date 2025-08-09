@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Assets.Helper;
 
 /// <summary>
 /// Displays "Wave X/Y" text with a rotate-in, hold, rotate-out animation.

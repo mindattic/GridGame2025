@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Assets.Helper;
+using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
@@ -7,6 +8,9 @@ public partial class DebugWindow
     // RenderVfxOptions renders a dropdown to select a VfxManager option and a Bounce button.
     private void RenderVfxOptions()
     {
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            return;
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("VfxManager", GUILayout.Width(Screen.width * 0.25f));
         selectedVfx = (VFX)EditorGUILayout.EnumPopup(selectedVfx, GUILayout.Width(Screen.width * 0.5f));

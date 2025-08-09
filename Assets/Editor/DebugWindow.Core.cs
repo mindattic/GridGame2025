@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Repositories;
+﻿using Assets.Helper;
+using Assets.Scripts.Repositories;
 using System;
 using System.Linq;
 using UnityEditor;
@@ -81,7 +82,11 @@ public partial class DebugWindow : EditorWindow
     // Checks if the active scene is "Game" and opens the debug window when it is.
     private static void CheckSceneLoad()
     {
-        if (!EditorApplication.isPlaying) return;
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+        {
+            CloseWindow();
+            return;
+        }
 
         if (SceneManager.GetActiveScene().name == "Game")
         {
@@ -165,36 +170,47 @@ public partial class DebugWindow : EditorWindow
 
     private void OnGUI()
     {
-        // If not playing or missing essential references, exit.
-        if (!EditorApplication.isPlaying)
-            return;
+        try
+        {
 
-        // Wrap all content inside a scroll view.
-        scrollPosition = GUILayout.BeginScrollView(
-            scrollPosition,
-            /* alwaysShowHorizontal */ false,
-            /* alwaysShowVertical */ false,
-            GUILayout.Width(position.width),
-            GUILayout.Height(position.height)
-        );
+            if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            {
+                CloseWindow();
+                return;
+            }
 
-        // Begin a vertical layout for the entire Debug Window UI.
-        GUILayout.BeginVertical();
+            // Wrap all content inside a scroll view.
+            scrollPosition = GUILayout.BeginScrollView(
+                scrollPosition,
+                /* alwaysShowHorizontal */ false,
+                /* alwaysShowVertical */ false,
+                GUILayout.Width(position.width),
+                GUILayout.Height(position.height)
+            );
 
-        // Render individual UI sections.
-        RenderGameStats();
-        RenderThumbnailSettings();
-        RenderGameSpeed();
-        RenderDebugOptions();
-        RenderVfxOptions();
-        RenderKeyboard();
-        RenderCheckboxes();
-        RenderLevels();
-        RenderScenes();
-        RenderSpawnOptions();
-        RenderActorStats();
+            // Begin a vertical layout for the entire Debug Window UI.
+            GUILayout.BeginVertical();
 
-        GUILayout.EndVertical();
-        GUILayout.EndScrollView();
+            // Render individual UI sections.
+            RenderGameStats();
+            RenderThumbnailSettings();
+            RenderGameSpeed();
+            RenderDebugOptions();
+            RenderVfxOptions();
+            RenderKeyboard();
+            RenderCheckboxes();
+            RenderLevels();
+            RenderScenes();
+            RenderSpawnOptions();
+            RenderActorStats();
+
+            GUILayout.EndVertical();
+            GUILayout.EndScrollView();
+
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+        }
     }
 }

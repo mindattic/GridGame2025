@@ -1,14 +1,11 @@
-using Assets.Scripts.Models;
+using Assets.Helper;
 using Assets.Scripts.Repositories;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using static Intermission.Before;
-using static UnityEngine.Rendering.DebugUI.Table;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -68,7 +65,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            SceneManager.LoadScene(SceneHelper.ProfileCreate);         
+            SceneManager.LoadScene(SceneHelper.ProfileCreate);
             return;
         }
 
@@ -453,7 +450,7 @@ public class PartyManager : MonoBehaviour
             useFade = true,
             useTypewriter = true,
             autoDestroy = false,
-            autoDestroyDelay = 2.5f,     
+            autoDestroyDelay = 2.5f,
             textAlignment = TooltipTextAlignment.TopLeft
         };
         Tooltip.Show(tt);

@@ -6,7 +6,7 @@ using System.Linq;
 using System;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
-
+using Assets.Helper;
 
 public class KeyboardDialogInstance : MonoBehaviour
 {

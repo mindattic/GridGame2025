@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Assets.Helper;
+using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
@@ -7,6 +8,9 @@ public partial class DebugWindow
     // RenderGameSpeed renders a dropdown to select the game speed and an Apply button.
     private void RenderGameSpeed()
     {
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            return;
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("Game Speed", GUILayout.Width(Screen.width * 0.25f));
         selectedGameFocus = (GameSpeedOption)EditorGUILayout.EnumPopup(selectedGameFocus, GUILayout.Width(Screen.width * 0.5f));

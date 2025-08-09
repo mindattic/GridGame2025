@@ -7,6 +7,7 @@ using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
+using Assets.Helper;
 
 public class ProfileSelectManager : MonoBehaviour
 {

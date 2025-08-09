@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Assets.Helper;
+using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
@@ -7,6 +8,9 @@ public partial class DebugWindow
     // RenderLevels renders buttons for stage control: Load, Previous, and None.
     private void RenderLevels()
     {
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            return;
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("Level", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();

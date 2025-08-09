@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Helper;
+using System;
 using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
@@ -13,6 +14,9 @@ public partial class DebugWindow
 
     private void RenderThumbnailSettings()
     {
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            return;
+
 #if UNITY_EDITOR
 
         if (g.ReloadThumbnailSettings && g.Actors.HasFocusedActor)

@@ -1,4 +1,5 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyStartSequence.cs ---
+using Assets.Helper;
 using System.Collections;
 using System.Linq;
 using g = Assets.Helpers.GameHelper;

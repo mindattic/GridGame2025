@@ -5,6 +5,8 @@ using Assets.Scripts.Repositories;
 using TMPro;
 using UnityEngine.EventSystems;
 using g = Assets.Helpers.GameHelper;
+using Assets.Helper;
+
 public class PlayerStageMover : MonoBehaviour
 {
     public RectTransform hero;  // Reference to the hero's RectTransform

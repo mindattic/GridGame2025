@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 using g = Assets.Helpers.GameHelper;
+using Assets.Helper;
+
 public class SettingsManager : MonoBehaviour
 {
     //Fields

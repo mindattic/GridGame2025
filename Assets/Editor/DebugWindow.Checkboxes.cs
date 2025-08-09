@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Assets.Helper;
+using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
@@ -7,6 +8,9 @@ public partial class DebugWindow
     // RenderCheckboxes provides several toggles for various debug options.
     private void RenderCheckboxes()
     {
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            return;
+
         bool onCheckChanged;
 
         GUILayout.BeginHorizontal();

@@ -1,24 +1,34 @@
-﻿using UnityEditor;
+﻿using Assets.Helper;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 public partial class DebugWindow
 {
-    // RenderGameStats displays key game statistics such as FPS, turn info, phase, and runtime.
+    // Draws focused actor, input mode, current turn, and sequence details.
+    // Safe during scene switches: avoids HasFocusedActor and null-guards all managers.
     private void RenderGameStats()
     {
+        if (!Application.isPlaying || !SceneHelper.IsGameScene)
+            return;
+
+        if (!SceneHelper.IsGameScene)
+            return;
+
         GUILayout.BeginHorizontal();
 
-        GUILayout.Label($"Focused Actor: {(g.Actors.FocusedActor ? g.Actors.FocusedActor.characterName : "-")}", GUILayout.Width(Screen.width * 0.25f));
-        //GUILayout.Label($"FPS: {consoleManager.fpsMonitor.currentFps}", GUILayout.Width(Screen.thumbnailScaleX * 0.25f));
+        var focusedActor = g.Actors.FocusedActor != null ? g.Actors.FocusedActor.characterName : null ?? "-";
+        GUILayout.Label($"Focused Actor: {focusedActor}", GUILayout.ExpandWidth(true));
 
-        GUILayout.Label($"Input Mode: {g.InputManager.inputMode.ToString()}", GUILayout.Width(Screen.width * 0.25f));
-        GUILayout.Label($"Current Turn: {(g.TurnManager.isHeroTurn ? "Hero" : "Opponent")}", GUILayout.Width(Screen.width * 0.25f));
+        var inputMode = g.InputManager.inputMode;
+        GUILayout.Label($"Input Mode: {inputMode}", GUILayout.ExpandWidth(true));
+
+        var currentTurn = g.TurnManager.isHeroTurn ? "Player" : "Opponent";
+        GUILayout.Label($"Current Turn: {currentTurn}", GUILayout.ExpandWidth(true));
         GUILayout.EndHorizontal();
-        GUILayout.Space(10);
 
         GUILayout.BeginHorizontal();
-        GUILayout.Label(g.SequenceManager.GetDetails(), GUILayout.Width(Screen.width));
+        var sequenceDetails = g.SequenceManager.GetDetails() ?? "-";
+        GUILayout.Label(sequenceDetails, GUILayout.ExpandWidth(true));
         GUILayout.EndHorizontal();
     }
 }

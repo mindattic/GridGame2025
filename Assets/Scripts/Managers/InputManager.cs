@@ -1,11 +1,7 @@
+using Assets.Helpers;
 using Assets.Scripts.Events;
 using System;
-using System.Collections;
-using System.Linq;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static GameObjectHelper;
 using g = Assets.Helpers.GameHelper;
 
 
@@ -115,7 +111,7 @@ public class InputManager : MonoBehaviour
                         case TouchPhase.Ended:
 
 
-                          
+
 
                             break;
                         case TouchPhase.Canceled:

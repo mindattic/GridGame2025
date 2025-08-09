@@ -1,4 +1,6 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyAttackSequence.cs ---
+using Assets.Helper;
+using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections;
 using System.Linq;

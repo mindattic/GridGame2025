@@ -1,4 +1,5 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/HeroStartSequence.cs ---
+using Assets.Helper;
 using Assets.Scripts.Models;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;

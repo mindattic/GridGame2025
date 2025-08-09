@@ -1,4 +1,5 @@
 ﻿// --- File: Assets/Scripts/Instances/Actor/ActorMovement.cs ---
+using Assets.Helper;
 using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Models;
 using System.Collections;
