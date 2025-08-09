@@ -67,7 +67,7 @@ public class ActorThumbnail : MonoBehaviour
     {
         instance = parentInstance;
 
-        var actorData = ActorRepo.Actors[instance.characterName];
+        var actorData = ActorRepo.Get(instance.characterName);
 
         spriteRenderer.sprite = actorData.Portrait;
         spriteRenderer.material.SetTexture("_MainTex", spriteRenderer.sprite.texture);

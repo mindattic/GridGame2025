@@ -1,11 +1,10 @@
-using Assets.Scripts.Models;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Label = TMPro.TextMeshProUGUI;
+using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
+using Label = TMPro.TextMeshProUGUI;
 
 // The Card class manages the UI card display that shows details about a focused actor.
 // It handles initialization, assignment of actors (such as portrait, name, and stats),
@@ -32,7 +31,7 @@ public class Card : MonoBehaviour
         title = GameObject.Find(GameObjectHelper.Game.Card.Title).GetComponent<RectTransform>();
         details = GameObject.Find(GameObjectHelper.Game.Card.Details).GetComponent<RectTransform>();
 
-        portraitSize = g.CanvasRect.rect.width;
+        portraitSize = c.CanvasRect.rect.width;
         slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         slideDuration = 0.5f;
 
@@ -58,12 +57,14 @@ public class Card : MonoBehaviour
         if (!g.Actors.HasFocusedActor)
             return;
 
+        var actorData = ActorRepo.Get(g.Actors.FocusedActor.characterName);
+
         // Enable the backdrop and portrait images.
         backdrop.gameObject.SetActive(true);
         portrait.gameObject.SetActive(true);
 
-        if (ActorRepo.Actors.ContainsKey(g.Actors.FocusedActor.characterName))
-            portrait.GetComponent<Image>().sprite = ActorRepo.Actors[g.Actors.FocusedActor.characterName].Portrait;
+
+        portrait.GetComponent<Image>().sprite = actorData.Portrait;
         title.GetComponent<Label>().text = g.Actors.FocusedActor.characterName;
 
         // Format the actor's stats for display:
@@ -82,7 +83,7 @@ public class Card : MonoBehaviour
             $"{HP}   {STR}{VIT}{AGI}{STA}{INT}{WIS}{LCK}{Environment.NewLine}";
 
         // Show the details textarea combining the stats table with extra details from DataManager.
-        details.GetComponent<Label>().text = stats + ActorRepo.Actors[g.Actors.FocusedActor.characterName].Details.Card;
+        details.GetComponent<Label>().text = stats + actorData.Details.Card;
 
         // Begin the slide-in action for the portrait.
         TriggerSlideIn();

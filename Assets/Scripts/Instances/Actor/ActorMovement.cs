@@ -1,9 +1,7 @@
 ﻿// --- File: Assets/Scripts/Instances/Actor/ActorMovement.cs ---
 using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Models;
-using Game.Behaviors;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
@@ -78,7 +76,7 @@ namespace Assets.Scripts.Instances.Actor
             instance.transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
 
-    
+
         // --------------------------------------------------------------------
         // Grid destination movement with watchdog
         // --------------------------------------------------------------------

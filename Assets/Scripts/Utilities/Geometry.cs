@@ -1,7 +1,4 @@
-﻿using Assets.Scripts.Models;
-using Game.Behaviors;
-using Game.Behaviors.Actor;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -72,27 +69,27 @@ public class Geometry
     // The following methods provide spatial relationship checks between ActorInstances or grid locations.
 
     // ActorInstance overloads:
-    public static bool IsSameColumn(ActorInstance a, ActorInstance b) 
+    public static bool IsSameColumn(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x;
     public static bool IsSameRow(ActorInstance a, ActorInstance b)
         => a.location.y == b.location.y;
-    public static bool IsNorthOf(ActorInstance a, ActorInstance b) 
+    public static bool IsNorthOf(ActorInstance a, ActorInstance b)
         => IsSameColumn(a, b) && a.location.y == b.location.y - 1;
-    public static bool IsEastOf(ActorInstance a, ActorInstance b) 
+    public static bool IsEastOf(ActorInstance a, ActorInstance b)
         => IsSameRow(a, b) && a.location.x == b.location.x + 1;
-    public static bool IsSouthOf(ActorInstance a, ActorInstance b) 
+    public static bool IsSouthOf(ActorInstance a, ActorInstance b)
         => IsSameColumn(a, b) && a.location.y == b.location.y + 1;
-    public static bool IsWestOf(ActorInstance a, ActorInstance b) 
+    public static bool IsWestOf(ActorInstance a, ActorInstance b)
         => IsSameRow(a, b) && a.location.x == b.location.x - 1;
-    public static bool IsNorthWestOf(ActorInstance a, ActorInstance b) 
+    public static bool IsNorthWestOf(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x - 1 && a.location.y == b.location.y - 1;
-    public static bool IsNorthEastOf(ActorInstance a, ActorInstance b) 
+    public static bool IsNorthEastOf(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x + 1 && a.location.y == b.location.y - 1;
-    public static bool IsSouthWestOf(ActorInstance a, ActorInstance b) 
+    public static bool IsSouthWestOf(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x - 1 && a.location.y == b.location.y + 1;
-    public static bool IsSouthEastOf(ActorInstance a, ActorInstance b) 
+    public static bool IsSouthEastOf(ActorInstance a, ActorInstance b)
         => a.location.x == b.location.x + 1 && a.location.y == b.location.y + 1;
- 
+
     public static bool IsAdjacentTo(ActorInstance a, ActorInstance b)
         => (IsSameColumn(a, b) || IsSameRow(a, b)) && Vector2Int.Distance(a.location, b.location).Equals(1);
 

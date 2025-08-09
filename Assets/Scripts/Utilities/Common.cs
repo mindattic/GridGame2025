@@ -8,10 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
-using Unity.Burst.Intrinsics;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
 
@@ -29,6 +28,12 @@ public static class SceneHelper
     public static string StageSelect = "StageSelect";
     public static string TitleScreen = "TitleScreen";
     public static string PartyManager = "PartyManager";
+
+    public static bool IsCurrentScene(string sceneName)
+    {
+        return SceneManager.GetActiveScene().name == sceneName;
+    }
+    public static bool IsGameScene = IsCurrentScene(Game);
 
 }
 

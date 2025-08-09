@@ -1,9 +1,8 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System;
+using c = Assets.Helpers.CanvasHelper;
 using Label = TMPro.TextMeshProUGUI;
-using g = Assets.Helpers.GameHelper;
 
 public class ConfirmationDialogInstance : MonoBehaviour
 {
@@ -44,8 +43,8 @@ public class ConfirmationDialogInstance : MonoBehaviour
     private void ResizeUI()
     {
         //Screen dimension references
-        screenWidth = g.CanvasRect.rect.width;
-        screenHeight = g.CanvasRect.rect.height;
+        screenWidth = c.CanvasRect.rect.width;
+        screenHeight = c.CanvasRect.rect.height;
         //float keySpacing = startX * 0.0025f;
         float keyWidth = screenWidth * 0.9f / 10;
         float keyHeight = keyWidth;
@@ -93,7 +92,7 @@ public static class ConfirmationDialog
             throw new UnityException($"Prefab not found");
 
         // Instantiate the dialog prefab.
-        GameObject go = GameObject.Instantiate(prefab, g.CanvasRect);
+        GameObject go = GameObject.Instantiate(prefab, c.CanvasRect);
         if (go == null)
             throw new UnityException("Failed to instantiate ConfirmationDialog prefab");
         go.name = "ConfirmationDialog";

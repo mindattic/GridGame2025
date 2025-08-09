@@ -4,6 +4,7 @@ using TMPro;
 using Label = TMPro.TextMeshProUGUI;
 using System.Linq;
 using System;
+using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
 
@@ -194,8 +195,8 @@ public class KeyboardDialogInstance : MonoBehaviour
     private void ResizeUI()
     {
         //Screen dimension references
-        screenWidth = g.CanvasRect.rect.width;
-        screenHeight = g.CanvasRect.rect.height;
+        screenWidth = c.CanvasRect.rect.width;
+        screenHeight = c.CanvasRect.rect.height;
 
         float currentY = 0f;
         float keySpacing = screenWidth * 0.0025f;
@@ -443,7 +444,7 @@ public static class KeyboardDialog
             throw new UnityException($"Prefab not found");
 
         //Instantiate prefab
-        GameObject go = GameObject.Instantiate(prefab, g.CanvasRect);
+        GameObject go = GameObject.Instantiate(prefab, c.CanvasRect);
         if (go == null)
             throw new UnityException("Failed to instantiate prefab");
         go.name = $"Keyboard";

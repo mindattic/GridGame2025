@@ -30,8 +30,8 @@ namespace Assets.Scripts.Instances.Actor
         }
 
 
-        private bool IsGlowing => 
-            instance.isPlaying 
+        private bool IsGlowing =>
+            instance.isPlaying
             && (g.TurnManager.isHeroTurn && isPlayer) || (g.TurnManager.isEnemyTurn && isEnemy);
 
 

@@ -426,7 +426,7 @@ public class ActorInstance : MonoBehaviour
         yield return Wait.None();
     }
 
- 
+
     public void TakeHealAsync(int amount) => StartCoroutine(TakeHeal(amount));
     public IEnumerator TakeHeal(int amount)
     {

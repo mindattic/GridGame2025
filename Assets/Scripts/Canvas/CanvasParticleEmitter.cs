@@ -1,13 +1,12 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using System.Collections.Generic;
-using g = Assets.Helpers.GameHelper;
+using c = Assets.Helpers.CanvasHelper;
 
 public class CanvasParticleEmitter : MonoBehaviour
 {
     private GameObject canvasParticlePrefab;
-    
+
     private float spawnIntervalMin; // Time between spawns
     private float spawnIntervalMax; // Time between spawns
     private float speedMin;
@@ -83,7 +82,7 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     private void SpawnImage(bool preheat = false)
     {
-        GameObject newImage = Instantiate(canvasParticlePrefab, g.CanvasRect);
+        GameObject newImage = Instantiate(canvasParticlePrefab, c.CanvasRect);
         RectTransform rect = newImage.GetComponent<RectTransform>();
         Image image = newImage.GetComponent<Image>();
         if (rect == null || image == null)

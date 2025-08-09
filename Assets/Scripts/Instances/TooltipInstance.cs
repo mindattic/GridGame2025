@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections;
 using System.Text;
 using Label = TMPro.TextMeshProUGUI;
+using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
 public class TooltipInstance : MonoBehaviour
@@ -45,7 +46,7 @@ public class TooltipInstance : MonoBehaviour
         label.enableAutoSizing = false;
         label.lineSpacing = label.fontSize * 1.5f;
 
-        float canvasMaxWidth = g.CanvasRect.rect.width - (horizontalMargin * 2f);
+        float canvasMaxWidth = c.CanvasRect.rect.width - (horizontalMargin * 2f);
         string wrappedMessage = WrapMessage(message, canvasMaxWidth);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(label.rectTransform);
@@ -103,7 +104,7 @@ public class TooltipInstance : MonoBehaviour
             ? RectTransformUtility.WorldToScreenPoint(null, uiTarget.position)
             : (worldTarget != null ? Camera.main.WorldToScreenPoint(worldTarget.position) : new Vector2(Screen.width / 2f, Screen.height / 2f));
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(g.CanvasRect, screenPos, null, out Vector2 localPos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(c.CanvasRect, screenPos, null, out Vector2 localPos);
         Vector2 finalPos = CalculatePosition(localPos, tooltipSize, uiTarget ? uiTarget.sizeDelta : Vector2.zero, placement);
 
         switch (placement)
@@ -283,7 +284,7 @@ public class TooltipInstance : MonoBehaviour
         if (followingPointer)
         {
             Vector2 mousePos = Input.mousePosition;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(g.CanvasRect, mousePos + screenOffset, null, out Vector2 localPos);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(c.CanvasRect, mousePos + screenOffset, null, out Vector2 localPos);
             background.anchoredPosition = ClampToScreen(localPos, background.sizeDelta);
         }
     }
@@ -308,8 +309,8 @@ public class TooltipInstance : MonoBehaviour
 
     private Vector2 ClampToScreen(Vector2 position, Vector2 size)
     {
-        float canvasWidth = g.CanvasRect.rect.width;
-        float canvasHeight = g.CanvasRect.rect.height;
+        float canvasWidth = c.CanvasRect.rect.width;
+        float canvasHeight = c.CanvasRect.rect.height;
         float halfWidth = size.x / 2;
         float halfHeight = size.y / 2;
         position.x = Mathf.Clamp(position.x, -canvasWidth / 2 + halfWidth, canvasWidth / 2 - halfWidth);

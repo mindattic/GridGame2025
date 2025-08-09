@@ -1,8 +1,6 @@
-using Assets.Scripts.Models;
 using Game.Models;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using g = Assets.Helpers.GameHelper;
 
 // BoardInstance represents the game board grid, handling tile generation, board bounds calculation,
@@ -35,7 +33,7 @@ public class BoardInstance : MonoBehaviour
     /// Show is called to set up the board by calculating its offset, bounds, and generating the tiles.
     /// </summary>
     public void Initialize()
-    {    
+    {
         AssignPosition();
         AssignBounds();
         GenerateTiles();
@@ -53,7 +51,7 @@ public class BoardInstance : MonoBehaviour
         // Calculate y-offset to position the board vertically.
         // Here, (tileSize * 4) + tileSize * 2 positions the board using 6 tiles' height.
         var y = (g.TileSize * 4) + g.TileSize / 2;
-        offset = new Vector2(x, y) ;
+        offset = new Vector2(x, y);
         // Show the board's world position to the calculated offset.
         transform.position = offset;
     }

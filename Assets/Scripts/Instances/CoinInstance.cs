@@ -4,7 +4,7 @@ using g = Assets.Helpers.GameHelper;
 
 public enum CoinValue
 {
-    Silver = 1, 
+    Silver = 1,
     Gold = 10,
     Red = 20
 }

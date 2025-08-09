@@ -160,13 +160,12 @@ public class PartyManager : MonoBehaviour
             slide.name = $"RosterSlide_{member.Character}";
 
             // Load the sprite asynchronously
-            string address = $"Actor-PortraitsContainer/{member.Character}";
-            var sprite = AssetHelper.LoadAsset<Sprite>(address);
+            var actorData = ActorRepo.Get(member.Character);
 
             // Load the instance with all required variables
             instance.Initialize(
                 key: member.Character,
-                sprite: sprite,
+                sprite: actorData.Portrait,
                 width: 512f,
                 height: 512f,
                 onClick: () => CenterOn(instance),

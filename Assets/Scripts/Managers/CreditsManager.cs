@@ -1,8 +1,7 @@
 using Assets.Scripts.Repositories;
 using UnityEngine;
-using UnityEngine.UI;
+using c = Assets.Helpers.CanvasHelper;
 using Label = TMPro.TextMeshProUGUI;
-using g = Assets.Helpers.GameHelper;
 
 public class CreditsManager : MonoBehaviour
 {
@@ -55,9 +54,9 @@ public class CreditsManager : MonoBehaviour
         var textareaHeight
             = label.textInfo.lineCount
             * label.textInfo.lineInfo[0].lineHeight
-            + g.CanvasRect.rect.height * 0.5f;
+            + c.CanvasRect.rect.height * 0.5f;
 
-        textarea.sizeDelta = new Vector2(g.CanvasRect.rect.width, textareaHeight);
+        textarea.sizeDelta = new Vector2(c.CanvasRect.rect.width, textareaHeight);
     }
     private void Start()
     {

@@ -1,7 +1,5 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyPreAttackSequence.cs ---
-using Assets.Scripts.Models;
 using System.Collections;
-using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {

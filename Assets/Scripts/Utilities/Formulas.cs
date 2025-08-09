@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Models;
 using Game.Behaviors;
 using UnityEngine;
-using g = Assets.Helpers.GameHelper;
 
 public enum ElementalDamageType
 {

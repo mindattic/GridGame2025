@@ -1,7 +1,4 @@
-﻿using System;
-using g = Assets.Helpers.GameHelper;
-
-public enum AbilityType
+﻿public enum AbilityType
 {
     Passive,
     Self,

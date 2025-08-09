@@ -91,7 +91,7 @@ public class GameManager : Singleton<GameManager>
     //Actors
     [HideInInspector] public List<ActorInstance> actors;
     [HideInInspector] public IEnumerable<ActorInstance> heroes => actors.Where(x => x.team == Team.Hero);
-    [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team ==Team.Enemy);
+    [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team == Team.Enemy);
 
     [HideInInspector] public ActorInstance focusedActor;
     [HideInInspector] public bool hasFocusedActor => focusedActor != null;

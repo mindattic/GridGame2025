@@ -11,8 +11,8 @@ namespace Assets.Helpers
     public static class GameHelper
     {
 
-        public static Canvas Canvas => CanvasHelper.Canvas;
-        public static RectTransform CanvasRect => CanvasHelper.CanvasRect;
+        //public static Canvas Canvas => CanvasHelper.Canvas;
+        //public static RectTransform CanvasRect => CanvasHelper.CanvasRect;
 
         public static bool ReloadThumbnailSettings
         {

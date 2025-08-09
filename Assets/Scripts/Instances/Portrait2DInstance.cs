@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
@@ -43,7 +44,7 @@ public class Portrait2DInstance : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         rectTransform.anchorMin = rectTransform.anchorMax = rectTransform.pivot = new Vector2(0.5f, 0.5f);
         image = GetComponent<Image>();
-        distance = g.CanvasRect.rect.height;
+        distance = c.CanvasRect.rect.height;
     }
 
     private void OnDestroy() => isBeingDestroyed = true;

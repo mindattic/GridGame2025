@@ -126,10 +126,10 @@ public static class TileInstanceExtensions
 
 }
 
-    /// <summary>
-    /// Extension methods for ActorInstance to simplify common property checks.
-    /// </summary>
-    public static class ActorInstanceExtensions
+/// <summary>
+/// Extension methods for ActorInstance to simplify common property checks.
+/// </summary>
+public static class ActorInstanceExtensions
 {
     /// <summary>
     /// Determines if this actor belongs to the hero's team.

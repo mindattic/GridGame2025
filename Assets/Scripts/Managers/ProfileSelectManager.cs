@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
+using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
 public class ProfileSelectManager : MonoBehaviour
@@ -33,8 +34,8 @@ public class ProfileSelectManager : MonoBehaviour
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
         fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
-        screenWidth = g.CanvasRect.rect.width;
-        screenHeight = g.CanvasRect.rect.height;
+        screenWidth = c.CanvasRect.rect.width;
+        screenHeight = c.CanvasRect.rect.height;
         buttonWidth = 0.9f * screenWidth;
         buttonHeight = screenHeight / 16f;
         fontSize = buttonHeight / 2;

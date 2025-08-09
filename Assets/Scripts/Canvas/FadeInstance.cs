@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameHelper;
 
 public class FadeInstance : MonoBehaviour
 {

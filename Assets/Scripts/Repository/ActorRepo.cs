@@ -17,6 +17,11 @@ public static class ActorRepo
         }
     }
 
+    public static ActorData Get(string key)
+    {
+        return actors.TryGetValue(key, out ActorData data) ? data : null;
+    }
+
     private static void Load()
     {
         actors = new Dictionary<string, ActorData>

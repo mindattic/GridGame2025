@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
 public class TimerBar2D : MonoBehaviour
@@ -48,10 +49,10 @@ public class TimerBar2D : MonoBehaviour
     private void OnDestroy()
     {
         // Unsubscribe from events
-        if (g.InputManager != null)
-        {
-            g.InputManager.OnInputModeChanged -= HandleModeChanged;
-        }
+        //if (g.InputManager != null)
+        //{
+        //    g.InputManager.OnInputModeChanged -= HandleModeChanged;
+        //}
     }
 
     /// <summary>
@@ -206,7 +207,7 @@ public class TimerBar2D : MonoBehaviour
     private void SetLayout()
     {
         // Compute 96 percent of canvas width for sizing
-        float targetWidth = Mathf.Max(0f, g.CanvasRect.rect.width * CanvasPercent);
+        float targetWidth = Mathf.Max(0f, c.CanvasRect.rect.width * CanvasPercent);
 
         // Keep current height from root
         float targetHeight = rootRect.rect.height;

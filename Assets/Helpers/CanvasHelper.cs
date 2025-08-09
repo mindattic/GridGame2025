@@ -4,11 +4,24 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Helpers
 {
+    /// <summary>
+    /// Caches the current scene's Canvas and Canvas RectTransform so callers
+    /// always get the correct references without repeated GameObject.Find calls.
+    /// Looks up the "Canvas" GameObject once per scene load and stores references
+    /// for fast access across the scene's lifetime.
+    /// </summary>
     public static class CanvasHelper
     {
+        // Cached Canvas reference for the active scene
         private static Canvas canvas;
+
+        // Cached RectTransform reference for the active scene's Canvas
         private static RectTransform canvasRect;
 
+        /// <summary>
+        /// Fast access to the cached Canvas.
+        /// If the cache is empty, performs a one-time lookup for the current scene.
+        /// </summary>
         public static Canvas Canvas
         {
             get
@@ -18,6 +31,10 @@ namespace Assets.Helpers
             }
         }
 
+        /// <summary>
+        /// Fast access to the cached Canvas RectTransform.
+        /// If the cache is empty, performs a one-time lookup for the current scene.
+        /// </summary>
         public static RectTransform CanvasRect
         {
             get
@@ -27,35 +44,56 @@ namespace Assets.Helpers
             }
         }
 
+        /// <summary>
+        /// Initializes the helper after the first scene load and sets up a listener
+        /// for future scene changes so the cache is refreshed automatically.
+        /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Init()
         {
+            // Clear any old references before caching
             canvas = null;
             canvasRect = null;
 
+            // Subscribe to scene change events
             SceneManager.sceneLoaded += OnSceneLoaded;
-            Cache(); // first scene
+
+            // Cache immediately for the first active scene
+            Cache();
         }
 
+        /// <summary>
+        /// Event handler for scene load — refreshes the cached references
+        /// whenever a new scene becomes active.
+        /// </summary>
         private static void OnSceneLoaded(Scene _, LoadSceneMode __)
         {
             Cache();
         }
 
+        /// <summary>
+        /// Performs the actual lookup for the Canvas and Canvas RectTransform
+        /// in the current scene and stores them for fast future access.
+        /// Safe if the Canvas object is missing.
+        /// </summary>
         private static void Cache()
         {
             var go = GameObject.Find("Canvas");
-            if (go != null)
-            {
-                canvas = go.GetComponent<Canvas>();
-                canvasRect = canvas != null ? canvas.GetComponent<RectTransform>() : null;
-            }
-            else
+            if (go == null)
             {
                 canvas = null;
                 canvasRect = null;
+                return;
             }
-        }
 
+            canvas = go.GetComponent<Canvas>();
+            if (canvas == null)
+            {
+                canvasRect = null;
+                return;
+            }
+
+            canvasRect = canvas.GetComponent<RectTransform>();
+        }
     }
 }

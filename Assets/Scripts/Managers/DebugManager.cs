@@ -1,11 +1,7 @@
 using Assets.Scripts.Events;
-using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
-using Game.Behaviors;
-using Game.Manager;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
