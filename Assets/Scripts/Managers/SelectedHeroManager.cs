@@ -22,21 +22,14 @@ public class SelectedHeroManager : MonoBehaviour
         if (!g.TurnManager.isHeroTurn)
             return;
 
-        var collisions = Physics2D.OverlapPointAll(g.TouchPosition3D);
-        if (collisions == null) return;
+        var target = TouchHelper.GetActorAtTouchPosition();
 
-        // Find the first collider with an ActorInstance component
-        var collider = collisions.FirstOrDefault(x => x.GetComponent<ActorInstance>() != null);
-        if (collider == null) return;
+        if (target == null || !target.isPlaying) return;
 
-        var actor = collider.GetComponent<ActorInstance>();
-
-        if (actor == null || !actor.isPlaying) return;
-
-        if (g.Actors.FocusedActor == actor)
+        if (g.Actors.FocusedActor == target)
             return;
 
-        g.Actors.FocusedActor = actor;
+        g.Actors.FocusedActor = target;
         g.SortingManager.OnActorFocus();
 
         if (g.Actors.FocusedActor.isHero)

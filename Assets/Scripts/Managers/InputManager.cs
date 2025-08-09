@@ -66,14 +66,7 @@ public class InputManager : MonoBehaviour
                     {
                         case TouchPhase.Began:
 
-                            var collisions = Physics2D.OverlapPointAll(g.TouchPosition3D);
-                            if (collisions == null) return;
-
-                            // Find the first collider that has an ActorInstance component
-                            var collider = collisions.FirstOrDefault(x => x.GetComponent<ActorInstance>() != null);
-                            if (collider == null) return;
-
-                            var target = collider.GetComponent<ActorInstance>();
+                            var target = TouchHelper.GetActorAtTouchPosition();
                             if (target == null || !target.isPlaying) return;
 
 
