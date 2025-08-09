@@ -3,7 +3,7 @@
     using Assets.Scripts.Models;
     using System.Collections.Generic;
     using UnityEngine;
-    using g = Assets.Helpers.GameManagerHelper;
+    using g = Assets.Helpers.GameHelper;
     public static class Paladin
     {
         public static ActorData Data()

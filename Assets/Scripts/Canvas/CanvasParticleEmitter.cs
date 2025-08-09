@@ -2,12 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using g = Assets.Helpers.GameHelper;
 
 public class CanvasParticleEmitter : MonoBehaviour
 {
-
-
-    private RectTransform canvas2D; // SelectProfile the Canvas
     private GameObject canvasParticlePrefab;
     
     private float spawnIntervalMin; // Time between spawns
@@ -29,9 +27,7 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     private void Awake()
     {
-        canvas2D = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
         canvasParticlePrefab = PrefabRepo.Prefabs["CanvasParticlePrefab"];
-
 
         xMin = -Screen.width;
         xMax = Screen.width;
@@ -80,14 +76,14 @@ public class CanvasParticleEmitter : MonoBehaviour
         while (true)
         {
             SpawnImage();
-            var spawnInterval = Random.Float(spawnIntervalMin, spawnIntervalMax);
+            var spawnInterval = RNG.Float(spawnIntervalMin, spawnIntervalMax);
             yield return new WaitForSeconds(spawnInterval);
         }
     }
 
     private void SpawnImage(bool preheat = false)
     {
-        GameObject newImage = Instantiate(canvasParticlePrefab, canvas2D);
+        GameObject newImage = Instantiate(canvasParticlePrefab, g.CanvasRect);
         RectTransform rect = newImage.GetComponent<RectTransform>();
         Image image = newImage.GetComponent<Image>();
         if (rect == null || image == null)
@@ -97,19 +93,19 @@ public class CanvasParticleEmitter : MonoBehaviour
         image.sprite = sprites.ShuffleFirst();
 
         // SelectProfile start position
-        float startX = preheat ? Random.Float(xMin, xMax) : xMin; // Prewarm particles start mid-flight
-        float startY = Random.Float(yMin, yMax);
+        float startX = preheat ? RNG.Float(xMin, xMax) : xMin; // Prewarm particles start mid-flight
+        float startY = RNG.Float(yMin, yMax);
         rect.anchoredPosition = new Vector2(startX, startY);
 
         // SelectProfile random rotation speed, move, and scale
-        float rotRange = Random.Float(rotationFocusMin, rotationFocusMax);
-        float rotWildcard = Random.Int(1, 3) == 1 ? Random.Float(1, 3f) : 1f;
-        float rotDirection = Random.Boolean ? -1f : 1f;
+        float rotRange = RNG.Float(rotationFocusMin, rotationFocusMax);
+        float rotWildcard = RNG.Int(1, 3) == 1 ? RNG.Float(1, 3f) : 1f;
+        float rotDirection = RNG.Boolean ? -1f : 1f;
 
         float rotationFocus = rotRange * rotWildcard * rotDirection;
-        float horizontalFocus = Random.Float(speedMin, speedMax);
-        float fallFocus = Random.Float(fallFocusMin, fallFocusMax);
-        float scale = Random.Float(scaleMin, scaleMax);
+        float horizontalFocus = RNG.Float(speedMin, speedMax);
+        float fallFocus = RNG.Float(fallFocusMin, fallFocusMax);
+        float scale = RNG.Float(scaleMin, scaleMax);
         rect.localScale = new Vector3(scale, scale, 1f);
 
         CanvasParticleInstance instance = newImage.AddComponent<CanvasParticleInstance>();

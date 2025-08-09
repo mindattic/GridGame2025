@@ -1,7 +1,7 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// TileManager is responsible for managing tile-specific behaviors on the board.

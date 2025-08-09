@@ -3,7 +3,7 @@ using Game.Models;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 // BoardInstance represents the game board grid, handling tile generation, board bounds calculation,
 // and conversion between board and screen positions. It also holds a reference to the TileMap.

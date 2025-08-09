@@ -1,7 +1,7 @@
 ﻿
 using Assets.Scripts.Models;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ActorThumbnail : MonoBehaviour
@@ -31,7 +31,7 @@ public class ActorThumbnail : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        noiseSeed = new Vector2(Random.Float(0f, 100f), Random.Float(0f, 100f));
+        noiseSeed = new Vector2(RNG.Float(0f, 100f), RNG.Float(0f, 100f));
 
         // Scale multiplier proportionally
         float textureSize = Mathf.Max(texture.width, texture.height);
@@ -43,9 +43,9 @@ public class ActorThumbnail : MonoBehaviour
         effectiveNoiseTime = 0f;
         cycleTime = 0f;
 
-        nextPauseInterval = Random.Float(3f, 7f);
-        pauseDuration = Random.Float(2f, 5f);
-        pauseRampDuration = Random.Float(0.25f, 0.75f);
+        nextPauseInterval = RNG.Float(3f, 7f);
+        pauseDuration = RNG.Float(2f, 5f);
+        pauseRampDuration = RNG.Float(0.25f, 0.75f);
         cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
 
 
@@ -98,9 +98,9 @@ public class ActorThumbnail : MonoBehaviour
         {
             cycleTime -= cyclePeriod;
 
-            nextPauseInterval = Random.Float(3f, 7f);
-            pauseDuration = Random.Float(2f, 5f);
-            pauseRampDuration = Random.Float(0.25f, 0.75f);
+            nextPauseInterval = RNG.Float(3f, 7f);
+            pauseDuration = RNG.Float(2f, 5f);
+            pauseRampDuration = RNG.Float(0.25f, 0.75f);
             cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
 
         }

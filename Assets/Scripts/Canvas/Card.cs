@@ -5,15 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 // The Card class manages the UI card display that shows details about a focused actor.
 // It handles initialization, assignment of actors (such as portrait, name, and stats),
 // and provides an action to slide the portrait into view.
 public class Card : MonoBehaviour
 {
-
-    private RectTransform canvas2D;
     RectTransform card;
     RectTransform backdrop;
     RectTransform portrait;
@@ -28,14 +26,13 @@ public class Card : MonoBehaviour
 
     private void Awake()
     {
-        canvas2D = GameObject.Find(GameObjectHelper.Game.Canvas2D).GetComponent<RectTransform>();
         card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<RectTransform>();
         backdrop = GameObject.Find(GameObjectHelper.Game.Card.Backdrop).GetComponent<RectTransform>();
         portrait = GameObject.Find(GameObjectHelper.Game.Card.Portrait).GetComponent<RectTransform>();
         title = GameObject.Find(GameObjectHelper.Game.Card.Title).GetComponent<RectTransform>();
         details = GameObject.Find(GameObjectHelper.Game.Card.Details).GetComponent<RectTransform>();
 
-        portraitSize = canvas2D.rect.width;
+        portraitSize = g.CanvasRect.rect.width;
         slideInCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         slideDuration = 0.5f;
 
@@ -137,7 +134,7 @@ public class Card : MonoBehaviour
 
     public Vector3 PortraitWorldPosition()
     {
-        return ScreenHelper.ConvertCanvas2DToWorldPosition(portrait.transform);
+        return ScreenHelper.Convert.CanvasToWorldPosition(portrait.transform);
     }
 
 
@@ -161,24 +158,24 @@ public class Card : MonoBehaviour
         float halfDuration = bounceDuration / 2f;
         float elapsed = 0f;
 
-        // Move up
+        // Seek up
         while (elapsed < halfDuration)
         {
             float t = elapsed / halfDuration;
             portrait.anchoredPosition = Vector2.Lerp(originalPos, upPos, Mathf.SmoothStep(0f, 1f, t));
             elapsed += Time.deltaTime;
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         portrait.anchoredPosition = upPos;
 
-        // Move down
+        // Seek down
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
             float t = elapsed / halfDuration;
             portrait.anchoredPosition = Vector2.Lerp(upPos, originalPos, Mathf.SmoothStep(0f, 1f, t));
             elapsed += Time.deltaTime;
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         portrait.anchoredPosition = originalPos;
     }

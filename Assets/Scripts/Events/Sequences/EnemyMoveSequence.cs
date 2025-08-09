@@ -1,7 +1,7 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyMoveSequence.cs ---
 using Assets.Scripts.Models;
 using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {

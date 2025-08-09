@@ -8,8 +8,11 @@ using UnityEngine;
 
 namespace Assets.Helpers
 {
-    public static class GameManagerHelper
+    public static class GameHelper
     {
+
+        public static Canvas Canvas => CanvasHelper.Canvas;
+        public static RectTransform CanvasRect => CanvasHelper.CanvasRect;
 
         public static bool ReloadThumbnailSettings
         {
@@ -88,7 +91,6 @@ namespace Assets.Helpers
         public static Vector2 Viewport => GameManager.instance.viewport;
         public static float TileSize => GameManager.instance.tileSize;
         public static Vector3 TileScale => GameManager.instance.tileScale;
-        public static Canvas Canvas2D => GameManager.instance.canvas2D;
         public static Canvas Canvas3D => GameManager.instance.canvas3D;
         public static WaveAnnouncement WaveAnnouncement => GameManager.instance.waveAnnouncement;
         public static TargetModeOverlay TargetModeOverlay => GameManager.instance.targetModeOverlay;
@@ -100,11 +102,15 @@ namespace Assets.Helpers
         public static Vector3 TouchPosition2D => GameManager.instance.touchPosition2D;
         public static Vector3 TouchPosition3D => GameManager.instance.touchPosition3D;
 
+
         public static Vector3 TouchOffset
         {
             get => GameManager.instance.touchOffset;
             set => GameManager.instance.touchOffset = value;
         }
+
+
+        public static Vector3 TouchPosition => TouchPosition3D + TouchOffset;
 
         public static float CursorFocus => GameManager.instance.cursorFocus;
         public static float SwapFocus => GameManager.instance.swapFocus;

@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class AbilityButton : MonoBehaviour
 {
@@ -39,7 +39,7 @@ public class AbilityButton : MonoBehaviour
 
     public Vector3 WorldPosition()
     {
-        return ScreenHelper.ConvertCanvas2DToWorldPosition(button.transform);
+        return ScreenHelper.Convert.CanvasToWorldPosition(button.transform);
     }
 
 

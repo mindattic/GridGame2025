@@ -101,7 +101,7 @@ public class PartyManager : MonoBehaviour
         lckRow = panel.transform.GetChild("LCK").GetComponent<RectTransform>();
 
         Debug.Log(GameObject.Find("Fade")); // Should log null
-        Debug.Log(GameObject.Find("PartyManager/Canvas2D/Fade")); // Should log the object
+        Debug.Log(GameObject.Find("PartyManager/Canvas/Fade")); // Should log the object
 
 
         fade = GameObject.Find("Fade").GetComponent<FadeInstance>();
@@ -406,7 +406,7 @@ public class PartyManager : MonoBehaviour
         if (barAnimations.TryGetValue(row, out Coroutine running))
             StopCoroutine(running);
 
-        // Start new action
+        // Bounce new action
         barAnimations[row] = StartCoroutine(AnimateBarFill(row, fillImage.rectTransform, targetWidth));
 
     }
@@ -423,7 +423,7 @@ public class PartyManager : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / duration);
             float newWidth = Mathf.Lerp(startWidth, targetWidth, t);
             bar.sizeDelta = new Vector2(newWidth, bar.sizeDelta.y);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         bar.sizeDelta = new Vector2(targetWidth, bar.sizeDelta.y);

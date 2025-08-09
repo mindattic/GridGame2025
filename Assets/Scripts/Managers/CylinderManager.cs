@@ -19,8 +19,8 @@ public class CylinderManager : MonoBehaviour
         }
         else
         {
-            Focus = Random.Int(2, 5) * 0.01f;
-            Floor = -1f + (-1f * Random.Percent);
+            Focus = RNG.Int(2, 5) * 0.01f;
+            Floor = -1f + (-1f * RNG.Percent);
             isRising = false;
         }
 
@@ -30,8 +30,8 @@ public class CylinderManager : MonoBehaviour
         }
         else
         {
-            Focus = Random.Int(2, 5) * 0.01f;
-            Ceiling = 1f + (1f * Random.Percent);
+            Focus = RNG.Int(2, 5) * 0.01f;
+            Ceiling = 1f + (1f * RNG.Percent);
             isRising = true;
         }
 

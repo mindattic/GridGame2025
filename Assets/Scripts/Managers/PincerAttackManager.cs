@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 public class PincerAttackManager : MonoBehaviour
 {
     public void Check(Team team)
@@ -31,7 +31,7 @@ public class PincerAttackManager : MonoBehaviour
         {
             foreach (var actor2 in teamActors.Skip(i + 1))
             {
-                if (!actor1.IsSameRow(actor2.location) && !actor1.IsSameColumn(actor2.location))
+                if (!Geometry.IsSameRow(actor1.location, actor2.location) && !Geometry.IsSameColumn(actor1.location, actor2.location))
                     continue;
 
                 var betweenLocs = Geometry.GetLocationsBetween(actor1.location, actor2.location);
@@ -77,7 +77,7 @@ public class PincerAttackManager : MonoBehaviour
 
         while (remaining.Any())
         {
-            // Start with top-leftmost among those not already ordered
+            // Bounce with top-leftmost among those not already ordered
             var start = remaining.OrderBy(pos).First();
             var curr = start;
 
@@ -195,7 +195,7 @@ public class PincerAttackManager : MonoBehaviour
     {
         var candidates = g.Actors.All
             .Where(x => x.isPlaying && x.team == attacker.team && x != attacker)
-            .Where(x => x.IsSameRow(attacker.location) || x.IsSameColumn(attacker.location))
+            .Where(x => Geometry.IsSameRow(x.location, attacker.location) || Geometry.IsSameColumn(x.location, attacker.location))
             .ToList();
 
         var result = new List<ActorInstance>();
@@ -208,7 +208,7 @@ public class PincerAttackManager : MonoBehaviour
 
     private bool IsActorBlocked(ActorInstance a, ActorInstance b)
     {
-        if (!a.IsSameRow(b.location) && !a.IsSameColumn(b.location))
+        if (!Geometry.IsSameRow(a.location, b.location) && !Geometry.IsSameColumn(a.location, b.location))
             return true;
 
         var between = Geometry

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class FadeInstance : MonoBehaviour
 {
@@ -17,7 +17,7 @@ public class FadeInstance : MonoBehaviour
 
     public IEnumerator FadeIn(IEnumerator coroutine = null)
     {
-        //Before: Start fully black
+        //Before: Bounce fully black
         image.color = new Color(0, 0, 0, 1);
         float elapsedTime = 0f;
 
@@ -27,7 +27,7 @@ public class FadeInstance : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float alpha = 1 - Mathf.Clamp01(elapsedTime / fadeDuration);
             image.color = new Color(0, 0, 0, alpha);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         //After: Ensure fully transparent
@@ -40,7 +40,7 @@ public class FadeInstance : MonoBehaviour
 
     public IEnumerator FadeOut(IEnumerator coroutine = null)
     {
-        //Before: Start fully transparent
+        //Before: Bounce fully transparent
         image.color = new Color(0, 0, 0, 0);
         float elapsedTime = 0f;
 
@@ -50,7 +50,7 @@ public class FadeInstance : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float alpha = Mathf.Clamp01(elapsedTime / fadeDuration);
             image.color = new Color(0, 0, 0, alpha);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         //After: Ensure fully black

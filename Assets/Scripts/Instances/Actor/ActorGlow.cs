@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {

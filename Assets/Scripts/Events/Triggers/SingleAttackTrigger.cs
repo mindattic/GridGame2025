@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Models;
 using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -19,7 +19,7 @@ namespace Assets.Scripts.Events
             var damage = attackResult.Damage;
             attackResult.Opponent.TakeDamageAsync(damage);
 
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
             HasExecuted = true;
         }
     }

@@ -1,5 +1,5 @@
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 
 public enum CoinValue
@@ -83,30 +83,30 @@ public class CoinInstance : MonoBehaviour
         end = g.CoinCounter.GetIconWorldPosition();
 
         timeElapsed = 0f;
-        startDuration += Random.Float(0, 0.2f);
-        moveDuration += Random.Float(0, 0.2f);
+        startDuration += RNG.Float(0, 0.2f);
+        moveDuration += RNG.Float(0, 0.2f);
 
         cX = RandomCurve();
         cY = RandomCurve();
 
         // Explosion impulse
-        float angle = Random.Float(0, 2 * Mathf.PI);
-        float force = Random.Float(0.5f, 1.5f);
+        float angle = RNG.Float(0, 2 * Mathf.PI);
+        float force = RNG.Float(0.5f, 1.5f);
         velocity = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0) * force;
         velocity.y = Mathf.Abs(velocity.y) + 4f; // always upward
-        bouncesRemaining = Random.Int(3, 6);
+        bouncesRemaining = RNG.Int(3, 6);
 
         // Add slight variation to the bounce floor
         float maxOffset = g.TileSize * 0.6f;
-        groundOffsetY = Random.Float(-maxOffset, 0);
+        groundOffsetY = RNG.Float(-maxOffset, 0);
 
         transform.position = start;
-        state = CoinState.Start;
+        state = CoinState.Bounce;
     }
 
     private AnimationCurve RandomCurve()
     {
-        int r = Random.Int(1, 3);
+        int r = RNG.Int(1, 3);
         if (r == 1) return linearCurve;
         if (r == 2) return slopeCurve;
         return sineCurve;
@@ -116,20 +116,16 @@ public class CoinInstance : MonoBehaviour
     {
         switch (state)
         {
-            case CoinState.Start:
+            case CoinState.Bounce:
                 Bounce();
                 break;
 
-            case CoinState.Move:
-                Move();
+            case CoinState.Seek:
+                Seek();
                 break;
 
-            case CoinState.Stop:
-                Stop();
-                break;
-
-            case CoinState.Destroy:
-                Destroy(gameObject);
+            case CoinState.Despawn:
+                Despawn();
                 break;
         }
 
@@ -141,7 +137,7 @@ public class CoinInstance : MonoBehaviour
         // Apply gravity
         velocity.y += gravity * Time.deltaTime;
 
-        // Move coin
+        // Seek coin
         Vector3 pos = transform.position;
         pos += velocity * Time.deltaTime;
 
@@ -162,7 +158,7 @@ public class CoinInstance : MonoBehaviour
                 timeElapsed = 0f;
                 start = pos;
                 end = g.CoinCounter.GetIconWorldPosition();
-                state = CoinState.Move;
+                state = CoinState.Seek;
                 return;
             }
         }
@@ -170,7 +166,7 @@ public class CoinInstance : MonoBehaviour
         transform.position = pos;
     }
 
-    private void Move()
+    private void Seek()
     {
         t = Mathf.Clamp01(timeElapsed / moveDuration);
         x = Mathf.Lerp(start.x, end.x, sineCurve.Evaluate(t));
@@ -180,17 +176,17 @@ public class CoinInstance : MonoBehaviour
         if (timeElapsed >= moveDuration)
         {
             timeElapsed = 0;
-            state = CoinState.Stop;
+            state = CoinState.Despawn;
         }
     }
 
-    private void Stop()
+    private void Despawn()
     {
         spriteRenderer.enabled = false;
         particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         g.TotalCoins++;
         g.CoinCounter.value.text = g.TotalCoins.ToString("D7");
-        g.AudioManager.Play($"Move{Random.Int(1, 6)}");
-        state = CoinState.Destroy;
+        g.AudioManager.Play($"Seek{RNG.Int(1, 6)}");
+        Destroy(gameObject);
     }
 }

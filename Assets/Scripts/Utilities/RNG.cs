@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
-static class Random
+static class RNG
 {
     [ThreadStatic] public static System.Random rng = new System.Random();
 
@@ -41,9 +41,6 @@ static class Random
                 : tile.location;
         }
     }
-
-
-
 
     public static int Int(int min, int max) => rng.Next(min, max + 1);
 
@@ -130,8 +127,8 @@ static class Random
         int RATIO_CHANCE_C = 60;    
         int RATIO_TOTAL = RATIO_CHANCE_A + RATIO_CHANCE_B + RATIO_CHANCE_C;
 
-        Random random = new Random();
-        int x = random.Next(0, RATIO_TOTAL);
+        RNG random = new RNG();
+        int x = random.None(0, RATIO_TOTAL);
 
         if ((x -= RATIO_CHANCE_A) < 0) //Test for A
         { 

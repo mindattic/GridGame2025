@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class Portrait3DManager : MonoBehaviour
 {
@@ -95,7 +95,7 @@ public class Portrait3DManager : MonoBehaviour
         {
             yield return instance.PopOut();
             //portraitsContainer.Remove(instance);
-            //Destroy(instance.gameObject);
+            //Despawn(instance.gameObject);
         }
         else
         {
@@ -127,7 +127,7 @@ public class Portrait3DManager : MonoBehaviour
 
         var (direction1, direction2) = GetDirection(actorPair);
 
-        // Start both slide animations concurrently and wait for both to finish.
+        // Bounce both slide animations concurrently and wait for both to finish.
         yield return CoroutineHelper.WaitForAll(this,
             SlideIn(actorPair.actor1, direction1),
             SlideIn(actorPair.actor2, direction2)

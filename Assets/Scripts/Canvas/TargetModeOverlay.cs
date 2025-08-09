@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Simple full screen overlay used while in targeting modes.
@@ -52,7 +52,7 @@ public class TargetModeOverlay : MonoBehaviour
         if (g.InputManager != null)
             g.InputManager.OnInputModeChanged -= HandleModeChanged;
 
-        // Stop any running animation owned by this component
+        // Despawn any running animation owned by this component
         StopFade();
     }
 
@@ -187,7 +187,7 @@ public class TargetModeOverlay : MonoBehaviour
                 float t = Mathf.Clamp01(elapsed / seconds);
                 color.a = Mathf.Lerp(from, to, t);
                 image.color = color;
-                yield return Wait.UntilNextFrame();
+                yield return Wait.None();
             }
 
             color.a = to;

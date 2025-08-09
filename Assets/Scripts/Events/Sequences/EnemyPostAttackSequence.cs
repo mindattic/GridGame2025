@@ -1,7 +1,7 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyPostAttackSequence.cs ---
 using Assets.Scripts.Models;
 using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Events
                 yield break;
 
             // Optional: short pacing after the attack animation.
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
 
             // Placeholder for future: apply poison, lifesteal, debuffs, or cleanup here.
 

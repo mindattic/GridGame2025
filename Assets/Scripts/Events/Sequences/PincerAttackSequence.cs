@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -48,7 +48,7 @@ namespace Assets.Scripts.Events
             var trigger1 = new MultiAttackTrigger(pair.attacker1, pair.attackResults1);
             var trigger2 = new MultiAttackTrigger(pair.attacker2, pair.attackResults2);
 
-            // Start bumps, attaching MultiAttackTriggers
+            // Bounce bumps, attaching MultiAttackTriggers
             yield return pair.attacker1.action.Bump(firstOpponent, trigger1);
             yield return pair.attacker2.action.Bump(firstOpponent, trigger2);
 

@@ -18,11 +18,11 @@ public class CityScroll : MonoBehaviour
 
         while (true)
         {
-            offset.x -= scrollFocus * Time.deltaTime; // Move UVs to the left
+            offset.x -= scrollFocus * Time.deltaTime; // Seek UVs to the left
             if (offset.x <= -1f) offset.x += 1f; // Wrap around at -1
 
             rawImage.uvRect = new Rect(offset, rawImage.uvRect.size);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
     }
 }

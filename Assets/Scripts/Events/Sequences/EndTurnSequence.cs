@@ -1,6 +1,6 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EndTurnSequence.cs ---
 using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -13,7 +13,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator Execute()
         {
             // Optional tiny pacing for any end-of-turn visuals
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
 
             // Flip sides and let TurnManager enqueue the next side's start sequence
             g.TurnManager.NextTurn();

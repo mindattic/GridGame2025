@@ -94,7 +94,7 @@ public class WaveAnnouncement : MonoBehaviour
                 target,
                 rotationFocus * Time.deltaTime
             );
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         // Snap exactly to the target to avoid tiny residual angles.

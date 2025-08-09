@@ -24,8 +24,8 @@ public class CanvasParticleInstance : MonoBehaviour
     public void Initialize(float rotationFocus, float horizontalFocus, float fallFocus)
     {
 
-        this.xRotationFocus = Random.Boolean ? Random.Float(0, rotationFocus) : 0;
-        this.yRotationFocus = Random.Boolean ? Random.Float(0, rotationFocus) : 0;
+        this.xRotationFocus = RNG.Boolean ? RNG.Float(0, rotationFocus) : 0;
+        this.yRotationFocus = RNG.Boolean ? RNG.Float(0, rotationFocus) : 0;
         this.zRotationFocus = rotationFocus;
         this.horizontalFocus = horizontalFocus;
         this.fallFocus = fallFocus;
@@ -46,7 +46,7 @@ public class CanvasParticleInstance : MonoBehaviour
                 yRotationFocus * Time.deltaTime,
                 zRotationFocus * Time.deltaTime);
 
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         Destroy(gameObject);
     }

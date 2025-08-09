@@ -2,7 +2,7 @@
 using Assets.Scripts.Models;
 using System.Collections;
 using System.Linq;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -22,7 +22,7 @@ namespace Assets.Scripts.Events
             g.InputManager.inputMode = InputMode.None;
 
             // Small pacing to let any visuals settle.
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
 
             // Collect enemies that are "ready" at turn start.
             // "isReady" means isPlaying && hasMaxAP, so readiness is already established once.

@@ -2,7 +2,7 @@ using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 // ActorActionBar is responsible for managing and updating the visual representation 
 // of an actor's action points (AP) in the UI. It handles the fill and drain animations 
@@ -45,7 +45,7 @@ public class ActorActionBar
 
         // TriggerEvent visual feedback on the actor's weapon.
         instance.action.TriggerWeaponWiggle();
-        // Start the drain action if needed.
+        // Bounce the drain action if needed.
         TriggerDrain();
     }
 

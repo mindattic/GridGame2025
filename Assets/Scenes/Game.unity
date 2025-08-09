@@ -2306,9 +2306,8 @@ GameObject:
   - component: {fileID: 655101919}
   - component: {fileID: 655101918}
   - component: {fileID: 655101924}
-  - component: {fileID: 655101925}
   m_Layer: 5
-  m_Name: Canvas2D
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2417,18 +2416,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 655101917}
   m_CullTransparentMesh: 1
---- !u!114 &655101925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 655101917}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd0c81fe9b444624398b70c53e1754f0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &670694078
 GameObject:
   m_ObjectHideFlags: 0
@@ -2978,6 +2965,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1507ff354a6d23a4bb9a02e43e9959b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minAlpha: 0
+  maxAlpha: 0.3333
+  duration: 0.15
 --- !u!114 &862594375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5704,7 +5694,7 @@ MonoBehaviour:
   turnManager: {fileID: 0}
   supportLineManager: {fileID: 0}
   attackLineManager: {fileID: 0}
-  damageTextManager: {fileID: 0}
+  combatTextManager: {fileID: 0}
   ghostManager: {fileID: 0}
   portrait2DManager: {fileID: 0}
   portrait3DManager: {fileID: 0}
@@ -5737,7 +5727,7 @@ MonoBehaviour:
   viewport: {x: 0, y: 0}
   tileSize: 0
   tileScale: {x: 0, y: 0, z: 0}
-  canvas2D: {fileID: 0}
+  canvas: {fileID: 0}
   canvas3D: {fileID: 0}
   waveAnnouncement: {fileID: 0}
   targetModeOverlay: {fileID: 0}
@@ -5765,6 +5755,7 @@ MonoBehaviour:
   previousGameFocus: 0
   reloadThumbnailSettings: 0
   gameSpeed: 1
+  applyMovementTilt: 0
 --- !u!114 &1751276278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5816,8 +5807,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentTurn: 1
-  currentTeam: 0
-  currentPhase: 0
 --- !u!114 &1751276283
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -12,13 +12,13 @@ namespace Assets.Scripts.Events
             var spawnableEnemies = g.Actors.Enemies.Where(x => x.isSpawnable).ToList();
             foreach (var enemy in spawnableEnemies)
             {
-                var unoccupiedLocation = Random.UnoccupiedLocation;
+                var unoccupiedLocation = RNG.UnoccupiedLocation;
                 if (unoccupiedLocation != null)
                     enemy.Spawn(unoccupiedLocation);
             }
 
             // Allow spawn visuals to apply
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
 
             // Chain into the enemy start-of-turn and RUN it now
             g.SequenceManager.Add(new EnemyStartSequence());

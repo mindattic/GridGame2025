@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Draws a curved arc between a fixed button position and a dynamic cursor/hero position.
@@ -95,7 +95,7 @@ public class TargetLineInstance : MonoBehaviour
             elapsed += Time.deltaTime;
             alpha = Mathf.Lerp(from, to, elapsed / fadeDuration);
             UpdateLineAlpha(alpha);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         alpha = to;
         UpdateLineAlpha(alpha);

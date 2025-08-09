@@ -1,7 +1,7 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyPreAttackSequence.cs ---
 using Assets.Scripts.Models;
 using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Events
                 yield break;
 
             // Optional: short pacing or anticipation before the attack.
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
 
             // Placeholder for future: apply buffs, debuffs, or triggers here.
 

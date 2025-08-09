@@ -5,7 +5,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class StageManager : MonoBehaviour
 {
@@ -61,7 +61,7 @@ public class StageManager : MonoBehaviour
         foreach (var partyMember in ProfileRepo.CurrentProfile.CurrentSave.Party.Members)
         {
             var hero = ActorRepo.Actors[partyMember.Character];
-            var stageActor = new StageActor(partyMember.Character, Team.Hero, hero.Level, location: Random.UnoccupiedLocation);
+            var stageActor = new StageActor(partyMember.Character, Team.Hero, hero.Level, location: RNG.UnoccupiedLocation);
             SpawnActor(stageActor);
         }
 
@@ -130,7 +130,7 @@ public class StageManager : MonoBehaviour
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
 
-        stageActor.Location ??= Random.UnoccupiedLocation;
+        stageActor.Location ??= RNG.UnoccupiedLocation;
 
         instance.Spawn(stageActor.Location.Value);
 
@@ -180,7 +180,7 @@ public class StageManager : MonoBehaviour
             var stageName = currentStage.NextStage;
             currentStage = StageRepo.Get(stageName);
             RestartStage();
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         StartCoroutine(g.Fade.FadeOut(loadNextStage()));
@@ -198,7 +198,7 @@ public class StageManager : MonoBehaviour
         IEnumerator reloadStage()
         {
             RestartStage();
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         StartCoroutine(g.Fade.FadeOut(reloadStage()));
@@ -211,7 +211,7 @@ public class StageManager : MonoBehaviour
     /// <param name="character">characterName type for the enemy.</param>
     public void AddEnemy(string character)
     {
-        var stageActor = new StageActor(character, Team.Enemy, level: 1, location: Random.UnoccupiedLocation);
+        var stageActor = new StageActor(character, Team.Enemy, level: 1, location: RNG.UnoccupiedLocation);
         SpawnActor(stageActor);
     }
 

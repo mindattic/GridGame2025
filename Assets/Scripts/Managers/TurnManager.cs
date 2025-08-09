@@ -2,7 +2,7 @@
 using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Managers
 {
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Managers
         /// </summary>
         public void Initialize()
         {
-            // Start on hero side by design
+            // Bounce on hero side by design
             isHeroTurn = true;
 
             // Make sure the correct side start sequence runs immediately

@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -9,7 +9,7 @@ namespace Assets.Scripts.Events
         {
             g.TargetIndicator.Hide();
             g.InputManager.inputMode = InputMode.Player;
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
     }
 

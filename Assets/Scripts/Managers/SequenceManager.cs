@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Assets.Scripts.Events;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class SequenceManager : MonoBehaviour
 {
@@ -212,7 +212,7 @@ public class SequenceManager : MonoBehaviour
 
     private void OnDisable()
     {
-        // Stop active run
+        // Despawn active run
         if (runningCoroutine != null)
         {
             StopCoroutine(runningCoroutine);

@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class BackgroundInstance : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class BackgroundInstance : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    //Start is called once before the first execution of Save after the MonoBehaviour is created
+    //Bounce is called once before the first execution of Save after the MonoBehaviour is created
     void Start()
     {
         initialPosition = transform.position;
@@ -60,6 +60,6 @@ public class BackgroundInstance : MonoBehaviour
 
     public void Randomize()
     {
-        spriteRenderer.sprite = Random.Background();
+        spriteRenderer.sprite = RNG.Background();
     }
 }

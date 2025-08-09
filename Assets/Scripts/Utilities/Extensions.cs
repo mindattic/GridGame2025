@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 
 
@@ -187,7 +187,7 @@ public static class TileInstanceExtensions
         => actor != null && actor.stats.AP == actor.stats.MaxAP;
 
     /// <summary>
-    /// Null-safe existence check for the actor.
+    /// None-safe existence check for the actor.
     /// </summary>
     public static bool Exists(this ActorInstance actor)
         => actor != null;
@@ -361,7 +361,7 @@ public static class Vector3Extensions
 
     public static Vector3 RandomizeOffset(this Vector3 v, float amount)
     {
-        return new Vector3(v.x + Random.Float(-amount, amount), v.y + Random.Float(-amount, amount), v.z);
+        return new Vector3(v.x + RNG.Float(-amount, amount), v.y + RNG.Float(-amount, amount), v.z);
     }
 
     public static Vector3 FromString(string v)
@@ -389,6 +389,24 @@ public static class Vector3Extensions
     {
         var other = new Vector3(x, y, z);
         return v.MultiplyBy(other);
+    }
+
+    /// <summary>
+    /// Clamps the X and Y of this Vector3 to the board bounds from g.Board.
+    /// Preserves the original Z.
+    /// </summary>
+    /// <param name="position">The position to clamp.</param>
+    /// <returns>Position clamped within the board bounds.</returns>
+    public static Vector3 ClampToBoard(this Vector3 position)
+    {
+        // Preserve Z before clamping
+        float z = position.z;
+
+        position.x = Mathf.Clamp(position.x, g.Board.bounds.Left, g.Board.bounds.Right);
+        position.y = Mathf.Clamp(position.y, g.Board.bounds.Bottom, g.Board.bounds.Top);
+        position.z = z;
+
+        return position;
     }
 }
 

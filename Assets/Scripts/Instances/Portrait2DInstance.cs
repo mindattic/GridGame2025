@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Manages a 2D portrait sliding across the UI canvas with a custom curved path on the main axis.
@@ -43,7 +43,7 @@ public class Portrait2DInstance : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         rectTransform.anchorMin = rectTransform.anchorMax = rectTransform.pivot = new Vector2(0.5f, 0.5f);
         image = GetComponent<Image>();
-        distance = g.Canvas2D.GetComponent<RectTransform>().rect.height;
+        distance = g.CanvasRect.rect.height;
     }
 
     private void OnDestroy() => isBeingDestroyed = true;
@@ -57,8 +57,8 @@ public class Portrait2DInstance : MonoBehaviour
     public IEnumerator SlideIn()
     {
         //Generate random offset
-        float offsetAmount = Random.Float(0f, distance * Increment.Percent10);
-        float offset = Random.Int(1, 2) == 1 ? offsetAmount : -offsetAmount;
+        float offsetAmount = RNG.Float(0f, distance * Increment.Percent10);
+        float offset = RNG.Int(1, 2) == 1 ? offsetAmount : -offsetAmount;
         bool isVertical = direction == Direction.North || direction == Direction.South;
 
         // Determine origin
@@ -101,7 +101,7 @@ public class Portrait2DInstance : MonoBehaviour
             }
 
             rectTransform.anchoredPosition = pos;
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         Despawn();

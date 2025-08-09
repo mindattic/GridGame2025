@@ -2,7 +2,7 @@ using Game.Behaviors.Actor;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 public class Portrait3DInstance : MonoBehaviour
 {
     public Transform parent
@@ -108,7 +108,7 @@ public class Portrait3DInstance : MonoBehaviour
     //        float curveT = slide != null ? slide.Evaluate(t) : t;
     //        this.position = Vector3.Lerp(start, destination, curveT);
     //        elapsed += Time.deltaTime;
-    //        yield return Wait.UntilNextFrame();
+    //        yield return Wait.None();
     //    }
 
     //    this.position = destination;
@@ -164,7 +164,7 @@ public class Portrait3DInstance : MonoBehaviour
                     break;
             }
 
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
     }
@@ -190,7 +190,7 @@ public class Portrait3DInstance : MonoBehaviour
 
             Vector3 frontAnchorPos = actor.render.front.transform.position;
             AlignPortraitWithFront(frontAnchorPos);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         yield return PopOut(rotateDuration, fadeDuration);
@@ -207,8 +207,8 @@ public class Portrait3DInstance : MonoBehaviour
         Vector3 originalFrontPos = front.position;
         float yOffset = -g.TileSize * 0.33f; // Lowered by 33%
 
-        float y = Random.Float(20f, 25f);
-        popInRotY = Random.Float() < 0.5f ? -y : y;
+        float y = RNG.Float(20f, 25f);
+        popInRotY = RNG.Float() < 0.5f ? -y : y;
         Quaternion startRot = front.rotation;
         Quaternion targetRot = Quaternion.Euler(75, popInRotY, 0);
         lastPopInRot = targetRot;
@@ -224,7 +224,7 @@ public class Portrait3DInstance : MonoBehaviour
             Vector3 loweredPos = originalFrontPos + new Vector3(0, yOffset, 0);
             front.position = Vector3.Lerp(originalFrontPos, loweredPos, t);
             AlignPortraitWithFront(front.position);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         front.rotation = targetRot;
         front.position = originalFrontPos + new Vector3(0, yOffset, 0);
@@ -241,7 +241,7 @@ public class Portrait3DInstance : MonoBehaviour
             float alpha = Mathf.Lerp(0, 1, t); // Fade in: 0 -> 1
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
             AlignPortraitWithFront(front.position);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         spriteRenderer.color = new Color(c.r, c.g, c.b, 1f);
         AlignPortraitWithFront(front.position);
@@ -273,7 +273,7 @@ public class Portrait3DInstance : MonoBehaviour
             float alpha = Mathf.Lerp(1, 0, t); // Fade out: 1 -> 0
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
             AlignPortraitWithFront(front.position);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         spriteRenderer.color = new Color(c.r, c.g, c.b, 0f);
         AlignPortraitWithFront(front.position);
@@ -290,7 +290,7 @@ public class Portrait3DInstance : MonoBehaviour
             front.rotation = Quaternion.Slerp(startRot, targetRot, t);
             front.position = Vector3.Lerp(loweredPos, originalPos, t);
             AlignPortraitWithFront(front.position);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         front.rotation = targetRot;
         front.position = originalPos;
@@ -325,12 +325,12 @@ public class Portrait3DInstance : MonoBehaviour
                 yield break;
 
             position = startPosition;
-            position += new Vector3(Random.Range(ShakeIntensity.Medium), Random.Range(ShakeIntensity.Medium), 1);
+            position += new Vector3(RNG.Range(ShakeIntensity.Medium), RNG.Range(ShakeIntensity.Medium), 1);
             transform.localScale *= 0.99f;
             alpha -= Increment.Percent1;
             alpha = Mathf.Clamp(alpha, 0, 1);
             spriteRenderer.color = new Color(1, 1, 1, alpha);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         Despawn();

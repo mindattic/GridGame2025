@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class TimerBar3D : MonoBehaviour
 {
@@ -43,13 +43,13 @@ public class TimerBar3D : MonoBehaviour
         {
             if (g.DebugManager.isTimerInfinite)
             {
-                yield return Wait.UntilNextFrame();
+                yield return Wait.None();
                 continue;
             }
 
             timeRemaining -= Time.deltaTime;
             UpdateFill();
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         g.SelectedHeroManager.Drop();

@@ -1,5 +1,5 @@
 ﻿using System;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public enum AbilityType
 {
@@ -73,10 +73,9 @@ public enum Characters
 
 public enum CoinState
 {
-    Destroy,
-    Move,
-    Start,
-    Stop
+    Bounce,
+    Seek,
+    Despawn
 }
 
 public enum DebugOptions

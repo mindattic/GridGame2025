@@ -4,7 +4,7 @@ using System.Collections;
 using Assets.Scripts.Repositories;
 using TMPro;
 using UnityEngine.EventSystems;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 public class PlayerStageMover : MonoBehaviour
 {
     public RectTransform hero;  // Reference to the hero's RectTransform
@@ -38,7 +38,7 @@ public class PlayerStageMover : MonoBehaviour
         Vector2 direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;
         SetAnimation(direction);
 
-        // Start moving the hero
+        // Bounce moving the hero
         StartCoroutine(MoveHero());
     }
 
@@ -60,7 +60,7 @@ public class PlayerStageMover : MonoBehaviour
             direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;
             SetAnimation(direction);
 
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         hero.anchoredPosition = targetPosition;

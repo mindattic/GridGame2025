@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class DebugManager : MonoBehaviour
 {
@@ -65,8 +65,8 @@ public class DebugManager : MonoBehaviour
         enemy6.Teleport(new Vector2Int(3, 7));
         hero2.Teleport(new Vector2Int(3, 8));
 
-        //Move all other actors to unoccupied locations
-        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
+        //Seek all other actors to unoccupied locations
+        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(RNG.UnoccupiedLocation));
     }
 
     public void ArrangeTripleCombo()
@@ -104,23 +104,23 @@ public class DebugManager : MonoBehaviour
         enemy9.Teleport(new Vector2Int(6, 7));
         hero4.Teleport(new Vector2Int(6, 8));
 
-        //Move all other actors to unoccupied locations
-        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(Random.UnoccupiedLocation));
+        //Seek all other actors to unoccupied locations
+        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(RNG.UnoccupiedLocation));
     }
 
     public void Bump()
     {
-        var hero = Random.Hero;
-        hero.Teleport(Random.UnoccupiedLocation);
+        var hero = RNG.Hero;
+        hero.Teleport(RNG.UnoccupiedLocation);
 
         // 3) try to find an enemy already adjacent
         var enemy = Geometry.GetAdjacentOpponent(hero);
         if (!enemy.Exists())
-            enemy = Random.Enemy;
+            enemy = RNG.Enemy;
 
         var location = Geometry.GetClosestUnoccupiedAdjacentTileByLocation(hero.location).location;
         if (!location.Exists())
-            location = Geometry.GetAdjacentLocationInDirection(hero.location, Random.AdjacentDirection);
+            location = Geometry.GetAdjacentLocationInDirection(hero.location, RNG.AdjacentDirection);
 
         enemy.Teleport(location);
         hero.action.BumpAsync(enemy);
@@ -143,21 +143,21 @@ public class DebugManager : MonoBehaviour
 
     public void Portrait2DSlideIn()
     {
-        var hero = Random.Hero;
-        var direction = Random.AdjacentDirection;
+        var hero = RNG.Hero;
+        var direction = RNG.AdjacentDirection;
         g.Portrait2DManager.TriggerSlideIn(hero, direction);
     }
 
     public void Portrait3DSlideIn()
     {
-        var hero = Random.Hero;
-        var direction = Random.AdjacentDirection;
+        var hero = RNG.Hero;
+        var direction = RNG.AdjacentDirection;
         g.Portrait3DManager.TriggerSlideIn(hero, direction);
     }
 
     public void PortraitPopIn()
     {
-        var hero = Random.Hero;
+        var hero = RNG.Hero;
         g.SequenceManager.Add(new PortraitPopInSequence(hero));
         g.SequenceManager.Add(new PortraitPopOutSequence(hero));
         StartCoroutine(g.SequenceManager.Execute());
@@ -165,23 +165,23 @@ public class DebugManager : MonoBehaviour
 
     public void SpawnDamageText()
     {
-        var hero = Random.Hero;
-        var text = $"{Random.Int(1, 100)}";
+        var hero = RNG.Hero;
+        var text = $"{RNG.Int(1, 100)}";
         g.CombatTextManager.Spawn(text, hero.position, "Damage");
     }
 
     public void SpawnHealText()
     {
-        var hero = Random.Hero;
-        var text = $"{Random.Int(1, 100)}";
+        var hero = RNG.Hero;
+        var text = $"{RNG.Int(1, 100)}";
         g.CombatTextManager.Spawn(text, hero.position, "Heal");
     }
 
 
     public void Shake()
     {
-        var intensity = Random.ShakeIntensityLevel();
-        var duration = Random.Float(Interval.HalfSecond, Interval.TwoSeconds);
+        var intensity = RNG.ShakeIntensityLevel();
+        var duration = RNG.Float(Interval.HalfSecond, Interval.TwoSeconds);
         hero1.action.ShakeAsync(intensity, duration);
     }
 
@@ -305,7 +305,7 @@ public class DebugManager : MonoBehaviour
     }
     public void SpawnRandomEnemy()
     {
-        var r = Random.Int(1, 10);
+        var r = RNG.Int(1, 10);
         if (r <= 7) SpawnSlime();
         else if (r == 8) SpawnBat();
         else if (r == 9) SpawnScorpion();
@@ -340,7 +340,7 @@ public class DebugManager : MonoBehaviour
             Attacker = hero1,
             Opponent = g.Actors.Enemies.First(),
             IsHit = true,
-            IsCriticalHit = Random.Int(1, 10) == 10,
+            IsCriticalHit = RNG.Int(1, 10) == 10,
             Damage = 3
         };
 

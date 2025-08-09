@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 // ActorInstance represents a game characterName (either hero or enemy) and encapsulates
 // its state, behaviors, rendering, move, and interactions with game systems.
@@ -27,17 +27,10 @@ public class ActorInstance : MonoBehaviour
 
     public bool isReady => isPlaying && hasMaxAP;
 
-    public bool IsSameColumn(Vector2Int other) => location.x == other.x;
-    public bool IsSameRow(Vector2Int other) => location.y == other.y;
-    public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(location, other).Equals(1);
-    public bool IsNorthOf(Vector2Int other) => IsSameColumn(other) && location.y == other.y - 1;
-    public bool IsEastOf(Vector2Int other) => IsSameRow(other) && location.x == other.x + 1;
-    public bool IsSouthOf(Vector2Int other) => IsSameColumn(other) && location.y == other.y + 1;
-    public bool IsWestOf(Vector2Int other) => IsSameRow(other) && location.x == other.x - 1;
-    public bool IsNorthWestOf(Vector2Int other) => location.x == other.x - 1 && location.y == other.y - 1;
-    public bool IsNorthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y - 1;
-    public bool IsSouthWestOf(Vector2Int other) => location.x == other.x - 1 && location.y == other.y + 1;
-    public bool IsSouthEastOf(Vector2Int other) => location.x == other.x + 1 && location.y == other.y + 1;
+    //public bool IsSameColumn(Vector2Int other) => location.x == other.x;
+    //public bool IsSameRow(Vector2Int other) => location.y == other.y;
+    //public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(location, other).Equals(1);
+
     // Determines if the actor is invincible based on team-specific debug settings.
     public bool isInvincible => (isEnemy && g.DebugManager.isEnemyInvincible) || (isHero && g.DebugManager.isHeroInvincible);
 
@@ -227,7 +220,7 @@ public class ActorInstance : MonoBehaviour
     // If 'mustBeAdjacent' is true, returns AdjacentDirection.None if the other actor is not adjacent.
     public Direction GetDirectionTo(ActorInstance other, bool mustBeAdjacent = false)
     {
-        if (mustBeAdjacent && !IsAdjacentTo(other.location))
+        if (mustBeAdjacent && !Geometry.IsAdjacentTo(this, other))
             return Direction.None;
 
         var deltaX = location.x - other.location.x;
@@ -330,9 +323,9 @@ public class ActorInstance : MonoBehaviour
 
         // Randomly assign weapon type and attributes.
         // TODO: Equip actor at stage manager load based on save file: party.json
-        weapon.Type = Random.WeaponType();
-        weapon.Attack = Random.Float(10, 15);
-        weapon.Defense = Random.Float(0, 5);
+        weapon.Type = RNG.WeaponType();
+        weapon.Attack = RNG.Float(10, 15);
+        weapon.Defense = RNG.Float(0, 5);
         weapon.Name = $"{weapon.Type}";
         // Show the weapon icon using resources.
         render.weaponIcon.sprite = SpriteRepo.WeaponTypes[weapon.Type.ToString()];
@@ -388,7 +381,7 @@ public class ActorInstance : MonoBehaviour
     {
         // Define weights for different strategies.
         int[] ratios = { 50, 20, 15, 10, 5 };
-        var attackStrategy = Random.Strategy(ratios);
+        var attackStrategy = RNG.Strategy(ratios);
 
         Vector2Int targetLocation = LocationHelper.Nowhere;
 
@@ -412,11 +405,11 @@ public class ActorInstance : MonoBehaviour
                 break;
             case AttackStrategy.AttackRandom:
                 // Choose a random hero's location.
-                targetLocation = Random.Hero.location;
+                targetLocation = RNG.Hero.location;
                 break;
             case AttackStrategy.MoveAnywhere:
                 // Choose a random location.
-                targetLocation = Random.Location;
+                targetLocation = RNG.Location;
                 break;
         }
 
@@ -430,7 +423,7 @@ public class ActorInstance : MonoBehaviour
     public IEnumerator TakeFireDamage(float amount)
     {
         g.CombatTextManager.Spawn($"Fireball: - {amount} HP", position);
-        yield return Wait.UntilNextFrame();
+        yield return Wait.None();
     }
 
  
@@ -480,12 +473,12 @@ public class ActorInstance : MonoBehaviour
         //var fontSize = Math.Clamp(attackResult.Damage, 24f, 32f);
 
         g.CombatTextManager.Spawn(damage.ToString(), position, "Damage");
-        g.AudioManager.Play($"Slash{Random.Int(1, 7)}");
+        g.AudioManager.Play($"Slash{RNG.Int(1, 7)}");
 
         //if (isDying)
         //    DieAsync();
 
-        // Start the damage action as a separate coroutine so it doesn't block.
+        // Bounce the damage action as a separate coroutine so it doesn't block.
         //Execute(DamageTaken(attackResult));
 
         // Return immediately.
@@ -509,7 +502,7 @@ public class ActorInstance : MonoBehaviour
 
     //    // Reset animations.
     //    action.TriggerShrink();
-    //    action.ShakeAsync(ShakeIntensity.Stop);
+    //    action.ShakeAsync(ShakeIntensity.Despawn);
 
     //    if (isDying)
     //        DieAsync();
@@ -611,13 +604,13 @@ public class ActorInstance : MonoBehaviour
 
         var occupant = g.Actors.All.FirstOrDefault(x => x.isPlaying && x.location == newLocation);
         if (occupant.Exists())
-            occupant.Teleport(Random.Location);
+            occupant.Teleport(RNG.Location);
 
         this.location = newLocation;
         transform.position = Geometry.GetPositionByLocation(this.location);
     }
 
-    //Move: Attempts to move the actor in the specified direction if the target location is valid.
+    //Seek: Attempts to move the actor in the specified direction if the target location is valid.
     public void Move(Vector2Int direction)
     {
         //Abort if the new location (CurrentProfile location + direction) is out of bounds.

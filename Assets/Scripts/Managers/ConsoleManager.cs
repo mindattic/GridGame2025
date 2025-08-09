@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using g = Assets.Helpers.GameHelper;
 
 namespace Game.Behaviors
 {

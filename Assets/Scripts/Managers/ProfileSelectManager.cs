@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
+using g = Assets.Helpers.GameHelper;
 
 public class ProfileSelectManager : MonoBehaviour
 {
     private GameObject buttonPrefab;
-    private RectTransform canvas2D;
     private Label header;
     private RectTransform scrollView;
     private RectTransform content;
@@ -27,16 +27,14 @@ public class ProfileSelectManager : MonoBehaviour
     {
 
         buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
-
-        canvas2D = GameObject.Find(GameObjectHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
         header = GameObject.Find(GameObjectHelper.StageSelect.Title).GetComponent<Label>();
         scrollView = GameObject.Find(GameObjectHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<RectTransform>();
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
         fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
-        screenWidth = canvas2D.rect.width;
-        screenHeight = canvas2D.rect.height;
+        screenWidth = g.CanvasRect.rect.width;
+        screenHeight = g.CanvasRect.rect.height;
         buttonWidth = 0.9f * screenWidth;
         buttonHeight = screenHeight / 16f;
         fontSize = buttonHeight / 2;

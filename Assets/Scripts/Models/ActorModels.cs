@@ -1,8 +1,6 @@
-﻿using Assets.Scripts.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
 
 namespace Assets.Scripts.Models
 {

@@ -6,7 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
@@ -65,12 +65,12 @@ namespace Assets.Scripts.Instances.Actor
             while (flags.IsMoving)
             {
                 previousPosition = instance.position;
-                instance.position = ClampToBoard(g.TouchPosition3D + g.TouchOffset);
+                instance.position = g.TouchPosition.ClampToBoard();
 
                 ApplyTilt(instance.position - previousPosition);
                 CheckLocationChanged();
 
-                yield return Wait.UntilNextFrame();
+                yield return Wait.None();
             }
 
             // After: clean up
@@ -78,20 +78,7 @@ namespace Assets.Scripts.Instances.Actor
             instance.transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
 
-        /// <summary>
-        /// Clamps a world pos to the board’s world-space bounds.
-        /// Board bounds are computed from offset, rows, columns, and tile 
-        /// size
-        /// and already include a half-tile margin on each side, which is ideal for the card center.
-        /// </summary>
-        private static Vector3 ClampToBoard(Vector3 pos)
-        {
-
-            pos.x = Mathf.Clamp(pos.x, g.Board.bounds.Left, g.Board.bounds.Right);
-            pos.y = Mathf.Clamp(pos.y, g.Board.bounds.Bottom, g.Board.bounds.Top);
-            return pos;
-        }
-
+    
         // --------------------------------------------------------------------
         // Grid destination movement with watchdog
         // --------------------------------------------------------------------
@@ -125,8 +112,9 @@ namespace Assets.Scripts.Instances.Actor
                 {
                     ApplyTilt(instance.position - previousPosition);
 
-                    // Move along X only
-                    this.position = ClampToBoard(Vector3.MoveTowards(this.position, horizontalTarget, g.MoveFocus));
+                    // Seek along X only
+                    previousPosition = instance.position;
+                    this.position = Vector3.MoveTowards(this.position, horizontalTarget, g.MoveFocus).ClampToBoard();
 
                     // Update grid state and potential overlap behaviors
                     CheckLocationChanged();
@@ -142,12 +130,12 @@ namespace Assets.Scripts.Instances.Actor
                         break;
                     }
 
-                    yield return Wait.UntilNextFrame();
+                    yield return Wait.None();
                 }
 
                 // Snap X into place to guarantee loop exit
                 previousPosition = instance.position;
-                position = ClampToBoard(new Vector3(destination.x, position.y, position.z));
+                position = new Vector3(destination.x, position.y, position.z).ClampToBoard();
             }
 
             // Reset per-axis watchdog counters before vertical leg
@@ -163,8 +151,9 @@ namespace Assets.Scripts.Instances.Actor
                 {
                     ApplyTilt(instance.position - previousPosition);
 
-                    // Move along Y only
-                    position = ClampToBoard(Vector3.MoveTowards(position, verticalTarget, g.MoveFocus));
+                    // Seek along Y only
+                    previousPosition = instance.position;
+                    position = Vector3.MoveTowards(position, verticalTarget, g.MoveFocus).ClampToBoard();
 
                     // Update grid state and potential overlap behaviors
                     CheckLocationChanged();
@@ -180,12 +169,12 @@ namespace Assets.Scripts.Instances.Actor
                         break;
                     }
 
-                    yield return Wait.UntilNextFrame();
+                    yield return Wait.None();
                 }
 
                 // Snap Y into place to guarantee loop exit
                 previousPosition = instance.position;
-                position = ClampToBoard(new Vector3(position.x, destination.y, position.z));
+                position = new Vector3(position.x, destination.y, position.z).ClampToBoard();
             }
 
             // After: finished moving

@@ -72,7 +72,7 @@ public class BoardOverlay : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float newAlpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
             SetAlpha(newAlpha);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         SetAlpha(targetAlpha);

@@ -8,9 +8,7 @@ public class CanvasLineRenderer : Graphic
     [SerializeField] public List<Vector2> points = new List<Vector2>();
     [SerializeField] public float thickness = 5f;
     [SerializeField] public float dotSpacing = 20f;
-
     [SerializeField] public RectTransform content; // Reference to the ScrollView's Content
-    [SerializeField] public RectTransform canvas2D; // Reference to the root Canvas
 
     protected override void OnPopulateMesh(VertexHelper vh)
     {

@@ -82,7 +82,6 @@
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
-    <Compile Include="Assets\Scripts\Utilities\Random.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
@@ -149,6 +148,7 @@
     <Compile Include="Assets\Data\Actor\Slime.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
+    <Compile Include="Assets\Scripts\Utilities\RNG.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
@@ -200,9 +200,11 @@
     <Compile Include="Assets\Data\Actor\Pugilist.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
+    <Compile Include="Assets\Helpers\CanvasHelper.cs" />
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
+    <Compile Include="Assets\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
@@ -234,9 +236,7 @@
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
-    <Compile Include="Assets\Helpers\GameManagerHelper.cs" />
     <Compile Include="Assets\Scripts\Repository\VisualEffectRepo.cs" />
-    <Compile Include="Assets\Scripts\Utilities\ConvertString.cs" />
     <Compile Include="Assets\Scripts\Canvas\TargetModeOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\HealAbilitySequence.cs" />
@@ -250,7 +250,6 @@
     <Compile Include="Assets\Data\Actor\RedNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorThumbnail.cs" />
     <Compile Include="Assets\Scripts\Events\Sequences\PortraitPopInSequence.cs" />
-    <Compile Include="Assets\Scripts\Instances\Canvas2DInstance.cs" />
     <Compile Include="Assets\Scripts\Repository\SpriteRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />

@@ -3,7 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class TrailInstance : MonoBehaviour
 {
@@ -54,7 +54,7 @@ public class TrailInstance : MonoBehaviour
         if (trail.Duration != 0f)
             yield return Wait.For(trail.Duration);
 
-        //Destroy VfxManager
+        //Despawn VfxManager
         Despawn(name);
     }
 

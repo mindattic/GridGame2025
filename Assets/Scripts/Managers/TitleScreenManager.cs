@@ -8,7 +8,7 @@ using Label = TMPro.TextMeshProUGUI;
 public class TitleScreenManager : MonoBehaviour
 {
     //Fields
-    private RectTransform canvas2D;
+    private RectTransform canvas;
     private RectTransform panel;
     private RectTransform continueButton;
     private RectTransform loadGameButton;
@@ -24,7 +24,7 @@ public class TitleScreenManager : MonoBehaviour
         if (!ProfileRepo.HasProfiles())
             return;
 
-        canvas2D = GameObject.Find(GameObjectHelper.TitleScreen.Canvas2D).GetComponent<RectTransform>();
+        canvas = GameObject.Find(GameObjectHelper.TitleScreen.Canvas).GetComponent<RectTransform>();
 
         profileButtonLabel = GameObject.Find(GameObjectHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
         fade = GameObject.Find(GameObjectHelper.TitleScreen.Fade).GetComponent<FadeInstance>();

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Assets.Scripts.Models;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Types of sorting requests.

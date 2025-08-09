@@ -35,7 +35,7 @@ public class StageActor
         Team = team;
         Level = level;
         SpawnTurn = 0;
-        Location = location.HasValue ? location.Value : Random.UnoccupiedLocation;
+        Location = location.HasValue ? location.Value : RNG.UnoccupiedLocation;
         AssignStats();
     }
 

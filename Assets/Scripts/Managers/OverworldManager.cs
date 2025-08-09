@@ -11,7 +11,7 @@ public class OverworldManager : MonoBehaviour
 {
     //Fields
     private Label header;
-    private RectTransform canvas2D;
+    private RectTransform canvas;
     private RectTransform scrollView;
     private ScrollRect scrollRect;
     private RectTransform viewport;
@@ -31,7 +31,7 @@ public class OverworldManager : MonoBehaviour
         if (!ProfileRepo.HasProfiles())
             return;
 
-        canvas2D = GameObject.Find(GameObjectHelper.Overworld.Canvas2D).GetComponent<RectTransform>();
+        canvas = GameObject.Find(GameObjectHelper.Overworld.Canvas).GetComponent<RectTransform>();
         scrollView = GameObject.Find(GameObjectHelper.Overworld.ScrollView).GetComponent<RectTransform>();
         scrollRect = GameObject.Find(GameObjectHelper.Overworld.ScrollView).GetComponent<ScrollRect>();
         viewport = GameObject.Find(GameObjectHelper.Overworld.Viewport).GetComponent<RectTransform>();
@@ -40,8 +40,8 @@ public class OverworldManager : MonoBehaviour
         hero = GameObject.Find(GameObjectHelper.Overworld.Hero).GetComponent<PlayerStageMover>();
         fade = GameObject.Find(GameObjectHelper.Overworld.Fade).GetComponent<FadeInstance>();
 
-        //startX = canvas2D.rect.width;
-        //startY = canvas2D.rect.height;
+        //startX = canvas.rect.width;
+        //startY = canvas.rect.height;
 
        // buttonWidth = 64;
         //buttonHeight = 32;
@@ -141,7 +141,7 @@ public class OverworldManager : MonoBehaviour
         while (Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > snapThreshold)
         {
             scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * speed);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         // Snap to final position
@@ -191,7 +191,7 @@ public class OverworldManager : MonoBehaviour
     //            break;
     //        }
 
-    //        yield return Wait.UntilNextFrame(); // Wait for next frame
+    //        yield return Wait.None(); // Wait for next frame
     //    }
 
     //    // Smooth final snap

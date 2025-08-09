@@ -1,7 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Handles the behavior and animation of a single floating damage text instance.
@@ -53,11 +53,11 @@ public class CombatTextInstance : MonoBehaviour
         textMesh.color = profile.Color;
 
         transform.position = new Vector3(
-            pos.x + Random.Range(g.TileSize / 4),
+            pos.x + RNG.Range(g.TileSize / 4),
             pos.y + g.TileSize / 4,
             0);
 
-        // Start the selected motion coroutine
+        // Bounce the selected motion coroutine
         StartCoroutine(style switch
         {
             TextMotion.Float => Float(),
@@ -84,7 +84,7 @@ public class CombatTextInstance : MonoBehaviour
                 color.a = alpha;
                 textMesh.color = color;
             }
-            // Move upward
+            // Seek upward
             transform.position = new Vector3(startPos.x, position.y + speed.y, 0);
             yield return Wait.For(Interval.OneTick);
         }
@@ -131,7 +131,7 @@ public class CombatTextInstance : MonoBehaviour
 
         float vY = g.TileSize * 6, gravity = -g.TileSize * 18f;
         float bounceDamping = 0.5f, groundY = startPos.y, bounceEnd = g.TileSize * 0.1f;
-        float hFocus = g.TileSize * Increment.Percent33 * Random.Float(-1f, 1f);
+        float hFocus = g.TileSize * Increment.Percent33 * RNG.Float(-1f, 1f);
         int bounceCount = 0;
         bool fadeStarted = false;
 

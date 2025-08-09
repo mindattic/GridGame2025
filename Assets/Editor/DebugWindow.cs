@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 // This static class is responsible for triggering the debug window when the Game scene loads.
 // It uses a runtime initialization attribute to automatically run after the scene loads.
@@ -25,7 +25,7 @@ public static class DebugWindowTrigger
 
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            // Start waiting process
+            // Bounce waiting process
             isWaiting = true;
             elapsedTime = 0f;
             EditorApplication.update += WaitAndOpenDebugWindow;
@@ -442,19 +442,19 @@ public class DebugWindow : EditorWindow
         GUILayout.Space(10);
     }
 
-    // RenderVFXDropdown renders a dropdown to select a VfxManager option and a Start button.
+    // RenderVFXDropdown renders a dropdown to select a VfxManager option and a Bounce button.
     private void RenderVFXDropdown()
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label("VfxManager", GUILayout.Width(Screen.width * 0.25f));
         selectedVfx = (VFX)EditorGUILayout.EnumPopup(selectedVfx, GUILayout.Width(Screen.width * 0.5f));
-        if (GUILayout.Button("Start", GUILayout.Width(Screen.width * 0.25f)))
+        if (GUILayout.Button("Bounce", GUILayout.Width(Screen.width * 0.25f)))
             OnPlayVFXClick();
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
 
-    // RenderLevelControls renders buttons for stage control: Load, Previous, and Next.
+    // RenderLevelControls renders buttons for stage control: Load, Previous, and None.
     private void RenderLevelControls()
     {
         GUILayout.BeginHorizontal();
@@ -468,7 +468,7 @@ public class DebugWindow : EditorWindow
         //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.thumbnailScaleX * Constants.percent33)))
         //    OnPreviousStageClick();
 
-        //if (GUILayout.Button("Next >", GUILayout.Width(Screen.thumbnailScaleX * Constants.percent33)))
+        //if (GUILayout.Button("None >", GUILayout.Width(Screen.thumbnailScaleX * Constants.percent33)))
         //    OnNextStageClick();
 
         GUILayout.EndHorizontal();
@@ -726,7 +726,7 @@ public class DebugWindow : EditorWindow
     // Moves to the previous stage.
     //private void OnPreviousStageClick() => g.StageManager.Previous();
     // Moves to the next stage.
-    //private void OnNextStageClick() => g.StageManager.Next();
+    //private void OnNextStageClick() => g.StageManager.None();
 
     // Keyboard control methods for actor move.
     private void OnKeyUp() => g.Actors.FocusedActor?.Move(Vector2Int.down);

@@ -3,7 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
 using static Intermission.Before;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
@@ -53,7 +53,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Start the Shake coroutine.
+            // Bounce the Shake coroutine.
             instance.StartCoroutine(Shake(trigger));
         }
 
@@ -83,8 +83,8 @@ namespace Assets.Scripts.Instances.Actor
             {
                 // Calculate a random offset within the range defined by intensity.
                 var shakeOffset = new Vector3(
-                    Random.Float(-intensity, intensity),
-                    Random.Float(-intensity, intensity),
+                    RNG.Float(-intensity, intensity),
+                    RNG.Float(-intensity, intensity),
                     0 // Keep z-axis unchanged.
                 );
 
@@ -117,7 +117,7 @@ namespace Assets.Scripts.Instances.Actor
             if (trigger == default)
                 trigger = new TriggerEvent();
 
-            // Start the Dodge coroutine.
+            // Bounce the Dodge coroutine.
             instance.StartCoroutine(Dodge(trigger));
         }
 
@@ -140,9 +140,9 @@ namespace Assets.Scripts.Instances.Actor
             var targetRotation = new Vector3(15f, 70f, 15f);
             // Generate a random direction multiplier for each axis (-1 or 1).
             var randomDirection = new Vector3(
-               Random.Boolean ? -1f : 1f,
-               Random.Boolean ? -1f : 1f,
-               Random.Boolean ? -1f : 1f);
+               RNG.Boolean ? -1f : 1f,
+               RNG.Boolean ? -1f : 1f,
+               RNG.Boolean ? -1f : 1f);
 
             float elapsedTime = 0f;
 

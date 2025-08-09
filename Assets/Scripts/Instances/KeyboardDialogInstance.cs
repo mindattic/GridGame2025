@@ -4,10 +4,11 @@ using TMPro;
 using Label = TMPro.TextMeshProUGUI;
 using System.Linq;
 using System;
+using g = Assets.Helpers.GameHelper;
+
 
 public class KeyboardDialogInstance : MonoBehaviour
 {
-    private RectTransform canvas2D;
     private RectTransform panel;
     private RectTransform prompt;
     private RectTransform inputBackdrop;
@@ -122,7 +123,6 @@ public class KeyboardDialogInstance : MonoBehaviour
 
     private void Setup()
     {
-        canvas2D = GameObject.Find(GameObjectHelper.KeyboardDialog.Canvas2D).GetComponent<RectTransform>();
         panel = GameObject.Find(GameObjectHelper.KeyboardDialog.Panel).GetComponent<RectTransform>();
         prompt = GameObject.Find(GameObjectHelper.KeyboardDialog.Prompt).GetComponent<RectTransform>();
         inputBackdrop = GameObject.Find(GameObjectHelper.KeyboardDialog.InputBackdrop).GetComponent<RectTransform>();
@@ -194,8 +194,8 @@ public class KeyboardDialogInstance : MonoBehaviour
     private void ResizeUI()
     {
         //Screen dimension references
-        screenWidth = canvas2D.rect.width;
-        screenHeight = canvas2D.rect.height;
+        screenWidth = g.CanvasRect.rect.width;
+        screenHeight = g.CanvasRect.rect.height;
 
         float currentY = 0f;
         float keySpacing = screenWidth * 0.0025f;
@@ -431,7 +431,6 @@ public class KeyboardDialogInstance : MonoBehaviour
 public static class KeyboardDialog
 {
     public static KeyboardDialogInstance Show(
-        RectTransform canvas2D,
         string promptText,
         string confirmText = "Are you sure?",
         string initialText = "",
@@ -443,12 +442,8 @@ public static class KeyboardDialog
         if (prefab == null)
             throw new UnityException($"Prefab not found");
 
-        //Find a parent canvas2D
-        if (canvas2D == null)
-            throw new UnityException("Canvas2D not found");
-
         //Instantiate prefab
-        GameObject go = GameObject.Instantiate(prefab, canvas2D);
+        GameObject go = GameObject.Instantiate(prefab, g.CanvasRect);
         if (go == null)
             throw new UnityException("Failed to instantiate prefab");
         go.name = $"Keyboard";

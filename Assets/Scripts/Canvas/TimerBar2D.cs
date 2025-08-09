@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class TimerBar2D : MonoBehaviour
 {
@@ -75,14 +75,14 @@ public class TimerBar2D : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        // Stop existing countdown if running
+        // Despawn existing countdown if running
         if (countdown != null)
         {
             StopCoroutine(countdown);
             countdown = null;
         }
 
-        // Start new countdown
+        // Bounce new countdown
         countdown = StartCoroutine(Countdown());
     }
 
@@ -158,7 +158,7 @@ public class TimerBar2D : MonoBehaviour
             // Respect infinite timer debug mode
             if (g.DebugManager.isTimerInfinite)
             {
-                yield return Wait.UntilNextFrame();
+                yield return Wait.None();
                 continue;
             }
 
@@ -170,7 +170,7 @@ public class TimerBar2D : MonoBehaviour
             UpdateFill();
 
             // Wait one frame
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         // Time expired, perform drop
@@ -206,8 +206,7 @@ public class TimerBar2D : MonoBehaviour
     private void SetLayout()
     {
         // Compute 96 percent of canvas width for sizing
-        var canvasRect = g.Canvas2D.GetComponent<RectTransform>();
-        float targetWidth = Mathf.Max(0f, canvasRect.rect.width * CanvasPercent);
+        float targetWidth = Mathf.Max(0f, g.CanvasRect.rect.width * CanvasPercent);
 
         // Keep current height from root
         float targetHeight = rootRect.rect.height;

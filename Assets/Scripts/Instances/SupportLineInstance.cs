@@ -3,7 +3,7 @@ using System.Collections;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Draws a curved support line (arc) between two ActorInstances,
@@ -134,7 +134,7 @@ public class SupportLineInstance : MonoBehaviour
             elapsedTime += Time.deltaTime;
             alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
             UpdateLineAlpha(alpha);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         alpha = maxAlpha;
@@ -166,7 +166,7 @@ public class SupportLineInstance : MonoBehaviour
             elapsedTime += Time.deltaTime;
             alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
             UpdateLineAlpha(alpha);
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         alpha = minAlpha;

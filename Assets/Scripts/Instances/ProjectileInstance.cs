@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class ProjectileInstance : MonoBehaviour
 {
@@ -92,7 +92,7 @@ public class ProjectileInstance : MonoBehaviour
             // Apply position update
             transform.position = position;
             elapsed += Time.deltaTime;
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         transform.position = endPosition;
@@ -113,11 +113,11 @@ public class ProjectileInstance : MonoBehaviour
             t = elapsed / projectile.duration;
             position = EvaluateBezier(projectile.controlPoints, t);
 
-            // Move the projectile instance, not just the trail!
+            // Seek the projectile instance, not just the trail!
             transform.position = position;
 
             elapsed += Time.deltaTime;
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         // Snap to final position
@@ -198,13 +198,13 @@ public class ProjectileInstance : MonoBehaviour
 
     //    // First control point - closer to start
     //    Vector3 control1 = start
-    //        + direction * (distance * 0.3f)    // Move forward (30% of distance)
+    //        + direction * (distance * 0.3f)    // Seek forward (30% of distance)
     //        + perpendicular * (distance * 0.5f) // Side deviation
     //        + Vector3.up * (distance * 0.8f);  // Height deviation
 
     //    // Second control point - closer to end
     //    Vector3 control2 = end
-    //        - direction * (distance * 0.3f)    // Move backward (mirrored to control1)
+    //        - direction * (distance * 0.3f)    // Seek backward (mirrored to control1)
     //        - perpendicular * (distance * 0.5f) // Side deviation (mirrored to control1)
     //        + Vector3.up * (distance * 0.8f);  // Height deviation (same as control1)
 

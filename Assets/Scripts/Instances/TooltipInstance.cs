@@ -4,10 +4,11 @@ using TMPro;
 using System.Collections;
 using System.Text;
 using Label = TMPro.TextMeshProUGUI;
+using g = Assets.Helpers.GameHelper;
 
 public class TooltipInstance : MonoBehaviour
 {
-    private RectTransform canvas2D;
+
     private RectTransform background;
     private Label label;
     private CanvasGroup canvasGroup;
@@ -31,7 +32,6 @@ public class TooltipInstance : MonoBehaviour
 
     public void Assign(string message, RectTransform uiTarget, Transform worldTarget, TooltipPlacement placement)
     {
-        canvas2D = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         background = transform.Find("Background").GetComponent<RectTransform>();
         label = background.transform.Find("Label").GetComponent<Label>();
@@ -45,7 +45,7 @@ public class TooltipInstance : MonoBehaviour
         label.enableAutoSizing = false;
         label.lineSpacing = label.fontSize * 1.5f;
 
-        float canvasMaxWidth = canvas2D.rect.width - (horizontalMargin * 2f);
+        float canvasMaxWidth = g.CanvasRect.rect.width - (horizontalMargin * 2f);
         string wrappedMessage = WrapMessage(message, canvasMaxWidth);
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(label.rectTransform);
@@ -103,7 +103,7 @@ public class TooltipInstance : MonoBehaviour
             ? RectTransformUtility.WorldToScreenPoint(null, uiTarget.position)
             : (worldTarget != null ? Camera.main.WorldToScreenPoint(worldTarget.position) : new Vector2(Screen.width / 2f, Screen.height / 2f));
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas2D, screenPos, null, out Vector2 localPos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(g.CanvasRect, screenPos, null, out Vector2 localPos);
         Vector2 finalPos = CalculatePosition(localPos, tooltipSize, uiTarget ? uiTarget.sizeDelta : Vector2.zero, placement);
 
         switch (placement)
@@ -234,7 +234,7 @@ public class TooltipInstance : MonoBehaviour
             background.localScale = Vector3.Lerp(startScale, endScale, eased);
             background.anchoredPosition = Vector2.Lerp(startPos, endPos, eased);
             elapsed += Time.deltaTime;
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         background.localScale = endScale;
@@ -265,7 +265,7 @@ public class TooltipInstance : MonoBehaviour
             float eased = Mathf.SmoothStep(from, to, t / duration);
             canvasGroup.alpha = eased;
             t += Time.deltaTime;
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
         canvasGroup.alpha = to;
     }
@@ -283,7 +283,7 @@ public class TooltipInstance : MonoBehaviour
         if (followingPointer)
         {
             Vector2 mousePos = Input.mousePosition;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas2D, mousePos + screenOffset, null, out Vector2 localPos);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(g.CanvasRect, mousePos + screenOffset, null, out Vector2 localPos);
             background.anchoredPosition = ClampToScreen(localPos, background.sizeDelta);
         }
     }
@@ -308,8 +308,8 @@ public class TooltipInstance : MonoBehaviour
 
     private Vector2 ClampToScreen(Vector2 position, Vector2 size)
     {
-        float canvasWidth = canvas2D.rect.width;
-        float canvasHeight = canvas2D.rect.height;
+        float canvasWidth = g.CanvasRect.rect.width;
+        float canvasHeight = g.CanvasRect.rect.height;
         float halfWidth = size.x / 2;
         float halfHeight = size.y / 2;
         position.x = Mathf.Clamp(position.x, -canvasWidth / 2 + halfWidth, canvasWidth / 2 - halfWidth);
@@ -338,7 +338,7 @@ public static class Tooltip
     public static TooltipInstance Show(TooltipSettings settings)
     {
         var prefab = PrefabRepo.Prefabs["TooltipPrefab"];
-        var canvas = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
+        var canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
         GameObject go = GameObject.Instantiate(prefab, canvas);
         go.name = $"Tooltip_{System.Guid.NewGuid():N}";
 

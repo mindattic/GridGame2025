@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class FootstepManager : MonoBehaviour
 {
@@ -51,7 +51,7 @@ public class FootstepManager : MonoBehaviour
                 Spawn();
             }
 
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
     }
 

@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 public class SettingsManager : MonoBehaviour
 {
     //Fields
-    private RectTransform canvas2D;
+    private RectTransform canvas;
     private Label title;
     private RectTransform scrollView;
     private RectTransform content;
@@ -26,7 +26,7 @@ public class SettingsManager : MonoBehaviour
 
     private void Awake()
     {
-        canvas2D = GameObject.Find(GameObjectHelper.Settings.Canvas2D).GetComponent<RectTransform>();
+        canvas = GameObject.Find(GameObjectHelper.Settings.Canvas).GetComponent<RectTransform>();
         fade = GameObject.Find(GameObjectHelper.Settings.Fade).GetComponent<FadeInstance>();
         actorPanMultiplier = GameObject.Find(GameObjectHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
 
@@ -40,7 +40,7 @@ public class SettingsManager : MonoBehaviour
     {
         IEnumerator showConfirm()
         {
-            ConfirmationDialog.Show(canvas2D, "Save changes?", onSubmit: (value) =>
+            ConfirmationDialog.Show("Save changes?", onSubmit: (value) =>
             {
                 if (value)
                 {
@@ -50,7 +50,7 @@ public class SettingsManager : MonoBehaviour
                 }
             });
 
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
 
         StartCoroutine(fade.Show(showConfirm()));

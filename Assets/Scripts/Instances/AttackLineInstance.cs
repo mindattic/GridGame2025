@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Game.Instances
 {
@@ -85,7 +85,7 @@ namespace Game.Instances
                 elapsedTime += Time.deltaTime;
                 alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
                 SetAlpha(alpha);
-                yield return Wait.UntilNextFrame();
+                yield return Wait.None();
             }
 
             alpha = maxAlpha;
@@ -110,7 +110,7 @@ namespace Game.Instances
                 elapsedTime += Time.deltaTime;
                 alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
                 SetAlpha(alpha);
-                yield return Wait.UntilNextFrame();
+                yield return Wait.None();
             }
 
             //After:

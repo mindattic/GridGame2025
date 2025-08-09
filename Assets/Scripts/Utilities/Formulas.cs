@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using Game.Behaviors;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public enum ElementalDamageType
 {
@@ -27,7 +27,7 @@ public static class Formulas
     public static float LuckModifier(ActorStats stats)
     {
         float multiplier = 0.01f * stats.Level;
-        return Random.Float(1f, 1f + stats.Luck * multiplier);
+        return RNG.Float(1f, 1f + stats.Luck * multiplier);
     }
 
     public static float Accuracy(ActorStats stats)
@@ -51,7 +51,7 @@ public static class Formulas
         float accuracy = Accuracy(attacker.stats);
         float evade = Evasion(target.stats);
         float chance = accuracy - evade;
-        float roll = Random.Float(0, 100);
+        float roll = RNG.Float(0, 100);
         return roll < Mathf.Clamp(chance, 5f, 95f);
     }
 
@@ -61,7 +61,7 @@ public static class Formulas
         float focus = attacker.stats.Wisdom * 0.4f;
         float luck = attacker.stats.Luck * 0.3f;
         float critChance = baseCrit + focus + luck;
-        return Random.Float(0, 100) < critChance;
+        return RNG.Float(0, 100) < critChance;
     }
 
     public static float Health(ActorStats stats)

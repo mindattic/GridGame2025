@@ -9,7 +9,6 @@ public class StageSelectManager : MonoBehaviour
 {
     //Fields
     private GameObject buttonPrefab;
-    private RectTransform canvas2D;
     private Label header;
     private RectTransform scrollView;
     private Transform content;
@@ -25,14 +24,12 @@ public class StageSelectManager : MonoBehaviour
     {
 
         buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
-
-        canvas2D = GameObject.Find(GameObjectHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
 
         fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
-        //startX = canvas2D.rect.width;
-        //startY = canvas2D.rect.height;
+        //startX = canvas.rect.width;
+        //startY = canvas.rect.height;
 
         //buttonWidth = 0.9f * startX;
         //buttonHeight = startY / 16f;

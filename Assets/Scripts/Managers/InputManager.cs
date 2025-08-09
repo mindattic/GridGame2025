@@ -6,7 +6,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static GameObjectHelper;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 
 
@@ -33,13 +33,11 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    private RectTransform canvas2D;
 
     public bool isDragging => g.Actors.HasSelectedHero && g.Actors.SelectedHero.flags.IsMoving;
 
     private void Awake()
     {
-        canvas2D = GameObject.Find("Canvas2D").GetComponent<RectTransform>();
         dragThreshold = GameManager.instance.tileSize * 0.125f;
     }
 
@@ -78,7 +76,7 @@ public class InputManager : MonoBehaviour
                             if (g.Actors.TargetActor == target)
                             {
                                 //This is a double click...
-                                //ConfirmationDialog.Show(canvas2D, "Are you sure?", onSubmit: (value) =>
+                                //ConfirmationDialog.Show(canvas, "Are you sure?", onSubmit: (value) =>
                                 //{
                                 //    var btn = g.AbilityButtonManager.buttons.First();
                                 //    var startPosition = g.AbilityButtonManager.buttons.First().transform.localPosition;

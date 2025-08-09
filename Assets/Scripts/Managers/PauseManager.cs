@@ -1,7 +1,7 @@
 using Assets.Scripts.Repositories;
 using UnityEngine;
 using UnityEngine.UI;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class PauseManager : MonoBehaviour
 {

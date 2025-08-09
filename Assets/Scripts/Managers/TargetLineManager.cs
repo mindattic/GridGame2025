@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using Assets.Scripts.Events;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 public class TargetLineManager : MonoBehaviour
 {
     private Camera mainCamera;
@@ -51,7 +51,7 @@ public class TargetLineManager : MonoBehaviour
         // 4) snap to a random actor initially
         if (g.Actors.Heroes.Any())
         {
-            var randomHero = Random.Hero;
+            var randomHero = RNG.Hero;
             SnapToTarget(randomHero);
         }
     }

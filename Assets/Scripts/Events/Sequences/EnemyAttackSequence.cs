@@ -2,7 +2,7 @@
 using Assets.Scripts.Models;
 using System.Collections;
 using System.Linq;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -30,7 +30,7 @@ namespace Assets.Scripts.Events
 
             // Gather adjacent defenders at attack time.
             var defendingHeroes = g.Actors.Heroes
-                .Where(x => x.isPlaying && x.IsAdjacentTo(enemy.location))
+                .Where(x => x.isPlaying && Geometry.IsAdjacentTo(x.location, enemy.location))
                 .ToList();
 
             // Resolve one-by-one if anyone is adjacent.

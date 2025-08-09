@@ -2,11 +2,11 @@ using Assets.Scripts.Repositories;
 using UnityEngine;
 using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
+using g = Assets.Helpers.GameHelper;
 
 public class CreditsManager : MonoBehaviour
 {
     //Fields
-    private RectTransform canvas2D;
     private RectTransform title;
     private RectTransform scrollView;
     private RectTransform content;
@@ -15,15 +15,14 @@ public class CreditsManager : MonoBehaviour
 
     private void Awake()
     {
-        canvas2D = GameObject.Find(GameObjectHelper.Credits.Canvas2D).GetComponent<RectTransform>();
         //title = GameObject.Find(GameObjectHelper.Credits.Title).GetComponent<RectTransform>();
         //scrollView = GameObject.Find(GameObjectHelper.Credits.ScrollView).GetComponent<RectTransform>();
         //content = GameObject.Find(GameObjectHelper.Credits.Content).GetComponent<RectTransform>();
         textarea = GameObject.Find(GameObjectHelper.Credits.Textarea).GetComponent<RectTransform>();
         fade = GameObject.Find(GameObjectHelper.Credits.Fade).GetComponent<FadeInstance>();
 
-        //var startX = canvas2D.rect.width;
-        //var startY = canvas2D.rect.height;
+        //var startX = canvas.rect.width;
+        //var startY = canvas.rect.height;
         //var buttonWidth = 0.9f * startX;
         //var buttonHeight = startY / 16f;
         //var fontSize = buttonHeight / 2;
@@ -56,9 +55,9 @@ public class CreditsManager : MonoBehaviour
         var textareaHeight
             = label.textInfo.lineCount
             * label.textInfo.lineInfo[0].lineHeight
-            + canvas2D.rect.height * 0.5f;
+            + g.CanvasRect.rect.height * 0.5f;
 
-        textarea.sizeDelta = new Vector2(canvas2D.rect.width, textareaHeight);
+        textarea.sizeDelta = new Vector2(g.CanvasRect.rect.width, textareaHeight);
     }
     private void Start()
     {

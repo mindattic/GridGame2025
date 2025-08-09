@@ -72,7 +72,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;
     [HideInInspector] public Vector3 tileScale;
-    [HideInInspector] public Canvas canvas2D;
     [HideInInspector] public Canvas canvas3D;
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
     [HideInInspector] public TargetModeOverlay targetModeOverlay;
@@ -162,11 +161,10 @@ public class GameManager : Singleton<GameManager>
 
         totalCoins = 0;
 
-        //Canvas2D
+        //Canvas
         tutorialPopup = GameObject.Find(GameObjectHelper.Game.TutorialPopup).GetComponent<TutorialPopup>();
         card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<Card>();
         fade = GameObject.Find(GameObjectHelper.Game.Fade).GetComponent<FadeInstance>();
-        canvas2D = GameObject.Find(GameObjectHelper.Game.Canvas2D).GetComponent<Canvas>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
         timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D.Root).GetComponent<TimerBar2D>();
         portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();

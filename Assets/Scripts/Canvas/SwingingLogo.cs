@@ -25,9 +25,9 @@ public class SwingingLogo : MonoBehaviour
     //private float currentVelocity = 0f;
     //private Queue<float> targetRotations = new Queue<float>();
 
-    //void Start()
+    //void Bounce()
     //{
-    //    noiseOffset = Random.Float(0f, 100f);
+    //    noiseOffset = RNG.Float(0f, 100f);
     //    currentYRotation = 0f;
     //    GenerateRotationBuffer();
     //    Execute(SwingWindow());
@@ -36,7 +36,7 @@ public class SwingingLogo : MonoBehaviour
     //private void GenerateRotationBuffer()
     //{
     //    float initialRotation = 0f;
-    //    float variation = Random.Float(variationMin, variationMax) * (Random.Float(0f, 1f) < 0.5f ? -1f : 1f);
+    //    float variation = RNG.Float(variationMin, variationMax) * (RNG.Float(0f, 1f) < 0.5f ? -1f : 1f);
     //    initialRotation = Mathf.Clamp(initialRotation + variation, minAngle, maxAngle);
     //    targetRotations.Add(initialRotation);
     //}
@@ -65,16 +65,16 @@ public class SwingingLogo : MonoBehaviour
     //            currentYRotation = Mathf.Lerp(currentYRotation, adjustedTarget, Time.deltaTime * windFocusMultiplier);
     //            currentYRotation = Mathf.Clamp(currentYRotation, minAngle, maxAngle);
     //            transform.rotation = Quaternion.Euler(0, currentYRotation, 0f);
-    //            yield return Wait.UntilNextFrame();
+    //            yield return Wait.None();
     //        }
 
     //        currentYRotation = targetYRotation;
     //        transform.rotation = Quaternion.Euler(0, currentYRotation, 0f);
 
-    //        if (Random.Float(0f, 1f) < windShiftChance) // Configurable chance for sudden wind shift
+    //        if (RNG.Float(0f, 1f) < windShiftChance) // Configurable chance for sudden wind shift
     //            GenerateRotationBuffer();
 
-    //        yield return new WaitForSeconds(Random.Float(waitTimeMin, waitTimeMax));
+    //        yield return new WaitForSeconds(RNG.Float(waitTimeMin, waitTimeMax));
     //    }
     //}
 }

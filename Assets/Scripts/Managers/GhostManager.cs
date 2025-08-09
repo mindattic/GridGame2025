@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 public class GhostManager : MonoBehaviour
 {
@@ -50,7 +50,7 @@ public class GhostManager : MonoBehaviour
                 Spawn();
             }
 
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
         }
     }
 

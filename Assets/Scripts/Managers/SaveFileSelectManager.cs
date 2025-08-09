@@ -13,12 +13,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
+using g = Assets.Helpers.GameHelper;
 
 public class SaveFileSelectManager : MonoBehaviour
 {
     // Fields
     private GameObject buttonPrefab;
-    private RectTransform canvas2D;
     private Label header;
     private RectTransform scrollView;
     private Transform content;
@@ -36,8 +36,6 @@ public class SaveFileSelectManager : MonoBehaviour
     private void Awake()
     {
         buttonPrefab = PrefabRepo.Prefabs["SaveFileButtonPrefab"];
-
-        canvas2D = GameObject.Find(GameObjectHelper.StageSelect.Canvas2D).GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
         fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Handles selection, dragging, and dropping of g.Actors.Heroes during the correct turn/phase.
@@ -18,7 +18,7 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Focus()
     {
-        // Only allow focus selection during the hero's turn and Start phase.
+        // Only allow focus selection during the hero's turn and Bounce phase.
         if (!g.TurnManager.isHeroTurn)
             return;
 
@@ -51,7 +51,7 @@ public class SelectedHeroManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles dragging an actor, setting up move. Starts Move phase if at Start, otherwise continues drag in Move phase.
+    /// Handles dragging an actor, setting up move. Starts Seek phase if at Bounce, otherwise continues drag in Seek phase.
     /// </summary>
     public void Drag()
     {
@@ -81,7 +81,7 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Drop()
     {
-        // Only proceed if it's the hero's turn, Move phase is active, and there's a selected hero currently moving.
+        // Only proceed if it's the hero's turn, Seek phase is active, and there's a selected hero currently moving.
         if (!g.TurnManager.isHeroTurn 
             || !g.Actors.HasSelectedHero || !g.Actors.SelectedHero.flags.IsMoving)
         {

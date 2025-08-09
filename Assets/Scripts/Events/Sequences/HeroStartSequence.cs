@@ -1,7 +1,7 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/HeroStartSequence.cs ---
 using Assets.Scripts.Models;
 using System.Collections;
-using g = Assets.Helpers.GameManagerHelper;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
@@ -18,7 +18,7 @@ namespace Assets.Scripts.Events
                 yield break;
 
             // Small pacing
-            yield return Wait.UntilNextFrame();
+            yield return Wait.None();
 
             // Put input back into hero mode and refill the turn timer UI
             g.InputManager.inputMode = InputMode.Player;
