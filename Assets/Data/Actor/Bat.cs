@@ -1,10 +1,11 @@
-﻿namespace Assets.Data.Actor
+using Assets.Helpers;
+using Assets.Scripts.Models;
+using System.Collections.Generic;
+using UnityEngine;
+using g = Assets.Helpers.GameHelper;
+
+namespace Assets.Data.Actor
 {
-    using Assets.Helpers;
-    using Assets.Scripts.Models;
-    using System.Collections.Generic;
-    using UnityEngine;
-    using g = Assets.Helpers.GameHelper;
     public static class Bat
     {
         public static ActorData Data()
@@ -13,16 +14,18 @@
             {
                 Character = CharacterHelper.Bat,
                 Description = "A flying menace.",
+                Expectations = "Evasive magic harasser. Relies on spells and high agility to peck away. Avoids direct trades with heavy melee.",
+                Lore = "Flock-runner of the midnight caves, guided by echoes and hunger.",
                 BaseStats = new ActorStats
                 {
                     Level = 1,
-                    Strength = 2,
-                    Vitality = 1,
-                    Agility = 6,
-                    Stamina = 2,
-                    Intelligence = 7,
-                    Wisdom = 3,
-                    Luck = 5
+                    Strength = 2f,
+                    Vitality = 1f,
+                    Agility = 6f,
+                    Stamina = 2f,
+                    Intelligence = 7f,
+                    Wisdom = 3f,
+                    Luck = 5f
                 },
                 StatGrowth = new StatGrowth
                 {
@@ -30,29 +33,33 @@
                     Vitality = 0.2f,
                     Agility = 1.2f,
                     Stamina = 0.6f,
-                    Intelligence = 1.4f,
-                    Wisdom = 1.0f,
+                    Intelligence = 0.75f,
+                    Wisdom = 0.5f,
                     Luck = 0.6f
                 },
                 MilestoneStatGrowth = new Dictionary<int, StatGrowth>
                 {
-                    { 5, new StatGrowth { Strength = 0.5f, Vitality = 0.2f, Agility = 2.0f, Stamina = 0.5f, Intelligence = 2.0f, Wisdom = 1.0f, Luck = 1.0f } },
-                    { 10, new StatGrowth { Strength = 1.0f, Vitality = 0.5f, Agility = 1.5f, Stamina = 1.0f, Intelligence = 2.5f, Wisdom = 1.5f, Luck = 1.5f } },
-                    { 20, new StatGrowth { Strength = 2.0f, Vitality = 1.0f, Agility = 2.5f, Stamina = 1.5f, Intelligence = 3.0f, Wisdom = 2.0f, Luck = 2.0f } },
-                    { 40, new StatGrowth { Strength = 3.0f, Vitality = 2.0f, Agility = 4.0f, Stamina = 2.0f, Intelligence = 4.0f, Wisdom = 2.5f, Luck = 2.5f } }
+                    { 5, new StatGrowth { Strength = 0.5f, Vitality = 0.2f, Agility = 1.5f, Stamina = 0.5f, Intelligence = 1.1f, Wisdom = 0.6f, Luck = 0.8f } },
+                    { 10, new StatGrowth { Strength = 0.6f, Vitality = 0.5f, Agility = 1.2f, Stamina = 0.7f, Intelligence = 1.4f, Wisdom = 0.8f, Luck = 1.0f } },
+                    { 20, new StatGrowth { Strength = 1.1f, Vitality = 0.8f, Agility = 1.8f, Stamina = 1.0f, Intelligence = 1.8f, Wisdom = 1.1f, Luck = 1.4f } },
+                    { 40, new StatGrowth { Strength = 1.6f, Vitality = 1.2f, Agility = 2.6f, Stamina = 1.4f, Intelligence = 2.2f, Wisdom = 1.5f, Luck = 1.8f } }
                 },
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.5f, 0.5f, 0f),
-                    Scale = new Vector3(2f, 2f, 0),
+                    Position = new Vector3(0.5f, 0.5f, 0.0f),
+                    Scale = new Vector3(2.0f, 2.0f, 0f)
                 },
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Bat}"),
                 Details = new ActorDetails
                 {
                     Description = "A flying menace.",
-                    Card = "Intermittently goes <color=#FF0033>[Berserk]</color> attacking multiple nearby enemies.",
-                    Lore = new List<string> { "Echolocation expert", "Sleeps upside down" }
+                    Card = "Intermittently goes [Berserk] attacking multiple nearby enemies.",
+                    Trivia = new List<string>
+                    {
+                        "Echolocation expert",
+                        "Sleeps upside down"
+                    }
                 }
             };
         }

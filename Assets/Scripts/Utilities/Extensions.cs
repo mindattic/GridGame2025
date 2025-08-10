@@ -139,7 +139,7 @@ public static class ActorInstanceExtensions
         => actor != null && actor.team == Team.Hero;
 
     /// <summary>
-    /// Determines if this actor belongs to the enemy's team.
+    /// Determines if this actor belongs to the attacker's team.
     /// </summary>
     public static bool IsEnemy(this ActorInstance actor)
         => actor != null && actor.team == Team.Enemy;

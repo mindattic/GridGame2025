@@ -180,7 +180,7 @@ namespace Assets.Scripts.Instances.Actor
         {
             g.SortingManager.OnBump(instance, target);
 
-            var direction = instance.GetDirectionTo(target);
+            var direction = instance.GetDirectionTo(target, mustBeAdjacent: true);
 
             var windupCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
             var bumpCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);

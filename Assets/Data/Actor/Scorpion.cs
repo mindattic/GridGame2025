@@ -1,61 +1,69 @@
-﻿using Assets.Helpers;
+using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
-public static class Scorpion
+
+namespace Assets.Data.Actor
 {
-    public static ActorData Data()
+    public static class Scorpion
     {
-        return new ActorData
+        public static ActorData Data()
         {
-            Character = CharacterHelper.Scorpion,
-            Description = "A hulking brute with a barbed tail and armored shell.",
-            BaseStats = new ActorStats
+            return new ActorData
             {
-                Level = 1,
-                Strength = 7,
-                Vitality = 1,
-                Agility = 2,
-                Stamina = 7,
-                Intelligence = 1,
-                Wisdom = 2,
-                Luck = 3
-            },
-            StatGrowth = new StatGrowth
-            {
-                Strength = 1.5f,
-                Vitality = 2.5f,
-                Agility = 0.5f,
-                Stamina = 2.0f,
-                Intelligence = 0.4f,
-                Wisdom = 0.6f,
-                Luck = 0.6f
-            },
-            MilestoneStatGrowth = new Dictionary<int, StatGrowth>
-            {
-                { 5, new StatGrowth(2.0f, 3.5f, 0.8f, 2.5f, 0.5f, 0.8f, 1.0f) },
-                { 10, new StatGrowth(2.5f, 4.5f, 1.0f, 3.0f, 0.8f, 1.0f, 1.2f) },
-                { 20, new StatGrowth(3.0f, 6.0f, 1.2f, 4.0f, 1.0f, 1.2f, 1.5f) },
-                { 40, new StatGrowth(4.0f, 8.0f, 1.5f, 5.0f, 1.5f, 1.5f, 2.0f) }
-            },
-            Stats = new ActorStats(),
-            ThumbnailSettings = new ThumbnailSettings
-            {
-                Position = new Vector3(1.02f, 0.04f, 0f),
-                Scale = new Vector3(4f, 4f, 0f),
-            },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
-            Details = new ActorDetails
-            {
+                Character = CharacterHelper.Scorpion,
                 Description = "A hulking brute with a barbed tail and armored shell.",
-                Card = "Takes <color=#00FF00>[reduced damage]</color> from frontal attacks. Has a chance to <color=#FF3300>[counterattack]</color> when hit.",
-                Lore = new List<string>
+                Expectations = "Slow bruiser with very high durability. Damage is steady. Punishes opponents who stay in front.",
+                Lore = "Ancient desert crawler whose shell rings like iron under the moon.",
+
+                BaseStats = new ActorStats
                 {
-                    "Harder than stone",
-                    "Feels no pain"
+                    Level = 1,
+                    Strength = 7f,
+                    Vitality = 1f,
+                    Agility = 2f,
+                    Stamina = 1.75f,
+                    Intelligence = 1f,
+                    Wisdom = 2f,
+                    Luck = 3f
+                },
+
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.4f,
+                    Vitality = 0.65f,
+                    Agility = 0.5f,
+                    Stamina = 0.525f,
+                    Intelligence = 0.4f,
+                    Wisdom = 0.6f,
+                    Luck = 0.6f
+                },
+
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth { Strength = 1.8f, Vitality = 0.95f,  Agility = 0.8f, Stamina = 0.65f,  Intelligence = 0.5f, Wisdom = 0.8f, Luck = 1.0f } }, // 3.8 -> 0.95, 2.6 -> 0.65
+                    { 10, new StatGrowth { Strength = 2.3f, Vitality = 1.2f,   Agility = 1.0f, Stamina = 0.8f,   Intelligence = 0.8f, Wisdom = 1.0f, Luck = 1.2f } }, // 4.8 -> 1.2, 3.2 -> 0.8
+                    { 20, new StatGrowth { Strength = 2.8f, Vitality = 1.6f,   Agility = 1.2f, Stamina = 1.05f,  Intelligence = 1.0f, Wisdom = 1.2f, Luck = 1.5f } }, // 6.4 -> 1.6, 4.2 -> 1.05
+                    { 40, new StatGrowth { Strength = 3.8f, Vitality = 2.125f, Agility = 1.5f, Stamina = 1.3f,   Intelligence = 1.5f, Wisdom = 1.5f, Luck = 2.0f } }  // 8.5 -> 2.125, 5.2 -> 1.3
+                },
+
+                Stats = new ActorStats(),
+
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    Position = new Vector3(1.02f, 0.04f, 0.0f),
+                    Scale = new Vector3(4.0f, 4.0f, 0f)
+                },
+
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
+
+                Details = new ActorDetails
+                {
+                    Description = "A hulking brute with a barbed tail and armored shell.",
+                    Card = "Takes [reduced damage] from frontal attacks. Has a chance to [counterattack] when hit.",
                 }
-            }
-        };
+            };
+        }
     }
 }

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-
-
 public static class TextStyleRepo
 {
     private static Dictionary<string, TextStyle> textStyles;
@@ -30,18 +28,22 @@ public static class TextStyleRepo
         {
             { "Damage", new TextStyle("Damage", FontRepo.Get("Damage"), 32, ColorHelper.Solid.White, TextMotion.Bounce) },
             { "Heal", new TextStyle("Heal", FontRepo.Get("Heal"), 32, ColorHelper.Solid.Green, TextMotion.Float) },
+
+            // New styles
+            { "CriticalHit", new TextStyle("CriticalHit", FontRepo.Get("Damage"), 40, ColorHelper.Solid.Yellow, TextMotion.Bounce) },
+            { "GlancingBlow", new TextStyle("GlancingBlow", FontRepo.Get("Damage"), 24, ColorHelper.Solid.Gray, TextMotion.Float) }
         };
     }
 
     /// <summary>
-    /// Retrieves a single music track asynchronously by key.
+    /// Retrieves a single text style by key.
     /// </summary>
     public static TextStyle Get(string key)
     {
         if (TextStyles.TryGetValue(key, out var entry))
             return entry;
 
-        Debug.LogError($"Floating Text '{entry}' not found in TextStyleRepo.");
+        Debug.LogError($"Floating Text '{key}' not found in TextStyleRepo.");
         return null;
     }
 }

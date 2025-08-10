@@ -11,14 +11,14 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using g = Assets.Helpers.GameHelper;
 
-// ActorInstance represents a game characterName (either hero or enemy) and encapsulates
+// ActorInstance represents a game characterName (either hero or attacker) and encapsulates
 // its state, behaviors, rendering, move, and interactions with game systems.
 public class ActorInstance : MonoBehaviour
 {
     #region Instance Properies
     public TileInstance currentTile => g.TileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
     public bool isHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
-    public bool isEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an enemy.
+    public bool isEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an attacker.
     public bool isActive => isActiveAndEnabled;                   // Checks if the GameObject is active.
     public bool isAlive => stats.HP > 0;                          // Actor is alive if HP is above zero.
     public bool isPlaying => isActive && isAlive;                 // Actor is active in the game (alive and enabled).
@@ -218,31 +218,40 @@ public class ActorInstance : MonoBehaviour
     public List<Ability> abilities = new List<Ability>();
 
 
-    // Determines the cardinal/diagonal direction from this actor to another.
-    // If 'mustBeAdjacent' is true, returns AdjacentDirection.None if the other actor is not adjacent.
-    public Direction GetDirectionTo(ActorInstance other, bool mustBeAdjacent = false)
+    // Determines the cardinal or diagonal direction from this actor to another.
+    // If mustBeAdjacent is true, returns Direction.None when the other actor is not adjacent.
+    public Direction GetDirectionTo(ActorInstance other, bool mustBeAdjacent = true)
     {
+        // Validate target before any access
+        if (other == null)
+        {
+            Debug.LogError($"GetDirectionTo called with null 'other' by {name}");
+            return Direction.None;
+        }
+
+        // Enforce adjacency only when requested
         if (mustBeAdjacent && !Geometry.IsAdjacentTo(this, other))
             return Direction.None;
 
         var deltaX = location.x - other.location.x;
         var deltaY = location.y - other.location.y;
 
-        // Handle simple cardinal directions.
+        // Cardinal directions
         if (deltaX == 0 && deltaY > 0) return Direction.North;
         if (deltaX == 0 && deltaY < 0) return Direction.South;
         if (deltaX > 0 && deltaY == 0) return Direction.West;
         if (deltaX < 0 && deltaY == 0) return Direction.East;
 
-        // Handle diagonal directions.
+        // Diagonals
         if (deltaX > 0 && deltaY > 0) return Direction.NorthWest;
         if (deltaX < 0 && deltaY > 0) return Direction.NorthEast;
         if (deltaX > 0 && deltaY < 0) return Direction.SouthWest;
         if (deltaX < 0 && deltaY < 0) return Direction.SouthEast;
 
-        // Default: no valid direction.
         return Direction.None;
     }
+
+
 
     /// <summary>
     /// Checks if there is any active actor within a given range in the specified cardinal direction.
@@ -455,22 +464,23 @@ public class ActorInstance : MonoBehaviour
 
 
     //DamageTrigger: Coroutine that processes damage application, triggers VfxManager and animations, and updates HP.
-    public void Damage(int damage) => StartCoroutine(DamageTrigger(damage));
-    public IEnumerator DamageTrigger(int damage)
+    public void Damage(AttackResult attackResult) => StartCoroutine(DamageTrigger(attackResult));
+    public IEnumerator DamageTrigger(AttackResult attackResult)
     {
+        if (attackResult.Opponent.isDying || attackResult.Opponent.isDead)
+            yield break;
+
         // Immediately apply damage and update health.
         if (!isInvincible)
         {
             stats.PreviousHP = stats.HP;
-            stats.HP -= damage;
+            stats.HP -= attackResult.Damage;
             stats.HP = Mathf.Clamp(stats.HP, 0, stats.MaxHP);
             healthBar.Update();
         }
 
-        // Immediately display damage textarea and play sound.
-        //var fontSize = Math.Clamp(attackResult.Damage, 24f, 32f);
-
-        g.CombatTextManager.Spawn(damage.ToString(), position, "Damage");
+        var style = CombatTextHelper.GetStyle(attackResult);
+        g.CombatTextManager.Spawn(attackResult.Damage.ToString(), position, style);
         g.AudioManager.Play($"Slash{RNG.Int(1, 7)}");
 
         yield break;
@@ -545,7 +555,7 @@ public class ActorInstance : MonoBehaviour
             alpha = Mathf.Clamp(alpha, Increment.Transparent, Opacity.Opaque);
             render.SetAlpha(alpha);
 
-            //Show coins when enemy fades below 10% opacity, if not already spawned.
+            //Show coins when attacker fades below 10% opacity, if not already spawned.
             if (isEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
             {
                 hasSpawnedCoins = true;
@@ -563,11 +573,11 @@ public class ActorInstance : MonoBehaviour
         g.StageManager.OnActorDeath();
     }
 
-    //TriggerSpawnCoins: Helper function to begin spawning coins upon enemy death.
+    //TriggerSpawnCoins: Helper function to begin spawning coins upon attacker death.
     private void TriggerSpawnCoins(int amount)
     {
         if (isPlaying)
-            StartCoroutine(SpawnCoins(amount)); // TODO: Adjust coin spawning based on enemy stats if necessary.
+            StartCoroutine(SpawnCoins(amount)); // TODO: Adjust coin spawning based on attacker stats if necessary.
     }
 
     //SpawnCoins: Coroutine that spawns a specified number of coins at the actor's position.
@@ -615,10 +625,10 @@ public class ActorInstance : MonoBehaviour
         Teleport(tile.location);
     }
 
-    //SetReady: Resets the enemy actor's action points for a new turn.
+    //SetReady: Resets the attacker actor's action points for a new turn.
     public void SetReady()
     {
-        //Abort if the actor is not active, not alive, or not an enemy.
+        //Abort if the actor is not active, not alive, or not an attacker.
         if (!isActive || !isAlive || !isEnemy)
             return;
 

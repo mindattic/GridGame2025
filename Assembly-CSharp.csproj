@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Repository\SoundEffectRepo.cs" />
+    <Compile Include="Assets\Data\Actor\Soldier01.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Repository\PrefabRepo.cs" />
@@ -75,9 +76,11 @@
     <Compile Include="Assets\Helpers\Intermission.cs" />
     <Compile Include="Assets\Scripts\Canvas\TimerBar2D.cs" />
     <Compile Include="Assets\Scripts\Models\ShakeIntensity.cs" />
+    <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
+    <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
@@ -114,10 +117,10 @@
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
+    <Compile Include="Assets\Data\Actor\Soldier02.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Helpers\AssetHelper.cs" />
-    <Compile Include="Assets\Scripts\Models\ActorModels.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
@@ -149,8 +152,8 @@
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
-    <Compile Include="Assets\Data\Actor\Soldier.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
+    <Compile Include="Assets\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Helpers\SceneHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
@@ -189,6 +192,7 @@
     <Compile Include="Assets\Scripts\Repository\TutorialRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
+    <Compile Include="Assets\Scripts\Models\Actor\StatGrowth.cs" />
     <Compile Include="Assets\Scripts\Managers\Portrait2DManager.cs" />
     <Compile Include="Assets\Helpers\AnimationCurveHelper.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
@@ -239,6 +243,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />
+    <Compile Include="Assets\Scripts\Models\Actor\ActorStats.cs" />
     <Compile Include="Assets\Data\Actor\Scorpion.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
@@ -249,6 +254,7 @@
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
+    <Compile Include="Assets\Data\Actor\Soldier03.cs" />
     <Compile Include="Assets\Scripts\Repository\TextStyleRepo.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
@@ -260,6 +266,7 @@
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
     <Compile Include="Assets\Scripts\Sequences\PincerAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
+    <Compile Include="Assets\Helpers\CombatTextHelper.cs" />
     <Compile Include="Assets\Scripts\Repository\VisualEffectRepo.cs" />
     <Compile Include="Assets\Scripts\Canvas\TargetModeOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />

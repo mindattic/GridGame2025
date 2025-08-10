@@ -164,8 +164,7 @@ public static class StageRepo
                 wave.Actors.Add(new StageActor
                 {
                     characterName = randomEnemy,
-                    Team = Team.Enemy,
-                    Location = new Vector2Int(rng.Next(1, 6), rng.Next(1, 6))
+                    Team = Team.Enemy
                 });
             }
 

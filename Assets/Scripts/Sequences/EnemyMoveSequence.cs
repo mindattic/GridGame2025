@@ -5,7 +5,7 @@ using System.Collections;
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Moves one enemy toward its target.
+    /// Moves one attacker toward its target.
     /// Does not end the turn or schedule other enemies.
     /// </summary>
     public class EnemyMoveSequence : SequenceEvent

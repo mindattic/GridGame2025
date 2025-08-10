@@ -1,57 +1,66 @@
-﻿using Assets.Helpers;
+using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
-public static class Yeti
+
+namespace Assets.Data.Actor
 {
-    public static ActorData Data()
+    public static class Yeti
     {
-        return new ActorData
+        public static ActorData Data()
         {
-            Character = CharacterHelper.Yeti,
-            Description = "A towering beast of cold fury.",
-            BaseStats = new ActorStats
+            return new ActorData
             {
-                Level = 1,
-                Strength = 10,
-                Vitality = 8,
-                Agility = 2,
-                Stamina = 5,
-                Intelligence = 1,
-                Wisdom = 1,
-                Luck = 2
-            },
-            StatGrowth = new StatGrowth
-            {
-                Strength = 2.0f,
-                Vitality = 1.5f,
-                Agility = 0.4f,
-                Stamina = 1.0f,
-                Intelligence = 0.0f,
-                Wisdom = 0.2f,
-                Luck = 0.5f
-            },
-            MilestoneStatGrowth = new Dictionary<int, StatGrowth>
-            {
-                { 5,  new StatGrowth(3.0f, 2.0f, 0.5f, 1.2f, 0.0f, 0.2f, 0.5f) },
-                { 10, new StatGrowth(4.0f, 2.5f, 0.6f, 1.5f, 0.0f, 0.3f, 0.6f) },
-                { 20, new StatGrowth(5.0f, 3.0f, 0.8f, 2.0f, 0.0f, 0.4f, 0.8f) },
-                { 40, new StatGrowth(6.0f, 4.0f, 1.0f, 2.5f, 0.0f, 0.5f, 1.0f) }
-            },
-            Stats = new ActorStats(),
-            ThumbnailSettings = new ThumbnailSettings
-            {
-                Position = new Vector3(1.3f, -1f, 0),
-                Scale = new Vector3(5f, 5f, 0),
-            },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Yeti}"),
-            Details = new ActorDetails
-            {
+                Character = CharacterHelper.Yeti,
                 Description = "A towering beast of cold fury.",
-                Card = "Delivers powerful <color=#00FFFF>[Ice]</color> attacks that ignore 25% of defense.",
-                Lore = new List<string> { "Hates heat", "Used to be a myth" }
-            }
-        };
+                Expectations = "Heavy hitter with armor-chunking swings. Slow turns but high impact.",
+                Lore = "Snow moves around it as if afraid to touch.",
+                BaseStats = new ActorStats
+                {
+                    Level = 1,
+                    Strength = 10f,
+                    Vitality = 2f,
+                    Agility = 2f,
+                    Stamina = 1f,
+                    Intelligence = 1f,
+                    Wisdom = 1f,
+                    Luck = 2f
+                },
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.5f,
+                    Vitality = 0.3f,
+                    Agility = 0.4f,
+                    Stamina = 0.2f,
+                    Wisdom = 0.2f,
+                    Luck = 0.5f
+                },
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5,  new StatGrowth { Strength = 2.2f, Vitality = 0.425f, Agility = 0.5f, Stamina = 0.25f, Intelligence = 0.0f, Wisdom = 0.2f, Luck = 0.5f } }, // 1.7 -> 0.425, 1.0 -> 0.25
+                    { 10, new StatGrowth { Strength = 3.0f, Vitality = 0.525f, Agility = 0.6f, Stamina = 0.3f,  Intelligence = 0.0f, Wisdom = 0.3f, Luck = 0.6f } }, // 2.1 -> 0.525, 1.2 -> 0.3
+                    { 20, new StatGrowth { Strength = 3.8f, Vitality = 0.625f, Agility = 0.8f, Stamina = 0.4f,  Intelligence = 0.0f, Wisdom = 0.4f, Luck = 0.8f } }, // 2.5 -> 0.625, 1.6 -> 0.4
+                    { 40, new StatGrowth { Strength = 4.8f, Vitality = 0.8f,   Agility = 1.0f, Stamina = 0.5f,  Intelligence = 0.0f, Wisdom = 0.5f, Luck = 1.0f } }  // 3.2 -> 0.8, 2.0 -> 0.5
+                },
+                Stats = new ActorStats(),
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    Position = new Vector3(1.3f, -1.0f, 0.0f),
+                    Scale = new Vector3(5.0f, 5.0f, 0f)
+                },
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Yeti}"),
+                Details = new ActorDetails
+                {
+                    Description = "A towering beast of cold fury.",
+                    Card = "Delivers powerful [Ice] attacks that ignore 25% of defense.",
+                    Trivia = new List<string>
+                    {
+                        "Hates heat",
+                        "Used to be a myth"
+                    }
+                }
+            };
+        }
     }
 }

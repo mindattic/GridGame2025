@@ -112,32 +112,39 @@ public class StageManager : MonoBehaviour
         g.WaveAnnouncement.Show(waveIndex + 1, currentStage.Waves.Count);
     }
 
+
     /// <summary>
-    /// Spawns a new actor in the scene.
+    /// Spawns a new actor on a guaranteed free tile.
+    /// Always assigns a fresh unoccupied location to the StageActor.
     /// </summary>
     public void SpawnActor(StageActor stageActor)
     {
+        // Instantiate and parent under the board
         var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<ActorInstance>();
-        instance.transform.parent = g.Board.transform;
-
+        instance.transform.SetParent(g.Board.transform, false);
         instance.name = $"{stageActor.characterName}_{Guid.NewGuid():N}";
         instance.characterName = stageActor.characterName;
         instance.team = stageActor.Team;
 
-        // Show stats based on characterName and stageActor's level
+        // Stats and metadata
         instance.stats = ActorRepo.Actors[stageActor.characterName].GetStats(stageActor.Level);
-
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
 
-        stageActor.Location ??= RNG.UnoccupiedLocation;
+        // Pick and assign location, then spawn
+        var location = RNG.UnoccupiedLocation;
 
-        instance.Spawn(stageActor.Location.Value);
+        // This ensures that the game's stage data "knows" where this actor is starting.
+        // Used for saving, AI planning, and any systems that read StageActor info.
+        stageActor.Location = location;
 
+        // This physically places the GameObject in the scene and updates the tile's occupancy.
+        instance.Spawn(location);
+
+        // Register the new actor
         g.Actors.All.Add(instance);
     }
-
 
     /// <summary>
     /// Called when an actor dies. Triggers checks for game over or stage completion.
@@ -207,9 +214,9 @@ public class StageManager : MonoBehaviour
 
 
     /// <summary>
-    /// Convenience method for adding a new enemy actor.
+    /// Convenience method for adding a new attacker actor.
     /// </summary>
-    /// <param name="character">characterName type for the enemy.</param>
+    /// <param name="character">characterName type for the attacker.</param>
     public void AddEnemy(string character)
     {
         var stageActor = new StageActor(character, Team.Enemy, level: 1, location: RNG.UnoccupiedLocation);

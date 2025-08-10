@@ -7,7 +7,7 @@ namespace Assets.Scripts.Events
     /// <summary>
     /// EnemyPreAttackSequence
     /// Purpose:
-    ///   Runs immediately before a single enemy's attack.
+    ///   Runs immediately before a single attacker's attack.
     ///   Designed as a hook for buffs, debuffs, or pre-attack effects.
     ///
     /// Behavior:
@@ -23,7 +23,7 @@ namespace Assets.Scripts.Events
         private readonly ActorInstance enemy; // Enemy preparing to attack.
 
         /// <summary>
-        /// Creates a new pre-attack sequence for a specific enemy.
+        /// Creates a new pre-attack sequence for a specific attacker.
         /// </summary>
         public EnemyPreAttackSequence(ActorInstance enemy)
         {
@@ -31,11 +31,11 @@ namespace Assets.Scripts.Events
         }
 
         /// <summary>
-        /// Executes any pre-attack effects for the given enemy.
+        /// Executes any pre-attack effects for the given attacker.
         /// </summary>
         public override IEnumerator Execute()
         {
-            // Safety check: null or inactive enemy should skip this step.
+            // Safety check: null or inactive attacker should skip this step.
             if (enemy == null || !enemy.isPlaying)
                 yield break;
 

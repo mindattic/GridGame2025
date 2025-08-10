@@ -16,9 +16,14 @@ static class RNG
 
     public static TileInstance Tile => g.Tiles.Shuffle().First();
 
-    public static TileInstance UnoccupiedTile => g.Tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
-
+    
     public static Vector2Int Location => new Vector2Int(Int(1, g.Board.columnCount), Int(1, g.Board.rowCount));
+
+
+
+
+
+    public static TileInstance UnoccupiedTile => g.Tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
 
     public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
 
@@ -199,6 +204,11 @@ static class RNG
         var keys = SpriteRepo.Backgrounds.Keys.ToList();
         string key = keys[Int(0, keys.Count - 1)];
         return SpriteRepo.Backgrounds[key];
+    }
+
+    public static HitType HitType()
+    {
+        return EnumValue<HitType>();
     }
 
 }

@@ -34,6 +34,7 @@ namespace Assets.Helper
             public static Color Red = RGB(255, 0, 0);
             public static Color Green = RGB(0, 255, 0);
             public static Color GunMetal = RGB(42, 52, 57);
+            public static Color Yellow = RGB(255, 255, 0);
         }
 
         public static class HealthBar

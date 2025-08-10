@@ -19,125 +19,275 @@ public enum ElementalDamageType
     Arcane
 }
 
+public enum HitType
+{
+    Normal,
+    CriticalHit,
+    GlancingBlow
+}
+
+/// <summary>
+/// Centralized numeric formulas for combat, movement pacing, and stat conversions.
+/// All methods are pure utilities and must not mutate game state.
+/// Calculations use float throughout and convert to int only at the final step where required.
+/// </summary>
 public static class Formulas
 {
-    private static LogManager log => GameManager.instance.logManager;
+    // Note: Do not keep cached managers here. These helpers must stay pure.
 
+    /// <summary>
+    /// Returns a small multiplicative tilt based on Luck to bias random variance slightly.
+    /// </summary>
+    private static float LuckTilt(ActorStats stats)
+    {
+        float t = Mathf.Clamp01(stats.Luck / 100f);
+        return Mathf.Lerp(0.98f, 1.02f, t);
+    }
+
+    /// <summary>
+    /// Samples a multiplicative variance in [1 - range, 1 + range], slightly biased by Luck.
+    /// No rounding occurs here.
+    /// </summary>
+    private static float SampleVarianceWithLuck(ActorStats stats, float rangeFraction)
+    {
+        float minV = 1f - rangeFraction;
+        float maxV = 1f + rangeFraction;
+
+        float roll = RNG.Float(minV, maxV);
+        float adjusted = roll * LuckTilt(stats);
+
+        return Mathf.Clamp(adjusted, minV, maxV);
+    }
+
+    /// <summary>
+    /// Returns a small multiplicative modifier based on Level and Luck.
+    /// No rounding occurs here.
+    /// </summary>
     public static float LuckModifier(ActorStats stats)
     {
         float multiplier = 0.01f * stats.Level;
         return RNG.Float(1f, 1f + stats.Luck * multiplier);
     }
 
+    /// <summary>
+    /// Attacker hit accuracy score before compare with defender evasion.
+    /// Pure float math; no rounding.
+    /// </summary>
     public static float Accuracy(ActorStats stats)
     {
         float baseAccuracy = 75f + stats.Level * 0.5f;
         float precision = stats.Wisdom * 1.25f;
         float luck = LuckModifier(stats);
+
         return baseAccuracy + precision + luck;
     }
 
+    /// <summary>
+    /// Defender evasion score before compare with attacker accuracy.
+    /// Pure float math; no rounding.
+    /// </summary>
     public static float Evasion(ActorStats stats)
     {
         float agility = stats.Agility * 2f;
         float staminaBonus = stats.Stamina * 0.5f;
         float luck = LuckModifier(stats);
+
         return agility + staminaBonus + luck;
     }
 
-    public static bool IsHit(ActorInstance attacker, ActorInstance target)
+    /// <summary>
+    /// Rolls Normal, CriticalHit, or GlancingBlow based on accuracy vs evasion and crit chance.
+    /// Uses float comparisons only; no integer conversions here.
+    /// </summary>
+    public static HitType CalculateHitType(ActorInstance attacker, ActorInstance opponent)
     {
         float accuracy = Accuracy(attacker.stats);
-        float evade = Evasion(target.stats);
-        float chance = accuracy - evade;
-        float roll = RNG.Float(0, 100);
-        return roll < Mathf.Clamp(chance, 5f, 95f);
-    }
+        float evade = Evasion(opponent.stats);
+        float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);
 
-    public static bool IsCriticalHit(ActorInstance attacker, ActorInstance target)
-    {
+        // Miss becomes a glancing blow
+        if (RNG.Float(0f, 100f) >= hitChance)
+            return HitType.GlancingBlow;
+
+        // Connected: check for crit
         float baseCrit = 5f;
         float focus = attacker.stats.Wisdom * 0.4f;
         float luck = attacker.stats.Luck * 0.3f;
         float critChance = baseCrit + focus + luck;
-        return RNG.Float(0, 100) < critChance;
+
+        if (RNG.Float(0f, 100f) < critChance)
+            return HitType.CriticalHit;
+
+        return HitType.Normal;
     }
 
+    /// <summary>
+    /// Derived max health from core stats.
+    /// Pure float math; callers decide if they need rounding for display.
+    /// </summary>
     public static float Health(ActorStats stats)
     {
-        return 50 + stats.Vitality * 10f + stats.Level * 2f;
+        return 50f + stats.Vitality * 10f + stats.Level * 2f;
     }
 
+    /// <summary>
+    /// Physical offense score including optional weapon power.
+    /// Float only; no rounding.
+    /// </summary>
     public static float Offense(ActorStats stats, float weaponPower = 0f)
     {
-        float gearModifier = 0f; // reserved for gear modifiers
-        float baseDamage = stats.Strength * 2f + weaponPower + gearModifier;
-        float luck = LuckModifier(stats);
-        return baseDamage * luck;
+        return stats.Strength * 2f + weaponPower;
     }
 
+    /// <summary>
+    /// Physical defense score including optional armor rating.
+    /// Float only; no rounding.
+    /// </summary>
     public static float Defense(ActorStats stats, float armorRating = 0f)
     {
-        float gearModifier = 0f; // reserved for gear modifiers
-        float baseDefense = stats.Vitality * 1.5f + stats.Stamina * 0.5f + armorRating + gearModifier;
-        float luck = LuckModifier(stats);
-        return baseDefense * luck;
+        return stats.Vitality * 1.5f + stats.Stamina * 0.5f + armorRating;
     }
 
+    /// <summary>
+    /// Magical offense score from Intelligence and Wisdom.
+    /// Float only; no rounding.
+    /// </summary>
     public static float MagicOffense(ActorStats stats)
     {
-        float gearModifier = 0f; // reserved for gear modifiers
-        float magicPower = stats.Intelligence * 2.5f + stats.Wisdom * 1f + gearModifier;
-        float luck = LuckModifier(stats);
-        return magicPower * luck;
+        return stats.Intelligence * 2.5f + stats.Wisdom * 1f;
     }
 
+    /// <summary>
+    /// Magical resistance score from Intelligence, Wisdom, and Stamina.
+    /// Float only; no rounding.
+    /// </summary>
     public static float MagicResistance(ActorStats stats)
     {
-        float gearModifier = 0f; // reserved for gear modifiers
-        float resistance = stats.Intelligence * 1.5f + stats.Wisdom * 1f + stats.Stamina * 0.5f + gearModifier;
-        float luck = LuckModifier(stats);
-        return resistance * luck;
+        return stats.Intelligence * 1.5f + stats.Wisdom * 1f + stats.Stamina * 0.5f;
     }
 
-    public static int CalculateDamage(ActorInstance attacker, ActorInstance target, float weaponPower = 0f, float armorRating = 0f, ElementalDamageType element = ElementalDamageType.Physical, float resistance = 0f)
+    /// <summary>
+    /// Applies positive or negative resistance to a base value as a float multiplier.
+    /// No rounding here.
+    /// </summary>
+    public static float ApplyResistance(float baseValue, float resistance)
     {
-        float offense = Offense(attacker.stats, weaponPower);
-        float defense = Defense(target.stats, armorRating);
-        float rawDamage = offense - defense;
+        if (resistance >= 0f)
+            return baseValue * (100f / (100f + resistance));
 
-        if (IsCriticalHit(attacker, target))
-            rawDamage *= 1.5f;
-
-        float adjusted = ApplyResistance(rawDamage, resistance);
-        return Mathf.Max(Mathf.FloorToInt(adjusted), 1);
+        return baseValue * (1f + Mathf.Abs(resistance) / 100f);
     }
 
-    public static int CalculateMagicDamage(ActorInstance caster, ActorInstance target, ElementalDamageType element = ElementalDamageType.Arcane, float resistance = 0f)
+    /// <summary>
+    /// Computes a fully populated physical AttackResult for attacker vs opponent.
+    /// All math remains float until the final conversion to int damage.
+    /// </summary>
+    public static AttackResult CalculateAttackResult(
+        ActorInstance attacker,
+        ActorInstance opponent,
+        float weaponPower = 0f,
+        float armorRating = 0f,
+        ElementalDamageType element = ElementalDamageType.Physical,
+        float resistance = 0f)
     {
-        float offense = MagicOffense(caster.stats);
-        float resist = MagicResistance(target.stats);
-        float damage = offense - resist;
+        float off = Offense(attacker.stats, weaponPower);
+        float def = Defense(opponent.stats, armorRating);
+        float raw = off - def;
 
-        float adjusted = ApplyResistance(damage, resistance);
-        return Mathf.Max(Mathf.FloorToInt(adjusted), 1);
+        float resisted = ApplyResistance(raw, resistance);
+        float amplified = resisted * 2f;
+        float varied = amplified * SampleVarianceWithLuck(attacker.stats, 0.33f);
+
+        HitType type = CalculateHitType(attacker, opponent);
+
+        // Single rounding step at the end. Preserve behavior of floor with a minimum of 1.
+        int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied));
+
+        return new AttackResult(attacker, opponent, finalDamage, type);
     }
 
-    public static float ApplyResistance(float baseDamage, float resistance)
+    /// <summary>
+    /// Computes a fully populated magical AttackResult for caster vs target.
+    /// All math remains float until the final conversion to int damage.
+    /// </summary>
+    public static AttackResult CalculateMagicDamage(
+        ActorInstance caster,
+        ActorInstance target,
+        ElementalDamageType element = ElementalDamageType.Arcane,
+        float resistance = 0f)
     {
-        if (resistance >= 0)
-        {
-            return baseDamage * (100f / (100f + resistance));
-        }
-        else
-        {
-            return baseDamage * (1f + Mathf.Abs(resistance) / 100f);
-        }
+        float off = MagicOffense(caster.stats);
+        float res = MagicResistance(target.stats);
+        float raw = off - res;
+
+        float resisted = ApplyResistance(raw, resistance);
+        float amplified = resisted * 2f;
+        float varied = amplified * SampleVarianceWithLuck(caster.stats, 0.33f);
+
+        HitType type = CalculateHitType(caster, target);
+
+        // Single rounding step at the end. Preserve behavior of floor with a minimum of 1.
+        int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied));
+
+        return new AttackResult(caster, target, finalDamage, type);
     }
 
+    /// <summary>
+    /// Clamps HP to nonnegative values while alive. Float domain.
+    /// </summary>
+    public static float ClampAlive(float hp)
+    {
+        return hp < 1f ? 0f : hp;
+    }
+
+    /// <summary>
+    /// Action point regeneration per tick based on Intelligence, Stamina, and Level. Float domain.
+    /// </summary>
     public static float APRegen(ActorStats stats)
     {
-        float gearModifier = 0f; // reserved for gear modifiers
-        return 5f + stats.Intelligence * 0.6f + stats.Stamina * 0.4f + stats.Level * 0.2f + gearModifier;
+        return 5f + stats.Intelligence * 0.6f + stats.Stamina * 0.4f + stats.Level * 0.2f;
     }
+
+    /// <summary>
+    /// Returns the percentage chance (0–100) of landing a critical hit, based on attacker stats.
+    /// This is the same formula used internally in CalculateHitType for crit determination.
+    /// </summary>
+    public static float CriticalHitPercent(ActorInstance attacker, ActorInstance opponent)
+    {
+        // First, compute hit chance to ensure attack connects.
+        float accuracy = Accuracy(attacker.stats);
+        float evade = Evasion(opponent.stats);
+        float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);
+
+        // If it can't hit at all, crit chance is effectively 0.
+        if (hitChance <= 0f)
+            return 0f;
+
+        // Crit chance formula from CalculateHitType.
+        float baseCrit = 5f;
+        float focus = attacker.stats.Wisdom * 0.4f;
+        float luck = attacker.stats.Luck * 0.3f;
+        float critChance = baseCrit + focus + luck;
+
+        // Ensure range safety.
+        return Mathf.Clamp(critChance, 0f, 100f);
+    }
+
+    /// <summary>
+    /// Returns the percentage chance (0–100) of a glancing blow, based on attacker vs opponent stats.
+    /// This is the same formula used internally in CalculateHitType for glancing determination.
+    /// </summary>
+    public static float GlancingBlowPercent(ActorInstance attacker, ActorInstance opponent)
+    {
+        float accuracy = Accuracy(attacker.stats);
+        float evade = Evasion(opponent.stats);
+
+        // Glancing chance is just the miss chance in the existing model.
+        float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);
+        float glanceChance = 100f - hitChance;
+
+        return Mathf.Clamp(glanceChance, 0f, 100f);
+    }
+
+
 }

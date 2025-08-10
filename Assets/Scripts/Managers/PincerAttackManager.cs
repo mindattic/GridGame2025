@@ -99,22 +99,10 @@ public class PincerAttackManager : MonoBehaviour
         var pair = pairs.FirstOrDefault(p => p.attacker1 == attacker || p.attacker2 == attacker);
         if (pair == null) return attackResults;
 
-        foreach (var opp in pair.opponents)
+        foreach (var opponent in pair.opponents)
         {
-            bool hit = Formulas.IsHit(attacker, opp);
-            bool crit = Formulas.IsCriticalHit(attacker, opp);
-            int dmg = hit ? Formulas.CalculateDamage(attacker, opp) : 0;
-
-            attackResults.Add(new AttackResult
-            {
-                Attacker = attacker,
-                Opponent = opp,
-                IsHit = hit,
-                IsCriticalHit = crit,
-                Damage = dmg
-            });
-
-            // NO recursive chaining—each pincer acts independently!
+            var attackResult = Formulas.CalculateAttackResult(attacker, opponent);
+            attackResults.Add(attackResult);
         }
         return attackResults;
     }
@@ -127,15 +115,15 @@ public class PincerAttackManager : MonoBehaviour
 
         foreach (var p in participants.pair)
         {
-            foreach (var sup in p.supporters1)
+            foreach (var supporter in p.supporters1)
             {
-                g.SupportLineManager.Spawn(sup, p.attacker1);
-                g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker1, sup));
+                g.SupportLineManager.Spawn(supporter, p.attacker1);
+                g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker1, supporter));
             }
-            foreach (var sup in p.supporters2)
+            foreach (var supporter in p.supporters2)
             {
-                g.SupportLineManager.Spawn(sup, p.attacker2);
-                g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker2, sup));
+                g.SupportLineManager.Spawn(supporter, p.attacker2);
+                g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker2, supporter));
             }
         }
 
@@ -176,19 +164,10 @@ public class PincerAttackManager : MonoBehaviour
         g.TurnManager.NextTurn();
     }
 
-    private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opp)
+    private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opponent)
     {
-        bool hit = Formulas.IsHit(attacker, opp);
-        bool crit = Formulas.IsCriticalHit(attacker, opp);
-        int dmg = hit ? Formulas.CalculateDamage(attacker, opp) : 0;
-        return new AttackResult
-        {
-            Attacker = attacker,
-            Opponent = opp,
-            IsHit = hit,
-            IsCriticalHit = crit,
-            Damage = dmg
-        };
+        var attackResult = Formulas.CalculateAttackResult(attacker, opponent);
+        return attackResult;
     }
 
     public List<ActorInstance> FindSupporters(ActorInstance attacker)

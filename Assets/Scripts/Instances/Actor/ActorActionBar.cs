@@ -100,9 +100,9 @@ public class ActorActionBar
     private IEnumerator Fill()
     {
         // Abort the fill process if:
-        // - The enemy is stunned,
+        // - The attacker is stunned,
         // - No hero is selected,
-        // - The actor is not an enemy,
+        // - The actor is not an attacker,
         // - The actor is not playing,
         // - The actor already has max AP, or
         // - The actor is currently gaining AP.

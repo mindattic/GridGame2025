@@ -7,7 +7,7 @@ namespace Assets.Scripts.Events
     /// <summary>
     /// EnemyPostAttackSequence
     /// Purpose:
-    ///   Runs immediately after a single enemy finishes its attack.
+    ///   Runs immediately after a single attacker finishes its attack.
     ///   Designed as a hook for post-attack effects or cleanup.
     ///
     /// Behavior:
@@ -23,7 +23,7 @@ namespace Assets.Scripts.Events
         private readonly ActorInstance enemy; // Enemy that just attacked.
 
         /// <summary>
-        /// Creates a new post-attack sequence for a specific enemy.
+        /// Creates a new post-attack sequence for a specific attacker.
         /// </summary>
         public EnemyPostAttackSequence(ActorInstance enemy)
         {
@@ -31,11 +31,11 @@ namespace Assets.Scripts.Events
         }
 
         /// <summary>
-        /// Executes any post-attack effects for the given enemy.
+        /// Executes any post-attack effects for the given attacker.
         /// </summary>
         public override IEnumerator Execute()
         {
-            // Safety check: null or inactive enemy should skip this step.
+            // Safety check: null or inactive attacker should skip this step.
             if (enemy == null || !enemy.isPlaying)
                 yield break;
 

@@ -7,14 +7,14 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Builds strict per-enemy order for the enemy team:
+    /// Builds strict per-attacker order for the attacker team:
     /// e1.move -> e1.attack -> e2.move -> e2.attack -> ... -> EndTurn
     /// </summary>
     public class EnemyStartSequence : SequenceEvent
     {
         public override IEnumerator Execute()
         {
-            // Ensure we only run on the enemy turn.
+            // Ensure we only run on the attacker turn.
             if (!g.TurnManager.isEnemyTurn)
                 yield break;
 
@@ -38,7 +38,7 @@ namespace Assets.Scripts.Events
                 yield break;
             }
 
-            // For each ready enemy, enqueue a move followed immediately by an attack for that same enemy.
+            // For each ready attacker, enqueue a move followed immediately by an attack for that same attacker.
             foreach (var e in ready)
             {
                 g.SequenceManager.Add(new EnemyMoveSequence(e));
@@ -47,7 +47,7 @@ namespace Assets.Scripts.Events
                 g.SequenceManager.Add(new EnemyPostAttackSequence(e));
             }
 
-            // After all per-enemy chains, end the enemy turn.
+            // After all per-attacker chains, end the attacker turn.
             g.SequenceManager.Add(new EndTurnSequence());
 
             // Run the global queue.

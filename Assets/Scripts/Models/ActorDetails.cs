@@ -11,10 +11,10 @@ public class ActorDetails
     {
         Description = other.Description;
         Card = other.Card;
-        Lore = other.Lore != null ? new List<string>(other.Lore) : new List<string>();
+        Trivia = other.Trivia != null ? new List<string>(other.Trivia) : new List<string>();
     }
 
     public string Description;
     public string Card;
-    public List<string> Lore = new List<string>();
+    public List<string> Trivia = new List<string>();
 }

@@ -1,57 +1,67 @@
-﻿using Assets.Helpers;
+using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
-public static class Thief
+
+namespace Assets.Data.Actor
 {
-    public static ActorData Data()
+    public static class Thief
     {
-        return new ActorData
+        public static ActorData Data()
         {
-            Character = CharacterHelper.Thief,
-            Description = "A nimble rogue with sticky fingers.",
-            BaseStats = new ActorStats
+            return new ActorData
             {
-                Level = 1,
-                Strength = 5,
-                Vitality = 2,
-                Agility = 6,
-                Stamina = 2,
-                Intelligence = 2,
-                Wisdom = 2,
-                Luck = 7
-            },
-            StatGrowth = new StatGrowth
-            {
-                Strength = 0.4f,
-                Vitality = 0.3f,
-                Agility = 1.5f,
-                Stamina = 0.5f,
-                Intelligence = 0.4f,
-                Wisdom = 0.4f,
-                Luck = 2.0f
-            },
-            MilestoneStatGrowth = new Dictionary<int, StatGrowth>
-            {
-                { 5, new StatGrowth(0.5f, 0.3f, 2.0f, 0.6f, 0.5f, 0.5f, 2.5f) },
-                { 10, new StatGrowth(0.6f, 0.4f, 2.5f, 0.7f, 0.6f, 0.6f, 3.0f) },
-                { 20, new StatGrowth(0.8f, 0.5f, 3.0f, 0.8f, 0.8f, 0.8f, 4.0f) },
-                { 40, new StatGrowth(1.0f, 0.7f, 3.5f, 1.0f, 1.0f, 1.0f, 5.0f) }
-            },
-            Stats = new ActorStats(),
-            ThumbnailSettings = new ThumbnailSettings
-            {
-                Position = new Vector3(0.61f, -1.56f, 0f),
-                Scale = new Vector3(5.3f, 5.3f, 0f),
-            },
-            Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Thief}"),
-            Details = new ActorDetails
-            {
+                Character = CharacterHelper.Thief,
                 Description = "A nimble rogue with sticky fingers.",
-                Card = "Has a high chance to evade. Can steal from enemies.",
-                Lore = new List<string> { "Loves coin", "Allergic to jail cells" }
-            }
-        };
+                Expectations = "Mobile crit fisher. Leans on evasion and luck to win long trades. Avoids armored foes.",
+                Lore = "Knows three hundred pockets by heart.",
+                BaseStats = new ActorStats
+                {
+                    Level = 1,
+                    Strength = 5f,
+                    Vitality = 2f,
+                    Agility = 6f,
+                    Stamina = 2f,
+                    Intelligence = 2f,
+                    Wisdom = 2f,
+                    Luck = 7f
+                },
+                StatGrowth = new StatGrowth
+                {
+                    Strength = 1.5f,
+                    Vitality = 0.5f,
+                    Agility = 2.0f,
+                    Stamina = 0.6f,
+                    Intelligence = 0.5f,
+                    Wisdom = 0.7f,
+                    Luck = 2.2f
+                },
+                MilestoneStatGrowth = new Dictionary<int, StatGrowth>
+                {
+                    { 5, new StatGrowth { Strength = 1.8f, Vitality = 0.5f, Agility = 2.5f, Stamina = 0.7f, Intelligence = 0.6f, Wisdom = 0.8f, Luck = 2.8f } },
+                    { 10, new StatGrowth { Strength = 2.1f, Vitality = 0.6f, Agility = 3.0f, Stamina = 0.9f, Intelligence = 0.8f, Wisdom = 1.0f, Luck = 3.4f } },
+                    { 20, new StatGrowth { Strength = 2.5f, Vitality = 0.8f, Agility = 3.5f, Stamina = 1.1f, Intelligence = 1.0f, Wisdom = 1.2f, Luck = 4.5f } },
+                    { 40, new StatGrowth { Strength = 2.9f, Vitality = 1.0f, Agility = 4.3f, Stamina = 1.3f, Intelligence = 1.2f, Wisdom = 1.5f, Luck = 5.5f } }
+                },
+                Stats = new ActorStats(),
+                ThumbnailSettings = new ThumbnailSettings
+                {
+                    Position = new Vector3(0.61f, -1.56f, 0.0f),
+                    Scale = new Vector3(5.3f, 5.3f, 0f)
+                },
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Thief}"),
+                Details = new ActorDetails
+                {
+                    Description = "A nimble rogue with sticky fingers.",
+                    Card = "Has a high chance to evade. Can steal from enemies.",
+                    Trivia = new List<string>
+                    {
+                        "Loves coin",
+                        "Allergic to jail cells"
+                    }
+                }
+            };
+        }
     }
 }

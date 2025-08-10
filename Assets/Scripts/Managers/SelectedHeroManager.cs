@@ -52,7 +52,7 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Drag()
     {
-        // Only proceed if it's the hero's turn, a hero is focused, and that actor is not an enemy.
+        // Only proceed if it's the hero's turn, a hero is focused, and that actor is not an attacker.
         if (!g.TurnManager.isHeroTurn || !g.Actors.HasFocusedActor || g.Actors.FocusedActor.isEnemy)
             return;
 

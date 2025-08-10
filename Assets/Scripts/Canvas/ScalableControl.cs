@@ -146,7 +146,7 @@ public class ScalableControl : MonoBehaviour
             background.anchoredPosition = Vector2.zero;
             background.sizeDelta = Vector2.zero;
 
-            //if (background.TryGetComponent(out Image bgImage) && bgImage.type == Image.Type.Tiled)
+            //if (background.TryGetComponent(out Image bgImage) && bgImage.type == Image.HitType.Tiled)
             //{
             //    float targetTileSize = root.rect.width; // Adjust this for your desired visual tile size
 

@@ -43,16 +43,17 @@ namespace Assets.Scripts.Events
                 pair.attacker2.action.Shrink()
             );
 
-            // Determine bump directions
-            var firstOpponent = pair.attackResults1.First().Opponent;
+            // Choose an adjacent target per attacker
+            var opp1 = pair.attackResults1.First().Opponent;
+            var opp2 = pair.attackResults2.First().Opponent;
 
             // Build attack routines
             var trigger1 = AttackHelper.MultiAttackTrigger(pair.attacker1, pair.attackResults1);
             var trigger2 = AttackHelper.MultiAttackTrigger(pair.attacker2, pair.attackResults2);
 
-            // Run bumps with attached routines
-            yield return pair.attacker1.action.BumpTrigger(firstOpponent, trigger1);
-            yield return pair.attacker2.action.BumpTrigger(firstOpponent, trigger2);
+            // Run bumps toward each attacker's own adjacent opponent
+            yield return pair.attacker1.action.BumpTrigger(opp1, trigger1);
+            yield return pair.attacker2.action.BumpTrigger(opp2, trigger2);
 
             //// Wait until both triggers complete all logic (VfxManager and damage)
             //yield return CoroutineHelper.WaitForAll(

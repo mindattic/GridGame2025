@@ -21,7 +21,7 @@ namespace Assets.Scripts.Events
             // Allow spawn visuals to apply
             yield return Wait.None();
 
-            // Chain into the enemy start-of-turn and RUN it now
+            // Chain into the attacker start-of-turn and RUN it now
             g.SequenceManager.Add(new EnemyStartSequence());
             g.SequenceManager.Execute();
         }

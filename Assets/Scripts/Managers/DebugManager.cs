@@ -7,6 +7,7 @@ using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static Assets.Helper.Intermission.Before;
 using g = Assets.Helpers.GameHelper;
 
 public class DebugManager : MonoBehaviour
@@ -111,7 +112,7 @@ public class DebugManager : MonoBehaviour
         var hero = RNG.Hero;
         hero.Teleport(RNG.UnoccupiedLocation);
 
-        // 3) try to find an enemy already adjacent
+        // 3) try to find an attacker already adjacent
         var enemy = Geometry.GetAdjacentOpponent(hero);
         if (!enemy.Exists())
             enemy = RNG.Enemy;
@@ -134,7 +135,8 @@ public class DebugManager : MonoBehaviour
         var playingEnemies = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
         foreach (var enemy in playingEnemies)
         {
-            enemy.Damage(9999);
+            var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitType.CriticalHit);
+            enemy.Damage(attackResult);
         }
         StartCoroutine(DeathHelper.Process());
     }
@@ -243,7 +245,7 @@ public class DebugManager : MonoBehaviour
     public void TriggerEnemyAttack()
     {
         if (g.TurnManager.isHeroTurn)
-            g.TurnManager.NextTurn();           // switch to enemy turn
+            g.TurnManager.NextTurn();           // switch to attacker turn
     }
 
 
@@ -331,24 +333,16 @@ public class DebugManager : MonoBehaviour
 
     public void VFXTest_BlueSlash1()
     {
-        var attack = new AttackResult()
-        {
-            Attacker = hero1,
-            Opponent = g.Actors.Enemies.First(),
-            IsHit = true,
-            IsCriticalHit = RNG.Int(1, 10) == 10,
-            Damage = 3
-        };
-
-        if (attack.IsCriticalHit)
+        var attackResult = new AttackResult(hero1, g.Actors.Enemies.First(), 3, HitType.Normal);
+        if (attackResult.HitType == HitType.CriticalHit)
         {
             var crit = VisualEffectRepo.VisualEffects["YellowHit"];
             g.VfxManager.Spawn(crit, hero1.position);
-            attack.Damage = (int)Math.Round(attack.Damage * 1.5f);
+            attackResult.Damage = (int)Math.Round(attackResult.Damage * 1.5f);
         }
 
         var vfx = VisualEffectRepo.VisualEffects["BlueSlash1"];
-        g.VfxManager.Spawn(vfx, hero1.position, hero1.DamageTrigger(attack.Damage));
+        g.VfxManager.Spawn(vfx, hero1.position, hero1.DamageTrigger(attackResult));
     }
 
     public void VFXTest_BlueSlash2()

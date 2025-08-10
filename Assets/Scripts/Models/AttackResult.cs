@@ -6,15 +6,25 @@ using System.Threading.Tasks;
 
 namespace Assets.Scripts.Models
 {
-    public class AttackResult
+    public sealed class AttackResult
     {
         public ActorInstance Attacker;
         public ActorInstance Opponent;
-        public bool IsHit;
-        public bool IsCriticalHit;
         public int Damage;
+        public HitType HitType;
 
-        public bool IsMiss => !IsHit;
+        // Require all fields up front
+        public AttackResult(ActorInstance attacker, ActorInstance opponent, int damage, HitType hitType)
+        {
+            if (attacker == null) throw new System.ArgumentNullException(nameof(attacker));
+            if (opponent == null) throw new System.ArgumentNullException(nameof(opponent));
+
+            Attacker = attacker;
+            Opponent = opponent;
+            Damage = damage;
+            HitType = hitType;
+        }
     }
+
 
 }
