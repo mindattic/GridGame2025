@@ -12,7 +12,7 @@ namespace Assets.Scripts.Events
     /// </summary>
     public class HeroStartSequence : SequenceEvent
     {
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // Only run during hero turns
             if (!g.TurnManager.isHeroTurn)

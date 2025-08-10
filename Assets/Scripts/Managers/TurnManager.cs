@@ -39,12 +39,12 @@ namespace Assets.Scripts.Managers
         }
 
         /// <summary>
-        /// Enqueue the appropriate start sequence for the active side.
-        /// SequenceManager executes items in order, and Execute is safe to call repeatedly.
+        /// EnqueueRoutine the appropriate start sequence for the active side.
+        /// SequenceManager executes items in order, and ProcessRoutine is safe to call repeatedly.
         /// </summary>
         private void StartTurn()
         {
-            // Enqueue the correct start sequence for the active side
+            // EnqueueRoutine the correct start sequence for the active side
             g.SequenceManager.Add(isHeroTurn ? new HeroStartSequence() : new EnemyStartSequence());
 
             // Ensure execution is running

@@ -507,7 +507,7 @@ public class ActorInstance : MonoBehaviour
         if (healthBar.isDraining)
             yield return new WaitUntil(() => healthBar.isEmpty);
 
-        //Execute portrait dissolve effect and play death sound.
+        //ProcessRoutine portrait dissolve effect and play death sound.
         g.Portrait3DManager.Dissolve(this);
         g.AudioManager.Play("Death");
 

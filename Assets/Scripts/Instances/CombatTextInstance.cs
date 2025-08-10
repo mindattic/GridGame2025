@@ -58,20 +58,20 @@ public class CombatTextInstance : MonoBehaviour
             pos.y + g.TileSize / 4,
             0);
 
-        // Bounce the selected motion coroutine
+        // BounceRoutine the selected motion coroutine
         StartCoroutine(style switch
         {
-            TextMotion.Float => Float(),
-            TextMotion.Oscillate => Oscillate(),
-            TextMotion.Bounce => Bounce(),
-            _ => Float(),
+            TextMotion.Float => FloatRoutine(),
+            TextMotion.Oscillate => OscillateRoutine(),
+            TextMotion.Bounce => BounceRoutine(),
+            _ => FloatRoutine(),
         });
     }
 
     /// <summary>
     /// Floats the text upward while fading out.
     /// </summary>
-    private IEnumerator Float()
+    private IEnumerator FloatRoutine()
     {
         float alpha = 1;
         Color color = textMesh.color;
@@ -95,7 +95,7 @@ public class CombatTextInstance : MonoBehaviour
     /// <summary>
     /// Oscillates the text horizontally while rising and fading out.
     /// </summary>
-    private IEnumerator Oscillate()
+    private IEnumerator OscillateRoutine()
     {
         float alpha = 1;
         Color color = textMesh.color;
@@ -124,7 +124,7 @@ public class CombatTextInstance : MonoBehaviour
     /// <summary>
     /// Bounces the text and fades it out after the first bounce.
     /// </summary>
-    private IEnumerator Bounce()
+    private IEnumerator BounceRoutine()
     {
         float alpha = 1f;
         Color color = textMesh.color;

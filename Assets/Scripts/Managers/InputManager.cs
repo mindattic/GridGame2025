@@ -78,7 +78,7 @@ public class InputManager : MonoBehaviour
                                 //        g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));
 
                                 //    g.SequenceManager.Add(new HideTargetIndicatorSequence());
-                                //    g.SequenceManager.Execute();
+                                //    g.SequenceManager.ProcessRoutine();
                                 //});
 
                                 //YieldSpawn from avility button

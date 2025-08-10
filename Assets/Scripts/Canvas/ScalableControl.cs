@@ -46,7 +46,7 @@ public class ScalableControl : MonoBehaviour
 #if UNITY_EDITOR
     void Update()
     {
-        // Continuously apply layout changes in SpawnPair & Edit mode (if in unity editor)
+        // Continuously apply layout changes in SpawnPairRoutine & Edit mode (if in unity editor)
         ApplyLayout();
     }
 #endif

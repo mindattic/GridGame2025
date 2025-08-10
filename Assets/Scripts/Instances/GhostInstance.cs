@@ -51,7 +51,7 @@ public class GhostInstance : MonoBehaviour
         this.renderers.thumbnail.color = ColorHelper.RGBA(255, 255, 255, 64);
         //this.render.frame.color = ScreenHelper.ColorRGBA(255, 255, 255, 100);
         this.Position = actor.position;
-        StartCoroutine(FadeOut());
+        StartCoroutine(FadeOutRoutine());
     }
 
 
@@ -63,7 +63,7 @@ public class GhostInstance : MonoBehaviour
     }
 
 
-    private IEnumerator FadeOut()
+    private IEnumerator FadeOutRoutine()
     {
         float alpha = renderers.thumbnail.color.a;
         Color color = renderers.thumbnail.color;

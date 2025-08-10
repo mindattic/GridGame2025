@@ -35,7 +35,7 @@ public class CoinInstance : MonoBehaviour
     private AnimationCurve cX;
     private AnimationCurve cY;
 
-    // Bounce simulation fields
+    // BounceRoutine simulation fields
     private Vector3 velocity;
     private float gravity = -20f;
     private int bouncesRemaining = 6;
@@ -141,7 +141,7 @@ public class CoinInstance : MonoBehaviour
         Vector3 pos = transform.position;
         pos += velocity * Time.deltaTime;
 
-        // Bounce on ground (assume y = start.y + groundOffsetY is ground level)
+        // BounceRoutine on ground (assume y = start.y + groundOffsetY is ground level)
         if (pos.y <= start.y + groundOffsetY)
         {
             if (bouncesRemaining > 0 && Mathf.Abs(velocity.y) > minBounceVelocity)

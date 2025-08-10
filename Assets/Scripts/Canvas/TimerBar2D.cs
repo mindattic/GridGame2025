@@ -92,8 +92,8 @@ public class TimerBar2D : MonoBehaviour
             countdown = null;
         }
 
-        // ExecuteRoutine new countdown
-        countdown = StartCoroutine(Countdown());
+        // ProcessRoutine new countdown
+        countdown = StartCoroutine(CountdownRoutine());
     }
 
     /// <summary>
@@ -160,7 +160,7 @@ public class TimerBar2D : MonoBehaviour
     /// <summary>
     /// Main countdown loop that decrements timeRemaining and updates the fill each frame.
     /// </summary>
-    private IEnumerator Countdown()
+    private IEnumerator CountdownRoutine()
     {
         while (timeRemaining > 0f)
         {

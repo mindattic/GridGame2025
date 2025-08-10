@@ -39,7 +39,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute a shake on the actor's thumbnail. Optional routine routine runs after the shake completes.
+        /// ProcessRoutine a shake on the actor's thumbnail. Optional routine routine runs after the shake completes.
         /// </summary>
         public void Shake(float intensity, float duration = 0f, IEnumerator routine = null)
         {
@@ -84,7 +84,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute the dodge action as a fire and forget. Optional routine runs at the midpoint.
+        /// ProcessRoutine the dodge action as a fire and forget. Optional routine runs at the midpoint.
         /// </summary>
         public void Dodge(IEnumerator routine = null)
         {
@@ -242,7 +242,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute a growth action. Optional routine runs after growth finishes.
+        /// ProcessRoutine a growth action. Optional routine runs after growth finishes.
         /// </summary>
         public void Grow(float maxSize = 0f, IEnumerator routine = null)
         {
@@ -278,20 +278,20 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute a shrink action. Optional routine runs after shrink finishes.
+        /// ProcessRoutine a shrink action. Optional routine runs after shrink finishes.
         /// </summary>
-        public void TriggerShrink(float minSize = 0f, IEnumerator routine = null)
+        public void Shrink(float minSize = 0f, IEnumerator routine = null)
         {
             if (!instance.isActive)
                 return;
 
-            instance.StartCoroutine(Shrink(minSize, routine));
+            instance.StartCoroutine(ShrinkRoutine(minSize, routine));
         }
 
         /// <summary>
         /// Decreases the actor scale down to a minimum, then optionally runs the routine routine.
         /// </summary>
-        public IEnumerator Shrink(float minSize = 0f, IEnumerator routine = null)
+        public IEnumerator ShrinkRoutine(float minSize = 0f, IEnumerator routine = null)
         {
             float targetMin = minSize > 0f ? minSize : g.TileSize;
             float maxSize = scale.x;
@@ -314,7 +314,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute a 90 degree spin. Optional routine runs at the 90 degree point.
+        /// ProcessRoutine a 90 degree spin. Optional routine runs at the 90 degree point.
         /// </summary>
         public void Spin90(IEnumerator routine = null)
         {
@@ -362,7 +362,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute a 360 degree spin. Optional routine runs after 240 degrees.
+        /// ProcessRoutine a 360 degree spin. Optional routine runs after 240 degrees.
         /// </summary>
         public void Spin360(IEnumerator routine = null)
         {
@@ -405,7 +405,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute a fade in by increasing renderer alpha. Optional routine runs after fade completes.
+        /// ProcessRoutine a fade in by increasing renderer alpha. Optional routine runs after fade completes.
         /// </summary>
         public void FadeIn(float delay = 0f, IEnumerator routine = null)
         {
@@ -442,7 +442,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute a weapon wiggle when AP is full. Optional routine runs after wiggle stops.
+        /// ProcessRoutine a weapon wiggle when AP is full. Optional routine runs after wiggle stops.
         /// </summary>
         public void WeaponWiggle(IEnumerator routine = null)
         {
@@ -476,7 +476,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Execute a wiggle on the turn delay text with damping, then settles back to zero. Optional routine runs after settle.
+        /// ProcessRoutine a wiggle on the turn delay text with damping, then settles back to zero. Optional routine runs after settle.
         /// </summary>
         public void TurnDelayWiggle(IEnumerator routine = null)
         {

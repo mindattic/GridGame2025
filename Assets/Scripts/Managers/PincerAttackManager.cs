@@ -16,7 +16,7 @@ public class PincerAttackManager : MonoBehaviour
             g.TurnManager.NextTurn();
             return;
         }
-        StartCoroutine(Enqueue(participants));
+        StartCoroutine(EnqueueRoutine(participants));
     }
 
     public PincerAttackParticipants GetParticipants(Team team)
@@ -78,7 +78,7 @@ public class PincerAttackManager : MonoBehaviour
 
         while (remaining.Any())
         {
-            // Bounce with top-leftmost among those not already ordered
+            // BounceRoutine with top-leftmost among those not already ordered
             var start = remaining.OrderBy(pos).First();
             var curr = start;
 
@@ -108,7 +108,7 @@ public class PincerAttackManager : MonoBehaviour
         return attackResults;
     }
 
-    private IEnumerator Enqueue(PincerAttackParticipants participants)
+    private IEnumerator EnqueueRoutine(PincerAttackParticipants participants)
     {
         g.SortingManager.OnPincerAttack(participants);
 

@@ -79,7 +79,7 @@ public class StageManager : MonoBehaviour
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
 
-        StartCoroutine(g.Fade.FadeIn());
+        StartCoroutine(g.Fade.FadeInRoutine());
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void OnStageComplete()
     {
-        IEnumerator loadNextStage()
+        IEnumerator loadNextStageRoutine()
         {
             var stageName = currentStage.NextStage;
             currentStage = StageRepo.Get(stageName);
@@ -191,7 +191,7 @@ public class StageManager : MonoBehaviour
             yield return Wait.None();
         }
 
-        StartCoroutine(g.Fade.FadeOut(loadNextStage()));
+        StartCoroutine(g.Fade.FadeOutRoutine(loadNextStageRoutine()));
     }
 
     /// <summary>
@@ -203,13 +203,13 @@ public class StageManager : MonoBehaviour
         if (!allPlayersDead)
             return;
 
-        IEnumerator reloadStage()
+        IEnumerator reloadStageRoutine()
         {
             RestartStage();
             yield return Wait.None();
         }
 
-        StartCoroutine(g.Fade.FadeOut(reloadStage()));
+        StartCoroutine(g.Fade.FadeOutRoutine(reloadStageRoutine()));
     }
 
 

@@ -33,7 +33,7 @@ namespace Assets.Scripts.Events
         /// <summary>
         /// Executes any post-attack effects for the given attacker.
         /// </summary>
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // Safety check: null or inactive attacker should skip this step.
             if (enemy == null || !enemy.isPlaying)

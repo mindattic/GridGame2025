@@ -19,7 +19,7 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Focus()
     {
-        // Only allow focus selection during the hero's turn and Bounce phase.
+        // Only allow focus selection during the hero's turn and BounceRoutine phase.
         if (!g.TurnManager.isHeroTurn)
             return;
 
@@ -48,7 +48,7 @@ public class SelectedHeroManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles dragging an actor, setting up move. Starts Seek phase if at Bounce, otherwise continues drag in Seek phase.
+    /// Handles dragging an actor, setting up move. Starts Seek phase if at BounceRoutine, otherwise continues drag in Seek phase.
     /// </summary>
     public void Drag()
     {

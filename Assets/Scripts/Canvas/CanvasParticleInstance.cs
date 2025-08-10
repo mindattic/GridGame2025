@@ -30,10 +30,10 @@ public class CanvasParticleInstance : MonoBehaviour
         this.horizontalFocus = horizontalFocus;
         this.fallFocus = fallFocus;
         rectTransform = GetComponent<RectTransform>();
-        StartCoroutine(MoveAndDestroy());
+        StartCoroutine(MoveAndDestroyRoutine());
     }
 
-    private IEnumerator MoveAndDestroy()
+    private IEnumerator MoveAndDestroyRoutine()
     {
         while (rectTransform.anchoredPosition.x < Screen.width)
         {

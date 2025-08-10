@@ -13,7 +13,7 @@ namespace Assets.Scripts.Events
     /// </summary>
     public class EnemyStartSequence : SequenceEvent
     {
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // Ensure we only run on the attacker turn.
             if (!g.TurnManager.isEnemyTurn)

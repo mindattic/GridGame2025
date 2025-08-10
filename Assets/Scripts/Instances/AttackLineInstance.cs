@@ -72,10 +72,10 @@ namespace Game.Instances
             lineRenderer.positionCount = points.Length;
             lineRenderer.SetPositions(points);
 
-            StartCoroutine(FadeIn());
+            StartCoroutine(FadeInRoutine());
         }
 
-        private IEnumerator FadeIn()
+        private IEnumerator FadeInRoutine()
         {
             float startAlpha = 0f;
             float targetAlpha = maxAlpha;

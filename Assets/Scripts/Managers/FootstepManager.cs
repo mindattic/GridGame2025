@@ -34,7 +34,7 @@ public class FootstepManager : MonoBehaviour
 
         this.actor = actor;
         previousPosition = this.actor.position;
-        StartCoroutine(CheckSpawn());
+        StartCoroutine(CheckSpawnRoutine());
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class FootstepManager : MonoBehaviour
     /// <summary>
     /// Checks the distance traveled by the actor to decide when to spawn footsteps.
     /// </summary>
-    private IEnumerator CheckSpawn()
+    private IEnumerator CheckSpawnRoutine()
     {
         while (actor != null && actor.isActive && actor.isAlive)
         {

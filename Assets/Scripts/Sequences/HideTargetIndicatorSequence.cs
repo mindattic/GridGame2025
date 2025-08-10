@@ -6,7 +6,7 @@ namespace Assets.Scripts.Events
 {
     public class HideTargetIndicatorSequence : SequenceEvent
     {
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             g.TargetIndicator.Hide();
             g.InputManager.inputMode = InputMode.Player;

@@ -18,10 +18,10 @@ namespace Assets.Scripts.Events
             this.target = target;
         }
 
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // 1) Portrait3DManager pops in
-            //yield return new PortraitPopInSequence(startPosition).ExecuteRoutine();
+            //yield return new PortraitPopInSequence(startPosition).ProcessRoutine();
 
             // 2) FireAndForget the heal projectile
             var healSettings = new ProjectileSettings
@@ -35,10 +35,10 @@ namespace Assets.Scripts.Events
                 vfxKey = "BuffLife",
                 routine = target.HealRoutine(10)
             };
-            yield return new FireProjectileSequence(healSettings).Execute();
+            yield return new FireProjectileSequence(healSettings).ProcessRoutine();
 
             // 3) Portrait3DManager pops out
-            //yield return new PortraitPopOutSequence(startPosition).ExecuteRoutine();
+            //yield return new PortraitPopOutSequence(startPosition).ProcessRoutine();
         }
     }
 }

@@ -106,7 +106,7 @@ public class TargetModeOverlay : MonoBehaviour
         StopFade();
         float from = GetAlpha();
         float to = targetVisible ? maxAlpha : minAlpha;
-        fadeCoroutine = StartCoroutine(Fade(from, to, duration));
+        fadeCoroutine = StartCoroutine(FadeRoutine(from, to, duration));
     }
 
     // ---------------------------------------------------------------------
@@ -161,7 +161,7 @@ public class TargetModeOverlay : MonoBehaviour
     /// Fades overlay alpha from current to target over duration seconds.
     /// Uses unscaled time so it works while game is paused.
     /// </summary>
-    private IEnumerator Fade(float from, float to, float seconds)
+    private IEnumerator FadeRoutine(float from, float to, float seconds)
     {
         if (image == null)
             yield break;

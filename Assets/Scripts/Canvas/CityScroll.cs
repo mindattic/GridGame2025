@@ -10,10 +10,10 @@ public class CityScroll : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(ScrollUV());
+        StartCoroutine(ScrollUVRoutine());
     }
 
-    private IEnumerator ScrollUV()
+    private IEnumerator ScrollUVRoutine()
     {
         Vector2 offset = rawImage.uvRect.position;
 

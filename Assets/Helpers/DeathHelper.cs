@@ -8,13 +8,12 @@ namespace Assets.Helpers
 {
     public static class DeathHelper
     {
-
-        public static void Execute()
+        public static void Process(MonoBehaviour context)
         {
-            
+            context.StartCoroutine(ProcessRoutine());
         }
 
-       public static IEnumerator ExecuteRoutine()
+       public static IEnumerator ProcessRoutine()
         {
             // find everyone who’s flagged as dying
             var dyingActors = g.Actors.All.Where(x => x.isDying).ToList();

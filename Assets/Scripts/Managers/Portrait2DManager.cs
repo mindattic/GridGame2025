@@ -60,7 +60,7 @@ public class Portrait2DManager : MonoBehaviour
     /// <summary>
     /// Spawns a pair of portraitsContainer sliding in from opposite sides.
     /// </summary>
-    public IEnumerator SpawnPair(ActorPair actorPair)
+    public IEnumerator SpawnPairRoutine(ActorPair actorPair)
     {
         yield return Wait.For(Intermission.Before.Player.Attack);
         g.AudioManager.Play("Click");

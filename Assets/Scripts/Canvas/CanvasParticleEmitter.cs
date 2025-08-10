@@ -59,7 +59,7 @@ public class CanvasParticleEmitter : MonoBehaviour
     void Start()
     {
         PrewarmParticles();  // Show initial particles
-        StartCoroutine(SpawnImages());
+        StartCoroutine(SpawnImagesRoutine());
     }
 
     private void PrewarmParticles()
@@ -70,7 +70,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnImages()
+    private IEnumerator SpawnImagesRoutine()
     {
         while (true)
         {

@@ -12,7 +12,7 @@ namespace Assets.Scripts.Events
             this.actor = actor;
         }
 
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             float scale;
 

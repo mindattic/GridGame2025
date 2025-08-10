@@ -109,7 +109,7 @@ public class PartyManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(fade.FadeInRoutine());
     }
 
     private void Update()
@@ -398,12 +398,12 @@ public class PartyManager : MonoBehaviour
         if (barAnimations.TryGetValue(row, out Coroutine routine))
             StopCoroutine(routine);
 
-        // Bounce new action
-        barAnimations[row] = StartCoroutine(AnimateBarFill(row, fillImage.rectTransform, targetWidth));
+        // BounceRoutine new action
+        barAnimations[row] = StartCoroutine(AnimateBarFillRoutine(row, fillImage.rectTransform, targetWidth));
 
     }
 
-    private IEnumerator AnimateBarFill(RectTransform row, RectTransform bar, float targetWidth)
+    private IEnumerator AnimateBarFillRoutine(RectTransform row, RectTransform bar, float targetWidth)
     {
         float duration = 0.4f;
         float elapsed = 0f;
@@ -429,8 +429,8 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        //ExecuteRoutine(fade.DespawnRoutine(SceneRepo.LoadPreviousScene()));
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
+        //ProcessRoutine(fade.DespawnRoutine(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
 

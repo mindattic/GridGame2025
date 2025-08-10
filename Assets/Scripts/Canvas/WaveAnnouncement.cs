@@ -56,7 +56,7 @@ public class WaveAnnouncement : MonoBehaviour
         gameObject.SetActive(true);
         label.text = $"Wave {currentWave}/{totalWaves}";
 
-        StartCoroutine(AnimateWaveText());
+        StartCoroutine(AnimateWaveTextRoutine());
     }
 
     // ------------------------------------------------------------------------
@@ -66,16 +66,16 @@ public class WaveAnnouncement : MonoBehaviour
     /// <summary>
     /// Rotate in, wait, then rotate out and hide.
     /// </summary>
-    private IEnumerator AnimateWaveText()
+    private IEnumerator AnimateWaveTextRoutine()
     {
         // Rotate into view
-        yield return RotateTo(0f);
+        yield return RotateToRoutine(0f);
 
         // Hold on screen briefly
         yield return new WaitForSeconds(3f);
 
         // Rotate out of view
-        yield return RotateTo(-90f);
+        yield return RotateToRoutine(-90f);
 
         // Hide after leaving
         gameObject.SetActive(false);
@@ -84,7 +84,7 @@ public class WaveAnnouncement : MonoBehaviour
     /// <summary>
     /// Smoothly rotates the transform to the given X angle.
     /// </summary>
-    private IEnumerator RotateTo(float targetX)
+    private IEnumerator RotateToRoutine(float targetX)
     {
         Quaternion target = Quaternion.Euler(targetX, 0f, 0f);
 

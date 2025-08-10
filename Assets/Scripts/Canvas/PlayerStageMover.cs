@@ -40,11 +40,11 @@ public class PlayerStageMover : MonoBehaviour
         Vector2 direction = (targetPosition - (Vector2)hero.anchoredPosition).normalized;
         SetAnimation(direction);
 
-        // Bounce moving the hero
-        StartCoroutine(MoveHero());
+        // BounceRoutine moving the hero
+        StartCoroutine(MoveHeroRoutine());
     }
 
-    private IEnumerator MoveHero()
+    private IEnumerator MoveHeroRoutine()
     {
         isMoving = true;
 
@@ -78,7 +78,7 @@ public class PlayerStageMover : MonoBehaviour
         ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
         // FadeInstance out & load next scene
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
     private void SetAnimation(Vector2 direction)

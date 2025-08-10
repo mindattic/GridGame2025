@@ -19,13 +19,13 @@ namespace Assets.Scripts.Events
             this.pair = pair;
         }
 
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             if (pair.attackResults1?.Any() != true || pair.attackResults2?.Any() != true)
                 yield break;
 
             // Display attackers
-            yield return g.Portrait2DManager.SpawnPair(
+            yield return g.Portrait2DManager.SpawnPairRoutine(
                 new ActorPair(pair.attacker1, pair.attacker2)
             );
 
@@ -39,8 +39,8 @@ namespace Assets.Scripts.Events
             // Shrink both attackers simultaneously
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
-                pair.attacker1.action.Shrink(),
-                pair.attacker2.action.Shrink()
+                pair.attacker1.action.ShrinkRoutine(),
+                pair.attacker2.action.ShrinkRoutine()
             );
 
             // Choose an adjacent target per attacker

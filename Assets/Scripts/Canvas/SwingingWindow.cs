@@ -49,7 +49,7 @@ public class SwingingWindow : MonoBehaviour
     void Start()
     {
         GenerateRotationBuffer();
-        StartCoroutine(SwingWindow());
+        StartCoroutine(SwingWindowRoutine());
     }
 
     private void GenerateRotationBuffer()
@@ -60,7 +60,7 @@ public class SwingingWindow : MonoBehaviour
         targetRotations.Enqueue(initialRotation);
     }
 
-    private IEnumerator SwingWindow()
+    private IEnumerator SwingWindowRoutine()
     {
         while (true)
         {

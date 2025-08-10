@@ -35,36 +35,36 @@ public class TitleScreenManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(fade.FadeInRoutine());
     }
     public void OnContinueButtonClicked()
     {
         ProfileRepo.CurrentProfile.CurrentSave = ProfileRepo.CurrentProfile.LatestSave;
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
     public void OnLoadGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.SaveFileSelect)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.SaveFileSelect)));
     }
 
     public void OnNewGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.ProfileCreate)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.ProfileCreate)));
     }
 
     public void OnSettingsButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnCreditsButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Credits)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Credits)));
     }
 
     public void OnChangeProfileButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.ProfileSelect)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.ProfileSelect)));
     }
 }

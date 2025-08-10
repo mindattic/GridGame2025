@@ -61,10 +61,10 @@ public class FootstepInstance : MonoBehaviour
         this.Rotation = rotation;
         spriteRenderer.flipX = !isRightFoot;
 
-        StartCoroutine(FadeOut());
+        StartCoroutine(FadeOutRoutine());
     }
 
-    private IEnumerator FadeOut()
+    private IEnumerator FadeOutRoutine()
     {
         yield return Wait.For(Duration);
 

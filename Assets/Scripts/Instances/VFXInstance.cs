@@ -32,7 +32,7 @@ public class VFXInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawn of a VFX at a world position. Optionally runs a routine routine afterward.
+    /// SpawnRoutine of a VFX at a world position. Optionally runs a routine routine afterward.
     /// </summary>
     public void Spawn(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
     {

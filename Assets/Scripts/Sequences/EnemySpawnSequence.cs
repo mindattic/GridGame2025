@@ -7,7 +7,7 @@ namespace Assets.Scripts.Events
 {
     public class EnemySpawnSequence : SequenceEvent
     {
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // YieldSpawn any enemies flagged as spawnable
             var spawnableEnemies = g.Actors.Enemies.Where(x => x.isSpawnable).ToList();

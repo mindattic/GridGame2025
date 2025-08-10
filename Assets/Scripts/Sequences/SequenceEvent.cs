@@ -4,7 +4,7 @@ namespace Assets.Scripts.Events
 {
     public abstract class SequenceEvent
     {
-        // ExecuteRoutine returns an IEnumerator so that it can yield for asynchronous operations.
-        public abstract IEnumerator Execute();
+        // ProcessRoutine returns an IEnumerator so that it can yield for asynchronous operations.
+        public abstract IEnumerator ProcessRoutine();
     }
 }

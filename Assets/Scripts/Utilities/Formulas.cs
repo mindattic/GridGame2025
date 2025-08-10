@@ -132,7 +132,7 @@ public static class Formulas
 
     /// <summary>
     /// Physical offense score including optional weapon power.
-    /// Float only; no rounding.
+    /// FloatRoutine only; no rounding.
     /// </summary>
     public static float Offense(ActorStats stats, float weaponPower = 0f)
     {
@@ -141,7 +141,7 @@ public static class Formulas
 
     /// <summary>
     /// Physical defense score including optional armor rating.
-    /// Float only; no rounding.
+    /// FloatRoutine only; no rounding.
     /// </summary>
     public static float Defense(ActorStats stats, float armorRating = 0f)
     {
@@ -150,7 +150,7 @@ public static class Formulas
 
     /// <summary>
     /// Magical offense score from Intelligence and Wisdom.
-    /// Float only; no rounding.
+    /// FloatRoutine only; no rounding.
     /// </summary>
     public static float MagicOffense(ActorStats stats)
     {
@@ -159,7 +159,7 @@ public static class Formulas
 
     /// <summary>
     /// Magical resistance score from Intelligence, Wisdom, and Stamina.
-    /// Float only; no rounding.
+    /// FloatRoutine only; no rounding.
     /// </summary>
     public static float MagicResistance(ActorStats stats)
     {
@@ -233,7 +233,7 @@ public static class Formulas
     }
 
     /// <summary>
-    /// Clamps HP to nonnegative values while alive. Float domain.
+    /// Clamps HP to nonnegative values while alive. FloatRoutine domain.
     /// </summary>
     public static float ClampAlive(float hp)
     {
@@ -241,7 +241,7 @@ public static class Formulas
     }
 
     /// <summary>
-    /// Action point regeneration per tick based on Intelligence, Stamina, and Level. Float domain.
+    /// Action point regeneration per tick based on Intelligence, Stamina, and Level. FloatRoutine domain.
     /// </summary>
     public static float APRegen(ActorStats stats)
     {

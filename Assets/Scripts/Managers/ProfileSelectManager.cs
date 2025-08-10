@@ -51,7 +51,7 @@ public class ProfileSelectManager : MonoBehaviour
     private void Start()
     {
         Reload();
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(fade.FadeInRoutine());
     }
 
     private void Clear()
@@ -112,16 +112,16 @@ public class ProfileSelectManager : MonoBehaviour
     private void OnProfileButtonClicked(string key)
     {
         ProfileRepo.SelectProfile(key);
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
     }
 
     private void OnCreateNewProfileButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.ProfileCreate)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.ProfileCreate)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
     }
 }

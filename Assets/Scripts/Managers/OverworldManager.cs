@@ -45,7 +45,7 @@ public class OverworldManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(fade.FadeInRoutine());
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class OverworldManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
     }
 
     public void OnCenterOnHeroClicked()
@@ -84,10 +84,10 @@ public class OverworldManager : MonoBehaviour
 
     public void CenterOnPosition(Vector2 targetLocalPosition, float speed, float snapThreshold)
     {
-        StartCoroutine(SmoothCentering(targetLocalPosition, speed, snapThreshold));
+        StartCoroutine(SmoothCenteringRoutine(targetLocalPosition, speed, snapThreshold));
     }
 
-    private IEnumerator SmoothCentering(Vector2 targetLocalPosition, float speed, float snapThreshold)
+    private IEnumerator SmoothCenteringRoutine(Vector2 targetLocalPosition, float speed, float snapThreshold)
     {
         Vector2 viewportSize = viewport.rect.size;
         Vector2 contentSize = content.rect.size;

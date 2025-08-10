@@ -15,9 +15,9 @@ public class FadeInstance : MonoBehaviour
         image.color = new Color(0, 0, 0, 1);
     }
 
-    public IEnumerator FadeIn(IEnumerator coroutine = null)
+    public IEnumerator FadeInRoutine(IEnumerator coroutine = null)
     {
-        //Before: Bounce fully black
+        //Before: BounceRoutine fully black
         image.color = new Color(0, 0, 0, 1);
         float elapsedTime = 0f;
 
@@ -38,9 +38,9 @@ public class FadeInstance : MonoBehaviour
             yield return coroutine;
     }
 
-    public IEnumerator FadeOut(IEnumerator coroutine = null)
+    public IEnumerator FadeOutRoutine(IEnumerator coroutine = null)
     {
-        //Before: Bounce fully transparent
+        //Before: BounceRoutine fully transparent
         image.color = new Color(0, 0, 0, 0);
         float elapsedTime = 0f;
 
@@ -61,7 +61,7 @@ public class FadeInstance : MonoBehaviour
             yield return coroutine;
     }
 
-    public IEnumerator Show(IEnumerator coroutine = null)
+    public IEnumerator ShowRoutine(IEnumerator coroutine = null)
     {
         image.color = new Color(0, 0, 0, 0);
 
@@ -69,7 +69,7 @@ public class FadeInstance : MonoBehaviour
             yield return coroutine;
     }
 
-    public IEnumerator Hide(IEnumerator coroutine = null)
+    public IEnumerator HideRoutine(IEnumerator coroutine = null)
     {
         image.color = new Color(0, 0, 0, 1);
 

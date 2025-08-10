@@ -120,17 +120,17 @@ public class Portrait3DManager : MonoBehaviour
         instance.startPosition = actor.position;
 
         portraits.Add(instance);
-        StartCoroutine(instance.Dissolve());
+        StartCoroutine(instance.DissolveRoutine());
     }
 
-    public IEnumerator SpawnPair(ActorPair actorPair)
+    public IEnumerator SpawnPairRoutine(ActorPair actorPair)
     {
         yield return Wait.For(Intermission.Before.Player.Attack);
         g.AudioManager.Play("Click");
 
         var (direction1, direction2) = GetDirection(actorPair);
 
-        // Bounce both slide animations concurrently and wait for both to finish.
+        // BounceRoutine both slide animations concurrently and wait for both to finish.
         yield return CoroutineHelper.WaitForAll(this,
             SlideInRoutine(actorPair.actor1, direction1),
             SlideInRoutine(actorPair.actor2, direction2)

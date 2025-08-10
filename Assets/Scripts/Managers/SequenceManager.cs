@@ -85,7 +85,7 @@ public class SequenceManager : MonoBehaviour
 
                 // Run to completion
                 if (current != null)
-                    yield return StartCoroutine(current.Execute());
+                    yield return StartCoroutine(current.ProcessRoutine());
 
                 // Track completion
                 lastCompletedSequenceName = current?.GetType().Name;

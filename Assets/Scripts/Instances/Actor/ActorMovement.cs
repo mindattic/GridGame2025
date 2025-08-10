@@ -86,7 +86,7 @@ namespace Assets.Scripts.Instances.Actor
         /// Moves the actor toward its grid destination using right-angle (non-diagonal) move.
         /// Includes a watchdog to prevent infinite loops if MoveFocus or SnapThreshold are misconfigured.
         /// </summary>
-        public IEnumerator TowardDestination()
+        public IEnumerator MoveTowardDestinationRoutine()
         {
             // Before: begin move
             flags.IsMoving = true;
@@ -125,7 +125,7 @@ namespace Assets.Scripts.Instances.Actor
                     // Watchdog: break if something is wrong
                     if (elapsed > MaxSeconds || iterations > MaxIterations)
                     {
-                        Debug.LogWarning($"[ActorMovement] TowardDestination X watchdog fired. Forcing snap. Actor={instance?.name}");
+                        Debug.LogWarning($"[ActorMovement] MoveTowardDestinationRoutine X watchdog fired. Forcing snap. Actor={instance?.name}");
                         break;
                     }
 
@@ -164,7 +164,7 @@ namespace Assets.Scripts.Instances.Actor
                     // Watchdog: break if something is wrong
                     if (elapsed > MaxSeconds || iterations > MaxIterations)
                     {
-                        Debug.LogWarning($"[ActorMovement] TowardDestination Y watchdog fired. Forcing snap. Actor={instance?.name}");
+                        Debug.LogWarning($"[ActorMovement] MoveTowardDestinationRoutine Y watchdog fired. Forcing snap. Actor={instance?.name}");
                         break;
                     }
 
@@ -274,7 +274,7 @@ namespace Assets.Scripts.Instances.Actor
                 // Mark swapping, update target location, and move there
                 flags.IsSwapping = true;
                 location = currentTile.location;
-                instance.StartCoroutine(TowardDestination());
+                instance.StartCoroutine(MoveTowardDestinationRoutine());
             }
         }
 

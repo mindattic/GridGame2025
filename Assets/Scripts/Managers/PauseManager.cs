@@ -89,7 +89,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.PartyManager)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.PartyManager)));
     }
 
     public void OnSpawnEnemyButtonClicked()
@@ -101,21 +101,21 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.StageSelect)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.StageSelect)));
     }
 
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Settings)));
     }
 
     public void OnTitleScreenButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
     }
 
 }

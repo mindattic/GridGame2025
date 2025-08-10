@@ -19,7 +19,7 @@ public class ProjectileManager : MonoBehaviour
     }
 
     // Spawns a ProjectileInstance configured by type.
-    public IEnumerator Spawn(ProjectileSettings projectile)
+    public IEnumerator SpawnRoutine(ProjectileSettings projectile)
     {
         // Instantiate the ProjectileInstance prefab at the startPosition's position.
         var prefab = Instantiate(projectilePrefab, projectile.startPosition, Quaternion.identity);
@@ -27,7 +27,7 @@ public class ProjectileManager : MonoBehaviour
         instance.name = $"Projectile_{projectile.friendlyName}_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         projectiles.Add(instance.name, instance);
-        yield return instance.Spawn(projectile);
+        yield return instance.SpawnRoutine(projectile);
     }
 
     public void Despawn(string name)

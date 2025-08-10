@@ -35,12 +35,12 @@ public class SettingsManager : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(fade.FadeInRoutine());
     }
 
     public void OnBackButtonClicked()
     {
-        IEnumerator showConfirm()
+        IEnumerator showConfirmRoutine()
         {
             ConfirmationDialog.Show("Save changes?", onSubmit: (value) =>
             {
@@ -48,14 +48,14 @@ public class SettingsManager : MonoBehaviour
                 {
                     Debug.Log("User said: " + value);
 
-                    StartCoroutine(fade.Hide(SceneRepo.LoadPreviousScene()));
+                    StartCoroutine(fade.HideRoutine(SceneRepo.LoadPreviousScene()));
                 }
             });
 
             yield return Wait.None();
         }
 
-        StartCoroutine(fade.Show(showConfirm()));
+        StartCoroutine(fade.ShowRoutine(showConfirmRoutine()));
     }
 
 

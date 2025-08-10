@@ -12,7 +12,7 @@ namespace Assets.Scripts.Events
             this.actor = actor;
         }
 
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             yield return g.Portrait3DManager.PopOutRoutine(actor);
         }

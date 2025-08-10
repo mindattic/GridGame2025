@@ -175,11 +175,11 @@ public class ActorRenderers
 
     public void SetParallaxFocus(float xScroll, float yScroll)
     {
-        instance.StartCoroutine(UpdateParallaxFocus("_XScroll", xScroll));
-        instance.StartCoroutine(UpdateParallaxFocus("_YScroll", yScroll));
+        instance.StartCoroutine(UpdateParallaxFocusRoutine("_XScroll", xScroll));
+        instance.StartCoroutine(UpdateParallaxFocusRoutine("_YScroll", yScroll));
     }
 
-    private IEnumerator UpdateParallaxFocus(string scrollProperty, float targetValue)
+    private IEnumerator UpdateParallaxFocusRoutine(string scrollProperty, float targetValue)
     {
         //Fetch the CurrentProfile value once at the start
         float currentValue = parallax.material.GetFloat(scrollProperty);

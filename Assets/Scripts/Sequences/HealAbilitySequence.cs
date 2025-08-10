@@ -18,7 +18,7 @@ namespace Assets.Scripts.Events
             this.target = targetActor;
         }
 
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             g.InputManager.inputMode = InputMode.None;
             g.Card.BouncePortrait();
@@ -35,10 +35,10 @@ namespace Assets.Scripts.Events
                 vfxKey = "BuffLife",
                 routine = target.HealRoutine(10)
             };
-            yield return new FireProjectileSequence(healSettings).Execute();
+            yield return new FireProjectileSequence(healSettings).ProcessRoutine();
 
             // 3) Portrait3DManager pops out
-            //yield return new PortraitPopOutSequence(startPosition).ExecuteRoutine();
+            //yield return new PortraitPopOutSequence(startPosition).ProcessRoutine();
         }
     }
 }

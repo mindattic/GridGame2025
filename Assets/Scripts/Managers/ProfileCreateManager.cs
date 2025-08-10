@@ -23,18 +23,18 @@ public class ProfileCreateManager : MonoBehaviour
 
         background.sizeDelta = new Vector2(screenWidth, screenHeight);
 
-        IEnumerator showKeyboard()
+        IEnumerator showKeyboardRoutine()
         {
             KeyboardDialog.Show("Who are you?", onSubmit: (value) =>
             {
                 ProfileRepo.CreateProfile(value);
-                StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+                StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
             });
 
             yield return Wait.None();
         }
 
-        StartCoroutine(fade.FadeIn(showKeyboard()));
+        StartCoroutine(fade.FadeInRoutine(showKeyboardRoutine()));
     }
 
 }

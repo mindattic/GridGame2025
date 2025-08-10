@@ -49,7 +49,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(fade.FadeInRoutine());
     }
 
     public void AddButton(string stageName)
@@ -74,12 +74,12 @@ public class StageSelectManager : MonoBehaviour
     private void OnStageSelectButtonClicked(string stageName)
     {
         ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
     }
 
 }

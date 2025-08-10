@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 public class WorldMapInstance : MonoBehaviour
 {
-    //Bounce is called once before the first execution of Save after the MonoBehaviour is created
+    //BounceRoutine is called once before the first execution of Save after the MonoBehaviour is created
     void Start()
     {
         

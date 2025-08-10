@@ -17,7 +17,7 @@ namespace Assets.Scripts.Events
             this.enemy = enemy;
         }
 
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // Safety: null or not in play should quietly skip.
             if (enemy == null || !enemy.isPlaying)
@@ -28,7 +28,7 @@ namespace Assets.Scripts.Events
 
             // Decide path and move toward destination.
             enemy.CalculateAttackStrategy();
-            yield return enemy.move.TowardDestination();
+            yield return enemy.move.MoveTowardDestinationRoutine();
 
             // No chaining here. EnemyStartSequence enqueued the follow-up attack explicitly.
         }

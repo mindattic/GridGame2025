@@ -39,7 +39,7 @@ public class CreditsManager : MonoBehaviour
             + $"<size=150%>Ryan DeBraal</size>{NL}{NL}"
             + $"<size=80%>Typography</size>{NL}"
             + $"<size=150%>Brian Willson</size> <size=50%>(Attic)</size>{NL}"
-            + $"<size=150%>Jonas Hecksher</size> <size=50%>(SpawnPair)</size>{NL}{NL}"
+            + $"<size=150%>Jonas Hecksher</size> <size=50%>(SpawnPairRoutine)</size>{NL}{NL}"
             + $"<size=80%>Visual Effects</size>{NL}"
             + $"<size=150%>Eric Wang</size>{NL}"
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"
@@ -61,12 +61,12 @@ public class CreditsManager : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(fade.FadeInRoutine());
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
     }
 
 

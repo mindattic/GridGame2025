@@ -16,20 +16,20 @@ public class SplashScreenManager : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(Startup());
+        StartCoroutine(FadeInRoutine());
     }
 
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+            StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
     }
 
-    private IEnumerator Startup()
+    private IEnumerator FadeInRoutine()
     {
-        yield return fade.FadeIn();
+        yield return fade.FadeInRoutine();
         yield return new WaitForSeconds(waitDuration);
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
     }
 
 

@@ -90,14 +90,14 @@ public class TooltipInstance : MonoBehaviour
         if (useTypewriter)
         {
             if (typewriterMode == TypewriterMode.LineByLine)
-                StartCoroutine(TypewriterLineByLine(wrappedMessage));
+                StartCoroutine(TypewriterLineRoutine(wrappedMessage));
             else
-                StartCoroutine(TypewriterCharacterByCharacter(wrappedMessage));
+                StartCoroutine(TypewriterRoutine(wrappedMessage));
         }
         else
         {
             label.text = wrappedMessage;
-            if (autoDestroy) StartCoroutine(AutoDestroy());
+            if (autoDestroy) StartCoroutine(AutoDestroyRoutine());
         }
 
         Vector2 tooltipSize = background.sizeDelta;
@@ -122,7 +122,7 @@ public class TooltipInstance : MonoBehaviour
         }
 
         background.anchoredPosition = ClampToScreen(finalPos, tooltipSize);
-        StartCoroutine(AnimateGrowth(background.anchoredPosition, placement));
+        StartCoroutine(AnimateGrowthRoutine(background.anchoredPosition, placement));
 
         if (followPointer)
         {
@@ -133,7 +133,7 @@ public class TooltipInstance : MonoBehaviour
         if (useFade)
         {
             canvasGroup.alpha = 0;
-            StartCoroutine(Fade(0f, 1f, fadeTime));
+            StartCoroutine(FadeRoutine(0f, 1f, fadeTime));
         }
     }
 
@@ -164,7 +164,7 @@ public class TooltipInstance : MonoBehaviour
         return builder.ToString();
     }
 
-    private IEnumerator TypewriterCharacterByCharacter(string fullText)
+    private IEnumerator TypewriterRoutine(string fullText)
     {
         label.text = "";
         int i = 0;
@@ -189,10 +189,10 @@ public class TooltipInstance : MonoBehaviour
         }
 
         label.text = fullText;
-        if (autoDestroy) StartCoroutine(AutoDestroy());
+        if (autoDestroy) StartCoroutine(AutoDestroyRoutine());
     }
 
-    private IEnumerator TypewriterLineByLine(string fullText)
+    private IEnumerator TypewriterLineRoutine(string fullText)
     {
         label.text = "";
         string[] lines = fullText.Split('\n');
@@ -208,10 +208,10 @@ public class TooltipInstance : MonoBehaviour
         }
 
         label.text = fullText;
-        if (autoDestroy) StartCoroutine(AutoDestroy());
+        if (autoDestroy) StartCoroutine(AutoDestroyRoutine());
     }
 
-    private IEnumerator AnimateGrowth(Vector2 anchoredTarget, TooltipPlacement placement)
+    private IEnumerator AnimateGrowthRoutine(Vector2 anchoredTarget, TooltipPlacement placement)
     {
         float duration = 0.2f;
         float elapsed = 0f;
@@ -259,7 +259,7 @@ public class TooltipInstance : MonoBehaviour
         background.sizeDelta = new Vector2(width, height);
     }
 
-    private IEnumerator Fade(float from, float to, float duration)
+    private IEnumerator FadeRoutine(float from, float to, float duration)
     {
         float t = 0f;
         while (t < duration)
@@ -272,11 +272,11 @@ public class TooltipInstance : MonoBehaviour
         canvasGroup.alpha = to;
     }
 
-    private IEnumerator AutoDestroy()
+    private IEnumerator AutoDestroyRoutine()
     {
         yield return new WaitForSeconds(autoDestroyDelay);
         if (useFade)
-            yield return StartCoroutine(Fade(1f, 0f, fadeTime));
+            yield return StartCoroutine(FadeRoutine(1f, 0f, fadeTime));
         Destroy(gameObject);
     }
 

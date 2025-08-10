@@ -16,10 +16,10 @@ namespace Assets.Scripts.Events
             this.projectile = projectile;
         }
 
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
 
-            yield return g.ProjectileManager.Spawn(projectile);
+            yield return g.ProjectileManager.SpawnRoutine(projectile);
         }
     }
 }

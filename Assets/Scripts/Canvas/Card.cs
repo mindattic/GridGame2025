@@ -141,7 +141,7 @@ public class Card : MonoBehaviour
 
 
     /// <summary>
-    /// Execute a quick bounce animation on the portrait: up, then down.
+    /// ProcessRoutine a quick bounce animation on the portrait: up, then down.
     /// </summary>
     public void BouncePortrait(float percentOfScreenHeight = 0.03f, float bounceDuration = 0.3333f)
     {

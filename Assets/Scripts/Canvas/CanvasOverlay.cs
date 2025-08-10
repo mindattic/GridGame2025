@@ -49,7 +49,7 @@ public class CanvasOverlay : MonoBehaviour
     {
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
-        fadeCoroutine = StartCoroutine(Fade(maxAlpha));
+        fadeCoroutine = StartCoroutine(FadeRoutine(maxAlpha));
     }
 
     /// <summary>
@@ -59,13 +59,13 @@ public class CanvasOverlay : MonoBehaviour
     {
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
-        fadeCoroutine = StartCoroutine(Fade(minAlpha));
+        fadeCoroutine = StartCoroutine(FadeRoutine(minAlpha));
     }
 
     /// <summary>
     /// Handles the fade transition over time.
     /// </summary>
-    private IEnumerator Fade(float targetAlpha)
+    private IEnumerator FadeRoutine(float targetAlpha)
     {
         float startAlpha = overlayImage.color.a;
         float elapsedTime = 0f;

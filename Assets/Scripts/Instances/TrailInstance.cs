@@ -36,7 +36,7 @@ public class TrailInstance : MonoBehaviour
     /// Spawns a trail effect at a world position, applies relative offsets, optional delay and duration,
     /// optionally runs a routine, then despawns.
     /// </summary>
-    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 worldPosition, IEnumerator routine = null)
+    public IEnumerator SpawnRoutine(TrailEffectAsset trail, Vector3 worldPosition, IEnumerator routine = null)
     {
         position = worldPosition;
         transform.localPosition = trail.RelativeOffset;

@@ -28,7 +28,7 @@ namespace Assets.Scripts.Events
         /// 3) For each defender, computes attack result and bumps with damage.
         /// 4) Processes deaths and then resets the action bar.
         /// </summary>
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // Safety: null or not in play should quietly skip.
             if (attacker == null || !attacker.isPlaying)

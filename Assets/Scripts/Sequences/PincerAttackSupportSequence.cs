@@ -17,11 +17,11 @@ namespace Assets.Scripts.Events
             this.supporter = supporter;
         }
 
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // If supporter is a Cleric, heal the attacker
             if (supporter.characterName == CharacterHelper.Cleric)
-                yield return new HealSupportSequence(supporter.position, attacker).Execute();
+                yield return new HealSupportSequence(supporter.position, attacker).ProcessRoutine();
         }
     }
 }

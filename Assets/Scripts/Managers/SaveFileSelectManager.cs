@@ -54,7 +54,7 @@ public class SaveFileSelectManager : MonoBehaviour
         }
 
         Reload();
-        StartCoroutine(fade.FadeIn());
+        StartCoroutine(fade.FadeInRoutine());
     }
 
 
@@ -116,7 +116,7 @@ public class SaveFileSelectManager : MonoBehaviour
                 ProfileRepo.CurrentProfile.CurrentSave = selectedSave;
 
                 // Proceed to load the game scene using the active save.
-                StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
+                StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
             }
             else
             {
@@ -132,6 +132,6 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOut(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
     }
 }

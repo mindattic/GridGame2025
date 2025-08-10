@@ -133,7 +133,7 @@ public class SupportLineInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Execute fade out and eventual destruction of the support line.
+    /// ProcessRoutine fade out and eventual destruction of the support line.
     /// </summary>
     public void Despawn()
     {

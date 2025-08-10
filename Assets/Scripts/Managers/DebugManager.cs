@@ -169,7 +169,8 @@ public class DebugManager : MonoBehaviour
             var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitType.CriticalHit);
             enemy.Damage(attackResult);
         }
-        StartCoroutine(DeathHelper.ExecuteRoutine());
+        StartCoroutine(DeathHelper.ProcessRoutine());
+        //DeathHelper.Process(GameManager.instance);
     }
 
     public void Portrait2DSlideIn()
@@ -232,19 +233,6 @@ public class DebugManager : MonoBehaviour
                 newest.isStatic = true;
             }
         }
-
-
-        //IEnumerator _()
-        //{
-        //    yield return Wait.For(Interval.ThreeSeconds);
-
-        //    foreach (var supportLine in g.SupportLineManager.supportLines.Values)
-        //    {
-        //        supportLine.DespawnRoutine();
-        //    }
-        //}
-
-        //StartCoroutine(_());
     }
 
     public void SpawnTooltip1()
@@ -312,6 +300,7 @@ public class DebugManager : MonoBehaviour
         g.TutorialPopup.Load(tutorial);
     }
 
+    //TODO: Should be controlled by CoinManager
     public void SpawnCoints()
     {
         var vfx = VisualEffectRepo.VisualEffects["YellowHit"];

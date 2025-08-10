@@ -30,7 +30,7 @@ public class GhostManager : MonoBehaviour
     {
         this.actor = actor;
         previousPosition = this.actor.position;
-        StartCoroutine(CheckSpawn());
+        StartCoroutine(CheckSpawnRoutine());
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public class GhostManager : MonoBehaviour
     /// <summary>
     /// Checks the actor's movement to determine when to spawn ghost effects.
     /// </summary>
-    private IEnumerator CheckSpawn()
+    private IEnumerator CheckSpawnRoutine()
     {
         while (actor != null && actor.isActive && actor.isAlive)
         {

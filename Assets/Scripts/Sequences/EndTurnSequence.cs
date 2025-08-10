@@ -11,7 +11,7 @@ namespace Assets.Scripts.Events
     /// </summary>
     public class EndTurnSequence : SequenceEvent
     {
-        public override IEnumerator Execute()
+        public override IEnumerator ProcessRoutine()
         {
             // Optional tiny pacing for any end-of-turn visuals
             yield return Wait.None();

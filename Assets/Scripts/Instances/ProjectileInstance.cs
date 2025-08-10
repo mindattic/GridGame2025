@@ -39,15 +39,17 @@ public class ProjectileInstance : MonoBehaviour
     private Vector3 endPosition;
     private GameObject trailInstance;
 
-    public IEnumerator Spawn(ProjectileSettings projectile)
+    public IEnumerator SpawnRoutine(ProjectileSettings projectile)
     {
         this.projectile = projectile;
-        yield return SpawnTrail();
+        yield return SpawnTrailRoutine();
         yield return SpawnVFX();
         g.ProjectileManager.Despawn(gameObject.name);
     }
 
-    private IEnumerator SpawnTrail()
+
+    //TODO: This should be controlled by TrailEffectManager....
+    private IEnumerator SpawnTrailRoutine()
     {
         startPosition = projectile.startPosition;
         endPosition = projectile.target.position;
@@ -66,13 +68,13 @@ public class ProjectileInstance : MonoBehaviour
                 break;
             case ProjectilePath.AnimationCurve:
             default:
-                yield return StartCoroutine(MoveAlongCurve());
+                yield return StartCoroutine(MoveAlongCurveRoutine());
                 break;
         }
 
     }
 
-    private IEnumerator MoveAlongCurve()
+    private IEnumerator MoveAlongCurveRoutine()
     {
         float elapsed = 0f;
         Vector3 direction = (endPosition - startPosition).normalized; // Travel direction

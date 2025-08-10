@@ -38,7 +38,7 @@ public class TimerBar3D : MonoBehaviour
             * fillOriginalScale.x;
     }
 
-    private IEnumerator Countdown()
+    private IEnumerator CountdownRoutine()
     {
         while (timeRemaining > 0f)
         {
@@ -83,7 +83,7 @@ public class TimerBar3D : MonoBehaviour
 
         timeRemaining = maxDuration;
         UpdateFill();
-        countdown = StartCoroutine(Countdown());
+        countdown = StartCoroutine(CountdownRoutine());
     }
 
     public void Pause()

@@ -37,10 +37,10 @@ public class ActorHealthBar
         render.healthBarText.text = $@"{stats.HP}/{stats.MaxHP}";
 
         if (instance.isActive)
-            instance.StartCoroutine(Drain());
+            instance.StartCoroutine(DrainRoutine());
     }
 
-    private IEnumerator Drain()
+    private IEnumerator DrainRoutine()
     {
         //Check abort conditions
         if (stats.PreviousHP == stats.HP)

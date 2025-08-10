@@ -311,8 +311,8 @@ public class Portrait3DInstance : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
     }
 
-    // Dissolve: fancy fade-out with shake/shrink
-    public IEnumerator Dissolve()
+    // DissolveRoutine: fancy fade-out with shake/shrink
+    public IEnumerator DissolveRoutine()
     {
         if (isBeingDestroyed || spriteRenderer == null)
             yield break;
