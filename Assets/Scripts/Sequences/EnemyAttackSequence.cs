@@ -58,9 +58,6 @@ namespace Assets.Scripts.Events
                     // Run bump plus damage sequence using routine-based trigger.
                     var attackRoutine = AttackHelper.SingleAttackTrigger(attackResult);
                     yield return attacker.action.BumpTrigger(opponent, attackRoutine);
-
-                    // Process deaths after each strike.
-                    yield return DeathHelper.Process();
                 }
             }
 

@@ -80,6 +80,7 @@ public enum DebugOptions
     None,
     ArrangeSingleCombo,
     ArrangeTripleCombo,
+    ArrangeSurroundCombo,
     Bump,
     Dodge,
     Fireball,

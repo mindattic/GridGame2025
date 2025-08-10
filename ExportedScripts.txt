@@ -1,6 +1,6 @@
 ﻿== GRIDGAME EXPORT ==
 VERSION: 4
-CREATED_UTC: 2025-08-10T01:41:52Z
+CREATED_UTC: 2025-08-10T03:58:55Z
 ROOT: D:/Projects/Unity/GridGame2025
 
 <<<MANIFEST JSON START>>>
@@ -88,8 +88,8 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Data/Actor/Scorpion.cs",
-        "sha256":  "A38015E767AA952AC5C01CD976DC1248D09E634885EC9CE9DC6F56C5FB84CB0F",
-        "bytes":  2806,
+        "sha256":  "F5E0A50A0F23D61E0944F02A85DA95078548711186641ABBA444E7C85A9A4B19",
+        "bytes":  2950,
         "lines":  61,
         "ext":  ".cs",
         "type":  "script",
@@ -169,9 +169,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Data/Actor/Yeti.cs",
-        "sha256":  "6C458726753B623CF22295D199E874A2C71E188614B0706E68DBCF53DFE6E73F",
-        "bytes":  2843,
-        "lines":  66,
+        "sha256":  "BE27BFDF7A1493519F6153642C87659540AB4E89B3E690660B67C1436981A305",
+        "bytes":  2931,
+        "lines":  65,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -331,9 +331,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Helpers/AttackHelper.cs",
-        "sha256":  "A7241770AB5E7C9CD1D5BD4085DA50BB2B63AEBAC4361B9452BAA347F2EF0F47",
-        "bytes":  1397,
-        "lines":  38,
+        "sha256":  "C462FC6F05157727DD32CC2DC2AD8850C49B10A18262487A1FACB6F08ACFE38D",
+        "bytes":  1293,
+        "lines":  36,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -412,8 +412,8 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Helpers/DeathHelper.cs",
-        "sha256":  "7A02D1B7C70831EDBEC8AE6D4BFA719C2102154F133D74D8BD2EA928CC0AD15D",
-        "bytes":  767,
+        "sha256":  "AC4AEB60C81D93B9FA6B33744EA48BA8304234F9B3895DEB9B1A2D03224EF439",
+        "bytes":  774,
         "lines":  24,
         "ext":  ".cs",
         "type":  "script",
@@ -1222,9 +1222,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Managers/DebugManager.cs",
-        "sha256":  "36D63670DCA2C8C01BD51B77C55A56E0944FCA64C48171D89619D2091810DCB0",
-        "bytes":  17522,
-        "lines":  465,
+        "sha256":  "5BE2EDDCE2B75D13EBFA4CA4AA0BDA43E963BFDA8955B1CB50BD4B66096C9BB5",
+        "bytes":  18271,
+        "lines":  482,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -1339,9 +1339,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Managers/PincerAttackManager.cs",
-        "sha256":  "E6DD8C1DB4E40D9CFBDAB3E9E12C2EB16DC12A9BA2F06E5B9C0182FB407602C4",
-        "bytes":  7693,
-        "lines":  167,
+        "sha256":  "D23E63E894DD457BC507313FB39807B63E9AF5134AE5C2DE8CC2F4B70D00309E",
+        "bytes":  7903,
+        "lines":  171,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -1456,9 +1456,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Managers/StageManager.cs",
-        "sha256":  "EF72134CA313C465BD35E21F334BAE04F31DB247ACAFFFB18874F3DED53F04D9",
-        "bytes":  6736,
-        "lines":  180,
+        "sha256":  "13D286975B52C2A0CA70941056BFE91279B81E2D87A4E4618E74B60AAF8B5DF5",
+        "bytes":  7211,
+        "lines":  188,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -1618,9 +1618,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Models/Enums.cs",
-        "sha256":  "BD2C72DD60469E16D396E93FD7C9DFA50D500F4842BAEB025A2C1E1A364F934E",
-        "bytes":  4195,
-        "lines":  294,
+        "sha256":  "295C7C781ABBC64D4BE9825D2EE41A3DC39542343DD848B092A4E27984BF09AB",
+        "bytes":  4222,
+        "lines":  295,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -1924,9 +1924,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Repository/StageRepo.cs",
-        "sha256":  "DE16F6CCF80688BEDDF02645ADC693EBFC8F3676C263CF1C87D3AB74B170A37F",
-        "bytes":  8653,
-        "lines":  164,
+        "sha256":  "56D688ACE6D05E43A495EEF92A38DBA2F5161F559DC6D12D46DE9E9A05F2FB05",
+        "bytes":  8573,
+        "lines":  163,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -1968,6 +1968,15 @@ ROOT: D:/Projects/Unity/GridGame2025
         "guid":  null
     },
     {
+        "path":  "Assets/Scripts/Sequences/DeathSequence.cs",
+        "sha256":  "C836A24899C4A0164A75E04C89BF57753E2E5F052757FBB7F4E44C03B7C6E7FE",
+        "bytes":  457,
+        "lines":  19,
+        "ext":  ".cs",
+        "type":  "script",
+        "guid":  null
+    },
+    {
         "path":  "Assets/Scripts/Sequences/EndTurnSequence.cs",
         "sha256":  "701531FF3332CC4D6A65344DC40C884D3519C04345CA444809851927D9F4C15B",
         "bytes":  771,
@@ -1978,9 +1987,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Sequences/EnemyAttackSequence.cs",
-        "sha256":  "F115880E98DB6B000114BD0B7602E1A4CC76EED768321BC5CD7C1559BFC948C0",
-        "bytes":  2504,
-        "lines":  57,
+        "sha256":  "6A2F78A340B30D6F5020BFB488A5AAF4C5EE6D7F07700B8D79B5F1A0D591DF07",
+        "bytes":  2644,
+        "lines":  60,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -2023,9 +2032,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Sequences/EnemyStartSequence.cs",
-        "sha256":  "F6794F2E3F1FF984831A3EBB77CD52E3C08E23A717FCCAA4983C8F9AF306EAB5",
-        "bytes":  2076,
-        "lines":  49,
+        "sha256":  "919834087B8EBE7EDCE3AEAB41211D959053D47D82054F209883AB982375CD23",
+        "bytes":  2237,
+        "lines":  52,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -2077,9 +2086,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Sequences/PincerAttackSequence.cs",
-        "sha256":  "80E1C77BF7558634D092117413BBC39BA20AB5702CEE504B6E1462C8EC64CFA0",
-        "bytes":  2653,
-        "lines":  62,
+        "sha256":  "742B4712D8440B18ABB4D9657A27402046AA53907E5D4EA3097DF8A859C5C7AD",
+        "bytes":  2737,
+        "lines":  63,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -2167,9 +2176,9 @@ ROOT: D:/Projects/Unity/GridGame2025
     },
     {
         "path":  "Assets/Scripts/Utilities/RNG.cs",
-        "sha256":  "BE7DFF27A35A10F1D8289DFAB2AA5F49486BE1727B915B8E34F9230D6D9CA7CC",
-        "bytes":  6157,
-        "lines":  168,
+        "sha256":  "095679875B2B65B7C8A4EAC380DF0DF2D52C4E1FC30F3A894A66D886C96F2CF8",
+        "bytes":  6171,
+        "lines":  169,
         "ext":  ".cs",
         "type":  "script",
         "guid":  null
@@ -2873,9 +2882,9 @@ namespace Assets.Data.Actor
 PATH: Assets/Data/Actor/Scorpion.cs
 TYPE: script
 EXT: .cs
-SHA256: A38015E767AA952AC5C01CD976DC1248D09E634885EC9CE9DC6F56C5FB84CB0F
-BYTES: 2806
-LINES: 63
+SHA256: F5E0A50A0F23D61E0944F02A85DA95078548711186641ABBA444E7C85A9A4B19
+BYTES: 2950
+LINES: 70
 <<<CONTENT START>>>
 using Assets.Helpers;
 using Assets.Scripts.Models;
@@ -2895,41 +2904,48 @@ namespace Assets.Data.Actor
                 Description = "A hulking brute with a barbed tail and armored shell.",
                 Expectations = "Slow bruiser with very high durability. Damage is steady. Punishes opponents who stay in front.",
                 Lore = "Ancient desert crawler whose shell rings like iron under the moon.",
+
                 BaseStats = new ActorStats
                 {
                     Level = 1,
                     Strength = 7f,
-                    Vitality = 4f,
+                    Vitality = 1f,
                     Agility = 2f,
-                    Stamina = 7f,
+                    Stamina = 1.75f,
                     Intelligence = 1f,
                     Wisdom = 2f,
                     Luck = 3f
                 },
+
                 StatGrowth = new StatGrowth
                 {
                     Strength = 1.4f,
-                    Vitality = 2.6f,
+                    Vitality = 0.65f,
                     Agility = 0.5f,
-                    Stamina = 2.1f,
+                    Stamina = 0.525f,
                     Intelligence = 0.4f,
                     Wisdom = 0.6f,
                     Luck = 0.6f
                 },
+
                 MilestoneStatGrowth = new Dictionary<int, StatGrowth>
                 {
-                    { 5, new StatGrowth { Strength = 1.8f, Vitality = 3.8f, Agility = 0.8f, Stamina = 2.6f, Intelligence = 0.5f, Wisdom = 0.8f, Luck = 1.0f } },
-                    { 10, new StatGrowth { Strength = 2.3f, Vitality = 4.8f, Agility = 1.0f, Stamina = 3.2f, Intelligence = 0.8f, Wisdom = 1.0f, Luck = 1.2f } },
-                    { 20, new StatGrowth { Strength = 2.8f, Vitality = 6.4f, Agility = 1.2f, Stamina = 4.2f, Intelligence = 1.0f, Wisdom = 1.2f, Luck = 1.5f } },
-                    { 40, new StatGrowth { Strength = 3.8f, Vitality = 8.5f, Agility = 1.5f, Stamina = 5.2f, Intelligence = 1.5f, Wisdom = 1.5f, Luck = 2.0f } }
+                    { 5,  new StatGrowth { Strength = 1.8f, Vitality = 0.95f,  Agility = 0.8f, Stamina = 0.65f,  Intelligence = 0.5f, Wisdom = 0.8f, Luck = 1.0f } }, // 3.8 -> 0.95, 2.6 -> 0.65
+                    { 10, new StatGrowth { Strength = 2.3f, Vitality = 1.2f,   Agility = 1.0f, Stamina = 0.8f,   Intelligence = 0.8f, Wisdom = 1.0f, Luck = 1.2f } }, // 4.8 -> 1.2, 3.2 -> 0.8
+                    { 20, new StatGrowth { Strength = 2.8f, Vitality = 1.6f,   Agility = 1.2f, Stamina = 1.05f,  Intelligence = 1.0f, Wisdom = 1.2f, Luck = 1.5f } }, // 6.4 -> 1.6, 4.2 -> 1.05
+                    { 40, new StatGrowth { Strength = 3.8f, Vitality = 2.125f, Agility = 1.5f, Stamina = 1.3f,   Intelligence = 1.5f, Wisdom = 1.5f, Luck = 2.0f } }  // 8.5 -> 2.125, 5.2 -> 1.3
                 },
+
                 Stats = new ActorStats(),
+
                 ThumbnailSettings = new ThumbnailSettings
                 {
                     Position = new Vector3(1.02f, 0.04f, 0.0f),
                     Scale = new Vector3(4.0f, 4.0f, 0f)
                 },
+
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
+
                 Details = new ActorDetails
                 {
                     Description = "A hulking brute with a barbed tail and armored shell.",
@@ -3561,9 +3577,9 @@ namespace Assets.Data.Actor
 PATH: Assets/Data/Actor/Yeti.cs
 TYPE: script
 EXT: .cs
-SHA256: 6C458726753B623CF22295D199E874A2C71E188614B0706E68DBCF53DFE6E73F
-BYTES: 2843
-LINES: 68
+SHA256: BE27BFDF7A1493519F6153642C87659540AB4E89B3E690660B67C1436981A305
+BYTES: 2931
+LINES: 67
 <<<CONTENT START>>>
 using Assets.Helpers;
 using Assets.Scripts.Models;
@@ -3587,9 +3603,9 @@ namespace Assets.Data.Actor
                 {
                     Level = 1,
                     Strength = 10f,
-                    Vitality = 8f,
+                    Vitality = 2f,
                     Agility = 2f,
-                    Stamina = 5f,
+                    Stamina = 1f,
                     Intelligence = 1f,
                     Wisdom = 1f,
                     Luck = 2f
@@ -3597,19 +3613,18 @@ namespace Assets.Data.Actor
                 StatGrowth = new StatGrowth
                 {
                     Strength = 1.5f,
-                    Vitality = 1.2f,
+                    Vitality = 0.3f,
                     Agility = 0.4f,
-                    Stamina = 0.8f,
-                    Intelligence = 0.0f,
+                    Stamina = 0.2f,
                     Wisdom = 0.2f,
                     Luck = 0.5f
                 },
                 MilestoneStatGrowth = new Dictionary<int, StatGrowth>
                 {
-                    { 5, new StatGrowth { Strength = 2.2f, Vitality = 1.7f, Agility = 0.5f, Stamina = 1.0f, Intelligence = 0.0f, Wisdom = 0.2f, Luck = 0.5f } },
-                    { 10, new StatGrowth { Strength = 3.0f, Vitality = 2.1f, Agility = 0.6f, Stamina = 1.2f, Intelligence = 0.0f, Wisdom = 0.3f, Luck = 0.6f } },
-                    { 20, new StatGrowth { Strength = 3.8f, Vitality = 2.5f, Agility = 0.8f, Stamina = 1.6f, Intelligence = 0.0f, Wisdom = 0.4f, Luck = 0.8f } },
-                    { 40, new StatGrowth { Strength = 4.8f, Vitality = 3.2f, Agility = 1.0f, Stamina = 2.0f, Intelligence = 0.0f, Wisdom = 0.5f, Luck = 1.0f } }
+                    { 5,  new StatGrowth { Strength = 2.2f, Vitality = 0.425f, Agility = 0.5f, Stamina = 0.25f, Intelligence = 0.0f, Wisdom = 0.2f, Luck = 0.5f } }, // 1.7 -> 0.425, 1.0 -> 0.25
+                    { 10, new StatGrowth { Strength = 3.0f, Vitality = 0.525f, Agility = 0.6f, Stamina = 0.3f,  Intelligence = 0.0f, Wisdom = 0.3f, Luck = 0.6f } }, // 2.1 -> 0.525, 1.2 -> 0.3
+                    { 20, new StatGrowth { Strength = 3.8f, Vitality = 0.625f, Agility = 0.8f, Stamina = 0.4f,  Intelligence = 0.0f, Wisdom = 0.4f, Luck = 0.8f } }, // 2.5 -> 0.625, 1.6 -> 0.4
+                    { 40, new StatGrowth { Strength = 4.8f, Vitality = 0.8f,   Agility = 1.0f, Stamina = 0.5f,  Intelligence = 0.0f, Wisdom = 0.5f, Luck = 1.0f } }  // 3.2 -> 0.8, 2.0 -> 0.5
                 },
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
@@ -5001,9 +5016,9 @@ namespace Assets.Helpers
 PATH: Assets/Helpers/AttackHelper.cs
 TYPE: script
 EXT: .cs
-SHA256: A7241770AB5E7C9CD1D5BD4085DA50BB2B63AEBAC4361B9452BAA347F2EF0F47
-BYTES: 1397
-LINES: 46
+SHA256: C462FC6F05157727DD32CC2DC2AD8850C49B10A18262487A1FACB6F08ACFE38D
+BYTES: 1293
+LINES: 43
 <<<CONTENT START>>>
 using Assets.Helper;
 using Assets.Scripts.Models;
@@ -5023,9 +5038,6 @@ namespace Assets.Helpers
         /// </summary>
         public static IEnumerator SingleAttackTrigger(AttackResult attackResult)
         {
-            if (attackResult == null || attackResult.Opponent == null)
-                yield break;
-
             attackResult.Opponent.Damage(attackResult);
 
             // Preserve original yield
@@ -5780,8 +5792,8 @@ namespace Assets.Helpers
 PATH: Assets/Helpers/DeathHelper.cs
 TYPE: script
 EXT: .cs
-SHA256: 7A02D1B7C70831EDBEC8AE6D4BFA719C2102154F133D74D8BD2EA928CC0AD15D
-BYTES: 767
+SHA256: AC4AEB60C81D93B9FA6B33744EA48BA8304234F9B3895DEB9B1A2D03224EF439
+BYTES: 774
 LINES: 29
 <<<CONTENT START>>>
 using System.Collections;
@@ -5793,7 +5805,7 @@ namespace Assets.Helpers
 {
     public static class DeathHelper
     {
-        public static IEnumerator Process()
+        public static IEnumerator ExecuteTrigger()
         {
             // find everyone who’s flagged as dying
             var dyingActors = g.Actors.All.Where(x => x.isDying).ToList();
@@ -17139,9 +17151,9 @@ public class CylinderManager : MonoBehaviour
 PATH: Assets/Scripts/Managers/DebugManager.cs
 TYPE: script
 EXT: .cs
-SHA256: 36D63670DCA2C8C01BD51B77C55A56E0944FCA64C48171D89619D2091810DCB0
-BYTES: 17522
-LINES: 551
+SHA256: 5BE2EDDCE2B75D13EBFA4CA4AA0BDA43E963BFDA8955B1CB50BD4B66096C9BB5
+BYTES: 18271
+LINES: 579
 <<<CONTENT START>>>
 using Assets.Helper;
 using Assets.Helpers;
@@ -17215,9 +17227,7 @@ public class DebugManager : MonoBehaviour
 
     public void ArrangeTripleCombo()
     {
-        //Show exactly nine slimes
-        for (int i = 0; i < 9; i++)
-            SpawnSlime();
+        SpawnSlime();
 
         //SelectProfile specific enemies for teleportation
         var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
@@ -17252,6 +17262,36 @@ public class DebugManager : MonoBehaviour
         g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(RNG.UnoccupiedLocation));
     }
 
+    public void ArrangeSurroundCombo()
+    {
+        SpawnSlime();
+
+        var slime = g.Actors.Enemies.LastOrDefault();
+        if (slime == null) return;
+
+        var center = new Vector2Int(3, 3);
+        var above = new Vector2Int(3, 4);
+        var right = new Vector2Int(4, 3);
+        var below = new Vector2Int(3, 2);
+        var left = new Vector2Int(2, 3);
+
+        var group = new[] { hero1, hero2, hero3, hero4, slime }.Where(x => x != null).ToArray();
+
+        slime.Teleport(center);
+        hero1.Teleport(above);
+        hero2.Teleport(right);
+        hero3.Teleport(below);
+        hero4.Teleport(left);
+
+        // Move everyone else out of the way to free tiles.
+        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(RNG.UnoccupiedLocation));
+    }
+
+
+
+
+
+
     public void Bump()
     {
         var hero = RNG.Hero;
@@ -17283,7 +17323,7 @@ public class DebugManager : MonoBehaviour
             var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitType.CriticalHit);
             enemy.Damage(attackResult);
         }
-        StartCoroutine(DeathHelper.Process());
+        StartCoroutine(DeathHelper.ExecuteTrigger());
     }
 
     public void Portrait2DSlideIn()
@@ -19329,12 +19369,13 @@ public class PauseManager : MonoBehaviour
 PATH: Assets/Scripts/Managers/PincerAttackManager.cs
 TYPE: script
 EXT: .cs
-SHA256: E6DD8C1DB4E40D9CFBDAB3E9E12C2EB16DC12A9BA2F06E5B9C0182FB407602C4
-BYTES: 7693
-LINES: 200
+SHA256: D23E63E894DD457BC507313FB39807B63E9AF5134AE5C2DE8CC2F4B70D00309E
+BYTES: 7903
+LINES: 205
 <<<CONTENT START>>>
 using Assets.Scripts.Events;
 using Assets.Scripts.Models;
+using Assets.Scripts.Sequences;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19491,9 +19532,13 @@ public class PincerAttackManager : MonoBehaviour
             g.SequenceManager.Add(new PincerAttackSequence(p));
         }
 
-        yield return g.SequenceManager.ExecuteTrigger();
-        yield return g.BoardOverlay.FadeOut();
+        // Run DeathSequence once after all pairs have resolved
+        g.SequenceManager.Add(new DeathSequence());
 
+        yield return g.SequenceManager.ExecuteTrigger();
+
+        //TODO: Put this in a HeroPostAttackSequence...
+        yield return g.BoardOverlay.FadeOut();
         g.SupportLineManager.Clear();
         participants.Clear();
         g.TurnManager.NextTurn();
@@ -20913,9 +20958,9 @@ public class SplashScreenManager : MonoBehaviour
 PATH: Assets/Scripts/Managers/StageManager.cs
 TYPE: script
 EXT: .cs
-SHA256: EF72134CA313C465BD35E21F334BAE04F31DB247ACAFFFB18874F3DED53F04D9
-BYTES: 6736
-LINES: 220
+SHA256: 13D286975B52C2A0CA70941056BFE91279B81E2D87A4E4618E74B60AAF8B5DF5
+BYTES: 7211
+LINES: 227
 <<<CONTENT START>>>
 using Assets.Helper;
 using Assets.Scripts.GUI;
@@ -21031,32 +21076,39 @@ public class StageManager : MonoBehaviour
         g.WaveAnnouncement.Show(waveIndex + 1, currentStage.Waves.Count);
     }
 
+
     /// <summary>
-    /// Spawns a new actor in the scene.
+    /// Spawns a new actor on a guaranteed free tile.
+    /// Always assigns a fresh unoccupied location to the StageActor.
     /// </summary>
     public void SpawnActor(StageActor stageActor)
     {
+        // Instantiate and parent under the board
         var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<ActorInstance>();
-        instance.transform.parent = g.Board.transform;
-
+        instance.transform.SetParent(g.Board.transform, false);
         instance.name = $"{stageActor.characterName}_{Guid.NewGuid():N}";
         instance.characterName = stageActor.characterName;
         instance.team = stageActor.Team;
 
-        // Show stats based on characterName and stageActor's level
+        // Stats and metadata
         instance.stats = ActorRepo.Actors[stageActor.characterName].GetStats(stageActor.Level);
-
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
 
-        stageActor.Location ??= RNG.UnoccupiedLocation;
+        // Pick and assign location, then spawn
+        var location = RNG.UnoccupiedLocation;
 
-        instance.Spawn(stageActor.Location.Value);
+        // This ensures that the game's stage data "knows" where this actor is starting.
+        // Used for saving, AI planning, and any systems that read StageActor info.
+        stageActor.Location = location;
 
+        // This physically places the GameObject in the scene and updates the tile's occupancy.
+        instance.Spawn(location);
+
+        // Register the new actor
         g.Actors.All.Add(instance);
     }
-
 
     /// <summary>
     /// Called when an actor dies. Triggers checks for game over or stage completion.
@@ -22417,9 +22469,9 @@ public class CanvasLineRenderer : Graphic
 PATH: Assets/Scripts/Models/Enums.cs
 TYPE: script
 EXT: .cs
-SHA256: BD2C72DD60469E16D396E93FD7C9DFA50D500F4842BAEB025A2C1E1A364F934E
-BYTES: 4195
-LINES: 326
+SHA256: 295C7C781ABBC64D4BE9825D2EE41A3DC39542343DD848B092A4E27984BF09AB
+BYTES: 4222
+LINES: 327
 <<<CONTENT START>>>
 public enum AbilityType
 {
@@ -22503,6 +22555,7 @@ public enum DebugOptions
     None,
     ArrangeSingleCombo,
     ArrangeTripleCombo,
+    ArrangeSurroundCombo,
     Bump,
     Dodge,
     Fireball,
@@ -25039,9 +25092,9 @@ public static class SpriteRepo
 PATH: Assets/Scripts/Repository/StageRepo.cs
 TYPE: script
 EXT: .cs
-SHA256: DE16F6CCF80688BEDDF02645ADC693EBFC8F3676C263CF1C87D3AB74B170A37F
-BYTES: 8653
-LINES: 178
+SHA256: 56D688ACE6D05E43A495EEF92A38DBA2F5161F559DC6D12D46DE9E9A05F2FB05
+BYTES: 8573
+LINES: 177
 <<<CONTENT START>>>
 using Assets.Helpers;
 using Assets.Scripts.Models;
@@ -25209,8 +25262,7 @@ public static class StageRepo
                 wave.Actors.Add(new StageActor
                 {
                     characterName = randomEnemy,
-                    Team = Team.Enemy,
-                    Location = new Vector2Int(rng.Next(1, 6), rng.Next(1, 6))
+                    Team = Team.Enemy
                 });
             }
 
@@ -25963,6 +26015,38 @@ public static class VisualEffectRepo
 <<<FILE END>>>
 
 <<<FILE START>>>
+PATH: Assets/Scripts/Sequences/DeathSequence.cs
+TYPE: script
+EXT: .cs
+SHA256: C836A24899C4A0164A75E04C89BF57753E2E5F052757FBB7F4E44C03B7C6E7FE
+BYTES: 457
+LINES: 21
+<<<CONTENT START>>>
+using Assets.Helper;
+using Assets.Helpers;
+using Assets.Scripts.Events;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Assets.Scripts.Sequences
+{
+    public class DeathSequence : SequenceEvent
+    {
+        public override IEnumerator Execute()
+        {
+            yield return DeathHelper.ExecuteTrigger();
+        }
+    }
+}
+
+<<<CONTENT END>>>
+<<<FILE END>>>
+
+<<<FILE START>>>
 PATH: Assets/Scripts/Sequences/EndTurnSequence.cs
 TYPE: script
 EXT: .cs
@@ -26003,9 +26087,9 @@ namespace Assets.Scripts.Events
 PATH: Assets/Scripts/Sequences/EnemyAttackSequence.cs
 TYPE: script
 EXT: .cs
-SHA256: F115880E98DB6B000114BD0B7602E1A4CC76EED768321BC5CD7C1559BFC948C0
-BYTES: 2504
-LINES: 68
+SHA256: 6A2F78A340B30D6F5020BFB488A5AAF4C5EE6D7F07700B8D79B5F1A0D591DF07
+BYTES: 2644
+LINES: 71
 <<<CONTENT START>>>
 // --- File: Assets/Scripts/Events/Sequences/EnemyAttackSequence.cs ---
 using Assets.Helper;
@@ -26058,12 +26142,15 @@ namespace Assets.Scripts.Events
                 {
                     var attackResult = Formulas.CalculateAttackResult(attacker, opponent);
 
+                    if (attackResult == null
+                        || attackResult.Opponent == null
+                        || attackResult.Opponent.isDying
+                        || attackResult.Opponent.isDead)
+                        continue;
+
                     // Run bump plus damage sequence using routine-based trigger.
                     var attackRoutine = AttackHelper.SingleAttackTrigger(attackResult);
                     yield return attacker.action.BumpTrigger(opponent, attackRoutine);
-
-                    // Process deaths after each strike.
-                    yield return DeathHelper.Process();
                 }
             }
 
@@ -26295,12 +26382,13 @@ namespace Assets.Scripts.Events
 PATH: Assets/Scripts/Sequences/EnemyStartSequence.cs
 TYPE: script
 EXT: .cs
-SHA256: F6794F2E3F1FF984831A3EBB77CD52E3C08E23A717FCCAA4983C8F9AF306EAB5
-BYTES: 2076
-LINES: 58
+SHA256: 919834087B8EBE7EDCE3AEAB41211D959053D47D82054F209883AB982375CD23
+BYTES: 2237
+LINES: 62
 <<<CONTENT START>>>
 // --- File: Assets/Scripts/Events/Sequences/EnemyStartSequence.cs ---
 using Assets.Helper;
+using Assets.Scripts.Sequences;
 using System.Collections;
 using System.Linq;
 using g = Assets.Helpers.GameHelper;
@@ -26347,6 +26435,9 @@ namespace Assets.Scripts.Events
                 g.SequenceManager.Add(new EnemyAttackSequence(e));
                 g.SequenceManager.Add(new EnemyPostAttackSequence(e));
             }
+
+            // Run all queued enemy actions first, then deaths once
+            g.SequenceManager.Add(new DeathSequence());
 
             // After all per-attacker chains, end the attacker turn.
             g.SequenceManager.Add(new EndTurnSequence());
@@ -26589,9 +26680,9 @@ namespace Assets.Scripts.Events
 PATH: Assets/Scripts/Sequences/PincerAttackSequence.cs
 TYPE: script
 EXT: .cs
-SHA256: 80E1C77BF7558634D092117413BBC39BA20AB5702CEE504B6E1462C8EC64CFA0
-BYTES: 2653
-LINES: 76
+SHA256: 742B4712D8440B18ABB4D9657A27402046AA53907E5D4EA3097DF8A859C5C7AD
+BYTES: 2737
+LINES: 77
 <<<CONTENT START>>>
 using Assets.Helper;
 using Assets.Helpers;
@@ -26638,16 +26729,17 @@ namespace Assets.Scripts.Events
                 pair.attacker2.action.Shrink()
             );
 
-            // Determine bump directions
-            var firstOpponent = pair.attackResults1.First().Opponent;
+            // Choose an adjacent target per attacker
+            var opp1 = pair.attackResults1.First().Opponent;
+            var opp2 = pair.attackResults2.First().Opponent;
 
             // Build attack routines
             var trigger1 = AttackHelper.MultiAttackTrigger(pair.attacker1, pair.attackResults1);
             var trigger2 = AttackHelper.MultiAttackTrigger(pair.attacker2, pair.attackResults2);
 
-            // Run bumps with attached routines
-            yield return pair.attacker1.action.BumpTrigger(firstOpponent, trigger1);
-            yield return pair.attacker2.action.BumpTrigger(firstOpponent, trigger2);
+            // Run bumps toward each attacker's own adjacent opponent
+            yield return pair.attacker1.action.BumpTrigger(opp1, trigger1);
+            yield return pair.attacker2.action.BumpTrigger(opp2, trigger2);
 
             //// Wait until both triggers complete all logic (VfxManager and damage)
             //yield return CoroutineHelper.WaitForAll(
@@ -26662,8 +26754,8 @@ namespace Assets.Scripts.Events
             //    pair.attacker2.action.BumpTrigger(dir2, trigger2)
             //);
 
-            // Process deaths afterward
-            yield return DeathHelper.Process();
+            // ExecuteTrigger deaths afterward
+            yield return DeathHelper.ExecuteTrigger();
         }
 
     }
@@ -28161,9 +28253,9 @@ public class Geometry
 PATH: Assets/Scripts/Utilities/RNG.cs
 TYPE: script
 EXT: .cs
-SHA256: BE7DFF27A35A10F1D8289DFAB2AA5F49486BE1727B915B8E34F9230D6D9CA7CC
-BYTES: 6157
-LINES: 210
+SHA256: 095679875B2B65B7C8A4EAC380DF0DF2D52C4E1FC30F3A894A66D886C96F2CF8
+BYTES: 6171
+LINES: 215
 <<<CONTENT START>>>
 using Assets.Helper;
 using Game.Behaviors.Actor;
@@ -28183,9 +28275,14 @@ static class RNG
 
     public static TileInstance Tile => g.Tiles.Shuffle().First();
 
-    public static TileInstance UnoccupiedTile => g.Tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
-
+    
     public static Vector2Int Location => new Vector2Int(Int(1, g.Board.columnCount), Int(1, g.Board.rowCount));
+
+
+
+
+
+    public static TileInstance UnoccupiedTile => g.Tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
 
     public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
 

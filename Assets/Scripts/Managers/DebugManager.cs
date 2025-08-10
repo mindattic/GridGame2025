@@ -4,9 +4,11 @@ using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static Assets.Helper.Intermission;
 using static Assets.Helper.Intermission.Before;
 using g = Assets.Helpers.GameHelper;
 
@@ -70,9 +72,7 @@ public class DebugManager : MonoBehaviour
 
     public void ArrangeTripleCombo()
     {
-        //Show exactly nine slimes
-        for (int i = 0; i < 9; i++)
-            SpawnSlime();
+        SpawnSlime();
 
         //SelectProfile specific enemies for teleportation
         var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
@@ -107,6 +107,37 @@ public class DebugManager : MonoBehaviour
         g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(RNG.UnoccupiedLocation));
     }
 
+    /// <summary>
+    /// Places Slime at center with heroes around it. 
+    /// Any actor already on those tiles is moved using TeleportAfter so the spots are freed,
+    /// then all non-group actors are moved to any unoccupied tile.
+    /// </summary>
+    public void ArrangeSurroundCombo()
+    {
+        var center = new Vector2Int(3, 3);
+        var above = new Vector2Int(3, 2);
+        var right = new Vector2Int(4, 3);
+        var below = new Vector2Int(3, 4);
+        var left = new Vector2Int(2, 3);
+
+        var blackList = new HashSet<Vector2Int>() { center, above, right, below };
+
+
+        // Ensure a slime exists
+        SpawnSlime();
+
+        var slime = g.Actors.Enemies.FirstOrDefault(x => x.characterName == CharacterHelper.Slime);
+        if (slime == null) return;
+
+        // Place slime and heroes
+        slime.Teleport(center);
+        hero1.Teleport(above);
+        hero2.Teleport(right);
+        hero3.Teleport(below);
+        hero4.Teleport(left);
+    }
+
+
     public void Bump()
     {
         var hero = RNG.Hero;
@@ -138,7 +169,7 @@ public class DebugManager : MonoBehaviour
             var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitType.CriticalHit);
             enemy.Damage(attackResult);
         }
-        StartCoroutine(DeathHelper.Process());
+        StartCoroutine(DeathHelper.ExecuteTrigger());
     }
 
     public void Portrait2DSlideIn()

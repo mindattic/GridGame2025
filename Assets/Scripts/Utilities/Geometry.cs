@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -174,6 +175,18 @@ public class Geometry
     {
         return g.Tiles.FirstOrDefault(x => !x.IsOccupied && x.IsAdjacentTo(other));
     }
+
+
+
+    public static ActorInstance GetClosestOpponent(ActorInstance attacker, IEnumerable<AttackResult> results)
+    {
+        return results
+            .Select(r => r.Opponent)
+            .Where(o => o != null)
+            .OrderBy(o => Mathf.Abs(attacker.location.x - o.location.x) + Mathf.Abs(attacker.location.y - o.location.y))
+            .FirstOrDefault();
+    }
+
 
     /// <summary>
     /// Returns a playing actor on the opposite team who is adjacent; 

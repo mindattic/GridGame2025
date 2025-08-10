@@ -141,6 +141,7 @@
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
+    <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
     <Compile Include="Assets\Helpers\Wait.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />

@@ -16,13 +16,6 @@ namespace Assets.Helpers
         /// </summary>
         public static IEnumerator SingleAttackTrigger(AttackResult attackResult)
         {
-            if (attackResult == null 
-                || attackResult.Opponent == null 
-                || attackResult.Opponent.isDying 
-                || attackResult.Opponent.isDead)
-                yield break;
-
-
             attackResult.Opponent.Damage(attackResult);
 
             // Preserve original yield

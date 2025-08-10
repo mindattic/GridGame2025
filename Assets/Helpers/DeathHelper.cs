@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.Helper;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
@@ -7,7 +8,7 @@ namespace Assets.Helpers
 {
     public static class DeathHelper
     {
-        public static IEnumerator Process()
+        public static IEnumerator ExecuteTrigger()
         {
             // find everyone who’s flagged as dying
             var dyingActors = g.Actors.All.Where(x => x.isDying).ToList();
@@ -21,6 +22,7 @@ namespace Assets.Helpers
             foreach (var actor in dyingActors)
             {
                 actor.Die();
+                yield return Wait.For(Interval.QuarterSecond);
             }
         }
     }

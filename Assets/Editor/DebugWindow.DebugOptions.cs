@@ -25,6 +25,8 @@ public partial class DebugWindow
 
             case DebugOptions.ArrangeSingleCombo: g.DebugManager.ArrangeSingleCombo(); break;
             case DebugOptions.ArrangeTripleCombo: g.DebugManager.ArrangeTripleCombo(); break;
+            case DebugOptions.ArrangeSurroundCombo: g.DebugManager.ArrangeSurroundCombo(); break;
+
             case DebugOptions.Bump: g.DebugManager.Bump(); break;
             case DebugOptions.Dodge: g.DebugManager.Dodge(); break;
             case DebugOptions.Fireball: g.DebugManager.Fireball(); break;

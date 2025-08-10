@@ -1,5 +1,6 @@
 using Assets.Scripts.Events;
 using Assets.Scripts.Models;
+using Assets.Scripts.Sequences;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -156,9 +157,13 @@ public class PincerAttackManager : MonoBehaviour
             g.SequenceManager.Add(new PincerAttackSequence(p));
         }
 
-        yield return g.SequenceManager.ExecuteTrigger();
-        yield return g.BoardOverlay.FadeOut();
+        // Run DeathSequence once after all pairs have resolved
+        g.SequenceManager.Add(new DeathSequence());
 
+        yield return g.SequenceManager.ExecuteTrigger();
+
+        //TODO: Put this in a HeroPostAttackSequence...
+        yield return g.BoardOverlay.FadeOut();
         g.SupportLineManager.Clear();
         participants.Clear();
         g.TurnManager.NextTurn();

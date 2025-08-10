@@ -467,9 +467,6 @@ public class ActorInstance : MonoBehaviour
     public void Damage(AttackResult attackResult) => StartCoroutine(DamageTrigger(attackResult));
     public IEnumerator DamageTrigger(AttackResult attackResult)
     {
-        if (attackResult.Opponent.isDying || attackResult.Opponent.isDead)
-            yield break;
-
         // Immediately apply damage and update health.
         if (!isInvincible)
         {
@@ -608,7 +605,44 @@ public class ActorInstance : MonoBehaviour
             occupant.Teleport(RNG.Location);
 
         this.location = newLocation;
-        transform.position = Geometry.GetPositionByLocation(this.location);
+        transform.position = Geometry.GetPositionByLocation(location);
+    }
+
+    /// <summary>
+    /// Teleports this actor to the first unoccupied tile that comes AFTER the given position
+    /// using the board's natural order (top-left to bottom-right). Wraps around at the end.
+    /// Requires g.Tiles to be ordered top-left to bottom-right.
+    /// </summary>
+    public void TeleportAfter(Vector2Int after)
+    {
+        var tiles = g.Tiles.ToList();
+        if (tiles.Count == 0)
+        {
+            Debug.LogWarning("TeleportAfter: no tiles available.");
+            return;
+        }
+
+        int startIndex = tiles.FindIndex(t => t != null && t.location == after);
+        if (startIndex < 0)
+        {
+            Debug.LogWarning($"TeleportAfter: starting tile {after} not found.");
+            return;
+        }
+
+        // Scan from the next tile, wrapping around once if needed
+        for (int step = 1; step <= tiles.Count; step++)
+        {
+            int idx = (startIndex + step) % tiles.Count;
+            var tile = tiles[idx];
+
+            if (tile != null && !tile.IsOccupied)
+            {
+                Teleport(tile.location);
+                return;
+            }
+        }
+
+        Debug.LogWarning($"TeleportAfter: no unoccupied tile found after {after}.");
     }
 
     //Seek: Attempts to move the actor in the specified direction if the target location is valid.

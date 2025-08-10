@@ -1,5 +1,6 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyStartSequence.cs ---
 using Assets.Helper;
+using Assets.Scripts.Sequences;
 using System.Collections;
 using System.Linq;
 using g = Assets.Helpers.GameHelper;
@@ -46,6 +47,9 @@ namespace Assets.Scripts.Events
                 g.SequenceManager.Add(new EnemyAttackSequence(e));
                 g.SequenceManager.Add(new EnemyPostAttackSequence(e));
             }
+
+            // Run all queued enemy actions first, then deaths once
+            g.SequenceManager.Add(new DeathSequence());
 
             // After all per-attacker chains, end the attacker turn.
             g.SequenceManager.Add(new EndTurnSequence());

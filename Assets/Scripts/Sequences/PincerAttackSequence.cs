@@ -44,8 +44,8 @@ namespace Assets.Scripts.Events
             );
 
             // Choose an adjacent target per attacker
-            var opp1 = pair.attackResults1.First().Opponent;
-            var opp2 = pair.attackResults2.First().Opponent;
+            var opp1 = Geometry.GetClosestOpponent(pair.attacker1, pair.attackResults1);
+            var opp2 = Geometry.GetClosestOpponent(pair.attacker2, pair.attackResults2);
 
             // Build attack routines
             var trigger1 = AttackHelper.MultiAttackTrigger(pair.attacker1, pair.attackResults1);
@@ -68,8 +68,8 @@ namespace Assets.Scripts.Events
             //    pair.attacker2.action.BumpTrigger(dir2, trigger2)
             //);
 
-            // Process deaths afterward
-            yield return DeathHelper.Process();
+            // ExecuteTrigger deaths afterward
+            //yield return DeathHelper.ExecuteTrigger();
         }
 
     }
