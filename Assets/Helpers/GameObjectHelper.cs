@@ -61,7 +61,7 @@ namespace Assets.Helper
             public const string PauseButton = "Canvas/PauseButton";
             public const string PauseMenu = "Canvas/PauseMenu";
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
-            public const string CanvasOverlay = "Canvas/CanvasOverlay";
+            public const string PauseOverlay = "Canvas/PauseOverlay";
 
 
 

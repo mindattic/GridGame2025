@@ -7,7 +7,7 @@ using UnityEngine.UI;
 /// Handles fade-in and fade-out of the attached Image component.
 /// </summary>
 [RequireComponent(typeof(Image))]
-public class CanvasOverlay : MonoBehaviour
+public class PauseOverlay : MonoBehaviour
 {
     private Image overlayImage;
     private Coroutine fadeCoroutine;
@@ -21,7 +21,7 @@ public class CanvasOverlay : MonoBehaviour
         overlayImage = GetComponent<Image>();
         if (overlayImage == null)
         {
-            Debug.LogError("CanvasOverlay requires an Image component.");
+            Debug.LogError("PauseOverlay requires an Image component.");
             enabled = false;
         }
     }

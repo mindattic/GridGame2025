@@ -29,7 +29,7 @@ public class PauseManager : MonoBehaviour
         pause = SpriteRepo.Sprites["Pause"];
         paused = SpriteRepo.Sprites["Paused"];
         pauseButtonImage.sprite = pause;
-        g.CanvasOverlay.Hide();
+        g.PauseOverlay.Hide();
         pauseMenu.SetActive(false);
     }
 
@@ -50,7 +50,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 0f;
         pauseButtonImage.sprite = paused;
-        g.CanvasOverlay.Show();
+        g.PauseOverlay.Show();
         pauseMenu.SetActive(true);
 
     }
@@ -59,7 +59,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         pauseButtonImage.sprite = pause;
-        g.CanvasOverlay.Hide();
+        g.PauseOverlay.Hide();
         pauseMenu.SetActive(false);
     }
 

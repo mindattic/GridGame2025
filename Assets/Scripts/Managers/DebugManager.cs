@@ -289,8 +289,8 @@ public class DebugManager : MonoBehaviour
     public void TitleTest()
     {
         var text = DateTime.UtcNow.Ticks.ToString();
-        g.CanvasOverlay.FadeIn();
-        g.CanvasOverlay.FadeOut();
+        g.PauseOverlay.FadeIn();
+        g.PauseOverlay.FadeOut();
 
     }
 
@@ -301,7 +301,7 @@ public class DebugManager : MonoBehaviour
     }
 
     //TODO: Should be controlled by CoinManager
-    public void SpawnCoints()
+    public void SpawnCoins()
     {
         var vfx = VisualEffectRepo.VisualEffects["YellowHit"];
 

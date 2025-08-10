@@ -183,6 +183,7 @@
     <Compile Include="Assets\Data\Actor\Barbarian.cs" />
     <Compile Include="Assets\Helpers\CharacterHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
+    <Compile Include="Assets\Scripts\Canvas\PauseOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\RectVector3.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
@@ -251,7 +252,6 @@
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Helpers\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
-    <Compile Include="Assets\Scripts\Canvas\CanvasOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />

@@ -37,7 +37,7 @@ public partial class DebugWindow
             case DebugOptions.Portrait3DSlideIn: g.DebugManager.Portrait3DSlideIn(); break;
             case DebugOptions.RandomizeBackground: g.DebugManager.RandomizeBackground(); break;
             case DebugOptions.Shake: g.DebugManager.Shake(); break;
-            case DebugOptions.SpawnCoins: g.DebugManager.SpawnCoints(); break;
+            case DebugOptions.SpawnCoins: g.DebugManager.SpawnCoins(); break;
             case DebugOptions.SpawnDamageText: g.DebugManager.SpawnDamageText(); break;
             case DebugOptions.SpawnHealText: g.DebugManager.SpawnHealText(); break;
             case DebugOptions.SpawnSupportLines: g.DebugManager.SpawnSupportLines(); break;
