@@ -11,24 +11,24 @@ public class TrailManager : MonoBehaviour
     private readonly Dictionary<string, TrailInstance> trailEffects = new Dictionary<string, TrailInstance>();
 
     /// <summary>
-    /// Fire-and-forget spawn of a trail effect at a world position.
-    /// Optionally runs a trigger routine after the trail's own sequence.
+    /// FireAndForget-and-forget spawn of a trail effect at a world position.
+    /// Optionally runs a routine routine after the trail's own sequence.
     /// </summary>
-    public void Spawn(TrailEffectAsset resource, Vector3 position, IEnumerator trigger = null)
+    public void Spawn(TrailEffectAsset resource, Vector3 position, IEnumerator routine = null)
     {
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<TrailInstance>();
         instance.name = $"Trail_{resource.Name}_{Guid.NewGuid():N}";
         trailEffects.Add(instance.name, instance);
 
-        StartCoroutine(instance.Spawn(resource, position, trigger));
+        StartCoroutine(instance.Spawn(resource, position, routine));
     }
 
     /// <summary>
     /// Yieldable spawn of a trail effect at a world position.
-    /// Optionally yields a trigger routine after the trail's own sequence.
+    /// Optionally yields a routine routine after the trail's own sequence.
     /// </summary>
-    public IEnumerator YieldSpawn(TrailEffectAsset resource, Vector3 position, IEnumerator trigger = null)
+    public IEnumerator YieldSpawn(TrailEffectAsset resource, Vector3 position, IEnumerator routine = null)
     {
         var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<TrailInstance>();
@@ -36,7 +36,7 @@ public class TrailManager : MonoBehaviour
         instance.parent = g.Board.transform;
         trailEffects.Add(instance.name, instance);
 
-        yield return instance.Spawn(resource, position, trigger);
+        yield return instance.Spawn(resource, position, routine);
     }
 
     /// <summary>

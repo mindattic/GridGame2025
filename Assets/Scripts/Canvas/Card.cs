@@ -87,17 +87,17 @@ public class Card : MonoBehaviour
         details.GetComponent<Label>().text = stats + actorData.Details.Card;
 
         // Begin the slide-in action for the portrait.
-        TriggerSlideIn();
+        SlideIn();
     }
 
-    // TriggerSlideIn starts the coroutine to action the portrait sliding in from offscreen.
-    private void TriggerSlideIn()
+
+    private void SlideIn()
     {
-        StartCoroutine(SlideIn());
+        StartCoroutine(SlideInRoutine());
     }
 
     // Show smoothly animates the portrait image from an offscreen position to its destination.
-    private IEnumerator SlideIn()
+    private IEnumerator SlideInRoutine()
     {
         float elapsedTime = 0f;
         portrait.anchoredPosition = offscreenPosition;
@@ -141,18 +141,18 @@ public class Card : MonoBehaviour
 
 
     /// <summary>
-    /// Triggers a quick bounce animation on the portrait: up, then down.
+    /// Execute a quick bounce animation on the portrait: up, then down.
     /// </summary>
     public void BouncePortrait(float percentOfScreenHeight = 0.03f, float bounceDuration = 0.3333f)
     {
         float bounceDistance = Screen.height * percentOfScreenHeight;
-        StartCoroutine(BouncePortraitTrigger(bounceDistance, bounceDuration));
+        StartCoroutine(BouncePortraitRoutune(bounceDistance, bounceDuration));
     }
 
     /// <summary>
-    /// Coroutine to animate the portrait bouncing up then back down.
+    /// StartCoroutine to animate the portrait bouncing up then back down.
     /// </summary>
-    private IEnumerator BouncePortraitTrigger(float bounceDistance, float bounceDuration)
+    private IEnumerator BouncePortraitRoutune(float bounceDistance, float bounceDuration)
     {
         // Store original anchored position
         Vector2 originalPos = portrait.anchoredPosition;

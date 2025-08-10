@@ -377,8 +377,7 @@ public class ActorInstance : MonoBehaviour
         {
             gameObject.SetActive(true);
             flags.HasSpawned = true;
-            // TriggerEvent fade-in and spin animations for visual feedback.
-            action.TriggerFadeIn();
+            action.FadeIn();
             action.Spin360();
         }
         else
@@ -430,16 +429,16 @@ public class ActorInstance : MonoBehaviour
         //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
     }
 
-    public void FireDamage(float amount) => StartCoroutine(FireDamageTrigger(amount));
-    public IEnumerator FireDamageTrigger(float amount)
+    public void FireDamage(float amount) => StartCoroutine(FireDamageRoutine(amount));
+    public IEnumerator FireDamageRoutine(float amount)
     {
         g.CombatTextManager.Spawn($"Fireball: - {amount} HP", position);
         yield return Wait.None();
     }
 
 
-    public void Heal(int amount) => StartCoroutine(HealTrigger(amount));
-    public IEnumerator HealTrigger(int amount)
+    public void Heal(int amount) => StartCoroutine(HealRoutine(amount));
+    public IEnumerator HealRoutine(int amount)
     {
         // Immediately apply healing and update health.
         if (!isInvincible)
@@ -454,18 +453,14 @@ public class ActorInstance : MonoBehaviour
         g.CombatTextManager.Spawn(amount.ToString(), position, "Heal");
         g.AudioManager.Play("Heal"); // Replace with your healing SFX key
 
-        // If you have a healing VFX, spawn it here.
-        // var vfx = vfxManager.HealEffect;
-        // g.VfxManager.SpawnTrigger(vfx, position);
-
         yield break;
     }
 
 
 
-    //DamageTrigger: Coroutine that processes damage application, triggers VfxManager and animations, and updates HP.
-    public void Damage(AttackResult attackResult) => StartCoroutine(DamageTrigger(attackResult));
-    public IEnumerator DamageTrigger(AttackResult attackResult)
+    //DamageRoutine: StartCoroutine that processes damage application, executes VfxManager and animations, and updates HP.
+    public void Damage(AttackResult attackResult) => StartCoroutine(DamageRoutine(attackResult));
+    public IEnumerator DamageRoutine(AttackResult attackResult)
     {
         // Immediately apply damage and update health.
         if (!isInvincible)
@@ -484,46 +479,21 @@ public class ActorInstance : MonoBehaviour
     }
 
 
-    //private IEnumerator DamageTaken(AttackResult attackResult)
-    //{
-    //    float ticks = 0f;
-    //    float duration = Interval.TenTicks; // For example, 1 second.
-
-    //    while (ticks < duration)
-    //    {
-    //        action.Grow(); // Flinch effect.
-    //        if (attackResult.IsCriticalHit)
-    //            action.Shake(ShakeIntensity.Medium);
-    //        ticks += Interval.OneTick;
-    //        yield return Wait.For(Interval.OneTick);
-    //    }
-
-    //    // Reset animations.
-    //    action.TriggerShrink();
-    //    action.Shake(ShakeIntensity.Medium);
-
-    //    if (isDying)
-    //        Die();
-
-    //    yield break;
-    //}
-
-
-    //AttackMissTrigger: Coroutine to display a miss message and attackResult a dodge action.
-    public IEnumerator AttackMissTrigger()
+    //AttackMissRoutine: StartCoroutine to display a miss message and attackResult a dodge action.
+    public IEnumerator AttackMissRoutine()
     {
         g.CombatTextManager.Spawn("Miss", position);
-        yield return action.DodgeTrigger();
+        yield return action.DodgeRoutine();
     }
 
     //Die: Initiates the actor's death sequence.
     public void Die()
     {
-        StartCoroutine(DieTrigger());
+        StartCoroutine(DieRoutine());
     }
 
-    //DieTrigger: Coroutine that handles the actor's death sequence, including fading out, spawning coins, and deactivation.
-    public IEnumerator DieTrigger()
+    //DieRoutine: StartCoroutine that handles the actor's death sequence, including fading out, spawning coins, and deactivation.
+    public IEnumerator DieRoutine()
     {
         //Abort if the actor is not in a dying state.
         if (!isDying)
@@ -537,7 +507,7 @@ public class ActorInstance : MonoBehaviour
         if (healthBar.isDraining)
             yield return new WaitUntil(() => healthBar.isEmpty);
 
-        //TriggerEvent portrait dissolve effect and play death sound.
+        //Execute portrait dissolve effect and play death sound.
         g.Portrait3DManager.Dissolve(this);
         g.AudioManager.Play("Death");
 
@@ -557,7 +527,7 @@ public class ActorInstance : MonoBehaviour
             {
                 hasSpawnedCoins = true;
                 int amount = 10;
-                TriggerSpawnCoins(amount);
+                SpawnCoins(amount);
             }
 
             yield return Wait.OneTick();
@@ -570,15 +540,15 @@ public class ActorInstance : MonoBehaviour
         g.StageManager.OnActorDeath();
     }
 
-    //TriggerSpawnCoins: Helper function to begin spawning coins upon attacker death.
-    private void TriggerSpawnCoins(int amount)
+    //SpawnCoins: Helper function to begin spawning coins upon attacker death.
+    private void SpawnCoins(int amount)
     {
         if (isPlaying)
-            StartCoroutine(SpawnCoins(amount)); // TODO: Adjust coin spawning based on attacker stats if necessary.
+            StartCoroutine(SpawnCoinsRoutine(amount)); // TODO: Adjust coin spawning based on attacker stats if necessary.
     }
 
-    //SpawnCoins: Coroutine that spawns a specified number of coins at the actor's position.
-    IEnumerator SpawnCoins(int amount)
+    //SpawnCoinsRoutine: StartCoroutine that spawns a specified number of coins at the actor's position.
+    IEnumerator SpawnCoinsRoutine(int amount)
     {
         var i = 0;
         do

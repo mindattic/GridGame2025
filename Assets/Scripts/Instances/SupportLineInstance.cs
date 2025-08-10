@@ -63,7 +63,7 @@ public class SupportLineInstance : MonoBehaviour
     private LineRenderer lineRenderer;
 
     /// <summary>
-    /// If true, FadeOutTrigger is skipped.
+    /// If true, DespawnRoutine is skipped.
     /// </summary>
     public bool isStatic = false;
 
@@ -121,34 +121,34 @@ public class SupportLineInstance : MonoBehaviour
         g.SortingManager.OnSupportLineSpawn(this);
 
         // Begin fade in effect
-        StartCoroutine(FadeIn());
+        StartCoroutine(FadeInRoutine());
     }
 
     /// <summary>
     /// Fades from transparent to maxAlpha.
     /// </summary>
-    private IEnumerator FadeIn()
+    private IEnumerator FadeInRoutine()
     {
-        yield return FadeTrigger(minAlpha, maxAlpha, null);
+        yield return FadeRoutine(minAlpha, maxAlpha, null);
     }
 
     /// <summary>
-    /// Triggers fade out and eventual destruction of the support line.
+    /// Execute fade out and eventual destruction of the support line.
     /// </summary>
     public void Despawn()
     {
-        StartCoroutine(FadeOutTrigger());
+        StartCoroutine(DespawnRoutine());
     }
 
     /// <summary>
     /// Fades from maxAlpha to transparent, then informs the manager to destroy.
     /// </summary>
-    public IEnumerator FadeOutTrigger()
+    public IEnumerator DespawnRoutine()
     {
         if (isStatic)
             yield break;
 
-        yield return FadeTrigger(maxAlpha, minAlpha, () =>
+        yield return FadeRoutine(maxAlpha, minAlpha, () =>
         {
             g.SupportLineManager.Destroy(supporter, attacker);
         });
@@ -173,11 +173,11 @@ public class SupportLineInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Consolidated fade routine used by FadeIn and FadeOutTrigger.
+    /// Consolidated fade routine used by FadeInRoutine and DespawnRoutine.
     /// Interpolates alpha from startAlpha to targetAlpha over fadeDuration.
     /// Calls onComplete after finishing if provided.
     /// </summary>
-    private IEnumerator FadeTrigger(float startAlpha, float targetAlpha, Action onComplete)
+    private IEnumerator FadeRoutine(float startAlpha, float targetAlpha, Action onComplete)
     {
         float elapsedTime = 0f;
 

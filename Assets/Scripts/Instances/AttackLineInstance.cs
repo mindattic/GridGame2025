@@ -93,12 +93,12 @@ namespace Game.Instances
             SetAlpha(alpha);
         }
 
-        public void TriggerDespawn()
+        public void Despawn()
         {
-            StartCoroutine(Despawn());
+            StartCoroutine(DespawnRoutine());
         }
 
-        public IEnumerator Despawn()
+        public IEnumerator DespawnRoutine()
         {
             //Before:
             float startAlpha = maxAlpha;

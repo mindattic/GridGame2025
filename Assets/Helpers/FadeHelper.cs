@@ -7,7 +7,7 @@ namespace Assets.Helpers
 {
     /// <summary>
     /// Caches the current scene's FadeInstance so callers always get the correct reference.
-    /// Looks up the Fade GameObject by name using GameObjectHelper.Overworld.Fade once per scene load.
+    /// Looks up the FadeRoutine GameObject by name using GameObjectHelper.Overworld.FadeRoutine once per scene load.
     /// </summary>
     public static class FadeHelper
     {

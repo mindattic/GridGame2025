@@ -21,9 +21,9 @@ namespace Assets.Scripts.Events
         public override IEnumerator Execute()
         {
             // 1) Portrait3DManager pops in
-            //yield return new PortraitPopInSequence(startPosition).ExecuteTrigger();
+            //yield return new PortraitPopInSequence(startPosition).ExecuteRoutine();
 
-            // 2) Fire the heal projectile
+            // 2) FireAndForget the heal projectile
             var healSettings = new ProjectileSettings
             {
                 friendlyName = "Heal",
@@ -33,12 +33,12 @@ namespace Assets.Scripts.Events
                 controlPoints = BezierCurveHelper.Gentle(source, target),
                 trailKey = "GreenSparkle",
                 vfxKey = "BuffLife",
-                trigger = target.HealTrigger(10)
+                routine = target.HealRoutine(10)
             };
             yield return new FireProjectileSequence(healSettings).Execute();
 
             // 3) Portrait3DManager pops out
-            //yield return new PortraitPopOutSequence(startPosition).ExecuteTrigger();
+            //yield return new PortraitPopOutSequence(startPosition).ExecuteRoutine();
         }
     }
 }

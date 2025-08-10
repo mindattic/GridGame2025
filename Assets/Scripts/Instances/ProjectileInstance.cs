@@ -154,7 +154,6 @@ public class ProjectileInstance : MonoBehaviour
         // Always add start position as first point
         controlPoints.Add(start);
 
-        // TriggerEnqueueAttacks if control points are provided
         if (projectile.controlPoints != null && projectile.controlPoints.Count > 0)
         {
             // Use provided control points
@@ -224,7 +223,7 @@ public class ProjectileInstance : MonoBehaviour
         trailInstance.SetActive(false); //Hide trail until end
 
         VFXAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];
-        yield return g.VfxManager.SpawnTrigger(vfxResource, projectile.target.position, projectile.trigger);
+        yield return g.VfxManager.SpawnRoutine(vfxResource, projectile.target.position, projectile.routine);
 
         if (trailInstance != null)
             Destroy(trailInstance);

@@ -57,14 +57,14 @@ public class SequenceManager : MonoBehaviour
         if (isExecuting)
             return;
 
-        runningCoroutine = StartCoroutine(ExecuteTrigger());
+        runningCoroutine = StartCoroutine(ExecuteRoutine());
     }
 
     /// <summary>
     /// Executes all queued SequenceEvents one by one, then raises OnSequenceComplete.
     /// Controls the isExecuting state and the coroutine handle.
     /// </summary>
-    public IEnumerator ExecuteTrigger()
+    public IEnumerator ExecuteRoutine()
     {
         if (isExecuting)
             yield break;
@@ -105,7 +105,7 @@ public class SequenceManager : MonoBehaviour
 
     private void OnDisable()
     {
-        // Despawn active run
+        // DespawnRoutine active run
         if (runningCoroutine != null)
         {
             StopCoroutine(runningCoroutine);

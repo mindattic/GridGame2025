@@ -12,7 +12,7 @@ namespace Assets.Scripts.Events
     ///
     /// Behavior:
     ///   1) Performs optional pacing to let visuals settle.
-    ///   2) Applies any status effects that trigger after attacking.
+    ///   2) Applies any status effects that routine after attacking.
     ///   3) Does not schedule other enemies or end the turn.
     ///
     /// Safety:

@@ -12,7 +12,7 @@ namespace Assets.Scripts.Events
     ///
     /// Behavior:
     ///   1) Performs optional pacing or anticipation visuals.
-    ///   2) Applies any status effects that trigger before attacking.
+    ///   2) Applies any status effects that routine before attacking.
     ///   3) Does not schedule other enemies or end the turn.
     ///
     /// Safety:
@@ -42,7 +42,7 @@ namespace Assets.Scripts.Events
             // Optional: short pacing or anticipation before the attack.
             yield return Wait.None();
 
-            // Placeholder for future: apply buffs, debuffs, or triggers here.
+            // Placeholder for future: apply buffs, debuffs here.
 
             yield break;
         }

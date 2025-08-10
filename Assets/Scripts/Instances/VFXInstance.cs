@@ -32,17 +32,17 @@ public class VFXInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Fire-and-forget spawn of a VFX at a world position. Optionally runs a trigger routine afterward.
+    /// Spawn of a VFX at a world position. Optionally runs a routine routine afterward.
     /// </summary>
-    public void Spawn(VFXAsset vfx, Vector3 position, IEnumerator trigger = null)
+    public void Spawn(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
     {
-        StartCoroutine(SpawnTrigger(vfx, position, trigger));
+        StartCoroutine(SpawnRoutine(vfx, position, routine));
     }
 
     /// <summary>
-    /// Yieldable spawn of a VFX at a world position. Plays optional trigger routine, then despawns.
+    /// Yieldable spawn of a VFX at a world position. Plays optional routine routine, then despawns.
     /// </summary>
-    public IEnumerator SpawnTrigger(VFXAsset vfx, Vector3 worldPosition, IEnumerator trigger = null)
+    public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 worldPosition, IEnumerator routine = null)
     {
         // 1) Place in world space
         transform.position = worldPosition + vfx.RelativeOffset;
@@ -58,15 +58,15 @@ public class VFXInstance : MonoBehaviour
         if (vfx.Delay != 0f)
             yield return new WaitForSeconds(vfx.Delay);
 
-        // Optional trigger routine
-        if (trigger != null)
-            yield return this.YieldRoutine(trigger);
+        // Optional routine
+        if (routine != null)
+            yield return StartCoroutine(routine);
 
         // Optional lifetime duration
         if (vfx.Duration != 0f)
             yield return new WaitForSeconds(vfx.Duration);
 
-        // Despawn this instance
+        // DespawnRoutine this instance
         Despawn(name);
     }
 

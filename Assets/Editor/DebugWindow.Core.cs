@@ -49,7 +49,6 @@ public partial class DebugWindow : EditorWindow
 #if UNITY_EDITOR_WIN
         if (state == PlayModeStateChange.EnteredPlayMode)
         {
-            // Do not close here. Let the trigger open it after Game scene loads.
             EditorApplication.delayCall += WaitForGameScene;
         }
 #endif

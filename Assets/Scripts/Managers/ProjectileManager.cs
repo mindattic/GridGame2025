@@ -50,7 +50,7 @@ public class ProjectileManager : MonoBehaviour
             controlPoints = BezierCurveHelper.Gentle(startPosition, target),
             trailKey = "GreenSparkle",
             vfxKey = "BuffLife",
-            trigger = target.HealTrigger(10)
+            routine = target.HealRoutine(10)
         };
 
         //g.SequenceManager.Add(new PortraitPopInSequence(startPosition));
@@ -75,7 +75,7 @@ public class ProjectileManager : MonoBehaviour
             controlPoints = BezierCurveHelper.Overshooting(startPosition, target),
             trailKey = "Fireball",
             vfxKey = "PuffyExplosion",
-            trigger = target.FireDamageTrigger(10)
+            routine = target.FireDamageRoutine(10)
         };
 
         //g.SequenceManager.Add(new PortraitPopInSequence(startPosition));

@@ -37,7 +37,7 @@ public class TimerBar2D : MonoBehaviour
         // Cache fill rect
         barRect = fill.GetComponent<RectTransform>();
 
-        // Drain to the left: pin the left edge, let the right edge retract left as width shrinks
+        // DrainRoutine to the left: pin the left edge, let the right edge retract left as width shrinks
         barRect.anchorMin = new Vector2(0f, 0.5f);
         barRect.anchorMax = new Vector2(0f, 0.5f);
         barRect.pivot = new Vector2(0f, 0.5f);
@@ -85,14 +85,14 @@ public class TimerBar2D : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        // Despawn existing countdown if running
+        // DespawnRoutine existing countdown if running
         if (countdown != null)
         {
             StopCoroutine(countdown);
             countdown = null;
         }
 
-        // ExecuteTrigger new countdown
+        // ExecuteRoutine new countdown
         countdown = StartCoroutine(Countdown());
     }
 

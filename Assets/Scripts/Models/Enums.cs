@@ -97,7 +97,8 @@ public enum DebugOptions
     SpawnHealText,
     SpawnSupportLines,
     SpawnTitle,
-    SpawnTooltip,
+    SpawnTooltip1,
+    SpawnTooltip2,
     TriggerEnemyMoveAttack,
     TriggerEnemyAttack,
 }

@@ -42,25 +42,25 @@ public class BoardOverlay : MonoBehaviour
         spriteRenderer.enabled = true;
     }
 
-    public IEnumerator FadeIn()
+    public IEnumerator FadeInRoutine()
     {
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
-        yield return fadeCoroutine = StartCoroutine(Fade(maxAlpha, true));
+        yield return fadeCoroutine = StartCoroutine(FadeRoutine(maxAlpha, true));
     }
 
-    public IEnumerator FadeOut()
+    public IEnumerator FadeOutRoutine()
     {
         if (fadeCoroutine != null)
             StopCoroutine(fadeCoroutine);
-        yield return fadeCoroutine = StartCoroutine(Fade(minAlpha, false));
+        yield return fadeCoroutine = StartCoroutine(FadeRoutine(minAlpha, false));
     }
 
 
     /// <summary>
     /// Handles the fade transition over time.
     /// </summary>
-    private IEnumerator Fade(float targetAlpha, bool enableOnStart)
+    private IEnumerator FadeRoutine(float targetAlpha, bool enableOnStart)
     {
         if (enableOnStart)
             spriteRenderer.enabled = true;

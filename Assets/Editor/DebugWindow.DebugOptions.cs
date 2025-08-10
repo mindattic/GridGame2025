@@ -42,7 +42,9 @@ public partial class DebugWindow
             case DebugOptions.SpawnHealText: g.DebugManager.SpawnHealText(); break;
             case DebugOptions.SpawnSupportLines: g.DebugManager.SpawnSupportLines(); break;
             case DebugOptions.SpawnTitle: g.DebugManager.TitleTest(); break;
-            case DebugOptions.SpawnTooltip: g.DebugManager.SpawnTooltip(); break;
+            case DebugOptions.SpawnTooltip1: g.DebugManager.SpawnTooltip1(); break;
+            case DebugOptions.SpawnTooltip2: g.DebugManager.SpawnTooltip2(); break;
+
             case DebugOptions.Spin: g.DebugManager.Spin(); break;
             case DebugOptions.TriggerEnemyMoveAttack: g.DebugManager.TriggerEnemyMoveAttack(); break;
             case DebugOptions.TriggerEnemyAttack: g.DebugManager.TriggerEnemyAttack(); break;

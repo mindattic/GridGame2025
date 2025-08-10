@@ -33,7 +33,7 @@ public class FadeInstance : MonoBehaviour
         //After: Ensure fully transparent
         image.color = new Color(0, 0, 0, 0);
 
-        //Triggered: Run additional coroutine if provided
+        //Run additional coroutine if provided
         if (coroutine != null)
             yield return coroutine;
     }
@@ -56,7 +56,7 @@ public class FadeInstance : MonoBehaviour
         //After: Ensure fully black
         image.color = new Color(0, 0, 0, 1);
 
-        //Triggered: Run additional coroutine if provided
+        //Run additional coroutine if provided
         if (coroutine != null)
             yield return coroutine;
     }
@@ -65,7 +65,6 @@ public class FadeInstance : MonoBehaviour
     {
         image.color = new Color(0, 0, 0, 0);
 
-        //Triggered: Run additional coroutine if provided
         if (coroutine != null)
             yield return coroutine;
     }
@@ -74,7 +73,7 @@ public class FadeInstance : MonoBehaviour
     {
         image.color = new Color(0, 0, 0, 1);
 
-        //Triggered: Run additional coroutine if provided
+        //Run additional coroutine if provided
         if (coroutine != null)
             yield return coroutine;
     }

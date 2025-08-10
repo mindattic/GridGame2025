@@ -55,7 +55,7 @@ namespace Assets.Scripts.Instances.Actor
         /// Moves the actor toward the cursor while the actor is focused or selected.
         /// If a swap is initiated (via overlap), the move exits immediately.
         /// </summary>
-        public IEnumerator TowardCursor()
+        public IEnumerator MoveTowardCursorRoutine()
         {
             // Before: set a high sorting order if needed, then mark moving
             flags.IsMoving = true;
@@ -247,11 +247,11 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Public entry to start TowardCursor as a coroutine.
+        /// Public entry to start MoveTowardCursorRoutine as a coroutine.
         /// </summary>
-        public void TriggerMoveTowardsCursor()
+        public void MoveTowardCursor()
         {
-            instance.StartCoroutine(TowardCursor());
+            instance.StartCoroutine(MoveTowardCursorRoutine());
         }
 
         /// <summary>

@@ -90,7 +90,7 @@ public class TargetLineManager : MonoBehaviour
         // cleanup line
         if (instance != null)
         {
-            instance.TriggerDespawn();
+            instance.Despawn();
             Destroy(instance.gameObject);
             instance = null;
         }

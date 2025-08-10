@@ -39,21 +39,21 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a shake on the actor's thumbnail. Optional trigger routine runs after the shake completes.
+        /// Execute a shake on the actor's thumbnail. Optional routine routine runs after the shake completes.
         /// </summary>
-        public void Shake(float intensity, float duration = 0f, IEnumerator trigger = null)
+        public void Shake(float intensity, float duration = 0f, IEnumerator routine = null)
         {
             if (!isActive || !isAlive)
                 return;
 
-            instance.FireTrigger(ShakeTrigger(intensity, duration, trigger));
+            instance.StartCoroutine(ShakeRoutine(intensity, duration, routine));
         }
 
         /// <summary>
         /// Applies a randomized positional offset to simulate a shaking effect, then restores position.
-        /// If a trigger routine is provided, it runs before restoration.
+        /// If a routine routine is provided, it runs before restoration.
         /// </summary>
-        private IEnumerator ShakeTrigger(float intensity, float duration, IEnumerator trigger = null)
+        private IEnumerator ShakeRoutine(float intensity, float duration, IEnumerator routine = null)
         {
             var originalPosition = instance.currentTile.position;
             float elapsedTime = 0f;
@@ -77,28 +77,28 @@ namespace Assets.Scripts.Instances.Actor
                     elapsedTime += Interval.OneTick;
             }
 
-            if (trigger != null)
-                yield return instance.YieldRoutine(trigger);
+            if (routine != null)
+                yield return instance.StartCoroutine(routine);
 
             instance.thumbnailPosition = originalPosition;
         }
 
         /// <summary>
-        /// Triggers the dodge action as a fire and forget. Optional trigger runs at the midpoint.
+        /// Execute the dodge action as a fire and forget. Optional routine runs at the midpoint.
         /// </summary>
-        public void Dodge(IEnumerator trigger = null)
+        public void Dodge(IEnumerator routine = null)
         {
             if (!isActive || !isAlive)
                 return;
 
-            instance.FireTrigger(DodgeTrigger(trigger));
+            instance.StartCoroutine(DodgeRoutine(routine));
         }
 
         /// <summary>
         /// Executes a two phase dodge where the actor twists forward then returns to the original state.
-        /// If a trigger routine is provided, it runs after the forward twist completes.
+        /// If a routine routine is provided, it runs after the forward twist completes.
         /// </summary>
-        public IEnumerator DodgeTrigger(IEnumerator trigger = null)
+        public IEnumerator DodgeRoutine(IEnumerator routine = null)
         {
             var rotationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
             var scaleCurve = AnimationCurve.EaseInOut(0, 1, 1, 0.9f);
@@ -134,8 +134,8 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            if (trigger != null)
-                yield return instance.YieldRoutine(trigger);
+            if (routine != null)
+                yield return instance.StartCoroutine(routine);
 
             elapsedTime = 0f;
             while (elapsedTime < returnDuration)
@@ -160,23 +160,23 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Starts a bump animation toward the target. Optional trigger runs at the bump apex.
+        /// Starts a bump animation toward the target. Optional routine runs at the bump apex.
         /// </summary>
-        public void Bump(ActorInstance target, IEnumerator trigger = null)
+        public void Bump(ActorInstance target, IEnumerator routine = null)
         {
             if (!isActive || !isAlive)
                 return;
 
-            instance.FireTrigger(BumpTrigger(target, trigger));
+            instance.StartCoroutine(BumpRoutine(target, routine));
         }
 
         /// <summary>
-        /// BumpTrigger sequence:
+        /// BumpRoutine sequence:
         /// 1) Windup backward.
-        /// 2) Lunge forward to apex and optionally run the trigger routine.
+        /// 2) Lunge forward to apex and optionally run the routine routine.
         /// 3) Return to start.
         /// </summary>
-        public IEnumerator BumpTrigger(ActorInstance target, IEnumerator trigger = null)
+        public IEnumerator BumpRoutine(ActorInstance target, IEnumerator routine = null)
         {
             g.SortingManager.OnBump(instance, target);
 
@@ -222,8 +222,8 @@ namespace Assets.Scripts.Instances.Actor
             position = bumpPosition;
             rotation = Quaternion.Euler(0f, 0f, targetRotationZ);
 
-            if (trigger != null)
-                instance.FireTrigger(trigger);
+            if (routine != null)
+                instance.StartCoroutine(routine);
 
             // If you spawn VFX here, do it after reaching the apex.
 
@@ -242,20 +242,20 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a growth action. Optional trigger runs after growth finishes.
+        /// Execute a growth action. Optional routine runs after growth finishes.
         /// </summary>
-        public void Grow(float maxSize = 0f, IEnumerator trigger = null)
+        public void Grow(float maxSize = 0f, IEnumerator routine = null)
         {
             if (!instance.isActive)
                 return;
 
-            instance.FireTrigger(GrowTrigger(maxSize, trigger));
+            instance.StartCoroutine(GrowRoutine(maxSize, routine));
         }
 
         /// <summary>
-        /// Increases the actor scale up to a maximum, then optionally runs the trigger routine.
+        /// Increases the actor scale up to a maximum, then optionally runs the routine routine.
         /// </summary>
-        public IEnumerator GrowTrigger(float maxSize = 0f, IEnumerator trigger = null)
+        public IEnumerator GrowRoutine(float maxSize = 0f, IEnumerator routine = null)
         {
             float targetMax = maxSize > 0f ? maxSize : g.TileSize * 1.1f;
             float minSize = scale.x;
@@ -271,27 +271,27 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            if (trigger != null)
-                yield return instance.YieldRoutine(trigger);
+            if (routine != null)
+                yield return instance.StartCoroutine(routine);
 
             scale = new Vector3(targetMax, targetMax, 0f);
         }
 
         /// <summary>
-        /// Triggers a shrink action. Optional trigger runs after shrink finishes.
+        /// Execute a shrink action. Optional routine runs after shrink finishes.
         /// </summary>
-        public void TriggerShrink(float minSize = 0f, IEnumerator trigger = null)
+        public void TriggerShrink(float minSize = 0f, IEnumerator routine = null)
         {
             if (!instance.isActive)
                 return;
 
-            instance.FireTrigger(Shrink(minSize, trigger));
+            instance.StartCoroutine(Shrink(minSize, routine));
         }
 
         /// <summary>
-        /// Decreases the actor scale down to a minimum, then optionally runs the trigger routine.
+        /// Decreases the actor scale down to a minimum, then optionally runs the routine routine.
         /// </summary>
-        public IEnumerator Shrink(float minSize = 0f, IEnumerator trigger = null)
+        public IEnumerator Shrink(float minSize = 0f, IEnumerator routine = null)
         {
             float targetMin = minSize > 0f ? minSize : g.TileSize;
             float maxSize = scale.x;
@@ -307,28 +307,28 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            if (trigger != null)
-                yield return instance.YieldRoutine(trigger);
+            if (routine != null)
+                yield return instance.StartCoroutine(routine);
 
             scale = new Vector3(targetMin, targetMin, 0f);
         }
 
         /// <summary>
-        /// Triggers a 90 degree spin. Optional trigger runs at the 90 degree point.
+        /// Execute a 90 degree spin. Optional routine runs at the 90 degree point.
         /// </summary>
-        public void TriggerSpin90(IEnumerator trigger = null)
+        public void Spin90(IEnumerator routine = null)
         {
             if (!isActive || !isAlive)
                 return;
 
-            instance.FireTrigger(Spin90(trigger));
+            instance.StartCoroutine(Spin90Routine(routine));
         }
 
         /// <summary>
-        /// Rotates the actor 90 degrees around Y, optionally runs the trigger routine at 90,
+        /// Rotates the actor 90 degrees around Y, optionally runs the routine routine at 90,
         /// then rotates back to zero.
         /// </summary>
-        private IEnumerator Spin90(IEnumerator trigger = null)
+        private IEnumerator Spin90Routine(IEnumerator routine = null)
         {
             bool hasTriggered = false;
             float rotY = 0f;
@@ -344,8 +344,8 @@ namespace Assets.Scripts.Instances.Actor
                 {
                     rotY = 90f;
 
-                    if (trigger != null)
-                        yield return instance.YieldRoutine(trigger);
+                    if (routine != null)
+                        yield return instance.StartCoroutine(routine);
 
                     hasTriggered = true;
                 }
@@ -362,21 +362,21 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a 360 degree spin. Optional trigger runs after 240 degrees.
+        /// Execute a 360 degree spin. Optional routine runs after 240 degrees.
         /// </summary>
-        public void Spin360(IEnumerator trigger = null)
+        public void Spin360(IEnumerator routine = null)
         {
             if (!isActive || !isAlive)
                 return;
 
-            instance.FireTrigger(Spin360Trigger(trigger));
+            instance.StartCoroutine(Spin360Routine(routine));
         }
 
         /// <summary>
-        /// Rotates the actor 360 degrees around Y. If a trigger routine is provided,
+        /// Rotates the actor 360 degrees around Y. If a routine routine is provided,
         /// it runs once after passing 240 degrees.
         /// </summary>
-        private IEnumerator Spin360Trigger(IEnumerator trigger = null)
+        private IEnumerator Spin360Routine(IEnumerator routine = null)
         {
             bool hasTriggered = false;
             float rotY = 0f;
@@ -391,8 +391,8 @@ namespace Assets.Scripts.Instances.Actor
 
                 if (!hasTriggered && rotY >= 240f)
                 {
-                    if (trigger != null)
-                        yield return instance.YieldRoutine(trigger);
+                    if (routine != null)
+                        yield return instance.StartCoroutine(routine);
 
                     hasTriggered = true;
                 }
@@ -405,20 +405,20 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Triggers a fade in by increasing renderer alpha. Optional trigger runs after fade completes.
+        /// Execute a fade in by increasing renderer alpha. Optional routine runs after fade completes.
         /// </summary>
-        public void TriggerFadeIn(float delay = 0f, IEnumerator trigger = null)
+        public void FadeIn(float delay = 0f, IEnumerator routine = null)
         {
             if (!isActive || !isAlive)
                 return;
 
-            instance.FireTrigger(FadeIn(delay, trigger));
+            instance.StartCoroutine(FadeInRoutine(delay, routine));
         }
 
         /// <summary>
-        /// Gradually increases alpha to 1. If a trigger routine is provided, it runs before finalizing.
+        /// Gradually increases alpha to 1. If a routine routine is provided, it runs before finalizing.
         /// </summary>
-        private IEnumerator FadeIn(float delay, IEnumerator trigger = null)
+        private IEnumerator FadeInRoutine(float delay, IEnumerator routine = null)
         {
             float increment = 0.05f;
             float alpha = 0f;
@@ -434,28 +434,28 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            if (trigger != null)
-                yield return instance.YieldRoutine(trigger);
+            if (routine != null)
+                yield return instance.StartCoroutine(routine);
 
             alpha = 1f;
             render.SetAlpha(alpha);
         }
 
         /// <summary>
-        /// Triggers a weapon wiggle when AP is full. Optional trigger runs after wiggle stops.
+        /// Execute a weapon wiggle when AP is full. Optional routine runs after wiggle stops.
         /// </summary>
-        public void TriggerWeaponWiggle(IEnumerator trigger = null)
+        public void WeaponWiggle(IEnumerator routine = null)
         {
             if (stats.AP < stats.MaxAP || !isActive || !isAlive)
                 return;
 
-            instance.FireTrigger(WeaponWiggle(trigger));
+            instance.StartCoroutine(WeaponWiggleRoutine(routine));
         }
 
         /// <summary>
-        /// Oscillates the weapon icon while AP remains full, then optionally runs the trigger routine.
+        /// Oscillates the weapon icon while AP remains full, then optionally runs the routine routine.
         /// </summary>
-        private IEnumerator WeaponWiggle(IEnumerator trigger = null)
+        private IEnumerator WeaponWiggleRoutine(IEnumerator routine = null)
         {
             float start = -45f;
             float rotZ = start;
@@ -468,28 +468,28 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            if (trigger != null)
-                yield return instance.YieldRoutine(trigger);
+            if (routine != null)
+                yield return instance.StartCoroutine(routine);
 
             rotZ = start;
             render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
         }
 
         /// <summary>
-        /// Triggers a wiggle on the turn delay text with damping, then settles back to zero. Optional trigger runs after settle.
+        /// Execute a wiggle on the turn delay text with damping, then settles back to zero. Optional routine runs after settle.
         /// </summary>
-        public void TriggerTurnDelayWiggle(IEnumerator trigger = null)
+        public void TurnDelayWiggle(IEnumerator routine = null)
         {
             if (!isActive || !isAlive)
                 return;
 
-            instance.FireTrigger(TurnDelayWiggle(trigger));
+            instance.StartCoroutine(TurnDelayWiggleRoutine(routine));
         }
 
         /// <summary>
-        /// Oscillates the turn delay text with damping, then smoothly returns to zero. Optionally runs a trigger routine.
+        /// Oscillates the turn delay text with damping, then smoothly returns to zero. Optionally runs a routine routine.
         /// </summary>
-        private IEnumerator TurnDelayWiggle(IEnumerator trigger = null)
+        private IEnumerator TurnDelayWiggleRoutine(IEnumerator routine = null)
         {
             float timeElapsed = 0f;
             float amplitude = 10f;
@@ -515,8 +515,8 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            if (trigger != null)
-                yield return instance.YieldRoutine(trigger);
+            if (routine != null)
+                yield return instance.StartCoroutine(routine);
 
             render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }

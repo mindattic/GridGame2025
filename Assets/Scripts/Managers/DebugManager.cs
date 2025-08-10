@@ -169,21 +169,21 @@ public class DebugManager : MonoBehaviour
             var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitType.CriticalHit);
             enemy.Damage(attackResult);
         }
-        StartCoroutine(DeathHelper.ExecuteTrigger());
+        StartCoroutine(DeathHelper.ExecuteRoutine());
     }
 
     public void Portrait2DSlideIn()
     {
         var hero = RNG.Hero;
         var direction = RNG.AdjacentDirection;
-        g.Portrait2DManager.TriggerSlideIn(hero, direction);
+        g.Portrait2DManager.SlideIn(hero, direction);
     }
 
     public void Portrait3DSlideIn()
     {
         var hero = RNG.Hero;
         var direction = RNG.AdjacentDirection;
-        g.Portrait3DManager.TriggerSlideIn(hero, direction);
+        g.Portrait3DManager.SlideIn(hero, direction);
     }
 
     public void PortraitPopIn()
@@ -191,7 +191,7 @@ public class DebugManager : MonoBehaviour
         var hero = RNG.Hero;
         g.SequenceManager.Add(new PortraitPopInSequence(hero));
         g.SequenceManager.Add(new PortraitPopOutSequence(hero));
-        StartCoroutine(g.SequenceManager.ExecuteTrigger());
+        StartCoroutine(g.SequenceManager.ExecuteRoutine());
     }
 
     public void SpawnDamageText()
@@ -240,13 +240,14 @@ public class DebugManager : MonoBehaviour
 
         //    foreach (var supportLine in g.SupportLineManager.supportLines.Values)
         //    {
-        //        supportLine.Despawn();
+        //        supportLine.DespawnRoutine();
         //    }
         //}
 
         //StartCoroutine(_());
     }
-    public void SpawnTooltip()
+
+    public void SpawnTooltip1()
     {
         var tt = new TooltipSettings()
         {
@@ -255,6 +256,23 @@ public class DebugManager : MonoBehaviour
             placement = TooltipPlacement.Top,
             useFade = true,
             useTypewriter = true,
+            autoDestroy = true,
+            followPointer = false,
+            autoDestroyDelay = 2.5f,
+        };
+
+        Tooltip.Show(tt);
+    }
+
+    public void SpawnTooltip2()
+    {
+        var tt = new TooltipSettings()
+        {
+            message = "Tap here to confirm",
+            target = hero1.transform,
+            placement = TooltipPlacement.Top,
+            useFade = false,
+            useTypewriter = false,
             autoDestroy = true,
             followPointer = false,
             autoDestroyDelay = 2.5f,
@@ -373,7 +391,7 @@ public class DebugManager : MonoBehaviour
         }
 
         var vfx = VisualEffectRepo.VisualEffects["BlueSlash1"];
-        g.VfxManager.Spawn(vfx, hero1.position, hero1.DamageTrigger(attackResult));
+        g.VfxManager.Spawn(vfx, hero1.position, hero1.DamageRoutine(attackResult));
     }
 
     public void VFXTest_BlueSlash2()

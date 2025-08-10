@@ -34,9 +34,9 @@ public class TrailInstance : MonoBehaviour
 
     /// <summary>
     /// Spawns a trail effect at a world position, applies relative offsets, optional delay and duration,
-    /// optionally runs a trigger routine, then despawns.
+    /// optionally runs a routine, then despawns.
     /// </summary>
-    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 worldPosition, IEnumerator trigger = null)
+    public IEnumerator Spawn(TrailEffectAsset trail, Vector3 worldPosition, IEnumerator routine = null)
     {
         position = worldPosition;
         transform.localPosition = trail.RelativeOffset;
@@ -48,8 +48,8 @@ public class TrailInstance : MonoBehaviour
         if (trail.Delay != 0f)
             yield return new WaitForSeconds(trail.Delay);
 
-        if (trigger != null)
-            yield return this.YieldRoutine(trigger);
+        if (routine != null)
+            yield return StartCoroutine(routine);
 
         if (trail.Duration != 0f)
             yield return Wait.For(trail.Duration);

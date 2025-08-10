@@ -395,8 +395,8 @@ public class PartyManager : MonoBehaviour
         float targetWidth = backImage.rectTransform.rect.width * (value / maxValue);
 
         // Cancel any existing action on this row
-        if (barAnimations.TryGetValue(row, out Coroutine running))
-            StopCoroutine(running);
+        if (barAnimations.TryGetValue(row, out Coroutine routine))
+            StopCoroutine(routine);
 
         // Bounce new action
         barAnimations[row] = StartCoroutine(AnimateBarFill(row, fillImage.rectTransform, targetWidth));
@@ -429,7 +429,7 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        //ExecuteTrigger(fade.FadeOutTrigger(SceneRepo.LoadPreviousScene()));
+        //ExecuteRoutine(fade.DespawnRoutine(SceneRepo.LoadPreviousScene()));
         StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 

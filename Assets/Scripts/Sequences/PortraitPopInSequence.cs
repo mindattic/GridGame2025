@@ -23,7 +23,7 @@ namespace Assets.Scripts.Events
             else
                 scale = 0.1666f;
 
-            yield return g.Portrait3DManager.PopIn(actor, scale);
+            yield return g.Portrait3DManager.PopInRoutine(actor, scale);
         }
     }
 

@@ -16,9 +16,9 @@ namespace Assets.Helper
                 runningCoroutines.Add(context.StartCoroutine(coroutine));
             }
 
-            foreach (var runningCoroutine in runningCoroutines)
+            foreach (var coroutine in runningCoroutines)
             {
-                yield return runningCoroutine;
+                yield return coroutine;
             }
         }
 

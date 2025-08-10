@@ -17,7 +17,7 @@ public partial class DebugWindow
         GUILayout.Space(10);
     }
 
-    // OnPlayVFXClick triggers a visual effects test based on the selected VfxManager option.
+    // OnPlayVFXClick plays a visual effects test based on the selected VfxManager option.
     private void OnPlayVFXClick()
     {
         switch (selectedVfx)

@@ -33,15 +33,15 @@ public class Portrait2DManager : MonoBehaviour
     /// <summary>
     /// Slide a portrait in for the given actor from the given direction.
     /// </summary>
-    public void TriggerSlideIn(ActorInstance actor, Direction direction)
+    public void SlideIn(ActorInstance actor, Direction direction)
     {
-        StartCoroutine(SlideIn(actor, direction));
+        StartCoroutine(SlideInRoutine(actor, direction));
     }
 
     /// <summary>
     /// Instantiates and slides the UI portrait into view.
     /// </summary>
-    private IEnumerator SlideIn(ActorInstance actor, Direction direction)
+    private IEnumerator SlideInRoutine(ActorInstance actor, Direction direction)
     {
         var prefab = Instantiate(portraitPrefab, Vector3.zero, Quaternion.identity);
         var instance = prefab.GetComponent<Portrait2DInstance>();
@@ -54,7 +54,7 @@ public class Portrait2DManager : MonoBehaviour
         instance.image.color = new Color(1f, 1f, 1f, 1);
 
         portraits.Add(instance);
-        yield return instance.SlideIn();
+        yield return instance.SlideInRoutine();
     }
 
     /// <summary>
@@ -67,10 +67,10 @@ public class Portrait2DManager : MonoBehaviour
 
         var (d1, d2) = GetDirection(actorPair);
 
-        // Run both SlideIn coroutines in parallel
+        // Run both SlideInRoutine coroutines in parallel
         yield return CoroutineHelper.WaitForAll(this,
-            SlideIn(actorPair.actor1, d1),
-            SlideIn(actorPair.actor2, d2)
+            SlideInRoutine(actorPair.actor1, d1),
+            SlideInRoutine(actorPair.actor2, d2)
         );
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);

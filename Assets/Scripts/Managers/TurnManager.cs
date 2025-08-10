@@ -6,7 +6,7 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Managers
 {
     /// <summary>
-    /// Controls which side is active and triggers each side's start sequence when turns change.
+    /// Controls which side is active and execute each side's start sequence when turns change.
     /// Keeps turn flow centralized so sequencing cannot stall due to missing or misplaced calls.
     /// </summary>
     public class TurnManager : MonoBehaviour

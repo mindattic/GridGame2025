@@ -73,22 +73,30 @@ public class TargetLineInstance : MonoBehaviour
         }
     }
 
-    public void TriggerDespawn()
+    //TODO: FIx this so that it despawns when fade out routine completes....
+    public void Despawn()
     {
-        StartCoroutine(FadeOut());
+        StartCoroutine(DespawnRoutine());
     }
 
-    private IEnumerator FadeIn()
+    private IEnumerator DespawnRoutine()
     {
-        yield return Fade(minAlpha, maxAlpha);
+        yield return FadeRoutine(maxAlpha, minAlpha);
+        Destroy(gameObject);
     }
 
-    private IEnumerator FadeOut()
+    private IEnumerator FadeInRoutine()
     {
-        yield return Fade(maxAlpha, minAlpha);
+        yield return FadeRoutine(minAlpha, maxAlpha);
     }
 
-    private IEnumerator Fade(float from, float to)
+    private IEnumerator FadeOutRoutine()
+    {
+        yield return FadeRoutine(maxAlpha, minAlpha);
+
+    }
+
+    private IEnumerator FadeRoutine(float from, float to)
     {
         float elapsed = 0f;
         while (elapsed < fadeDuration)

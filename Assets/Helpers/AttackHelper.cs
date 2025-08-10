@@ -14,7 +14,7 @@ namespace Assets.Helpers
         /// <summary>
         /// Applies damage for a single attack result, then yields once.
         /// </summary>
-        public static IEnumerator SingleAttackTrigger(AttackResult attackResult)
+        public static IEnumerator SingleAttackRoutine(AttackResult attackResult)
         {
             attackResult.Opponent.Damage(attackResult);
 
@@ -26,14 +26,14 @@ namespace Assets.Helpers
         /// Runs multiple attacks in sequence. Each attack finishes before the next starts,
         /// with a brief delay in between.
         /// </summary>
-        public static IEnumerator MultiAttackTrigger(ActorInstance attacker, List<AttackResult> attackResults)
+        public static IEnumerator MultiAttackRoutine(List<AttackResult> attackResults)
         {
             if (attackResults == null || attackResults.Count == 0)
                 yield break;
 
             foreach (var attackResult in attackResults)
             {
-                yield return SingleAttackTrigger(attackResult);
+                yield return SingleAttackRoutine(attackResult);
                 yield return Wait.For(Interval.TenthSecond);
             }
         }

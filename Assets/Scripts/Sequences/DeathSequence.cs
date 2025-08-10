@@ -14,7 +14,7 @@ namespace Assets.Scripts.Sequences
     {
         public override IEnumerator Execute()
         {
-            yield return DeathHelper.ExecuteTrigger();
+            yield return DeathHelper.ExecuteRoutine();
         }
     }
 }

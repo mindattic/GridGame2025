@@ -112,7 +112,7 @@ public class PincerAttackManager : MonoBehaviour
     {
         g.SortingManager.OnPincerAttack(participants);
 
-        yield return g.BoardOverlay.FadeIn();
+        yield return g.BoardOverlay.FadeInRoutine();
 
         foreach (var p in participants.pair)
         {
@@ -160,10 +160,10 @@ public class PincerAttackManager : MonoBehaviour
         // Run DeathSequence once after all pairs have resolved
         g.SequenceManager.Add(new DeathSequence());
 
-        yield return g.SequenceManager.ExecuteTrigger();
+        yield return g.SequenceManager.ExecuteRoutine();
 
         //TODO: Put this in a HeroPostAttackSequence...
-        yield return g.BoardOverlay.FadeOut();
+        yield return g.BoardOverlay.FadeOutRoutine();
         g.SupportLineManager.Clear();
         participants.Clear();
         g.TurnManager.NextTurn();

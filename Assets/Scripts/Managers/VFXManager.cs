@@ -25,21 +25,21 @@ public class VFXManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Fire-and-forget spawn. Optionally runs a trigger routine on the instance after its own sequence.
+    /// FireAndForget-and-forget spawn. Optionally runs a routine routine on the instance after its own sequence.
     /// </summary>
-    public void Spawn(VFXAsset asset, Vector3 worldPos, IEnumerator trigger = null)
+    public void Spawn(VFXAsset asset, Vector3 worldPos, IEnumerator routine = null)
     {
         var instance = CreateInstance(asset, worldPos);
-        instance.Spawn(asset, worldPos, trigger);
+        instance.Spawn(asset, worldPos, routine);
     }
 
     /// <summary>
-    /// Yieldable spawn. Optionally yields a trigger routine on the instance after its own sequence.
+    /// Yieldable spawn. Optionally yields a routine routine on the instance after its own sequence.
     /// </summary>
-    public IEnumerator SpawnTrigger(VFXAsset asset, Vector3 worldPos, IEnumerator trigger = null)
+    public IEnumerator SpawnRoutine(VFXAsset asset, Vector3 worldPos, IEnumerator routine = null)
     {
         var instance = CreateInstance(asset, worldPos);
-        yield return instance.SpawnTrigger(asset, worldPos, trigger);
+        yield return instance.SpawnRoutine(asset, worldPos, routine);
     }
 
     /// <summary>

@@ -19,7 +19,7 @@ public class TargetModeOverlay : MonoBehaviour
     private Image image;                 // Background image to fade
     private Coroutine fadeCoroutine;     // Handle to the active fade
 
-    // Fade parameters
+    // FadeRoutine parameters
     [SerializeField] private float minAlpha = 0f;
     [SerializeField] private float maxAlpha = 0.3333f;
     [SerializeField] private float duration = 0.15f;
@@ -53,7 +53,7 @@ public class TargetModeOverlay : MonoBehaviour
         if (g.InputManager != null)
             g.InputManager.OnInputModeChanged -= HandleModeChanged;
 
-        // Despawn any running animation owned by this component
+        // DespawnRoutine any running animation owned by this component
         StopFade();
     }
 

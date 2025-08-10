@@ -20,17 +20,14 @@ public class Portrait3DManager : MonoBehaviour
         portraitPrefab = PrefabRepo.Prefabs["Portrait3DPrefab"];
     }
 
-    public void TriggerSlideIn(ActorInstance actor, Direction direction)
+    public void SlideIn(ActorInstance actor, Direction direction)
     {
-        StartCoroutine(SlideIn(actor, direction));
+        StartCoroutine(SlideInRoutine(actor, direction));
     }
 
-    public void TriggerPopInOut(ActorInstance actor)
-    {
-        StartCoroutine(PopInOut(actor));
-    }
 
-    public IEnumerator SlideIn(ActorInstance actor, Direction direction)
+
+    public IEnumerator SlideInRoutine(ActorInstance actor, Direction direction)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<Portrait3DInstance>();
@@ -47,7 +44,12 @@ public class Portrait3DManager : MonoBehaviour
         yield return instance.SlideIn();
     }
 
-    public IEnumerator PopInOut(ActorInstance actor, float scale = 0.1666f)
+    public void PopInOut(ActorInstance actor)
+    {
+        StartCoroutine(PopInOutRoutine(actor));
+    }
+
+    public IEnumerator PopInOutRoutine(ActorInstance actor, float scale = 0.1666f)
     {
         var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<Portrait3DInstance>();
@@ -64,7 +66,7 @@ public class Portrait3DManager : MonoBehaviour
         yield return instance.PopInOut();
     }
 
-    public IEnumerator PopIn(ActorInstance actor, float scale = 0.1666f)
+    public IEnumerator PopInRoutine(ActorInstance actor, float scale = 0.1666f)
     {
         // Remove and destroy any existing portrait for this actor
         var existing = portraits.FirstOrDefault(x => x != null && x.actor == actor);
@@ -89,14 +91,14 @@ public class Portrait3DManager : MonoBehaviour
         yield return instance.PopIn();
     }
 
-    public IEnumerator PopOut(ActorInstance actor)
+    public IEnumerator PopOutRoutine(ActorInstance actor)
     {
         var instance = portraits.FirstOrDefault(x => x != null && x.actor == actor);
         if (instance != null)
         {
             yield return instance.PopOut();
             //portraitsContainer.Remove(instance);
-            //Despawn(instance.gameObject);
+            //DespawnRoutine(instance.gameObject);
         }
         else
         {
@@ -130,8 +132,8 @@ public class Portrait3DManager : MonoBehaviour
 
         // Bounce both slide animations concurrently and wait for both to finish.
         yield return CoroutineHelper.WaitForAll(this,
-            SlideIn(actorPair.actor1, direction1),
-            SlideIn(actorPair.actor2, direction2)
+            SlideInRoutine(actorPair.actor1, direction1),
+            SlideInRoutine(actorPair.actor2, direction2)
         );
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);

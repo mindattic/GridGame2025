@@ -70,7 +70,7 @@ public class SelectedHeroManager : MonoBehaviour
         g.TimerBar2D.Play();
         g.ActorManager.CheckEnemyAP();
 
-        g.Actors.SelectedHero.move.TriggerMoveTowardsCursor();
+        g.Actors.SelectedHero.move.MoveTowardCursor();
     }
 
     /// <summary>

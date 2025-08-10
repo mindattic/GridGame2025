@@ -44,7 +44,7 @@ namespace Game.Behaviors
             var key = GetKey(pair);
             if (attackLines.TryGetValue(key, out var instance))
             {
-                instance.TriggerDespawn();
+                instance.Despawn();
                 attackLines.Remove(key);
             }
         }
@@ -54,7 +54,7 @@ namespace Game.Behaviors
             foreach (var instance in attackLines.Values)
             {
 
-                instance.TriggerDespawn();
+                instance.Despawn();
             }
             attackLines.Clear();
         }

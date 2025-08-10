@@ -70,8 +70,8 @@ public class Portrait3DInstance : MonoBehaviour
         isBeingDestroyed = true;
     }
 
-    // SlideIn by duration (lerps in a set time)
-    //public IEnumerator SlideIn(float duration = 0.5f)
+    // SlideInRoutine by duration (lerps in a set time)
+    //public IEnumerator SlideInRoutine(float duration = 0.5f)
     //{
     //    if (isBeingDestroyed || spriteRenderer == null)
     //        yield break;
@@ -113,7 +113,7 @@ public class Portrait3DInstance : MonoBehaviour
     //    }
 
     //    this.position = destination;
-    //    Despawn();
+    //    DespawnRoutine();
     //}
     public IEnumerator SlideIn()
     {
@@ -170,7 +170,7 @@ public class Portrait3DInstance : MonoBehaviour
 
     }
 
-    // PopInOut: rotates, fades in, holds, fades out, restores
+    // PopInOutRoutine: rotates, fades in, holds, fades out, restores
     public IEnumerator PopInOut(
        float fadeDuration = 0.25f,
        float holdDuration = 0.25f,
@@ -197,7 +197,7 @@ public class Portrait3DInstance : MonoBehaviour
         yield return PopOut(rotateDuration, fadeDuration);
     }
 
-    // PopIn: rotates and lowers Front, fades portrait in from transparent
+    // PopInRoutine: rotates and lowers Front, fades portrait in from transparent
     public IEnumerator PopIn(float rotateDuration = 0.2f, float fadeDuration = 0.25f)
     {
         if (isBeingDestroyed || spriteRenderer == null)
@@ -231,7 +231,7 @@ public class Portrait3DInstance : MonoBehaviour
         front.position = originalFrontPos + new Vector3(0, yOffset, 0);
         AlignPortraitWithFront(front.position);
 
-        // Fade in portrait (start fully transparent)
+        // FadeRoutine in portrait (start fully transparent)
         Color c = spriteRenderer.color;
         for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
@@ -239,7 +239,7 @@ public class Portrait3DInstance : MonoBehaviour
                 yield break;
 
             float t = Mathf.Clamp01(elapsed / fadeDuration);
-            float alpha = Mathf.Lerp(0, 1, t); // Fade in: 0 -> 1
+            float alpha = Mathf.Lerp(0, 1, t); // FadeRoutine in: 0 -> 1
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
             AlignPortraitWithFront(front.position);
             yield return Wait.None();
@@ -250,7 +250,7 @@ public class Portrait3DInstance : MonoBehaviour
         popOutFrontRestorePos = originalFrontPos;
     }
 
-    // PopOut: fades out, restores Front rotation/position
+    // PopOutRoutine: fades out, restores Front rotation/position
     public IEnumerator PopOut(float rotateDuration = 0.2f, float fadeDuration = 0.25f)
     {
         if (isBeingDestroyed || spriteRenderer == null)
@@ -264,14 +264,14 @@ public class Portrait3DInstance : MonoBehaviour
         Color c = spriteRenderer.color;
         spriteRenderer.color = new Color(c.r, c.g, c.b, 1f);
 
-        // Fade out portrait
+        // FadeRoutine out portrait
         for (float elapsed = 0; elapsed < fadeDuration; elapsed += Time.deltaTime)
         {
             if (isBeingDestroyed || spriteRenderer == null)
                 yield break;
 
             float t = Mathf.Clamp01(elapsed / fadeDuration);
-            float alpha = Mathf.Lerp(1, 0, t); // Fade out: 1 -> 0
+            float alpha = Mathf.Lerp(1, 0, t); // FadeRoutine out: 1 -> 0
             spriteRenderer.color = new Color(c.r, c.g, c.b, alpha);
             AlignPortraitWithFront(front.position);
             yield return Wait.None();

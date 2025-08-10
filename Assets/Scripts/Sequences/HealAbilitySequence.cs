@@ -23,7 +23,7 @@ namespace Assets.Scripts.Events
             g.InputManager.inputMode = InputMode.None;
             g.Card.BouncePortrait();
 
-            // Fire the heal projectile
+            // FireAndForget the heal projectile
             var healSettings = new ProjectileSettings
             {
                 friendlyName = "Heal",
@@ -33,12 +33,12 @@ namespace Assets.Scripts.Events
                 controlPoints = BezierCurveHelper.Gentle(startPosition, target),
                 trailKey = "GreenSparkle",
                 vfxKey = "BuffLife",
-                trigger = target.HealTrigger(10)
+                routine = target.HealRoutine(10)
             };
             yield return new FireProjectileSequence(healSettings).Execute();
 
             // 3) Portrait3DManager pops out
-            //yield return new PortraitPopOutSequence(startPosition).ExecuteTrigger();
+            //yield return new PortraitPopOutSequence(startPosition).ExecuteRoutine();
         }
     }
 }

@@ -55,9 +55,9 @@ namespace Assets.Scripts.Events
                         || attackResult.Opponent.isDead)
                         continue;
 
-                    // Run bump plus damage sequence using routine-based trigger.
-                    var attackRoutine = AttackHelper.SingleAttackTrigger(attackResult);
-                    yield return attacker.action.BumpTrigger(opponent, attackRoutine);
+                    // Run bump plus damage sequence using routine-based routine.
+                    var attackRoutine = AttackHelper.SingleAttackRoutine(attackResult);
+                    yield return attacker.action.BumpRoutine(opponent, attackRoutine);
                 }
             }
 

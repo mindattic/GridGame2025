@@ -8,7 +8,13 @@ namespace Assets.Helpers
 {
     public static class DeathHelper
     {
-        public static IEnumerator ExecuteTrigger()
+
+        public static void Execute()
+        {
+            
+        }
+
+       public static IEnumerator ExecuteRoutine()
         {
             // find everyone who’s flagged as dying
             var dyingActors = g.Actors.All.Where(x => x.isDying).ToList();

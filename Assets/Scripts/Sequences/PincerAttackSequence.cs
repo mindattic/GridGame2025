@@ -29,11 +29,11 @@ namespace Assets.Scripts.Events
                 new ActorPair(pair.attacker1, pair.attacker2)
             );
 
-            // GrowTrigger both attackers simultaneously
+            // GrowRoutine both attackers simultaneously
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
-                pair.attacker1.action.GrowTrigger(),
-                pair.attacker2.action.GrowTrigger()
+                pair.attacker1.action.GrowRoutine(),
+                pair.attacker2.action.GrowRoutine()
             );
 
             // Shrink both attackers simultaneously
@@ -48,28 +48,12 @@ namespace Assets.Scripts.Events
             var opp2 = Geometry.GetClosestOpponent(pair.attacker2, pair.attackResults2);
 
             // Build attack routines
-            var trigger1 = AttackHelper.MultiAttackTrigger(pair.attacker1, pair.attackResults1);
-            var trigger2 = AttackHelper.MultiAttackTrigger(pair.attacker2, pair.attackResults2);
+            var routine1 = AttackHelper.MultiAttackRoutine(pair.attackResults1);
+            var routine2 = AttackHelper.MultiAttackRoutine(pair.attackResults2);
 
             // Run bumps toward each attacker's own adjacent opponent
-            yield return pair.attacker1.action.BumpTrigger(opp1, trigger1);
-            yield return pair.attacker2.action.BumpTrigger(opp2, trigger2);
-
-            //// Wait until both triggers complete all logic (VfxManager and damage)
-            //yield return CoroutineHelper.WaitForAll(
-            //    GameManager.instance,
-            //    trigger1.Run(),
-            //    trigger2.Run()
-            //);
-
-            //yield return CoroutineHelper.WaitForAll(
-            //    GameManager.instance,
-            //    pair.attacker1.action.BumpTrigger(dir1, trigger1),
-            //    pair.attacker2.action.BumpTrigger(dir2, trigger2)
-            //);
-
-            // ExecuteTrigger deaths afterward
-            //yield return DeathHelper.ExecuteTrigger();
+            yield return pair.attacker1.action.BumpRoutine(opp1, routine1);
+            yield return pair.attacker2.action.BumpRoutine(opp2, routine2);
         }
 
     }

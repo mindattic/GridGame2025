@@ -75,7 +75,7 @@ public class SupportLineManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Despawn all active support lines and clear the registry.
+    /// DespawnRoutine all active support lines and clear the registry.
     /// </summary>
     public void Clear()
     {

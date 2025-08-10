@@ -56,7 +56,7 @@ public class Portrait2DInstance : MonoBehaviour
     /// Slides the portrait from off-screen start to off-screen end using slideCurve:
     /// covers full screen span vertically or horizontally, with overshoot and retreat.
     /// </summary>
-    public IEnumerator SlideIn()
+    public IEnumerator SlideInRoutine()
     {
         //Generate random offset
         float offsetAmount = RNG.Float(0f, distance * Increment.Percent10);

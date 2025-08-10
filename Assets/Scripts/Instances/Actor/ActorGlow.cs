@@ -36,13 +36,13 @@ namespace Assets.Scripts.Instances.Actor
             && (g.TurnManager.isHeroTurn && isPlayer) || (g.TurnManager.isEnemyTurn && isEnemy);
 
 
-        public void TriggerGlow()
+        public void Glow()
         {
             if (instance.isActive)
-                instance.StartCoroutine(Glow());
+                instance.StartCoroutine(GlowRoutine());
         }
 
-        public IEnumerator Glow()
+        public IEnumerator GlowRoutine()
         {
             //Before:
             Vector3 scale = initialScale;

@@ -36,7 +36,7 @@ public class ActorActionBar
     }
 
     // Save refreshes the action fill UI to reflect the actor's CurrentProfile AP values.
-    // It adjusts the fill and drain fill scales, updates the textarea display, triggers a weapon wiggle action,
+    // It adjusts the fill and drain fill scales, updates the textarea display, execute a weapon wiggle action,
     // and initiates the drain action.
     public void Update()
     {
@@ -44,24 +44,23 @@ public class ActorActionBar
         render.actionBarFill.transform.localScale = GetScale(stats.AP);
         render.actionBarText.text = $@"{stats.AP}/{stats.MaxAP}";
 
-        // TriggerEvent visual feedback on the actor's weapon.
-        instance.action.TriggerWeaponWiggle();
-        // Bounce the drain action if needed.
-        TriggerDrain();
+        instance.action.WeaponWiggle();
+
+        Drain();
     }
 
-    // TriggerDrain starts the drain coroutine to action the reduction of the drain fill,
+    // Drain starts the drain coroutine to action the reduction of the drain fill,
     // but only if the actor actors is active.
-    private void TriggerDrain()
+    private void Drain()
     {
         if (instance.isActive)
-            instance.StartCoroutine(Drain());
+            instance.StartCoroutine(DrainRoutine());
     }
 
-    // Drain is a coroutine that gradually reduces the displayed AP on the drain fill until it matches the CurrentProfile AP.
+    // DrainRoutine is a coroutine that gradually reduces the displayed AP on the drain fill until it matches the CurrentProfile AP.
     // It waits for a brief interval before starting, then decreases stats.PreviousAP in increments,
     // updating the scale of the drain fill each tick.
-    private IEnumerator Drain()
+    private IEnumerator DrainRoutine()
     {
         // Abort if no drain is required (i.e., CurrentProfile AP equals previous AP).
         if (stats.PreviousAP == stats.AP)
@@ -88,16 +87,16 @@ public class ActorActionBar
         render.healthBarDrain.transform.localScale = scale;
     }
 
-    // TriggerFill starts the coroutine that fills the action fill (increasing AP) if conditions are met.
-    public void TriggerFill()
+    // Fill starts the coroutine that fills the action fill (increasing AP) if conditions are met.
+    public void Fill()
     {
         if (instance.isActive)
-            instance.StartCoroutine(Fill());
+            instance.StartCoroutine(FillRoutine());
     }
 
-    // Fill is a coroutine that incrementally increases the actor's AP based on its Intelligence stat.
+    // FillRoutine is a coroutine that incrementally increases the actor's AP based on its Intelligence stat.
     // It continues to increase AP until the actor reaches max AP or one of the abort conditions occurs.
-    private IEnumerator Fill()
+    private IEnumerator FillRoutine()
     {
         // Abort the fill process if:
         // - The attacker is stunned,
