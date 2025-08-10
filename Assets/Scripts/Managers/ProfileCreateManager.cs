@@ -1,9 +1,7 @@
 using Assets.Helper;
-using Assets.Scripts.Repositories;
 using System.Collections;
 using UnityEngine;
 using c = Assets.Helpers.CanvasHelper;
-using g = Assets.Helpers.GameHelper;
 
 public class ProfileCreateManager : MonoBehaviour
 {
@@ -28,7 +26,7 @@ public class ProfileCreateManager : MonoBehaviour
             KeyboardDialog.Show("Who are you?", onSubmit: (value) =>
             {
                 ProfileRepo.CreateProfile(value);
-                StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+                StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
             });
 
             yield return Wait.None();

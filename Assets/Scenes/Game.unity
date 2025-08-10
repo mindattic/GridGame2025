@@ -2394,13 +2394,13 @@ RectTransform:
   - {fileID: 196576095}
   - {fileID: 962657116}
   - {fileID: 890377526}
-  - {fileID: 377173716}
   - {fileID: 16670912}
   - {fileID: 862594377}
   - {fileID: 2014384096}
   - {fileID: 1043321231}
   - {fileID: 570420154}
   - {fileID: 1911155772}
+  - {fileID: 377173716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4050,7 +4050,7 @@ GameObject:
   - component: {fileID: 1332688854}
   - component: {fileID: 1332688853}
   m_Layer: 5
-  m_Name: CanvasOverlay
+  m_Name: PauseOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5723,11 +5723,10 @@ MonoBehaviour:
   boardOverlay: {fileID: 0}
   focusIndicator: {fileID: 0}
   targetIndicator: {fileID: 0}
-  canvasOverlay: {fileID: 0}
+  pauseOverlay: {fileID: 0}
   viewport: {x: 0, y: 0}
   tileSize: 0
   tileScale: {x: 0, y: 0, z: 0}
-  canvas: {fileID: 0}
   canvas3D: {fileID: 0}
   waveAnnouncement: {fileID: 0}
   targetModeOverlay: {fileID: 0}
@@ -8232,6 +8231,16 @@ MonoBehaviour:
   rowCount: 8
   offset: {x: 0, y: 0}
   center: {x: 0, y: 0}
+  worldEdges:
+    Top: {x: 0, y: 0, z: 0}
+    Right: {x: 0, y: 0, z: 0}
+    Bottom: {x: 0, y: 0, z: 0}
+    Left: {x: 0, y: 0, z: 0}
+  screenEdges:
+    Top: {x: 0, y: 0, z: 0}
+    Right: {x: 0, y: 0, z: 0}
+    Bottom: {x: 0, y: 0, z: 0}
+    Left: {x: 0, y: 0, z: 0}
 --- !u!1 &7829945855426710408
 GameObject:
   m_ObjectHideFlags: 0

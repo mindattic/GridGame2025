@@ -1,12 +1,8 @@
-using Assets.Scripts.Repositories;
+using Assets.Helper;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
-using g = Assets.Helpers.GameHelper;
-using Assets.Helper;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -48,7 +44,7 @@ public class SettingsManager : MonoBehaviour
                 {
                     Debug.Log("User said: " + value);
 
-                    StartCoroutine(fade.HideRoutine(SceneRepo.LoadPreviousScene()));
+                    StartCoroutine(fade.HideRoutine(SceneHelper.LoadPreviousScene()));
                 }
             });
 

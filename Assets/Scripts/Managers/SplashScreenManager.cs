@@ -1,5 +1,4 @@
 using Assets.Helper;
-using Assets.Scripts.Repositories;
 using System.Collections;
 using UnityEngine;
 
@@ -22,14 +21,14 @@ public class SplashScreenManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+            StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
     }
 
     private IEnumerator FadeInRoutine()
     {
         yield return fade.FadeInRoutine();
         yield return new WaitForSeconds(waitDuration);
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
     }
 
 

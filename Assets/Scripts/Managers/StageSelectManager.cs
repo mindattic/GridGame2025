@@ -1,6 +1,4 @@
 using Assets.Helper;
-using Assets.Scripts.Repositories;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
@@ -57,7 +55,7 @@ public class StageSelectManager : MonoBehaviour
         //Instantiate the prefab as a child of the content
         GameObject instance = Instantiate(buttonPrefab, content);
         instance.name = $"Button_{stageName}";
-       
+
         //Show the button size
         //RectTransform buttonRect = instance.GetComponent<RectTransform>();
         //buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
@@ -74,12 +72,12 @@ public class StageSelectManager : MonoBehaviour
     private void OnStageSelectButtonClicked(string stageName)
     {
         ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
     }
 
 }

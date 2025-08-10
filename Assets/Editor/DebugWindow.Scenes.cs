@@ -1,6 +1,4 @@
 ﻿using Assets.Helper;
-using Assets.Scripts.Repositories;
-using UnityEditor;
 using UnityEngine;
 
 public partial class DebugWindow
@@ -17,38 +15,38 @@ public partial class DebugWindow
         GUILayout.BeginHorizontal();
         isClicked = GUILayout.Button("SplashScreen Screen", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneRepo.LoadScene(SceneHelper.SplashScreen);
+            SceneHelper.LoadScene(SceneHelper.SplashScreen);
 
         isClicked = GUILayout.Button("TitleScreen Screen", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneRepo.LoadScene(SceneHelper.TitleScreen);
+            SceneHelper.LoadScene(SceneHelper.TitleScreen);
 
         isClicked = GUILayout.Button("Settings", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneRepo.LoadScene(SceneHelper.Settings);
+            SceneHelper.LoadScene(SceneHelper.Settings);
 
         isClicked = GUILayout.Button("Stage Select", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneRepo.LoadScene(SceneHelper.StageSelect);
+            SceneHelper.LoadScene(SceneHelper.StageSelect);
 
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
         isClicked = GUILayout.Button("Load Profile", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneRepo.LoadScene(SceneHelper.ProfileSelect);
+            SceneHelper.LoadScene(SceneHelper.ProfileSelect);
 
         isClicked = GUILayout.Button("Load Save", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneRepo.LoadScene(SceneHelper.SaveFileSelect);
+            SceneHelper.LoadScene(SceneHelper.SaveFileSelect);
 
         isClicked = GUILayout.Button("Overworld", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneRepo.LoadScene(SceneHelper.Overworld);
+            SceneHelper.LoadScene(SceneHelper.Overworld);
 
         isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneRepo.LoadScene(SceneHelper.Game);
+            SceneHelper.LoadScene(SceneHelper.Game);
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);

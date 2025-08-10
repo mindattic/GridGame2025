@@ -1,5 +1,4 @@
 using Assets.Helper;
-using Assets.Scripts.Repositories;
 using UnityEngine;
 using c = Assets.Helpers.CanvasHelper;
 using Label = TMPro.TextMeshProUGUI;
@@ -66,7 +65,7 @@ public class CreditsManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
     }
 
 

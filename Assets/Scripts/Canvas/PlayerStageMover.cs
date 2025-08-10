@@ -1,11 +1,8 @@
+using Assets.Helper;
+using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using Assets.Scripts.Repositories;
-using TMPro;
-using UnityEngine.EventSystems;
-using g = Assets.Helpers.GameHelper;
-using Assets.Helper;
 
 public class PlayerStageMover : MonoBehaviour
 {
@@ -18,7 +15,7 @@ public class PlayerStageMover : MonoBehaviour
     private string targetStageName; // Stores the name of the target stage
     private FadeInstance fade; // Reference to fade manager
 
-  
+
     private void Start()
     {
         fade = GameObject.Find(GameObjectHelper.Overworld.Fade).GetComponent<FadeInstance>();
@@ -26,7 +23,7 @@ public class PlayerStageMover : MonoBehaviour
 
     public void MoveToStage(Button stageButton)
     {
-        if (isMoving) 
+        if (isMoving)
             return;
 
         TextMeshProUGUI label = stageButton.GetComponentInChildren<TextMeshProUGUI>();
@@ -77,8 +74,8 @@ public class PlayerStageMover : MonoBehaviour
         // Update hero profile stage
         ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
-        // FadeInstance out & load next scene
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
+        // FadeInstance out & load game scene
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
     }
 
     private void SetAnimation(Vector2 direction)

@@ -134,6 +134,7 @@
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Models\TrailEffectAsset.cs" />
+    <Compile Include="Assets\Scripts\Utilities\SceneLoader.cs" />
     <Compile Include="Assets\Data\Actor\Cleric.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
@@ -213,7 +214,6 @@
     <Compile Include="Assets\Scripts\Managers\SortingManager.cs" />
     <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
-    <Compile Include="Assets\Scripts\Repository\SceneRepo.cs" />
     <Compile Include="Assets\Scripts\Sequences\EndTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\Portrait3DManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
@@ -233,6 +233,7 @@
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
+    <Compile Include="Assets\Scripts\Instances\LoadingScreen.cs" />
     <Compile Include="Assets\Helpers\Interval.cs" />
     <Compile Include="Assets\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />

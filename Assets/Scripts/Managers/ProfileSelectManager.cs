@@ -1,13 +1,10 @@
-using Assets.Scripts.Repositories;
+using Assets.Helper;
 using Game.Models.Profile;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
-using Label = TMPro.TextMeshProUGUI;
 using c = Assets.Helpers.CanvasHelper;
-using g = Assets.Helpers.GameHelper;
-using Assets.Helper;
+using Label = TMPro.TextMeshProUGUI;
 
 public class ProfileSelectManager : MonoBehaviour
 {
@@ -24,7 +21,7 @@ public class ProfileSelectManager : MonoBehaviour
     private float buttonHeight;
     private float fontSize;
     private float rowSpacing;
-   
+
     private void Awake()
     {
 
@@ -100,7 +97,7 @@ public class ProfileSelectManager : MonoBehaviour
         instance.name = $"Profile_{item.Key}";
 
         //RectTransform buttonRect = instance.GetComponent<RectTransform>();
-       // buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
+        // buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
 
         Button button = instance.GetComponent<Button>();
         button.onClick.AddListener(() => OnProfileButtonClicked(item.Key));
@@ -112,16 +109,16 @@ public class ProfileSelectManager : MonoBehaviour
     private void OnProfileButtonClicked(string key)
     {
         ProfileRepo.SelectProfile(key);
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
     }
 
     private void OnCreateNewProfileButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.ProfileCreate)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileCreate()));
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
     }
 }

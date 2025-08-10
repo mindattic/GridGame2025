@@ -1,10 +1,8 @@
 using Assets.Helper;
-using Assets.Scripts.Repositories;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
@@ -65,7 +63,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+            StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileCreate()));
             return;
         }
 
@@ -73,7 +71,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
-            SceneManager.LoadScene(SceneHelper.SaveFileSelect);
+            StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadSaveFileSelect()));
             return;
         }
 
@@ -429,8 +427,7 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        //ProcessRoutine(fade.DespawnRoutine(SceneRepo.LoadPreviousScene()));
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
     }
 
 

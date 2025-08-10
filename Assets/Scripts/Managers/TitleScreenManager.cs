@@ -1,9 +1,5 @@
 using Assets.Helper;
-using Assets.Scripts.Repositories;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
 
 public class TitleScreenManager : MonoBehaviour
@@ -40,31 +36,31 @@ public class TitleScreenManager : MonoBehaviour
     public void OnContinueButtonClicked()
     {
         ProfileRepo.CurrentProfile.CurrentSave = ProfileRepo.CurrentProfile.LatestSave;
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
     }
 
     public void OnLoadGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.SaveFileSelect)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadSaveFileSelect()));
     }
 
     public void OnNewGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.ProfileCreate)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileCreate()));
     }
 
     public void OnSettingsButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadSettings()));
     }
 
     public void OnCreditsButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Credits)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadCredits()));
     }
 
     public void OnChangeProfileButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.ProfileSelect)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileSelect()));
     }
 }

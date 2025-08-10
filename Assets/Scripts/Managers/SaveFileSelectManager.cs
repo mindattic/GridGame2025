@@ -1,21 +1,14 @@
-﻿using Assets.Scripts.Models;
-using Assets.Scripts.Repositories;
-using Game.Models;
+﻿using Assets.Helper;
+using Assets.Helpers;
 using Game.Models.Profile;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
-using g = Assets.Helpers.GameHelper;
-using Assets.Helpers;
-using Assets.Helper;
 
 public class SaveFileSelectManager : MonoBehaviour
 {
@@ -49,7 +42,7 @@ public class SaveFileSelectManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            SceneManager.LoadScene(SceneHelper.ProfileCreate);
+            StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileCreate()));
             return;
         }
 
@@ -116,7 +109,7 @@ public class SaveFileSelectManager : MonoBehaviour
                 ProfileRepo.CurrentProfile.CurrentSave = selectedSave;
 
                 // Proceed to load the game scene using the active save.
-                StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Game)));
+                StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
             }
             else
             {
@@ -132,6 +125,6 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
     }
 }

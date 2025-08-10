@@ -1,9 +1,7 @@
 using Assets.Helper;
-using Assets.Scripts.Repositories;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
@@ -74,7 +72,7 @@ public class OverworldManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadPreviousScene()));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
     }
 
     public void OnCenterOnHeroClicked()

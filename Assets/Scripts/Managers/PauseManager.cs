@@ -1,5 +1,4 @@
 using Assets.Helper;
-using Assets.Scripts.Repositories;
 using UnityEngine;
 using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
@@ -89,7 +88,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.PartyManager)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPartyManager()));
     }
 
     public void OnSpawnEnemyButtonClicked()
@@ -101,21 +100,21 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.StageSelect)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadStageSelect()));
     }
 
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.Settings)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadSettings()));
     }
 
     public void OnTitleScreenButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOutRoutine(SceneRepo.LoadScene(SceneHelper.TitleScreen)));
+        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
     }
 
 }
