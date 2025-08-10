@@ -1,18 +1,26 @@
 ﻿using System;
 
+/// <summary>
+/// Represents growth values for all stats, inheriting from BaseStats.
+/// Supports construction from values, copy construction, and addition.
+/// </summary>
 [Serializable]
 public class StatGrowth : BaseStats
 {
+    // ------------------------------------------------------------
+    // Constructors
+    // ------------------------------------------------------------
+
     public StatGrowth() { }
 
     public StatGrowth(
-        float strength, 
-        float vitality, 
-        float agility, 
-        float stamina, 
+        float strength,
+        float vitality,
+        float agility,
+        float stamina,
         float intelligence,
-        float wisdom, float
-        luck)
+        float wisdom,
+        float luck)
     {
         Strength = strength;
         Vitality = vitality;
@@ -36,6 +44,14 @@ public class StatGrowth : BaseStats
         Luck = other.Luck;
     }
 
+    // ------------------------------------------------------------
+    // Operators
+    // ------------------------------------------------------------
+
+    /// <summary>
+    /// Add two StatGrowth objects together, returning a new instance.
+    /// Handles null values by treating them as zero.
+    /// </summary>
     public static StatGrowth operator +(StatGrowth a, StatGrowth b)
     {
         if (a == null && b == null) return new StatGrowth();

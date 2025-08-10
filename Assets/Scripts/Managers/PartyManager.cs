@@ -97,10 +97,6 @@ public class PartyManager : MonoBehaviour
         spdRow = panel.transform.GetChild("SPD").GetComponent<RectTransform>();
         lckRow = panel.transform.GetChild("LCK").GetComponent<RectTransform>();
 
-        Debug.Log(GameObject.Find("Fade")); // Should log null
-        Debug.Log(GameObject.Find("PartyManager/Canvas/Fade")); // Should log the object
-
-
         fade = GameObject.Find("Fade").GetComponent<FadeInstance>();
 
         float parentWidth = statsDisplay.rect.width;
@@ -433,7 +429,7 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        //ExecuteTrigger(fade.FadeOut(SceneRepo.LoadPreviousScene()));
+        //ExecuteTrigger(fade.FadeOutTrigger(SceneRepo.LoadPreviousScene()));
         StartCoroutine(fade.FadeOut(SceneRepo.LoadScene(SceneHelper.Game)));
     }
 

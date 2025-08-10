@@ -6,33 +6,51 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
+/// <summary>
+/// Centralized random helpers for gameplay.
+/// Provides random actors, tiles, locations, directions, colors, enums, and weighted choices.
+/// </summary>
 static class RNG
 {
     [ThreadStatic] public static System.Random rng = new System.Random();
 
+    /// <summary>
+    /// Random hero that is currently playing.
+    /// </summary>
     public static ActorInstance Hero => g.Actors.Heroes.Where(x => x.isPlaying).Shuffle().First();
 
+    /// <summary>
+    /// Random enemy that is currently playing.
+    /// </summary>
     public static ActorInstance Enemy => g.Actors.Enemies.Where(x => x.isPlaying).Shuffle().First();
 
+    /// <summary>
+    /// Random tile from all tiles.
+    /// </summary>
     public static TileInstance Tile => g.Tiles.Shuffle().First();
 
-    
+    /// <summary>
+    /// Random board location within inclusive 1..columnCount and 1..rowCount.
+    /// </summary>
     public static Vector2Int Location => new Vector2Int(Int(1, g.Board.columnCount), Int(1, g.Board.rowCount));
 
-
-
-
-
+    /// <summary>
+    /// Random unoccupied tile if available, otherwise null.
+    /// </summary>
     public static TileInstance UnoccupiedTile => g.Tiles.Where(x => !x.IsOccupied).Shuffle().FirstOrDefault();
 
+    /// <summary>
+    /// Random unoccupied location or Nowhere if none available.
+    /// </summary>
     public static Vector2Int UnoccupiedLocation => UnoccupiedTile == null ? LocationHelper.Nowhere : UnoccupiedTile.location;
 
-
+    /// <summary>
+    /// Random unoccupied interior location that is not on the border; Nowhere if none found.
+    /// </summary>
     public static Vector2Int UnoccupiedInteriorLocation
     {
         get
         {
-            // pick any unoccupied tile that isn't on the board's edge
             var tile = g.Tiles
                 .Where(t =>
                     !t.IsOccupied &&
@@ -42,28 +60,45 @@ static class RNG
                 .Shuffle()
                 .FirstOrDefault();
 
-            return tile == null
-                ? LocationHelper.Nowhere
-                : tile.location;
+            return tile == null ? LocationHelper.Nowhere : tile.location;
         }
     }
 
+    /// <summary>
+    /// Random integer in inclusive range [min, max].
+    /// </summary>
     public static int Int(int min, int max) => rng.Next(min, max + 1);
 
+    /// <summary>
+    /// Random float in range [min, max).
+    /// </summary>
     public static float Float(float min = 0f, float max = 1f) => (float)rng.NextDouble() * (max - min) + min;
 
+    /// <summary>
+    /// Random percentage in [0, 1).
+    /// </summary>
     public static float Percent => (float)rng.NextDouble();
 
+    /// <summary>
+    /// Random offset in [-amount, +amount] using two independent draws.
+    /// </summary>
     public static float Range(float amount) => (-amount * Percent) + (amount * Percent);
 
+    /// <summary>
+    /// Random boolean.
+    /// </summary>
     public static bool Boolean => Int(1, 2) == 1;
 
+    /// <summary>
+    /// Random cardinal direction.
+    /// </summary>
     public static Direction AdjacentDirection
     {
         get
         {
             var result = Int(1, 4);
-            return result switch {
+            return result switch
+            {
                 1 => Direction.North,
                 2 => Direction.East,
                 3 => Direction.South,
@@ -72,11 +107,13 @@ static class RNG
         }
     }
 
+    /// <summary>
+    /// Random 8-way direction.
+    /// </summary>
     public static Direction Direction
     {
         get
         {
-            // Pick a random integer from 1 to 8 inclusive
             var result = Int(1, 8);
             return result switch
             {
@@ -92,8 +129,14 @@ static class RNG
         }
     }
 
+    /// <summary>
+    /// Random opaque color.
+    /// </summary>
     public static Color Color => new Color(Float(), Float(), Float(), 1f);
 
+    /// <summary>
+    /// Random attack strategy. Preserves commented reference code for future weighted logic.
+    /// </summary>
     public static AttackStrategy Strategy(params int[] ratios)
     {
         //int sum = Int(0, ratios.Sum());
@@ -121,7 +164,6 @@ static class RNG
         //{
         //   do_somethingN();
         //}
-
 
         //TODO: SpawnActor in weighted value so some attackResults are more common that others...
 
@@ -151,9 +193,6 @@ static class RNG
         }
         */
 
-
-
-
         //var attackResult = Int(1, 5);
         //return attackResult switch
         //{
@@ -172,33 +211,43 @@ static class RNG
             2 => AttackStrategy.AttackRandom,
             _ => AttackStrategy.AttackClosest,
         };
-
     }
 
+    /// <summary>
+    /// Random enum value of type T.
+    /// </summary>
     public static T EnumValue<T>() where T : Enum
     {
-        Array values = Enum.GetValues(typeof(T));  
+        Array values = Enum.GetValues(typeof(T));
         return (T)values.GetValue(Int(0, values.Length - 1));
     }
 
+    /// <summary>
+    /// Random weapon type.
+    /// </summary>
     public static WeaponType WeaponType()
     {
         return EnumValue<WeaponType>();
     }
 
+    /// <summary>
+    /// Random shake intensity level: High, Medium, or Low.
+    /// </summary>
     public static float ShakeIntensityLevel()
     {
-        //Randomly pick between High, Medium, and Low
-        int choice = Int(1, 3); //Generate a random number between 1 and 3
+        int choice = Int(1, 3);
         return choice switch
         {
             1 => ShakeIntensity.High,
             2 => ShakeIntensity.Medium,
             3 => ShakeIntensity.Low,
-            _ => ShakeIntensity.Low //Default to Low as a fallback
+            _ => ShakeIntensity.Low
         };
     }
 
+    /// <summary>
+    /// Random background sprite from the SpriteRepo.
+    /// </summary>
     public static Sprite Background()
     {
         var keys = SpriteRepo.Backgrounds.Keys.ToList();
@@ -206,9 +255,11 @@ static class RNG
         return SpriteRepo.Backgrounds[key];
     }
 
+    /// <summary>
+    /// Random hit type.
+    /// </summary>
     public static HitType HitType()
     {
         return EnumValue<HitType>();
     }
-
 }

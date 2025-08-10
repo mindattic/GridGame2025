@@ -240,7 +240,7 @@ public class DebugManager : MonoBehaviour
 
         //    foreach (var supportLine in g.SupportLineManager.supportLines.Values)
         //    {
-        //        supportLine.TriggerDespawn();
+        //        supportLine.Despawn();
         //    }
         //}
 
