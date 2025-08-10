@@ -1,6 +1,7 @@
 using Assets.Helper;
 using UnityEngine;
 using c = Assets.Helpers.CanvasHelper;
+using f = Assets.Helpers.FadeOverlayHelper;
 using Label = TMPro.TextMeshProUGUI;
 
 public class CreditsManager : MonoBehaviour
@@ -10,7 +11,7 @@ public class CreditsManager : MonoBehaviour
     private RectTransform scrollView;
     private RectTransform content;
     private RectTransform textarea;
-    private FadeInstance fade;
+
 
     private void Awake()
     {
@@ -18,8 +19,7 @@ public class CreditsManager : MonoBehaviour
         //scrollView = GameObject.Find(GameObjectHelper.Credits.ScrollView).GetComponent<RectTransform>();
         //content = GameObject.Find(GameObjectHelper.Credits.Content).GetComponent<RectTransform>();
         textarea = GameObject.Find(GameObjectHelper.Credits.Textarea).GetComponent<RectTransform>();
-        fade = GameObject.Find(GameObjectHelper.Credits.Fade).GetComponent<FadeInstance>();
-
+      
         //var startX = canvas.rect.width;
         //var startY = canvas.rect.height;
         //var buttonWidth = 0.9f * startX;
@@ -60,12 +60,12 @@ public class CreditsManager : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(fade.FadeInRoutine());
+        f.Overlay.FadeIn();
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
+        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
     }
 
 

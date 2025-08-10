@@ -7,7 +7,7 @@ using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Draws a support line between two ActorInstances,
-/// handles fade in/out, and initializes renderer settings.
+/// handles overlay in/out, and initializes renderer settings.
 /// </summary>
 public class SupportLineInstance : MonoBehaviour
 {
@@ -27,7 +27,7 @@ public class SupportLineInstance : MonoBehaviour
     public float alpha = 0f;
 
     /// <summary>
-    /// Duration for fade in and fade out.
+    /// Duration for overlay in and overlay out.
     /// </summary>
     [SerializeField]
     private float fadeDuration = 0.1f;
@@ -102,7 +102,7 @@ public class SupportLineInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Initializes the support line between two actors and starts fade in.
+    /// Initializes the support line between two actors and starts overlay in.
     /// </summary>
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
@@ -120,7 +120,7 @@ public class SupportLineInstance : MonoBehaviour
 
         g.SortingManager.OnSupportLineSpawn(this);
 
-        // Begin fade in effect
+        // Begin overlay in effect
         StartCoroutine(FadeInRoutine());
     }
 
@@ -133,7 +133,7 @@ public class SupportLineInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// ProcessRoutine fade out and eventual destruction of the support line.
+    /// ProcessRoutine overlay out and eventual destruction of the support line.
     /// </summary>
     public void Despawn()
     {
@@ -173,7 +173,7 @@ public class SupportLineInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Consolidated fade routine used by FadeInRoutine and DespawnRoutine.
+    /// Consolidated overlay routine used by FadeInRoutine and DespawnRoutine.
     /// Interpolates alpha from startAlpha to targetAlpha over fadeDuration.
     /// Calls onComplete after finishing if provided.
     /// </summary>

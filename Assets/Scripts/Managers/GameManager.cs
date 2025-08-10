@@ -104,7 +104,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public bool hasTargetActor => targetActor != null;
 
     //Instances
-    [HideInInspector] public FadeInstance fade;
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TimerBar2D timerBar2D;
     [HideInInspector] public RectTransform portraitsContainer;
@@ -165,7 +164,6 @@ public class GameManager : Singleton<GameManager>
         //Canvas
         tutorialPopup = GameObject.Find(GameObjectHelper.Game.TutorialPopup).GetComponent<TutorialPopup>();
         card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<Card>();
-        fade = GameObject.Find(GameObjectHelper.Game.Fade).GetComponent<FadeInstance>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
         timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D.Root).GetComponent<TimerBar2D>();
         portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();

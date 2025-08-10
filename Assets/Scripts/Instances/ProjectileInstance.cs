@@ -221,7 +221,7 @@ public class ProjectileInstance : MonoBehaviour
 
     private IEnumerator SpawnVFX()
     {
-        //TODO: Differnet trail hides? Hide, FadeInstance, Shrink, etc...
+        //TODO: Differnet trail hides? Hide, FadeOverlayInstance, Shrink, etc...
         trailInstance.SetActive(false); //Hide trail until end
 
         VFXAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];

@@ -6,7 +6,7 @@ using Assets.Helper;
 
 /// <summary>
 /// Draws a curved arc between a fixed button position and a dynamic cursor/hero position.
-/// Handles fade in/out and updates on each physics step.
+/// Handles overlay in/out and updates on each physics step.
 /// </summary>
 public class TargetLineInstance : MonoBehaviour
 {
@@ -73,7 +73,7 @@ public class TargetLineInstance : MonoBehaviour
         }
     }
 
-    //TODO: FIx this so that it despawns when fade out routine completes....
+    //TODO: FIx this so that it despawns when overlay out routine completes....
     public void Despawn()
     {
         StartCoroutine(DespawnRoutine());

@@ -1,16 +1,15 @@
 using Assets.Helper;
 using System.Collections;
 using UnityEngine;
+using f = Assets.Helpers.FadeOverlayHelper;
 
 public class SplashScreenManager : MonoBehaviour
 {
     //Fields
-    private FadeInstance fade;
     private float waitDuration = 30;
 
     private void Awake()
     {
-        fade = GameObject.Find(GameObjectHelper.SplashScreen.Fade).GetComponent<FadeInstance>();
     }
 
     void Start()
@@ -21,15 +20,13 @@ public class SplashScreenManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
+            f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
     }
 
     private IEnumerator FadeInRoutine()
     {
-        yield return fade.FadeInRoutine();
+        f.Overlay.FadeIn();
         yield return new WaitForSeconds(waitDuration);
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
+        f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
     }
-
-
 }

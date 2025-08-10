@@ -405,7 +405,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// ProcessRoutine a fade in by increasing renderer alpha. Optional routine runs after fade completes.
+        /// ProcessRoutine a overlay in by increasing renderer alpha. Optional routine runs after overlay completes.
         /// </summary>
         public void FadeIn(float delay = 0f, IEnumerator routine = null)
         {

@@ -1,6 +1,7 @@
 using Assets.Helper;
 using UnityEngine;
 using UnityEngine.UI;
+using f = Assets.Helpers.FadeOverlayHelper;
 using g = Assets.Helpers.GameHelper;
 
 public class PauseManager : MonoBehaviour
@@ -13,14 +14,11 @@ public class PauseManager : MonoBehaviour
     private Sprite pause;
     private Sprite paused;
     private GameObject pauseMenu;
-    private FadeInstance fade;
-
     void Awake()
     {
         pauseButton = GameObject.Find(GameObjectHelper.Game.PauseButton);
         pauseButtonImage = pauseButton.GetComponent<Image>();
         pauseMenu = GameObject.Find(GameObjectHelper.Game.PauseMenu).gameObject;
-        fade = GameObject.Find(GameObjectHelper.Game.Fade).GetComponent<FadeInstance>();
     }
 
     private void Start()
@@ -88,7 +86,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPartyManager()));
+        f.Overlay.FadeOut(SceneHelper.LoadPartyManager());
     }
 
     public void OnSpawnEnemyButtonClicked()
@@ -100,21 +98,21 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadStageSelect()));
+        f.Overlay.FadeOut(SceneHelper.LoadStageSelect());
     }
 
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadSettings()));
+        f.Overlay.FadeOut(SceneHelper.LoadSettings());
     }
 
     public void OnTitleScreenButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
+        f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
     }
 
 }

@@ -10,7 +10,7 @@ namespace Assets.Scripts
     /// <summary>
     /// Centralized scene transition service with a loading screen.
     /// Attach this component only in the LoadingScreen scene.
-    /// Provides fade from black, delayed progress UI, and progress UI fade in.
+    /// Provides overlay from black, delayed progress UI, and progress UI overlay in.
     /// Tracks current and previous scene names and supports editor bootstrap when started on LoadingScreen.
     /// </summary>
     public sealed class SceneLoader : MonoBehaviour
@@ -19,7 +19,7 @@ namespace Assets.Scripts
         [SerializeField] private Slider progressBar;
         [SerializeField] private Label progressLabel;
 
-        [Header("Fade Groups")]
+        [Header("Overlay Groups")]
         [Tooltip("Fullscreen black overlay CanvasGroup that fades from 1 to 0.")]
         [SerializeField] private CanvasGroup fadePanel;
         [Tooltip("Container CanvasGroup for progress UI that fades from 0 to 1.")]
@@ -46,8 +46,8 @@ namespace Assets.Scripts
         private static string previousScene = "TitleScreen";
         private static string currentScene = "TitleScreen";
 
-        private bool uiVisible;
-        private bool fadeFinished;
+        private bool isProgressVisible;
+        private bool isFadeCompleted;
 
         // Tracks progress even while the UI is hidden so it can be applied instantly when shown
         private float latestProgress;
@@ -109,7 +109,7 @@ namespace Assets.Scripts
         /// </summary>
         private void Start()
         {
-            // Prepare fade groups
+            // Prepare overlay groups
             if (fadePanel != null)
             {
                 fadePanel.alpha = 1f;
@@ -125,7 +125,7 @@ namespace Assets.Scripts
             }
 
             // Ensure progress widgets start hidden if no progressPanel is assigned
-            SetUIVisible(false);
+            SetProgressVisible(false);
             latestProgress = 0f;
 
             // If we pressed Play on LoadingScreen directly and no target is set, bootstrap once without reloading LoadingScreen
@@ -162,13 +162,13 @@ namespace Assets.Scripts
         }
 
         /// <summary>
-        /// Fade the black overlay from 1 to 0 in unscaled time.
+        /// Overlay the black overlay from 1 to 0 in unscaled time.
         /// </summary>
         private IEnumerator FadeFromBlackRoutine(float duration)
         {
             if (fadePanel == null || duration <= 0f)
             {
-                fadeFinished = true;
+                isFadeCompleted = true;
                 yield break;
             }
 
@@ -185,18 +185,18 @@ namespace Assets.Scripts
 
             fadePanel.alpha = 0f;
             fadePanel.blocksRaycasts = false;
-            fadeFinished = true;
+            isFadeCompleted = true;
         }
 
         /// <summary>
-        /// After a delay, fade in the progress UI and immediately apply the latest known progress.
+        /// After a delay, overlay in the progress UI and immediately apply the latest known progress.
         /// </summary>
         private IEnumerator ShowUIAfterDelay(float delay, float duration)
         {
             if (delay > 0f)
                 yield return new WaitForSecondsRealtime(delay);
 
-            while (!fadeFinished)
+            while (!isFadeCompleted)
                 yield return null;
 
             if (progressPanel != null && duration > 0f)
@@ -221,11 +221,11 @@ namespace Assets.Scripts
             }
             else
             {
-                SetUIVisible(true);
+                SetProgressVisible(true);
                 UpdateUI(latestProgress);
             }
 
-            uiVisible = true;
+            isProgressVisible = true;
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace Assets.Scripts
             {
                 latestProgress = Mathf.Clamp01(op.progress / 0.9f);
 
-                if (uiVisible)
+                if (isProgressVisible)
                     UpdateUI(latestProgress);
 
                 yield return null;
@@ -252,7 +252,7 @@ namespace Assets.Scripts
 
             // Reached activation plateau
             latestProgress = 1f;
-            if (uiVisible)
+            if (isProgressVisible)
                 UpdateUI(latestProgress);
 
             // Guarantee a minimum on-screen time
@@ -279,7 +279,7 @@ namespace Assets.Scripts
         /// <summary>
         /// Toggle child widgets active when no CanvasGroup is used for them.
         /// </summary>
-        private void SetUIVisible(bool visible)
+        private void SetProgressVisible(bool visible)
         {
             if (progressBar != null)
                 progressBar.gameObject.SetActive(visible);
@@ -298,11 +298,11 @@ namespace Assets.Scripts
                 if (progressPanel.gameObject.activeSelf != active)
                     progressPanel.gameObject.SetActive(active);
 
-                SetUIVisible(true);
+                SetProgressVisible(true);
             }
             else
             {
-                SetUIVisible(active);
+                SetProgressVisible(active);
             }
         }
 

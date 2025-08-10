@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using f = Assets.Helpers.FadeOverlayHelper;
 using g = Assets.Helpers.GameHelper;
 
 public class StageManager : MonoBehaviour
@@ -79,7 +80,8 @@ public class StageManager : MonoBehaviour
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
 
-        StartCoroutine(g.Fade.FadeInRoutine());
+
+        f.Overlay.FadeIn();
     }
 
     /// <summary>
@@ -191,7 +193,7 @@ public class StageManager : MonoBehaviour
             yield return Wait.None();
         }
 
-        StartCoroutine(g.Fade.FadeOutRoutine(loadNextStageRoutine()));
+        f.Overlay.FadeOut(loadNextStageRoutine());
     }
 
     /// <summary>
@@ -209,7 +211,7 @@ public class StageManager : MonoBehaviour
             yield return Wait.None();
         }
 
-        StartCoroutine(g.Fade.FadeOutRoutine(reloadStageRoutine()));
+        f.Overlay.FadeOut(reloadStageRoutine());
     }
 
 

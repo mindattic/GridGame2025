@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
-
+using f = Assets.Helpers.FadeOverlayHelper;
 public class PartyManager : MonoBehaviour
 {
     private GameObject slidePrefab;
@@ -45,7 +45,6 @@ public class PartyManager : MonoBehaviour
     private float centeredX;
 
 
-    private FadeInstance fade;
 
 
     private bool IsInParty(string character)
@@ -63,7 +62,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileCreate()));
+            f.Overlay.FadeOut(SceneHelper.LoadProfileCreate());
             return;
         }
 
@@ -71,7 +70,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
-            StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadSaveFileSelect()));
+            f.Overlay.FadeOut(SceneHelper.LoadSaveFileSelect());
             return;
         }
 
@@ -95,8 +94,6 @@ public class PartyManager : MonoBehaviour
         spdRow = panel.transform.GetChild("SPD").GetComponent<RectTransform>();
         lckRow = panel.transform.GetChild("LCK").GetComponent<RectTransform>();
 
-        fade = GameObject.Find("Fade").GetComponent<FadeInstance>();
-
         float parentWidth = statsDisplay.rect.width;
         float barBackWidth = levelRow.rect.width;
         centeredX = (parentWidth - barBackWidth) / 2;
@@ -107,7 +104,7 @@ public class PartyManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(fade.FadeInRoutine());
+        f.Overlay.FadeIn();
     }
 
     private void Update()
@@ -427,7 +424,7 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
+        f.Overlay.FadeOut(SceneHelper.LoadGame());
     }
 
 

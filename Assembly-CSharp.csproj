@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
+    <Compile Include="Assets\Helpers\FadeOverlayHelper.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
@@ -99,7 +100,6 @@
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
-    <Compile Include="Assets\Helpers\FadeHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Helpers\DateTimeHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
@@ -177,7 +177,6 @@
     <Compile Include="Assets\Data\Actor\Yeti.cs" />
     <Compile Include="Assets\Data\Actor\Paladin.cs" />
     <Compile Include="Assets\Data\Actor\Bat.cs" />
-    <Compile Include="Assets\Scripts\Canvas\FadeInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Portrait2DInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
@@ -249,6 +248,7 @@
     <Compile Include="Assets\Scripts\Models\Actor\ActorStats.cs" />
     <Compile Include="Assets\Data\Actor\Scorpion.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
+    <Compile Include="Assets\Scripts\Canvas\FadeOverlayInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Helpers\GameObjectHelper.cs" />

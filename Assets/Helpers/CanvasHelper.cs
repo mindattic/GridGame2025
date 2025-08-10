@@ -12,10 +12,8 @@ namespace Assets.Helpers
     /// </summary>
     public static class CanvasHelper
     {
-        // Cached Canvas reference for the active scene
+        // Cached references
         private static Canvas canvas;
-
-        // Cached RectTransform reference for the active scene's Canvas
         private static RectTransform canvasRect;
 
         /// <summary>

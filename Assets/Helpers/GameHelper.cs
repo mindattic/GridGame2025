@@ -158,7 +158,6 @@ namespace Assets.Helpers
         }
 
         // World instances
-        public static FadeInstance Fade => GameManager.instance.fade;
         public static TileMap TileMap => GameManager.instance.tileMap;
         public static TimerBar2D TimerBar2D => GameManager.instance.timerBar2D;
         public static BoardInstance Board => GameManager.instance.board;

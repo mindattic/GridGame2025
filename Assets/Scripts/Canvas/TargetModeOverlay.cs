@@ -16,8 +16,8 @@ public class TargetModeOverlay : MonoBehaviour
     // Components and state
     // ---------------------------------------------------------------------
 
-    private Image image;                 // Background image to fade
-    private Coroutine fadeCoroutine;     // Handle to the active fade
+    private Image image;                 // Background image to overlay
+    private Coroutine fadeCoroutine;     // Handle to the active overlay
 
     // FadeRoutine parameters
     [SerializeField] private float minAlpha = 0f;
@@ -102,7 +102,7 @@ public class TargetModeOverlay : MonoBehaviour
         if (targetVisible && !gameObject.activeSelf)
             gameObject.SetActive(true);
 
-        // Drive fade
+        // Drive overlay
         StopFade();
         float from = GetAlpha();
         float to = targetVisible ? maxAlpha : minAlpha;
@@ -126,7 +126,7 @@ public class TargetModeOverlay : MonoBehaviour
         return image != null ? image.color.a : 0f;
     }
 
-    // Stops an existing fade if any
+    // Stops an existing overlay if any
     private void StopFade()
     {
         if (fadeCoroutine != null)

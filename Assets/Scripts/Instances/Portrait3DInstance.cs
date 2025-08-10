@@ -260,7 +260,7 @@ public class Portrait3DInstance : MonoBehaviour
         Vector3 loweredPos = front.position;
         Vector3 originalPos = popOutFrontRestorePos;
 
-        // UpdateFill fully opaque before fade out
+        // UpdateFill fully opaque before overlay out
         Color c = spriteRenderer.color;
         spriteRenderer.color = new Color(c.r, c.g, c.b, 1f);
 
@@ -311,7 +311,7 @@ public class Portrait3DInstance : MonoBehaviour
         transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
     }
 
-    // DissolveRoutine: fancy fade-out with shake/shrink
+    // DissolveRoutine: fancy overlay-out with shake/shrink
     public IEnumerator DissolveRoutine()
     {
         if (isBeingDestroyed || spriteRenderer == null)

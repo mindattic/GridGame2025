@@ -1,5 +1,6 @@
 using Assets.Helper;
 using UnityEngine;
+using f = Assets.Helpers.FadeOverlayHelper;
 using Label = TMPro.TextMeshProUGUI;
 
 public class TitleScreenManager : MonoBehaviour
@@ -13,7 +14,6 @@ public class TitleScreenManager : MonoBehaviour
     private RectTransform creditsButton;
     private RectTransform profileButton;
     private RectTransform profileButtonLabel;
-    private FadeInstance fade;
 
     private void Awake()
     {
@@ -21,46 +21,43 @@ public class TitleScreenManager : MonoBehaviour
         if (!ProfileRepo.HasProfiles())
             return;
 
-        canvas = GameObject.Find(GameObjectHelper.TitleScreen.Canvas).GetComponent<RectTransform>();
-
         profileButtonLabel = GameObject.Find(GameObjectHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
-        fade = GameObject.Find(GameObjectHelper.TitleScreen.Fade).GetComponent<FadeInstance>();
-
         profileButtonLabel.GetComponent<Label>().text = ProfileRepo.CurrentProfile.Key;
     }
 
     private void Start()
     {
-        StartCoroutine(fade.FadeInRoutine());
+        f.Overlay.FadeIn();
     }
+
     public void OnContinueButtonClicked()
     {
         ProfileRepo.CurrentProfile.CurrentSave = ProfileRepo.CurrentProfile.LatestSave;
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
+        f.Overlay.FadeOut(SceneHelper.LoadGame());
     }
 
     public void OnLoadGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadSaveFileSelect()));
+        f.Overlay.FadeOut(SceneHelper.LoadSaveFileSelect());
     }
 
     public void OnNewGameButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileCreate()));
+        f.Overlay.FadeOut(SceneHelper.LoadProfileCreate());
     }
 
     public void OnSettingsButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadSettings()));
+        f.Overlay.FadeOut(SceneHelper.LoadSettings());
     }
 
     public void OnCreditsButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadCredits()));
+        f.Overlay.FadeOut(SceneHelper.LoadCredits());
     }
 
     public void OnChangeProfileButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileSelect()));
+        f.Overlay.FadeOut(SceneHelper.LoadProfileSelect());
     }
 }

@@ -1,6 +1,7 @@
 using Assets.Helper;
 using UnityEngine;
 using UnityEngine.UI;
+using f = Assets.Helpers.FadeOverlayHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -17,15 +18,13 @@ public class StageSelectManager : MonoBehaviour
     private float buttonWidth;
     private float buttonHeight;
     private float spacing;
-    private FadeInstance fade;
+
 
     private void Awake()
     {
 
         buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
-
-        fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
         //startX = canvas.rect.width;
         //startY = canvas.rect.height;
@@ -47,7 +46,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(fade.FadeInRoutine());
+        f.Overlay.FadeIn();
     }
 
     public void AddButton(string stageName)
@@ -72,12 +71,12 @@ public class StageSelectManager : MonoBehaviour
     private void OnStageSelectButtonClicked(string stageName)
     {
         ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
+        f.Overlay.FadeOut(SceneHelper.LoadGame());
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
+        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
     }
 
 }

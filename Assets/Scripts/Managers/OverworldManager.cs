@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
+using f = Assets.Helpers.FadeOverlayHelper;
 
 public class OverworldManager : MonoBehaviour
 {
@@ -20,7 +21,6 @@ public class OverworldManager : MonoBehaviour
     private float screenHeight;
     private float buttonWidth;
     private float buttonHeight;
-    private FadeInstance fade;
     private List<Button> stageButtons = new List<Button>();
 
     private void Awake()
@@ -35,7 +35,6 @@ public class OverworldManager : MonoBehaviour
         content = GameObject.Find(GameObjectHelper.Overworld.Content).GetComponent<RectTransform>();
         map = GameObject.Find(GameObjectHelper.Overworld.Map).GetComponent<RectTransform>();
         hero = GameObject.Find(GameObjectHelper.Overworld.Hero).GetComponent<PlayerStageMover>();
-        fade = GameObject.Find(GameObjectHelper.Overworld.Fade).GetComponent<FadeInstance>();
 
         FindStageButtons();
         OnCenterOnHeroClicked();
@@ -43,7 +42,7 @@ public class OverworldManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(fade.FadeInRoutine());
+        f.Overlay.FadeIn();
     }
 
     /// <summary>
@@ -72,7 +71,7 @@ public class OverworldManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
+        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
     }
 
     public void OnCenterOnHeroClicked()

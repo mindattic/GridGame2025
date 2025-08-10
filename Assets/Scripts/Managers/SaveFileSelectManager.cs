@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using f = Assets.Helpers.FadeOverlayHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -18,7 +19,7 @@ public class SaveFileSelectManager : MonoBehaviour
     private RectTransform scrollView;
     private Transform content;
     private VerticalLayoutGroup verticalLayoutGroup;
-    private FadeInstance fade;
+
 
     private float screenWidth;
     private float screenHeight;
@@ -32,8 +33,6 @@ public class SaveFileSelectManager : MonoBehaviour
     {
         buttonPrefab = PrefabRepo.Prefabs["SaveFileButtonPrefab"];
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
-        fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
-
     }
 
     private void Start()
@@ -42,12 +41,12 @@ public class SaveFileSelectManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileCreate()));
+            f.Overlay.FadeOut(SceneHelper.LoadProfileCreate());
             return;
         }
 
         Reload();
-        StartCoroutine(fade.FadeInRoutine());
+        f.Overlay.FadeIn();
     }
 
 
@@ -109,7 +108,7 @@ public class SaveFileSelectManager : MonoBehaviour
                 ProfileRepo.CurrentProfile.CurrentSave = selectedSave;
 
                 // Proceed to load the game scene using the active save.
-                StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadGame()));
+                f.Overlay.FadeOut(SceneHelper.LoadGame());
             }
             else
             {
@@ -125,6 +124,6 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
+        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FadeInstance : MonoBehaviour
+public class FadeOverlayInstance : MonoBehaviour
 {
     private Image image;
     private float fadeDuration = 0.5f;
@@ -15,13 +15,14 @@ public class FadeInstance : MonoBehaviour
         image.color = new Color(0, 0, 0, 1);
     }
 
-    public IEnumerator FadeInRoutine(IEnumerator coroutine = null)
+    public void FadeIn(IEnumerator routine = null) => StartCoroutine(FadeInRoutine(routine));
+    private IEnumerator FadeInRoutine(IEnumerator routine = null)
     {
         //Before: BounceRoutine fully black
         image.color = new Color(0, 0, 0, 1);
         float elapsedTime = 0f;
 
-        //During: FadeInstance from black (1) to transparent (0)
+        //During: FadeOverlayInstance from black (1) to transparent (0)
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -33,18 +34,19 @@ public class FadeInstance : MonoBehaviour
         //After: Ensure fully transparent
         image.color = new Color(0, 0, 0, 0);
 
-        //Run additional coroutine if provided
-        if (coroutine != null)
-            yield return coroutine;
+        //Run additional routine if provided
+        if (routine != null)
+            yield return routine;
     }
 
-    public IEnumerator FadeOutRoutine(IEnumerator coroutine = null)
+    public void FadeOut(IEnumerator routine = null) => StartCoroutine(FadeOutRoutine(routine));
+    private IEnumerator FadeOutRoutine(IEnumerator routine = null)
     {
         //Before: BounceRoutine fully transparent
         image.color = new Color(0, 0, 0, 0);
         float elapsedTime = 0f;
 
-        //During: FadeInstance from transparent (0) to black (1)
+        //During: FadeOverlayInstance from transparent (0) to black (1)
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -56,25 +58,27 @@ public class FadeInstance : MonoBehaviour
         //After: Ensure fully black
         image.color = new Color(0, 0, 0, 1);
 
-        //Run additional coroutine if provided
-        if (coroutine != null)
-            yield return coroutine;
+        //Run additional routine if provided
+        if (routine != null)
+            yield return routine;
     }
 
-    public IEnumerator ShowRoutine(IEnumerator coroutine = null)
+    public void Show(IEnumerator routine = null) => StartCoroutine(ShowRoutine(routine));
+    private IEnumerator ShowRoutine(IEnumerator routine = null)
     {
         image.color = new Color(0, 0, 0, 0);
 
-        if (coroutine != null)
-            yield return coroutine;
+        if (routine != null)
+            yield return routine;
     }
 
-    public IEnumerator HideRoutine(IEnumerator coroutine = null)
+    public void Hide(IEnumerator routine = null) => StartCoroutine(HideRoutine(routine));
+    private IEnumerator HideRoutine(IEnumerator routine = null)
     {
         image.color = new Color(0, 0, 0, 1);
 
-        //Run additional coroutine if provided
-        if (coroutine != null)
-            yield return coroutine;
+        //Run additional routine if provided
+        if (routine != null)
+            yield return routine;
     }
 }

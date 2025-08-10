@@ -2,19 +2,18 @@ using Assets.Helper;
 using System.Collections;
 using UnityEngine;
 using c = Assets.Helpers.CanvasHelper;
+using f = Assets.Helpers.FadeOverlayHelper;
 
 public class ProfileCreateManager : MonoBehaviour
 {
     //Fields
     private RectTransform background;
-    private FadeInstance fade;
     private float screenWidth;
     private float screenHeight;
 
     private void Awake()
     {
         background = GameObject.Find(GameObjectHelper.ProfileCreate.Background).GetComponent<RectTransform>();
-        fade = GameObject.Find(GameObjectHelper.ProfileCreate.Fade).GetComponent<FadeInstance>();
 
         screenWidth = c.CanvasRect.rect.width;
         screenHeight = c.CanvasRect.rect.height;
@@ -26,13 +25,13 @@ public class ProfileCreateManager : MonoBehaviour
             KeyboardDialog.Show("Who are you?", onSubmit: (value) =>
             {
                 ProfileRepo.CreateProfile(value);
-                StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
+                f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
             });
 
             yield return Wait.None();
         }
 
-        StartCoroutine(fade.FadeInRoutine(showKeyboardRoutine()));
+        f.Overlay.FadeIn(showKeyboardRoutine());
     }
 
 }

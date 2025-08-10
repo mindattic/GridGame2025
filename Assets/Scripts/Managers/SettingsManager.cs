@@ -2,6 +2,7 @@ using Assets.Helper;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using f = Assets.Helpers.FadeOverlayHelper;
 using Label = TMPro.TextMeshProUGUI;
 
 public class SettingsManager : MonoBehaviour
@@ -17,21 +18,16 @@ public class SettingsManager : MonoBehaviour
     private float buttonWidth;
     private float buttonHeight;
     private float spacing;
-    private FadeInstance fade;
-
-
     private RectTransform actorPanMultiplier;
 
     private void Awake()
     {
-        canvas = GameObject.Find(GameObjectHelper.Settings.Canvas).GetComponent<RectTransform>();
-        fade = GameObject.Find(GameObjectHelper.Settings.Fade).GetComponent<FadeInstance>();
         actorPanMultiplier = GameObject.Find(GameObjectHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
 
     }
     private void Start()
     {
-        StartCoroutine(fade.FadeInRoutine());
+        f.Overlay.FadeIn();
     }
 
     public void OnBackButtonClicked()
@@ -44,14 +40,14 @@ public class SettingsManager : MonoBehaviour
                 {
                     Debug.Log("User said: " + value);
 
-                    StartCoroutine(fade.HideRoutine(SceneHelper.LoadPreviousScene()));
+                    f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
                 }
             });
 
             yield return Wait.None();
         }
 
-        StartCoroutine(fade.ShowRoutine(showConfirmRoutine()));
+        f.Overlay.Show(showConfirmRoutine());
     }
 
 

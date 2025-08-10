@@ -514,7 +514,7 @@ public class ActorInstance : MonoBehaviour
         //Show sorting order to maximum so that the death sequence renders on top.
         //sortingOrder = SortingOrder.Max;
 
-        //During: Gradually reduce the alpha value for a fade-out effect.
+        //During: Gradually reduce the alpha value for a overlay-out effect.
         var hasSpawnedCoins = false;
         while (alpha > 0f)
         {

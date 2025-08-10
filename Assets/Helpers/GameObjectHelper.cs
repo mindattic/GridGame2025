@@ -46,7 +46,6 @@ namespace Assets.Helper
 
         public static class Credits
         {
-            public const string Fade = "Canvas/Fade";
             public const string Title = "Canvas/Title";
             public const string ScrollView = "Canvas/ScrollView";
             public const string Viewport = "Canvas/ScrollView/Viewport";
@@ -55,15 +54,11 @@ namespace Assets.Helper
         }
         public static class Game
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
             public const string Canvas3D = "Canvas3D";
             public const string PauseButton = "Canvas/PauseButton";
             public const string PauseMenu = "Canvas/PauseMenu";
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
             public const string PauseOverlay = "Canvas/PauseOverlay";
-
-
 
             public static class TimerBar2D
             {
@@ -109,8 +104,6 @@ namespace Assets.Helper
 
         public static class PartyManager
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
             public const string Title = "Canvas/Title";
             public const string AddRemovePartyMemberButton = "Canvas/AddRemovePartyMemberButton";
             public const string AddRemovePartyMemberButtonLabel = "Canvas/AddRemovePartyMemberButton/Label";
@@ -121,8 +114,6 @@ namespace Assets.Helper
 
         public static class Overworld
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
             public const string Title = "Canvas/Title";
             public const string ScrollView = "Canvas/ScrollView";
             public const string Viewport = "Canvas/ScrollView/Viewport";
@@ -134,16 +125,12 @@ namespace Assets.Helper
 
         public static class ProfileCreate
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
             public const string Background = "Canvas/Background";
         }
 
 
         public static class ProfileSelect
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
             public const string Title = "Canvas/Title";
             public const string ScrollView = "Canvas/ScrollView";
             public const string Content = "Canvas/ScrollView/Viewport/Content";
@@ -152,14 +139,10 @@ namespace Assets.Helper
 
         public static class SplashScreen
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
         }
 
         public static class Settings
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
             public const string Title = "Canvas/Title";
             public const string ScrollView = "Canvas/ScrollView";
             public const string Content = "Canvas/ScrollView/Viewport/Content";
@@ -168,8 +151,6 @@ namespace Assets.Helper
 
         public static class StageSelect
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
             public const string Title = "Canvas/Title";
             public const string ScrollView = "Canvas/ScrollView";
             public const string Content = "Canvas/ScrollView/Viewport/Content";
@@ -177,8 +158,6 @@ namespace Assets.Helper
 
         public static class TitleScreen
         {
-            public const string Canvas = "Canvas";
-            public const string Fade = "Canvas/Fade";
             public const string Panel = "Canvas/Panel";
             public const string ContinueButton = "Canvas/Panel/ContinueButton";
             public const string LoadGameButton = "Canvas/Panel/LoadGameButton";
@@ -190,7 +169,6 @@ namespace Assets.Helper
 
         public static class ConfirmationDialog
         {
-            public const string Canvas = "Canvas";
             public const string ConfirmDialog = "Canvas/ConfirmationDialog";
             public const string Panel = ConfirmDialog + "/Panel";
             public const string Prompt = Panel + "/Prompt";
@@ -200,7 +178,7 @@ namespace Assets.Helper
 
         public static class KeyboardDialog
         {
-            public const string Canvas = "Canvas";
+
             public const string Keyboard = "Canvas/Keyboard";
             public const string Panel = Keyboard + "/Panel";
             public const string Prompt = Panel + "/Prompt";

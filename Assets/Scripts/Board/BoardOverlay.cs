@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Handles fade-in and fade-out of the BoardOverlay using a SpriteRenderer.
+/// Handles overlay-in and overlay-out of the BoardOverlay using a SpriteRenderer.
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class BoardOverlay : MonoBehaviour
@@ -11,7 +11,7 @@ public class BoardOverlay : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Coroutine fadeCoroutine;
 
-    [SerializeField] private float fadeDuration = 0.25f; // Duration of fade effect
+    [SerializeField] private float fadeDuration = 0.25f; // Duration of overlay effect
     [SerializeField] private float minAlpha = Opacity.Transparent; // Fully transparent
     [SerializeField] private float maxAlpha = Opacity.Translucent.Alpha196; // Maximum opacity
     [SerializeField] private Color overlayColor = ColorHelper.Translucent.DarkBlack; // Default color
@@ -58,7 +58,7 @@ public class BoardOverlay : MonoBehaviour
 
 
     /// <summary>
-    /// Handles the fade transition over time.
+    /// Handles the overlay transition over time.
     /// </summary>
     private IEnumerator FadeRoutine(float targetAlpha, bool enableOnStart)
     {

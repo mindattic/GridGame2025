@@ -2,8 +2,9 @@ using Assets.Helper;
 using Game.Models.Profile;
 using UnityEngine;
 using UnityEngine.UI;
-using Button = UnityEngine.UI.Button;
 using c = Assets.Helpers.CanvasHelper;
+using f = Assets.Helpers.FadeOverlayHelper;
+using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
 public class ProfileSelectManager : MonoBehaviour
@@ -13,7 +14,6 @@ public class ProfileSelectManager : MonoBehaviour
     private RectTransform scrollView;
     private RectTransform content;
     private VerticalLayoutGroup verticalLayoutGroup;
-    private FadeInstance fade;
 
     private float screenWidth;
     private float screenHeight;
@@ -30,7 +30,6 @@ public class ProfileSelectManager : MonoBehaviour
         scrollView = GameObject.Find(GameObjectHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<RectTransform>();
         verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
-        fade = GameObject.Find(GameObjectHelper.StageSelect.Fade).GetComponent<FadeInstance>();
 
         screenWidth = c.CanvasRect.rect.width;
         screenHeight = c.CanvasRect.rect.height;
@@ -48,7 +47,7 @@ public class ProfileSelectManager : MonoBehaviour
     private void Start()
     {
         Reload();
-        StartCoroutine(fade.FadeInRoutine());
+        f.Overlay.FadeIn();
     }
 
     private void Clear()
@@ -109,16 +108,16 @@ public class ProfileSelectManager : MonoBehaviour
     private void OnProfileButtonClicked(string key)
     {
         ProfileRepo.SelectProfile(key);
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadTitleScreen()));
+        f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
     }
 
     private void OnCreateNewProfileButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadProfileCreate()));
+        f.Overlay.FadeOut(SceneHelper.LoadProfileCreate());
     }
 
     public void OnBackButtonClicked()
     {
-        StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadPreviousScene()));
+        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
     }
 }

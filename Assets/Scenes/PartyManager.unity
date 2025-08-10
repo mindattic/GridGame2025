@@ -7996,7 +7996,7 @@ GameObject:
   - component: {fileID: 1964486286}
   - component: {fileID: 1964486285}
   m_Layer: 5
-  m_Name: Fade
+  m_Name: FadeOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

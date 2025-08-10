@@ -6,24 +6,25 @@ using c = Assets.Helpers.CanvasHelper;
 namespace Assets.Helpers
 {
     /// <summary>
-    /// Caches the current scene's FadeInstance so callers always get the correct reference.
+    /// Caches the current scene's FadeOverlayInstance so callers always get the correct reference.
     /// Looks up the FadeRoutine GameObject by name using GameObjectHelper.Overworld.FadeRoutine once per scene load.
     /// </summary>
-    public static class FadeHelper
+    public static class FadeOverlayHelper
     {
-        // Cached component reference for the active scene
-        private static FadeInstance fade;
+        // Cached references
+        private static FadeOverlayInstance overlay;
+        private static RectTransform rect;
 
         /// <summary>
-        /// Fast access to the cached FadeInstance.
+        /// Fast access to the cached FadeOverlayInstance.
         /// If the cache is empty, performs a one time lookup for the current scene.
         /// </summary>
-        public static FadeInstance Fade
+        public static FadeOverlayInstance Overlay
         {
             get
             {
-                if (fade == null) Cache();
-                return fade;
+                if (overlay == null) Cache();
+                return overlay;
             }
         }
 
@@ -33,7 +34,7 @@ namespace Assets.Helpers
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void Init()
         {
-            fade = null;
+            overlay = null;
             SceneManager.sceneLoaded += OnSceneLoaded;
             Cache();
         }
@@ -47,25 +48,26 @@ namespace Assets.Helpers
         }
 
         /// <summary>
-        /// Performs the actual lookup and caches the FadeInstance.
+        /// Performs the actual lookup and caches the FadeOverlayInstance.
         /// Safe if the GameObject is missing.
         /// </summary>
         private static void Cache()
         {
             if (c.Canvas == null)
             {
-                fade = null;
+                overlay = null;
                 return;
             }
 
-            var go = c.Canvas.transform.Find("Fade");
+            var go = c.Canvas.transform.Find("FadeOverlay");
             if (go == null)
             {
-                fade = null;
+                overlay = null;
                 return;
             }
 
-            fade = go.GetComponent<FadeInstance>();
+            overlay = go.GetComponent<FadeOverlayInstance>();
+            rect = go.GetComponent<RectTransform>();
         }
 
     }

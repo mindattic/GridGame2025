@@ -88,7 +88,7 @@ namespace Assets.Helper
 
         /// <summary>
         /// Backward compatible signature for old call sites:
-        /// StartCoroutine(fade.FadeOutRoutine(SceneHelper.LoadScene(SceneHelper.Game)));
+        /// StartCoroutine(overlay.FadeOutRoutine(SceneHelper.LoadScene(SceneHelper.Game)));
         /// Delegates to SceneLoader and immediately completes.
         /// </summary>
         public static IEnumerator LoadScene(string sceneName)
