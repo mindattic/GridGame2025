@@ -157,6 +157,7 @@
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Helpers\SceneHelper.cs" />
+    <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
@@ -232,7 +233,6 @@
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\LoadingScreen.cs" />
     <Compile Include="Assets\Helpers\Interval.cs" />
     <Compile Include="Assets\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />

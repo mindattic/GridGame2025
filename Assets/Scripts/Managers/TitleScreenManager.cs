@@ -1,6 +1,6 @@
 using Assets.Helper;
 using UnityEngine;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 using Label = TMPro.TextMeshProUGUI;
 
 public class TitleScreenManager : MonoBehaviour
@@ -27,37 +27,37 @@ public class TitleScreenManager : MonoBehaviour
 
     private void Start()
     {
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     public void OnContinueButtonClicked()
     {
         ProfileRepo.CurrentProfile.CurrentSave = ProfileRepo.CurrentProfile.LatestSave;
-        f.Overlay.FadeOut(SceneHelper.LoadGame());
+        scene.Change.ToGame();
     }
 
     public void OnLoadGameButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadSaveFileSelect());
+        scene.Change.ToSaveFileSelect();
     }
 
     public void OnNewGameButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadProfileCreate());
+        scene.Change.ToProfileCreate();
     }
 
     public void OnSettingsButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadSettings());
+        scene.Change.ToSettings();
     }
 
     public void OnCreditsButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadCredits());
+        scene.Change.ToCredits();
     }
 
     public void OnChangeProfileButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadProfileSelect());
+        scene.Change.ToProfileSelect();
     }
 }

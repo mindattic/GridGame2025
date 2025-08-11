@@ -1,19 +1,24 @@
+using Assets.Helper;
 using Assets.Scripts;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Helper
+namespace Assets.Helpers
 {
     /// <summary>
-    /// Central scene constants and helpers.
-    /// Includes backward compatible coroutine shims that delegate to SceneLoader.
+    /// Centralized scene changes with fade out, scene change, async load, and fade in.
+    /// Usage:
+    ///   using scene = Assets.Helpers.SceneHelper;
+    ///   scene.Change.ToSettings();
+    ///   scene.FadeIn();
     /// </summary>
     public static class SceneHelper
     {
         // Scene name constants
         public static string Credits = "Credits";
         public static string Game = "Game";
+        public static string LoadingScreen = "LoadingScreen";
         public static string Overworld = "Overworld";
         public static string PartyManager = "PartyManager";
         public static string ProfileCreate = "ProfileCreate";
@@ -24,109 +29,94 @@ namespace Assets.Helper
         public static string StageSelect = "StageSelect";
         public static string TitleScreen = "TitleScreen";
 
-
         /// <summary>
-        /// Returns true if the active scene name matches the provided name.
+        /// Returns true if the active scene matches the provided name.
         /// </summary>
-        public static bool IsCurrentScene(string sceneName)
-        {
-            return SceneManager.GetActiveScene().name == sceneName;
-        }
+        public static bool IsCurrentScene(string sceneName) =>
+            SceneManager.GetActiveScene().name == sceneName;
 
         /// <summary>
-        /// Returns true if the active scene is the main Game scene.
-        /// Implemented as a property so it reflects the current scene at call time.
+        /// True if the current scene is the main game scene.
         /// </summary>
         public static bool IsGameScene => IsCurrentScene(Game);
 
-        public static IEnumerator LoadCredits()
+        /// <summary>
+        /// Calls FadeIn on the active FadeOverlay if it exists.
+        /// </summary>
+        public static void FadeIn(IEnumerator routine = null)
         {
-            yield return LoadScene(Credits);
+            var overlay = FadeOverlayHelper.Overlay;
+            if (overlay != null)
+            {
+                overlay.FadeIn(routine);
+            }
+            else
+            {
+                Debug.LogWarning("SceneHelper.FadeIn called but no FadeOverlay found in scene.");
+            }
         }
-        public static IEnumerator LoadGame()
-        {
-            yield return LoadScene(Game);
-        }
-        public static IEnumerator LoadOverworld()
-        {
-            yield return LoadScene(Overworld);
-
-        }
-        public static IEnumerator LoadPartyManager()
-        {
-            yield return LoadScene(PartyManager);
-        }
-        public static IEnumerator LoadProfileCreate()
-        {
-            yield return LoadScene(ProfileCreate);
-        }
-        public static IEnumerator LoadProfileSelect()
-        {
-            yield return LoadScene(ProfileSelect);
-        }
-        public static IEnumerator LoadSaveFileSelect()
-        {
-            yield return LoadScene(SaveFileSelect);
-        }
-        public static IEnumerator LoadSaveSplashScreen()
-        {
-            yield return LoadScene(SplashScreen);
-        }
-        public static IEnumerator LoadSettings()
-        {
-            yield return LoadScene(Settings);
-        }
-        public static IEnumerator LoadStageSelect()
-        {
-            yield return LoadScene(StageSelect);
-        }
-        public static IEnumerator LoadTitleScreen()
-        {
-            yield return LoadScene(TitleScreen);
-        }
-
 
         /// <summary>
-        /// Backward compatible signature for old call sites:
-        /// StartCoroutine(overlay.FadeOutRoutine(SceneHelper.LoadScene(SceneHelper.Game)));
-        /// Delegates to SceneLoader and immediately completes.
+        /// Calls FadeOut with a provided IEnumerator or action.
         /// </summary>
-        public static IEnumerator LoadScene(string sceneName)
+        public static void FadeOut(IEnumerator routine)
         {
-            if (string.IsNullOrWhiteSpace(sceneName))
+            var overlay = FadeOverlayHelper.Overlay;
+            if (overlay != null)
             {
-                Debug.LogError("SceneHelper.LoadScene received an empty scene name.");
-                yield break;
+                overlay.FadeOut(routine);
+            }
+            else
+            {
+                Debug.LogWarning("SceneHelper.FadeOut called but no FadeOverlay found in scene.");
+            }
+        }
+
+        /// <summary>
+        /// Fluent scene change API that encapsulates fade and loading flow.
+        /// </summary>
+        public static class Change
+        {
+            public static void To(string sceneName)
+            {
+                if (string.IsNullOrWhiteSpace(sceneName))
+                {
+                    Debug.LogError("SceneHelper.Change.To received an empty scene name.");
+                    return;
+                }
+
+                IEnumerator afterFade()
+                {
+                    SceneLoader.Load(sceneName);
+                    yield return Wait.None();
+                }
+
+                FadeOut(afterFade());
             }
 
-            SceneLoader.Load(sceneName);
-            yield break;
-        }
+            public static void ToPreviousScene(string defaultScene = "Game")
+            {
+                IEnumerator afterFade()
+                {
+                    SceneLoader.LoadPreviousScene(defaultScene);
+                    yield return Wait.None();
+                }
 
-        /// <summary>
-        /// Backward compatible signature for loading the previously tracked scene.
-        /// Delegates to SceneLoader and immediately completes.
-        /// </summary>
-        public static IEnumerator LoadPreviousScene(string defaultScene = "Game")
-        {
-            SceneLoader.LoadPreviousScene(defaultScene);
-            yield break;
-        }
+                FadeOut(afterFade());
+            }
 
-        /// <summary>
-        /// Returns the currently tracked scene name from SceneLoader.
-        /// </summary>
-        public static string GetCurrentScene()
-        {
-            return SceneLoader.GetCurrentScene();
-        }
-
-        /// <summary>
-        /// Returns the previously tracked scene name from SceneLoader.
-        /// </summary>
-        public static string GetPreviousScene()
-        {
-            return SceneLoader.GetPreviousScene();
+            // Strongly typed helpers
+            public static void ToCredits() => To(Credits);
+            public static void ToGame() => To(Game);
+            public static void ToOverworld() => To(Overworld);
+            public static void ToPartyManager() => To(PartyManager);
+            public static void ToProfileCreate() => To(ProfileCreate);
+            public static void ToProfileSelect() => To(ProfileSelect);
+            public static void ToSaveFileSelect() => To(SaveFileSelect);
+            public static void ToSplashScreen() => To(SplashScreen);
+            public static void ToSettings() => To(Settings);
+            public static void ToStageSelect() => To(StageSelect);
+            public static void ToTitleScreen() => To(TitleScreen);
         }
     }
 }

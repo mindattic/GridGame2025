@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 
 public class OverworldManager : MonoBehaviour
 {
@@ -42,7 +42,7 @@ public class OverworldManager : MonoBehaviour
 
     private void Start()
     {
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     /// <summary>
@@ -71,7 +71,7 @@ public class OverworldManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
+        scene.Change.ToPreviousScene();
     }
 
     public void OnCenterOnHeroClicked()

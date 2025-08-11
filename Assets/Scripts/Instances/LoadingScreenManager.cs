@@ -1,12 +1,12 @@
 using UnityEngine;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 
-public class LoadingScreen : MonoBehaviour
+public class LoadingScreenManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     // Update is called once per frame

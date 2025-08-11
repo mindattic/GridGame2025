@@ -2,7 +2,7 @@ using Assets.Helper;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 using Label = TMPro.TextMeshProUGUI;
 
 public class SettingsManager : MonoBehaviour
@@ -27,27 +27,27 @@ public class SettingsManager : MonoBehaviour
     }
     private void Start()
     {
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     public void OnBackButtonClicked()
     {
-        IEnumerator showConfirmRoutine()
-        {
-            ConfirmationDialog.Show("Save changes?", onSubmit: (value) =>
-            {
-                if (value)
-                {
-                    Debug.Log("User said: " + value);
+        //IEnumerator showConfirmRoutine()
+        //{
+        //    ConfirmationDialog.Show("Save changes?", onSubmit: (value) =>
+        //    {
+        //        if (value)
+        //        {
+        //            Debug.Log("User said: " + value);
 
-                    f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
-                }
-            });
+        //            scene.Change.ToPreviousScene();
+        //        }
+        //    });
 
-            yield return Wait.None();
-        }
+        //    yield return Wait.None();
+        //}
 
-        f.Overlay.Show(showConfirmRoutine());
+        scene.Change.ToPreviousScene();
     }
 
 

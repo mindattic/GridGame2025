@@ -1,5 +1,6 @@
 ﻿using Assets.Helper;
 using UnityEngine;
+using scene = Assets.Helpers.SceneHelper;
 
 public partial class DebugWindow
 {
@@ -15,38 +16,38 @@ public partial class DebugWindow
         GUILayout.BeginHorizontal();
         isClicked = GUILayout.Button("SplashScreen Screen", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneHelper.LoadScene(SceneHelper.SplashScreen);
+            scene.Change.ToSplashScreen();
 
         isClicked = GUILayout.Button("TitleScreen Screen", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneHelper.LoadScene(SceneHelper.TitleScreen);
+            scene.Change.ToTitleScreen();
 
         isClicked = GUILayout.Button("Settings", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneHelper.LoadScene(SceneHelper.Settings);
+            scene.Change.ToSettings();
 
         isClicked = GUILayout.Button("Stage Select", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneHelper.LoadScene(SceneHelper.StageSelect);
+            scene.Change.ToStageSelect();
 
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
         isClicked = GUILayout.Button("Load Profile", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneHelper.LoadScene(SceneHelper.ProfileSelect);
+            scene.Change.ToProfileSelect();
 
         isClicked = GUILayout.Button("Load Save", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneHelper.LoadScene(SceneHelper.SaveFileSelect);
+            scene.Change.ToSaveFileSelect();
 
         isClicked = GUILayout.Button("Overworld", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneHelper.LoadScene(SceneHelper.Overworld);
+            scene.Change.ToOverworld();
 
         isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            SceneHelper.LoadScene(SceneHelper.Game);
+            scene.Change.ToGame();
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);

@@ -1,7 +1,7 @@
 using Assets.Helper;
 using UnityEngine;
 using UnityEngine.UI;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -46,7 +46,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void Start()
     {
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     public void AddButton(string stageName)
@@ -71,12 +71,12 @@ public class StageSelectManager : MonoBehaviour
     private void OnStageSelectButtonClicked(string stageName)
     {
         ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        f.Overlay.FadeOut(SceneHelper.LoadGame());
+        scene.Change.ToGame();
     }
 
     public void OnBackButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
+        scene.Change.ToPreviousScene();
     }
 
 }

@@ -6,8 +6,8 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using f = Assets.Helpers.FadeOverlayHelper;
 using g = Assets.Helpers.GameHelper;
+using scene = Assets.Helpers.SceneHelper;
 
 public class StageManager : MonoBehaviour
 {
@@ -81,7 +81,7 @@ public class StageManager : MonoBehaviour
         }
 
 
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     /// <summary>
@@ -193,7 +193,7 @@ public class StageManager : MonoBehaviour
             yield return Wait.None();
         }
 
-        f.Overlay.FadeOut(loadNextStageRoutine());
+        scene.FadeOut(loadNextStageRoutine());
     }
 
     /// <summary>
@@ -211,7 +211,7 @@ public class StageManager : MonoBehaviour
             yield return Wait.None();
         }
 
-        f.Overlay.FadeOut(reloadStageRoutine());
+        scene.FadeOut(reloadStageRoutine());
     }
 
 

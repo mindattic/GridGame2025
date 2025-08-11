@@ -1,7 +1,8 @@
 using Assets.Helper;
 using UnityEngine;
 using c = Assets.Helpers.CanvasHelper;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
+
 using Label = TMPro.TextMeshProUGUI;
 
 public class CreditsManager : MonoBehaviour
@@ -60,12 +61,13 @@ public class CreditsManager : MonoBehaviour
     }
     private void Start()
     {
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     public void OnBackButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
+
+        scene.Change.ToPreviousScene();
     }
 
 

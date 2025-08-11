@@ -3,7 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 
 public class PlayerStageMover : MonoBehaviour
 {
@@ -14,12 +14,6 @@ public class PlayerStageMover : MonoBehaviour
     private bool isMoving = false;
     private Vector2 targetPosition;
     private string targetStageName; // Stores the name of the target stage
-
-
-
-    private void Start()
-    {
-    }
 
     public void MoveToStage(Button stageButton)
     {
@@ -75,7 +69,7 @@ public class PlayerStageMover : MonoBehaviour
         ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
 
-        f.Overlay.FadeOut(SceneHelper.LoadGame());
+        scene.Change.ToGame();
     }
 
     private void SetAnimation(Vector2 direction)

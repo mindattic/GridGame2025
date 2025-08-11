@@ -1,7 +1,7 @@
 using Assets.Helper;
 using System.Collections;
 using UnityEngine;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 
 public class SplashScreenManager : MonoBehaviour
 {
@@ -20,13 +20,13 @@ public class SplashScreenManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
+            scene.Change.ToTitleScreen();
     }
 
     private IEnumerator FadeInRoutine()
     {
-        f.Overlay.FadeIn();
+        scene.FadeIn();
         yield return new WaitForSeconds(waitDuration);
-        f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
+        scene.Change.ToTitleScreen();
     }
 }

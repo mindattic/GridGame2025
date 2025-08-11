@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -41,12 +41,12 @@ public class SaveFileSelectManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            f.Overlay.FadeOut(SceneHelper.LoadProfileCreate());
+            scene.Change.ToProfileCreate();
             return;
         }
 
         Reload();
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
 
@@ -108,7 +108,7 @@ public class SaveFileSelectManager : MonoBehaviour
                 ProfileRepo.CurrentProfile.CurrentSave = selectedSave;
 
                 // Proceed to load the game scene using the active save.
-                f.Overlay.FadeOut(SceneHelper.LoadGame());
+                scene.Change.ToGame();
             }
             else
             {
@@ -124,6 +124,6 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
+        scene.Change.ToPreviousScene();
     }
 }

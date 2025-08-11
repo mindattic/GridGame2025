@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using scene = Assets.Helpers.SceneHelper;
 using Label = TMPro.TextMeshProUGUI;
 
 namespace Assets.Scripts
@@ -71,7 +72,7 @@ namespace Assets.Scripts
             onLoadedCallback = onLoaded;
 
             // Always route through LoadingScreen
-            SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Single);
+            SceneManager.LoadScene(scene.LoadingScreen, LoadSceneMode.Single);
         }
 
         /// <summary>
@@ -91,7 +92,7 @@ namespace Assets.Scripts
             targetLoadMode = mode;
             onLoadedCallback = onLoaded;
 
-            SceneManager.LoadScene("LoadingScreen", LoadSceneMode.Single);
+            SceneManager.LoadScene(scene.LoadingScreen, LoadSceneMode.Single);
         }
 
         /// <summary>
@@ -134,7 +135,7 @@ namespace Assets.Scripts
                 if (autoLoadWhenLaunchedDirectly && !string.IsNullOrWhiteSpace(bootstrapScene))
                 {
                     // Set up a normal load for the bootstrap scene and continue as if it had been requested
-                    previousScene = "LoadingScreen";
+                    previousScene = scene.LoadingScreen;
                     currentScene = bootstrapScene;
 
                     targetSceneName = bootstrapScene;

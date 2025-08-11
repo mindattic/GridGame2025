@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using scene = Assets.Helpers.SceneHelper;
 
 /// <summary>
 /// DebugWindowBootstrapper
@@ -11,8 +12,6 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public static class DebugWindowBootstrapper
 {
-    private const string GameSceneName = "Game";
-
     private static float delayTime = 3f;
     private static float elapsedTime = 0f;
     private static bool isWaiting = false;
@@ -77,7 +76,7 @@ public static class DebugWindowBootstrapper
             return;
         }
 
-        if (IsSceneGame(newScene))
+        if (IsGame(newScene))
         {
             BeginWait();
         }
@@ -122,13 +121,13 @@ public static class DebugWindowBootstrapper
 
     private static bool IsActiveSceneGame()
     {
-        var scene = SceneManager.GetActiveScene();
-        return scene.IsValid() && scene.name == GameSceneName;
+        var activeScene = SceneManager.GetActiveScene();
+        return activeScene.IsValid() && activeScene.name == scene.Game;
     }
 
-    private static bool IsSceneGame(Scene scene)
+    private static bool IsGame(Scene activeScene)
     {
-        return scene.IsValid() && scene.name == GameSceneName;
+        return activeScene.IsValid() && activeScene.name == scene.Game;
     }
 
     private static void EnsureUpdateSubscription()

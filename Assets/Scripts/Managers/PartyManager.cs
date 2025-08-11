@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
-using f = Assets.Helpers.FadeOverlayHelper;
+
 public class PartyManager : MonoBehaviour
 {
     private GameObject slidePrefab;
@@ -44,9 +45,6 @@ public class PartyManager : MonoBehaviour
     private RectTransform lckRow;
     private float centeredX;
 
-
-
-
     private bool IsInParty(string character)
     {
         return ProfileRepo.CurrentProfile.CurrentSave.Party.Members.Any(x => x.Character == character);
@@ -62,7 +60,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            f.Overlay.FadeOut(SceneHelper.LoadProfileCreate());
+            scene.Change.ToProfileCreate();
             return;
         }
 
@@ -70,7 +68,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileRepo.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
-            f.Overlay.FadeOut(SceneHelper.LoadSaveFileSelect());
+            scene.Change.ToSaveFileSelect();
             return;
         }
 
@@ -104,7 +102,7 @@ public class PartyManager : MonoBehaviour
 
     private void Start()
     {
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     private void Update()
@@ -424,7 +422,7 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadGame());
+        scene.Change.ToGame();
     }
 
 

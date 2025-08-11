@@ -1,7 +1,7 @@
 using Assets.Helper;
 using UnityEngine;
 using UnityEngine.UI;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 using g = Assets.Helpers.GameHelper;
 
 public class PauseManager : MonoBehaviour
@@ -86,7 +86,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        f.Overlay.FadeOut(SceneHelper.LoadPartyManager());
+        scene.Change.ToPartyManager();
     }
 
     public void OnSpawnEnemyButtonClicked()
@@ -98,21 +98,21 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        f.Overlay.FadeOut(SceneHelper.LoadStageSelect());
+        scene.Change.ToStageSelect();
     }
 
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        f.Overlay.FadeOut(SceneHelper.LoadSettings());
+        scene.Change.ToSettings();
     }
 
     public void OnTitleScreenButtonClicked()
     {
         Time.timeScale = 1f;
         ProfileRepo.Save(overwrite: true);
-        f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
+        scene.Change.ToTitleScreen();
     }
 
 }

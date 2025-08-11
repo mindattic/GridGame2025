@@ -2,7 +2,7 @@ using Assets.Helper;
 using System.Collections;
 using UnityEngine;
 using c = Assets.Helpers.CanvasHelper;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 
 public class ProfileCreateManager : MonoBehaviour
 {
@@ -25,13 +25,13 @@ public class ProfileCreateManager : MonoBehaviour
             KeyboardDialog.Show("Who are you?", onSubmit: (value) =>
             {
                 ProfileRepo.CreateProfile(value);
-                f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
+                scene.Change.ToTitleScreen();
             });
 
             yield return Wait.None();
         }
 
-        f.Overlay.FadeIn(showKeyboardRoutine());
+        scene.FadeIn(showKeyboardRoutine());
     }
 
 }

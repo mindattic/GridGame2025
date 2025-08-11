@@ -3,7 +3,7 @@ using Game.Models.Profile;
 using UnityEngine;
 using UnityEngine.UI;
 using c = Assets.Helpers.CanvasHelper;
-using f = Assets.Helpers.FadeOverlayHelper;
+using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
 
@@ -47,7 +47,7 @@ public class ProfileSelectManager : MonoBehaviour
     private void Start()
     {
         Reload();
-        f.Overlay.FadeIn();
+        scene.FadeIn();
     }
 
     private void Clear()
@@ -108,16 +108,16 @@ public class ProfileSelectManager : MonoBehaviour
     private void OnProfileButtonClicked(string key)
     {
         ProfileRepo.SelectProfile(key);
-        f.Overlay.FadeOut(SceneHelper.LoadTitleScreen());
+        scene.Change.ToTitleScreen();
     }
 
     private void OnCreateNewProfileButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadProfileCreate());
+        scene.Change.ToProfileCreate();
     }
 
     public void OnBackButtonClicked()
     {
-        f.Overlay.FadeOut(SceneHelper.LoadPreviousScene());
+        scene.Change.ToPreviousScene();
     }
 }
