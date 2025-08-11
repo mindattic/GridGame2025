@@ -114,7 +114,6 @@
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
-    <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Data\Actor\Soldier02.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
@@ -141,6 +140,7 @@
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
+    <Compile Include="Assets\Helpers\CombatLogHelper.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
@@ -246,6 +246,7 @@
     <Compile Include="Assets\Helpers\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
+    <Compile Include="Assets\Scripts\Managers\VfxManager.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
     <Compile Include="Assets\Data\Actor\Soldier03.cs" />
