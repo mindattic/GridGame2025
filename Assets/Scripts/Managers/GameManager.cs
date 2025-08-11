@@ -46,7 +46,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TileManager tileManager;
     [HideInInspector] public FootstepManager footstepManager;
     [HideInInspector] public AudioManager audioManager;
-    [HideInInspector] public VFXManager vfxManager;
+    [HideInInspector] public VfxManager vfxManager;
     [HideInInspector] public TrailManager trailManager;
     [HideInInspector] public CoinManager coinManager;
     [HideInInspector] public PauseManager pauseManager;
@@ -209,7 +209,7 @@ public class GameManager : Singleton<GameManager>
         debugManager = game.GetComponent<DebugManager>();
         consoleManager = game.GetComponent<ConsoleManager>();
         logManager = game.GetComponent<LogManager>();
-        vfxManager = game.GetComponent<VFXManager>();
+        vfxManager = game.GetComponent<VfxManager>();
         trailManager = game.GetComponent<TrailManager>();
         coinManager = game.GetComponent<CoinManager>();
         pauseManager = game.GetComponent<PauseManager>();

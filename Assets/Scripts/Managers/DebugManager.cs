@@ -1,4 +1,3 @@
-using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.Events;
 using Assets.Scripts.Models;
@@ -8,8 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using static Assets.Helper.Intermission;
-using static Assets.Helper.Intermission.Before;
 using g = Assets.Helpers.GameHelper;
 
 public class DebugManager : MonoBehaviour

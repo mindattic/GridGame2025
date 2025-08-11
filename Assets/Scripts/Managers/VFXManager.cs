@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-public class VFXManager : MonoBehaviour
+public class VfxManager : MonoBehaviour
 {
     // Holds active VFX instances by unique name.
     private readonly Dictionary<string, VFXInstance> visualEffects = new Dictionary<string, VFXInstance>();

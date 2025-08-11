@@ -13,7 +13,7 @@ namespace Assets.Helpers
         {
             return DateTime.ParseExact(
                 timestamp,
-                Constants.dateFormat,
+                DateFormat.yyyyMMddHHmmss,
                 CultureInfo.InvariantCulture,
                 DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal
             );

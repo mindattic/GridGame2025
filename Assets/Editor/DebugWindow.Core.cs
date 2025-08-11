@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// DebugWindow
 /// Purpose:
-///   Editor window that can stay open across scenes. It only renders content while in the Game scene.
-///   Rendering is guarded to avoid null references and IMGUI imbalance during scene switches.
+///   Editor window that can stay open across scenes. It only renders content while in the Game activeScene.
+///   Rendering is guarded to avoid null references and IMGUI imbalance during activeScene switches.
 /// </summary>
 public partial class DebugWindow : EditorWindow
 {
@@ -68,8 +68,8 @@ public partial class DebugWindow : EditorWindow
             return;
         }
 
-        var scene = SceneManager.GetActiveScene();
-        if (scene.IsValid() && scene.name == "Game")
+        var activeScene = SceneManager.GetActiveScene();
+        if (activeScene.IsValid() && activeScene.name == "Game")
         {
             ShowWindow();
             EditorApplication.update -= CheckSceneLoad;
@@ -121,13 +121,13 @@ public partial class DebugWindow : EditorWindow
 
     private void OnGUI()
     {
-        // Only draw content while playing and while the active scene is Game.
+        // Only draw content while playing and while the active activeScene is Game.
         if (!Application.isPlaying || !IsActiveSceneGame())
         {
             // Render nothing. Window stays open.
             GUILayout.BeginVertical();
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Debug Window is only available in `Game` scene.");
+            GUILayout.Label("Debug Window is only available in `Game` activeScene.");
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
             return;

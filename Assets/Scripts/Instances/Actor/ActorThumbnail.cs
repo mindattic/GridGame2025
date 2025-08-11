@@ -78,7 +78,7 @@ public class ActorThumbnail : MonoBehaviour
 
         // Dynamic range based on texture size
         float textureSize = Mathf.Max(texture.width, texture.height);
-        rangeMultiplier = 0.05f * (textureSize / Constants.PortraitSize);
+        rangeMultiplier = 0.05f * (textureSize / g.TextureResolution.ToInt());
 
         range = new Vector2(0.1f, 0.1f);
         wobbleAmplitudeFactorX = 0.25f;

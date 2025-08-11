@@ -45,8 +45,8 @@ namespace Assets.Data.Actor
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.5f, -1.4f, 0.0f),
-                    Scale = new Vector3(5.0f, 5.0f, 0f)
+                    Position = new Vector3(0.5f, -1.44f, 0f),
+                    Scale = new Vector3(5f, 5f, 0f),
                 },
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Soldier01}"),
                 Details = new ActorDetails

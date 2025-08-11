@@ -16,18 +16,18 @@ namespace Assets.Helpers
     public static class SceneHelper
     {
         // Scene name constants
-        public static string Credits = "Credits";
-        public static string Game = "Game";
-        public static string LoadingScreen = "LoadingScreen";
-        public static string Overworld = "Overworld";
-        public static string PartyManager = "PartyManager";
-        public static string ProfileCreate = "ProfileCreate";
-        public static string ProfileSelect = "ProfileSelect";
-        public static string SaveFileSelect = "SaveFileSelect";
-        public static string SplashScreen = "SplashScreen";
-        public static string Settings = "Settings";
-        public static string StageSelect = "StageSelect";
-        public static string TitleScreen = "TitleScreen";
+        public const string Credits = "Credits";
+        public const string Game = "Game";
+        public const string LoadingScreen = "LoadingScreen";
+        public const string Overworld = "Overworld";
+        public const string PartyManager = "PartyManager";
+        public const string ProfileCreate = "ProfileCreate";
+        public const string ProfileSelect = "ProfileSelect";
+        public const string SaveFileSelect = "SaveFileSelect";
+        public const string SplashScreen = "SplashScreen";
+        public const string Settings = "Settings";
+        public const string StageSelect = "StageSelect";
+        public const string TitleScreen = "TitleScreen";
 
         /// <summary>
         /// Returns true if the active scene matches the provided name.
@@ -94,7 +94,7 @@ namespace Assets.Helpers
                 FadeOut(afterFade());
             }
 
-            public static void ToPreviousScene(string defaultScene = "Game")
+            public static void ToPreviousScene(string defaultScene = Game)
             {
                 IEnumerator afterFade()
                 {

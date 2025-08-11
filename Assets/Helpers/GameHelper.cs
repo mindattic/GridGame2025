@@ -61,7 +61,7 @@ namespace Assets.Helpers
         public static TileManager TileManager => GameManager.instance.tileManager;
         public static FootstepManager FootstepManager => GameManager.instance.footstepManager;
         public static AudioManager AudioManager => GameManager.instance.audioManager;
-        public static VFXManager VfxManager => GameManager.instance.vfxManager;
+        public static VfxManager VfxManager => GameManager.instance.vfxManager;
         public static TrailManager TrailManager => GameManager.instance.trailManager;
         public static CoinManager CoinManager => GameManager.instance.coinManager;
         public static PauseManager PauseManager => GameManager.instance.pauseManager;

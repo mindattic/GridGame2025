@@ -73,7 +73,6 @@
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\StageWave.cs" />
-    <Compile Include="Assets\Helpers\Intermission.cs" />
     <Compile Include="Assets\Scripts\Canvas\TimerBar2D.cs" />
     <Compile Include="Assets\Scripts\Models\ShakeIntensity.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
@@ -86,7 +85,6 @@
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
-    <Compile Include="Assets\Helpers\Constants.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Board\FocusIndicator.cs" />
     <Compile Include="Assets\Scripts\Repository\TrailEffectRepo.cs" />
@@ -138,13 +136,11 @@
     <Compile Include="Assets\Data\Actor\Cleric.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
-    <Compile Include="Assets\Helpers\Rarities.cs" />
     <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
-    <Compile Include="Assets\Helpers\Wait.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
@@ -154,7 +150,6 @@
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
-    <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Helpers\SceneHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
@@ -165,7 +160,6 @@
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
-    <Compile Include="Assets\Helpers\Opacity.cs" />
     <Compile Include="Assets\Scripts\Utilities\RNG.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\HideTargetIndicatorSequence.cs" />
@@ -199,7 +193,6 @@
     <Compile Include="Assets\Scripts\Managers\Portrait2DManager.cs" />
     <Compile Include="Assets\Helpers\AnimationCurveHelper.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
-    <Compile Include="Assets\Helpers\Increment.cs" />
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Utilities\Constants.cs" />
@@ -233,7 +226,6 @@
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
-    <Compile Include="Assets\Helpers\Interval.cs" />
     <Compile Include="Assets\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DebugButtonPanel.cs" />
@@ -287,7 +279,6 @@
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TileManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\WallManager.cs" />
     <Compile Include="Assets\Scripts\Repository\MusicTrackRepo.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyStartSequence.cs" />
   </ItemGroup>
