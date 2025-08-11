@@ -13,6 +13,7 @@ namespace Assets.Data.Actor
             return new ActorData
             {
                 Character = CharacterHelper.Soldier02,
+                Groups = ActorGroup.Soldier | ActorGroup.Humanoid,
                 Description = "A jittery scout with sharp eyes.",
                 Expectations = "Skirmisher with good initiative but poor staying power.",
                 Lore = "Never stops scanning the horizon.",

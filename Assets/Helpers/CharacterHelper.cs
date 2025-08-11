@@ -1,11 +1,16 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Helpers
 {
     public static class CharacterHelper
     {
+
+        //TODO: Put this into an Enum??
         public const string Barbarian = "Barbarian";
         public const string Bat = "Bat";
         public const string Cleric = "Cleric";
@@ -26,7 +31,33 @@ namespace Assets.Helpers
         public const string Thief = "Thief";
         public const string Vampire = "Vampire";
         public const string Yeti = "Yeti";
+
+
+        public static IReadOnlyList<string> AllCharacters { get; } = new[]
+        {
+            Barbarian,
+            Bat,
+            Cleric,
+            Captain00,
+            GreenNinja,
+            Paladin,
+            PandaGirl,
+            Pugilist,
+            RedNinja,
+            Ronin,
+            Sellsword,
+            Scorpion,
+            Soldier00,
+            Soldier01,
+            Soldier02,
+            Soldier03,
+            Slime,
+            Thief,
+            Vampire,
+            Yeti
+        };
     }
+
 
 
 }

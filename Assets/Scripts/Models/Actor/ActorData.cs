@@ -12,6 +12,10 @@ public class ActorData
     public string Expectations;
     public string Lore;
 
+    public ActorGroup Groups { get; set; }
+
+
+
     public ActorStats BaseStats;
     public ActorStats Stats;
 
@@ -171,4 +175,12 @@ public class ActorData
 
         return stats;
     }
+
+    /// <summary>
+    /// Returns true if the actor has all groups in mask.
+    /// </summary>
+    public bool InGroups(ActorGroup mask) => (Groups & mask) == mask;
+    public void AddGroups(ActorGroup groups) => Groups |= groups;
+    public void RemoveGroups(ActorGroup groups) => Groups &= ~groups;
+
 }

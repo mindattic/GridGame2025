@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using scene = Assets.Helpers.SceneHelper;
 
 /// <summary>
 /// DebugWindow
@@ -69,7 +70,7 @@ public partial class DebugWindow : EditorWindow
         }
 
         var activeScene = SceneManager.GetActiveScene();
-        if (activeScene.IsValid() && activeScene.name == "Game")
+        if (activeScene.IsValid() && activeScene.name == scene.Game)
         {
             ShowWindow();
             EditorApplication.update -= CheckSceneLoad;
@@ -173,7 +174,7 @@ public partial class DebugWindow : EditorWindow
 
     private static bool IsActiveSceneGame()
     {
-        var scene = SceneManager.GetActiveScene();
-        return scene.IsValid() && scene.name == "Game";
+        var activeScene = SceneManager.GetActiveScene();
+        return activeScene.IsValid() && activeScene.name == scene.Game;
     }
 }

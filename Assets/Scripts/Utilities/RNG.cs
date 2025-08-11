@@ -14,6 +14,21 @@ static class RNG
 {
     [ThreadStatic] public static System.Random rng = new System.Random();
 
+
+    /// <summary>
+    /// Returns one uniformly random element from the list.
+    /// Returns default(T) if the list is null or empty.
+    /// </summary>
+    public static T PickOne<T>(IReadOnlyList<T> items)
+    {
+        if (items == null || items.Count == 0)
+            return default;
+
+        // Replace Range(0, items.Count) with your project’s int RNG method.
+        int i = Int(0, items.Count);
+        return items[i];
+    }
+
     /// <summary>
     /// Random hero that is currently playing.
     /// </summary>

@@ -36,78 +36,149 @@ public class DebugManager : MonoBehaviour
     public bool isTimerInfinite = false;
     public bool isEnemyStunned = false;
 
+    /// <summary>
+    /// Lays out a single horizontal pincer lane for quick debugging.
+    /// Spawns six slimes, destroys all other enemies, teleports up to two heroes and the six slimes
+    /// to fixed positions, and moves all other playing actors to random unoccupied tiles.
+    /// By keeping the newly spawned slimes alive while removing other enemies,
+    /// the wave does not advance and the stage does not restart.
+    /// </summary>
     public void ArrangeSingleCombo()
     {
-        //Show exactly nine slimes
+        // Spawn six slimes for this debug layout and keep references
+        var keptSlimes = new List<ActorInstance>(6);
         for (int i = 0; i < 6; i++)
+            keptSlimes.Add(SpawnSlime());
+
+        // Destroy all existing enemies except the six slimes we just spawned
+        foreach (var enemy in g.Actors.Enemies.ToArray())
+        {
+            if (enemy == null) continue;
+            if (keptSlimes.Contains(enemy)) continue;
+
+            UnityEngine.Object.Destroy(enemy.gameObject);
+        }
+
+        // Horizontal lane positions
+        hero1?.Teleport(new Vector2Int(3, 1));
+        keptSlimes[0]?.Teleport(new Vector2Int(3, 2));
+        keptSlimes[1]?.Teleport(new Vector2Int(3, 3));
+        keptSlimes[2]?.Teleport(new Vector2Int(3, 4));
+        keptSlimes[3]?.Teleport(new Vector2Int(3, 5));
+        keptSlimes[4]?.Teleport(new Vector2Int(3, 6));
+        keptSlimes[5]?.Teleport(new Vector2Int(3, 7));
+        hero2?.Teleport(new Vector2Int(3, 8));
+
+        // Build alignment group
+        var group = new List<ActorInstance> { hero1, hero2 };
+        group.AddRange(keptSlimes.Where(s => s != null));
+
+        // Move every other playing actor to an unoccupied location
+        foreach (var actor in g.Actors.All)
+        {
+            if (actor == null) continue;
+            if (!actor.isPlaying) continue;
+            if (group.Contains(actor)) continue;
+
+            actor.Teleport(RNG.UnoccupiedLocation);
+        }
+    }
+
+
+    public void ArrangeDoubleCombo()
+    {
+        // Spawn either slimes used by this debug layout
+        for (int i = 0; i < 8; i++)
             SpawnSlime();
 
-        //SelectProfile specific enemies for teleportation
-        var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
-        var enemy2 = g.Actors.Enemies.ElementAtOrDefault(1);
-        var enemy3 = g.Actors.Enemies.ElementAtOrDefault(2);
-        var enemy4 = g.Actors.Enemies.ElementAtOrDefault(3);
-        var enemy5 = g.Actors.Enemies.ElementAtOrDefault(4);
-        var enemy6 = g.Actors.Enemies.ElementAtOrDefault(5);
+        // Collect up to 9 enemies, some may be missing
+        var enemies = g.Actors.Enemies.Take(8).ToArray();
 
-        //Define the group to remain aligned
-        var group = new[] { hero1, hero2, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6 };
+        // Utility to teleport only when the actor exists
+        void SafeTeleport(ActorInstance a, Vector2Int pos)
+        {
+            if (a != null) a.Teleport(pos);
+        }
 
-        //Teleport actors in the group to specific positions
-        hero1.Teleport(new Vector2Int(3, 1));
-        enemy1.Teleport(new Vector2Int(3, 2));
-        enemy2.Teleport(new Vector2Int(3, 3));
-        enemy3.Teleport(new Vector2Int(3, 4));
-        enemy4.Teleport(new Vector2Int(3, 5));
-        enemy5.Teleport(new Vector2Int(3, 6));
-        enemy6.Teleport(new Vector2Int(3, 7));
-        hero2.Teleport(new Vector2Int(3, 8));
+        // Heroes may be assigned in SpawnSlime; guard in case any are missing
+        SafeTeleport(hero1, new Vector2Int(1, 1));
+        SafeTeleport(enemies[0], new Vector2Int(1, 2));
+        SafeTeleport(enemies[1], new Vector2Int(1, 3));
+        SafeTeleport(enemies[2], new Vector2Int(1, 4));
+        SafeTeleport(enemies[3], new Vector2Int(1, 5));
+        SafeTeleport(hero2, new Vector2Int(1, 6));
+        SafeTeleport(enemies[4], new Vector2Int(2, 6));
+        SafeTeleport(enemies[5], new Vector2Int(3, 6));
+        SafeTeleport(enemies[6], new Vector2Int(4, 6));
+        SafeTeleport(enemies[7], new Vector2Int(5, 6));
 
-        //Seek all other actors to unoccupied locations
-        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(RNG.UnoccupiedLocation));
+        // Build the alignment group without nulls
+        var group = new List<ActorInstance> { hero1, hero2, hero3, hero4 };
+        group.AddRange(enemies.Where(e => e != null));
+        group = group.Where(x => x != null).ToList();
+
+        // Move every other playing actor to an unoccupied location
+        foreach (var actor in g.Actors.All)
+        {
+            if (actor == null) continue;
+            if (!actor.isPlaying) continue;
+            if (group.Contains(actor)) continue;
+
+            actor.Teleport(RNG.UnoccupiedLocation);
+        }
     }
 
     public void ArrangeTripleCombo()
     {
-        SpawnSlime();
+        // Spawn nine slimes used by this debug layout
+        for (int i = 0; i < 9; i++)
+            SpawnSlime();
 
-        //SelectProfile specific enemies for teleportation
-        var enemy1 = g.Actors.Enemies.ElementAtOrDefault(0);
-        var enemy2 = g.Actors.Enemies.ElementAtOrDefault(1);
-        var enemy3 = g.Actors.Enemies.ElementAtOrDefault(2);
-        var enemy4 = g.Actors.Enemies.ElementAtOrDefault(3);
-        var enemy5 = g.Actors.Enemies.ElementAtOrDefault(4);
-        var enemy6 = g.Actors.Enemies.ElementAtOrDefault(5);
-        var enemy7 = g.Actors.Enemies.ElementAtOrDefault(6);
-        var enemy8 = g.Actors.Enemies.ElementAtOrDefault(7);
-        var enemy9 = g.Actors.Enemies.ElementAtOrDefault(8);
+        // Collect up to 9 enemies, some may be missing
+        var enemies = g.Actors.Enemies.Take(9).ToArray();
 
-        //Define the group to remain aligned
-        var group = new[] { hero1, hero2, hero3, hero4, enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9 };
+        // Utility to teleport only when the actor exists
+        void SafeTeleport(ActorInstance a, Vector2Int pos)
+        {
+            if (a != null) a.Teleport(pos);
+        }
 
-        //Teleport actors in the group to specific positions
-        hero1.Teleport(new Vector2Int(1, 1));
-        enemy1.Teleport(new Vector2Int(1, 2));
-        enemy2.Teleport(new Vector2Int(1, 3));
-        hero2.Teleport(new Vector2Int(1, 4));
-        enemy3.Teleport(new Vector2Int(2, 4));
-        enemy4.Teleport(new Vector2Int(3, 4));
-        enemy5.Teleport(new Vector2Int(4, 4));
-        enemy6.Teleport(new Vector2Int(5, 4));
-        hero3.Teleport(new Vector2Int(6, 4));
-        enemy7.Teleport(new Vector2Int(6, 5));
-        enemy8.Teleport(new Vector2Int(6, 6));
-        enemy9.Teleport(new Vector2Int(6, 7));
-        hero4.Teleport(new Vector2Int(6, 8));
+        // Heroes may be assigned in SpawnSlime; guard in case any are missing
+        SafeTeleport(hero1, new Vector2Int(1, 1));
+        SafeTeleport(enemies[0], new Vector2Int(1, 2));
+        SafeTeleport(enemies[1], new Vector2Int(1, 3));
+        SafeTeleport(hero2, new Vector2Int(1, 4));
+        SafeTeleport(enemies[2], new Vector2Int(2, 4));
+        SafeTeleport(enemies[3], new Vector2Int(3, 4));
+        SafeTeleport(enemies[4], new Vector2Int(4, 4));
+        SafeTeleport(enemies[5], new Vector2Int(5, 4));
+        SafeTeleport(hero3, new Vector2Int(6, 4));
+        SafeTeleport(enemies[6], new Vector2Int(6, 5));
+        SafeTeleport(enemies[7], new Vector2Int(6, 6));
+        SafeTeleport(enemies[8], new Vector2Int(6, 7));
+        SafeTeleport(hero4, new Vector2Int(6, 8));
 
-        //Seek all other actors to unoccupied locations
-        g.Actors.All.Except(group).ToList().ForEach(x => x.Teleport(RNG.UnoccupiedLocation));
+        // Build the alignment group without nulls
+        var group = new List<ActorInstance> { hero1, hero2, hero3, hero4 };
+        group.AddRange(enemies.Where(e => e != null));
+        group = group.Where(x => x != null).ToList();
+
+        // Move every other playing actor to an unoccupied location
+        foreach (var actor in g.Actors.All)
+        {
+            if (actor == null) continue;
+            if (!actor.isPlaying) continue;
+            if (group.Contains(actor)) continue;
+
+            actor.Teleport(RNG.UnoccupiedLocation);
+        }
     }
 
+
     /// <summary>
-    /// Places Slime at center with heroes around it. 
-    /// Any actor already on those tiles is moved using TeleportAfter so the spots are freed,
-    /// then all non-group actors are moved to any unoccupied tile.
+    /// Arranges a surround combo for debug testing.
+    /// Spawns a slime in the center and positions up to four heroes
+    /// around it (above, right, below, left).
     /// </summary>
     public void ArrangeSurroundCombo()
     {
@@ -117,22 +188,30 @@ public class DebugManager : MonoBehaviour
         var below = new Vector2Int(3, 4);
         var left = new Vector2Int(2, 3);
 
-        var blackList = new HashSet<Vector2Int>() { center, above, right, below };
-
-
-        // Ensure a slime exists
+        // Ensure at least one slime exists
         SpawnSlime();
 
-        var slime = g.Actors.Enemies.FirstOrDefault(x => x.characterName == CharacterHelper.Slime);
-        if (slime == null) return;
+        var slime = g.Actors.Enemies.FirstOrDefault(x => x != null && x.characterName == CharacterHelper.Slime);
+        if (slime == null)
+        {
+            Debug.LogError("ArrangeSurroundCombo: No slime found to place in center.");
+            return;
+        }
+
+        // Safe teleport helper
+        void SafeTeleport(ActorInstance actor, Vector2Int pos)
+        {
+            if (actor != null) actor.Teleport(pos);
+        }
 
         // Place slime and heroes
-        slime.Teleport(center);
-        hero1.Teleport(above);
-        hero2.Teleport(right);
-        hero3.Teleport(below);
-        hero4.Teleport(left);
+        SafeTeleport(slime, center);
+        SafeTeleport(hero1, above);
+        SafeTeleport(hero2, right);
+        SafeTeleport(hero3, below);
+        SafeTeleport(hero4, left);
     }
+
 
 
     public void Bump()
@@ -317,25 +396,32 @@ public class DebugManager : MonoBehaviour
         g.VfxManager.Spawn(vfx, hero1.position, spawnTenCoins());
     }
 
-    public void SpawnSlime()
+    public ActorInstance SpawnSlime()
     {
-        g.StageManager.AddEnemy(CharacterHelper.Slime);
+        return g.StageManager.AddEnemy(CharacterHelper.Slime);
     }
 
-    public void SpawnBat()
+    public ActorInstance SpawnBat()
     {
-        g.StageManager.AddEnemy(CharacterHelper.Bat);
+        return g.StageManager.AddEnemy(CharacterHelper.Bat);
     }
 
-    public void SpawnScorpion()
+    public ActorInstance SpawnScorpion()
     {
-        g.StageManager.AddEnemy(CharacterHelper.Scorpion);
+        return g.StageManager.AddEnemy(CharacterHelper.Scorpion);
     }
 
-    public void SpawnYeti()
+    public ActorInstance SpawnYeti()
     {
-        g.StageManager.AddEnemy(CharacterHelper.Yeti);
+        return g.StageManager.AddEnemy(CharacterHelper.Yeti);
     }
+
+    public ActorInstance SpawnSoldier()
+    {
+        return SpawnRandomByGroup(ActorGroup.Soldier);
+    }
+
+
     public void SpawnRandomEnemy()
     {
         var r = RNG.Int(1, 10);
@@ -343,6 +429,26 @@ public class DebugManager : MonoBehaviour
         else if (r == 8) SpawnBat();
         else if (r == 9) SpawnScorpion();
         else if (r == 10) SpawnYeti();
+    }
+
+    /// <summary>
+    /// Spawns a random enemy whose ActorData matches all requested groups.
+    /// Example: SpawnRandomByGroup(ActorGroup.Soldier | ActorGroup.Elite)
+    /// </summary>
+    public ActorInstance SpawnRandomByGroup(ActorGroup required)
+    {
+        var candidates = CharacterHelper.AllCharacters.Where(key =>
+            {
+                var data = ActorRepo.Get(key);
+                return data != null && data.InGroups(required);
+            })
+            .ToArray();
+
+        if (candidates.Length == 0)
+            return null;
+
+        var pick = RNG.PickOne(candidates);
+        return g.StageManager.AddEnemy(pick);
     }
 
     public void Fireball()

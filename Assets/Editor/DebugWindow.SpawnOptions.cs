@@ -33,6 +33,13 @@ public partial class DebugWindow
             g.DebugManager.SpawnYeti();
 
         GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+
+        isClicked = GUILayout.Button("Soldier", GUILayout.Width(Screen.width * Increment.Percent25));
+        if (isClicked)
+            g.DebugManager.SpawnSoldier();
+
+        GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
 

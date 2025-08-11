@@ -119,7 +119,7 @@ public class StageManager : MonoBehaviour
     /// Spawns a new actor on a guaranteed free tile.
     /// Always assigns a fresh unoccupied location to the StageActor.
     /// </summary>
-    public void SpawnActor(StageActor stageActor)
+    public ActorInstance SpawnActor(StageActor stageActor)
     {
         // Instantiate and parent under the board
         var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
@@ -146,6 +146,8 @@ public class StageManager : MonoBehaviour
 
         // Register the new actor
         g.Actors.All.Add(instance);
+
+        return instance;
     }
 
     /// <summary>
@@ -219,10 +221,10 @@ public class StageManager : MonoBehaviour
     /// Convenience method for adding a new attacker actor.
     /// </summary>
     /// <param name="character">characterName type for the attacker.</param>
-    public void AddEnemy(string character)
+    public ActorInstance AddEnemy(string character)
     {
         var stageActor = new StageActor(character, Team.Enemy, level: 1, location: RNG.UnoccupiedLocation);
-        SpawnActor(stageActor);
+        return SpawnActor(stageActor);
     }
 
 }

@@ -13,6 +13,7 @@ namespace Assets.Data.Actor
             return new ActorData
             {
                 Character = CharacterHelper.Soldier00,
+                Groups = ActorGroup.Soldier | ActorGroup.Humanoid,
                 Description = "A low-ranked fort guard.",
                 Expectations = "Entry level foe. Falls off quickly at higher levels.",
                 Lore = "Knows every watchpost in the fort by name.",
