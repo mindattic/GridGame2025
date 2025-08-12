@@ -29,8 +29,8 @@ public class Portrait3DManager : MonoBehaviour
 
     public IEnumerator SlideInRoutine(ActorInstance actor, Direction direction)
     {
-        var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<Portrait3DInstance>();
+        var go = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
         instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
@@ -51,8 +51,8 @@ public class Portrait3DManager : MonoBehaviour
 
     public IEnumerator PopInOutRoutine(ActorInstance actor, float scale = 0.1666f)
     {
-        var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<Portrait3DInstance>();
+        var go = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
@@ -76,8 +76,8 @@ public class Portrait3DManager : MonoBehaviour
             portraits.Remove(existing);
         }
 
-        var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<Portrait3DInstance>();
+        var go = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<Portrait3DInstance>();
         instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         g.SortingManager.OnPortraitPopIn(instance);
@@ -108,8 +108,8 @@ public class Portrait3DManager : MonoBehaviour
 
     public void Dissolve(ActorInstance actor)
     {
-        var prefab = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<Portrait3DInstance>();
+        var go = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<Portrait3DInstance>();
         instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;

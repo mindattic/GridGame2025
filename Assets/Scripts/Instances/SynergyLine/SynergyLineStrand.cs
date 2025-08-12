@@ -69,7 +69,7 @@ public class SynergyLineStrand : MonoBehaviour
     private float glowAlphaPulseSpeed;
 
     // Geometry
-    private int segmentCount;
+    private int strandCount;
 
     // Shader property ids
     private static int idBaseColor = -1;
@@ -81,7 +81,7 @@ public class SynergyLineStrand : MonoBehaviour
     private float revElapsed;
     private float revCooldown;
 
-    // Sparkles that Move along the path
+    // Sparks that Move along the path
     private ParticleSystem sparkles;
     private ParticleSystemRenderer sparklesRenderer;
 
@@ -96,7 +96,7 @@ public class SynergyLineStrand : MonoBehaviour
         public float offsetJitter;
     }
 
-    private readonly List<Sparkle> activeSparkles = new List<Sparkle>(64);
+    private readonly List<Sparkle> activeSparks = new List<Sparkle>(64);
     private ParticleSystem.Particle[] particleBuffer = new ParticleSystem.Particle[64];
     private float sparkleSpawnAccum;
     private float sparkleRateR;
@@ -119,10 +119,10 @@ public class SynergyLineStrand : MonoBehaviour
         glow.material = line.material != null ? new Material(line.material) : null;
         SetupLineRenderer(glow);
 
-        // Sparkles system: manual SetParticles with additive material and runtime texture from TextureRepo
-        var sparkleGO = new GameObject("Sparkles");
-        sparkleGO.transform.SetParent(transform, false);
-        sparkles = sparkleGO.AddComponent<ParticleSystem>();
+        // Sparks system: manual SetParticles with additive material and runtime texture from TextureRepo
+        var sparkGO = new GameObject("Spark");
+        sparkGO.transform.SetParent(transform, false);
+        sparkles = sparkGO.AddComponent<ParticleSystem>();
         sparklesRenderer = sparkles.GetComponent<ParticleSystemRenderer>();
 
         var shader = Shader.Find("Particles/Additive");
@@ -216,7 +216,7 @@ public class SynergyLineStrand : MonoBehaviour
     }
 
     /// <summary>
-    /// Configure geometry, color params, sorting, halo, and resolution. Randomizes halo per segment if enabled.
+    /// Configure geometry, color params, sorting, halo, and resolution. Randomizes halo per strand if enabled.
     /// Also assigns sparkle renderer sorting to sit above the core line.
     /// Uses RNG for all per instance randomization.
     /// </summary>
@@ -305,9 +305,9 @@ public class SynergyLineStrand : MonoBehaviour
 
         glowAlphaPulseSpeed = glowPulseSpeedR * 1.3f;
 
-        segmentCount = Mathf.Max(2, inSegmentCount);
-        line.positionCount = segmentCount;
-        glow.positionCount = segmentCount;
+        strandCount = Mathf.Max(2, inSegmentCount);
+        line.positionCount = strandCount;
+        glow.positionCount = strandCount;
 
         line.sortingLayerName = sortingLayer;
         line.sortingOrder = sortingOrder;
@@ -369,7 +369,7 @@ public class SynergyLineStrand : MonoBehaviour
             line.SetPosition(0, start); line.SetPosition(1, start);
             glow.SetPosition(0, start); glow.SetPosition(1, start);
 
-            activeSparkles.Clear();
+            activeSparks.Clear();
             sparkles.Clear();
             return;
         }
@@ -377,8 +377,8 @@ public class SynergyLineStrand : MonoBehaviour
         Vector3 forward = dir / len;
         Vector3 perp = new Vector3(-forward.y, forward.x, 0f);
 
-        if (line.positionCount != segmentCount) line.positionCount = segmentCount;
-        if (glow.positionCount != segmentCount) glow.positionCount = segmentCount;
+        if (line.positionCount != strandCount) line.positionCount = strandCount;
+        if (glow.positionCount != strandCount) glow.positionCount = strandCount;
 
         float twoPi = Mathf.PI * 2f;
 
@@ -393,9 +393,9 @@ public class SynergyLineStrand : MonoBehaviour
         float timeWarp = UpdateRevAndGetTimeWarp();
         pathTime += Time.deltaTime * timeWarp;
 
-        for (int i = 0; i < segmentCount; i++)
+        for (int i = 0; i < strandCount; i++)
         {
-            float t = i / (float)(segmentCount - 1);
+            float t = i / (float)(strandCount - 1);
             Vector3 p = EvaluatePathPoint(start, end, perp, envelope, twoPi, t);
             line.SetPosition(i, p);
             glow.SetPosition(i, p);
@@ -409,7 +409,7 @@ public class SynergyLineStrand : MonoBehaviour
             SpawnSparkle();
         }
 
-        UpdateSparkles(start, end, perp, envelope, twoPi);
+        UpdateSparks(start, end, perp, envelope, twoPi);
     }
 
     /// <summary>
@@ -419,7 +419,7 @@ public class SynergyLineStrand : MonoBehaviour
     {
         if (line != null) line.positionCount = 0;
         if (glow != null) glow.positionCount = 0;
-        activeSparkles.Clear();
+        activeSparks.Clear();
         if (sparkles != null) sparkles.Clear();
         configured = false;
     }
@@ -546,30 +546,30 @@ public class SynergyLineStrand : MonoBehaviour
         s.age = 0f;
         s.offsetJitter = RNG.Float(SynergyLineSettings.minOffsetJitter, SynergyLineSettings.maxOffsetJitter);
 
-        activeSparkles.Add(s);
+        activeSparks.Add(s);
     }
 
     /// <summary>
     /// Advance sparkles along the curve and cull finished ones. Writes positions to the particle system.
     /// </summary>
-    private void UpdateSparkles(Vector3 start, Vector3 end, Vector3 perp, float envelope, float twoPi)
+    private void UpdateSparks(Vector3 start, Vector3 end, Vector3 perp, float envelope, float twoPi)
     {
-        if (activeSparkles.Count == 0)
+        if (activeSparks.Count == 0)
         {
             sparkles.Clear();
             return;
         }
 
-        if (particleBuffer.Length < activeSparkles.Count)
-            particleBuffer = new ParticleSystem.Particle[Mathf.NextPowerOfTwo(activeSparkles.Count)];
+        if (particleBuffer.Length < activeSparks.Count)
+            particleBuffer = new ParticleSystem.Particle[Mathf.NextPowerOfTwo(activeSparks.Count)];
 
         int alive = 0;
         float dt = Time.deltaTime;
         var tint = sparkles.main.startColor.color;
 
-        for (int i = 0; i < activeSparkles.Count; i++)
+        for (int i = 0; i < activeSparks.Count; i++)
         {
-            Sparkle s = activeSparkles[i];
+            Sparkle s = activeSparks[i];
             s.age += dt;
             s.t += s.speed * dt;
 
@@ -593,23 +593,80 @@ public class SynergyLineStrand : MonoBehaviour
             particleBuffer[alive] = pp;
             alive++;
 
-            activeSparkles[i] = s;
+            activeSparks[i] = s;
         }
 
-        if (alive < activeSparkles.Count)
+        if (alive < activeSparks.Count)
         {
             int write = 0;
-            for (int read = 0; read < activeSparkles.Count; read++)
+            for (int read = 0; read < activeSparks.Count; read++)
             {
-                var s = activeSparkles[read];
+                var s = activeSparks[read];
                 if (s.t < 1f && s.age < s.lifetime)
-                    activeSparkles[write++] = s;
+                    activeSparks[write++] = s;
             }
-            if (write < activeSparkles.Count)
-                activeSparkles.RemoveRange(write, activeSparkles.Count - write);
+            if (write < activeSparks.Count)
+                activeSparks.RemoveRange(write, activeSparks.Count - write);
         }
 
         sparkles.SetParticles(particleBuffer, alive);
         if (!sparkles.isPlaying) sparkles.Play(true);
     }
+
+    // Inside SynergyLineStrand
+    // Pre-fills the sparkle list so the effect starts "warm".
+    public void PrewarmSparks(int count = 20)
+    {
+        if (sparkles == null) return;
+
+        activeSparks.Clear();
+
+        for (int i = 0; i < count; i++)
+        {
+            Sparkle s;
+
+            // Start somewhere along the strand, not just at the head
+            s.t = RNG.Float(SynergyLineSettings.minT, 0.98f);
+
+            // Use normal speed and size ranges
+            float baseSpeed = RNG.Float(SynergyLineSettings.minBaseSpeed, SynergyLineSettings.maxBaseSpeed)
+                              * SynergyLineSettings.sparkleSpeedMulR;
+            s.speed = baseSpeed;
+            s.size = RNG.Float(SynergyLineSettings.minSize, SynergyLineSettings.maxSize);
+
+            // Lifetime long enough to finish from the chosen t
+            float travelT = 1f - s.t;
+            float timeNeeded = travelT / Mathf.Max(0.001f, s.speed);
+            float padding = timeNeeded * RNG.Float(0.10f, 0.35f);
+            s.lifetime = Mathf.Clamp(timeNeeded + padding,
+                                     SynergyLineSettings.minLifetime,
+                                     SynergyLineSettings.maxLifetime);
+
+            // Give some age so a few are near the tail already
+            s.age = RNG.Float(0f, Mathf.Min(s.lifetime * 0.9f, s.lifetime - 0.01f));
+
+            // Small perpendicular jitter like the normal spawns
+            s.offsetJitter = RNG.Float(SynergyLineSettings.minOffsetJitter, SynergyLineSettings.maxOffsetJitter);
+
+            activeSparks.Add(s);
+        }
+
+        // If not configured yet, stop here. We need endpoints to place particles.
+        if (!configured || a == null || b == null) return;
+
+        // Build an initial particle snapshot
+        Vector3 start = a.position; start.z = 0f;
+        Vector3 end = b.position; end.z = 0f;
+
+        Vector3 dir = end - start;
+        Vector3 perp = new Vector3(-dir.y, dir.x, 0f).normalized;
+
+        float envelope = 1f;
+        float twoPi = 6.283185f;
+
+        // Writes positions to the ParticleSystem in one go
+        UpdateSparks(start, end, perp, envelope, twoPi);
+    }
+
+
 }

@@ -32,9 +32,9 @@ public class SynergyLineManager : MonoBehaviour
         if (collection.ContainsKey(key))
             return;
 
-        var prefab = Instantiate(synergyLinePrefab, transform);
-        prefab.name = key;
-        var instance = prefab.GetComponent<SynergyLineInstance>();
+        var go = Instantiate(synergyLinePrefab, transform);
+        go.name = key;
+        var instance = go.GetComponent<SynergyLineInstance>();
         instance.Spawn(supporter, attacker);
         collection[key] = instance;
     }

@@ -38,6 +38,12 @@ namespace Assets.Helpers
             set => GameManager.instance.textureResolution = value;
         }
 
+        public static float DragSensitivity
+        {
+            get => GameManager.instance.dragSensitivity;
+            set => GameManager.instance.dragSensitivity = value;
+        }
+
         public static AudioSource SoundSource => GameManager.instance.soundSource;
 
         // Component properties

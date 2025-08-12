@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
 {
     //Settings
     public TextureResolution textureResolution = TextureResolution.NormalResolution;
+    public float dragSensitivity = 0.05f;
 
     //Device
     [HideInInspector] public string deviceType;

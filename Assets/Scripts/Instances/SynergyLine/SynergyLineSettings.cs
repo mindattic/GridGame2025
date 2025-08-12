@@ -1,13 +1,13 @@
 ﻿// Assets/Scripts/Instances/SynergyLineSettings.cs
-// Static settings class for synergy lines and segments.
+// Static settings class for synergy lines and strands.
 
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Centralized tunables for synergy lines and segments.
+/// Centralized tunables for synergy lines and strands.
 /// Thin at both ends and thick in the middle. Transparency tuned for overlap.
-/// Includes halo randomization ranges so segments do not pulse in lockstep.
+/// Includes halo randomization ranges so strands do not pulse in lockstep.
 /// </summary>
 public static class SynergyLineSettings
 {
@@ -59,7 +59,7 @@ public static class SynergyLineSettings
     public static readonly float GlowHDRBoost = 1.35f;
 
     // Halo randomization
-    // Set HaloRandomize to true to enable per-segment variation.
+    // Set HaloRandomize to true to enable per-strand variation.
     public static readonly bool HaloRandomize = true;
     public static readonly Vector2 HaloWidthScaleRange = new Vector2(2.2f, 3.1f);
     public static readonly Vector2 HaloAlphaRange = new Vector2(0.14f, 0.26f);

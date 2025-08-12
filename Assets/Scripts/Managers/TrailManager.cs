@@ -30,8 +30,8 @@ public class TrailManager : MonoBehaviour
     /// </summary>
     public IEnumerator SpawnRoutine(TrailEffectAsset resource, Vector3 position, IEnumerator routine = null)
     {
-        var prefab = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<TrailInstance>();
+        var go = Instantiate(resource.Prefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<TrailInstance>();
         instance.name = $"Trail_{resource.Name}_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         trailEffects.Add(instance.name, instance);

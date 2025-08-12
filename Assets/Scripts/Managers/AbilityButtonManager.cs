@@ -34,8 +34,8 @@ public class AbilityButtonManager : MonoBehaviour
             foreach (var ability in abilities)
             {
 
-                var prefab = Instantiate(abilityButtonPrefab, abilityButtonContainer);
-                var instance = prefab.GetComponent<AbilityButton>();
+                var go = Instantiate(abilityButtonPrefab, abilityButtonContainer);
+                var instance = go.GetComponent<AbilityButton>();
                 instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
                 buttons.Add(instance);
                 instance.Initialize(ability, () => OnClick(actor, ability));

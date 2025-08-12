@@ -20,7 +20,7 @@ public class SupportLineManager : MonoBehaviour
     // ------------------------------------------------------------
 
     /// <summary>
-    /// Resolve the support line prefab from the central PrefabRepo.
+    /// Resolve the support line go from the central PrefabRepo.
     /// </summary>
     public void Awake()
     {
@@ -51,8 +51,8 @@ public class SupportLineManager : MonoBehaviour
         if (Exists(supporter, attacker))
             return null;
 
-        var prefab = Instantiate(supportLinePrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<SupportLineInstance>();
+        var go = Instantiate(supportLinePrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<SupportLineInstance>();
 
         supportLines.Add(key, instance);
         instance.Spawn(supporter, attacker);

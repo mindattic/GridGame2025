@@ -26,7 +26,7 @@ public class Portrait2DManager : MonoBehaviour
 
     private void Awake()
     {
-        // Load the UI-based portrait prefab
+        // Load the UI-based portrait go
         portraitPrefab = PrefabLibrary.Prefabs["Portrait2DPrefab"];
     }
 
@@ -43,8 +43,8 @@ public class Portrait2DManager : MonoBehaviour
     /// </summary>
     private IEnumerator SlideInRoutine(ActorInstance actor, Direction direction)
     {
-        var prefab = Instantiate(portraitPrefab, Vector3.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<Portrait2DInstance>();
+        var go = Instantiate(portraitPrefab, Vector3.zero, Quaternion.identity);
+        var instance = go.GetComponent<Portrait2DInstance>();
         instance.actor = actor;
         instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";

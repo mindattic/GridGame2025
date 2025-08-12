@@ -90,9 +90,9 @@ public class BoardInstance : MonoBehaviour
         {
             for (int row = 1; row <= rowCount; row++)
             {
-                var prefab = Instantiate(tilePrefab, Vector2.zero, Quaternion.identity);
+                var go = Instantiate(tilePrefab, Vector2.zero, Quaternion.identity);
 
-                var instance = prefab.GetComponent<TileInstance>();
+                var instance = go.GetComponent<TileInstance>();
                 instance.parent = transform;
                 instance.name = $"Tile_{col}s{row}";
                 instance.Initialize(col, row);

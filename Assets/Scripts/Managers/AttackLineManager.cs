@@ -33,8 +33,8 @@ namespace Game.Behaviors
             if (Exists(actorPair))
                 return;
 
-            var prefab = Instantiate(AttackLinePrefab, Vector2.zero, Quaternion.identity);
-            var instance = prefab.GetComponent<AttackLineInstance>();
+            var go = Instantiate(AttackLinePrefab, Vector2.zero, Quaternion.identity);
+            var instance = go.GetComponent<AttackLineInstance>();
             attackLines[key] = instance;
             instance.Spawn(actorPair);
         }

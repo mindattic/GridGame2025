@@ -41,8 +41,8 @@ public class TargetLineManager : MonoBehaviour
         lastClicked = null;
 
         // 3) instantiate line
-        var prefab = Instantiate(targetLinePrefab.gameObject, Vector3.zero, Quaternion.identity);
-        instance = prefab.GetComponent<TargetLineInstance>();
+        var go = Instantiate(targetLinePrefab.gameObject, Vector3.zero, Quaternion.identity);
+        instance = go.GetComponent<TargetLineInstance>();
         instance.name = $"TargetLine_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         instance.buttonPosition = buttonOrigin;

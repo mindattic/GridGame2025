@@ -28,8 +28,8 @@ public class CombatTextManager : MonoBehaviour
             if (textStyle == null) return;
         }
 
-        var prefab = Instantiate(CombatTextPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<CombatTextInstance>();
+        var go = Instantiate(CombatTextPrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<CombatTextInstance>();
         instance.name = $"DamageText_{Guid.NewGuid():N}";
         instance.parent = g.Canvas3D.transform;
         instance.Spawn(text, position, textStyle);

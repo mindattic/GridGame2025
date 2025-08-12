@@ -21,9 +21,9 @@ public class ProjectileManager : MonoBehaviour
     // Spawns a ProjectileInstance configured by type.
     public IEnumerator SpawnRoutine(ProjectileSettings projectile)
     {
-        // Instantiate the ProjectileInstance prefab at the startPosition's position.
-        var prefab = Instantiate(projectilePrefab, projectile.startPosition, Quaternion.identity);
-        var instance = prefab.GetComponent<ProjectileInstance>();
+        // Instantiate the ProjectileInstance go at the startPosition's position.
+        var go = Instantiate(projectilePrefab, projectile.startPosition, Quaternion.identity);
+        var instance = go.GetComponent<ProjectileInstance>();
         instance.name = $"Projectile_{projectile.friendlyName}_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         projectiles.Add(instance.name, instance);

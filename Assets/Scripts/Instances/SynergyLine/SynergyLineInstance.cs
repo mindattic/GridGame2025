@@ -14,14 +14,12 @@ using settings = SynergyLineSettings;
 /// </summary>
 public class SynergyLineInstance : MonoBehaviour
 {
-    // Registry for live tuning
-    private static readonly List<SynergyLineInstance> Live = new List<SynergyLineInstance>(64);
 
     // Prefab cache
-    private GameObject synergyLineSegmentPrefab;
+    private GameObject synergyLineStrandPrefab;
 
     // Runtime
-    private readonly List<SynergyLineStrand> segments = new List<SynergyLineStrand>(8);
+    private readonly List<SynergyLineStrand> strands = new List<SynergyLineStrand>(8);
     private Transform a;
     private Transform b;
     private Renderer aRenderer;
@@ -38,21 +36,11 @@ public class SynergyLineInstance : MonoBehaviour
 
     private void Awake()
     {
-        synergyLineSegmentPrefab = PrefabLibrary.Get("SynergyLineStrandPrefab");
-    }
-
-    private void OnEnable()
-    {
-        if (!Live.Contains(this)) Live.Add(this);
-    }
-
-    private void OnDisable()
-    {
-        Live.Remove(this);
+        synergyLineStrandPrefab = PrefabLibrary.Get("SynergyLineStrandPrefab");
     }
  
     /// <summary>
-    /// Entry point. Combines Stats, configures segments, begins loop.
+    /// Entry point. Combines Stats, configures strands, begins loop.
     /// </summary>
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
@@ -112,7 +100,61 @@ public class SynergyLineInstance : MonoBehaviour
         for (int i = 0; i < settings.WaveformCount; i++)
             wNormPerStrand[i] = (w[i % 7] / max);
 
-        ApplySettingsToSegments();
+        float phaseStep = (Mathf.PI * 2f) / Mathf.Max(1, settings.WaveformCount);
+
+        string layerName;
+        int baseOrder;
+        ResolveSortingBelowActors(out layerName, out baseOrder);
+
+        EnsureSegments(settings.WaveformCount);
+
+        for (int i = 0; i < settings.WaveformCount; i++)
+        {
+            float wNorm = wNormPerStrand != null && i < wNormPerStrand.Length ? wNormPerStrand[i] : 0.5f;
+
+            float widthAbs = Mathf.Lerp(0.75f, 1.25f, wNorm) * settings.BaseWidth;
+            float radiusAbs = Mathf.Lerp(0.75f, 1.25f, wNorm) * settings.BaseRadius;
+            float phase = phaseStep * i;
+
+            var s = strands[i];
+            s.Configure(
+                a, b,
+                widthAbs,
+                radiusAbs,
+                phase,
+                settings.Frequency,
+                settings.NoiseAmplitude,
+                settings.NoiseScale,
+                settings.NoiseSpeed,
+                settings.RadiusOverT,
+                sortingLayer: layerName,
+                sortingOrder: baseOrder + settings.ExtraFrontBias + (i * settings.OrderOffsetPerWave),
+                inStrandIndex: i,
+                inWeightNorm: wNorm,
+                settings.HueSpeed,
+                settings.HuePhase,
+                settings.HueRange,
+                settings.SatBase,
+                settings.SatRange,
+                settings.ValBase,
+                settings.ValPulseAmp,
+                settings.ValPulseSpeed,
+                settings.UseHalo,
+                settings.GlowWidthScale,
+                settings.GlowAlpha,
+                settings.GlowPulseAmp,
+                settings.GlowPulseSpeed,
+                settings.GlowHDRBoost,
+                settings.SegmentCount
+            );
+
+            s.SetFade(0f);
+            s.Tick();
+            //s.PrewarmSparks(20); // start with some mid-flight sparks
+        }
+
+        for (int i = settings.WaveformCount; i < strands.Count; i++)
+            strands[i].gameObject.SetActive(false);
     }
 
     private void StartLoop()
@@ -156,68 +198,10 @@ public class SynergyLineInstance : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void ApplySettingsToSegments()
-    {
-        float phaseStep = (Mathf.PI * 2f) / Mathf.Max(1, settings.WaveformCount);
-
-        string layerName;
-        int baseOrder;
-        ResolveSortingBelowActors(out layerName, out baseOrder);
-
-        EnsureSegments(settings.WaveformCount);
-
-        for (int i = 0; i < settings.WaveformCount; i++)
-        {
-            float wNorm = wNormPerStrand != null && i < wNormPerStrand.Length ? wNormPerStrand[i] : 0.5f;
-
-            float widthAbs = Mathf.Lerp(0.75f, 1.25f, wNorm) * settings.BaseWidth;
-            float radiusAbs = Mathf.Lerp(0.75f, 1.25f, wNorm) * settings.BaseRadius;
-            float phase = phaseStep * i;
-
-            var seg = segments[i];
-            seg.Configure(
-                a, b,
-                widthAbs,
-                radiusAbs,
-                phase,
-                settings.Frequency,
-                settings.NoiseAmplitude,
-                settings.NoiseScale,
-                settings.NoiseSpeed,
-                settings.RadiusOverT,
-                layerName,
-                baseOrder + settings.ExtraFrontBias + (i * settings.OrderOffsetPerWave),
-                i,
-                wNorm,
-                settings.HueSpeed,
-                settings.HuePhase,
-                settings.HueRange,
-                settings.SatBase,
-                settings.SatRange,
-                settings.ValBase,
-                settings.ValPulseAmp,
-                settings.ValPulseSpeed,
-                settings.UseHalo,
-                settings.GlowWidthScale,
-                settings.GlowAlpha,
-                settings.GlowPulseAmp,
-                settings.GlowPulseSpeed,
-                settings.GlowHDRBoost,
-                settings.SegmentCount
-            );
-
-            seg.SetFade(0f);
-            seg.Tick();
-        }
-
-        for (int i = settings.WaveformCount; i < segments.Count; i++)
-            segments[i].gameObject.SetActive(false);
-    }
-
     private void SetFadeAll(float k)
     {
-        int n = Mathf.Min(settings.WaveformCount, segments.Count);
-        for (int i = 0; i < n; i++) segments[i].SetFade(k);
+        int n = Mathf.Min(settings.WaveformCount, strands.Count);
+        for (int i = 0; i < n; i++) strands[i].SetFade(k);
     }
 
     private void TickAll()
@@ -225,37 +209,29 @@ public class SynergyLineInstance : MonoBehaviour
         if (a != null) { var pa = a.position; pa.z = 0f; a.position = pa; }
         if (b != null) { var pb = b.position; pb.z = 0f; b.position = pb; }
 
-        int n = Mathf.Min(settings.WaveformCount, segments.Count);
-        for (int i = 0; i < n; i++) segments[i].Tick();
+        int n = Mathf.Min(settings.WaveformCount, strands.Count);
+        for (int i = 0; i < n; i++) strands[i].Tick();
     }
 
     private void ClearAll()
     {
-        int n = Mathf.Min(settings.WaveformCount, segments.Count);
-        for (int i = 0; i < n; i++) segments[i].Clear();
+        int n = Mathf.Min(settings.WaveformCount, strands.Count);
+        for (int i = 0; i < n; i++) strands[i].Clear();
     }
 
     private void EnsureSegments(int count)
     {
-        if (synergyLineSegmentPrefab == null)
+        while (strands.Count < count)
         {
-            var fallback = new GameObject("SynergyLineStrand_Fallback");
-            fallback.SetActive(false);
-            fallback.AddComponent<LineRenderer>();
-            fallback.AddComponent<SynergyLineStrand>();
-            synergyLineSegmentPrefab = fallback;
-        }
+            var go = Instantiate(synergyLineStrandPrefab, transform);
+            go.name = "SynergyLine_" + strands.Count;
+            go.SetActive(true);
 
-        while (segments.Count < count)
-        {
-            var instGO = Instantiate(synergyLineSegmentPrefab, transform);
-            instGO.name = "Waveform_" + segments.Count;
-            instGO.SetActive(true);
+            var strand = go.GetComponent<SynergyLineStrand>();
+            if (strand == null) 
+                strand = go.AddComponent<SynergyLineStrand>();
 
-            var seg = instGO.GetComponent<SynergyLineStrand>();
-            if (seg == null) seg = instGO.AddComponent<SynergyLineStrand>();
-
-            segments.Add(seg);
+            strands.Add(strand);
         }
     }
 

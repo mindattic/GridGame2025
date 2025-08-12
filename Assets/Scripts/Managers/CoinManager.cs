@@ -12,8 +12,8 @@ public class CoinManager : MonoBehaviour
 
     public void Spawn(Vector3 position)
     {
-        var prefab = Instantiate(CoinPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<CoinInstance>();
+        var go = Instantiate(CoinPrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<CoinInstance>();
         instance.name = $"Coin_{Guid.NewGuid():N}";
         instance.Spawn(position);
     }

@@ -122,8 +122,8 @@ public class StageManager : MonoBehaviour
     public ActorInstance SpawnActor(StageActor stageActor)
     {
         // Instantiate and parent under the board
-        var prefab = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
-        var instance = prefab.GetComponent<ActorInstance>();
+        var go = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
+        var instance = go.GetComponent<ActorInstance>();
         instance.transform.SetParent(g.Board.transform, false);
         instance.name = $"{stageActor.characterName}_{Guid.NewGuid():N}";
         instance.characterName = stageActor.characterName;
