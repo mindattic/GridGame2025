@@ -7,7 +7,7 @@ using UnityEngine.Rendering;
 /// <summary>
 /// Wispy multi-strand line between two actors.
 /// Combines supporter + attacker stats, spawns strands, animates until Despawn is called.
-/// Colors are animated rainbow hues applied per strand and pushed to the material.
+/// Colors are green-first with a subtle tropical tint that shifts over time.
 /// </summary>
 public class SynergyLineInstance : MonoBehaviour
 {
@@ -15,15 +15,15 @@ public class SynergyLineInstance : MonoBehaviour
     private GameObject synergyLineSegmentPrefab;
 
     // Group
-    private int waveformCount = 7;          // one strand per stat including Luck
+    private int waveformCount = 2;          // one strand per stat including Luck
     private float baseRadius = 0.07f;
-    private float baseWidth = 0.005f;
+    private float baseWidth = 0.008f;
     private float frequency = 2.2f;
 
     // Noise
     private float noiseAmplitude = 0.015f;
     private float noiseScale = 2.5f;
-    private float noiseSpeed = 0.18f;
+    private float noiseSpeed = 0.25f;
 
     // Shape
     private AnimationCurve radiusOverT = AnimationCurve.EaseInOut(0, 0.2f, 1, 1.0f);
@@ -36,14 +36,15 @@ public class SynergyLineInstance : MonoBehaviour
     private int orderOffsetPerWave = 1;
     private int extraFrontBias = -2;
 
-    // Rainbow animation controls
-    private float rainbowHueSpeed = 0.06f;       // hue change speed over time
-    private float rainbowHuePhase = 0.12f;       // per-strand hue offset
-    private float rainbowSatMin = 0.75f;         // saturation lower bound
-    private float rainbowSatMax = 1.00f;         // saturation upper bound
-    private float rainbowValueBase = 1.00f;      // brightness base
-    private float rainbowValuePulseAmp = 0.08f;  // brightness pulse amount
-    private float rainbowValuePulseSpeed = 0.7f; // brightness pulse speed
+    // Tropical green tint animation controls
+    private float hueSpeed = 0.06f;          // how fast the tint shifts
+    private float huePhase = 0.12f;          // per-strand offset so they do not sync
+    private float hueRange = 0.06f;          // max hue deviation away from base green
+    private float satBase = 0.85f;           // base saturation for the green
+    private float satRange = 0.08f;          // small extra saturation from weight
+    private float valBase = 1.00f;           // base brightness
+    private float valPulseAmp = 0.08f;       // brightness pulse amount
+    private float valPulseSpeed = 0.7f;      // brightness pulse speed
 
     // Runtime
     private readonly List<SynergyLineSegment> segments = new List<SynergyLineSegment>(8);
@@ -63,9 +64,6 @@ public class SynergyLineInstance : MonoBehaviour
         synergyLineSegmentPrefab = PrefabRepo.Get("SynergyLineSegmentPrefab");
     }
 
-    /// <summary>
-    /// Entry point. Combines stats, configures segments, begins loop.
-    /// </summary>
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
         a = supporter.transform;
@@ -85,18 +83,12 @@ public class SynergyLineInstance : MonoBehaviour
         StartLoop();
     }
 
-    /// <summary>
-    /// Request fade out and cleanup.
-    /// </summary>
     public void Despawn(float fadeSeconds = -1f)
     {
         if (fadeSeconds >= 0f) fadeOutTime = fadeSeconds;
         despawnRequested = true;
     }
 
-    /// <summary>
-    /// Configure endpoints and map weights to strands.
-    /// </summary>
     public void Configure(Transform start, Transform end, Vector7 weights)
     {
         a = start;
@@ -150,15 +142,16 @@ public class SynergyLineInstance : MonoBehaviour
                 radiusOverT,
                 layerName,
                 baseOrder + extraFrontBias + (i * orderOffsetPerWave),
-                i,                   // strand index
-                wNorm,               // normalized weight for saturation
-                rainbowHueSpeed,
-                rainbowHuePhase,
-                rainbowSatMin,
-                rainbowSatMax,
-                rainbowValueBase,
-                rainbowValuePulseAmp,
-                rainbowValuePulseSpeed
+                i,                 // strand index
+                wNorm,             // weight 0..1
+                hueSpeed,
+                huePhase,
+                hueRange,
+                satBase,
+                satRange,
+                valBase,
+                valPulseAmp,
+                valPulseSpeed
             );
 
             seg.SetFade(0f);
@@ -166,9 +159,6 @@ public class SynergyLineInstance : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Start fade in, then run until Despawn() is requested, then fade out.
-    /// </summary>
     private void StartLoop()
     {
         if (playing) return;
