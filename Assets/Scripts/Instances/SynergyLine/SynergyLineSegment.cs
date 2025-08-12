@@ -1,25 +1,14 @@
 ﻿// Assets/Scripts/Instances/SynergyLineSegment.cs
 using UnityEngine;
 
-/// <summary>
-/// One waveform strand with independent sine + Perlin jitter.
-/// Base color is green, gently tinted toward tropical hues over time.
-/// Adds a breathing halo that keeps pulsing even at low fade so the strand feels gaseous.
-/// Applies color to both vertex color and URP Unlit material.
-/// </summary>
+//
+// One waveform strand with sine + Perlin jitter.
+// Base color is green, gently tinted toward tropical hues over time.
+// Optional breathing halo. Colors pushed to both vertex color and URP Unlit material.
+//
 [RequireComponent(typeof(LineRenderer))]
 public class SynergyLineSegment : MonoBehaviour
 {
-    // Geometry
-    private int segmentCount = 56;
-    private float frequency = 2.2f;
-    private AnimationCurve radiusOverT = AnimationCurve.EaseInOut(0, 0.2f, 1, 1);
-
-    // Noise
-    private float noiseAmplitude = 0.015f;
-    private float noiseScale = 2.5f;
-    private float noiseSpeed = 0.18f;
-
     // Renderers
     private LineRenderer line;      // core
     private LineRenderer glow;      // halo
@@ -30,39 +19,48 @@ public class SynergyLineSegment : MonoBehaviour
 
     // Strand parameters
     private float phaseOffset;
-    private float widthAbs = 0.012f;
-    private float radiusAbs = 0.07f;
-    private float fade = 0f;
+    private float widthAbs;
+    private float radiusAbs;
+    private float frequency;
+    private float noiseAmplitude;
+    private float noiseScale;
+    private float noiseSpeed;
+    private AnimationCurve radiusOverT;
+    private float fade;
     private float noiseSeed;
     private bool configured;
 
     // Tropical green tint state
     private int strandIndex;
     private float weightNorm;
-    private float hueSpeed;     // how fast the tint shifts
-    private float huePhase;     // per-strand offset
-    private float hueRange;     // allowed deviation from base green hue
-    private float satBase;      // base saturation for green
-    private float satRange;     // extra saturation from weight
-    private float valBase;      // base brightness
-    private float valPulseAmp;  // brightness pulse amount
-    private float valPulseSpeed;// brightness pulse speed
+    private float hueSpeed;
+    private float huePhase;
+    private float hueRange;
+    private float satBase;
+    private float satRange;
+    private float valBase;
+    private float valPulseAmp;
+    private float valPulseSpeed;
 
     // Base green in HSV (computed once)
-    private static readonly Color BaseGreenRGB = new Color(0.25f, 1.00f, 0.25f); // brighter green
-    private static float BaseHue = 0.42f;   // fallback
-    private static float BaseSat = 0.9f;    // fallback
-    private static float BaseVal = 1.0f;    // fallback
+    private static readonly Color BaseGreenRGB = new Color(0.25f, 1.00f, 0.25f); // warmer true green
+    private static float BaseHue = 0.42f;
+    private static float BaseSat = 0.9f;
+    private static float BaseVal = 1.0f;
     private static bool BaseHSVInit = false;
 
     // Halo controls
-    private float glowWidthScale = 2.6f;
-    private float glowAlpha = 0.32f;
-    private float glowPulseAmp = 0.28f;
-    private float glowPulseSpeed = 0.9f;
-    private float glowHDRBoost = 1.35f;
+    private bool useHalo;
+    private float glowWidthScale;
+    private float glowAlpha;
+    private float glowPulseAmp;
+    private float glowPulseSpeed;
+    private float glowHDRBoost;
 
-    // Material color property ids
+    // Geometry
+    private int segmentCount;
+
+    // Shader property ids
     private static int idBaseColor = -1;
     private static int idColor = -1;
 
@@ -93,7 +91,7 @@ public class SynergyLineSegment : MonoBehaviour
     }
 
     /// <summary>
-    /// Initializes a LineRenderer with sane defaults.
+    /// Initialize a LineRenderer with consistent defaults.
     /// </summary>
     private void SetupLineRenderer(LineRenderer lr)
     {
@@ -104,11 +102,10 @@ public class SynergyLineSegment : MonoBehaviour
         lr.numCapVertices = 3;
         lr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         lr.receiveShadows = false;
-        lr.positionCount = Mathf.Max(2, segmentCount);
     }
 
     /// <summary>
-    /// Configure geometry, behavior, sorting, and tropical tint controls.
+    /// Configure geometry, behavior, sorting, color, halo, and segment resolution.
     /// </summary>
     public void Configure(
         Transform start,
@@ -132,7 +129,14 @@ public class SynergyLineSegment : MonoBehaviour
         float inSatRange,
         float inValBase,
         float inValPulseAmp,
-        float inValPulseSpeed
+        float inValPulseSpeed,
+        bool inUseHalo,
+        float inGlowWidthScale,
+        float inGlowAlpha,
+        float inGlowPulseAmp,
+        float inGlowPulseSpeed,
+        float inGlowHDRBoost,
+        int inSegmentCount
     )
     {
         a = start;
@@ -159,13 +163,21 @@ public class SynergyLineSegment : MonoBehaviour
         valPulseAmp = Mathf.Max(0f, inValPulseAmp);
         valPulseSpeed = Mathf.Max(0f, inValPulseSpeed);
 
+        useHalo = inUseHalo;
+        glowWidthScale = inGlowWidthScale;
+        glowAlpha = inGlowAlpha;
+        glowPulseAmp = inGlowPulseAmp;
+        glowPulseSpeed = inGlowPulseSpeed;
+        glowHDRBoost = inGlowHDRBoost;
+
+        segmentCount = Mathf.Max(2, inSegmentCount);
+        line.positionCount = segmentCount;
+        glow.positionCount = segmentCount;
+
         line.sortingLayerName = sortingLayer;
         line.sortingOrder = sortingOrder;
         glow.sortingLayerName = sortingLayer;
         glow.sortingOrder = sortingOrder - 1;
-
-        if (line.positionCount != segmentCount) line.positionCount = segmentCount;
-        if (glow.positionCount != segmentCount) glow.positionCount = segmentCount;
 
         configured = true;
     }
@@ -177,11 +189,11 @@ public class SynergyLineSegment : MonoBehaviour
     {
         fade = Mathf.Clamp01(k);
         line.widthMultiplier = widthAbs;
-        // glow width is pulsed per-frame
+        // halo width pulses per-frame
     }
 
     /// <summary>
-    /// Recompute color and geometry each frame. Halo breathes even at low fade.
+    /// Per-frame update of color and geometry. Halo breathes even at low fade.
     /// </summary>
     public void Tick()
     {
@@ -189,16 +201,20 @@ public class SynergyLineSegment : MonoBehaviour
 
         // Colors
         Color greenTint = ComputeTintedGreen();
-        Color core = greenTint; core.a *= fade;
+
+        Color core = greenTint;
+        core.a *= fade;
 
         Color halo = greenTint;
         float alphaPulse = 0.65f + 0.35f * Mathf.Sin(Time.time * glowPulseSpeed + strandIndex);
         halo.a = Mathf.Clamp01(glowAlpha * alphaPulse * Mathf.Pow(fade, 0.9f));
-
         Color haloHDR = halo * glowHDRBoost;
 
         ApplyColor(line, core);
-        ApplyColor(glow, haloHDR);
+        if (useHalo)
+        {
+            ApplyColor(glow, haloHDR);
+        }
 
         // Positions
         Vector3 start = a.position; start.z = 0f;
@@ -226,9 +242,12 @@ public class SynergyLineSegment : MonoBehaviour
         // Slow envelope to stretch and shrink the strand
         float envelope = 1f + Mathf.Sin(Time.time * 0.35f + phaseOffset * 0.7f) * 0.35f;
 
-        // Halo pulse width keeps breathing regardless of fade
-        float haloWidthPulse = 1f + Mathf.Sin(Time.time * glowPulseSpeed + strandIndex) * glowPulseAmp;
-        glow.widthMultiplier = widthAbs * glowWidthScale * haloWidthPulse;
+        // Halo width pulse keeps breathing regardless of fade
+        if (useHalo)
+        {
+            float haloWidthPulse = 1f + Mathf.Sin(Time.time * glowPulseSpeed + strandIndex) * glowPulseAmp;
+            glow.widthMultiplier = widthAbs * glowWidthScale * haloWidthPulse;
+        }
 
         for (int i = 0; i < segmentCount; i++)
         {
@@ -274,21 +293,17 @@ public class SynergyLineSegment : MonoBehaviour
     }
 
     /// <summary>
-    /// Computes a green-first color that is gently pushed toward tropical hues.
-    /// The hue stays near base green but shifts within hueRange, with saturation and value pulsing.
+    /// Computes a green-first color gently pushed toward tropical hues.
     /// </summary>
     private Color ComputeTintedGreen()
     {
         float t = Time.time;
 
-        // Move hue around base green within a small tropical window
         float hueOffset = Mathf.Sin(t * hueSpeed + strandIndex * huePhase) * hueRange;
         float h = Mathf.Repeat(BaseHue + hueOffset, 1f);
 
-        // Increase saturation slightly with stat weight so stronger strands pop a bit more
         float s = Mathf.Clamp01(satBase + satRange * weightNorm);
 
-        // Gentle brightness pulse for life
         float vPulse = Mathf.Sin(t * valPulseSpeed + strandIndex * 0.4f);
         float v = Mathf.Clamp01(valBase + valPulseAmp * vPulse);
 

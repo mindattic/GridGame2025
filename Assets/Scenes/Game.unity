@@ -2727,6 +2727,102 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 685652633}
   m_CullTransparentMesh: 1
+--- !u!1 &763794735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 763794737}
+  - component: {fileID: 763794736}
+  m_Layer: 0
+  m_Name: SynergyLineSettingsComponent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &763794736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763794735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5ca192fe47cdbb408dc5c2edc21ac27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+    waveformCount: 7
+    baseRadius: 0.07
+    baseWidth: 0.012
+    frequency: 2.2
+    noiseAmplitude: 0.015
+    noiseScale: 2.5
+    noiseSpeed: 0.18
+    radiusOverT:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0.2
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    fadeInTime: 0.2
+    fadeOutTime: 0.3
+    orderOffsetPerWave: 1
+    extraFrontBias: -2
+    hueSpeed: 0.06
+    huePhase: 0.12
+    hueRange: 0.06
+    satBase: 0.9
+    satRange: 0.08
+    valBase: 1
+    valPulseAmp: 0.08
+    valPulseSpeed: 0.7
+    useHalo: 1
+    glowWidthScale: 2.6
+    glowAlpha: 0.32
+    glowPulseAmp: 0.28
+    glowPulseSpeed: 0.9
+    glowHDRBoost: 1.35
+    segmentCount: 56
+  autoRespawnDuringPlay: 1
+--- !u!4 &763794737
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763794735}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &810683555
 GameObject:
   m_ObjectHideFlags: 0
@@ -6374,7 +6470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa96c96cfc0500c42b273f17538135fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  synergyLinePrefab: {fileID: 0}
+  synergyLinePrefab: {fileID: 4742857754028974969, guid: e19fd25619f95274b89af87599d386e9, type: 3}
 --- !u!1 &1751426063
 GameObject:
   m_ObjectHideFlags: 0
@@ -8304,3 +8400,4 @@ SceneRoots:
   - {fileID: 1751276276}
   - {fileID: 1830783916}
   - {fileID: 28728138}
+  - {fileID: 763794737}

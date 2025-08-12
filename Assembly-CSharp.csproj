@@ -110,6 +110,7 @@
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Helpers\DeathHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\TimerBar3D.cs" />
+    <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineSettingsComponent.cs" />
     <Compile Include="Assets\Helpers\TextureHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
@@ -141,7 +142,7 @@
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
-    <Compile Include="Assets\Scripts\Instances\SynergyLineSegment.cs" />
+    <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineSegment.cs" />
     <Compile Include="Assets\Helpers\CombatLogHelper.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
+    <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineInstance.cs" />
     <Compile Include="Assets\Data\Actor\Slime.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyAttackSequence.cs" />
@@ -237,7 +239,6 @@
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
     <Compile Include="Assets\Scripts\Models\TextStyle.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityButtonManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\SynergyLineInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="Assets\Scripts\Canvas\FadeOverlayInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
+    <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineSettings.cs" />
     <Compile Include="Assets\Helpers\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
