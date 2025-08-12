@@ -189,7 +189,7 @@ public class Portrait3DInstance : MonoBehaviour
             if (isBeingDestroyed || spriteRenderer == null)
                 yield break;
 
-            Vector3 frontAnchorPos = actor.render.front.transform.position;
+            Vector3 frontAnchorPos = actor.Render.front.transform.position;
             AlignPortraitWithFront(frontAnchorPos);
             yield return Wait.None();
         }
@@ -204,7 +204,7 @@ public class Portrait3DInstance : MonoBehaviour
             yield break;
 
         
-        Transform front = actor.render.front.transform;
+        Transform front = actor.Render.front.transform;
         Vector3 originalFrontPos = front.position;
         float yOffset = -g.TileSize * 0.33f; // Lowered by 33%
 
@@ -256,7 +256,7 @@ public class Portrait3DInstance : MonoBehaviour
         if (isBeingDestroyed || spriteRenderer == null)
             yield break;
 
-        Transform front = actor.render.front.transform;
+        Transform front = actor.Render.front.transform;
         Vector3 loweredPos = front.position;
         Vector3 originalPos = popOutFrontRestorePos;
 

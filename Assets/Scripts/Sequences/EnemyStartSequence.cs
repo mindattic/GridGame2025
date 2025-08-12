@@ -9,7 +9,7 @@ namespace Assets.Scripts.Events
 {
     /// <summary>
     /// Builds strict per-attacker order for the attacker team:
-    /// e1.move -> e1.attack -> e2.move -> e2.attack -> ... -> EndTurn
+    /// e1.Move -> e1.attack -> e2.Move -> e2.attack -> ... -> EndTurn
     /// </summary>
     public class EnemyStartSequence : SequenceEvent
     {
@@ -39,7 +39,7 @@ namespace Assets.Scripts.Events
                 yield break;
             }
 
-            // For each ready attacker, enqueue a move followed immediately by an attack for that same attacker.
+            // For each ready attacker, enqueue a Move followed immediately by an attack for that same attacker.
             foreach (var e in ready)
             {
                 g.SequenceManager.Add(new EnemyMoveSequence(e));

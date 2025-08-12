@@ -20,7 +20,7 @@ public class TargetLineManager : MonoBehaviour
         mainCamera = Camera.main;
         lockRadius = g.TileSize / 2f;
 
-        if (!PrefabRepo.Prefabs.TryGetValue("TargetLinePrefab", out var prefabGO))
+        if (!PrefabLibrary.Prefabs.TryGetValue("TargetLinePrefab", out var prefabGO))
             Debug.LogError("TargetLinePrefab not found in PrefabRepo.");
         else if ((targetLinePrefab = prefabGO.GetComponent<TargetLineInstance>()) == null)
             Debug.LogError("TargetLinePrefab is missing TargetLineInstance.");

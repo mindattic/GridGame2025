@@ -18,7 +18,7 @@ public partial class DebugWindow
         if (g.DebugManager.showActorNameTag != onCheckChanged)
         {
             g.DebugManager.showActorNameTag = onCheckChanged;
-            g.Actors.All.ForEach(x => x.render.SetNameTagEnabled(onCheckChanged));
+            g.Actors.All.ForEach(x => x.Render.SetNameTagEnabled(onCheckChanged));
         }
 
         // Toggle to show or hide actor frames.
@@ -26,7 +26,7 @@ public partial class DebugWindow
         if (g.DebugManager.showActorFrame != onCheckChanged)
         {
             g.DebugManager.showActorFrame = onCheckChanged;
-            g.Actors.All.ForEach(x => x.render.SetFrameEnabled(onCheckChanged));
+            g.Actors.All.ForEach(x => x.Render.SetFrameEnabled(onCheckChanged));
         }
 
         // Toggle to show or hide tutorial popups.

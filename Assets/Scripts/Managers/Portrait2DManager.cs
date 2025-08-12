@@ -27,7 +27,7 @@ public class Portrait2DManager : MonoBehaviour
     private void Awake()
     {
         // Load the UI-based portrait prefab
-        portraitPrefab = PrefabRepo.Prefabs["Portrait2DPrefab"];
+        portraitPrefab = PrefabLibrary.Prefabs["Portrait2DPrefab"];
     }
 
     /// <summary>
@@ -49,7 +49,7 @@ public class Portrait2DManager : MonoBehaviour
         instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.PortraitsContainer;
-        instance.sprite = ActorRepo.Actors[actor.characterName].Portrait;
+        instance.sprite = ActorLibrary.Actors[actor.characterName].Portrait;
         instance.scale = new Vector3(1f, 1f, 1f);
         instance.image.color = new Color(1f, 1f, 1f, 1);
 

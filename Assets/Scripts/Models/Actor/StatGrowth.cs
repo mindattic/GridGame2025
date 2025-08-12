@@ -1,7 +1,7 @@
 ﻿using System;
 
 /// <summary>
-/// Represents growth values for all stats, inheriting from BaseStats.
+/// Represents growth values for all Stats, inheriting from BaseStats.
 /// Supports construction from values, copy construction, and addition.
 /// </summary>
 [Serializable]

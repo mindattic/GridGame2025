@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public static class FontRepo
+public static class FontLibrary
 {
     private static Dictionary<string, TMP_FontAsset> fonts;
     private static bool isLoaded = false;

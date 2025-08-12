@@ -12,7 +12,7 @@ public class CombatTextManager : MonoBehaviour
 
     public void Awake()
     {
-        CombatTextPrefab = PrefabRepo.Prefabs["CombatTextPrefab"];
+        CombatTextPrefab = PrefabLibrary.Prefabs["CombatTextPrefab"];
     }
 
     /// <summary>
@@ -20,11 +20,11 @@ public class CombatTextManager : MonoBehaviour
     /// </summary>
     public void Spawn(string text, Vector3 position, string styleKey = "Damage")
     {
-        var textStyle = TextStyleRepo.Get(styleKey);
+        var textStyle = TextStyleLibrary.Get(styleKey);
         if (textStyle == null)
         {
             Debug.LogError($"Text style '{styleKey}' not found. Falling back to default profile.");
-            textStyle = TextStyleRepo.Get("Damage"); // fallback
+            textStyle = TextStyleLibrary.Get("Damage"); // fallback
             if (textStyle == null) return;
         }
 

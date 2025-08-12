@@ -14,7 +14,7 @@ namespace Assets.Data.Actor
             {
                 Character = CharacterHelper.Captain00,
                 Description = "A captain.",
-                Expectations = "Frontline commander with strong early stats and respectable scaling. Wins sustained trades but does not burst.",
+                Expectations = "Frontline commander with strong early Stats and respectable scaling. Wins sustained trades but does not burst.",
                 Lore = "Veteran of two sieges, known for steady hands and short speeches.",
                 BaseStats = new ActorStats
                 {

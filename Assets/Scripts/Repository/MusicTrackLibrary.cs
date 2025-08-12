@@ -3,7 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-public static class MusicTrackRepo
+public static class MusicTrackLibrary
 {
     private static Dictionary<string, AudioClip> musicTracks;
     private static bool isLoaded = false;

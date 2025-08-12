@@ -17,7 +17,7 @@ namespace Game.Behaviors
 
         public void Awake()
         {
-            AttackLinePrefab = PrefabRepo.Prefabs["AttackLinePrefab"];
+            AttackLinePrefab = PrefabLibrary.Prefabs["AttackLinePrefab"];
         }
 
         public bool Exists(ActorPair actorPair)

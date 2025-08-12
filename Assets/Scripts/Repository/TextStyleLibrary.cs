@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
-public static class TextStyleRepo
+public static class TextStyleLibrary
 {
     private static Dictionary<string, TextStyle> textStyles;
     private static bool isLoaded = false;
@@ -26,10 +26,10 @@ public static class TextStyleRepo
 
         textStyles = new Dictionary<string, TextStyle>
         {
-            { "Damage", new TextStyle("Damage", FontRepo.Get("Damage"), 32, ColorHelper.Solid.White, TextMotion.Bounce) },
-            { "Heal", new TextStyle("Heal", FontRepo.Get("Heal"), 32, ColorHelper.Solid.Green, TextMotion.Float) },
-            { "CriticalHit", new TextStyle("CriticalHit", FontRepo.Get("Damage"), 40, ColorHelper.Solid.Yellow, TextMotion.Bounce) },
-            { "GlancingBlow", new TextStyle("GlancingBlow", FontRepo.Get("Damage"), 24, ColorHelper.Solid.Gray, TextMotion.Float) }
+            { "Damage", new TextStyle("Damage", FontLibrary.Get("Damage"), 32, ColorHelper.Solid.White, TextMotion.Bounce) },
+            { "Heal", new TextStyle("Heal", FontLibrary.Get("Heal"), 32, ColorHelper.Solid.Green, TextMotion.Float) },
+            { "CriticalHit", new TextStyle("CriticalHit", FontLibrary.Get("Damage"), 40, ColorHelper.Solid.Yellow, TextMotion.Bounce) },
+            { "GlancingBlow", new TextStyle("GlancingBlow", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.Gray, TextMotion.Float) }
         };
     }
 

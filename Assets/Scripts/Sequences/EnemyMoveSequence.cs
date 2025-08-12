@@ -26,9 +26,9 @@ namespace Assets.Scripts.Events
             // Optional pacing before movement.
             yield return Wait.For(Intermission.Before.Enemy.Move);
 
-            // Decide path and move toward destination.
+            // Decide path and Move toward destination.
             enemy.CalculateAttackStrategy();
-            yield return enemy.move.MoveTowardDestinationRoutine();
+            yield return enemy.Move.MoveTowardDestinationRoutine();
 
             // No chaining here. EnemyStartSequence enqueued the follow-up attack explicitly.
         }

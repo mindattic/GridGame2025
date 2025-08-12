@@ -3,7 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class PrefabRepo
+public static class PrefabLibrary
 {
     private static Dictionary<string, GameObject> prefabs;
 

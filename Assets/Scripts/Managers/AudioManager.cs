@@ -5,7 +5,7 @@ public class AudioManager : MonoBehaviour
 {
     public void Play(string sfx)
     {
-        var soundEffect = SoundEffectRepo.SoundEffects[sfx];
+        var soundEffect = SoundEffectLibrary.SoundEffects[sfx];
         if (soundEffect == null)
         {
             Debug.LogError($@"Sound Effect `{sfx}` was not found.");

@@ -4,7 +4,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class ActorRepo
+public static class ActorLibrary
 {
     private static Dictionary<string, ActorData> actors;
 

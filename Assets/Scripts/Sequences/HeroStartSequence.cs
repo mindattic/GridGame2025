@@ -8,7 +8,7 @@ namespace Assets.Scripts.Events
 {
     /// <summary>
     /// Performs start-of-turn logic for the hero team.
-    /// Refills the hero action timer and makes sure UI is in the right mode.
+    /// Refills the hero Animation timer and makes sure UI is in the right mode.
     /// </summary>
     public class HeroStartSequence : SequenceEvent
     {

@@ -45,9 +45,28 @@ public partial class DebugWindow
         Repaint(); // Force a UI update.
     }
 
-    // Keyboard control methods for actor move.
-    private void OnKeyUp() => g.Actors.FocusedActor?.Move(Vector2Int.down);
-    private void OnKeyDown() => g.Actors.FocusedActor?.Move(Vector2Int.up);
-    private void OnKeyLeft() => g.Actors.FocusedActor?.Move(Vector2Int.left);
-    private void OnKeyRight() => g.Actors.FocusedActor?.Move(Vector2Int.right);
+    // Keyboard control methods for actor Move.
+    private void OnKeyUp()
+    {
+        if (!g.Actors.HasFocusedActor) return;
+        g.Actors.FocusedActor.TeleportToward(Vector2Int.down);
+    }
+
+    private void OnKeyDown()
+    {
+        if (!g.Actors.HasFocusedActor) return;
+        g.Actors.FocusedActor.TeleportToward(Vector2Int.up);
+    }
+
+    private void OnKeyLeft()
+    {
+        if (!g.Actors.HasFocusedActor) return;
+        g.Actors.FocusedActor.TeleportToward(Vector2Int.left);
+    }
+
+    private void OnKeyRight()
+    {
+        if (!g.Actors.HasFocusedActor) return;
+        g.Actors.FocusedActor.TeleportToward(Vector2Int.right);
+    }
 }

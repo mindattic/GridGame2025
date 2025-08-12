@@ -16,9 +16,9 @@ namespace Assets.Scripts.Instances.Actor
     public class ActorMovement
     {
         // Shortcut accessors into the owning instance
-        protected ActorFlags flags => instance.flags;
-        protected ActorRenderers render => instance.render;
-        protected ActorStats stats => instance.stats;
+        protected ActorFlags flags => instance.Flags;
+        protected ActorRenderers render => instance.Render;
+        protected ActorStats stats => instance.Stats;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
         private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
@@ -53,7 +53,7 @@ namespace Assets.Scripts.Instances.Actor
 
         /// <summary>
         /// Moves the actor toward the cursor while the actor is focused or selected.
-        /// If a swap is initiated (via overlap), the move exits immediately.
+        /// If a swap is initiated (via overlap), the Move exits immediately.
         /// </summary>
         public IEnumerator MoveTowardCursorRoutine()
         {
@@ -83,22 +83,22 @@ namespace Assets.Scripts.Instances.Actor
         // --------------------------------------------------------------------
 
         /// <summary>
-        /// Moves the actor toward its grid destination using right-angle (non-diagonal) move.
+        /// Moves the actor toward its grid destination using right-angle (non-diagonal) Move.
         /// Includes a watchdog to prevent infinite loops if MoveFocus or SnapThreshold are misconfigured.
         /// </summary>
         public IEnumerator MoveTowardDestinationRoutine()
         {
-            // Before: begin move
+            // Before: begin Move
             flags.IsMoving = true;
             g.AudioManager.Play("Slide");
 
             // Compute the world pos for the current logical location.
-            // Note: calling code should have set desired 'location' before starting the move.
+            // Note: calling code should have set desired 'location' before starting the Move.
             Vector3 destination = Geometry.GetPositionByLocation(location);
 
             // Watchdog config: hard cap duration and iteration count
-            const float MaxSeconds = 5.0f;   // Maximum time allowed for this move
-            const int MaxIterations = 2000;  // Maximum frames allowed for this move
+            const float MaxSeconds = 5.0f;   // Maximum time allowed for this Move
+            const int MaxIterations = 2000;  // Maximum frames allowed for this Move
             float elapsed = 0f;
             int iterations = 0;
 
@@ -205,7 +205,7 @@ namespace Assets.Scripts.Instances.Actor
         /// </summary>
         private void CheckLocationChanged()
         {
-            // Ignore if the change is due to selection, not move
+            // Ignore if the change is due to selection, not Move
             if (!flags.IsMoving)
                 return;
 
@@ -242,7 +242,7 @@ namespace Assets.Scripts.Instances.Actor
             {
                 // Signal overlap and let the other actor react
                 g.SortingManager.OnActorOverlap(this.instance, overlappingActor);
-                overlappingActor.move.HandleOverlap(previousLocation);
+                overlappingActor.Move.HandleOverlap(previousLocation);
             }
         }
 
@@ -266,12 +266,12 @@ namespace Assets.Scripts.Instances.Actor
 
             if (currentTile.IsOccupied)
             {
-                // Cannot move into an occupied tile
+                // Cannot Move into an occupied tile
                 Debug.Log($"Tile {currentTile.location.x},{currentTile.location.y} is occupied.");
             }
             else
             {
-                // Mark swapping, update target location, and move there
+                // Mark swapping, update target location, and Move there
                 flags.IsSwapping = true;
                 location = currentTile.location;
                 instance.StartCoroutine(MoveTowardDestinationRoutine());
@@ -279,7 +279,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Applies a tilt effect to the actor based on its move velocity.
+        /// Applies a tilt effect to the actor based on its Move velocity.
         /// Horizontal motion tilts around Z.
         /// Vertical motion tilts around both X and Y for a twisting card effect.
         /// </summary>

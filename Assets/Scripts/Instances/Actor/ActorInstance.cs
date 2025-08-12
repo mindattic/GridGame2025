@@ -12,7 +12,7 @@ using UnityEngine.Rendering;
 using g = Assets.Helpers.GameHelper;
 
 // ActorInstance represents a game characterName (either hero or attacker) and encapsulates
-// its state, behaviors, rendering, move, and interactions with game systems.
+// its state, behaviors, rendering, Move, and interactions with game systems.
 public class ActorInstance : MonoBehaviour
 {
     #region Instance Properies
@@ -20,12 +20,12 @@ public class ActorInstance : MonoBehaviour
     public bool isHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
     public bool isEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an attacker.
     public bool isActive => isActiveAndEnabled;                   // Checks if the GameObject is active.
-    public bool isAlive => stats.HP > 0;                          // Actor is alive if HP is above zero.
+    public bool isAlive => Stats.HP > 0;                          // Actor is alive if HP is above zero.
     public bool isPlaying => isActive && isAlive;                 // Actor is active in the game (alive and enabled).
-    public bool isDying => isActive && stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
+    public bool isDying => isActive && Stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
     public bool isDead => !isActive && !isAlive;                  // Actor is dead when not active and HP is 0.
-    public bool isSpawnable => !flags.HasSpawned && spawnTurn <= g.TurnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
-    public bool hasMaxAP => stats.AP == stats.MaxAP;              // Actor has maximum action points.
+    public bool isSpawnable => !Flags.HasSpawned && spawnTurn <= g.TurnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
+    public bool hasMaxAP => Stats.AP == Stats.MaxAP;              // Actor has maximum Animation points.
 
     public bool isReady => isPlaying && hasMaxAP;
 
@@ -192,30 +192,30 @@ public class ActorInstance : MonoBehaviour
 
     #endregion
 
-    // Fields: Core actors fields representing characterName stats, state, and modules.
-    [SerializeField] public AnimationCurve glowCurve;   // Curve defining glow action behavior.
-    public Vector2Int previousLocation;                 // Grid location before the last move.
-    public Vector3 previousPosition;                    // World position before the last move.
+    // Fields: Core actors fields representing characterName Stats, state, and modules.
+    [SerializeField] public AnimationCurve glowCurve;   // Curve defining Glow Animation behavior.
+    public Vector2Int previousLocation;                 // Grid location before the last Move.
+    public Vector3 previousPosition;                    // World position before the last Move.
     public Vector2Int location;                         // CurrentProfile grid location.
     public Team team = Team.Neutral;                    // Actor's team affiliation.
     public int spawnTurn = 0;                           // TurnManager number when the actor is eligible to spawn.
     public string characterName;                                // characterName actors for this actor.
 
 
-    // Modules: Encapsulate various aspects of the actor such as rendering, stats, abilities, and animations.
-    public ActorRenderers render = new ActorRenderers();
-    public ActorStats stats = new ActorStats();
-    public ActorFlags flags = new ActorFlags();
-    public ActorVFX vfx = new ActorVFX();
-    public ActorWeapon weapon = new ActorWeapon();
-    public ActorActions action = new ActorActions();
-    public ActorMovement move = new ActorMovement();
-    public ActorHealthBar healthBar = new ActorHealthBar();
-    public ActorActionBar actionBar = new ActorActionBar();
-    public ActorGlow glow = new ActorGlow();
-    public ActorParallax parallax = new ActorParallax();
-    public ActorThumbnail thumbnail;
-    public List<Ability> abilities = new List<Ability>();
+    // Modules: Encapsulate various aspects of the actor such as rendering, Stats, Abilities, and animations.
+    public ActorRenderers Render = new ActorRenderers();
+    public ActorStats Stats = new ActorStats();
+    public ActorFlags Flags = new ActorFlags();
+    public ActorVFX Vfx = new ActorVFX();
+    public ActorWeapon Weapon = new ActorWeapon();
+    public ActorAnimation Animation = new ActorAnimation();
+    public ActorMovement Move = new ActorMovement();
+    public ActorHealthBar HealthBar = new ActorHealthBar();
+    public ActorActionBar ActionBar = new ActorActionBar();
+    public ActorGlow Glow = new ActorGlow();
+    public ActorParallax Parallax = new ActorParallax();
+    public ActorThumbnail Thumbnail;
+    public List<Ability> Abilities = new List<Ability>();
 
 
     // Determines the cardinal or diagonal direction from this actor to another.
@@ -250,8 +250,6 @@ public class ActorInstance : MonoBehaviour
 
         return Direction.None;
     }
-
-
 
     /// <summary>
     /// Checks if there is any active actor within a given range in the specified cardinal direction.
@@ -301,14 +299,14 @@ public class ActorInstance : MonoBehaviour
     private void Awake()
     {
         // Show modules with this actor actors context.
-        render.Initialize(this);
-        action.Initialize(this);
-        move.Initialize(this);
-        healthBar.Initialize(this);
-        actionBar.Initialize(this);
-        glow.Initialize(this);
-        parallax.Initialize(this);
-        thumbnail = this.transform.Find(GameObjectHelper.Actor.Front.Thumbnail).GetComponent<ActorThumbnail>();
+        Render.Initialize(this);
+        Animation.Initialize(this);
+        Move.Initialize(this);
+        HealthBar.Initialize(this);
+        ActionBar.Initialize(this);
+        Glow.Initialize(this);
+        Parallax.Initialize(this);
+        Thumbnail = this.transform.Find(GameObjectHelper.Actor.Front.Thumbnail).GetComponent<ActorThumbnail>();
 
     }
 
@@ -329,56 +327,56 @@ public class ActorInstance : MonoBehaviour
         position = Geometry.GetPositionByLocation(location);
         previousPosition = position;
 
-        // Generate the thumbnail for UI/display purposes.
-        thumbnail.Initialize(this);
+        // Generate the Thumbnail for UI/display purposes.
+        Thumbnail.Initialize(this);
 
-        // Randomly assign weapon type and attributes.
+        // Randomly assign Weapon type and attributes.
         // TODO: Equip actor at stage manager load based on save file: party.json
-        weapon.Type = RNG.WeaponType();
-        weapon.Attack = RNG.Float(10, 15);
-        weapon.Defense = RNG.Float(0, 5);
-        weapon.Name = $"{weapon.Type}";
-        // Show the weapon icon using resources.
-        render.weaponIcon.sprite = SpriteRepo.WeaponTypes[weapon.Type.ToString()];
+        Weapon.Type = RNG.WeaponType();
+        Weapon.Attack = RNG.Float(10, 15);
+        Weapon.Defense = RNG.Float(0, 5);
+        Weapon.Name = $"{Weapon.Type}";
+        // Show the Weapon icon using resources.
+        Render.weaponIcon.sprite = SpriteLibrary.WeaponTypes[Weapon.Type.ToString()];
 
         // Configure visual appearance and effects based on team.
         if (isHero)
         {
-            render.SetOpaqueColor(ColorHelper.Solid.White);
-            render.SetQualityColor(ColorHelper.Solid.White);
-            render.SetGlowColor(ColorHelper.Solid.White);
-            render.SetParallaxSprite(SpriteRepo.Seamless["WhiteFire2"]);
-            render.SetParallaxMaterial(MaterialRepo.Materials["PlayerParallax"], thumbnail.texture);
-            render.SetParallaxAlpha(Opacity.Percent50);
-            vfx.Attack = VisualEffectRepo.VisualEffects["BlueSlash1"];
+            Render.SetOpaqueColor(ColorHelper.Solid.White);
+            Render.SetQualityColor(ColorHelper.Solid.White);
+            Render.SetGlowColor(ColorHelper.Solid.White);
+            Render.SetParallaxSprite(SpriteLibrary.Seamless["WhiteFire2"]);
+            Render.SetParallaxMaterial(MaterialLibrary.Materials["PlayerParallax"], Thumbnail.texture);
+            Render.SetParallaxAlpha(Opacity.Percent50);
+            Vfx.Attack = VfxLibrary.VisualEffects["BlueSlash1"];
         }
         else if (isEnemy)
         {
-            render.SetOpaqueColor(ColorHelper.Solid.Black);
-            render.SetQualityColor(ColorHelper.Solid.GunMetal);
-            render.SetGlowColor(ColorHelper.Solid.GunMetal);
-            render.SetParallaxSprite(SpriteRepo.Seamless["RedFire1"]);
-            render.SetParallaxMaterial(MaterialRepo.Materials["EnemyParallax"], thumbnail.texture);
-            render.SetParallaxAlpha(Opacity.Percent50);
-            render.SetFrameColor(ColorHelper.Solid.GunMetal);
-            vfx.Attack = VisualEffectRepo.VisualEffects["DoubleClaw"];
+            Render.SetOpaqueColor(ColorHelper.Solid.Black);
+            Render.SetQualityColor(ColorHelper.Solid.GunMetal);
+            Render.SetGlowColor(ColorHelper.Solid.GunMetal);
+            Render.SetParallaxSprite(SpriteLibrary.Seamless["RedFire1"]);
+            Render.SetParallaxMaterial(MaterialLibrary.Materials["EnemyParallax"], Thumbnail.texture);
+            Render.SetParallaxAlpha(Opacity.Percent50);
+            Render.SetFrameColor(ColorHelper.Solid.GunMetal);
+            Vfx.Attack = VfxLibrary.VisualEffects["DoubleClaw"];
         }
 
         // Show name tag textarea and toggle its visibility based on debug settings.
-        render.SetNameTagText(characterName);
-        render.SetNameTagEnabled(isEnabled: g.DebugManager.showActorNameTag);
+        Render.SetNameTagText(characterName);
+        Render.SetNameTagEnabled(isEnabled: g.DebugManager.showActorNameTag);
 
-        // Save health and action bars.
-        healthBar.Update();
-        actionBar.Reset();
+        // Save health and Animation bars.
+        HealthBar.Update();
+        ActionBar.Reset();
 
         // Activate the actor if it is spawnable; otherwise, keep it inactive.
         if (isSpawnable)
         {
             gameObject.SetActive(true);
-            flags.HasSpawned = true;
-            action.FadeIn();
-            action.Spin360();
+            Flags.HasSpawned = true;
+            Animation.FadeIn();
+            Animation.Spin360();
         }
         else
         {
@@ -405,12 +403,12 @@ public class ActorInstance : MonoBehaviour
                 break;
             case AttackStrategy.AttackWeakest:
                 // Pick the hero with the lowest HP.
-                targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderBy(x => x.stats.HP).FirstOrDefault();
+                targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderBy(x => x.Stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackStrongest:
                 // Pick the hero with the highest HP.
-                targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderByDescending(x => x.stats.HP).FirstOrDefault();
+                targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderByDescending(x => x.Stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackRandom:
@@ -443,10 +441,10 @@ public class ActorInstance : MonoBehaviour
         // Immediately apply healing and update health.
         if (!isInvincible)
         {
-            stats.PreviousHP = stats.HP;
-            stats.HP += amount;
-            stats.HP = Mathf.Clamp(stats.HP, 0, stats.MaxHP);
-            healthBar.Update();
+            Stats.PreviousHP = Stats.HP;
+            Stats.HP += amount;
+            Stats.HP = Mathf.Clamp(Stats.HP, 0, Stats.MaxHP);
+            HealthBar.Update();
         }
 
         // Display healing combat text and play sound.
@@ -465,10 +463,10 @@ public class ActorInstance : MonoBehaviour
         // Immediately apply damage and update health.
         if (!isInvincible)
         {
-            stats.PreviousHP = stats.HP;
-            stats.HP -= attackResult.Damage;
-            stats.HP = Mathf.Clamp(stats.HP, 0, stats.MaxHP);
-            healthBar.Update();
+            Stats.PreviousHP = Stats.HP;
+            Stats.HP -= attackResult.Damage;
+            Stats.HP = Mathf.Clamp(Stats.HP, 0, Stats.MaxHP);
+            HealthBar.Update();
         }
 
         var style = CombatTextHelper.GetStyle(attackResult);
@@ -479,11 +477,11 @@ public class ActorInstance : MonoBehaviour
     }
 
 
-    //AttackMissRoutine: StartCoroutine to display a miss message and attackResult a dodge action.
+    //AttackMissRoutine: StartCoroutine to display a miss message and attackResult a dodge Animation.
     public IEnumerator AttackMissRoutine()
     {
         g.CombatTextManager.Spawn("Miss", position);
-        yield return action.DodgeRoutine();
+        yield return Animation.DodgeRoutine();
     }
 
     //Die: Initiates the actor's death sequence.
@@ -501,11 +499,11 @@ public class ActorInstance : MonoBehaviour
 
         //Before: Show actor to fully opaque.
         var alpha = 1f;
-        render.SetAlpha(alpha);
+        Render.SetAlpha(alpha);
 
         //Wait until the health fill has finished draining.
-        if (healthBar.isDraining)
-            yield return new WaitUntil(() => healthBar.isEmpty);
+        if (HealthBar.isDraining)
+            yield return new WaitUntil(() => HealthBar.isEmpty);
 
         //ProcessRoutine portrait dissolve effect and play death sound.
         g.Portrait3DManager.Dissolve(this);
@@ -520,7 +518,7 @@ public class ActorInstance : MonoBehaviour
         {
             alpha -= Increment.Percent1;
             alpha = Mathf.Clamp(alpha, Increment.Transparent, Opacity.Opaque);
-            render.SetAlpha(alpha);
+            Render.SetAlpha(alpha);
 
             //Show coins when attacker fades below 10% opacity, if not already spawned.
             if (isEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
@@ -544,7 +542,7 @@ public class ActorInstance : MonoBehaviour
     private void SpawnCoins(int amount)
     {
         if (isPlaying)
-            StartCoroutine(SpawnCoinsRoutine(amount)); // TODO: Adjust coin spawning based on attacker stats if necessary.
+            StartCoroutine(SpawnCoinsRoutine(amount)); // TODO: Adjust coin spawning based on attacker Stats if necessary.
     }
 
     //SpawnCoinsRoutine: StartCoroutine that spawns a specified number of coins at the actor's position.
@@ -615,8 +613,8 @@ public class ActorInstance : MonoBehaviour
         Debug.LogWarning($"TeleportAfter: no unoccupied tile found after {after}.");
     }
 
-    //Seek: Attempts to move the actor in the specified direction if the target location is valid.
-    public void Move(Vector2Int direction)
+    //Seek: Attempts to Move the actor in the specified direction if the target location is valid.
+    public void TeleportToward(Vector2Int direction)
     {
         //Abort if the new location (CurrentProfile location + direction) is out of bounds.
         if (!g.Board.InBounds(location + direction))
@@ -629,17 +627,17 @@ public class ActorInstance : MonoBehaviour
         Teleport(tile.location);
     }
 
-    //SetReady: Resets the attacker actor's action points for a new turn.
+    //SetReady: Resets the attacker actor's Animation points for a new turn.
     public void SetReady()
     {
         //Abort if the actor is not active, not alive, or not an attacker.
         if (!isActive || !isAlive || !isEnemy)
             return;
 
-        stats.AP = stats.MaxAP;
-        stats.PreviousAP = stats.MaxAP;
+        Stats.AP = Stats.MaxAP;
+        Stats.PreviousAP = Stats.MaxAP;
 
-        //Save the action fill UI to reflect the refreshed action points.
-        actionBar.Update();
+        //Save the Animation fill UI to reflect the refreshed Animation points.
+        ActionBar.Update();
     }
 }

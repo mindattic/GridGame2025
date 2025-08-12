@@ -81,7 +81,7 @@ public class SynergyLineStrand : MonoBehaviour
     private float revElapsed;
     private float revCooldown;
 
-    // Sparkles that move along the path
+    // Sparkles that Move along the path
     private ParticleSystem sparkles;
     private ParticleSystemRenderer sparklesRenderer;
 
@@ -129,7 +129,7 @@ public class SynergyLineStrand : MonoBehaviour
         if (shader == null) shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
         var mat = new Material(shader);
 
-        mat.mainTexture = SpriteRepo.Sprites["SynergySpark"].texture;
+        mat.mainTexture = SpriteLibrary.Sprites["SynergySpark"].texture;
 
         sparklesRenderer.material = mat;
         sparklesRenderer.renderMode = ParticleSystemRenderMode.Billboard;
@@ -142,6 +142,7 @@ public class SynergyLineStrand : MonoBehaviour
         main.startSpeed = 0f;
         main.startLifetime = 1f;
         main.startSize = 0.12f;
+        main.prewarm = true;
 
         var emission = sparkles.emission;
         emission.enabled = false;

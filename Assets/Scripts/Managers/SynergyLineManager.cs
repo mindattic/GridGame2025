@@ -18,7 +18,7 @@ public class SynergyLineManager : MonoBehaviour
 
     private void Awake()
     {
-        synergyLinePrefab = PrefabRepo.Get("SynergyLinePrefab");
+        synergyLinePrefab = PrefabLibrary.Get("SynergyLinePrefab");
     }
 
     /// <summary>

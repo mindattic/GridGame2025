@@ -13,7 +13,7 @@ public partial class DebugWindow
         GUILayout.Label("Actors", GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
 
-        // Display hero stats sorted by name.
+        // Display hero Stats sorted by name.
         foreach (var x in g.Actors.Heroes.OrderBy(x => x.name))
         {
             GUILayout.BeginHorizontal();
@@ -24,7 +24,7 @@ public partial class DebugWindow
 
         GUILayout.Space(10);
 
-        // Display enemy stats sorted by name.
+        // Display enemy Stats sorted by name.
         foreach (var x in g.Actors.Enemies.OrderBy(x => x.name))
         {
             GUILayout.BeginHorizontal();

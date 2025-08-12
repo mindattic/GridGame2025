@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 using g = Assets.Helpers.GameHelper;
 
 
-public static class VisualEffectRepo
+public static class VfxLibrary
 {
     private static Dictionary<string, VFXAsset> visualEffects;
     private static bool isLoaded = false;

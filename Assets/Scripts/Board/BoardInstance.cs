@@ -83,7 +83,7 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     private void GenerateTiles()
     {
-        var tilePrefab = PrefabRepo.Prefabs["TilePrefab"];
+        var tilePrefab = PrefabLibrary.Prefabs["TilePrefab"];
 
         // Create tiles for each grid cell.
         for (int col = 1; col <= columnCount; col++)

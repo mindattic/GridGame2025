@@ -15,7 +15,7 @@ public class GhostManager : MonoBehaviour
 
     public void Awake()
     {
-        ghostPrefab = PrefabRepo.Prefabs["GhostPrefab"];
+        ghostPrefab = PrefabLibrary.Prefabs["GhostPrefab"];
     }
 
     private void Start()

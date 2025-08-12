@@ -339,7 +339,7 @@ public static class Tooltip
 {
     public static TooltipInstance Show(TooltipSettings settings)
     {
-        var prefab = PrefabRepo.Prefabs["TooltipPrefab"];
+        var prefab = PrefabLibrary.Prefabs["TooltipPrefab"];
         var canvas = GameObject.Find("Canvas").GetComponent<RectTransform>();
         GameObject go = GameObject.Instantiate(prefab, canvas);
         go.name = $"Tooltip_{System.Guid.NewGuid():N}";

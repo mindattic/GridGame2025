@@ -26,7 +26,7 @@ public class CanvasParticleEmitter : MonoBehaviour
 
     private void Awake()
     {
-        canvasParticlePrefab = PrefabRepo.Prefabs["CanvasParticlePrefab"];
+        canvasParticlePrefab = PrefabLibrary.Prefabs["CanvasParticlePrefab"];
 
         xMin = -Screen.width;
         xMax = Screen.width;
@@ -48,10 +48,10 @@ public class CanvasParticleEmitter : MonoBehaviour
 
         sprites = new Sprite[]
         {
-            SpriteRepo.Leaves["Leaf1"],
-            SpriteRepo.Leaves["Leaf2"],
-            SpriteRepo.Leaves["MapleLeaf1"],
-            SpriteRepo.Leaves["MapleLeaf2"],
+            SpriteLibrary.Leaves["Leaf1"],
+            SpriteLibrary.Leaves["Leaf2"],
+            SpriteLibrary.Leaves["MapleLeaf1"],
+            SpriteLibrary.Leaves["MapleLeaf2"],
         };
 
     }
@@ -96,7 +96,7 @@ public class CanvasParticleEmitter : MonoBehaviour
         float startY = RNG.Float(yMin, yMax);
         rect.anchoredPosition = new Vector2(startX, startY);
 
-        // SelectProfile random rotation speed, move, and scale
+        // SelectProfile random rotation speed, Move, and scale
         float rotRange = RNG.Float(rotationFocusMin, rotationFocusMax);
         float rotWildcard = RNG.Int(1, 3) == 1 ? RNG.Float(1, 3f) : 1f;
         float rotDirection = RNG.Boolean ? -1f : 1f;

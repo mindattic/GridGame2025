@@ -16,7 +16,7 @@ public class FootstepManager : MonoBehaviour
 
     public void Awake()
     {
-        FootstepPrefab = PrefabRepo.Prefabs["FootstepPrefab"];
+        FootstepPrefab = PrefabLibrary.Prefabs["FootstepPrefab"];
     }
 
     private void Start()
@@ -70,7 +70,7 @@ public class FootstepManager : MonoBehaviour
     {
         GameObject prefab = Instantiate(FootstepPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<FootstepInstance>();
-        instance.sprite = SpriteRepo.Sprites["FootstepManager"];
+        instance.sprite = SpriteLibrary.Sprites["FootstepManager"];
         instance.name = $"Footstep_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         instance.Spawn(actor.position, RotationHelper.ByDirection(actor.position, previousPosition), isRightFoot);

@@ -54,7 +54,7 @@ namespace Assets.Data.Actor
                 Details = new ActorDetails
                 {
                     Description = "A jiggly nuisance barely held together.",
-                    Card = "Lowest stats in the game. Designed to die in one hit.",
+                    Card = "Lowest Stats in the game. Designed to die in one hit.",
                 }
             };
         }

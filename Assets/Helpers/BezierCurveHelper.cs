@@ -8,7 +8,7 @@ namespace Assets.Helper
     public static class BezierCurveHelper
     {
         /// <summary>
-        /// Generates control points for a gentle S-curve move.
+        /// Generates control points for a gentle S-curve Move.
         /// Ensures the perpendicular wave follows the travel direction properly.
         /// </summary>
         public static List<Vector3> Gentle(Vector3 startPosition, ActorInstance target, float travelModifier = 1f, float waveModifier = 1.2f)

@@ -34,7 +34,7 @@ public class ProjectileInstance : MonoBehaviour
 
     private ProjectileSettings projectile = new ProjectileSettings();
 
-    // Private fields for move and for the instantiated trailInstance.
+    // Private fields for Move and for the instantiated trailInstance.
     private Vector3 startPosition;
     private Vector3 endPosition;
     private GameObject trailInstance;
@@ -54,7 +54,7 @@ public class ProjectileInstance : MonoBehaviour
         startPosition = projectile.startPosition;
         endPosition = projectile.target.position;
       
-        TrailEffectAsset asset = TrailEffectRepo.TrailEffects[projectile.trailKey];
+        TrailEffectAsset asset = TrailEffectLibrary.TrailEffects[projectile.trailKey];
         trailInstance = Instantiate(asset.Prefab, transform.position, Quaternion.identity, transform);
         trailInstance.name = $"TailEffect_{projectile.friendlyName}_{Guid.NewGuid():N}";
         trailInstance.transform.localPosition = asset.RelativeOffset;
@@ -224,7 +224,7 @@ public class ProjectileInstance : MonoBehaviour
         //TODO: Differnet trail hides? Hide, FadeOverlayInstance, Shrink, etc...
         trailInstance.SetActive(false); //Hide trail until end
 
-        VFXAsset vfxResource = VisualEffectRepo.VisualEffects[projectile.vfxKey];
+        VFXAsset vfxResource = VfxLibrary.VisualEffects[projectile.vfxKey];
         yield return g.VfxManager.SpawnRoutine(vfxResource, projectile.target.position, projectile.routine);
 
         if (trailInstance != null)

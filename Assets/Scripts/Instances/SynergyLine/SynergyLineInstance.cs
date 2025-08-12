@@ -38,7 +38,7 @@ public class SynergyLineInstance : MonoBehaviour
 
     private void Awake()
     {
-        synergyLineSegmentPrefab = PrefabRepo.Get("SynergyLineStrandPrefab");
+        synergyLineSegmentPrefab = PrefabLibrary.Get("SynergyLineStrandPrefab");
     }
 
     private void OnEnable()
@@ -52,7 +52,7 @@ public class SynergyLineInstance : MonoBehaviour
     }
  
     /// <summary>
-    /// Entry point. Combines stats, configures segments, begins loop.
+    /// Entry point. Combines Stats, configures segments, begins loop.
     /// </summary>
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
@@ -60,13 +60,13 @@ public class SynergyLineInstance : MonoBehaviour
         b = attacker.transform;
 
         Vector7 weights = new Vector7(
-            supporter.stats.Strength + attacker.stats.Strength,
-            supporter.stats.Vitality + attacker.stats.Vitality,
-            supporter.stats.Agility + attacker.stats.Agility,
-            supporter.stats.Stamina + attacker.stats.Stamina,
-            supporter.stats.Intelligence + attacker.stats.Intelligence,
-            supporter.stats.Wisdom + attacker.stats.Wisdom,
-            supporter.stats.Luck + attacker.stats.Luck
+            supporter.Stats.Strength + attacker.Stats.Strength,
+            supporter.Stats.Vitality + attacker.Stats.Vitality,
+            supporter.Stats.Agility + attacker.Stats.Agility,
+            supporter.Stats.Stamina + attacker.Stats.Stamina,
+            supporter.Stats.Intelligence + attacker.Stats.Intelligence,
+            supporter.Stats.Wisdom + attacker.Stats.Wisdom,
+            supporter.Stats.Luck + attacker.Stats.Luck
         );
 
         Configure(a, b, weights);

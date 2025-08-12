@@ -6,7 +6,7 @@ using g = Assets.Helpers.GameHelper;
 
 
 
-// InputManager handles hero touch input and delegates focus, drag, and drop action
+// InputManager handles hero touch input and delegates focus, drag, and drop Animation
 // to the SelectedHeroManager, while also considering the game's paused state.
 public class InputManager : MonoBehaviour
 {
@@ -30,7 +30,7 @@ public class InputManager : MonoBehaviour
     }
 
 
-    public bool isDragging => g.Actors.HasSelectedHero && g.Actors.SelectedHero.flags.IsMoving;
+    public bool isDragging => g.Actors.HasSelectedHero && g.Actors.SelectedHero.Flags.IsMoving;
 
     private void Awake()
     {

@@ -24,7 +24,7 @@ public class SupportLineManager : MonoBehaviour
     /// </summary>
     public void Awake()
     {
-        supportLinePrefab = PrefabRepo.Prefabs["SupportLinePrefab"];
+        supportLinePrefab = PrefabLibrary.Prefabs["SupportLinePrefab"];
     }
 
     // ------------------------------------------------------------

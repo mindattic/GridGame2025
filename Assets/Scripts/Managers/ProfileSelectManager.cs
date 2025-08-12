@@ -25,7 +25,7 @@ public class ProfileSelectManager : MonoBehaviour
     private void Awake()
     {
 
-        buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
+        buttonPrefab = PrefabLibrary.Prefabs["ScreenWidthButtonPrefab"];
         header = GameObject.Find(GameObjectHelper.StageSelect.Title).GetComponent<Label>();
         scrollView = GameObject.Find(GameObjectHelper.StageSelect.ScrollView).GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<RectTransform>();

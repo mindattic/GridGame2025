@@ -72,7 +72,7 @@ public class PartyManager : MonoBehaviour
             return;
         }
 
-        slidePrefab = PrefabRepo.Prefabs["RosterSlidePrefab"];
+        slidePrefab = PrefabLibrary.Prefabs["RosterSlidePrefab"];
 
         title = GameObject.Find(GameObjectHelper.PartyManager.Title).GetComponent<RectTransform>();
         rosterPanel = GameObject.Find(GameObjectHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
@@ -146,7 +146,7 @@ public class PartyManager : MonoBehaviour
             slide.name = $"RosterSlide_{member.Character}";
 
             // Load the sprite asynchronously
-            var actorData = ActorRepo.Get(member.Character);
+            var actorData = ActorLibrary.Get(member.Character);
 
             // Load the instance with all required variables
             instance.Initialize(
@@ -280,7 +280,7 @@ public class PartyManager : MonoBehaviour
         // Update the button text and functionality
         UpdateAddRemoveButton(slide.Key);
 
-        // Update the stats display
+        // Update the Stats display
         UpdateStatsDisplay(slide.Key);
     }
 
@@ -360,7 +360,7 @@ public class PartyManager : MonoBehaviour
 
     public void Load(string character, int level)
     {
-        var actorData = ActorRepo.Actors[character];
+        var actorData = ActorLibrary.Actors[character];
         var stats = actorData.GetStats(level);
 
         // Update each stat row
@@ -387,11 +387,11 @@ public class PartyManager : MonoBehaviour
 
         float targetWidth = backImage.rectTransform.rect.width * (value / maxValue);
 
-        // Cancel any existing action on this row
+        // Cancel any existing Animation on this row
         if (barAnimations.TryGetValue(row, out Coroutine routine))
             StopCoroutine(routine);
 
-        // BounceRoutine new action
+        // BounceRoutine new Animation
         barAnimations[row] = StartCoroutine(AnimateBarFillRoutine(row, fillImage.rectTransform, targetWidth));
 
     }

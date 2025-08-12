@@ -31,7 +31,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     private void Awake()
     {
-        buttonPrefab = PrefabRepo.Prefabs["SaveFileButtonPrefab"];
+        buttonPrefab = PrefabLibrary.Prefabs["SaveFileButtonPrefab"];
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
     }
 

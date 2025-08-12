@@ -16,7 +16,7 @@ public class FadeOverlayInstance : MonoBehaviour
     {
         // Cache the Image and initialize as an opaque black overlay
         image = GetComponent<Image>();
-        image.sprite = SpriteRepo.Sprites["Black16x16"];
+        image.sprite = SpriteLibrary.Sprites["Black16x16"];
         SetAlpha(1f);
     }
 

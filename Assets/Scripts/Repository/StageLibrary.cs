@@ -3,7 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class StageRepo
+public static class StageLibrary
 {
     private static Dictionary<string, Stage> stages;
     private static bool isLoaded = false;

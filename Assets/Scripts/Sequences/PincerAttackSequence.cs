@@ -32,15 +32,15 @@ namespace Assets.Scripts.Events
             // GrowRoutine both attackers simultaneously
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
-                pair.attacker1.action.GrowRoutine(),
-                pair.attacker2.action.GrowRoutine()
+                pair.attacker1.Animation.GrowRoutine(),
+                pair.attacker2.Animation.GrowRoutine()
             );
 
             // Shrink both attackers simultaneously
             yield return CoroutineHelper.WaitForAll(
                 GameManager.instance,
-                pair.attacker1.action.ShrinkRoutine(),
-                pair.attacker2.action.ShrinkRoutine()
+                pair.attacker1.Animation.ShrinkRoutine(),
+                pair.attacker2.Animation.ShrinkRoutine()
             );
 
             // Pick an adjacent target per attacker
@@ -52,8 +52,8 @@ namespace Assets.Scripts.Events
             var routine2 = AttackHelper.MultiAttackRoutine(pair.attackResults2);
 
             // Run bumps toward each attacker's own adjacent opponent
-            yield return pair.attacker1.action.BumpRoutine(opp1, routine1);
-            yield return pair.attacker2.action.BumpRoutine(opp2, routine2);
+            yield return pair.attacker1.Animation.BumpRoutine(opp1, routine1);
+            yield return pair.attacker2.Animation.BumpRoutine(opp2, routine2);
         }
 
     }

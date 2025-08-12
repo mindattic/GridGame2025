@@ -1,4 +1,4 @@
-﻿// --- File: Assets/Scripts/Instances/Actor/ActorActions.cs ---
+﻿// --- File: Assets/Scripts/Instances/Actor/ActorAnimation.cs ---
 using Assets.Helper;
 using Assets.Scripts.Models;
 using System.Collections;
@@ -8,13 +8,13 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Instances.Actor
 {
     /// <summary>
-    /// ActorActions encapsulates animated actions for an actor such as shaking, dodging, bumping,
+    /// ActorAnimation encapsulates animated actions for an actor such as shaking, dodging, bumping,
     /// growing, spinning, fading, and wiggles. All actions are coroutine based.
     /// </summary>
-    public class ActorActions
+    public class ActorAnimation
     {
-        protected ActorRenderers render => instance.render;
-        protected ActorStats stats => instance.stats;
+        protected ActorRenderers render => instance.Render;
+        protected ActorStats stats => instance.Stats;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
         private bool isPlaying => instance.isPlaying;
@@ -28,7 +28,7 @@ namespace Assets.Scripts.Instances.Actor
         private float wiggleAmplitude;
 
         /// <summary>
-        /// Initializes this action module for the owning actor and prepares animation parameters.
+        /// Initializes this Animation module for the owning actor and prepares animation parameters.
         /// </summary>
         public void Initialize(ActorInstance parentInstance)
         {
@@ -39,7 +39,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// ProcessRoutine a shake on the actor's thumbnail. Optional routine routine runs after the shake completes.
+        /// ProcessRoutine a shake on the actor's Thumbnail. Optional routine routine runs after the shake completes.
         /// </summary>
         public void Shake(float intensity, float duration = 0f, IEnumerator routine = null)
         {
@@ -84,7 +84,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// ProcessRoutine the dodge action as a fire and forget. Optional routine runs at the midpoint.
+        /// ProcessRoutine the dodge Animation as a fire and forget. Optional routine runs at the midpoint.
         /// </summary>
         public void Dodge(IEnumerator routine = null)
         {
@@ -242,7 +242,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// ProcessRoutine a growth action. Optional routine runs after growth finishes.
+        /// ProcessRoutine a growth Animation. Optional routine runs after growth finishes.
         /// </summary>
         public void Grow(float maxSize = 0f, IEnumerator routine = null)
         {
@@ -278,7 +278,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// ProcessRoutine a shrink action. Optional routine runs after shrink finishes.
+        /// ProcessRoutine a shrink Animation. Optional routine runs after shrink finishes.
         /// </summary>
         public void Shrink(float minSize = 0f, IEnumerator routine = null)
         {
@@ -442,7 +442,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// ProcessRoutine a weapon wiggle when AP is full. Optional routine runs after wiggle stops.
+        /// ProcessRoutine a Weapon wiggle when AP is full. Optional routine runs after wiggle stops.
         /// </summary>
         public void WeaponWiggle(IEnumerator routine = null)
         {
@@ -453,7 +453,7 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Oscillates the weapon icon while AP remains full, then optionally runs the routine routine.
+        /// Oscillates the Weapon icon while AP remains full, then optionally runs the routine routine.
         /// </summary>
         private IEnumerator WeaponWiggleRoutine(IEnumerator routine = null)
         {
@@ -461,7 +461,7 @@ namespace Assets.Scripts.Instances.Actor
             float rotZ = start;
             render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
 
-            while (instance.stats.AP == instance.stats.MaxAP)
+            while (instance.Stats.AP == instance.Stats.MaxAP)
             {
                 rotZ = start + Mathf.Sin(Time.time * wiggleFocus) * wiggleAmplitude;
                 render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);

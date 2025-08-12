@@ -2,7 +2,7 @@ using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-public static class TrailEffectRepo
+public static class TrailEffectLibrary
 {
     private static Dictionary<string, TrailEffectAsset> trailEffects;
     private static bool isLoaded = false;

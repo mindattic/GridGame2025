@@ -23,7 +23,7 @@ public class StageSelectManager : MonoBehaviour
     private void Awake()
     {
 
-        buttonPrefab = PrefabRepo.Prefabs["ScreenWidthButtonPrefab"];
+        buttonPrefab = PrefabLibrary.Prefabs["ScreenWidthButtonPrefab"];
         content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
 
         //startX = canvas.rect.width;
@@ -38,7 +38,7 @@ public class StageSelectManager : MonoBehaviour
         //spacing = 0.01f * startY;
         //verticalLayoutGroup.spacing = spacing;
 
-        foreach (var stage in StageRepo.Stages)
+        foreach (var stage in StageLibrary.Stages)
         {
             AddButton(stage.Value.Name);
         }

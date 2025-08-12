@@ -3,7 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class MaterialRepo
+public static class MaterialLibrary
 {
     private static Dictionary<string, Material> materials;
 

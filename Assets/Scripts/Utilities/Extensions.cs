@@ -154,7 +154,7 @@ public static class ActorInstanceExtensions
     /// Actor is alive if HP is above zero.
     /// </summary>
     public static bool IsAlive(this ActorInstance actor)
-        => actor != null && actor.stats.HP > 0;
+        => actor != null && actor.Stats.HP > 0;
 
     /// <summary>
     /// Actor is active in the game (alive and enabled).
@@ -166,7 +166,7 @@ public static class ActorInstanceExtensions
     /// Actor is in the process of dying (active but HP below 1).
     /// </summary>
     public static bool IsDying(this ActorInstance actor)
-        => actor.IsActive() && actor.stats.HP < 1;
+        => actor.IsActive() && actor.Stats.HP < 1;
 
     /// <summary>
     /// Actor is dead when not active and HP is zero.
@@ -178,14 +178,14 @@ public static class ActorInstanceExtensions
     /// Actor can spawn if not already spawned and the spawn turn has arrived.
     /// </summary>
     public static bool IsSpawnable(this ActorInstance actor)
-        => actor != null && !actor.flags.HasSpawned
+        => actor != null && !actor.Flags.HasSpawned
            && actor.spawnTurn <= g.TurnManager.currentTurn;
 
     /// <summary>
-    /// Actor has maximum action points.
+    /// Actor has maximum Animation points.
     /// </summary>
     public static bool HasMaxAP(this ActorInstance actor)
-        => actor != null && actor.stats.AP == actor.stats.MaxAP;
+        => actor != null && actor.Stats.AP == actor.Stats.MaxAP;
 
     /// <summary>
     /// None-safe existence check for the actor.

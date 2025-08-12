@@ -49,8 +49,8 @@ namespace Assets.Scripts.Instances.Actor
                     break;
             }
 
-            instance.render.parallax.material.SetFloat("_XScroll", targetX);
-            instance.render.parallax.material.SetFloat("_YScroll", targetY);
+            instance.Render.parallax.material.SetFloat("_XScroll", targetX);
+            instance.Render.parallax.material.SetFloat("_YScroll", targetY);
         }
 
 

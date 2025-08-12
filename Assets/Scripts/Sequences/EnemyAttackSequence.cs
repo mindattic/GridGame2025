@@ -26,7 +26,7 @@ namespace Assets.Scripts.Events
         /// 1) Waits pre-attack intermission.
         /// 2) Finds adjacent defenders.
         /// 3) For each defender, computes attack result and bumps with damage.
-        /// 4) Processes deaths and then resets the action bar.
+        /// 4) Processes deaths and then resets the Animation bar.
         /// </summary>
         public override IEnumerator ProcessRoutine()
         {
@@ -57,12 +57,12 @@ namespace Assets.Scripts.Events
 
                     // Run bump plus damage sequence using routine-based routine.
                     var attackRoutine = AttackHelper.SingleAttackRoutine(attackResult);
-                    yield return attacker.action.BumpRoutine(opponent, attackRoutine);
+                    yield return attacker.Animation.BumpRoutine(opponent, attackRoutine);
                 }
             }
 
-            // Reset this attacker's action bar after its attack to mark completion.
-            attacker.actionBar.Reset();
+            // Reset this attacker's Animation bar after its attack to mark completion.
+            attacker.ActionBar.Reset();
 
             // Do not enqueue anything else here. Global queue continues.
         }

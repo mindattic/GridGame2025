@@ -7,7 +7,7 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorGlow
     {
-        protected ActorRenderers render => instance.render;
+        protected ActorRenderers render => instance.Render;
         private bool isActive => instance.isActive;
         private bool isAlive => instance.isAlive;
         private bool isPlayer => instance.isHero;

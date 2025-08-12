@@ -124,7 +124,7 @@ public class Geometry
     }
 
     /// <summary>
-    /// Calculates the primary move direction from point 'a' to point 'b' based on their differences.
+    /// Calculates the primary Move direction from point 'a' to point 'b' based on their differences.
     /// Returns East/West if horizontal difference is greater; otherwise, returns North/South.
     /// </summary>
     public static Direction CalculateDirection(Vector2 a, Vector2 b)
@@ -132,12 +132,12 @@ public class Geometry
         Vector2 difference = b - a;
         if (Mathf.Abs(difference.x) > Mathf.Abs(difference.y))
         {
-            // Horizontal move: positive s indicates East, negative indicates West.
+            // Horizontal Move: positive s indicates East, negative indicates West.
             return difference.x > 0 ? Direction.East : Direction.West;
         }
         else
         {
-            // Vertical move: positive y indicates North, negative indicates South.
+            // Vertical Move: positive y indicates North, negative indicates South.
             return difference.y > 0 ? Direction.North : Direction.South;
         }
     }
@@ -380,7 +380,7 @@ public class Geometry
     }
 
     /// <summary>
-    /// Determines the starting actor (i.e., the one who should initiate an action) between two g.Actors.All.
+    /// Determines the starting actor (i.e., the one who should initiate an Animation) between two g.Actors.All.
     /// The decision is based on the dominant axis difference: vertical if the y difference is greater,
     /// or horizontal otherwise.
     /// </summary>

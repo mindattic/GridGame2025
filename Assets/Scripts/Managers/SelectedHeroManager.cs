@@ -48,7 +48,7 @@ public class SelectedHeroManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Handles dragging an actor, setting up move. Starts Seek phase if at BounceRoutine, otherwise continues drag in Seek phase.
+    /// Handles dragging an actor, setting up Move. Starts Seek phase if at BounceRoutine, otherwise continues drag in Seek phase.
     /// </summary>
     public void Drag()
     {
@@ -60,7 +60,7 @@ public class SelectedHeroManager : MonoBehaviour
         g.SortingManager.OnSelectedHeroDrag();
 
         // If the selected hero is already moving, do not process further drag logic.
-        if (g.Actors.SelectedHero.flags.IsMoving)
+        if (g.Actors.SelectedHero.Flags.IsMoving)
             return;
 
         g.Card.Clear();
@@ -70,7 +70,7 @@ public class SelectedHeroManager : MonoBehaviour
         g.TimerBar2D.Play();
         g.ActorManager.CheckEnemyAP();
 
-        g.Actors.SelectedHero.move.MoveTowardCursor();
+        g.Actors.SelectedHero.Move.MoveTowardCursor();
     }
 
     /// <summary>
@@ -80,14 +80,14 @@ public class SelectedHeroManager : MonoBehaviour
     {
         // Only proceed if it's the hero's turn, Seek phase is active, and there's a selected hero currently moving.
         if (!g.TurnManager.isHeroTurn 
-            || !g.Actors.HasSelectedHero || !g.Actors.SelectedHero.flags.IsMoving)
+            || !g.Actors.HasSelectedHero || !g.Actors.SelectedHero.Flags.IsMoving)
         {
             if (g.Actors.HasFocusedActor)
                 g.Actors.FocusedActor.position = g.Actors.FocusedActor.currentTile.position;
             return;
         }
 
-        g.Actors.SelectedHero.move.ToLocation();
+        g.Actors.SelectedHero.Move.ToLocation();
         g.SortingManager.OnSelectedHeroDrop();
 
         g.Actors.SelectedHero = null;

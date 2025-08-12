@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-public static class SpriteRepo
+public static class SpriteLibrary
 {
     private static Dictionary<string, Sprite> backgrounds;
     private static Dictionary<string, Sprite> gui;

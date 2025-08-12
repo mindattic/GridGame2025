@@ -41,14 +41,14 @@ public class StageActor
 
     public void AssignStats()
     {
-        if (ActorRepo.Actors.ContainsKey(characterName))
+        if (ActorLibrary.Actors.ContainsKey(characterName))
         {
-            var actor = ActorRepo.Actors[characterName];
+            var actor = ActorLibrary.Actors[characterName];
             Stats = actor.GetStats(Level);
         }
         else
         {
-            Debug.LogError($"StageActor failed to assign stats for characterName: {characterName}");
+            Debug.LogError($"StageActor failed to assign Stats for characterName: {characterName}");
         }
     }
 }

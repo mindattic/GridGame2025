@@ -3,7 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class SoundEffectRepo
+public static class SoundEffectLibrary
 {
     private static Dictionary<string, AudioClip> soundEffects;
 

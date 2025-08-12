@@ -57,7 +57,7 @@ namespace Assets.Helpers
         }
 
         /// <summary>
-        /// Calls FadeOut with a provided IEnumerator or action.
+        /// Calls FadeOut with a provided IEnumerator or Animation.
         /// </summary>
         public static void FadeOut(IEnumerator routine)
         {

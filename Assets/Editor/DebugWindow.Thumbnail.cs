@@ -19,7 +19,7 @@ public partial class DebugWindow
 
         if (g.ReloadThumbnailSettings && g.Actors.HasFocusedActor)
         {
-            var t = g.Actors.FocusedActor.thumbnail;
+            var t = g.Actors.FocusedActor.Thumbnail;
             thumbnailPositionX = t.settings.Position.x.ToString("F2");
             thumbnailPositionY = t.settings.Position.y.ToString("F2");
             thumbnailScaleX = t.settings.Scale.x.ToString("F2");
@@ -54,7 +54,7 @@ public partial class DebugWindow
             {
                 var position = new Vector3(pX, pY, 0f);
                 var scale = new Vector3(sX, sY, 1f);
-                GameManager.instance.focusedActor.thumbnail.Set(position, scale);
+                GameManager.instance.focusedActor.Thumbnail.Set(position, scale);
             }
         }
 

@@ -8,8 +8,8 @@ using g = Assets.Helpers.GameHelper;
 using Label = TMPro.TextMeshProUGUI;
 
 // The Card class manages the UI card display that shows details about a focused actor.
-// It handles initialization, assignment of actors (such as portrait, name, and stats),
-// and provides an action to slide the portrait into view.
+// It handles initialization, assignment of actors (such as portrait, name, and Stats),
+// and provides an Animation to slide the portrait into view.
 public class Card : MonoBehaviour
 {
     RectTransform card;
@@ -18,9 +18,9 @@ public class Card : MonoBehaviour
     RectTransform title;
     RectTransform details;
     Vector3 offscreenPosition;       // Starting offscreen position for the portrait.
-    Vector3 destination;             // Final destination position for the portrait during slide-in action. 
-    AnimationCurve slideInCurve;     // Easing curve for slide-in action.
-    float slideDuration;            // Duration of the slide-in action in seconds.
+    Vector3 destination;             // Final destination position for the portrait during slide-in Animation. 
+    AnimationCurve slideInCurve;     // Easing curve for slide-in Animation.
+    float slideDuration;            // Duration of the slide-in Animation in seconds.
     float portraitSize;
 
 
@@ -58,7 +58,7 @@ public class Card : MonoBehaviour
         if (!g.Actors.HasFocusedActor)
             return;
 
-        var actorData = ActorRepo.Get(g.Actors.FocusedActor.characterName);
+        var actorData = ActorLibrary.Get(g.Actors.FocusedActor.characterName);
 
         // Enable the backdrop and portrait images.
         backdrop.gameObject.SetActive(true);
@@ -68,25 +68,25 @@ public class Card : MonoBehaviour
         portrait.GetComponent<Image>().sprite = actorData.Portrait;
         title.GetComponent<Label>().text = g.Actors.FocusedActor.characterName;
 
-        // Format the actor's stats for display:
-        var HP = $"{g.Actors.FocusedActor.stats.HP,2}/{g.Actors.FocusedActor.stats.MaxHP,-3}";
-        var STR = $"{g.Actors.FocusedActor.stats.Strength,4}";
-        var VIT = $"{g.Actors.FocusedActor.stats.Vitality,4}";
-        var AGI = $"{g.Actors.FocusedActor.stats.Agility,4}";
-        var STA = $"{g.Actors.FocusedActor.stats.Stamina,4}";
-        var INT = $"{g.Actors.FocusedActor.stats.Intelligence,4}";
-        var WIS = $"{g.Actors.FocusedActor.stats.Wisdom,4}";
-        var LCK = $"{g.Actors.FocusedActor.stats.Luck,4}";
+        // Format the actor's Stats for display:
+        var HP = $"{g.Actors.FocusedActor.Stats.HP,2}/{g.Actors.FocusedActor.Stats.MaxHP,-3}";
+        var STR = $"{g.Actors.FocusedActor.Stats.Strength,4}";
+        var VIT = $"{g.Actors.FocusedActor.Stats.Vitality,4}";
+        var AGI = $"{g.Actors.FocusedActor.Stats.Agility,4}";
+        var STA = $"{g.Actors.FocusedActor.Stats.Stamina,4}";
+        var INT = $"{g.Actors.FocusedActor.Stats.Intelligence,4}";
+        var WIS = $"{g.Actors.FocusedActor.Stats.Wisdom,4}";
+        var LCK = $"{g.Actors.FocusedActor.Stats.Luck,4}";
 
-        // Data a formatted stats table string.
+        // Data a formatted Stats table string.
         var stats =
             $"HP       STR  VIT  AGI  STA  INT  WIS  LCK{Environment.NewLine}" +
             $"{HP}   {STR}{VIT}{AGI}{STA}{INT}{WIS}{LCK}{Environment.NewLine}";
 
-        // Show the details textarea combining the stats table with extra details from DataManager.
+        // Show the details textarea combining the Stats table with extra details from DataManager.
         details.GetComponent<Label>().text = stats + actorData.Details.Card;
 
-        // Begin the slide-in action for the portrait.
+        // Begin the slide-in Animation for the portrait.
         SlideIn();
     }
 
@@ -116,7 +116,7 @@ public class Card : MonoBehaviour
             yield return Wait.OneTick(); // Wait for the next frame.
         }
 
-        // Ensure the portrait is exactly at the destination position after the action.
+        // Ensure the portrait is exactly at the destination position after the Animation.
         portrait.anchoredPosition = destination;
     }
 

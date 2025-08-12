@@ -17,7 +17,7 @@ namespace Game.Manager
         public void CheckEnemyAP()
         {
             var notReadyEnemies = g.Actors.Enemies.Where(x => x.isPlaying && !x.hasMaxAP).ToList();
-            notReadyEnemies.ForEach(x => x.actionBar.Fill());
+            notReadyEnemies.ForEach(x => x.ActionBar.Fill());
         }
 
         public void Clear()

@@ -101,8 +101,8 @@ public static class Formulas
     /// </summary>
     public static HitType CalculateHitType(ActorInstance attacker, ActorInstance opponent)
     {
-        float accuracy = Accuracy(attacker.stats);
-        float evade = Evasion(opponent.stats);
+        float accuracy = Accuracy(attacker.Stats);
+        float evade = Evasion(opponent.Stats);
         float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);
 
         // Miss becomes a glancing blow
@@ -111,8 +111,8 @@ public static class Formulas
 
         // Connected: check for crit
         float baseCrit = 5f;
-        float focus = attacker.stats.Wisdom * 0.4f;
-        float luck = attacker.stats.Luck * 0.3f;
+        float focus = attacker.Stats.Wisdom * 0.4f;
+        float luck = attacker.Stats.Luck * 0.3f;
         float critChance = baseCrit + focus + luck;
 
         if (RNG.Float(0f, 100f) < critChance)
@@ -122,7 +122,7 @@ public static class Formulas
     }
 
     /// <summary>
-    /// Derived max health from core stats.
+    /// Derived max health from core Stats.
     /// Pure float math; callers decide if they need rounding for display.
     /// </summary>
     public static float Health(ActorStats stats)
@@ -131,7 +131,7 @@ public static class Formulas
     }
 
     /// <summary>
-    /// Physical offense score including optional weapon power.
+    /// Physical offense score including optional Weapon power.
     /// FloatRoutine only; no rounding.
     /// </summary>
     public static float Offense(ActorStats stats, float weaponPower = 0f)
@@ -190,13 +190,13 @@ public static class Formulas
         ElementalDamageType element = ElementalDamageType.Physical,
         float resistance = 0f)
     {
-        float off = Offense(attacker.stats, weaponPower);
-        float def = Defense(opponent.stats, armorRating);
+        float off = Offense(attacker.Stats, weaponPower);
+        float def = Defense(opponent.Stats, armorRating);
         float raw = off - def;
 
         float resisted = ApplyResistance(raw, resistance);
         float amplified = resisted * 2f;
-        float varied = amplified * SampleVarianceWithLuck(attacker.stats, 0.33f);
+        float varied = amplified * SampleVarianceWithLuck(attacker.Stats, 0.33f);
 
         HitType type = CalculateHitType(attacker, opponent);
 
@@ -216,13 +216,13 @@ public static class Formulas
         ElementalDamageType element = ElementalDamageType.Arcane,
         float resistance = 0f)
     {
-        float off = MagicOffense(caster.stats);
-        float res = MagicResistance(target.stats);
+        float off = MagicOffense(caster.Stats);
+        float res = MagicResistance(target.Stats);
         float raw = off - res;
 
         float resisted = ApplyResistance(raw, resistance);
         float amplified = resisted * 2f;
-        float varied = amplified * SampleVarianceWithLuck(caster.stats, 0.33f);
+        float varied = amplified * SampleVarianceWithLuck(caster.Stats, 0.33f);
 
         HitType type = CalculateHitType(caster, target);
 
@@ -249,14 +249,14 @@ public static class Formulas
     }
 
     /// <summary>
-    /// Returns the percentage chance (0–100) of landing a critical hit, based on attacker stats.
+    /// Returns the percentage chance (0–100) of landing a critical hit, based on attacker Stats.
     /// This is the same formula used internally in CalculateHitType for crit determination.
     /// </summary>
     public static float CriticalHitPercent(ActorInstance attacker, ActorInstance opponent)
     {
         // First, compute hit chance to ensure attack connects.
-        float accuracy = Accuracy(attacker.stats);
-        float evade = Evasion(opponent.stats);
+        float accuracy = Accuracy(attacker.Stats);
+        float evade = Evasion(opponent.Stats);
         float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);
 
         // If it can't hit at all, crit chance is effectively 0.
@@ -265,8 +265,8 @@ public static class Formulas
 
         // Crit chance formula from CalculateHitType.
         float baseCrit = 5f;
-        float focus = attacker.stats.Wisdom * 0.4f;
-        float luck = attacker.stats.Luck * 0.3f;
+        float focus = attacker.Stats.Wisdom * 0.4f;
+        float luck = attacker.Stats.Luck * 0.3f;
         float critChance = baseCrit + focus + luck;
 
         // Ensure range safety.
@@ -274,13 +274,13 @@ public static class Formulas
     }
 
     /// <summary>
-    /// Returns the percentage chance (0–100) of a glancing blow, based on attacker vs opponent stats.
+    /// Returns the percentage chance (0–100) of a glancing blow, based on attacker vs opponent Stats.
     /// This is the same formula used internally in CalculateHitType for glancing determination.
     /// </summary>
     public static float GlancingBlowPercent(ActorInstance attacker, ActorInstance opponent)
     {
-        float accuracy = Accuracy(attacker.stats);
-        float evade = Evasion(opponent.stats);
+        float accuracy = Accuracy(attacker.Stats);
+        float evade = Evasion(opponent.Stats);
 
         // Glancing chance is just the miss chance in the existing model.
         float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);

@@ -12,7 +12,7 @@ public class AbilityButtonManager : MonoBehaviour
     public void Awake()
     {
         abilityButtonContainer = GameObject.Find("AbilityButtonContainer").transform;
-        abilityButtonPrefab = PrefabRepo.Prefabs["AbilityButtonPrefab"];
+        abilityButtonPrefab = PrefabLibrary.Prefabs["AbilityButtonPrefab"];
     }
 
     public List<AbilityButton> buttons = new();

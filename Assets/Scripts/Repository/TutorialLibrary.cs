@@ -1,7 +1,7 @@
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-public static class TutorialRepo
+public static class TutorialLibrary
 {
     private static Dictionary<string, Tutorial> tutorials;
     private static bool isLoaded = false;

@@ -15,7 +15,7 @@ public class ProjectileManager : MonoBehaviour
 
     public void Awake()
     {
-        projectilePrefab = PrefabRepo.Prefabs["ProjectilePrefab"];
+        projectilePrefab = PrefabLibrary.Prefabs["ProjectilePrefab"];
     }
 
     // Spawns a ProjectileInstance configured by type.
@@ -83,9 +83,9 @@ public class ProjectileManager : MonoBehaviour
         //g.SequenceManager.Add(new PortraitPopOutSequence(startPosition));
 
         //if (castBeforeAttack)
-        //    g.SequenceManager.AddFirst(action);
+        //    g.SequenceManager.AddFirst(Animation);
         //else
-        //    g.SequenceManager.Add(action);
+        //    g.SequenceManager.Add(Animation);
     }
 
 }

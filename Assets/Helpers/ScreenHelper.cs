@@ -343,7 +343,7 @@ namespace Assets.Helper
             // -------- UI (Canvas) conversions --------
 
             /// <summary>
-            /// UI Transform world position to screen pixels. Works for any Canvas render mode.
+            /// UI Transform world position to screen pixels. Works for any Canvas Render mode.
             /// </summary>
             public static Vector2 UIToScreenPoint(Transform uiTransform, Canvas canvas = null)
             {

@@ -8,8 +8,8 @@ public class ActorHealthBar
     //Fields
     private ActorInstance instance;
     public bool isDraining;
-    protected ActorRenderers render => instance.render;
-    protected ActorStats stats => instance.stats;
+    protected ActorRenderers render => instance.Render;
+    protected ActorStats stats => instance.Stats;
 
     //Properties
     public bool isEmpty => !isDraining && stats.PreviousHP < 1;

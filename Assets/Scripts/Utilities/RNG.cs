@@ -234,7 +234,7 @@ static class RNG
     }
 
     /// <summary>
-    /// Random weapon type.
+    /// Random Weapon type.
     /// </summary>
     public static WeaponType WeaponType()
     {
@@ -261,9 +261,9 @@ static class RNG
     /// </summary>
     public static Sprite Background()
     {
-        var keys = SpriteRepo.Backgrounds.Keys.ToList();
+        var keys = SpriteLibrary.Backgrounds.Keys.ToList();
         string key = keys[Int(0, keys.Count - 1)];
-        return SpriteRepo.Backgrounds[key];
+        return SpriteLibrary.Backgrounds[key];
     }
 
     /// <summary>

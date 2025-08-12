@@ -21,7 +21,7 @@ public class StageManager : MonoBehaviour
 
     public void Awake()
     {
-        actorPrefab = PrefabRepo.Prefabs["ActorPrefab"];
+        actorPrefab = PrefabLibrary.Prefabs["ActorPrefab"];
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class StageManager : MonoBehaviour
 
 
 
-        currentStage = StageRepo.Get(latestSave.Stage.CurrentStage);
+        currentStage = StageLibrary.Get(latestSave.Stage.CurrentStage);
         RestartStage();
     }
 
@@ -62,13 +62,13 @@ public class StageManager : MonoBehaviour
         // Show persistent hero actors from ProfileRepo
         foreach (var partyMember in ProfileRepo.CurrentProfile.CurrentSave.Party.Members)
         {
-            var hero = ActorRepo.Actors[partyMember.Character];
+            var hero = ActorLibrary.Actors[partyMember.Character];
             var stageActor = new StageActor(partyMember.Character, Team.Hero, hero.Level, location: RNG.UnoccupiedLocation);
             SpawnActor(stageActor);
         }
 
         //HACK: For some reason enemies might spawn on top of g.Actors.Heroes because they aren't loaded at same time...
-        //g.Actors.All.ForEach(s => s.flags.HasSpawned = true);
+        //g.Actors.All.ForEach(s => s.Flags.HasSpawned = true);
 
         // Load the wave based on currentWave.
         if (currentStage.Waves.Count > 0)
@@ -130,7 +130,7 @@ public class StageManager : MonoBehaviour
         instance.team = stageActor.Team;
 
         // Stats and metadata
-        instance.stats = ActorRepo.Actors[stageActor.characterName].GetStats(stageActor.Level);
+        instance.Stats = ActorLibrary.Actors[stageActor.characterName].GetStats(stageActor.Level);
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
 
@@ -164,7 +164,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void CheckWaveCompletion()
     {
-        bool allEnemiesDead = g.Actors.Enemies.All(x => x.flags.HasSpawned && x.isDead);
+        bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.isDead);
         if (!allEnemiesDead)
             return;
 
@@ -190,7 +190,7 @@ public class StageManager : MonoBehaviour
         IEnumerator loadNextStageRoutine()
         {
             var stageName = currentStage.NextStage;
-            currentStage = StageRepo.Get(stageName);
+            currentStage = StageLibrary.Get(stageName);
             RestartStage();
             yield return Wait.None();
         }
@@ -203,7 +203,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void CheckGameOver()
     {
-        bool allPlayersDead = g.Actors.Heroes.All(x => x.flags.HasSpawned && x.isDead);
+        bool allPlayersDead = g.Actors.Heroes.All(x => x.Flags.HasSpawned && x.isDead);
         if (!allPlayersDead)
             return;
 

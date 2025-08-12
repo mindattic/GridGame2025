@@ -69,7 +69,7 @@ public class TimerBar3D : MonoBehaviour
         // 2) shift it so the left edge stays in place
         float newWidth = fillSpriteWidth * ratio;
         // when newWidth < fillSpriteWidth, (fillSpriteWidth - newWidth) > 0
-        // multiply by -0.5 to move the center left by half the shrink-amount
+        // multiply by -0.5 to Move the center left by half the shrink-amount
         float offset = (fillSpriteWidth - newWidth) * -0.5f;
         fillRenderer.transform.localPosition
             = fillOriginalPosition

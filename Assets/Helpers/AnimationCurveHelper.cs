@@ -10,7 +10,7 @@ namespace Assets.Helper
         public static AnimationCurve EaseInOut => AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         /// <summary>
-        /// A linear move curve, maintaining a constant speed from start to finish.
+        /// A linear Move curve, maintaining a constant speed from start to finish.
         /// </summary>
         public static AnimationCurve Linear => new AnimationCurve(
             new Keyframe(0, 0),
@@ -79,7 +79,7 @@ namespace Assets.Helper
         );
 
         /// <summary>
-        /// An elastic move that springs back and forth before settling.
+        /// An elastic Move that springs back and forth before settling.
         /// </summary>
         public static AnimationCurve Elastic => new AnimationCurve(
             new Keyframe(0, 0),

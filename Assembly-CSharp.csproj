@@ -9,7 +9,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -62,11 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
-    <Compile Include="Assets\Scripts\Repository\SoundEffectRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\SoundEffectLibrary.cs" />
     <Compile Include="Assets\Data\Actor\Soldier01.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
-    <Compile Include="Assets\Scripts\Repository\PrefabRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\PrefabLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
     <Compile Include="Assets\Data\Actor\Ronin.cs" />
     <Compile Include="Assets\Scripts\Board\TargetIndicator.cs" />
@@ -87,7 +88,7 @@
     <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Board\FocusIndicator.cs" />
-    <Compile Include="Assets\Scripts\Repository\TrailEffectRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\TrailEffectLibrary.cs" />
     <Compile Include="Assets\Helpers\SortingHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemySpawnSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
+    <Compile Include="Assets\Scripts\Instances\Actor\ActorAnimation.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Data\Actor\Soldier02.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
@@ -136,17 +138,16 @@
     <Compile Include="Assets\Data\Actor\Cleric.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
-    <Compile Include="Assets\Scripts\Repository\ActorRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\ActorLibrary.cs" />
     <Compile Include="Assets\Scripts\Instances\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
     <Compile Include="Assets\Helpers\CombatLogHelper.cs" />
-    <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\StageLibrary.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Portrait3DInstance.cs" />
-    <Compile Include="Assets\Scripts\Repository\ProfileRepo.cs" />
     <Compile Include="Assets\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
@@ -185,11 +186,11 @@
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\RectVector3.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
-    <Compile Include="Assets\Scripts\Repository\FontRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\FontLibrary.cs" />
     <Compile Include="Assets\Helpers\ColorHelper.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPostAttackSequence.cs" />
-    <Compile Include="Assets\Scripts\Repository\TutorialRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\StatGrowth.cs" />
@@ -217,7 +218,7 @@
     <Compile Include="Assets\Helpers\AttackHelper.cs" />
     <Compile Include="Assets\Data\Actor\Vampire.cs" />
     <Compile Include="Assets\Helpers\ScreenHelper.cs" />
-    <Compile Include="Assets\Scripts\Repository\MaterialRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\MaterialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
     <Compile Include="Assets\Data\Actor\Sellsword.cs" />
@@ -238,7 +239,6 @@
     <Compile Include="Assets\Scripts\Models\TextStyle.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityButtonManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineStrand.cs" />
-    <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorStats.cs" />
@@ -255,7 +255,7 @@
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
     <Compile Include="Assets\Data\Actor\Soldier03.cs" />
-    <Compile Include="Assets\Scripts\Repository\TextStyleRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\TextStyleLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
@@ -267,7 +267,7 @@
     <Compile Include="Assets\Scripts\Sequences\PincerAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
     <Compile Include="Assets\Helpers\CombatTextHelper.cs" />
-    <Compile Include="Assets\Scripts\Repository\VisualEffectRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\VfxLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\TargetModeOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
     <Compile Include="Assets\Scripts\Sequences\PincerAttackSupportSequence.cs" />
@@ -280,12 +280,12 @@
     <Compile Include="Assets\Scripts\Managers\StageManager.cs" />
     <Compile Include="Assets\Data\Actor\RedNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorThumbnail.cs" />
-    <Compile Include="Assets\Scripts\Repository\SpriteRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\SpriteLibrary.cs" />
     <Compile Include="Assets\Helpers\PositionHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TileManager.cs" />
-    <Compile Include="Assets\Scripts\Repository\MusicTrackRepo.cs" />
+    <Compile Include="Assets\Scripts\Repository\MusicTrackLibrary.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyStartSequence.cs" />
   </ItemGroup>
   <ItemGroup>

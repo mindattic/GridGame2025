@@ -23,8 +23,8 @@ public class PauseManager : MonoBehaviour
 
     private void Start()
     {
-        pause = SpriteRepo.Sprites["Pause"];
-        paused = SpriteRepo.Sprites["Paused"];
+        pause = SpriteLibrary.Sprites["Pause"];
+        paused = SpriteLibrary.Sprites["Paused"];
         pauseButtonImage.sprite = pause;
         g.PauseOverlay.Hide();
         pauseMenu.SetActive(false);
