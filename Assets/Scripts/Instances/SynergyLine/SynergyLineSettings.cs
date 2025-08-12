@@ -71,7 +71,7 @@ public static class SynergyLineSettings
     public static readonly Vector2 HaloPhaseOffsetRange = new Vector2(0.0f, 6.283185f); // 0 to 2*pi
 
     // Geometry
-    public static readonly int SegmentCount = 56;
+    public static readonly int SegmentCount = 32;
 
     // Rev behavior for wiggles
     public static readonly float RevChancePerSecond = 0.12f;

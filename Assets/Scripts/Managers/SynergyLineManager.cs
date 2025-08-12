@@ -14,7 +14,7 @@ public class SynergyLineManager : MonoBehaviour
     [SerializeField] private GameObject synergyLinePrefab;
 
     // Active lines keyed by an order-independent pair key
-    private readonly Dictionary<string, SynergyLineInstance> activeLines = new Dictionary<string, SynergyLineInstance>();
+    private readonly Dictionary<string, SynergyLineInstance> collection = new Dictionary<string, SynergyLineInstance>();
 
     private void Awake()
     {
@@ -22,58 +22,50 @@ public class SynergyLineManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a synergy line between the two actors if one does not already exist.
+    /// Spawns a synergy instance between the two actors if one does not already exist.
     /// Order-independent: (supporter, attacker) is treated the same as (attacker, supporter).
     /// </summary>
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
-        if (supporter == null || attacker == null || synergyLinePrefab == null)
-            return;
-
         string key = GenerateKey(supporter, attacker);
-
-        // Prevent duplicate spawn in either order
-        if (activeLines.ContainsKey(key))
+        if (key == null) return;
+        if (collection.ContainsKey(key))
             return;
 
-        var lineObj = Instantiate(synergyLinePrefab, transform);
-        lineObj.name = key;
-
-        var line = lineObj.GetComponent<SynergyLineInstance>();
-        if (line == null)
-        {
-            Debug.LogError("SynergyLinePrefab is missing SynergyLineInstance.");
-            Destroy(lineObj);
-            return;
-        }
-
-        line.Spawn(supporter, attacker);
-        activeLines[key] = line;
+        var prefab = Instantiate(synergyLinePrefab, transform);
+        prefab.name = key;
+        var instance = prefab.GetComponent<SynergyLineInstance>();
+        instance.Spawn(supporter, attacker);
+        collection[key] = instance;
     }
 
     /// <summary>
-    /// Removes the synergy line between the two actors if it exists.
+    /// Removes the synergy instance between the two actors if it exists.
     /// Order-independent removal.
     /// </summary>
     public void Remove(ActorInstance a, ActorInstance b)
     {
         string key = GenerateKey(a, b);
-        if (activeLines.TryGetValue(key, out var line))
+        if (key == null) return;
+
+        if (collection.TryGetValue(key, out var line))
         {
             if (line != null)
                 Destroy(line.gameObject);
 
-            activeLines.Remove(key);
+            collection.Remove(key);
         }
     }
 
     /// <summary>
-    /// Checks if a synergy line already exists between the two actors in any order.
+    /// Checks if a synergy instance already exists between the two actors in any order.
     /// </summary>
     public bool Exists(ActorInstance a, ActorInstance b)
     {
         string key = GenerateKey(a, b);
-        return activeLines.ContainsKey(key);
+        if (key == null) return false;
+
+        return collection.ContainsKey(key);
     }
 
     /// <summary>
@@ -81,12 +73,12 @@ public class SynergyLineManager : MonoBehaviour
     /// </summary>
     public void ClearAll()
     {
-        foreach (var kv in activeLines)
+        foreach (var kv in collection)
         {
             if (kv.Value != null)
                 Destroy(kv.Value.gameObject);
         }
-        activeLines.Clear();
+        collection.Clear();
     }
 
     /// <summary>
@@ -95,13 +87,16 @@ public class SynergyLineManager : MonoBehaviour
     /// </summary>
     private static string GenerateKey(ActorInstance a, ActorInstance b)
     {
-        int ha = a != null ? RuntimeHelpers.GetHashCode(a) : 0;
-        int hb = b != null ? RuntimeHelpers.GetHashCode(b) : 0;
+        if (a == null || b == null) return null;
 
-        // Order-independent by sorting the two values
-        int first = ha <= hb ? ha : hb;
-        int second = ha <= hb ? hb : ha;
+        string na = a.characterName;
+        string nb = b.characterName;
 
-        return $"Synergy_{first}_{second}";
+        // Order independent by sorting the normalized names
+        bool aFirst = string.CompareOrdinal(na, nb) <= 0;
+        string first = aFirst ? na : nb;
+        string second = aFirst ? nb : na;
+
+        return $"Synergy_{first}{second}";
     }
 }
