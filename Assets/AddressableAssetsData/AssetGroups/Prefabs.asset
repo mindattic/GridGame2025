@@ -75,6 +75,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 526e3799f58cd824ea4aa7e143bdf827
+    m_Address: Prefabs/SynergyLineSegmentPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 70ed2dcb9cfeb86489b788049c8eeb4c
     m_Address: Prefabs/CombatTextPrefab
     m_ReadOnly: 0
@@ -112,6 +117,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dfd66e3027064c74080a03cf0a5ac39f
     m_Address: Prefabs/CanvasParticlePrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e19fd25619f95274b89af87599d386e9
+    m_Address: Prefabs/SynergyLinePrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -68,6 +68,7 @@
     <Compile Include="Assets\Editor\DebugWindow.Keyboard.cs" />
     <Compile Include="Assets\Editor\CombatLog.cs" />
     <Compile Include="Assets\Editor\DebugWindow.Checkboxes.cs" />
+    <Compile Include="Assets\Editor\SynergyLinePrefabBuilder.cs" />
     <Compile Include="Assets\Editor\DebugWindow.GameStats.cs" />
     <Compile Include="Assets\Editor\DebugWindow.cs" />
     <Compile Include="Assets\Editor\DebugWindow.Scenes.cs" />

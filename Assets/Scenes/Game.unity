@@ -5645,6 +5645,7 @@ GameObject:
   - component: {fileID: 1751276318}
   - component: {fileID: 1751276320}
   - component: {fileID: 1751276319}
+  - component: {fileID: 1751276322}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -5719,6 +5720,7 @@ MonoBehaviour:
   sortingManager: {fileID: 0}
   targetLineManager: {fileID: 0}
   abilityButtonManager: {fileID: 0}
+  synergyLineManager: {fileID: 0}
   background: {fileID: 0}
   boardOverlay: {fileID: 0}
   focusIndicator: {fileID: 0}
@@ -5742,7 +5744,6 @@ MonoBehaviour:
   focusedActor: {fileID: 0}
   selectedHero: {fileID: 0}
   targetActor: {fileID: 0}
-  fade: {fileID: 0}
   timerBar2D: {fileID: 0}
   portraitsContainer: {fileID: 0}
   board: {fileID: 0}
@@ -6361,6 +6362,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actor: {fileID: 0}
   sortingOrder: 0
+--- !u!114 &1751276322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751276275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa96c96cfc0500c42b273f17538135fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  synergyLinePrefab: {fileID: 0}
 --- !u!1 &1751426063
 GameObject:
   m_ObjectHideFlags: 0

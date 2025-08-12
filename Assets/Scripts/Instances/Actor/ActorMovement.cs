@@ -308,7 +308,7 @@ namespace Assets.Scripts.Instances.Actor
 
                 // Y twist = vertical contribution + horizontal coupling for banking
                 //float tiltY = Mathf.Clamp(
-                //    (-v.y * tiltFactor.y) + (v.x * (tiltFactor.y * 0.6f)),
+                //    (-v.y * tiltFactor.y) + (v.s * (tiltFactor.y * 0.6f)),
                 //    -maxTilt.y,
                 //    maxTilt.y
                 //);

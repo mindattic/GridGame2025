@@ -27,7 +27,7 @@ namespace Assets.Scripts.Models
     }
 
     /// <summary>
-    /// A container with all of the "bookend pairs" found for x certain team.
+    /// A container with all of the "bookend pairs" found for s certain team.
     /// </summary>
     public class PincerAttackParticipants
     {

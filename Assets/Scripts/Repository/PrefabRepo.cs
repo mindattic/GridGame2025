@@ -38,6 +38,8 @@ public static class PrefabRepo
             { "RosterSlidePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/RosterSlidePrefab") },
             { "SaveFileButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SaveFileButtonPrefab") },
             { "ScreenWidthButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ScreenWidthButtonPrefab") },
+            { "SynergyLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SynergyLinePrefab") },
+            { "SynergyLineSegmentPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SynergyLineSegmentPrefab") },
             { "ProjectilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ProjectilePrefab") },
             { "StatRow", AssetHelper.LoadAsset<GameObject>("Prefabs/StatRow") },
             { "SupportLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SupportLinePrefab") },
@@ -48,13 +50,16 @@ public static class PrefabRepo
         };
     }
 
-    // Optional helper for direct prefab access
+    // Safe direct access
     public static GameObject Get(string key)
     {
-        if (prefabs.TryGetValue(key, out var prefab))
+        if (prefabs == null)
+            Load();
+
+        if (prefabs.TryGetValue(key, out var prefab) && prefab != null)
             return prefab;
 
-        Debug.LogError($"Prefab '{key}' not found in PrefabRepo.");
+        Debug.LogError($"Prefab '{key}' not found or is null in PrefabRepo.");
         return null;
     }
 }

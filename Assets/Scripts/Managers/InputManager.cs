@@ -81,16 +81,16 @@ public class InputManager : MonoBehaviour
                                 //    g.SequenceManager.ProcessRoutine();
                                 //});
 
-                                //YieldSpawn from avility button
+                                //Show from avility button
 
 
-                                //YieldSpawn at Actor
+                                //Show at Actor
                                 //var startPosition = g.Actors.FocusedActor.position;
 
                                 //YieldSpawn at button
                                 //var startPosition = g.AbilityButtonManager.buttons.First().WorldPosition();
 
-                                //YieldSpawn at card portrait
+                                //Show at card portrait
                                 var startPosition = g.Card.PortraitWorldPosition();
 
                                 g.SequenceManager.Add(new HealAbilitySequence(startPosition, g.Actors.TargetActor));

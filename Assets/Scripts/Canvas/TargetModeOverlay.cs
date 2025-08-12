@@ -95,7 +95,7 @@ public class TargetModeOverlay : MonoBehaviour
             return;
         }
 
-        // Active. Choose animated or instant path depending on current visibility.
+        // Active. Pick animated or instant path depending on current visibility.
         bool targetVisible = ShouldBeVisible(mode);
 
         // Ensure we are active before animating in

@@ -26,7 +26,7 @@ public class ActorActionBar
     }
 
     // GetScale calculates the scaled width for the action fill elements based on a given AP value.
-    // It scales the x-component proportionally to the fraction of AP relative to MaxAP and clamps it between 0 and the initial width.
+    // It scales the s-component proportionally to the fraction of AP relative to MaxAP and clamps it between 0 and the initial width.
     private Vector3 GetScale(float value)
     {
         return new Vector3(

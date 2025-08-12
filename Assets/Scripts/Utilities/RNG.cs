@@ -1,4 +1,5 @@
 ﻿using Assets.Helper;
+using Assets.Helpers;
 using Game.Behaviors.Actor;
 using System;
 using System.Collections.Generic;
@@ -14,19 +15,14 @@ static class RNG
 {
     [ThreadStatic] public static System.Random rng = new System.Random();
 
-
     /// <summary>
-    /// Returns one uniformly random element from the list.
-    /// Returns default(T) if the list is null or empty.
+    /// Returns one uniformly random element from items.
+    /// If items is null or empty, returns defaultValue.
     /// </summary>
-    public static T PickOne<T>(IReadOnlyList<T> items)
+    public static T Pick<T>(IReadOnlyList<T> items)
     {
-        if (items == null || items.Count == 0)
-            return default;
-
-        // Replace Range(0, items.Count) with your project’s int RNG method.
-        int i = Int(0, items.Count);
-        return items[i];
+        if (items == null || items.Count < 1) return default;
+        return items[Int(0, items.Count - 1)];
     }
 
     /// <summary>
@@ -170,7 +166,7 @@ static class RNG
         //{
         //   do_something1();
         //}
-        //else if ((x -= RATIO_CHANCE_B) < 0) //Test for B
+        //else if ((s -= RATIO_CHANCE_B) < 0) //Test for B
         //{
         //   do_something2();
         //}
@@ -191,13 +187,13 @@ static class RNG
         int RATIO_TOTAL = RATIO_CHANCE_A + RATIO_CHANCE_B + RATIO_CHANCE_C;
 
         RNG random = new RNG();
-        int x = random.None(0, RATIO_TOTAL);
+        int s = random.None(0, RATIO_TOTAL);
 
-        if ((x -= RATIO_CHANCE_A) < 0) //Test for A
+        if ((s -= RATIO_CHANCE_A) < 0) //Test for A
         { 
              do_something1();
         } 
-        else if ((x -= RATIO_CHANCE_B) < 0) //Test for B
+        else if ((s -= RATIO_CHANCE_B) < 0) //Test for B
         { 
              do_something2();
         }

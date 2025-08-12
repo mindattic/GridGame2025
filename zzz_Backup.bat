@@ -31,7 +31,7 @@ echo You are about to back up:
 echo   From: %SOURCE%
 echo   To:   %BACKUP_FOLDER%\GridGame2025
 echo.
-set /p "CHOICE=Proceed with backup? (Y/N): "
+set /p "CHOICE=Proceed with backup? (y/n): "
 if /i not "%CHOICE%"=="Y" (
     echo Backup aborted by user.
     pause

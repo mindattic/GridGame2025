@@ -311,6 +311,18 @@ public class DebugManager : MonoBehaviour
         }
     }
 
+    public void SpawnSynergyLines()
+    {
+        foreach (var attacker in g.Actors.Heroes)
+        {
+            var supporters = g.PincerAttackManager.FindSupporters(attacker);
+            foreach (var supporter in supporters)
+            {
+                g.SynergyLineManager.Spawn(supporter, attacker);
+            }
+        }
+    }
+
     public void SpawnTooltip1()
     {
         var tt = new TooltipSettings()
@@ -418,7 +430,7 @@ public class DebugManager : MonoBehaviour
 
     public ActorInstance SpawnSoldier()
     {
-        return SpawnRandomByGroup(ActorGroup.Soldier);
+        return SpawnRandomByGroup(ActorGroup.Soldier | ActorGroup.Soldier);
     }
 
 
@@ -435,20 +447,15 @@ public class DebugManager : MonoBehaviour
     /// Spawns a random enemy whose ActorData matches all requested groups.
     /// Example: SpawnRandomByGroup(ActorGroup.Soldier | ActorGroup.Elite)
     /// </summary>
-    public ActorInstance SpawnRandomByGroup(ActorGroup required)
+    public ActorInstance SpawnRandomByGroup(ActorGroup requiredGroups)
     {
-        var candidates = CharacterHelper.AllCharacters.Where(key =>
-            {
-                var data = ActorRepo.Get(key);
-                return data != null && data.InGroups(required);
-            })
-            .ToArray();
+        var actorData = ActorRepo.Actors
+            .Where(x => x.Value.InGroups(requiredGroups)).ToList()
+            .Shuffle().FirstOrDefault().Value;
 
-        if (candidates.Length == 0)
-            return null;
+        if (actorData == null) return null;
 
-        var pick = RNG.PickOne(candidates);
-        return g.StageManager.AddEnemy(pick);
+        return g.StageManager.AddEnemy(actorData.Character);
     }
 
     public void Fireball()

@@ -16,6 +16,6 @@ public class WorldMapInstance : MonoBehaviour
     void Update()
     {
         //y -= 0.01f;
-        //transform.position = new Vector3(transform.position.x, y, transform.position.z);  
+        //transform.position = new Vector3(transform.position.s, y, transform.position.z);  
     }
 }

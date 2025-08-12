@@ -60,6 +60,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public SortingManager sortingManager;
     [HideInInspector] public TargetLineManager targetLineManager;
     [HideInInspector] public AbilityButtonManager abilityButtonManager;
+    [HideInInspector] public SynergyLineManager synergyLineManager;
 
     [HideInInspector] public BackgroundInstance background;
 
@@ -220,6 +221,7 @@ public class GameManager : Singleton<GameManager>
         sortingManager = game.GetComponent<SortingManager>();
         targetLineManager = game.GetComponent<TargetLineManager>();
         abilityButtonManager = game.GetComponent<AbilityButtonManager>();
+        synergyLineManager = game.GetComponent<SynergyLineManager>();
 
 
 

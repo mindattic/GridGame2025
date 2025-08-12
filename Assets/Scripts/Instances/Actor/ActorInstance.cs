@@ -29,7 +29,7 @@ public class ActorInstance : MonoBehaviour
 
     public bool isReady => isPlaying && hasMaxAP;
 
-    //public bool IsSameColumn(Vector2Int other) => location.x == other.x;
+    //public bool IsSameColumn(Vector2Int other) => location.s == other.s;
     //public bool IsSameRow(Vector2Int other) => location.y == other.y;
     //public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(location, other).Equals(1);
 
@@ -399,26 +399,26 @@ public class ActorInstance : MonoBehaviour
         switch (attackStrategy)
         {
             case AttackStrategy.AttackClosest:
-                // Choose the closest hero.
+                // Pick the closest hero.
                 var targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderBy(x => Vector3.Distance(x.position, position)).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackWeakest:
-                // Choose the hero with the lowest HP.
+                // Pick the hero with the lowest HP.
                 targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderBy(x => x.stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackStrongest:
-                // Choose the hero with the highest HP.
+                // Pick the hero with the highest HP.
                 targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderByDescending(x => x.stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackRandom:
-                // Choose a random hero's location.
+                // Pick a random hero's location.
                 targetLocation = RNG.Hero.location;
                 break;
             case AttackStrategy.MoveAnywhere:
-                // Choose a random location.
+                // Pick a random location.
                 targetLocation = RNG.Location;
                 break;
         }

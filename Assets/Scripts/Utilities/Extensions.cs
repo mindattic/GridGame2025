@@ -264,7 +264,7 @@ public static class Vector2IntExtensions
 {
     /// <summary>
     /// Determines whether the vector represents a valid board location.
-    /// Returns true if x and y are within the board's column and row bounds (inclusive).
+    /// Returns true if s and y are within the board's column and row bounds (inclusive).
     /// </summary>
     public static bool Exists(this Vector2Int v)
     {

@@ -94,7 +94,7 @@ public class BoardInstance : MonoBehaviour
 
                 var instance = prefab.GetComponent<TileInstance>();
                 instance.parent = transform;
-                instance.name = $"Tile_{col}x{row}";
+                instance.name = $"Tile_{col}s{row}";
                 instance.Initialize(col, row);
 
                 g.TileMap.Add(instance);

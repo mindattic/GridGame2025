@@ -68,7 +68,7 @@ public class StageManager : MonoBehaviour
         }
 
         //HACK: For some reason enemies might spawn on top of g.Actors.Heroes because they aren't loaded at same time...
-        //g.Actors.All.ForEach(x => x.flags.HasSpawned = true);
+        //g.Actors.All.ForEach(s => s.flags.HasSpawned = true);
 
         // Load the wave based on currentWave.
         if (currentStage.Waves.Count > 0)

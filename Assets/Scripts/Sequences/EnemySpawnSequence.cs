@@ -9,7 +9,7 @@ namespace Assets.Scripts.Events
     {
         public override IEnumerator ProcessRoutine()
         {
-            // YieldSpawn any enemies flagged as spawnable
+            // Show any enemies flagged as spawnable
             var spawnableEnemies = g.Actors.Enemies.Where(x => x.isSpawnable).ToList();
             foreach (var enemy in spawnableEnemies)
             {

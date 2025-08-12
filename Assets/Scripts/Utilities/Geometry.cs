@@ -17,7 +17,7 @@ public class Geometry
     /// <returns>World position (Vector3) corresponding to the grid location.</returns>
     public static Vector3 CalculatePositionByLocation(Vector2Int location)
     {
-        // Calculate x position: start from board offset and add tileSize multiplied by the x coordinate.
+        // Calculate s position: start from board offset and add tileSize multiplied by the s coordinate.
         float x = g.Board.offset.x + (g.TileSize * location.x);
         // Calculate y position: start from board offset and subtract tileSize multiplied by the y coordinate.
         float y = g.Board.offset.y + -(g.TileSize * location.y);
@@ -64,7 +64,7 @@ public class Geometry
         // Return the first tile with an exact match of the location.
         return g.Tiles.First(x => x.location == location);
         // Alternatively, you could order by distance if needed.
-        // return tiles.OrderBy(x => Vector2Int.Distance(x.boardLocation, boardLocation)).First();
+        // return tiles.OrderBy(s => Vector2Int.Distance(s.boardLocation, boardLocation)).First();
     }
 
     // The following methods provide spatial relationship checks between ActorInstances or grid locations.
@@ -132,7 +132,7 @@ public class Geometry
         Vector2 difference = b - a;
         if (Mathf.Abs(difference.x) > Mathf.Abs(difference.y))
         {
-            // Horizontal move: positive x indicates East, negative indicates West.
+            // Horizontal move: positive s indicates East, negative indicates West.
             return difference.x > 0 ? Direction.East : Direction.West;
         }
         else
@@ -396,7 +396,7 @@ public class Geometry
 
     /// <summary>
     /// Determines the starting actor based on the specified dominant axis.
-    /// For horizontal, the actor with the lower x value (more left) is chosen.
+    /// For horizontal, the actor with the lower s value (more left) is chosen.
     /// For vertical, the actor with the higher y value (closer to the top) is chosen.
     /// </summary>
     public static ActorInstance GetStartActor(ActorInstance actor1, ActorInstance actor2, Axis axis)
@@ -407,7 +407,7 @@ public class Geometry
     }
 
     /// <summary>
-    /// Creates a quaternion (rotation) from Euler angles (x, y, z).
+    /// Creates a quaternion (rotation) from Euler angles (s, y, z).
     /// </summary>
     public static Quaternion Rotation(float x, float y, float z)
     {

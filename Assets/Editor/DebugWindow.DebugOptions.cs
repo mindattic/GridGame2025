@@ -42,6 +42,8 @@ public partial class DebugWindow
             case DebugOptions.SpawnDamageText: g.DebugManager.SpawnDamageText(); break;
             case DebugOptions.SpawnHealText: g.DebugManager.SpawnHealText(); break;
             case DebugOptions.SpawnSupportLines: g.DebugManager.SpawnSupportLines(); break;
+            case DebugOptions.SpawnSynergyLines: g.DebugManager.SpawnSynergyLines(); break;
+
             case DebugOptions.SpawnTitle: g.DebugManager.TitleTest(); break;
             case DebugOptions.SpawnTooltip1: g.DebugManager.SpawnTooltip1(); break;
             case DebugOptions.SpawnTooltip2: g.DebugManager.SpawnTooltip2(); break;

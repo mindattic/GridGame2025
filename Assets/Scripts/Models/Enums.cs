@@ -99,6 +99,7 @@ public enum DebugOptions
     SpawnDamageText,
     SpawnHealText,
     SpawnSupportLines,
+    SpawnSynergyLines,
     SpawnTitle,
     SpawnTooltip1,
     SpawnTooltip2,

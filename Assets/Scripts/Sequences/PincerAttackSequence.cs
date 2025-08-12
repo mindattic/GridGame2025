@@ -43,7 +43,7 @@ namespace Assets.Scripts.Events
                 pair.attacker2.action.ShrinkRoutine()
             );
 
-            // Choose an adjacent target per attacker
+            // Pick an adjacent target per attacker
             var opp1 = Geometry.GetClosestOpponent(pair.attacker1, pair.attackResults1);
             var opp2 = Geometry.GetClosestOpponent(pair.attacker2, pair.attackResults2);
 

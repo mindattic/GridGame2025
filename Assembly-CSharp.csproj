@@ -105,6 +105,7 @@
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopInSequence.cs" />
     <Compile Include="Assets\Helpers\BezierCurveHelper.cs" />
+    <Compile Include="Assets\Scripts\Models\Vector7.cs" />
     <Compile Include="Assets\Scripts\Instances\CombatTextInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Helpers\DeathHelper.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
+    <Compile Include="Assets\Scripts\Instances\SynergyLineSegment.cs" />
     <Compile Include="Assets\Helpers\CombatLogHelper.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
@@ -172,6 +174,7 @@
     <Compile Include="Assets\Data\Actor\Yeti.cs" />
     <Compile Include="Assets\Data\Actor\Paladin.cs" />
     <Compile Include="Assets\Data\Actor\Bat.cs" />
+    <Compile Include="Assets\Scripts\Managers\SynergyLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Portrait2DInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
@@ -234,6 +237,7 @@
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
     <Compile Include="Assets\Scripts\Models\TextStyle.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityButtonManager.cs" />
+    <Compile Include="Assets\Scripts\Instances\SynergyLineInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />

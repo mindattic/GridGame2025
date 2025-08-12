@@ -79,6 +79,7 @@ namespace Assets.Helpers
         public static TargetLineManager TargetLineManager => GameManager.instance.targetLineManager;
         public static AbilityButtonManager AbilityButtonManager => GameManager.instance.abilityButtonManager;
 
+        public static SynergyLineManager SynergyLineManager => GameManager.instance.synergyLineManager;
 
         // Board visuals and overlays
         public static BackgroundInstance Background => GameManager.instance.background;
