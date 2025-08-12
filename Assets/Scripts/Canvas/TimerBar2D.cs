@@ -76,7 +76,7 @@ public class TimerBar2D : MonoBehaviour
         if (rootRect != null && g.Board != null && g.Board.screenEdges != null)
         {
             rootRect.pivot = new Vector2(0.5f, 0f);              // bottom center
-            rootRect.position = g.Board.screenEdges.Top;          // place at board top midpoint
+            rootRect.position = g.Board.screenEdges.Top + new Vector3(0, 100);          // place at board top midpoint
         }
     }
 

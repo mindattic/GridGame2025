@@ -164,6 +164,7 @@ public static class SpriteRepo
             { "Paused", AssetHelper.LoadAsset<Sprite>("Sprites/Paused") },
             { "Forest", AssetHelper.LoadAsset<Sprite>("Sprites/Forest") },
             { "Black16x16", AssetHelper.LoadAsset<Sprite>("Sprites/Black16x16") },
+            { "SynergySpark", AssetHelper.LoadAsset<Sprite>("Sprites/SynergySpark") },
         };
 
         weaponTypes = new Dictionary<string, Sprite>
