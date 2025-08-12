@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using g = Assets.Helpers.GameHelper;
+using settings = SynergyLineSettings;
 
 /// <summary>
 /// Wispy multi-strand line between two actors.
@@ -18,9 +19,6 @@ public class SynergyLineInstance : MonoBehaviour
 
     // Prefab cache
     private GameObject synergyLineSegmentPrefab;
-
-    // Settings
-    private SynergyLineSettings settings = SynergyLineSettings.Defaults();
 
     // Runtime
     private readonly List<SynergyLineSegment> segments = new List<SynergyLineSegment>(8);
@@ -52,32 +50,7 @@ public class SynergyLineInstance : MonoBehaviour
     {
         Live.Remove(this);
     }
-
-    /// <summary>
-    /// Broadcast helper. Debug UI can call this to hot-apply during play.
-    /// </summary>
-    public static void ApplyToAll(SynergyLineSettings newSettings)
-    {
-        for (int i = 0; i < Live.Count; i++)
-        {
-            if (Live[i] != null) Live[i].ApplySettings(newSettings);
-        }
-    }
-
-    /// <summary>
-    /// Replace internal settings and reconfigure strands.
-    /// </summary>
-    public void ApplySettings(SynergyLineSettings newSettings)
-    {
-        if (newSettings == null) return;
-        settings.CopyFrom(newSettings);
-
-        if (segments.Count > 0)
-        {
-            ApplySettingsToSegments();
-        }
-    }
-
+ 
     /// <summary>
     /// Entry point. Combines stats, configures segments, begins loop.
     /// </summary>

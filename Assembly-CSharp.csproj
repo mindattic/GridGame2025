@@ -110,7 +110,6 @@
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Helpers\DeathHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\TimerBar3D.cs" />
-    <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineSettingsComponent.cs" />
     <Compile Include="Assets\Helpers\TextureHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />

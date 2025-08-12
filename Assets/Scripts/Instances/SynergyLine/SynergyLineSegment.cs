@@ -43,7 +43,7 @@ public class SynergyLineSegment : MonoBehaviour
     private float valPulseSpeed;
 
     // Base green in HSV (computed once)
-    private static readonly Color BaseGreenRGB = new Color(0.25f, 1.00f, 0.25f); // warmer true green
+    private static readonly Color BaseGreenRGB = new Color(0.25f, 1.00f, 0.25f);
     private static float BaseHue = 0.42f;
     private static float BaseSat = 0.9f;
     private static float BaseVal = 1.0f;
@@ -56,6 +56,9 @@ public class SynergyLineSegment : MonoBehaviour
     private float glowPulseAmp;
     private float glowPulseSpeed;
     private float glowHDRBoost;
+
+    // Derived halo rate so alpha can breathe at a different speed than width
+    private float glowAlphaPulseSpeed;
 
     // Geometry
     private int segmentCount;
@@ -170,6 +173,10 @@ public class SynergyLineSegment : MonoBehaviour
         glowPulseSpeed = inGlowPulseSpeed;
         glowHDRBoost = inGlowHDRBoost;
 
+        // Alpha breathes at a different rate than width for a richer look.
+        // Multiplier is subtle to avoid desync looking chaotic. Adjust if you want stronger separation.
+        glowAlphaPulseSpeed = glowPulseSpeed * 1.3f;
+
         segmentCount = Mathf.Max(2, inSegmentCount);
         line.positionCount = segmentCount;
         glow.positionCount = segmentCount;
@@ -183,7 +190,7 @@ public class SynergyLineSegment : MonoBehaviour
     }
 
     /// <summary>
-    /// External fade, 0 to 1.
+    /// External fade, 0 to 1. Also pins current core width.
     /// </summary>
     public void SetFade(float k)
     {
@@ -195,6 +202,7 @@ public class SynergyLineSegment : MonoBehaviour
     /// <summary>
     /// Per-frame update of color and geometry. Halo breathes even at low fade.
     /// </summary>
+    // In Tick()
     public void Tick()
     {
         if (!configured || a == null || b == null) return;
@@ -202,11 +210,12 @@ public class SynergyLineSegment : MonoBehaviour
         // Colors
         Color greenTint = ComputeTintedGreen();
 
+        // Apply fade and CoreAlpha from settings
         Color core = greenTint;
-        core.a *= fade;
+        core.a *= fade * SynergyLineSettings.CoreAlpha;
 
         Color halo = greenTint;
-        float alphaPulse = 0.65f + 0.35f * Mathf.Sin(Time.time * glowPulseSpeed + strandIndex);
+        float alphaPulse = 0.65f + 0.35f * Mathf.Sin(Time.time * glowAlphaPulseSpeed + strandIndex);
         halo.a = Mathf.Clamp01(glowAlpha * alphaPulse * Mathf.Pow(fade, 0.9f));
         Color haloHDR = halo * glowHDRBoost;
 
@@ -216,7 +225,7 @@ public class SynergyLineSegment : MonoBehaviour
             ApplyColor(glow, haloHDR);
         }
 
-        // Positions
+        // Positions (unchanged)
         Vector3 start = a.position; start.z = 0f;
         Vector3 end = b.position; end.z = 0f;
 
@@ -239,10 +248,8 @@ public class SynergyLineSegment : MonoBehaviour
 
         float twoPi = Mathf.PI * 2f;
 
-        // Slow envelope to stretch and shrink the strand
         float envelope = 1f + Mathf.Sin(Time.time * 0.35f + phaseOffset * 0.7f) * 0.35f;
 
-        // Halo width pulse keeps breathing regardless of fade
         if (useHalo)
         {
             float haloWidthPulse = 1f + Mathf.Sin(Time.time * glowPulseSpeed + strandIndex) * glowPulseAmp;
@@ -265,6 +272,7 @@ public class SynergyLineSegment : MonoBehaviour
             glow.SetPosition(i, p);
         }
     }
+
 
     /// <summary>
     /// Clear renderers when despawning.
