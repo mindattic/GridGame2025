@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 using Label = TMPro.TextMeshProUGUI;
+using Assets.Helpers;
 
 public class SettingsManager : MonoBehaviour
 {
@@ -55,6 +56,6 @@ public class SettingsManager : MonoBehaviour
     public void UpdateActorPanMultiplier()
     {
         var slider = actorPanMultiplier.GetComponentInChildren<Slider>();
-        ProfileRepo.CurrentProfile.Settings.ActorPanMultiplier = slider.value;
+        ProfileHelper.CurrentProfile.Settings.ActorPanMultiplier = slider.value;
     }
 }

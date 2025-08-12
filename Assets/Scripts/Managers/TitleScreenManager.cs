@@ -2,6 +2,7 @@ using Assets.Helper;
 using UnityEngine;
 using scene = Assets.Helpers.SceneHelper;
 using Label = TMPro.TextMeshProUGUI;
+using Assets.Helpers;
 
 public class TitleScreenManager : MonoBehaviour
 {
@@ -18,11 +19,11 @@ public class TitleScreenManager : MonoBehaviour
     private void Awake()
     {
         //Verify that game is ready to run
-        if (!ProfileRepo.HasProfiles())
+        if (!ProfileHelper.HasProfiles())
             return;
 
         profileButtonLabel = GameObject.Find(GameObjectHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
-        profileButtonLabel.GetComponent<Label>().text = ProfileRepo.CurrentProfile.Key;
+        profileButtonLabel.GetComponent<Label>().text = ProfileHelper.CurrentProfile.Key;
     }
 
     private void Start()
@@ -32,7 +33,7 @@ public class TitleScreenManager : MonoBehaviour
 
     public void OnContinueButtonClicked()
     {
-        ProfileRepo.CurrentProfile.CurrentSave = ProfileRepo.CurrentProfile.LatestSave;
+        ProfileHelper.CurrentProfile.CurrentSave = ProfileHelper.CurrentProfile.LatestSave;
         scene.Change.ToGame();
     }
 

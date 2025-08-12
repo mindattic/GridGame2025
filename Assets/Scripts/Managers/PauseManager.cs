@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 using g = Assets.Helpers.GameHelper;
+using Assets.Helpers;
 
 public class PauseManager : MonoBehaviour
 {
@@ -72,7 +73,7 @@ public class PauseManager : MonoBehaviour
 
     public void OnSaveGameButtonClicked()
     {
-        ProfileRepo.Save(overwrite: true);
+        ProfileHelper.Save(overwrite: true);
         Resume();
     }
 
@@ -85,7 +86,7 @@ public class PauseManager : MonoBehaviour
     public void OnPartyManagerButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileRepo.Save(overwrite: true);
+        ProfileHelper.Save(overwrite: true);
         scene.Change.ToPartyManager();
     }
 
@@ -97,21 +98,21 @@ public class PauseManager : MonoBehaviour
     public void OnStageSelectButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileRepo.Save(overwrite: true);
+        ProfileHelper.Save(overwrite: true);
         scene.Change.ToStageSelect();
     }
 
     public void OnSettingsButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileRepo.Save(overwrite: true);
+        ProfileHelper.Save(overwrite: true);
         scene.Change.ToSettings();
     }
 
     public void OnTitleScreenButtonClicked()
     {
         Time.timeScale = 1f;
-        ProfileRepo.Save(overwrite: true);
+        ProfileHelper.Save(overwrite: true);
         scene.Change.ToTitleScreen();
     }
 

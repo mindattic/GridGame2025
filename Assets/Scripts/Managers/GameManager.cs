@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Helpers;
 using Assets.Scripts.GUI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
@@ -135,7 +136,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
-        if (!ProfileRepo.HasProfiles())
+        if (!ProfileHelper.HasProfiles())
             return;
 
         Application.targetFrameRate = targetFramerate;
@@ -260,7 +261,7 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         // By now, profiles are guaranteed to be loaded.
-        if (!ProfileRepo.HasProfiles())
+        if (!ProfileHelper.HasProfiles())
             return;
 
 

@@ -390,7 +390,7 @@ GameObject:
   - component: {fileID: 6456493057903806793}
   - component: {fileID: 2298891273073808337}
   m_Layer: 5
-  m_Name: ConfirmationDialog
+  m_Name: ConfirmationDialogPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

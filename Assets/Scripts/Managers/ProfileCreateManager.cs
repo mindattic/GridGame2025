@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Helpers;
 using System.Collections;
 using UnityEngine;
 using c = Assets.Helpers.CanvasHelper;
@@ -24,7 +25,7 @@ public class ProfileCreateManager : MonoBehaviour
         {
             KeyboardDialog.Show("Who are you?", onSubmit: (value) =>
             {
-                ProfileRepo.CreateProfile(value);
+                ProfileHelper.CreateProfile(value);
                 scene.Change.ToTitleScreen();
             });
 

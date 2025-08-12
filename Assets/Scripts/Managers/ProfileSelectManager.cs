@@ -6,6 +6,7 @@ using c = Assets.Helpers.CanvasHelper;
 using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
+using Assets.Helpers;
 
 public class ProfileSelectManager : MonoBehaviour
 {
@@ -65,11 +66,11 @@ public class ProfileSelectManager : MonoBehaviour
 
         AddCreateNewProfileButton();
 
-        if (!ProfileRepo.HasProfiles())
+        if (!ProfileHelper.HasProfiles())
             return;
 
         //Add each profile as a button
-        foreach (var item in ProfileRepo.Profiles.Values)
+        foreach (var item in ProfileHelper.Profiles.Values)
         {
             AddProfileSelectButton(item);
         }
@@ -87,7 +88,7 @@ public class ProfileSelectManager : MonoBehaviour
         button.onClick.AddListener(() => OnCreateNewProfileButtonClicked());
 
         Label label = instance.GetComponentInChildren<Label>();
-        label.text = "Data New Profile";
+        label.text = "Create New Profile";
     }
 
     public void AddProfileSelectButton(Profile item)
@@ -107,7 +108,7 @@ public class ProfileSelectManager : MonoBehaviour
 
     private void OnProfileButtonClicked(string key)
     {
-        ProfileRepo.SelectProfile(key);
+        ProfileHelper.SelectProfile(key);
         scene.Change.ToTitleScreen();
     }
 

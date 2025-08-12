@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Helpers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,7 +27,7 @@ public class OverworldManager : MonoBehaviour
     private void Awake()
     {
         // Verify that game is ready to run
-        if (!ProfileRepo.HasProfiles())
+        if (!ProfileHelper.HasProfiles())
             return;
 
         scrollView = GameObject.Find(GameObjectHelper.Overworld.ScrollView).GetComponent<RectTransform>();

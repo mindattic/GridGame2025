@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1142d6dcbdc122341acb5617b377a888
+    m_Address: Prefabs/MessageBoxPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1b2a90b6d99a569488879ad4a0ac551f
     m_Address: Prefabs/AbilityButtonPrefab
     m_ReadOnly: 0
@@ -46,7 +51,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3bcf5e30aaea635489fb6601b264b191
-    m_Address: Prefabs/ConfirmationDialog
+    m_Address: Prefabs/ConfirmationDialogPrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

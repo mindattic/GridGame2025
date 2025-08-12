@@ -170,10 +170,18 @@ namespace Assets.Helper
         public static class ConfirmationDialog
         {
             public const string ConfirmDialog = "Canvas/ConfirmationDialog";
-            public const string Panel = ConfirmDialog + "/Panel";
-            public const string Prompt = Panel + "/Prompt";
-            public const string ButtonYes = Panel + "/ButtonYes";
-            public const string ButtonNo = Panel + "/ButtonNo";
+            public const string Panel = "Canvas/ConfirmationDialog/Panel";
+            public const string Prompt = "Canvas/ConfirmationDialog/Panel/Prompt";
+            public const string ButtonYes = "Canvas/ConfirmationDialog/Panel/ButtonYes";
+            public const string ButtonNo = "Canvas/ConfirmationDialog/Panel/ButtonNo";
+        }
+
+        public static class MessageBox
+        {
+            public const string ConfirmDialog = "Canvas/MessageBox";
+            public const string Panel = "Canvas/MessageBox/Panel";
+            public const string Prompt = "Canvas/MessageBox/Panel/Prompt";
+            public const string ButtonOk = "Canvas/MessageBox/Panel/ButtonOk";
         }
 
         public static class KeyboardDialog

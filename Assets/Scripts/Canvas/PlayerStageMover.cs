@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Helpers;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -66,7 +67,7 @@ public class PlayerStageMover : MonoBehaviour
         yield return Wait.For(Interval.HalfSecond);
 
         // Update hero profile stage
-        ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
+        ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = targetStageName;
 
 
         scene.Change.ToGame();

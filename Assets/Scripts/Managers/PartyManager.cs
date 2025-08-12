@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
+using Assets.Helpers;
 
 public class PartyManager : MonoBehaviour
 {
@@ -47,17 +48,17 @@ public class PartyManager : MonoBehaviour
 
     private bool IsInParty(string character)
     {
-        return ProfileRepo.CurrentProfile.CurrentSave.Party.Members.Any(x => x.Character == character);
+        return ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Any(x => x.Character == character);
     }
 
     //Properties
-    private int partyMemberCount => ProfileRepo.CurrentProfile.CurrentSave.Party.Members.Count;
+    private int partyMemberCount => ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Count;
 
 
     private void Awake()
     {
         //Validate a current profile exists
-        if (!ProfileRepo.HasCurrentProfile)
+        if (!ProfileHelper.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
             scene.Change.ToProfileCreate();
@@ -65,7 +66,7 @@ public class PartyManager : MonoBehaviour
         }
 
         //Validate a current save exists
-        if (!ProfileRepo.HasCurrentSave)
+        if (!ProfileHelper.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
             scene.Change.ToSaveFileSelect();
@@ -135,7 +136,7 @@ public class PartyManager : MonoBehaviour
 
     private void LoadRosterSlides()
     {
-        var rosterMembers = ProfileRepo.CurrentProfile.CurrentSave.Roster.Members;
+        var rosterMembers = ProfileHelper.CurrentProfile.CurrentSave.Roster.Members;
         foreach (var member in rosterMembers)
         {
             // Instantiate the slide prefab and retrieve the RosterSlideInstance script
@@ -286,7 +287,7 @@ public class PartyManager : MonoBehaviour
 
     private void UpdateStatsDisplay(string character)
     {
-        var rosterMember = ProfileRepo.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.Character == character).First();
+        var rosterMember = ProfileHelper.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.Character == character).First();
         Load(rosterMember.Character, rosterMember.Level);
     }
 
@@ -337,7 +338,7 @@ public class PartyManager : MonoBehaviour
             return;
         }
 
-        ProfileRepo.AddToParty(characterName);
+        ProfileHelper.AddToParty(characterName);
         UpdateAddRemoveButton(characterName); // Refresh button state
     }
 
@@ -346,7 +347,7 @@ public class PartyManager : MonoBehaviour
 
     private void RemoveFromParty(string characterName)
     {
-        ProfileRepo.RemoveFromParty(characterName);
+        ProfileHelper.RemoveFromParty(characterName);
         UpdateAddRemoveButton(characterName); // Refresh button state
     }
 

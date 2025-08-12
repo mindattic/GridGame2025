@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Helpers;
 using Assets.Scripts.GUI;
 using Assets.Scripts.Models;
 using Game.Manager;
@@ -30,7 +31,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        var latestSave = ProfileRepo.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
+        var latestSave = ProfileHelper.CurrentProfile.LatestSave; // Assumes a helper property LatestSave is defined.
         if (latestSave == null)
         {
             Debug.LogError("No saved game state found.");
@@ -51,7 +52,7 @@ public class StageManager : MonoBehaviour
     public void RestartStage()
     {
         // Reset everything for a new stage.
-        currentWave = ProfileRepo.CurrentProfile.CurrentSave.Stage.CurrentWave;
+        currentWave = ProfileHelper.CurrentProfile.CurrentSave.Stage.CurrentWave;
         g.ActorManager.Clear();
         g.DottedLineManager.Clear();
         g.SupportLineManager.Clear();
@@ -59,8 +60,8 @@ public class StageManager : MonoBehaviour
         g.TileManager.Reset();
         //g.TurnManager.Initialize();
 
-        // Show persistent hero actors from ProfileRepo
-        foreach (var partyMember in ProfileRepo.CurrentProfile.CurrentSave.Party.Members)
+        // Show persistent hero actors from ProfileHelper
+        foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)
         {
             var hero = ActorLibrary.Actors[partyMember.Character];
             var stageActor = new StageActor(partyMember.Character, Team.Hero, hero.Level, location: RNG.UnoccupiedLocation);

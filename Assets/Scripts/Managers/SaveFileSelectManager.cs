@@ -38,7 +38,7 @@ public class SaveFileSelectManager : MonoBehaviour
     private void Start()
     {
         //Validate a current profile exists
-        if (!ProfileRepo.HasCurrentProfile)
+        if (!ProfileHelper.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
             scene.Change.ToProfileCreate();
@@ -64,11 +64,11 @@ public class SaveFileSelectManager : MonoBehaviour
         Clear();
 
         //Retrieve all saves in profile
-        string savesPath = Path.Combine(ProfileRepo.CurrentProfile.Folder, "Saves");
+        string savesPath = Path.Combine(ProfileHelper.CurrentProfile.Folder, "Saves");
         var saveFiles = Directory.GetFiles(savesPath, "*.json").ToArray();
 
         //Add each save as a button
-        foreach (var item in ProfileRepo.CurrentProfile.SaveStates)
+        foreach (var item in ProfileHelper.CurrentProfile.SaveStates)
         {
             AddLoadSaveFileButton(item);
         }
@@ -76,7 +76,7 @@ public class SaveFileSelectManager : MonoBehaviour
 
     public void AddLoadSaveFileButton(SaveState item)
     {
-        string savesPath = Path.Combine(ProfileRepo.CurrentProfile.Folder, "Saves");
+        string savesPath = Path.Combine(ProfileHelper.CurrentProfile.Folder, "Saves");
         string filePath = Path.Combine(savesPath, item.FileName);
 
         //Instantiate the prefab as a child of `content`
@@ -105,7 +105,7 @@ public class SaveFileSelectManager : MonoBehaviour
             SaveState selectedSave = JsonConvert.DeserializeObject<SaveState>(json);
             if (selectedSave != null)
             {
-                ProfileRepo.CurrentProfile.CurrentSave = selectedSave;
+                ProfileHelper.CurrentProfile.CurrentSave = selectedSave;
 
                 // Proceed to load the game scene using the active save.
                 scene.Change.ToGame();

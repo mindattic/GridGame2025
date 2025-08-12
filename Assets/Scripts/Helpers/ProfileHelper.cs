@@ -96,7 +96,7 @@ namespace Assets.Helpers
         {
             if (!Directory.Exists(FolderHelper.Folder.Profiles))
             {
-                Debug.LogWarning($"[ProfileRepo] Profiles folder not found. Creating: {FolderHelper.Folder.Profiles}");
+                Debug.LogWarning($"[ProfileHelper] Profiles folder not found. Creating: {FolderHelper.Folder.Profiles}");
                 Directory.CreateDirectory(FolderHelper.Folder.Profiles);
             }
 
@@ -113,13 +113,13 @@ namespace Assets.Helpers
                 }
                 else
                 {
-                    Debug.LogWarning($"[ProfileRepo] Failed to load profile: {key}");
+                    Debug.LogWarning($"[ProfileHelper] Failed to load profile: {key}");
                 }
             }
 
             if (!profiles.Any())
             {
-                Debug.LogWarning("[ProfileRepo] No valid profiles loaded.");
+                Debug.LogWarning("[ProfileHelper] No valid profiles loaded.");
                 return false;
             }
 

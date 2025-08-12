@@ -62,7 +62,7 @@ namespace Game.Models.Profile
         {
             Index = index;
             Timestamp = timestamp;
-            //Folder = Path.Combine(ProfileRepo.CurrentProfile.Folder, "Saves");
+            //Folder = Path.Combine(ProfileHelper.CurrentProfile.Folder, "Saves");
             FileName = $"Save{index:D3}.json";
             Global = global;
             Stage = stage;

@@ -26,13 +26,14 @@ public static class PrefabLibrary
             { "AttackLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/AttackLinePrefab") },
             { "CanvasParticlePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CanvasParticlePrefab") },
             { "CoinPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CoinPrefab") },
-            { "ConfirmationDialog", AssetHelper.LoadAsset<GameObject>("Prefabs/ConfirmationDialog") },
+            { "ConfirmationDialogPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ConfirmationDialogPrefab") },
             { "CombatTextPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CombatTextPrefab") },
             { "DottedLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/DottedLinePrefab") },
             { "FootstepPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/FootstepPrefab") },
             { "GhostPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/GhostPrefab") },
             { "KeyboardDialog", AssetHelper.LoadAsset<GameObject>("Prefabs/KeyboardDialog") },
             { "KeyButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/KeyButtonPrefab") },
+            { "MessageBoxPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/MessageBoxPrefab") },
             { "Portrait2DPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/Portrait2DPrefab") },
             { "Portrait3DPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/Portrait3DPrefab") },
             { "RosterSlidePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/RosterSlidePrefab") },
@@ -45,8 +46,7 @@ public static class PrefabLibrary
             { "SupportLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SupportLinePrefab") },
             { "TargetLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TargetLinePrefab") },
             { "TilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TilePrefab") },
-            { "TooltipPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TooltipPrefab") },
-            { "WallPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/WallPrefab") }
+            { "TooltipPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TooltipPrefab") }
         };
     }
 

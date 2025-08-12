@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
 using Label = TMPro.TextMeshProUGUI;
+using Assets.Helpers;
 
 public class StageSelectManager : MonoBehaviour
 {
@@ -70,7 +71,7 @@ public class StageSelectManager : MonoBehaviour
 
     private void OnStageSelectButtonClicked(string stageName)
     {
-        ProfileRepo.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
+        ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
         scene.Change.ToGame();
     }
 
