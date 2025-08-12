@@ -91,7 +91,7 @@ public static class SynergyLineSettings
     public static float revActiveSpeedMul = 1.2f;
 
     public static float minSize = 0.10f;
-    public static float maxSize = 0.16f;
+    public static float maxSize = 0.14f;
 
     public static float minLifetime = 0.40f;
     public static float maxLifetime = 2f;

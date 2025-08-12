@@ -370,6 +370,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d02c13fdf13f0c5469b00faad95d0474
+    m_Address: Sprites/SynergySpark
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d07afbf831712b34e9dc7689a931acf6
     m_Address: Sprites/WeaponTypes/Scythe
     m_ReadOnly: 0

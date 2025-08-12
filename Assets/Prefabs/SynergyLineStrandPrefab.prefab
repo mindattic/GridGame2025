@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 847131116198260908}
   - component: {fileID: 7786854457056077302}
   m_Layer: 0
-  m_Name: SynergyLineSegmentPrefab
+  m_Name: SynergyLineStrandPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

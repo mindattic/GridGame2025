@@ -141,7 +141,6 @@
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
-    <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineSegment.cs" />
     <Compile Include="Assets\Helpers\CombatLogHelper.cs" />
     <Compile Include="Assets\Scripts\Repository\StageRepo.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
@@ -238,6 +237,7 @@
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
     <Compile Include="Assets\Scripts\Models\TextStyle.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityButtonManager.cs" />
+    <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineStrand.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActions.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />

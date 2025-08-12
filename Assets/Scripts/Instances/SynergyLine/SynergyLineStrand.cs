@@ -1,4 +1,4 @@
-﻿// Assets/Scripts/Instances/SynergyLineSegment.cs
+﻿// Assets/Scripts/Instances/SynergyLineStrand.cs
 // Waveform strand with sine + Perlin jitter, halo, alpha control, rev bursts,
 // halo desync, and sparkles that travel along the line and despawn at the end.
 // All random values use RNG instead of UnityEngine.Random.
@@ -7,7 +7,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 [RequireComponent(typeof(LineRenderer))]
-public class SynergyLineSegment : MonoBehaviour
+public class SynergyLineStrand : MonoBehaviour
 {
     // Renderers
     private LineRenderer line;
