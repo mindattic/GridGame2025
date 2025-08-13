@@ -493,10 +493,6 @@ public class ActorInstance : MonoBehaviour
     //DieRoutine: StartCoroutine that handles the actor's death sequence, including fading out, spawning coins, and deactivation.
     public IEnumerator DieRoutine()
     {
-        //Abort if the actor is not in a dying state.
-        if (!isDying)
-            yield break;
-
         //Before: Show actor to fully opaque.
         var alpha = 1f;
         Render.SetAlpha(alpha);

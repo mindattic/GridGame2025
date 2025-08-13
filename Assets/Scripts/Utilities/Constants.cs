@@ -98,7 +98,7 @@ public static class Intermission
 
         public static class HealthBar
         {
-            public static float Drain = Interval.OneSecond;
+            public static float Drain = Interval.QuarterSecond;
         }
 
         public static class ActionBar

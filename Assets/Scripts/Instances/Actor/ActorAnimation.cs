@@ -162,13 +162,8 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Starts a bump animation toward the target. Optional routine runs at the bump apex.
         /// </summary>
-        public void Bump(ActorInstance target, IEnumerator routine = null)
-        {
-            if (!isActive || !isAlive)
-                return;
-
-            instance.StartCoroutine(BumpRoutine(target, routine));
-        }
+        public void Bump(ActorInstance target, IEnumerator routine = null) 
+            => instance.StartCoroutine(BumpRoutine(target, routine));
 
         /// <summary>
         /// BumpRoutine sequence:
@@ -176,6 +171,7 @@ namespace Assets.Scripts.Instances.Actor
         /// 2) Lunge forward to apex and optionally run the routine routine.
         /// 3) Return to start.
         /// </summary>
+        /// 
         public IEnumerator BumpRoutine(ActorInstance target, IEnumerator routine = null)
         {
             g.SortingManager.OnBump(instance, target);
@@ -222,11 +218,11 @@ namespace Assets.Scripts.Instances.Actor
             position = bumpPosition;
             rotation = Quaternion.Euler(0f, 0f, targetRotationZ);
 
+            //Bump has reached it's apex:
             if (routine != null)
                 instance.StartCoroutine(routine);
 
-            // If you spawn VFX here, do it after reaching the apex.
-
+           
             elapsedTime = 0f;
             while (elapsedTime < returnDuration)
             {

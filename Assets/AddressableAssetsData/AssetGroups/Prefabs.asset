@@ -55,11 +55,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3eba79bc8a6fa36488692d363b9eb0b1
-    m_Address: Prefabs/WallPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 409fab7dbe45fd248adcbda47cc4bcd6
     m_Address: Prefabs/KeyButtonPrefab
     m_ReadOnly: 0

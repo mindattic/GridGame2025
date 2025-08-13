@@ -5681,6 +5681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textureResolution: 1024
+  dragSensitivity: 0.05
   deviceType: 
   targetFramerate: 60
   vSyncCount: 0
@@ -6374,7 +6375,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa96c96cfc0500c42b273f17538135fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  synergyLinePrefab: {fileID: 4742857754028974969, guid: e19fd25619f95274b89af87599d386e9, type: 3}
 --- !u!1 &1751426063
 GameObject:
   m_ObjectHideFlags: 0
@@ -7845,9 +7845,9 @@ RectTransform:
   - {fileID: 1612043258}
   m_Father: {fileID: 655101921}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -435.1, y: -73.2}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -73.2}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &2014384097
@@ -7864,7 +7864,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   glowCurve:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.515565
+      value: 0.52333987
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.012085
+      value: -0.021427155
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

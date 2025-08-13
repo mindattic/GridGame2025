@@ -24,10 +24,8 @@ public class ActorHealthBar
 
     private Vector3 GetScale(float value)
     {
-        return new Vector3(
-            Mathf.Clamp(initialScale.x * (value / stats.MaxHP), 0, initialScale.x),
-            initialScale.y,
-            initialScale.z);
+        var x = Mathf.Clamp(initialScale.x * (value / stats.MaxHP), 0f, initialScale.x);
+        return new Vector3(x, initialScale.y, initialScale.z);
     }
 
     public void Update()
@@ -42,17 +40,12 @@ public class ActorHealthBar
 
     private IEnumerator DrainRoutine()
     {
-        //Check abort conditions
-        if (stats.PreviousHP == stats.HP)
-            yield break;
-
         //Before:
         Vector3 scale;
         isDraining = true;
 
         //During:
         yield return Wait.For(Intermission.Before.HealthBar.Drain);
-
         while (stats.HP < stats.PreviousHP)
         {
             stats.PreviousHP -= Increment.HealthBar.Drain;
