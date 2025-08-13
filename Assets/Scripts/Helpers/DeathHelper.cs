@@ -17,7 +17,7 @@ namespace Assets.Helpers
                 yield break;
 
             // wait until all their HP‐bars are empty
-            yield return new WaitUntil(() => dyingActors.All(x => x.HealthBar.isEmpty));
+            //yield return new WaitUntil(() => dyingActors.All(x => x.HealthBar.isEmpty));
 
             // now actually kill them
             foreach (var actor in dyingActors)
