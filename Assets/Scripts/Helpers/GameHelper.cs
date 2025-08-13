@@ -54,6 +54,8 @@ namespace Assets.Helpers
         public static TurnManager TurnManager => GameManager.instance.turnManager;
 
         public static SupportLineManager SupportLineManager => GameManager.instance.supportLineManager;
+        public static SynergyLineManager SynergyLineManager => GameManager.instance.synergyLineManager;
+
         public static AttackLineManager AttackLineManager => GameManager.instance.attackLineManager;
         public static CombatTextManager CombatTextManager => GameManager.instance.combatTextManager;
         public static GhostManager GhostManager => GameManager.instance.ghostManager;
@@ -85,8 +87,7 @@ namespace Assets.Helpers
         public static TargetLineManager TargetLineManager => GameManager.instance.targetLineManager;
         public static AbilityButtonManager AbilityButtonManager => GameManager.instance.abilityButtonManager;
 
-        public static SynergyLineManager SynergyLineManager => GameManager.instance.synergyLineManager;
-
+       
         // Board visuals and overlays
         public static BackgroundInstance Background => GameManager.instance.background;
         public static BoardOverlay BoardOverlay => GameManager.instance.boardOverlay;

@@ -4,6 +4,7 @@ using Assets.Scripts.Sequences;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
@@ -251,13 +252,13 @@ public class PincerAttackManager : MonoBehaviour
         {
             foreach (var supporter in p.supporters1)
             {
-                g.SupportLineManager.Spawn(supporter, p.attacker1);
+                g.SynergyLineManager.Spawn(supporter, p.attacker1);
                 g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker1, supporter));
             }
 
             foreach (var supporter in p.supporters2)
             {
-                g.SupportLineManager.Spawn(supporter, p.attacker2);
+                g.SynergyLineManager.Spawn(supporter, p.attacker2);
                 g.SequenceManager.Add(new PincerAttackSupportSequence(p.attacker2, supporter));
             }
         }
@@ -308,7 +309,8 @@ public class PincerAttackManager : MonoBehaviour
 
         // Cleanup and advance turn
         yield return g.BoardOverlay.FadeOutRoutine();
-        g.SupportLineManager.Clear();
+ 
+        g.SynergyLineManager.Clear();
         participants.Clear();
         g.TurnManager.NextTurn();
     }

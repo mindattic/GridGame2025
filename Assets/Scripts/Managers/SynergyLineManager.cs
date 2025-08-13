@@ -1,9 +1,9 @@
 ﻿// Assets/Scripts/Instances/SynergyLineManager.cs
-// Manages unique SynergyLine instances between two actors.
-
 using UnityEngine;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using System.Collections;
+using g = Assets.Helpers.GameHelper;
+
 
 /// <summary>
 /// Spawns and tracks SynergyLine instances between two ActorInstances.
@@ -11,10 +11,11 @@ using System.Runtime.CompilerServices;
 /// </summary>
 public class SynergyLineManager : MonoBehaviour
 {
-    [SerializeField] private GameObject synergyLinePrefab;
+    private GameObject synergyLinePrefab;
 
     // Active lines keyed by an order-independent pair key
-    private readonly Dictionary<string, SynergyLineInstance> collection = new Dictionary<string, SynergyLineInstance>();
+    private readonly Dictionary<string, SynergyLineInstance> collection
+        = new Dictionary<string, SynergyLineInstance>();
 
     private void Awake()
     {
@@ -29,56 +30,65 @@ public class SynergyLineManager : MonoBehaviour
     {
         string key = GenerateKey(supporter, attacker);
         if (key == null) return;
-        if (collection.ContainsKey(key))
-            return;
+
+        // Clean up stale entry (e.g., instance destroyed externally).
+        if (collection.TryGetValue(key, out var existing))
+        {
+            if (existing == null) collection.Remove(key);
+            else return; // already active
+        }
 
         var go = Instantiate(synergyLinePrefab, transform);
         go.name = key;
+
         var instance = go.GetComponent<SynergyLineInstance>();
         instance.Spawn(supporter, attacker);
+        g.SortingManager.OnSynergyLineSpawn(instance);
         collection[key] = instance;
     }
 
-    /// <summary>
-    /// Removes the synergy instance between the two actors if it exists.
-    /// Order-independent removal.
-    /// </summary>
-    public void Remove(ActorInstance a, ActorInstance b)
+    public void Despawn(ActorInstance a, ActorInstance b)
     {
         string key = GenerateKey(a, b);
         if (key == null) return;
 
-        if (collection.TryGetValue(key, out var line))
+        if (collection.TryGetValue(key, out var instance) && instance != null)
         {
-            if (line != null)
-                Destroy(line.gameObject);
-
-            collection.Remove(key);
+            instance.Despawn();
+            StartCoroutine(DespawnRoutine(key, instance));
         }
     }
 
     /// <summary>
-    /// Checks if a synergy instance already exists between the two actors in any order.
+    /// Waits until the instance is actually destroyed, then removes the key.
     /// </summary>
-    public bool Exists(ActorInstance a, ActorInstance b)
+    private IEnumerator DespawnRoutine(string key, SynergyLineInstance instance)
     {
-        string key = GenerateKey(a, b);
-        if (key == null) return false;
-
-        return collection.ContainsKey(key);
+        // Unity null check becomes true after Destroy
+        while (instance != null) yield return null;
+        collection.Remove(key);
     }
 
-    /// <summary>
-    /// Clears all active synergy lines managed by this instance.
-    /// </summary>
-    public void ClearAll()
+    public void Clear()
     {
-        foreach (var kv in collection)
+        // Make a copy to avoid modifying the dictionary while iterating
+        var items = new List<KeyValuePair<string, SynergyLineInstance>>(collection);
+
+        foreach (var kv in items)
         {
-            if (kv.Value != null)
-                Destroy(kv.Value.gameObject);
+            var key = kv.Key;
+            var instance = kv.Value;
+
+            if (instance != null)
+            {
+                instance.Despawn();
+                StartCoroutine(DespawnRoutine(key, instance));
+            }
+            else
+            {
+                collection.Remove(key);
+            }
         }
-        collection.Clear();
     }
 
     /// <summary>
@@ -92,11 +102,11 @@ public class SynergyLineManager : MonoBehaviour
         string na = a.characterName;
         string nb = b.characterName;
 
-        // Order independent by sorting the normalized names
+        // Order independent by sorting the names
         bool aFirst = string.CompareOrdinal(na, nb) <= 0;
         string first = aFirst ? na : nb;
         string second = aFirst ? nb : na;
 
-        return $"Synergy_{first}{second}";
+        return $"SynergyLine_{first}{second}";
     }
 }

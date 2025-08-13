@@ -55,7 +55,7 @@ public class StageManager : MonoBehaviour
         currentWave = ProfileHelper.CurrentProfile.CurrentSave.Stage.CurrentWave;
         g.ActorManager.Clear();
         g.DottedLineManager.Clear();
-        g.SupportLineManager.Clear();
+        g.SynergyLineManager.Clear();
         g.CoinCounter.Refresh();
         g.TileManager.Reset();
         //g.TurnManager.Initialize();

@@ -38,7 +38,7 @@ public class SortEvent
 /// </summary>
 public class SortingManager : MonoBehaviour
 {
-   
+
 
     /// <summary>
     /// Global event actors subscribe to in order to update their sorting.
@@ -56,8 +56,9 @@ public class SortingManager : MonoBehaviour
     public void OnActorFocus()
     {
         if (!g.Actors.HasFocusedActor) return;
-        Invoke(new SortEvent { 
-            Type = SortEventType.Focus, 
+        Invoke(new SortEvent
+        {
+            Type = SortEventType.Focus,
             Initiator = g.Actors.FocusedActor
         });
     }
@@ -136,6 +137,12 @@ public class SortingManager : MonoBehaviour
     {
         var isAbove = supportLine.supporter.sortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
         supportLine.SetSorting(isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow);
+    }
+
+    public void OnSynergyLineSpawn(SynergyLineInstance synergyLineInstance)
+    {
+        var isAbove = synergyLineInstance.supporter.sortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
+        synergyLineInstance.SetSorting(isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow);
     }
 
     public void OnPortraitPopIn(Portrait3DInstance portrait)

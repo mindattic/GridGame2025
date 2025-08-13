@@ -1,51 +1,48 @@
 ﻿// Assets/Scripts/Instances/SynergyLineInstance.cs
-// Uses its own settings copy. No global Active. Supports live apply via a static registry.
+// Wispy multi-instance line between two actors with fixed spawn anchors.
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
-using g = Assets.Helpers.GameHelper;
 using settings = SynergyLineSettings;
 
 /// <summary>
-/// Wispy multi-strand line between two actors.
+/// Wispy multi-instance line between two actors.
 /// Each instance owns a SynergyLineSettings copy. Use ApplyToAll to live-tune while playing.
 /// </summary>
 public class SynergyLineInstance : MonoBehaviour
 {
-
-    // Prefab cache
+    // Prefab cache.
     private GameObject synergyLineStrandPrefab;
 
-    // Runtime
+    // Runtime.
     private readonly List<SynergyLineStrand> strands = new List<SynergyLineStrand>(8);
-    private Transform a;
-    private Transform b;
-    private Renderer aRenderer;
-    private Renderer bRenderer;
-    private SortingGroup aGroup;
-    private SortingGroup bGroup;
+    public ActorInstance supporter { get; private set; }
+    public ActorInstance attacker { get; private set; }
+
+    // Pinned world-space endpoints captured at spawn (tile centers)
+    private Vector3 aWS;
+    private Vector3 bWS;
 
     private bool playing;
     private bool despawnRequested;
-    private Coroutine loopCo;
 
-    // Cached per-strand weights for reconfigure
     private float[] wNormPerStrand;
 
     private void Awake()
     {
         synergyLineStrandPrefab = PrefabLibrary.Get("SynergyLineStrandPrefab");
     }
- 
-    /// <summary>
-    /// Entry point. Combines Stats, configures strands, begins loop.
-    /// </summary>
+
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
-        a = supporter.transform;
-        b = attacker.transform;
+        this.supporter = supporter;
+        this.attacker = attacker;
+
+        // Capture tile-centered, world-space anchors ONCE.
+        aWS = supporter.currentTile.position;
+        bWS = attacker.currentTile.position;
 
         Vector7 weights = new Vector7(
             supporter.Stats.Strength + attacker.Stats.Strength,
@@ -57,31 +54,16 @@ public class SynergyLineInstance : MonoBehaviour
             supporter.Stats.Luck + attacker.Stats.Luck
         );
 
-        Configure(a, b, weights);
+        Configure(weights);
         StartLoop();
     }
 
-    public void Despawn(float fadeSeconds = -1f)
+  
+    public void Despawn() => despawnRequested = true;
+
+    public void Configure(Vector7 weights)
     {
-        //if (fadeSeconds >= 0f) 
-        //    settings.FadeOutTime = fadeSeconds;
-        despawnRequested = true;
-    }
-
-    public void Configure(Transform start, Transform end, Vector7 weights)
-    {
-        a = start;
-        b = end;
-
-        aGroup = a != null ? a.GetComponentInParent<SortingGroup>() : null;
-        bGroup = b != null ? b.GetComponentInParent<SortingGroup>() : null;
-
-        if (aGroup == null) aRenderer = a != null ? a.GetComponentInParent<SpriteRenderer>() : null;
-        if (bGroup == null) bRenderer = b != null ? b.GetComponentInParent<SpriteRenderer>() : null;
-
-        EnsureSegments(settings.WaveformCount);
-
-        // STR, VIT, AGI, STA, INT, WIS, LCK
+        // Compute normalized weights across strands.
         float[] w = new float[7];
         w[0] = Mathf.Max(0f, weights.str);
         w[1] = Mathf.Max(0f, weights.vit);
@@ -98,27 +80,26 @@ public class SynergyLineInstance : MonoBehaviour
             wNormPerStrand = new float[settings.WaveformCount];
 
         for (int i = 0; i < settings.WaveformCount; i++)
-            wNormPerStrand[i] = (w[i % 7] / max);
+            wNormPerStrand[i] = w[i % 7] / max;
 
         float phaseStep = (Mathf.PI * 2f) / Mathf.Max(1, settings.WaveformCount);
 
-        string layerName;
-        int baseOrder;
-        ResolveSortingBelowActors(out layerName, out baseOrder);
-
         EnsureSegments(settings.WaveformCount);
+
+        string layer = Assets.Helpers.SortingHelper.Layer.SupportLineBelow; // SortingManager can override
+        int baseOrder = 0;
 
         for (int i = 0; i < settings.WaveformCount; i++)
         {
-            float wNorm = wNormPerStrand != null && i < wNormPerStrand.Length ? wNormPerStrand[i] : 0.5f;
-
+            float wNorm = (i < wNormPerStrand.Length) ? wNormPerStrand[i] : 0.5f;
             float widthAbs = Mathf.Lerp(0.75f, 1.25f, wNorm) * settings.BaseWidth;
             float radiusAbs = Mathf.Lerp(0.75f, 1.25f, wNorm) * settings.BaseRadius;
             float phase = phaseStep * i;
 
             var s = strands[i];
             s.Configure(
-                a, b,
+                aWS, 
+                bWS,
                 widthAbs,
                 radiusAbs,
                 phase,
@@ -127,7 +108,7 @@ public class SynergyLineInstance : MonoBehaviour
                 settings.NoiseScale,
                 settings.NoiseSpeed,
                 settings.RadiusOverT,
-                sortingLayer: layerName,
+                sortingLayer: layer,
                 sortingOrder: baseOrder + settings.ExtraFrontBias + (i * settings.OrderOffsetPerWave),
                 inStrandIndex: i,
                 inWeightNorm: wNorm,
@@ -150,7 +131,6 @@ public class SynergyLineInstance : MonoBehaviour
 
             s.SetFade(0f);
             s.Tick();
-            //s.PrewarmSparks(20); // start with some mid-flight sparks
         }
 
         for (int i = settings.WaveformCount; i < strands.Count; i++)
@@ -162,7 +142,7 @@ public class SynergyLineInstance : MonoBehaviour
         if (playing) return;
         playing = true;
         despawnRequested = false;
-        loopCo = StartCoroutine(LoopRoutine());
+        StartCoroutine(LoopRoutine());
     }
 
     private IEnumerator LoopRoutine()
@@ -206,9 +186,6 @@ public class SynergyLineInstance : MonoBehaviour
 
     private void TickAll()
     {
-        if (a != null) { var pa = a.position; pa.z = 0f; a.position = pa; }
-        if (b != null) { var pb = b.position; pb.z = 0f; b.position = pb; }
-
         int n = Mathf.Min(settings.WaveformCount, strands.Count);
         for (int i = 0; i < n; i++) strands[i].Tick();
     }
@@ -227,27 +204,20 @@ public class SynergyLineInstance : MonoBehaviour
             go.name = "SynergyLine_" + strands.Count;
             go.SetActive(true);
 
-            var strand = go.GetComponent<SynergyLineStrand>();
-            if (strand == null) 
-                strand = go.AddComponent<SynergyLineStrand>();
+            var instance = go.GetComponent<SynergyLineStrand>();
+            if (instance == null) instance = go.AddComponent<SynergyLineStrand>();
 
-            strands.Add(strand);
+            strands.Add(instance);
         }
     }
 
-    private void ResolveSortingBelowActors(out string layerName, out int order)
+    public void SetSorting(string sortingLayer, int baseOrder = 0)
     {
-        int orderA = 0;
-        int orderB = 0;
-
-        if (aGroup != null) orderA = aGroup.sortingOrder;
-        else if (aRenderer != null) orderA = aRenderer.sortingOrder;
-
-        if (bGroup != null) orderB = bGroup.sortingOrder;
-        else if (bRenderer != null) orderB = bRenderer.sortingOrder;
-
-        layerName = Assets.Helpers.SortingHelper.Layer.SupportLineBelow;
-        int underBoth = Mathf.Min(orderA, orderB) - 1;
-        order = underBoth;
+        int n = Mathf.Min(settings.WaveformCount, strands.Count);
+        for (int i = 0; i < n; i++)
+        {
+            int order = baseOrder + settings.ExtraFrontBias + (i * settings.OrderOffsetPerWave);
+            strands[i].SetSorting(sortingLayer, order);
+        }
     }
 }
