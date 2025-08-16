@@ -8,13 +8,10 @@ public partial class DebugWindow
     // RenderCheckboxes provides several toggles for various debug options.
     private void RenderCheckboxes()
     {
-
-        bool onCheckChanged;
-
         GUILayout.BeginHorizontal();
 
         // Toggle to show or hide actor name tags.
-        onCheckChanged = EditorGUILayout.Toggle("Show Actor Name?", g.DebugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
+        bool onCheckChanged = EditorGUILayout.Toggle("Show Actor Name?", g.DebugManager.showActorNameTag, GUILayout.Width(Screen.width * 0.25f));
         if (g.DebugManager.showActorNameTag != onCheckChanged)
         {
             g.DebugManager.showActorNameTag = onCheckChanged;
