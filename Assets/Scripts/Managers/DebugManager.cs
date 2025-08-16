@@ -242,7 +242,7 @@ public class DebugManager : MonoBehaviour
         var playingEnemies = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
         foreach (var enemy in playingEnemies)
         {
-            var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitType.CriticalHit);
+            var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitOutcome.Critical);
             enemy.Damage(attackResult);
         }
         StartCoroutine(DeathHelper.ProcessRoutine());
@@ -481,8 +481,8 @@ public class DebugManager : MonoBehaviour
 
     public void VFXTest_BlueSlash1()
     {
-        var attackResult = new AttackResult(hero1, g.Actors.Enemies.First(), 3, HitType.Normal);
-        if (attackResult.HitType == HitType.CriticalHit)
+        var attackResult = new AttackResult(hero1, g.Actors.Enemies.First(), 3, HitOutcome.Normal);
+        if (attackResult.HitType == HitOutcome.Critical)
         {
             var crit = VfxLibrary.VisualEffects["YellowHit"];
             g.VfxManager.Spawn(crit, hero1.position);

@@ -9,10 +9,10 @@ namespace Assets.Helpers
         /// </summary>
         public static string GetStyle(AttackResult attackResult)
         {
-            if (attackResult.HitType == HitType.CriticalHit)
+            if (attackResult.HitType == HitOutcome.Critical)
                 return "CriticalHit"; // big, yellow
 
-            if (attackResult.HitType == HitType.GlancingBlow)
+            if (attackResult.HitType == HitOutcome.Weak)
                 return "GlancingBlow"; // small, gray
 
             return "Damage"; // normal damage style

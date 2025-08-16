@@ -11,10 +11,10 @@ namespace Assets.Scripts.Models
         public ActorInstance Attacker;
         public ActorInstance Opponent;
         public int Damage;
-        public HitType HitType;
+        public HitOutcome HitType;
 
         // Require all fields up front
-        public AttackResult(ActorInstance attacker, ActorInstance opponent, int damage, HitType hitType)
+        public AttackResult(ActorInstance attacker, ActorInstance opponent, int damage, HitOutcome hitType)
         {
             if (attacker == null) throw new System.ArgumentNullException(nameof(attacker));
             if (opponent == null) throw new System.ArgumentNullException(nameof(opponent));

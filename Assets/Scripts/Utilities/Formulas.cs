@@ -19,11 +19,11 @@ public enum ElementalDamageType
     Arcane
 }
 
-public enum HitType
+public enum HitOutcome
 {
     Normal,
-    CriticalHit,
-    GlancingBlow
+    Critical,
+    Weak
 }
 
 /// <summary>
@@ -99,7 +99,7 @@ public static class Formulas
     /// Rolls Normal, CriticalHit, or GlancingBlow based on accuracy vs evasion and crit chance.
     /// Uses float comparisons only; no integer conversions here.
     /// </summary>
-    public static HitType CalculateHitType(ActorInstance attacker, ActorInstance opponent)
+    public static HitOutcome CalculateHitType(ActorInstance attacker, ActorInstance opponent)
     {
         float accuracy = Accuracy(attacker.Stats);
         float evade = Evasion(opponent.Stats);
@@ -107,7 +107,7 @@ public static class Formulas
 
         // Miss becomes a glancing blow
         if (RNG.Float(0f, 100f) >= hitChance)
-            return HitType.GlancingBlow;
+            return HitOutcome.Weak;
 
         // Connected: check for crit
         float baseCrit = 5f;
@@ -116,9 +116,9 @@ public static class Formulas
         float critChance = baseCrit + focus + luck;
 
         if (RNG.Float(0f, 100f) < critChance)
-            return HitType.CriticalHit;
+            return HitOutcome.Critical;
 
-        return HitType.Normal;
+        return HitOutcome.Normal;
     }
 
     /// <summary>
@@ -198,7 +198,7 @@ public static class Formulas
         float amplified = resisted * 2f;
         float varied = amplified * SampleVarianceWithLuck(attacker.Stats, 0.33f);
 
-        HitType type = CalculateHitType(attacker, opponent);
+        HitOutcome type = CalculateHitType(attacker, opponent);
 
         // Single rounding step at the end. Preserve behavior of floor with a minimum of 1.
         int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied));
@@ -224,7 +224,7 @@ public static class Formulas
         float amplified = resisted * 2f;
         float varied = amplified * SampleVarianceWithLuck(caster.Stats, 0.33f);
 
-        HitType type = CalculateHitType(caster, target);
+        HitOutcome type = CalculateHitType(caster, target);
 
         // Single rounding step at the end. Preserve behavior of floor with a minimum of 1.
         int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied));

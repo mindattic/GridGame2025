@@ -68,7 +68,7 @@ public class TimerBar2D : MonoBehaviour
         g.InputManager.OnInputModeChanged += HandleModeChanged;
 
         // Apply initial state
-        HandleModeChanged(g.InputManager.inputMode);
+        HandleModeChanged(g.InputManager.InputMode);
 
         // Position the bar at the top edge of the board in screen space.
         // Canvas is Screen Space - Overlay, so screen point maps directly to rectTransform.position.
@@ -144,7 +144,7 @@ public class TimerBar2D : MonoBehaviour
     {
         switch (mode)
         {
-            case InputMode.Player:
+            case InputMode.PlayerTurn:
                 gameObject.SetActive(true);
                 break;
 

@@ -9,7 +9,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator ProcessRoutine()
         {
             g.TargetIndicator.Hide();
-            g.InputManager.inputMode = InputMode.Player;
+            g.InputManager.InputMode = InputMode.PlayerTurn;
             yield return Wait.None();
         }
     }

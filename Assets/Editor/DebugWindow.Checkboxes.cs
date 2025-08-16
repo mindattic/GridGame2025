@@ -28,27 +28,19 @@ public partial class DebugWindow
             g.DebugManager.showActorFrame = onCheckChanged;
             g.Actors.All.ForEach(x => x.Render.SetFrameEnabled(onCheckChanged));
         }
-
-        // Toggle to show or hide tutorial popups.
-        onCheckChanged = EditorGUILayout.Toggle("Show Tutorials", g.DebugManager.showTutorials, GUILayout.Width(Screen.width * 0.25f));
-        if (g.DebugManager.showTutorials != onCheckChanged)
-        {
-            g.DebugManager.showTutorials = onCheckChanged;
-            g.TutorialPopup.gameObject.SetActive(g.DebugManager.showTutorials);
-        }
-
+    
         // Toggle for hero invincibility.
         onCheckChanged = EditorGUILayout.Toggle("Are Heroes Invincible?", g.DebugManager.isHeroInvincible, GUILayout.Width(Screen.width * 0.25f));
         if (g.DebugManager.isHeroInvincible != onCheckChanged)
             g.DebugManager.isHeroInvincible = onCheckChanged;
 
+        GUILayout.EndHorizontal();
+        GUILayout.BeginHorizontal();
+
         // Toggle for enemy invincibility.
         onCheckChanged = EditorGUILayout.Toggle("Are Enemies Invincible?", g.DebugManager.isEnemyInvincible, GUILayout.Width(Screen.width * 0.25f));
         if (g.DebugManager.isEnemyInvincible != onCheckChanged)
             g.DebugManager.isEnemyInvincible = onCheckChanged;
-
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
 
         // Toggle for infinite timer.
         onCheckChanged = EditorGUILayout.Toggle("Is Timer Infinite?", g.DebugManager.isTimerInfinite, GUILayout.Width(Screen.width * 0.25f));

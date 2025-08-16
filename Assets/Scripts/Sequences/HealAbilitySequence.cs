@@ -20,7 +20,7 @@ namespace Assets.Scripts.Events
 
         public override IEnumerator ProcessRoutine()
         {
-            g.InputManager.inputMode = InputMode.None;
+            g.InputManager.InputMode = InputMode.None;
             g.Card.BouncePortrait();
 
             // FireAndForget the heal projectile

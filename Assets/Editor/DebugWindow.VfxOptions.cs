@@ -11,7 +11,7 @@ public partial class DebugWindow
         GUILayout.BeginHorizontal();
         GUILayout.Label("VfxManager", GUILayout.Width(Screen.width * 0.25f));
         selectedVfx = (VFX)EditorGUILayout.EnumPopup(selectedVfx, GUILayout.Width(Screen.width * 0.5f));
-        if (GUILayout.Button("Bounce", GUILayout.Width(Screen.width * 0.25f)))
+        if (GUILayout.Button("Play", GUILayout.Width(Screen.width * 0.25f)))
             OnPlayVFXClick();
         GUILayout.EndHorizontal();
         GUILayout.Space(10);

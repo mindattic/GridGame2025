@@ -269,8 +269,8 @@ static class RNG
     /// <summary>
     /// Random hit type.
     /// </summary>
-    public static HitType HitType()
+    public static HitOutcome HitType()
     {
-        return EnumValue<HitType>();
+        return EnumValue<HitOutcome>();
     }
 }

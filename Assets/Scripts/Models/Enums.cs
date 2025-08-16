@@ -172,7 +172,8 @@ public enum Glow
 public enum InputMode
 {
     None,
-    Player,
+    PlayerTurn,
+    EnemyTurn,
     AbilityTarget,
 }
 
@@ -347,3 +348,5 @@ public enum ActorGroup : uint
     Ranged = 1u << 9,
     Melee = 1u << 10
 }
+
+enum DefenseTiming { None, Dodge, Parry }

@@ -20,7 +20,7 @@ namespace Assets.Scripts.Events
                 yield break;
 
             // Disable input during AI resolution.
-            g.InputManager.inputMode = InputMode.None;
+            g.InputManager.InputMode = InputMode.None;
 
             // Small pacing to let any visuals settle.
             yield return Wait.None();

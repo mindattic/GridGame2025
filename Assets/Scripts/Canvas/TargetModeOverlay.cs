@@ -77,7 +77,7 @@ public class TargetModeOverlay : MonoBehaviour
         else
         {
             // Otherwise, sync to current mode instantly to avoid a pop
-            ApplyInstant(g.InputManager.inputMode);
+            ApplyInstant(g.InputManager.InputMode);
         }
     }
 
