@@ -1,4 +1,5 @@
 ﻿using Assets.Helper;
+using UnityEditor;
 using UnityEngine;
 using scene = Assets.Helpers.SceneHelper;
 
@@ -8,7 +9,7 @@ public partial class DebugWindow
     private void RenderScenes()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Scenes");
+        GUILayout.Label("SceneOptions", EditorStyles.boldLabel, GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
 
         bool isClicked;

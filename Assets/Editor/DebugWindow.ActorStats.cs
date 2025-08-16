@@ -10,7 +10,7 @@ public partial class DebugWindow
     private void RenderActorStats()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Actors", GUILayout.Width(Screen.width));
+        GUILayout.Label("Stats", EditorStyles.boldLabel, GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
 
         // Display hero Stats sorted by name.

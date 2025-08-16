@@ -6,7 +6,7 @@ using g = Assets.Helpers.GameHelper;
 public partial class DebugWindow
 {
     // RenderGameSpeed renders a dropdown to select the game speed and an Apply button.
-    private void RenderGameSpeed()
+    private void RenderGameSpeedOptions()
     {
         GUILayout.BeginHorizontal();
         GUILayout.Label("Game Speed", GUILayout.Width(Screen.width * 0.25f));
@@ -25,20 +25,20 @@ public partial class DebugWindow
             case GameSpeedOption.Paused:
                 g.GameSpeed = 0f;
                 break;
-            case GameSpeedOption.Slower:
+            case GameSpeedOption.Percent25:
                 g.GameSpeed = 0.25f;
                 break;
-            case GameSpeedOption.Slow:
+            case GameSpeedOption.Percent50:
                 g.GameSpeed = 0.5f;
                 break;
             case GameSpeedOption.Normal:
                 g.GameSpeed = 1f;
                 break;
-            case GameSpeedOption.Fast:
-                g.GameSpeed = 2f;
+            case GameSpeedOption.Percent125:
+                g.GameSpeed = 1.25f;
                 break;
-            case GameSpeedOption.Faster:
-                g.GameSpeed = 4f;
+            case GameSpeedOption.Percent150:
+                g.GameSpeed = 1.5f;
                 break;
         }
     }

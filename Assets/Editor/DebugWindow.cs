@@ -149,11 +149,11 @@ public partial class DebugWindow : EditorWindow
             {
                 RenderGameStats();
                 RenderThumbnailSettings();
-                RenderGameSpeed();
+                RenderGameSpeedOptions();
                 RenderDebugOptions();
                 RenderVfxOptions();
                 RenderKeyboard();
-                RenderCheckboxes();
+                RenderToggleOptions();
                 RenderLevels();
                 RenderScenes();
                 RenderSpawnOptions();

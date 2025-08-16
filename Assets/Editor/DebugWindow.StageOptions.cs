@@ -9,11 +9,12 @@ public partial class DebugWindow
     private void RenderLevels()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Level", GUILayout.Width(Screen.width));
+        GUILayout.Label("Stage Options", EditorStyles.boldLabel, GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
+
         GUILayout.BeginHorizontal();
 
-        if (GUILayout.Button("Load", GUILayout.Width(Screen.width * Increment.Percent33)))
+        if (GUILayout.Button("Restart", GUILayout.Width(Screen.width * Increment.Percent33)))
             OnReloadStageClick();
 
         //if (GUILayout.Button("< Previous", GUILayout.Width(Screen.thumbnailScaleX * Constants.percent33)))

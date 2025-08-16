@@ -6,8 +6,13 @@ using g = Assets.Helpers.GameHelper;
 public partial class DebugWindow
 {
     // RenderCheckboxes provides several toggles for various debug options.
-    private void RenderCheckboxes()
+    private void RenderToggleOptions()
     {
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Toggle Options", EditorStyles.boldLabel, GUILayout.Width(Screen.width));
+        GUILayout.EndHorizontal();
+
         GUILayout.BeginHorizontal();
 
         // Toggle to show or hide actor name tags.

@@ -15,6 +15,10 @@ public partial class DebugWindow
     private void RenderThumbnailSettings()
     {
 
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Thumbnail Options", EditorStyles.boldLabel, GUILayout.Width(Screen.width));
+        GUILayout.EndHorizontal();
+
 #if UNITY_EDITOR
 
         if (g.ReloadThumbnailSettings && g.Actors.HasFocusedActor)
@@ -31,8 +35,6 @@ public partial class DebugWindow
 
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical(GUILayout.Width(containerWidth));
-
-        GUILayout.Label("Thumbnail Settings", EditorStyles.boldLabel);
 
         // Parse values
         float.TryParse(thumbnailPositionX, out float pX);

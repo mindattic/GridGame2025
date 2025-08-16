@@ -147,11 +147,11 @@ public enum DottedLineSegment
 public enum GameSpeedOption
 {
     Paused = 0,
-    Slower = 1,
-    Slow = 2,
+    Percent25 = 1,
+    Percent50 = 2,
     Normal = 3,
-    Fast = 4,
-    Faster = 5
+    Percent125 = 4,
+    Percent150 = 5
 }
 
 public enum Glow

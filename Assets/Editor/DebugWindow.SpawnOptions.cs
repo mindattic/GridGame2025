@@ -10,7 +10,7 @@ public partial class DebugWindow
     private void RenderSpawnOptions()
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Show", GUILayout.Width(Screen.width));
+        GUILayout.Label("Spawn Options", EditorStyles.boldLabel, GUILayout.Width(Screen.width));
         GUILayout.EndHorizontal();
 
         bool isClicked;
