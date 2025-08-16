@@ -141,8 +141,8 @@ public class SortingManager : MonoBehaviour
 
     public void OnSynergyLineSpawn(SynergyLineInstance synergyLineInstance)
     {
-        var isAbove = synergyLineInstance.supporter.sortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
-        synergyLineInstance.SetSorting(isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow);
+        //var isAbove = synergyLineInstance.supporter.sortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
+        //synergyLineInstance.SetSorting(isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow);
     }
 
     public void OnPortraitPopIn(Portrait3DInstance portrait)

@@ -125,6 +125,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5b7271908f4052840a8f07df11215b2f
+    m_Address: Assets/Sprites/Actor/Portraits/4096/Mannequin.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5c17928f3e5be8842a977d793720632b
     m_Address: 1024/Scorpion
     m_ReadOnly: 0
@@ -277,6 +282,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e61841d3e59f89d4caf454e7b2b324ee
     m_Address: 1024/Fighter
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eda777dccd3d21242af730c27c5c827e
+    m_Address: 1024/Mannequin
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
