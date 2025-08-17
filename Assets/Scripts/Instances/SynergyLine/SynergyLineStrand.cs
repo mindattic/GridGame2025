@@ -9,6 +9,46 @@ using UnityEditor;
 [RequireComponent(typeof(LineRenderer))]
 public class SynergyLineSegment : MonoBehaviour
 {
+    /// <summary>
+    /// Local defaults used only by SynergyLineSegment.
+    /// </summary>
+    private static class S
+    {
+        // Core alpha used when tinting the main line
+        public static readonly float CoreAlpha = 0.55f;
+
+        // Halo base behavior and randomization
+        public static readonly bool HaloRandomize = true;
+        public static readonly Vector2 HaloWidthScaleRange = new Vector2(2.2f, 3.1f);
+        public static readonly Vector2 HaloAlphaRange = new Vector2(0.14f, 0.26f);
+        public static readonly Vector2 HaloPulseAmpRange = new Vector2(0.22f, 0.36f);
+        public static readonly Vector2 HaloPulseSpeedMultRange = new Vector2(0.75f, 1.25f);
+        public static readonly Vector2 HaloHDRBoostRange = new Vector2(1.10f, 1.60f);
+        public static readonly Vector2 HaloPhaseOffsetRange = new Vector2(0.0f, 6.283185f); // 0..2*pi
+
+        // Rev wiggle behavior
+        public static readonly float RevChancePerSecond = 0.12f;
+        public static readonly float RevPeakMultiplier = 2.2f;
+        public static readonly float RevAccelTime = 0.20f;
+        public static readonly float RevDecelTime = 0.60f;
+        public static readonly float RevCooldownMin = 0.60f;
+        public static readonly float RevCooldownMax = 1.60f;
+
+        // Sparkle spawn and motion
+        public static float minT = 0.01f;
+        public static float maxT = 0.08f;
+        public static float minBaseSpeed = 0.2f;
+        public static float maxBaseSpeed = 0.6f;
+        public static float sparkleSpeedMulR = 1.0f; // runtime multiplier hook
+        public static float revActiveSpeedMul = 1.2f;
+        public static float minSize = 0.10f;
+        public static float maxSize = 0.16f;
+        public static float minLifetime = 0.40f;
+        public static float maxLifetime = 2f;
+        public static float minOffsetJitter = -1f;
+        public static float maxOffsetJitter = 1f;
+    }
+
     // Renderers
     private LineRenderer line;
     private LineRenderer glow;
@@ -119,7 +159,7 @@ public class SynergyLineSegment : MonoBehaviour
         glow.material = line.material != null ? new Material(line.material) : null;
         SetupLineRenderer(glow);
 
-        // Sparkles system: manual SetParticles with additive material and runtime texture from TextureRepo
+        // Sparkles system
         var sparkleGO = new GameObject("Sparkles");
         sparkleGO.transform.SetParent(transform, false);
         sparkles = sparkleGO.AddComponent<ParticleSystem>();
@@ -128,7 +168,6 @@ public class SynergyLineSegment : MonoBehaviour
         var shader = Shader.Find("Particles/Additive");
         if (shader == null) shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
         var mat = new Material(shader);
-
         mat.mainTexture = SpriteLibrary.Sprites["SynergySpark"].texture;
 
         sparklesRenderer.material = mat;
@@ -194,7 +233,7 @@ public class SynergyLineSegment : MonoBehaviour
             BaseHSVInit = true;
         }
 
-        revCooldown = RNG.Float(SynergyLineSettings.RevCooldownMin, SynergyLineSettings.RevCooldownMax);
+        revCooldown = RNG.Float(S.RevCooldownMin, S.RevCooldownMax);
 
         sparkleRateR = RNG.Float(10f, 16f);
         sparkleSpeedMulR = RNG.Float(0.85f, 1.35f);
@@ -215,9 +254,8 @@ public class SynergyLineSegment : MonoBehaviour
     }
 
     /// <summary>
-    /// Configure geometry, color params, sorting, halo, and resolution. Randomizes halo per segment if enabled.
-    /// Also assigns sparkle renderer sorting to sit above the core line.
-    /// Uses RNG for all per instance randomization.
+    /// Configure geometry, color params, sorting, halo, and resolution.
+    /// Randomizes halo per segment if enabled and sets sparkle sorting.
     /// </summary>
     public void Configure(
         Transform start,
@@ -282,15 +320,15 @@ public class SynergyLineSegment : MonoBehaviour
         glowPulseSpeed = inGlowPulseSpeed;
         glowHDRBoost = inGlowHDRBoost;
 
-        if (SynergyLineSettings.HaloRandomize)
+        if (S.HaloRandomize)
         {
-            glowWidthScaleR = RNG.Float(SynergyLineSettings.HaloWidthScaleRange.x, SynergyLineSettings.HaloWidthScaleRange.y);
-            glowAlphaR = RNG.Float(SynergyLineSettings.HaloAlphaRange.x, SynergyLineSettings.HaloAlphaRange.y);
-            glowPulseAmpR = RNG.Float(SynergyLineSettings.HaloPulseAmpRange.x, SynergyLineSettings.HaloPulseAmpRange.y);
-            float speedMult = RNG.Float(SynergyLineSettings.HaloPulseSpeedMultRange.x, SynergyLineSettings.HaloPulseSpeedMultRange.y);
+            glowWidthScaleR = RNG.Float(S.HaloWidthScaleRange.x, S.HaloWidthScaleRange.y);
+            glowAlphaR = RNG.Float(S.HaloAlphaRange.x, S.HaloAlphaRange.y);
+            glowPulseAmpR = RNG.Float(S.HaloPulseAmpRange.x, S.HaloPulseAmpRange.y);
+            float speedMult = RNG.Float(S.HaloPulseSpeedMultRange.x, S.HaloPulseSpeedMultRange.y);
             glowPulseSpeedR = glowPulseSpeed * speedMult;
-            glowHDRBoostR = RNG.Float(SynergyLineSettings.HaloHDRBoostRange.x, SynergyLineSettings.HaloHDRBoostRange.y);
-            glowPhaseOffsetR = RNG.Float(SynergyLineSettings.HaloPhaseOffsetRange.x, SynergyLineSettings.HaloPhaseOffsetRange.y);
+            glowHDRBoostR = RNG.Float(S.HaloHDRBoostRange.x, S.HaloHDRBoostRange.y);
+            glowPhaseOffsetR = RNG.Float(S.HaloPhaseOffsetRange.x, S.HaloPhaseOffsetRange.y);
         }
         else
         {
@@ -341,7 +379,7 @@ public class SynergyLineSegment : MonoBehaviour
         Color greenTint = ComputeTintedGreen();
 
         Color core = greenTint;
-        core.a *= fade * SynergyLineSettings.CoreAlpha;
+        core.a *= fade * S.CoreAlpha;
 
         Color haloC = greenTint;
         float alphaPulse = 0.65f + 0.35f * Mathf.Sin(Time.time * glowAlphaPulseSpeed + strandIndex + glowPhaseOffsetR);
@@ -467,7 +505,7 @@ public class SynergyLineSegment : MonoBehaviour
             revCooldown -= Time.deltaTime;
             if (revCooldown <= 0f)
             {
-                if (RNG.Percent < SynergyLineSettings.RevChancePerSecond * Time.deltaTime)
+                if (RNG.Percent < S.RevChancePerSecond * Time.deltaTime)
                 {
                     revActive = true;
                     revElapsed = 0f;
@@ -479,8 +517,8 @@ public class SynergyLineSegment : MonoBehaviour
 
         revElapsed += Time.deltaTime;
 
-        float acc = Mathf.Max(0.0001f, SynergyLineSettings.RevAccelTime);
-        float dec = Mathf.Max(0.0001f, SynergyLineSettings.RevDecelTime);
+        float acc = Mathf.Max(0.0001f, S.RevAccelTime);
+        float dec = Mathf.Max(0.0001f, S.RevDecelTime);
         float total = acc + dec;
 
         float k;
@@ -497,11 +535,11 @@ public class SynergyLineSegment : MonoBehaviour
         else
         {
             revActive = false;
-            revCooldown = RNG.Float(SynergyLineSettings.RevCooldownMin, SynergyLineSettings.RevCooldownMax);
+            revCooldown = RNG.Float(S.RevCooldownMin, S.RevCooldownMax);
             return 1f;
         }
 
-        float peak = Mathf.Max(1f, SynergyLineSettings.RevPeakMultiplier);
+        float peak = Mathf.Max(1f, S.RevPeakMultiplier);
         return 1f + (peak - 1f) * k;
     }
 
@@ -527,23 +565,20 @@ public class SynergyLineSegment : MonoBehaviour
     private void SpawnSparkle()
     {
         Sparkle s;
-        s.t = RNG.Float(SynergyLineSettings.minT, SynergyLineSettings.maxT);
+        s.t = RNG.Float(S.minT, S.maxT);
 
-        float baseSpeed = RNG.Float(SynergyLineSettings.minBaseSpeed, SynergyLineSettings.maxBaseSpeed)
-                          * SynergyLineSettings.sparkleSpeedMulR;
-        s.speed = baseSpeed * (revActive ? SynergyLineSettings.revActiveSpeedMul : 1.0f);
+        float baseSpeed = RNG.Float(S.minBaseSpeed, S.maxBaseSpeed) * S.sparkleSpeedMulR;
+        s.speed = baseSpeed * (revActive ? S.revActiveSpeedMul : 1.0f);
 
-        s.size = RNG.Float(SynergyLineSettings.minSize, SynergyLineSettings.maxSize);
+        s.size = RNG.Float(S.minSize, S.maxSize);
 
         float travelT = 1f - s.t;
         float timeNeeded = travelT / Mathf.Max(0.001f, s.speed);
         float padding = timeNeeded * RNG.Float(0.10f, 0.35f);
-        s.lifetime = Mathf.Clamp(timeNeeded + padding,
-                                 SynergyLineSettings.minLifetime,
-                                 SynergyLineSettings.maxLifetime);
+        s.lifetime = Mathf.Clamp(timeNeeded + padding, S.minLifetime, S.maxLifetime);
 
         s.age = 0f;
-        s.offsetJitter = RNG.Float(SynergyLineSettings.minOffsetJitter, SynergyLineSettings.maxOffsetJitter);
+        s.offsetJitter = RNG.Float(S.minOffsetJitter, S.maxOffsetJitter);
 
         activeSparkles.Add(s);
     }
