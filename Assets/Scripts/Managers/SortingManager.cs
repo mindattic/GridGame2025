@@ -38,8 +38,6 @@ public class SortEvent
 /// </summary>
 public class SortingManager : MonoBehaviour
 {
-
-
     /// <summary>
     /// Global event actors subscribe to in order to update their sorting.
     /// </summary>
@@ -139,10 +137,14 @@ public class SortingManager : MonoBehaviour
         supportLine.SetSorting(isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow);
     }
 
+    /// <summary>
+    /// Ensure SynergyLine uses the correct layer relative to actors at spawn.
+    /// </summary>
     public void OnSynergyLineSpawn(SynergyLineInstance synergyLineInstance)
     {
-        //var isAbove = synergyLineInstance.supporter.sortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
-        //synergyLineInstance.SetSorting(isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow);
+        var isAbove = synergyLineInstance.supporter.sortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
+        var layer = isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow;
+        synergyLineInstance.SetSorting(layer);
     }
 
     public void OnPortraitPopIn(Portrait3DInstance portrait)

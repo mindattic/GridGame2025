@@ -1,4 +1,4 @@
-﻿// Assets/Scripts/Instances/SynergyLineInstance.cs
+﻿// Assets/Scripts/Instances/SynergyLine/SynergyLineInstance.cs
 // Uses its own settings copy. No global Active. Supports live apply via a static registry.
 
 using System.Collections;
@@ -14,16 +14,13 @@ using settings = SynergyLineSettings;
 /// </summary>
 public class SynergyLineInstance : MonoBehaviour
 {
-    // Registry for live tuning
-    private static readonly List<SynergyLineInstance> Live = new List<SynergyLineInstance>(64);
-
     // Prefab cache
     private GameObject synergyLineSegmentPrefab;
 
     // Runtime
     private readonly List<SynergyLineSegment> segments = new List<SynergyLineSegment>(8);
-    private Transform a;
-    private Transform b;
+    public ActorInstance supporter;
+    public ActorInstance attacker;
     private Renderer aRenderer;
     private Renderer bRenderer;
     private SortingGroup aGroup;
@@ -41,55 +38,62 @@ public class SynergyLineInstance : MonoBehaviour
         synergyLineSegmentPrefab = PrefabLibrary.Get("SynergyLineStrandPrefab");
     }
 
-    private void OnEnable()
-    {
-        if (!Live.Contains(this)) Live.Add(this);
-    }
-
-    private void OnDisable()
-    {
-        Live.Remove(this);
-    }
-
     /// <summary>
-    /// Entry point. Combines stats, configures segments, begins loop.
+    /// Entry point for creating the visual link between two actors.
+    /// Assigns endpoints, calculates weights, configures segments, and starts the update loop.
     /// </summary>
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
-        a = supporter.transform;
-        b = attacker.transform;
+        // Assign endpoints first so downstream code can safely use instance fields.
+        this.supporter = supporter;
+        this.attacker = attacker;
+
+        if (this.supporter == null || this.attacker == null)
+        {
+            Debug.LogError("SynergyLineInstance.Spawn received null supporter or attacker.");
+            return;
+        }
 
         Vector7 weights = new Vector7(
-            supporter.Stats.Strength + attacker.Stats.Strength,
-            supporter.Stats.Vitality + attacker.Stats.Vitality,
-            supporter.Stats.Agility + attacker.Stats.Agility,
-            supporter.Stats.Stamina + attacker.Stats.Stamina,
-            supporter.Stats.Intelligence + attacker.Stats.Intelligence,
-            supporter.Stats.Wisdom + attacker.Stats.Wisdom,
-            supporter.Stats.Luck + attacker.Stats.Luck
+            this.supporter.Stats.Strength + this.attacker.Stats.Strength,
+            this.supporter.Stats.Vitality + this.attacker.Stats.Vitality,
+            this.supporter.Stats.Agility + this.attacker.Stats.Agility,
+            this.supporter.Stats.Stamina + this.attacker.Stats.Stamina,
+            this.supporter.Stats.Intelligence + this.attacker.Stats.Intelligence,
+            this.supporter.Stats.Wisdom + this.attacker.Stats.Wisdom,
+            this.supporter.Stats.Luck + this.attacker.Stats.Luck
         );
 
-        Configure(a, b, weights);
+        Configure(weights);
         StartLoop();
     }
 
+    /// <summary>
+    /// Requests a graceful fade out and destruction.
+    /// </summary>
     public void Despawn(float fadeSeconds = -1f)
     {
-        //if (fadeSeconds >= 0f) 
-        //    settings.FadeOutTime = fadeSeconds;
+        // if (fadeSeconds >= 0f) settings.FadeOutTime = fadeSeconds;
         despawnRequested = true;
     }
 
-    public void Configure(Transform start, Transform end, Vector7 weights)
+    /// <summary>
+    /// Gathers rendering components from endpoints, prepares segments, normalizes weights, and applies settings.
+    /// </summary>
+    public void Configure(Vector7 weights)
     {
-        a = start;
-        b = end;
+        // Defensive guard in case Spawn was called improperly.
+        if (supporter == null || attacker == null)
+        {
+            Debug.LogError("SynergyLineInstance.Configure missing supporter or attacker. Did you call Spawn first?");
+            return;
+        }
 
-        aGroup = a != null ? a.GetComponentInParent<SortingGroup>() : null;
-        bGroup = b != null ? b.GetComponentInParent<SortingGroup>() : null;
+        aGroup = supporter != null ? supporter.GetComponentInParent<SortingGroup>() : null;
+        bGroup = attacker != null ? attacker.GetComponentInParent<SortingGroup>() : null;
 
-        if (aGroup == null) aRenderer = a != null ? a.GetComponentInParent<SpriteRenderer>() : null;
-        if (bGroup == null) bRenderer = b != null ? b.GetComponentInParent<SpriteRenderer>() : null;
+        if (aGroup == null) aRenderer = supporter != null ? supporter.GetComponentInParent<SpriteRenderer>() : null;
+        if (bGroup == null) bRenderer = attacker != null ? attacker.GetComponentInParent<SpriteRenderer>() : null;
 
         EnsureSegments(settings.WaveformCount);
 
@@ -115,6 +119,9 @@ public class SynergyLineInstance : MonoBehaviour
         ApplySettingsToSegments();
     }
 
+    /// <summary>
+    /// Starts the coroutine loop that drives fade, animation, and lifetime.
+    /// </summary>
     private void StartLoop()
     {
         if (playing) return;
@@ -123,6 +130,9 @@ public class SynergyLineInstance : MonoBehaviour
         loopCo = StartCoroutine(LoopRoutine());
     }
 
+    /// <summary>
+    /// Handles fade in, steady update, fade out, and cleanup.
+    /// </summary>
     private IEnumerator LoopRoutine()
     {
         float t = 0f;
@@ -156,8 +166,18 @@ public class SynergyLineInstance : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /// <summary>
+    /// Applies configuration to each segment, including sorting and visual parameters.
+    /// </summary>
     private void ApplySettingsToSegments()
     {
+        // Defensive guard to avoid null deref when assigning endpoints into segments.
+        if (supporter == null || attacker == null)
+        {
+            Debug.LogError("SynergyLineInstance.ApplySettingsToSegments missing supporter or attacker.");
+            return;
+        }
+
         float phaseStep = (Mathf.PI * 2f) / Mathf.Max(1, settings.WaveformCount);
 
         string layerName;
@@ -176,7 +196,8 @@ public class SynergyLineInstance : MonoBehaviour
 
             var seg = segments[i];
             seg.Configure(
-                a, b,
+                supporter.gameObject.transform,
+                attacker.gameObject.transform,
                 widthAbs,
                 radiusAbs,
                 phase,
@@ -214,27 +235,39 @@ public class SynergyLineInstance : MonoBehaviour
             segments[i].gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Sets the same fade value across all active segments.
+    /// </summary>
     private void SetFadeAll(float k)
     {
         int n = Mathf.Min(settings.WaveformCount, segments.Count);
         for (int i = 0; i < n; i++) segments[i].SetFade(k);
     }
 
+    /// <summary>
+    /// Per frame update that keeps endpoints pinned to z = 0 and ticks all segments.
+    /// </summary>
     private void TickAll()
     {
-        if (a != null) { var pa = a.position; pa.z = 0f; a.position = pa; }
-        if (b != null) { var pb = b.position; pb.z = 0f; b.position = pb; }
+        if (supporter != null) { var pa = supporter.position; pa.z = 0f; supporter.position = pa; }
+        if (attacker != null) { var pb = attacker.position; pb.z = 0f; attacker.position = pb; }
 
         int n = Mathf.Min(settings.WaveformCount, segments.Count);
         for (int i = 0; i < n; i++) segments[i].Tick();
     }
 
+    /// <summary>
+    /// Clears all segment geometry when despawning.
+    /// </summary>
     private void ClearAll()
     {
         int n = Mathf.Min(settings.WaveformCount, segments.Count);
         for (int i = 0; i < n; i++) segments[i].Clear();
     }
 
+    /// <summary>
+    /// Ensures the segment pool has at least the requested count.
+    /// </summary>
     private void EnsureSegments(int count)
     {
         if (synergyLineSegmentPrefab == null)
@@ -259,6 +292,9 @@ public class SynergyLineInstance : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Computes a sorting layer and order that sits beneath both actors.
+    /// </summary>
     private void ResolveSortingBelowActors(out string layerName, out int order)
     {
         int orderA = 0;
@@ -273,5 +309,18 @@ public class SynergyLineInstance : MonoBehaviour
         layerName = Assets.Helpers.SortingHelper.Layer.SupportLineBelow;
         int underBoth = Mathf.Min(orderA, orderB) - 1;
         order = underBoth;
+    }
+
+    /// <summary>
+    /// Update the sorting layer for all active strands without changing their relative order.
+    /// Allows the manager to flip between below and above layers after spawn.
+    /// </summary>
+    public void SetSorting(string sortingLayer)
+    {
+        int n = Mathf.Min(settings.WaveformCount, segments.Count);
+        for (int i = 0; i < n; i++)
+        {
+            segments[i].SetSortingLayer(sortingLayer);
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿// Assets/Scripts/Instances/SynergyLineSegment.cs
-// Waveform strand with sine + Perlin jitter, halo, alpha control, rev bursts,
+﻿// Waveform strand with sine + Perlin jitter, halo, alpha control, rev bursts,
 // halo desync, and sparkles that travel along the line and despawn at the end.
 // All random values use RNG instead of UnityEngine.Random.
 
@@ -611,5 +610,16 @@ public class SynergyLineSegment : MonoBehaviour
 
         sparkles.SetParticles(particleBuffer, alive);
         if (!sparkles.isPlaying) sparkles.Play(true);
+    }
+
+    /// <summary>
+    /// Change only the sorting layer, preserving per-strand relative order.
+    /// Used by the manager to flip between below and above actor layers.
+    /// </summary>
+    public void SetSortingLayer(string sortingLayer)
+    {
+        if (line != null) line.sortingLayerName = sortingLayer;
+        if (glow != null) glow.sortingLayerName = sortingLayer;
+        if (sparklesRenderer != null) sparklesRenderer.sortingLayerName = sortingLayer;
     }
 }
