@@ -180,6 +180,7 @@
     <Compile Include="Assets\Scripts\Managers\SynergyLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Portrait2DInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
+    <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergySpark.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\Helpers\PositionHelper.cs" />

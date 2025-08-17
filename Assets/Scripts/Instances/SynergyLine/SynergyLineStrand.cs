@@ -3,14 +3,13 @@
 // All random values use RNG instead of UnityEngine.Random.
 
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEditor;
 
 [RequireComponent(typeof(LineRenderer))]
 public class SynergyLineStrand : MonoBehaviour
 {
     /// <summary>
-    /// Local defaults used only by SynergyLineSegment.
+    /// Local defaults used only by SynergyLineStrand.
     /// </summary>
     private static class S
     {
@@ -34,19 +33,9 @@ public class SynergyLineStrand : MonoBehaviour
         public static readonly float RevCooldownMin = 0.60f;
         public static readonly float RevCooldownMax = 1.60f;
 
-        // Spark spawn and motion
-        public static float minT = 0.01f;
-        public static float maxT = 0.08f;
-        public static float minBaseSpeed = 0.2f;
-        public static float maxBaseSpeed = 0.6f;
-        public static float sparkSpeedMulR = 1.0f; // runtime multiplier hook
-        public static float revActiveSpeedMul = 1.2f;
-        public static float minSize = 0.10f;
-        public static float maxSize = 0.16f;
-        public static float minLifetime = 0.40f;
-        public static float maxLifetime = 2f;
-        public static float minOffsetJitter = -1f;
-        public static float maxOffsetJitter = 1f;
+        // Strand prewarm
+        public static readonly float DefaultPrewarmSeconds = 0.25f;
+        public static readonly int DefaultPrewarmSteps = 16;
     }
 
     // Renderers
@@ -121,30 +110,12 @@ public class SynergyLineStrand : MonoBehaviour
     private float revElapsed;
     private float revCooldown;
 
-    // Sparks that move along the path
-    private ParticleSystem sparks;
-    private ParticleSystemRenderer sparksRenderer;
-
-    // Spark runtime data
-    private struct Spark
-    {
-        public float t;
-        public float speed;
-        public float size;
-        public float age;
-        public float lifetime;
-        public float offsetJitter;
-    }
-
-    private readonly List<Spark> activeSparks = new List<Spark>(64);
-    private ParticleSystem.Particle[] particleBuffer = new ParticleSystem.Particle[64];
-    private float sparkSpawnAccum;
-    private float sparkRateR;
-    private float sparkSpeedMulR;
+    // External spark system
+    private SynergySpark sparkSystem = new SynergySpark();
 
     /// <summary>
     /// Sets up renderers, shader ids, HSV base, rev cooldown, and spark system.
-    /// Initializes all random seeds and per instance parameters using RNG.
+    /// Initializes random seeds.
     /// </summary>
     private void Awake()
     {
@@ -159,67 +130,7 @@ public class SynergyLineStrand : MonoBehaviour
         glow.material = line.material != null ? new Material(line.material) : null;
         SetupLineRenderer(glow);
 
-        // Sparks system
-        var sparkGO = new GameObject("Sparks");
-        sparkGO.transform.SetParent(transform, false);
-        sparks = sparkGO.AddComponent<ParticleSystem>();
-        sparksRenderer = sparks.GetComponent<ParticleSystemRenderer>();
-
-        var shader = Shader.Find("Particles/Additive");
-        if (shader == null) shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
-        var mat = new Material(shader);
-        mat.mainTexture = SpriteLibrary.Sprites["SynergySpark"].texture;
-
-        sparksRenderer.material = mat;
-        sparksRenderer.renderMode = ParticleSystemRenderMode.Billboard;
-
-        var main = sparks.main;
-        main.playOnAwake = true;
-        main.loop = true;
-        main.simulationSpace = ParticleSystemSimulationSpace.World;
-        main.maxParticles = 1024;
-        main.startSpeed = 0f;
-        main.startLifetime = 1f;
-        main.startSize = 0.12f;
-
-        var emission = sparks.emission;
-        emission.enabled = false;
-
-        var shape = sparks.shape;
-        shape.enabled = false;
-
-        // Fade and size over lifetime so sparks feel like glints
-        var col = sparks.colorOverLifetime;
-        col.enabled = true;
-        var grad = new Gradient();
-        grad.SetKeys(
-            new GradientColorKey[]
-            {
-                new GradientColorKey(Color.white, 0f),
-                new GradientColorKey(Color.white, 0.5f),
-                new GradientColorKey(Color.white, 1f)
-            },
-            new GradientAlphaKey[]
-            {
-                new GradientAlphaKey(0.0f, 0f),
-                new GradientAlphaKey(0.9f, 0.35f),
-                new GradientAlphaKey(0.0f, 1f)
-            }
-        );
-        col.color = new ParticleSystem.MinMaxGradient(grad);
-
-        var sizeOL = sparks.sizeOverLifetime;
-        sizeOL.enabled = true;
-        sizeOL.size = new ParticleSystem.MinMaxCurve(
-            1f,
-            new AnimationCurve(
-                new Keyframe(0.00f, 0.2f),
-                new Keyframe(0.35f, 1.0f),
-                new Keyframe(1.00f, 0.0f)
-            )
-        );
-
-        sparks.Play(true);
+        sparkSystem.Init(transform);
 
         noiseSeed = RNG.Float(0f, 1000f);
         pathTime = RNG.Float(0f, 1000f);
@@ -234,9 +145,6 @@ public class SynergyLineStrand : MonoBehaviour
         }
 
         revCooldown = RNG.Float(S.RevCooldownMin, S.RevCooldownMax);
-
-        sparkRateR = RNG.Float(10f, 16f);
-        sparkSpeedMulR = RNG.Float(0.85f, 1.35f);
     }
 
     /// <summary>
@@ -255,7 +163,8 @@ public class SynergyLineStrand : MonoBehaviour
 
     /// <summary>
     /// Configure geometry, color params, sorting, halo, and resolution.
-    /// Randomizes halo per segment if enabled and sets spark sorting.
+    /// Randomizes halo if enabled and sets spark sorting.
+    /// Also prewarms both sparks and strand geometry so visuals are immediate.
     /// </summary>
     public void Configure(
         Transform start,
@@ -351,13 +260,12 @@ public class SynergyLineStrand : MonoBehaviour
         glow.sortingLayerName = sortingLayer;
         glow.sortingOrder = sortingOrder - 1;
 
-        if (sparksRenderer != null)
-        {
-            sparksRenderer.sortingLayerName = sortingLayer;
-            sparksRenderer.sortingOrder = sortingOrder + 2;
-        }
+        sparkSystem.SetSorting(sortingLayer, sortingOrder + 2);
 
         configured = true;
+
+        // Prewarm visuals so they look settled on first frame.
+        Prewarm(S.DefaultPrewarmSeconds, S.DefaultPrewarmSteps);
     }
 
     /// <summary>
@@ -389,10 +297,9 @@ public class SynergyLineStrand : MonoBehaviour
         ApplyColor(line, core);
         if (useHalo) ApplyColor(glow, haloHDR);
 
-        var smain = sparks.main;
         var sparkTint = greenTint * 1.35f;
         sparkTint.a = 0.9f;
-        smain.startColor = new ParticleSystem.MinMaxGradient(sparkTint);
+        sparkSystem.SetTint(sparkTint);
 
         Vector3 start = a.position; start.z = 0f;
         Vector3 end = b.position; end.z = 0f;
@@ -406,8 +313,7 @@ public class SynergyLineStrand : MonoBehaviour
             line.SetPosition(0, start); line.SetPosition(1, start);
             glow.SetPosition(0, start); glow.SetPosition(1, start);
 
-            activeSparks.Clear();
-            sparks.Clear();
+            sparkSystem.Clear();
             return;
         }
 
@@ -430,6 +336,7 @@ public class SynergyLineStrand : MonoBehaviour
         float timeWarp = UpdateRevAndGetTimeWarp();
         pathTime += Time.deltaTime * timeWarp;
 
+        // Position the strand
         for (int i = 0; i < segmentCount; i++)
         {
             float t = i / (float)(segmentCount - 1);
@@ -438,15 +345,62 @@ public class SynergyLineStrand : MonoBehaviour
             glow.SetPosition(i, p);
         }
 
-        float spawnRate = sparkRateR * Mathf.Clamp01(fade);
-        sparkSpawnAccum += spawnRate * Time.deltaTime;
-        while (sparkSpawnAccum >= 1f)
-        {
-            sparkSpawnAccum -= 1f;
-            SpawnSpark();
-        }
+        // Provide exact samplers to sparks so they follow the same path
+        System.Func<float, Vector3> sampler = (t) => EvaluatePathPoint(start, end, perp, envelope, twoPi, t);
+        System.Func<float, float> radiusSampler = (t) => radiusAbs * radiusOverT.Evaluate(t) * envelope;
 
-        UpdateSpark(start, end, perp, envelope, twoPi);
+        sparkSystem.Tick(
+            fade,
+            revActive,
+            sampler,
+            radiusSampler,
+            Time.deltaTime
+        );
+    }
+
+    /// <summary>
+    /// Simulate strand and sparks forward so first visible frame is already settled.
+    /// Only affects internal state and particle buffers.
+    /// </summary>
+    public void Prewarm(float seconds, int steps)
+    {
+        if (!configured || a == null || b == null) return;
+        if (seconds <= 0f || steps <= 0) return;
+
+        Vector3 start = a.position; start.z = 0f;
+        Vector3 end = b.position; end.z = 0f;
+
+        Vector3 dir = end - start;
+        float len = dir.magnitude;
+        if (len < 0.0001f) return;
+
+        Vector3 forward = dir / len;
+        Vector3 perp = new Vector3(-forward.y, forward.x, 0f);
+
+        float twoPi = Mathf.PI * 2f;
+        float dt = seconds / steps;
+
+        for (int i = 0; i < steps; i++)
+        {
+            // Simple envelope approximation without Time.time dependency, but consistent within step
+            float env = 1f;
+
+            float timeWarp = UpdateRevAndGetTimeWarpCore(dt);
+            pathTime += dt * timeWarp;
+
+            for (int j = 0; j < segmentCount; j++)
+            {
+                float t = j / (float)(segmentCount - 1);
+                Vector3 p = EvaluatePathPoint(start, end, perp, env, twoPi, t);
+                line.SetPosition(j, p);
+                glow.SetPosition(j, p);
+            }
+
+            System.Func<float, Vector3> sampler = (t) => EvaluatePathPoint(start, end, perp, env, twoPi, t);
+            System.Func<float, float> radiusSampler = (t) => radiusAbs * radiusOverT.Evaluate(t) * env;
+
+            sparkSystem.Prewarm(dt, 1, revActive, sampler, radiusSampler);
+        }
     }
 
     /// <summary>
@@ -456,8 +410,7 @@ public class SynergyLineStrand : MonoBehaviour
     {
         if (line != null) line.positionCount = 0;
         if (glow != null) glow.positionCount = 0;
-        activeSparks.Clear();
-        if (sparks != null) sparks.Clear();
+        sparkSystem.Clear();
         configured = false;
     }
 
@@ -496,16 +449,24 @@ public class SynergyLineStrand : MonoBehaviour
     }
 
     /// <summary>
-    /// Time warp for rev burst. Starts bursts using RNG and resets cooldown with RNG.
+    /// Time warp for rev burst using Time.deltaTime.
     /// </summary>
     private float UpdateRevAndGetTimeWarp()
     {
+        return UpdateRevAndGetTimeWarpCore(Time.deltaTime);
+    }
+
+    /// <summary>
+    /// Shared rev-burst update used by realtime and prewarm paths.
+    /// </summary>
+    private float UpdateRevAndGetTimeWarpCore(float dt)
+    {
         if (!revActive)
         {
-            revCooldown -= Time.deltaTime;
+            revCooldown -= dt;
             if (revCooldown <= 0f)
             {
-                if (RNG.Percent < S.RevChancePerSecond * Time.deltaTime)
+                if (RNG.Percent < S.RevChancePerSecond * dt)
                 {
                     revActive = true;
                     revElapsed = 0f;
@@ -515,7 +476,7 @@ public class SynergyLineStrand : MonoBehaviour
 
         if (!revActive) return 1f;
 
-        revElapsed += Time.deltaTime;
+        revElapsed += dt;
 
         float acc = Mathf.Max(0.0001f, S.RevAccelTime);
         float dec = Mathf.Max(0.0001f, S.RevDecelTime);
@@ -544,7 +505,7 @@ public class SynergyLineStrand : MonoBehaviour
     }
 
     /// <summary>
-    /// Evaluate a single path point at parameter t.
+    /// Evaluate a single path point at parameter t using strand parameters.
     /// </summary>
     private Vector3 EvaluatePathPoint(Vector3 start, Vector3 end, Vector3 perp, float envelope, float twoPi, float t)
     {
@@ -559,95 +520,6 @@ public class SynergyLineStrand : MonoBehaviour
     }
 
     /// <summary>
-    /// Create a new spark near the start. All random draws use RNG.
-    /// Lifetime scales with remaining t and speed so the spark can reach the end.
-    /// </summary>
-    private void SpawnSpark()
-    {
-        Spark s;
-        s.t = RNG.Float(S.minT, S.maxT);
-
-        float baseSpeed = RNG.Float(S.minBaseSpeed, S.maxBaseSpeed) * S.sparkSpeedMulR;
-        s.speed = baseSpeed * (revActive ? S.revActiveSpeedMul : 1.0f);
-
-        s.size = RNG.Float(S.minSize, S.maxSize);
-
-        float travelT = 1f - s.t;
-        float timeNeeded = travelT / Mathf.Max(0.001f, s.speed);
-        float padding = timeNeeded * RNG.Float(0.10f, 0.35f);
-        s.lifetime = Mathf.Clamp(timeNeeded + padding, S.minLifetime, S.maxLifetime);
-
-        s.age = 0f;
-        s.offsetJitter = RNG.Float(S.minOffsetJitter, S.maxOffsetJitter);
-
-        activeSparks.Add(s);
-    }
-
-    /// <summary>
-    /// Advance sparks along the curve and cull finished ones. Writes positions to the particle system.
-    /// </summary>
-    private void UpdateSpark(Vector3 start, Vector3 end, Vector3 perp, float envelope, float twoPi)
-    {
-        if (activeSparks.Count == 0)
-        {
-            sparks.Clear();
-            return;
-        }
-
-        if (particleBuffer.Length < activeSparks.Count)
-            particleBuffer = new ParticleSystem.Particle[Mathf.NextPowerOfTwo(activeSparks.Count)];
-
-        int alive = 0;
-        float dt = Time.deltaTime;
-        var tint = sparks.main.startColor.color;
-
-        for (int i = 0; i < activeSparks.Count; i++)
-        {
-            Spark s = activeSparks[i];
-            s.age += dt;
-            s.t += s.speed * dt;
-
-            if (s.t >= 1f || s.age >= s.lifetime)
-                continue;
-
-            Vector3 p = EvaluatePathPoint(start, end, perp, envelope, twoPi, s.t);
-
-            float radiusAtT = radiusAbs * radiusOverT.Evaluate(s.t) * envelope;
-            p += perp * (s.offsetJitter * 0.12f * radiusAtT);
-
-            ParticleSystem.Particle pp = new ParticleSystem.Particle();
-            pp.position = p;
-            pp.remainingLifetime = Mathf.Max(0.01f, s.lifetime - s.age);
-            pp.startLifetime = s.lifetime;
-            pp.startSize = s.size;
-            pp.startColor = tint;
-            pp.velocity = Vector3.zero;
-            pp.rotation3D = Vector3.zero;
-
-            particleBuffer[alive] = pp;
-            alive++;
-
-            activeSparks[i] = s;
-        }
-
-        if (alive < activeSparks.Count)
-        {
-            int write = 0;
-            for (int read = 0; read < activeSparks.Count; read++)
-            {
-                var s = activeSparks[read];
-                if (s.t < 1f && s.age < s.lifetime)
-                    activeSparks[write++] = s;
-            }
-            if (write < activeSparks.Count)
-                activeSparks.RemoveRange(write, activeSparks.Count - write);
-        }
-
-        sparks.SetParticles(particleBuffer, alive);
-        if (!sparks.isPlaying) sparks.Play(true);
-    }
-
-    /// <summary>
     /// Change only the sorting layer, preserving per-strand relative order.
     /// Used by the manager to flip between below and above actor layers.
     /// </summary>
@@ -655,6 +527,6 @@ public class SynergyLineStrand : MonoBehaviour
     {
         if (line != null) line.sortingLayerName = sortingLayer;
         if (glow != null) glow.sortingLayerName = sortingLayer;
-        if (sparksRenderer != null) sparksRenderer.sortingLayerName = sortingLayer;
+        sparkSystem.SetSorting(sortingLayer, (line != null ? line.sortingOrder : 0) + 2);
     }
 }
