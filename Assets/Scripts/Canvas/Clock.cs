@@ -38,7 +38,7 @@ public sealed class Clock : MonoBehaviour
 
         // Configure text
         clockText.raycastTarget = false;
-        clockText.enableWordWrapping = false;
+        clockText.textWrappingMode = TextWrappingModes.NoWrap;
         clockText.fontSize = fontSize;
         clockText.color = fontColor;
         clockText.alignment = alignment;
