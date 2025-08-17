@@ -14,8 +14,7 @@ public class SynergyLineManager : MonoBehaviour
     private GameObject synergyLinePrefab;
 
     // Active lines keyed by an order-independent pair key
-    private readonly Dictionary<string, SynergyLineInstance> collection
-        = new Dictionary<string, SynergyLineInstance>();
+    private readonly Dictionary<string, SynergyLineInstance> collection = new Dictionary<string, SynergyLineInstance>();
 
     private void Awake()
     {

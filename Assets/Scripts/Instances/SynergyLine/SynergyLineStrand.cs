@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using UnityEditor;
 
 [RequireComponent(typeof(LineRenderer))]
-public class SynergyLineSegment : MonoBehaviour
+public class SynergyLineStrand : MonoBehaviour
 {
     /// <summary>
     /// Local defaults used only by SynergyLineSegment.

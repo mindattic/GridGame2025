@@ -71,7 +71,7 @@ public class SynergyLineInstance : MonoBehaviour
     private GameObject synergyLineSegmentPrefab;
 
     // Runtime
-    private readonly List<SynergyLineSegment> segments = new List<SynergyLineSegment>(8);
+    private readonly List<SynergyLineStrand> segments = new List<SynergyLineStrand>(8);
     public ActorInstance supporter;
     public ActorInstance attacker;
     private Renderer aRenderer;
@@ -325,7 +325,7 @@ public class SynergyLineInstance : MonoBehaviour
             var fallback = new GameObject("SynergyLineSegment_Fallback");
             fallback.SetActive(false);
             fallback.AddComponent<LineRenderer>();
-            fallback.AddComponent<SynergyLineSegment>();
+            fallback.AddComponent<SynergyLineStrand>();
             synergyLineSegmentPrefab = fallback;
         }
 
@@ -335,8 +335,8 @@ public class SynergyLineInstance : MonoBehaviour
             instGO.name = "Waveform_" + segments.Count;
             instGO.SetActive(true);
 
-            var seg = instGO.GetComponent<SynergyLineSegment>();
-            if (seg == null) seg = instGO.AddComponent<SynergyLineSegment>();
+            var seg = instGO.GetComponent<SynergyLineStrand>();
+            if (seg == null) seg = instGO.AddComponent<SynergyLineStrand>();
 
             segments.Add(seg);
         }
