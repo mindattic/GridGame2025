@@ -80,6 +80,7 @@
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
+    <Compile Include="Assets\Scripts\Canvas\PauseButton.cs" />
     <Compile Include="Assets\Scripts\Helpers\FolderHelper.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Vampire.cs" />
@@ -162,7 +163,6 @@
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
-    <Compile Include="Assets\Scripts\Canvas\TopOverlayClock.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\StageLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
@@ -227,9 +227,9 @@
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />
-    <Compile Include="Assets\Scripts\Canvas\TopOverlayClickProxy.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
+    <Compile Include="Assets\Scripts\Canvas\Clock.cs" />
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
