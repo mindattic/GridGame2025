@@ -162,6 +162,7 @@
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TopOverlayClock.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\StageLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Utilities\Constants.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TopOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Managers\HeroManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
@@ -225,6 +227,7 @@
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TopOverlayClickProxy.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
     <Compile Include="Assets\Scripts\Board\BackgroundInstance.cs" />

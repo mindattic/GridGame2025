@@ -55,7 +55,7 @@ namespace Assets.Helper
         public static class Game
         {
             public const string Canvas3D = "Canvas3D";
-            public const string PauseButton = "Canvas/PauseButton";
+            public const string PauseButton = "Canvas/TopOverlay/PauseButton";
             public const string PauseMenu = "Canvas/PauseMenu";
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
             public const string PauseOverlay = "Canvas/PauseOverlay";
