@@ -7,38 +7,33 @@ using UnityEngine;
 
 public class SynergySpark
 {
-    /// <summary>
-    /// Tunables scoped only to the spark system.
-    /// </summary>
-    private static class T
-    {
-        public static float minT = 0.01f;
-        public static float maxT = 0.08f;
+    // Spawn window on the path
+    [SerializeField] private float minT = 0.01f;
+    [SerializeField] private float maxT = 0.08f;
 
-        public static float minBaseSpeed = 0.2f;
-        public static float maxBaseSpeed = 0.6f;
+    // Motion
+    [SerializeField] private float minBaseSpeed = 0.2f;
+    [SerializeField] private float maxBaseSpeed = 0.6f;
+    [SerializeField] private float revActiveSpeedMul = 1.2f;
 
-        public static float minSize = 0.10f;
-        public static float maxSize = 0.16f;
+    // Size and lifetime
+    [SerializeField] private float minSize = 0.10f;
+    [SerializeField] private float maxSize = 0.16f;
+    [SerializeField] private float minLifetime = 0.40f;
+    [SerializeField] private float maxLifetime = 2.0f;
 
-        public static float minLifetime = 0.40f;
-        public static float maxLifetime = 2.0f;
+    // Offset jitter along the local perpendicular
+    [SerializeField] private float minOffsetJitter = -1f;
+    [SerializeField] private float maxOffsetJitter = 1f;
 
-        public static float minOffsetJitter = -1f;
-        public static float maxOffsetJitter = 1f;
+    // Rate and speed randomization
+    [SerializeField] private float spawnRateMin = 10f;
+    [SerializeField] private float spawnRateMax = 16f;
+    [SerializeField] private float speedMulMin = 0.85f;
+    [SerializeField] private float speedMulMax = 1.35f;
 
-        // Multiplier knobs
-        public static float speedMulR_defaultMin = 0.85f;
-        public static float speedMulR_defaultMax = 1.35f;
-        public static float revActiveSpeedMul = 1.2f;
-
-        // Spawn rate randomization
-        public static float spawnRateMin = 10f;
-        public static float spawnRateMax = 16f;
-
-        // Default sprite key
-        public static string textureKey = "SynergySpark";
-    }
+    // Sprite library key
+    [SerializeField] private string textureKey = "SynergySpark";
 
     // Particle system objects
     private ParticleSystem sparks;
@@ -78,7 +73,7 @@ public class SynergySpark
         if (shader == null) shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
         var mat = new Material(shader);
 
-        string key = string.IsNullOrEmpty(spriteKeyOverride) ? T.textureKey : spriteKeyOverride;
+        string key = string.IsNullOrEmpty(spriteKeyOverride) ? textureKey : spriteKeyOverride;
         if (SpriteLibrary.Sprites != null && SpriteLibrary.Sprites.ContainsKey(key))
         {
             mat.mainTexture = SpriteLibrary.Sprites[key].texture;
@@ -90,7 +85,7 @@ public class SynergySpark
         var main = sparks.main;
         main.playOnAwake = true;
         main.loop = true;
-        main.prewarm = true; // prewarm particle system
+        main.prewarm = true;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
         main.maxParticles = 1024;
         main.startSpeed = 0f;
@@ -133,8 +128,8 @@ public class SynergySpark
             )
         );
 
-        spawnRateR = RNG.Float(T.spawnRateMin, T.spawnRateMax);
-        speedMulR = RNG.Float(T.speedMulR_defaultMin, T.speedMulR_defaultMax);
+        spawnRateR = RNG.Float(spawnRateMin, spawnRateMax);
+        speedMulR = RNG.Float(speedMulMin, speedMulMax);
 
         sparks.Play(true);
     }
@@ -212,29 +207,27 @@ public class SynergySpark
         if (sparks != null) sparks.Clear();
     }
 
-    // Internal spawn of a single spark
-    private void Spawn(bool revActive)
+    private void Spawn(bool revActiveFlag)
     {
         var s = new SynergyLineSpark();
-        s.t = RNG.Float(T.minT, T.maxT);
+        s.t = RNG.Float(minT, maxT);
 
-        float baseSpeed = RNG.Float(T.minBaseSpeed, T.maxBaseSpeed) * speedMulR;
-        s.speed = baseSpeed * (revActive ? T.revActiveSpeedMul : 1.0f);
+        float baseSpeed = RNG.Float(minBaseSpeed, maxBaseSpeed) * speedMulR;
+        s.speed = baseSpeed * (revActiveFlag ? revActiveSpeedMul : 1.0f);
 
-        s.size = RNG.Float(T.minSize, T.maxSize);
+        s.size = RNG.Float(minSize, maxSize);
 
         float travelT = 1f - s.t;
         float timeNeeded = travelT / Mathf.Max(0.001f, s.speed);
         float padding = timeNeeded * RNG.Float(0.10f, 0.35f);
-        s.lifetime = Mathf.Clamp(timeNeeded + padding, T.minLifetime, T.maxLifetime);
+        s.lifetime = Mathf.Clamp(timeNeeded + padding, minLifetime, maxLifetime);
 
         s.age = 0f;
-        s.offsetJitter = RNG.Float(T.minOffsetJitter, T.maxOffsetJitter);
+        s.offsetJitter = RNG.Float(minOffsetJitter, maxOffsetJitter);
 
         active.Add(s);
     }
 
-    // Internal update for all active sparks and particle system write
     private void UpdateActive(
         Func<float, Vector3> samplePos,
         Func<float, float> radiusAtT,
@@ -261,10 +254,8 @@ public class SynergySpark
             if (s.t >= 1f || s.age >= s.lifetime)
                 continue;
 
-            // Sample exact strand position
             Vector3 p = samplePos(s.t);
 
-            // Estimate tangent and perpendicular from the same path to keep jitter aligned
             float tPrev = Mathf.Max(0f, s.t - 0.01f);
             float tNext = Mathf.Min(1f, s.t + 0.01f);
             Vector3 tangent = samplePos(tNext) - samplePos(tPrev);
@@ -287,7 +278,6 @@ public class SynergySpark
             alive++;
         }
 
-        // Compact dead sparks
         if (alive < active.Count)
         {
             int write = 0;
