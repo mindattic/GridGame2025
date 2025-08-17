@@ -76,7 +76,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 526e3799f58cd824ea4aa7e143bdf827
-    m_Address: Prefabs/SynergyLineStrandPrefab
+    m_Address: Prefabs/SynergyStrandPrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

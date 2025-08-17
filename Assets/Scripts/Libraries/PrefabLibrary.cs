@@ -40,7 +40,7 @@ public static class PrefabLibrary
             { "SaveFileButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SaveFileButtonPrefab") },
             { "ScreenWidthButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ScreenWidthButtonPrefab") },
             { "SynergyLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SynergyLinePrefab") },
-            { "SynergyLineStrandPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SynergyLineStrandPrefab") },
+            { "SynergyStrandPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SynergyStrandPrefab") },
             { "ProjectilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ProjectilePrefab") },
             { "StatRow", AssetHelper.LoadAsset<GameObject>("Prefabs/StatRow") },
             { "SupportLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SupportLinePrefab") },

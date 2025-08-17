@@ -26,7 +26,7 @@ public class SynergyLineInstance : MonoBehaviour
     [SerializeField] private int strandSegmentCount = 32;
 
     // Prefab cache
-    private GameObject synergyLineStrandPrefab;
+    private GameObject synergyStrandPrefab;
 
     // Runtime
     private readonly List<SynergyLineStrand> strands = new List<SynergyLineStrand>(8);
@@ -46,7 +46,7 @@ public class SynergyLineInstance : MonoBehaviour
 
     private void Awake()
     {
-        synergyLineStrandPrefab = PrefabLibrary.Get("SynergyLineStrandPrefab");
+        synergyStrandPrefab = PrefabLibrary.Get("SynergyStrandPrefab");
     }
 
     /// <summary>
@@ -245,18 +245,18 @@ public class SynergyLineInstance : MonoBehaviour
 
     private void EnsureStrands(int count)
     {
-        if (synergyLineStrandPrefab == null)
+        if (synergyStrandPrefab == null)
         {
             var fallback = new GameObject("SynergyLineStrand_Fallback");
             fallback.SetActive(false);
             fallback.AddComponent<LineRenderer>();
             fallback.AddComponent<SynergyLineStrand>();
-            synergyLineStrandPrefab = fallback;
+            synergyStrandPrefab = fallback;
         }
 
         while (strands.Count < count)
         {
-            var instGO = Instantiate(synergyLineStrandPrefab, transform);
+            var instGO = Instantiate(synergyStrandPrefab, transform);
             instGO.name = "Waveform_" + strands.Count;
             instGO.SetActive(true);
 
