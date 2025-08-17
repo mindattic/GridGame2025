@@ -2,26 +2,39 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// Displays a live clock pinned to the upper-left corner of the TopOverlay.
-/// Ignores timescale, updates once per second, and never blocks raycasts.
+/// Updates a TextMeshProUGUI with the current system time and anchors it
+/// to the upper-left corner of its parent (TopOverlay).
 /// </summary>
 [DisallowMultipleComponent]
+[ExecuteAlways]
 public sealed class TopOverlayClock : MonoBehaviour
 {
     [Header("Clock Settings")]
     [SerializeField] private string timeFormat = "h:mm tt";
     [SerializeField] private int fontSize = 24;
     [SerializeField] private Color fontColor = Color.white;
+    [SerializeField] private Vector2 padding = new Vector2(80f, 32f);
     [SerializeField] private TextAlignmentOptions alignment = TextAlignmentOptions.Left;
 
     private TMP_Text clockText;
-    private RectTransform clockRect;
+    private RectTransform rect;
     private float nextClockTickTime;
 
     private void OnEnable()
     {
-        EnsureClockObject();
-        LayoutClock();
+        rect = GetComponent<RectTransform>();
+        clockText = GetComponent<TMP_Text>();
+        if (clockText == null)
+            clockText = gameObject.AddComponent<TextMeshProUGUI>();
+
+        // Configure text
+        clockText.raycastTarget = false;
+        clockText.enableWordWrapping = false;
+        clockText.fontSize = fontSize;
+        clockText.color = fontColor;
+        clockText.alignment = alignment;
+
+        AnchorToUpperLeft();
         UpdateClock(force: true);
     }
 
@@ -30,62 +43,12 @@ public sealed class TopOverlayClock : MonoBehaviour
 #if UNITY_EDITOR
         if (!Application.isPlaying)
         {
-            LayoutClock();
+            AnchorToUpperLeft();
             UpdateClock(force: true);
             return;
         }
 #endif
-        if (Application.isPlaying)
-            TickClock();
-    }
-
-    /// <summary>
-    /// Ensures the TMP text object exists and is configured.
-    /// </summary>
-    private void EnsureClockObject()
-    {
-        if (clockText != null) return;
-
-        Transform child = transform.Find("ClockText");
-        if (child != null)
-            clockText = child.GetComponent<TMP_Text>();
-
-        if (clockText == null)
-        {
-            var go = new GameObject("ClockText", typeof(RectTransform), typeof(TextMeshProUGUI));
-            go.transform.SetParent(transform, false);
-            clockText = go.GetComponent<TMP_Text>();
-        }
-
-        clockRect = clockText.GetComponent<RectTransform>();
-
-        clockText.raycastTarget = false;
-        clockText.enableWordWrapping = false;
-        clockText.fontSize = fontSize;
-        clockText.color = fontColor;
-        clockText.alignment = alignment;
-        clockText.text = string.Empty;
-    }
-
-    /// <summary>
-    /// Positions and sizes the clock in the upper-left corner of the overlay.
-    /// </summary>
-    private void LayoutClock()
-    {
-        if (clockRect == null) return;
-
-        clockRect.anchorMin = new Vector2(0f, 1f);
-        clockRect.anchorMax = new Vector2(0f, 1f);
-        clockRect.pivot = new Vector2(0f, 1f);
-        clockRect.sizeDelta = new Vector2(240f, fontSize + 6f);
-    }
-
-    /// <summary>
-    /// Updates the clock text every second.
-    /// </summary>
-    private void TickClock()
-    {
-        if (Time.unscaledTime >= nextClockTickTime)
+        if (Application.isPlaying && Time.unscaledTime >= nextClockTickTime)
         {
             UpdateClock(force: false);
             nextClockTickTime = Mathf.Floor(Time.unscaledTime) + 1f;
@@ -93,7 +56,22 @@ public sealed class TopOverlayClock : MonoBehaviour
     }
 
     /// <summary>
-    /// Formats and applies the current system time to the text.
+    /// Anchors and positions this RectTransform to the upper-left corner.
+    /// </summary>
+    private void AnchorToUpperLeft()
+    {
+        if (rect == null) return;
+
+        rect.anchorMin = new Vector2(0f, 1f);
+        rect.anchorMax = new Vector2(0f, 1f);
+        rect.pivot = new Vector2(0f, 1f);
+
+        rect.anchoredPosition = new Vector2(padding.x, -padding.y);
+        rect.sizeDelta = new Vector2(240f, fontSize + 6f);
+    }
+
+    /// <summary>
+    /// Updates the displayed time string.
     /// </summary>
     private void UpdateClock(bool force)
     {
