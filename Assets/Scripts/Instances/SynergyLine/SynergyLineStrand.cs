@@ -1,5 +1,5 @@
 ﻿// Waveform strand with sine + Perlin jitter, halo, alpha control, rev bursts,
-// halo desync, and sparkles that travel along the line and despawn at the end.
+// halo desync, and sparks that travel along the line and despawn at the end.
 // All random values use RNG instead of UnityEngine.Random.
 
 using UnityEngine;
@@ -34,12 +34,12 @@ public class SynergyLineStrand : MonoBehaviour
         public static readonly float RevCooldownMin = 0.60f;
         public static readonly float RevCooldownMax = 1.60f;
 
-        // Sparkle spawn and motion
+        // Spark spawn and motion
         public static float minT = 0.01f;
         public static float maxT = 0.08f;
         public static float minBaseSpeed = 0.2f;
         public static float maxBaseSpeed = 0.6f;
-        public static float sparkleSpeedMulR = 1.0f; // runtime multiplier hook
+        public static float sparkSpeedMulR = 1.0f; // runtime multiplier hook
         public static float revActiveSpeedMul = 1.2f;
         public static float minSize = 0.10f;
         public static float maxSize = 0.16f;
@@ -121,12 +121,12 @@ public class SynergyLineStrand : MonoBehaviour
     private float revElapsed;
     private float revCooldown;
 
-    // Sparkles that move along the path
-    private ParticleSystem sparkles;
-    private ParticleSystemRenderer sparklesRenderer;
+    // Sparks that move along the path
+    private ParticleSystem sparks;
+    private ParticleSystemRenderer sparksRenderer;
 
-    // Sparkle runtime data
-    private struct Sparkle
+    // Spark runtime data
+    private struct Spark
     {
         public float t;
         public float speed;
@@ -136,14 +136,14 @@ public class SynergyLineStrand : MonoBehaviour
         public float offsetJitter;
     }
 
-    private readonly List<Sparkle> activeSparkles = new List<Sparkle>(64);
+    private readonly List<Spark> activeSparks = new List<Spark>(64);
     private ParticleSystem.Particle[] particleBuffer = new ParticleSystem.Particle[64];
-    private float sparkleSpawnAccum;
-    private float sparkleRateR;
-    private float sparkleSpeedMulR;
+    private float sparkSpawnAccum;
+    private float sparkRateR;
+    private float sparkSpeedMulR;
 
     /// <summary>
-    /// Sets up renderers, shader ids, HSV base, rev cooldown, and sparkle system.
+    /// Sets up renderers, shader ids, HSV base, rev cooldown, and spark system.
     /// Initializes all random seeds and per instance parameters using RNG.
     /// </summary>
     private void Awake()
@@ -159,21 +159,21 @@ public class SynergyLineStrand : MonoBehaviour
         glow.material = line.material != null ? new Material(line.material) : null;
         SetupLineRenderer(glow);
 
-        // Sparkles system
-        var sparkleGO = new GameObject("Sparkles");
-        sparkleGO.transform.SetParent(transform, false);
-        sparkles = sparkleGO.AddComponent<ParticleSystem>();
-        sparklesRenderer = sparkles.GetComponent<ParticleSystemRenderer>();
+        // Sparks system
+        var sparkGO = new GameObject("Sparks");
+        sparkGO.transform.SetParent(transform, false);
+        sparks = sparkGO.AddComponent<ParticleSystem>();
+        sparksRenderer = sparks.GetComponent<ParticleSystemRenderer>();
 
         var shader = Shader.Find("Particles/Additive");
         if (shader == null) shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
         var mat = new Material(shader);
         mat.mainTexture = SpriteLibrary.Sprites["SynergySpark"].texture;
 
-        sparklesRenderer.material = mat;
-        sparklesRenderer.renderMode = ParticleSystemRenderMode.Billboard;
+        sparksRenderer.material = mat;
+        sparksRenderer.renderMode = ParticleSystemRenderMode.Billboard;
 
-        var main = sparkles.main;
+        var main = sparks.main;
         main.playOnAwake = true;
         main.loop = true;
         main.simulationSpace = ParticleSystemSimulationSpace.World;
@@ -182,14 +182,14 @@ public class SynergyLineStrand : MonoBehaviour
         main.startLifetime = 1f;
         main.startSize = 0.12f;
 
-        var emission = sparkles.emission;
+        var emission = sparks.emission;
         emission.enabled = false;
 
-        var shape = sparkles.shape;
+        var shape = sparks.shape;
         shape.enabled = false;
 
-        // Fade and size over lifetime so sparkles feel like glints
-        var col = sparkles.colorOverLifetime;
+        // Fade and size over lifetime so sparks feel like glints
+        var col = sparks.colorOverLifetime;
         col.enabled = true;
         var grad = new Gradient();
         grad.SetKeys(
@@ -208,7 +208,7 @@ public class SynergyLineStrand : MonoBehaviour
         );
         col.color = new ParticleSystem.MinMaxGradient(grad);
 
-        var sizeOL = sparkles.sizeOverLifetime;
+        var sizeOL = sparks.sizeOverLifetime;
         sizeOL.enabled = true;
         sizeOL.size = new ParticleSystem.MinMaxCurve(
             1f,
@@ -219,7 +219,7 @@ public class SynergyLineStrand : MonoBehaviour
             )
         );
 
-        sparkles.Play(true);
+        sparks.Play(true);
 
         noiseSeed = RNG.Float(0f, 1000f);
         pathTime = RNG.Float(0f, 1000f);
@@ -235,8 +235,8 @@ public class SynergyLineStrand : MonoBehaviour
 
         revCooldown = RNG.Float(S.RevCooldownMin, S.RevCooldownMax);
 
-        sparkleRateR = RNG.Float(10f, 16f);
-        sparkleSpeedMulR = RNG.Float(0.85f, 1.35f);
+        sparkRateR = RNG.Float(10f, 16f);
+        sparkSpeedMulR = RNG.Float(0.85f, 1.35f);
     }
 
     /// <summary>
@@ -255,7 +255,7 @@ public class SynergyLineStrand : MonoBehaviour
 
     /// <summary>
     /// Configure geometry, color params, sorting, halo, and resolution.
-    /// Randomizes halo per segment if enabled and sets sparkle sorting.
+    /// Randomizes halo per segment if enabled and sets spark sorting.
     /// </summary>
     public void Configure(
         Transform start,
@@ -351,10 +351,10 @@ public class SynergyLineStrand : MonoBehaviour
         glow.sortingLayerName = sortingLayer;
         glow.sortingOrder = sortingOrder - 1;
 
-        if (sparklesRenderer != null)
+        if (sparksRenderer != null)
         {
-            sparklesRenderer.sortingLayerName = sortingLayer;
-            sparklesRenderer.sortingOrder = sortingOrder + 2;
+            sparksRenderer.sortingLayerName = sortingLayer;
+            sparksRenderer.sortingOrder = sortingOrder + 2;
         }
 
         configured = true;
@@ -370,7 +370,7 @@ public class SynergyLineStrand : MonoBehaviour
     }
 
     /// <summary>
-    /// Per frame update of color, halo, geometry, rev motion, and sparkles.
+    /// Per frame update of color, halo, geometry, rev motion, and sparks.
     /// </summary>
     public void Tick()
     {
@@ -389,10 +389,10 @@ public class SynergyLineStrand : MonoBehaviour
         ApplyColor(line, core);
         if (useHalo) ApplyColor(glow, haloHDR);
 
-        var smain = sparkles.main;
-        var sparkleTint = greenTint * 1.35f;
-        sparkleTint.a = 0.9f;
-        smain.startColor = new ParticleSystem.MinMaxGradient(sparkleTint);
+        var smain = sparks.main;
+        var sparkTint = greenTint * 1.35f;
+        sparkTint.a = 0.9f;
+        smain.startColor = new ParticleSystem.MinMaxGradient(sparkTint);
 
         Vector3 start = a.position; start.z = 0f;
         Vector3 end = b.position; end.z = 0f;
@@ -406,8 +406,8 @@ public class SynergyLineStrand : MonoBehaviour
             line.SetPosition(0, start); line.SetPosition(1, start);
             glow.SetPosition(0, start); glow.SetPosition(1, start);
 
-            activeSparkles.Clear();
-            sparkles.Clear();
+            activeSparks.Clear();
+            sparks.Clear();
             return;
         }
 
@@ -438,15 +438,15 @@ public class SynergyLineStrand : MonoBehaviour
             glow.SetPosition(i, p);
         }
 
-        float spawnRate = sparkleRateR * Mathf.Clamp01(fade);
-        sparkleSpawnAccum += spawnRate * Time.deltaTime;
-        while (sparkleSpawnAccum >= 1f)
+        float spawnRate = sparkRateR * Mathf.Clamp01(fade);
+        sparkSpawnAccum += spawnRate * Time.deltaTime;
+        while (sparkSpawnAccum >= 1f)
         {
-            sparkleSpawnAccum -= 1f;
-            SpawnSparkle();
+            sparkSpawnAccum -= 1f;
+            SpawnSpark();
         }
 
-        UpdateSparkles(start, end, perp, envelope, twoPi);
+        UpdateSpark(start, end, perp, envelope, twoPi);
     }
 
     /// <summary>
@@ -456,8 +456,8 @@ public class SynergyLineStrand : MonoBehaviour
     {
         if (line != null) line.positionCount = 0;
         if (glow != null) glow.positionCount = 0;
-        activeSparkles.Clear();
-        if (sparkles != null) sparkles.Clear();
+        activeSparks.Clear();
+        if (sparks != null) sparks.Clear();
         configured = false;
     }
 
@@ -559,15 +559,15 @@ public class SynergyLineStrand : MonoBehaviour
     }
 
     /// <summary>
-    /// Create a new sparkle near the start. All random draws use RNG.
-    /// Lifetime scales with remaining t and speed so the sparkle can reach the end.
+    /// Create a new spark near the start. All random draws use RNG.
+    /// Lifetime scales with remaining t and speed so the spark can reach the end.
     /// </summary>
-    private void SpawnSparkle()
+    private void SpawnSpark()
     {
-        Sparkle s;
+        Spark s;
         s.t = RNG.Float(S.minT, S.maxT);
 
-        float baseSpeed = RNG.Float(S.minBaseSpeed, S.maxBaseSpeed) * S.sparkleSpeedMulR;
+        float baseSpeed = RNG.Float(S.minBaseSpeed, S.maxBaseSpeed) * S.sparkSpeedMulR;
         s.speed = baseSpeed * (revActive ? S.revActiveSpeedMul : 1.0f);
 
         s.size = RNG.Float(S.minSize, S.maxSize);
@@ -580,30 +580,30 @@ public class SynergyLineStrand : MonoBehaviour
         s.age = 0f;
         s.offsetJitter = RNG.Float(S.minOffsetJitter, S.maxOffsetJitter);
 
-        activeSparkles.Add(s);
+        activeSparks.Add(s);
     }
 
     /// <summary>
-    /// Advance sparkles along the curve and cull finished ones. Writes positions to the particle system.
+    /// Advance sparks along the curve and cull finished ones. Writes positions to the particle system.
     /// </summary>
-    private void UpdateSparkles(Vector3 start, Vector3 end, Vector3 perp, float envelope, float twoPi)
+    private void UpdateSpark(Vector3 start, Vector3 end, Vector3 perp, float envelope, float twoPi)
     {
-        if (activeSparkles.Count == 0)
+        if (activeSparks.Count == 0)
         {
-            sparkles.Clear();
+            sparks.Clear();
             return;
         }
 
-        if (particleBuffer.Length < activeSparkles.Count)
-            particleBuffer = new ParticleSystem.Particle[Mathf.NextPowerOfTwo(activeSparkles.Count)];
+        if (particleBuffer.Length < activeSparks.Count)
+            particleBuffer = new ParticleSystem.Particle[Mathf.NextPowerOfTwo(activeSparks.Count)];
 
         int alive = 0;
         float dt = Time.deltaTime;
-        var tint = sparkles.main.startColor.color;
+        var tint = sparks.main.startColor.color;
 
-        for (int i = 0; i < activeSparkles.Count; i++)
+        for (int i = 0; i < activeSparks.Count; i++)
         {
-            Sparkle s = activeSparkles[i];
+            Spark s = activeSparks[i];
             s.age += dt;
             s.t += s.speed * dt;
 
@@ -627,24 +627,24 @@ public class SynergyLineStrand : MonoBehaviour
             particleBuffer[alive] = pp;
             alive++;
 
-            activeSparkles[i] = s;
+            activeSparks[i] = s;
         }
 
-        if (alive < activeSparkles.Count)
+        if (alive < activeSparks.Count)
         {
             int write = 0;
-            for (int read = 0; read < activeSparkles.Count; read++)
+            for (int read = 0; read < activeSparks.Count; read++)
             {
-                var s = activeSparkles[read];
+                var s = activeSparks[read];
                 if (s.t < 1f && s.age < s.lifetime)
-                    activeSparkles[write++] = s;
+                    activeSparks[write++] = s;
             }
-            if (write < activeSparkles.Count)
-                activeSparkles.RemoveRange(write, activeSparkles.Count - write);
+            if (write < activeSparks.Count)
+                activeSparks.RemoveRange(write, activeSparks.Count - write);
         }
 
-        sparkles.SetParticles(particleBuffer, alive);
-        if (!sparkles.isPlaying) sparkles.Play(true);
+        sparks.SetParticles(particleBuffer, alive);
+        if (!sparks.isPlaying) sparks.Play(true);
     }
 
     /// <summary>
@@ -655,6 +655,6 @@ public class SynergyLineStrand : MonoBehaviour
     {
         if (line != null) line.sortingLayerName = sortingLayer;
         if (glow != null) glow.sortingLayerName = sortingLayer;
-        if (sparklesRenderer != null) sparklesRenderer.sortingLayerName = sortingLayer;
+        if (sparksRenderer != null) sparksRenderer.sortingLayerName = sortingLayer;
     }
 }
