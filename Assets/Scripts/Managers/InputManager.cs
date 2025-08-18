@@ -62,7 +62,7 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        dragThreshold = GameManager.instance.tileSize * 0.08f;
+        dragThreshold = GameManager.instance.tileSize * 0.01f;
     }
 
     /// <summary>
