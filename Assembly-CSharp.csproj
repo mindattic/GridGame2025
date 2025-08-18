@@ -9,8 +9,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{47644FDC-BFE0-0D7F-3E92-670F4BF64E03}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -62,12 +61,12 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.1.4f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Cleric.cs" />
-    <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\RedNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
@@ -94,7 +93,6 @@
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\MessageBox.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Bat.cs" />
-    <Compile Include="Assets\Scripts\Instances\Board\FocusIndicator.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemySpawnSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
     <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
@@ -176,7 +174,6 @@
     <Compile Include="Assets\Scripts\Utilities\RNG.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\HideTargetIndicatorSequence.cs" />
-    <Compile Include="Assets\Scripts\Instances\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealAbilitySequence.cs" />
     <Compile Include="Assets\Scripts\Managers\ProjectileManager.cs" />
@@ -190,10 +187,12 @@
     <Compile Include="Assets\Scripts\Helpers\AnimationCurveHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Barbarian.cs" />
+    <Compile Include="Assets\Scripts\Instances\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Canvas\PauseOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\RectVector3.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
+    <Compile Include="Assets\Scripts\Instances\Board\FocusIndicator.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPostAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Captain.cs" />
@@ -209,6 +208,7 @@
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Utilities\Constants.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
+    <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Managers\HeroManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
@@ -217,7 +217,6 @@
     <Compile Include="Assets\Scripts\Models\CanvasLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\SortingManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Helpers\CharacterHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EndTurnSequence.cs" />
@@ -230,7 +229,6 @@
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
     <Compile Include="Assets\Scripts\Canvas\Clock.cs" />
-    <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />
@@ -238,6 +236,7 @@
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
+    <Compile Include="Assets\Scripts\Instances\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Models\TextStyle.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityButtonManager.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineStrand.cs" />
