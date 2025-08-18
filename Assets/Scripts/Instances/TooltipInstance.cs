@@ -7,6 +7,7 @@ using Label = TMPro.TextMeshProUGUI;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
+using Assets.Helpers;
 
 public class TooltipInstance : MonoBehaviour
 {
@@ -101,11 +102,12 @@ public class TooltipInstance : MonoBehaviour
         }
 
         Vector2 tooltipSize = background.sizeDelta;
-        Vector2 screenPos = uiTarget != null
-            ? RectTransformUtility.WorldToScreenPoint(null, uiTarget.position)
-            : (worldTarget != null ? Camera.main.WorldToScreenPoint(worldTarget.position) : new Vector2(Screen.width / 2f, Screen.height / 2f));
+        Vector2 screenPos = uiTarget ? UnitConversionHelper.Canvas.TransformToScreen(uiTarget)
+            : worldTarget ? UnitConversionHelper.World.ToScreen(worldTarget.position)
+            : UnitConversionHelper.Viewport.ToScreen(new Vector2(0.5f, 0.5f));
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(c.CanvasRect, screenPos, null, out Vector2 localPos);
+        Vector2 localPos = UnitConversionHelper.Screen.ToCanvas(c.CanvasRect, screenPos);
+
         Vector2 finalPos = CalculatePosition(localPos, tooltipSize, uiTarget ? uiTarget.sizeDelta : Vector2.zero, placement);
 
         switch (placement)

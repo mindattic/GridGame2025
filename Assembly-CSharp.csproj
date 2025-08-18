@@ -146,7 +146,6 @@
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\CombatLogHelper.cs" />
-    <Compile Include="Assets\Scripts\Helpers\ScreenHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier02.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />

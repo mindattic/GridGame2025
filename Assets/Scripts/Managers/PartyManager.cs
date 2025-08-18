@@ -172,7 +172,8 @@ public class PartyManager : MonoBehaviour
         {
             Touch touch = Input.GetTouch(0);
 
-            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rosterPanel, touch.position, null, out Vector2 localPoint)) return;
+            Vector2 localPoint = UnitConversionHelper.Screen.ToCanvas(rosterPanel, touch.position);
+
             if (!rosterPanel.rect.Contains(localPoint)) return;
 
             if (touch.phase == TouchPhase.Began)
