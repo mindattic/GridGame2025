@@ -67,7 +67,7 @@
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Cleric.cs" />
-    <Compile Include="Assets\Scripts\Board\TargetIndicator.cs" />
+    <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\RedNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
@@ -94,7 +94,7 @@
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\MessageBox.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Bat.cs" />
-    <Compile Include="Assets\Scripts\Board\FocusIndicator.cs" />
+    <Compile Include="Assets\Scripts\Instances\Board\FocusIndicator.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemySpawnSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
     <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
@@ -176,7 +176,7 @@
     <Compile Include="Assets\Scripts\Utilities\RNG.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\HideTargetIndicatorSequence.cs" />
-    <Compile Include="Assets\Scripts\Board\BoardOverlay.cs" />
+    <Compile Include="Assets\Scripts\Instances\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealAbilitySequence.cs" />
     <Compile Include="Assets\Scripts\Managers\ProjectileManager.cs" />
@@ -217,7 +217,7 @@
     <Compile Include="Assets\Scripts\Models\CanvasLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\SortingManager.cs" />
-    <Compile Include="Assets\Scripts\Board\BoardInstance.cs" />
+    <Compile Include="Assets\Scripts\Instances\Board\BoardInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Helpers\CharacterHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EndTurnSequence.cs" />
