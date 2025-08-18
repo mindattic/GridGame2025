@@ -273,6 +273,10 @@ public class GameManager : Singleton<GameManager>
         targetModeOverlay.Initialize(); //05
         timerBar2D.Initialize();        //06
         turnManager.Initialize();       //07
+
+
+
+
     }
 
 }

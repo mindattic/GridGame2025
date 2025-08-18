@@ -128,7 +128,6 @@
     <Compile Include="Assets\Scripts\Libraries\TextStyleLibrary.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAnimation.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
-    <Compile Include="Assets\Scripts\Canvas\BottomOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
@@ -209,7 +208,6 @@
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Utilities\Constants.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
-    <Compile Include="Assets\Scripts\Canvas\TopOverlay.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Managers\HeroManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
@@ -280,6 +278,7 @@
     <Compile Include="Assets\Scripts\Models\SaveFile.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Ronin.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorMovement.cs" />
+    <Compile Include="Assets\Scripts\Canvas\CutoutOverlay.cs" />
     <Compile Include="Assets\Scripts\Helpers\SortingHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\HeroStartSequence.cs" />
     <Compile Include="Assets\Scripts\Helpers\RotationHelper.cs" />
