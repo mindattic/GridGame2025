@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Helpers;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -236,7 +237,7 @@ public class Card : MonoBehaviour
     // Converts the portrait RectTransform position to world space.
     public Vector3 PortraitWorldPosition()
     {
-        return ScreenHelper.Convert.CanvasToWorldPosition(portrait.transform);
+        return UnitConversionHelper.Canvas.ToWorld(portrait.transform);
     }
 
     // Quick bounce for feedback on the portrait.

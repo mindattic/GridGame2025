@@ -145,7 +145,8 @@ public class GameManager : Singleton<GameManager>
         previousGameFocus = Time.timeScale;
 
         // Calculate 96% of canvas width
-        float width97Percent = ScreenHelper.CenteredScreenWorldRect.Width * 0.97f;
+        float width97Percent = UnitConversionHelper.World.VisibleRect().width * 0.97f;
+
 
         // Divide into sixths
         tileSize = width97Percent / 6f;

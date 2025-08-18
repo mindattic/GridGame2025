@@ -122,6 +122,7 @@
     <Compile Include="Assets\Scripts\Helpers\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\TimerBar3D.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Thief.cs" />
+    <Compile Include="Assets\Scripts\Helpers\UnitConversionHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />

@@ -1,6 +1,7 @@
 ﻿// --- File: Assets/Scripts/Helpers/CanvasHelper.cs ---
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Assets.Helpers
 {
@@ -15,6 +16,7 @@ namespace Assets.Helpers
         // Cached references
         private static Canvas canvas;
         private static RectTransform canvasRect;
+        private static CanvasScaler canvasScalar;
 
         /// <summary>
         /// Fast access to the cached Canvas.
@@ -39,6 +41,15 @@ namespace Assets.Helpers
             {
                 if (canvasRect == null) Cache();
                 return canvasRect;
+            }
+        }
+
+        public static CanvasScaler CanvasScaler
+        {
+            get
+            {
+                if (canvasRect == null) Cache();
+                return canvasScalar;
             }
         }
 
@@ -92,6 +103,11 @@ namespace Assets.Helpers
             }
 
             canvasRect = canvas.GetComponent<RectTransform>();
+
+
+            canvasScalar = canvas.GetComponent<CanvasScaler>();
+
+
         }
     }
 }

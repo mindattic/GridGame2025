@@ -1,7 +1,9 @@
 ﻿using Assets.Helper;
+using Assets.Helpers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Intermission.Before;
 
 public class AbilityButton : MonoBehaviour
 {
@@ -39,8 +41,9 @@ public class AbilityButton : MonoBehaviour
 
     public Vector3 WorldPosition()
     {
-        return ScreenHelper.Convert.CanvasToWorldPosition(button.transform);
+        return UnitConversionHelper.Canvas.ToWorld(button.transform, button.transform.position.z);
     }
+
 
 
 

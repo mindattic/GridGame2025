@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Helpers;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -224,7 +225,8 @@ public class TimerBar2D : MonoBehaviour
             Vector2 selfSize = rootRect.sizeDelta;
             selfSize.x = targetWidth;
             rootRect.sizeDelta = selfSize;
-            rootRect.anchoredPosition = ScreenHelper.GetScreenPosition(rootRect, g.Board.screenEdges.Top);
+            rootRect.anchoredPosition = UnitConversionHelper.World.ToCanvas(rootRect, g.Board.screenEdges.Top);
+
         }
 
         // Apply to background and front overlays

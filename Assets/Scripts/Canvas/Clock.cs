@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Assets.Helpers;
 
 [DisallowMultipleComponent]
 [DefaultExecutionOrder(1000)]
@@ -79,7 +80,7 @@ public sealed class Clock : MonoBehaviour
             }
         }
 
-        float s = GetEffectiveUiScale();
+        float s = UnitConversionHelper.UiScale.Get();
         if (Screen.safeArea != lastSafeArea ||
             Screen.width != lastScreenSize.x ||
             Screen.height != lastScreenSize.y ||
@@ -164,7 +165,7 @@ public sealed class Clock : MonoBehaviour
 
         lastSafeArea = Screen.safeArea;
         lastScreenSize = new Vector2Int(Screen.width, Screen.height);
-        lastEffectiveScale = GetEffectiveUiScale();
+        lastEffectiveScale = UnitConversionHelper.UiScale.Get();
 
         // Top alignment inside our cell
         rect.pivot = new Vector2(0f, 1f);
@@ -173,10 +174,10 @@ public sealed class Clock : MonoBehaviour
         if (respectHorizontalSafeInset)
         {
             float leftInsetPixels = Mathf.Max(0f, Screen.safeArea.xMin);
-            leftInsetUnits = PixelsToCanvasUnits(leftInsetPixels);
+            leftInsetUnits = UnitConversionHelper.UiScale.PixelsToCanvasUnits(leftInsetPixels);
         }
 
-        Vector2 refPaddingUnits = ReferencePixelsToCanvasUnits(padding);
+        Vector2 refPaddingUnits = UnitConversionHelper.UiScale.ReferencePixelsToCanvasUnits(padding);
 
         // Only affect local offset inside our equal-width cell
         rect.anchoredPosition = new Vector2(leftInsetUnits + refPaddingUnits.x, refPaddingUnits.y);
@@ -222,61 +223,5 @@ public sealed class Clock : MonoBehaviour
         return 0;
     }
 
-    private float GetEffectiveUiScale()
-    {
-        if (canvasScaler != null && rootCanvas != null)
-        {
-            switch (canvasScaler.uiScaleMode)
-            {
-                case CanvasScaler.ScaleMode.ConstantPixelSize:
-                    return canvasScaler.scaleFactor > 0f ? canvasScaler.scaleFactor : 1f;
 
-                case CanvasScaler.ScaleMode.ScaleWithScreenSize:
-                    {
-                        Vector2 referenceResolution = canvasScaler.referenceResolution;
-                        if (referenceResolution.x <= 0f || referenceResolution.y <= 0f)
-                            return rootCanvas.scaleFactor > 0f ? rootCanvas.scaleFactor : 1f;
-
-                        if (canvasScaler.screenMatchMode == CanvasScaler.ScreenMatchMode.Expand)
-                        {
-                            float w = Screen.width / referenceResolution.x;
-                            float h = Screen.height / referenceResolution.y;
-                            return Mathf.Min(w, h);
-                        }
-                        if (canvasScaler.screenMatchMode == CanvasScaler.ScreenMatchMode.Shrink)
-                        {
-                            float w = Screen.width / referenceResolution.x;
-                            float h = Screen.height / referenceResolution.y;
-                            return Mathf.Max(w, h);
-                        }
-
-                        float lw = Mathf.Log(Screen.width / referenceResolution.x, 2f);
-                        float lh = Mathf.Log(Screen.height / referenceResolution.y, 2f);
-                        float m = Mathf.Clamp01(canvasScaler.matchWidthOrHeight);
-                        return Mathf.Pow(2f, Mathf.Lerp(lw, lh, m));
-                    }
-
-                case CanvasScaler.ScaleMode.ConstantPhysicalSize:
-                    {
-                        float dpi = Screen.dpi;
-                        if (dpi <= 0f) dpi = 96f;
-                        float refDpi = canvasScaler.fallbackScreenDPI > 0f ? canvasScaler.fallbackScreenDPI : 96f;
-                        return dpi / refDpi;
-                    }
-            }
-        }
-        return (rootCanvas != null && rootCanvas.scaleFactor > 0f) ? rootCanvas.scaleFactor : 1f;
-    }
-
-    private float PixelsToCanvasUnits(float pixels)
-    {
-        float s = GetEffectiveUiScale();
-        return s <= 0f ? pixels : pixels / s;
-    }
-
-    private Vector2 ReferencePixelsToCanvasUnits(Vector2 refPixels)
-    {
-        float s = GetEffectiveUiScale();
-        return new Vector2(refPixels.x / (s <= 0f ? 1f : s), refPixels.y / (s <= 0f ? 1f : s));
-    }
 }
