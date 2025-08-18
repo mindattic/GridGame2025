@@ -6,9 +6,8 @@ using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Simple full screen overlay used while in targeting modes.
-/// Hardened so it never starts a coroutine while inactive,
-/// and it applies state instantly when disabled.
+/// Full-screen overlay for targeting modes.
+/// Always stays active; visibility is controlled by Image alpha only.
 /// </summary>
 public class TargetModeOverlay : MonoBehaviour
 {
@@ -16,17 +15,17 @@ public class TargetModeOverlay : MonoBehaviour
     // Components and state
     // ---------------------------------------------------------------------
 
-    private Image image;                 // Background image to overlay
-    private Coroutine fadeCoroutine;     // Handle to the active overlay
+    private Image image;                 // Background image that we fade
+    private Coroutine fadeCoroutine;     // Active fade routine if any
 
-    // FadeRoutine parameters
-    [SerializeField] private float minAlpha = 0f;
-    [SerializeField] private float maxAlpha = 0.3333f;
-    [SerializeField] private float duration = 0.15f;
+    // Fade parameters
+    [SerializeField] private float minAlpha = 0f;          // Fully transparent
+    [SerializeField] private float maxAlpha = 0.3333f;     // Visible overlay alpha
+    [SerializeField] private float duration = 0.15f;       // Fade time (unscaled)
 
-    // If a mode arrives while disabled, store it and apply on enable
-    private bool hasPendingMode;
-    private InputMode pendingMode;
+    // If a mode arrives while this component is disabled, store and apply on enable
+    private bool hasPendingMode;         // Tracks if we queued a mode
+    private InputMode pendingMode;       // The queued mode value
 
     // ---------------------------------------------------------------------
     // Lifecycle
@@ -34,49 +33,62 @@ public class TargetModeOverlay : MonoBehaviour
 
     private void Awake()
     {
+        // Cache the Image component
         image = GetComponent<Image>();
+
+        // Ensure deterministic starting visuals
         if (image != null)
         {
-            // Ensure a deterministic starting state
             var c = image.color;
-            c.a = 0f;
+            c.a = 0f;                    // Start fully transparent
             image.color = c;
-            image.enabled = true;
+            image.enabled = true;        // Keep Image enabled; GO is never disabled by this script
         }
     }
 
+    //private void OnEnable()
+    //{
+    //    // Subscribe to input mode changes if the input manager exists
+    //    if (g.InputManager != null)
+    //        g.InputManager.OnInputModeChanged += HandleModeChanged;
 
+    //    // Apply any queued mode instantly
+    //    if (hasPendingMode)
+    //    {
+    //        ApplyInstant(pendingMode);
+    //        hasPendingMode = false;
+    //    }
+    //    else if (g.InputManager != null)
+    //    {
+    //        // Sync instantly to current mode on enable to avoid popping
+    //        ApplyInstant(g.InputManager.InputMode);
+    //    }
+    //}
 
-    private void OnDisable()
-    {
-        // Unsubscribe first
-        if (g.InputManager != null)
-            g.InputManager.OnInputModeChanged -= HandleModeChanged;
+    //private void OnDisable()
+    //{
+    //    // Unsubscribe safely
+    //    if (g.InputManager != null)
+    //        g.InputManager.OnInputModeChanged -= HandleModeChanged;
 
-        // DespawnRoutine any running animation owned by this component
-        StopFade();
-    }
+    //    // Stop any running fade coroutine
+    //    StopFade();
+    //}
 
-    // ---------------------------------------------------------------------
-    // Public compatibility initializer
-    // ---------------------------------------------------------------------
-    // Kept for backward compatibility if some bootstrapper still calls it.
-    // No subscription here to avoid double registering. It only snaps
-    // the initial visual state once.
     public void Initialize()
     {
-        // Subscribe to input mode changes
-        g.InputManager.OnInputModeChanged += HandleModeChanged;
+        // Subscribe if not already
+        if (g.InputManager != null)
+            g.InputManager.OnInputModeChanged += HandleModeChanged;
 
-        // If a mode was requested while disabled, apply instantly
+        // Snap to current state immediately
         if (hasPendingMode)
         {
             ApplyInstant(pendingMode);
             hasPendingMode = false;
         }
-        else
+        else if (g.InputManager != null)
         {
-            // Otherwise, sync to current mode instantly to avoid a pop
             ApplyInstant(g.InputManager.InputMode);
         }
     }
@@ -87,7 +99,7 @@ public class TargetModeOverlay : MonoBehaviour
 
     private void HandleModeChanged(InputMode mode)
     {
-        // If we are not active, record and bail. OnEnable will apply instantly.
+        // If the component is disabled, defer until OnEnable
         if (!isActiveAndEnabled)
         {
             pendingMode = mode;
@@ -95,14 +107,10 @@ public class TargetModeOverlay : MonoBehaviour
             return;
         }
 
-        // Active. Pick animated or instant path depending on current visibility.
+        // Decide target visibility based on mode
         bool targetVisible = ShouldBeVisible(mode);
 
-        // Ensure we are active before animating in
-        if (targetVisible && !gameObject.activeSelf)
-            gameObject.SetActive(true);
-
-        // Drive overlay
+        // Drive fade purely by alpha (no SetActive toggles)
         StopFade();
         float from = GetAlpha();
         float to = targetVisible ? maxAlpha : minAlpha;
@@ -113,20 +121,20 @@ public class TargetModeOverlay : MonoBehaviour
     // Helpers
     // ---------------------------------------------------------------------
 
-    // Returns whether overlay should be visible for a given mode
+    // Return whether the overlay should be visible for the given mode
     private static bool ShouldBeVisible(InputMode mode)
     {
-        // Adjust these modes as your game evolves
+        // Adjust as your game evolves
         return mode == InputMode.AbilityTarget;
     }
 
-    // Reads current alpha safely
+    // Get current alpha safely
     private float GetAlpha()
     {
         return image != null ? image.color.a : 0f;
     }
 
-    // Stops an existing overlay if any
+    // Stop an in-flight fade routine
     private void StopFade()
     {
         if (fadeCoroutine != null)
@@ -136,7 +144,7 @@ public class TargetModeOverlay : MonoBehaviour
         }
     }
 
-    // Applies the state instantly without coroutines
+    // Apply the target state instantly (no coroutine)
     private void ApplyInstant(InputMode mode)
     {
         bool visible = ShouldBeVisible(mode);
@@ -144,13 +152,10 @@ public class TargetModeOverlay : MonoBehaviour
         if (image != null)
         {
             var c = image.color;
-            c.a = visible ? maxAlpha : minAlpha;
+            c.a = visible ? maxAlpha : minAlpha;   // Only alpha changes
             image.color = c;
-            image.enabled = true;
+            image.enabled = true;                  // Keep the Image enabled
         }
-
-        // If you want the GO disabled when invisible, toggle here
-        gameObject.SetActive(visible);
     }
 
     // ---------------------------------------------------------------------
@@ -158,15 +163,15 @@ public class TargetModeOverlay : MonoBehaviour
     // ---------------------------------------------------------------------
 
     /// <summary>
-    /// Fades overlay alpha from current to target over duration seconds.
-    /// Uses unscaled time so it works while game is paused.
+    /// Fade from current alpha to target alpha over the given duration.
+    /// Uses unscaled time so it works while the game is paused.
     /// </summary>
     private IEnumerator FadeRoutine(float from, float to, float seconds)
     {
         if (image == null)
             yield break;
 
-        // Ensure image is enabled while we animate
+        // Ensure the Image is enabled while animating
         image.enabled = true;
 
         float elapsed = 0f;
@@ -174,30 +179,31 @@ public class TargetModeOverlay : MonoBehaviour
         color.a = from;
         image.color = color;
 
-        // Early exit if duration is tiny
+        // Immediate path for zero duration
         if (seconds <= 0f)
         {
             color.a = to;
             image.color = color;
+            fadeCoroutine = null;
+            yield break;
         }
-        else
+
+        // Animate alpha
+        while (elapsed < seconds)
         {
-            while (elapsed < seconds)
-            {
-                elapsed += Time.unscaledDeltaTime;
-                float t = Mathf.Clamp01(elapsed / seconds);
-                color.a = Mathf.Lerp(from, to, t);
-                image.color = color;
-                yield return Wait.None();
-            }
-
-            color.a = to;
+            elapsed += Time.unscaledDeltaTime;
+            float t = Mathf.Clamp01(elapsed / seconds);
+            color.a = Mathf.Lerp(from, to, t);
             image.color = color;
+            yield return Wait.None();
         }
 
-        // Optionally disable GO after fading out
-        if (Mathf.Approximately(to, minAlpha))
-            gameObject.SetActive(false);
+        // Snap final alpha
+        color.a = to;
+        image.color = color;
+
+        // Note: We do NOT disable the GameObject here.
+        // The overlay remains active at all times.
 
         fadeCoroutine = null;
     }
