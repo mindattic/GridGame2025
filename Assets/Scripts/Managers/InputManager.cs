@@ -94,10 +94,6 @@ public class InputManager : MonoBehaviour
 
             case TouchPhase.Ended:
             case TouchPhase.Canceled:
-
-                //TODO: reset all states
-                //g.Actors.TargetActor = null;
-                //g.TargetIndicator.Hide();
                 break;
         }
     }

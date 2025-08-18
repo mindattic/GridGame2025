@@ -75,17 +75,14 @@ public class SelectedHeroManager : MonoBehaviour
         if (g.Actors.SelectedHero.Flags.IsMoving)
             return;
 
-        // Hide card and focus indicator while dragging.
-        g.Card.Clear();
-        g.FocusIndicator.Hide();
-
-        // Begin UI feedback and AP checks before movement.
-        g.AudioManager.Play("Click");
-        g.TimerBar2D.Play();
-        g.ActorManager.CheckEnemyAP();
-
         // Start moving the selected hero toward the cursor.
         g.Actors.SelectedHero.Move.MoveTowardCursor();
+    
+        g.Card.Clear();
+        g.FocusIndicator.Hide();
+        g.AudioManager.Play("Click");
+        g.TimerBar2D.Play();
+        g.ActorManager.CheckEnemyAP();  
     }
 
     /// <summary>
