@@ -31,7 +31,7 @@ public class ProjectileManager : MonoBehaviour
             travelSeconds = 10.9f,
             wiggleAmplitudeTiles = 3.35f,
             wiggleHz = 3.5f,
-            arriveRadiusTiles = 0.25f
+            arriveRadiusTiles = 0.1f
         };
 
         g.SequenceManager.Add(new Assets.Scripts.Events.FireProjectileSequence(heal));
@@ -57,7 +57,7 @@ public class ProjectileManager : MonoBehaviour
             motionStyle = MotionStyle.LobbedArc,
             travelSeconds = 0.8f,
             lobbedHeightTiles = 0.9f,
-            arriveRadiusTiles = 0.55f
+            arriveRadiusTiles = 0.1f
         };
 
         g.SequenceManager.Add(new Assets.Scripts.Events.FireProjectileSequence(fireball));
@@ -85,7 +85,7 @@ public class ProjectileManager : MonoBehaviour
             // Motion
             motionStyle = MotionStyle.HomingSpiral,
             travelSeconds = 1.0f,
-            arriveRadiusTiles = 0.5f,
+            arriveRadiusTiles = 0.1f,
 
             // Spiral specific
             spiralTurns = 3,
@@ -147,7 +147,7 @@ public class ProjectileManager : MonoBehaviour
         nodeGo.transform.SetParent(root.transform, true); // no parent, no inherited scale
 
 
-        var node = new ProjectileNode(nodeGo.transform, s, g.TileSize);
+        var node = new ProjectileNode(nodeGo.transform, s);
 
         // One trail
         AttachTrail(node, s.trailKey);
@@ -156,7 +156,7 @@ public class ProjectileManager : MonoBehaviour
         yield return StartCoroutine(node.TravelRoutine());
 
         // Impact
-        Vector3 finalPos = node.Position;
+        Vector3 finalPos = node.position;
         SpawnImpact(s.vfxKey, finalPos);
 
         // Post impact

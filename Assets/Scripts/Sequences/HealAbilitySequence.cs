@@ -47,7 +47,7 @@ namespace Assets.Scripts.Events
                 travelSeconds = 0.9f,
                 wiggleAmplitudeTiles = 0.35f,
                 wiggleHz = 3.5f,
-                arriveRadiusTiles = 0.5f,
+                arriveRadiusTiles = 0.1f,
 
                 // Post impact
                 routine = target != null ? target.HealRoutine(10) : null

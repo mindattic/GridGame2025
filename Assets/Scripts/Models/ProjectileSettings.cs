@@ -28,7 +28,7 @@ public class ProjectileSettings
     public float travelSeconds = 0.8f;
     public float minTilesPerSec = 1.5f;
     public float maxTilesPerSec = 4.0f;
-    public float arriveRadiusTiles = 0.5f;
+    public float arriveRadiusTiles = 0.1f;
 
     // Facing
     public bool faceDirection = true;

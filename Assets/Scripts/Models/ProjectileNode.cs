@@ -33,11 +33,10 @@ namespace Assets.Scripts.Models
         /// <summary>
         /// Build the node with tile scaled pacing and motion bases.
         /// </summary>
-        public ProjectileNode(Transform transform, ProjectileSettings settings, float tile)
+        public ProjectileNode(Transform transform, ProjectileSettings settings)
         {
             this.transform = transform;
             this.settings = settings;
-            tile = Mathf.Max(0.01f, tile);
 
             start = settings.startPosition;
 
@@ -46,17 +45,17 @@ namespace Assets.Scripts.Models
 
             direction = (end - start).sqrMagnitude > 1e-8f ? (end - start).normalized : Vector3.forward;
 
-            BuildBases(direction, out basisRight, out basisUp, out basisOrtho);
+            CalculateBasis(direction, out basisRight, out basisUp, out basisOrtho);
 
             float distance = Mathf.Max(0.001f, Vector3.Distance(start, end));
-            float distTiles = distance / tile;
+            float distTiles = distance / g.TileSize;
 
             float seconds = Mathf.Max(0.05f, this.settings.travelSeconds);
             float idealTilesPerSec = Mathf.Max(0.01f, distTiles / seconds);
             float tilesPerSec = Mathf.Clamp(idealTilesPerSec, Mathf.Max(0.01f, this.settings.minTilesPerSec), Mathf.Max(this.settings.minTilesPerSec + 0.01f, this.settings.maxTilesPerSec));
-            speedUnitsPerSec = tilesPerSec * tile;
+            speedUnitsPerSec = tilesPerSec * g.TileSize;
 
-            arriveRadiusUnits = Mathf.Max(0.01f, this.settings.arriveRadiusTiles * tile);
+            arriveRadiusUnits = Mathf.Max(0.01f, this.settings.arriveRadiusTiles * g.TileSize);
 
             t = 0f;
 
@@ -67,7 +66,7 @@ namespace Assets.Scripts.Models
         /// <summary>
         /// Current world position of the node.
         /// </summary>
-        public Vector3 Position => transform != null ? transform.position : end;
+        public Vector3 position => transform != null ? transform.position : end;
 
         /// <summary>
         /// Parents a single trail instance to this node. Only spawns once.
@@ -77,9 +76,9 @@ namespace Assets.Scripts.Models
             if (trailSpawned) return;
             trailSpawned = true;
 
-            var inst = g.VfxManager.SpawnReturnInstance(asset, transform.position, transform, null);
-            trail = inst;
-            trailName = inst != null ? inst.name : null;
+            var instance = g.VfxManager.SpawnInstance(asset, transform.position, transform, null);
+            trail = instance;
+            trailName = instance != null ? instance.name : null;
         }
 
         /// <summary>
@@ -93,7 +92,7 @@ namespace Assets.Scripts.Models
                 end = destTf != null ? destTf.position : settings.staticTargetPosition;
 
                 direction = (end - start).sqrMagnitude > 1e-10f ? (end - start).normalized : direction;
-                BuildBases(direction, out basisRight, out basisUp, out basisOrtho);
+                CalculateBasis(direction, out basisRight, out basisUp, out basisOrtho);
 
                 StepParametric(Time.deltaTime);
 
@@ -223,7 +222,7 @@ namespace Assets.Scripts.Models
             return Vector3.Lerp(start, end, t);
         }
 
-        private static void BuildBases(Vector3 dir, out Vector3 right, out Vector3 up, out Vector3 ortho)
+        private static void CalculateBasis(Vector3 dir, out Vector3 right, out Vector3 up, out Vector3 ortho)
         {
             var n = dir.sqrMagnitude > 1e-8f ? dir.normalized : Vector3.forward;
 
