@@ -350,3 +350,15 @@ public enum ActorGroup : uint
 }
 
 enum DefenseTiming { None, Dodge, Parry }
+
+
+/// <summary>
+/// Motion styles supported by the projectile system.
+/// </summary>
+public enum MotionStyle
+{
+    Straight,
+    Wiggle,
+    LobbedArc,
+    HomingSpiral
+}

@@ -120,6 +120,29 @@ public partial class DebugWindow : EditorWindow
         }
     }
 
+    private void RenderButtonRow(params (string label, System.Action onClick)[] buttons)
+    {
+        GUILayout.BeginHorizontal();
+
+        int count = buttons.Length;
+        for (int i = 0; i < count; i++)
+        {
+            var b = buttons[i];
+            bool clicked = GUILayout.Button(b.label, GUILayout.Width(Screen.width * Increment.Percent25));
+            if (clicked)
+                b.onClick?.Invoke();
+        }
+
+        // Fill remaining cells to keep the row width consistent when fewer than four buttons are provided.
+        for (int i = count; i < 4; i++)
+        {
+            GUILayout.Label(string.Empty, GUILayout.Width(Screen.width * Increment.Percent25));
+        }
+
+        GUILayout.EndHorizontal();
+        GUILayout.Space(4);
+    }
+
     private void OnGUI()
     {
         // Only draw content while playing and while the active activeScene is Game.
@@ -149,6 +172,7 @@ public partial class DebugWindow : EditorWindow
             {
                 RenderGameStats();
                 RenderThumbnailSettings();
+                RenderProjectileOptions();
                 RenderGameSpeedOptions();
                 RenderDebugOptions();
                 RenderVfxOptions();

@@ -70,7 +70,6 @@ namespace Assets.Helpers
         public static FootstepManager FootstepManager => GameManager.instance.footstepManager;
         public static AudioManager AudioManager => GameManager.instance.audioManager;
         public static VfxManager VfxManager => GameManager.instance.vfxManager;
-        public static TrailManager TrailManager => GameManager.instance.trailManager;
         public static CoinManager CoinManager => GameManager.instance.coinManager;
         public static PauseManager PauseManager => GameManager.instance.pauseManager;
         public static DebugManager DebugManager => GameManager.instance.debugManager;
@@ -104,6 +103,7 @@ namespace Assets.Helpers
         public static TargetModeOverlay TargetModeOverlay => GameManager.instance.targetModeOverlay;
         public static Card Card => GameManager.instance.card;
         public static TutorialPopup TutorialPopup => GameManager.instance.tutorialPopup;
+
 
 
         // Mouse-related fields

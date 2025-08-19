@@ -1,3 +1,4 @@
+using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.Events;
 using Assets.Scripts.Models;
@@ -458,10 +459,13 @@ public class DebugManager : MonoBehaviour
         return g.StageManager.AddEnemy(actorData.Character);
     }
 
+
     public void Fireball()
     {
         var startPosition = hero1.position;
-        var target = g.Actors.Enemies.FirstOrDefault();
+        var target = hero2;
+   
+        // Use ProjectileManager helper which sets MotionStyle and pacing
         g.ProjectileManager.EnqueueFireball(startPosition, target);
         g.SequenceManager.Execute();
     }
@@ -471,9 +475,22 @@ public class DebugManager : MonoBehaviour
         var source = hero1.position;
         var target = hero2;
 
+        // Use ProjectileManager helper which sets MotionStyle and pacing
         g.ProjectileManager.EnqueueHeal(source, target);
         g.SequenceManager.Execute();
     }
+
+    public void HomingSpiral()
+    {
+        var source = hero1.position;
+        var target = hero2;
+
+        // Use ProjectileManager helper which sets MotionStyle and pacing
+        g.ProjectileManager.EnqueueHomingSpiral(source, target);
+        g.SequenceManager.Execute();
+    }
+
+
     public void RandomizeBackground()
     {
         g.Background.Randomize();
@@ -694,5 +711,7 @@ public class DebugManager : MonoBehaviour
         g.VfxManager.Spawn(vfx, hero1.position);
         g.VfxManager.Spawn(vfx, hero2.position);
     }
+
+
 
 }

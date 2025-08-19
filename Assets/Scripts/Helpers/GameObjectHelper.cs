@@ -100,6 +100,8 @@ namespace Assets.Helper
                 public const string Title = "Canvas/Card/Title";
                 public const string Details = "Canvas/Card/Details";
             }
+
+
         }
 
 

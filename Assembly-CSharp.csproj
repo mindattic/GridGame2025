@@ -96,11 +96,10 @@
     <Compile Include="Assets\Scripts\Sequences\EnemySpawnSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
     <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
-    <Compile Include="Assets\Scripts\Managers\TrailManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\CanvasHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\StageSelectManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\VfxLibrary.cs" />
-    <Compile Include="Assets\Scripts\Libraries\TrailEffectLibrary.cs" />
+    <Compile Include="Assets\Scripts\Helpers\ProjectileHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
@@ -140,7 +139,6 @@
     <Compile Include="Assets\Scripts\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
-    <Compile Include="Assets\Scripts\Models\TrailEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Utilities\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
@@ -170,7 +168,6 @@
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier01.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyAttackSequence.cs" />
-    <Compile Include="Assets\Scripts\Instances\TrailInstance.cs" />
     <Compile Include="Assets\Scripts\Utilities\RNG.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\HideTargetIndicatorSequence.cs" />
@@ -249,6 +246,7 @@
     <Compile Include="Assets\Scripts\Canvas\FadeOverlayInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
+    <Compile Include="Assets\Scripts\Models\ProjectileNode.cs" />
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />

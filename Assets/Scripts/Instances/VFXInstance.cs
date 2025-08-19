@@ -42,17 +42,20 @@ public class VFXInstance : MonoBehaviour
     /// <summary>
     /// Yieldable spawn of a VFX at a world position. Plays optional routine routine, then despawns.
     /// </summary>
-    public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 worldPosition, IEnumerator routine = null)
+    public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
     {
-        // 1) Place in world space
-        transform.position = worldPosition + vfx.RelativeOffset;
+        // 1) Place
+        transform.position = position + vfx.RelativeOffset;
 
-        // 2) Apply rotation and scale
+        // 2) Apply
         transform.eulerAngles = vfx.AngularRotation;
         transform.localScale = g.TileScale.MultiplyBy(vfx.RelativeScale);
 
-        // Configure looping on all particle systems in this hierarchy
+        // Configure looping
         SetLooping(vfx.IsLoop);
+
+        // Cache the name now, before any possible destroy by parent
+        string instanceName = name;
 
         // Optional start delay
         if (vfx.Delay != 0f)
@@ -62,13 +65,19 @@ public class VFXInstance : MonoBehaviour
         if (routine != null)
             yield return StartCoroutine(routine);
 
-        // Optional lifetime duration
+        // Optional lifetime
         if (vfx.Duration != 0f)
             yield return new WaitForSeconds(vfx.Duration);
 
-        // DespawnRoutine this instance
-        Despawn(name);
+        // If this was already destroyed by a parent, stop quietly
+        if (this == null || gameObject == null)
+            yield break;
+
+        // Only self-despawn when there is a finite lifetime
+        if (vfx.Duration > 0f)
+            Despawn(instanceName);
     }
+
 
     /// <summary>
     /// Sets the loop flag on all ParticleSystem components in the transform hierarchy.

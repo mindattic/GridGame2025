@@ -1,12 +1,15 @@
-﻿
-using Assets.Helper;
-using Assets.Scripts.Models;
+﻿// File: Assets/Scripts/Events/HealSupportSequence.cs
 using System.Collections;
 using UnityEngine;
+using Assets.Scripts.Models;
 using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
+    /// <summary>
+    /// Runs a support heal: launches a wiggle style projectile from a source point to the target,
+    /// plays the impact VFX, then yields the heal routine.
+    /// </summary>
     public class HealSupportSequence : SequenceEvent
     {
         private readonly Vector3 source;
@@ -18,27 +21,38 @@ namespace Assets.Scripts.Events
             this.target = target;
         }
 
+        /// <summary>
+        /// Executes the heal using the new ProjectileEngine.
+        /// Spawns a single looping trail, travels to the target, then spawns a single impact VFX.
+        /// </summary>
         public override IEnumerator ProcessRoutine()
         {
-            // 1) Portrait3DManager pops in
-            //yield return new PortraitPopInSequence(startPosition).ProcessRoutine();
+            if (target == null)
+                yield break;
 
-            // 2) FireAndForget the heal projectile
             var healSettings = new ProjectileSettings
             {
                 friendlyName = "Heal",
                 startPosition = source,
                 target = target,
-                path = ProjectilePath.BezierCurve,
-                controlPoints = BezierCurveHelper.Gentle(source, target),
+
+                // Visuals
                 trailKey = "GreenSparkle",
                 vfxKey = "BuffLife",
+
+                // Motion
+                motionStyle = MotionStyle.Wiggle,
+                travelSeconds = 0.9f,
+                wiggleAmplitudeTiles = 0.35f,
+                wiggleHz = 3.5f,
+                arriveRadiusTiles = 0.5f,
+
+                // Post impact
                 routine = target.HealRoutine(10)
             };
-            yield return new FireProjectileSequence(healSettings).ProcessRoutine();
 
-            // 3) Portrait3DManager pops out
-            //yield return new PortraitPopOutSequence(startPosition).ProcessRoutine();
+            // Launch and wait for completion
+            yield return new FireProjectileSequence(healSettings).ProcessRoutine();
         }
     }
 }

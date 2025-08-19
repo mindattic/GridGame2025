@@ -16,57 +16,57 @@ MonoBehaviour:
   m_GUID: 2578757ce0d8eb247bce42c4c4b04967
   m_SerializeEntries:
   - m_GUID: 09cc03906436b5a49849abb66d159478
-    m_Address: TrailEffects/IceSparkle
+    m_Address: Vfx/Loop/IceSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0cc61da64e192f146b38f812cc5645b4
-    m_Address: TrailEffects/PinkDust
+    m_Address: Vfx/Loop/PinkDust
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 49e6d9236fcf78646931ecf0ec5682d8
-    m_Address: TrailEffects/Feather
+    m_Address: Vfx/Loop/Feather
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 71b664a2d9932a344b8563c3a00b15ab
-    m_Address: TrailEffects/Fireball
+    m_Address: Vfx/Loop/Fireball
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 770299b675d80ee4fb7bccf1bc8cc6ba
-    m_Address: TrailEffects/StarSparkle
+    m_Address: Vfx/Loop/StarSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7bf713e99ad076343b773221b19799a2
-    m_Address: TrailEffects/BlueGlow
+    m_Address: Vfx/Loop/BlueGlow
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 805f43fefa2159d459e0ab55a868ae06
-    m_Address: TrailEffects/Bubble
+    m_Address: Vfx/Loop/Bubble
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9263c45164b34c845ba8a1cadf40ac86
-    m_Address: TrailEffects/GoldSparkle
+    m_Address: Vfx/Loop/GoldSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9810767d7a151584ba06e8d0fed68584
-    m_Address: TrailEffects/Flame
+    m_Address: Vfx/Loop/Flame
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a2e72b420d967db47b029c1e6c7f608e
-    m_Address: TrailEffects/RosePetal
+    m_Address: Vfx/Loop/RosePetal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f8fc602f1dd633547be1cd437c18d647
-    m_Address: TrailEffects/GreenSparkle
+    m_Address: Vfx/Loop/GreenSparkle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

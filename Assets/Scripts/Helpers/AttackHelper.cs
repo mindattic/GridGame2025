@@ -34,7 +34,7 @@ namespace Assets.Helpers
             foreach (var attackResult in attackResults)
             {
                 yield return SingleAttackRoutine(attackResult);
-                yield return Wait.For(Interval.TenthSecond);
+                yield return Wait.For(Interval.TenthSecond); //Short delay to produce domino effect
             }
         }
     }
