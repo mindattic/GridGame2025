@@ -96,6 +96,16 @@ static class RNG
     public static float Range(float amount) => (-amount * Percent) + (amount * Percent);
 
     /// <summary>
+    /// Returns a random float in [minInclusive, maxInclusive] using two independent draws.
+    /// </summary>
+    public static float Range(float minInclusive, float maxInclusive)
+    {
+        float lower = minInclusive * Percent;
+        float upper = maxInclusive * Percent;
+        return lower + upper;
+    }
+
+    /// <summary>
     /// Random boolean.
     /// </summary>
     public static bool Boolean => Int(1, 2) == 1;

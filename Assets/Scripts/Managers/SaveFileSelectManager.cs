@@ -13,31 +13,46 @@ using Label = TMPro.TextMeshProUGUI;
 
 public class SaveFileSelectManager : MonoBehaviour
 {
-    // Fields
+    // Prefab reference used to spawn a save-file button.
     private GameObject buttonPrefab;
-    private Label header;
-    private RectTransform scrollView;
+
+    // Parent container that will hold instantiated buttons.
     private Transform content;
-    private VerticalLayoutGroup verticalLayoutGroup;
 
-
-    private float screenWidth;
-    private float screenHeight;
-    private float buttonWidth;
-    private float buttonHeight;
-    private float fontSize;
-    private float rowSpacing;
-
+    // ----------------------------------------------------------------------------------------------------
+    // Unity Lifecycle
+    // ----------------------------------------------------------------------------------------------------
 
     private void Awake()
     {
+        // Load the button prefab from a central library.
+        // Validate the prefab exists before proceeding.
+        if (PrefabLibrary.Prefabs == null || !PrefabLibrary.Prefabs.ContainsKey("SaveFileButtonPrefab"))
+        {
+            Debug.LogError("SaveFileButtonPrefab not found in PrefabLibrary.Prefabs.");
+            return;
+        }
+
         buttonPrefab = PrefabLibrary.Prefabs["SaveFileButtonPrefab"];
-        content = GameObject.Find(GameObjectHelper.StageSelect.Content).GetComponent<Transform>();
+
+        // Find the content container in the scene and validate it.
+        GameObject contentGO = GameObject.Find(GameObjectHelper.StageSelect.Content);
+        if (contentGO == null)
+        {
+            Debug.LogError($"Content container not found: {GameObjectHelper.StageSelect.Content}");
+            return;
+        }
+
+        content = contentGO.GetComponent<Transform>();
+        if (content == null)
+        {
+            Debug.LogError("Content transform component missing on content container.");
+        }
     }
 
     private void Start()
     {
-        //Validate a current profile exists
+        // Validate that a current profile exists. If not, send the user to create one.
         if (!ProfileHelper.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
@@ -45,13 +60,24 @@ public class SaveFileSelectManager : MonoBehaviour
             return;
         }
 
+        // Populate the list and fade in.
         Reload();
         scene.FadeIn();
     }
 
+    // ----------------------------------------------------------------------------------------------------
+    // UI Population
+    // ----------------------------------------------------------------------------------------------------
 
     private void Clear()
     {
+        // Remove any previously created buttons to avoid duplicates.
+        if (content == null)
+        {
+            Debug.LogError("Cannot clear. Content transform is null.");
+            return;
+        }
+
         foreach (Transform child in content)
         {
             Destroy(child.gameObject);
@@ -60,54 +86,183 @@ public class SaveFileSelectManager : MonoBehaviour
 
     private void Reload()
     {
-        //Hide existing content
+        // Hide existing content and prepare to repopulate.
         Clear();
 
-        //Retrieve all saves in profile
-        string savesPath = Path.Combine(ProfileHelper.CurrentProfile.Folder, "Saves");
-        var saveFiles = Directory.GetFiles(savesPath, "*.json").ToArray();
+        // Validate prerequisites before reading save data.
+        if (ProfileHelper.CurrentProfile == null)
+        {
+            Debug.LogError("CurrentProfile is null during Reload.");
+            return;
+        }
 
-        //Add each save as a button
+        string savesPath = Path.Combine(ProfileHelper.CurrentProfile.Folder ?? string.Empty, "Saves");
+        if (string.IsNullOrWhiteSpace(savesPath))
+        {
+            Debug.LogError("Saves path is invalid.");
+            return;
+        }
+
+        // Ensure the saves directory exists.
+        if (!Directory.Exists(savesPath))
+        {
+            Debug.LogWarning($"Saves directory does not exist at: {savesPath}");
+            return;
+        }
+
+        // Optional existence check of json files. Not used for logic, but validates folder health.
+        // Keeps original logic of enumerating SaveStates from the profile.
+        var saveFiles = Directory.GetFiles(savesPath, "*.json").ToArray();
+        if (saveFiles.Length == 0)
+        {
+            Debug.Log($"No save files found in: {savesPath}");
+        }
+
+        // Defensive null check on the profile SaveStates list.
+        if (ProfileHelper.CurrentProfile.SaveStates == null)
+        {
+            Debug.LogWarning("CurrentProfile.SaveStates is null. Nothing to display.");
+            return;
+        }
+
+        // Add each save as a button. Preserve existing enumeration behavior.
         foreach (var item in ProfileHelper.CurrentProfile.SaveStates)
         {
+            if (item == null)
+            {
+                Debug.LogWarning("Encountered null SaveState. Skipping.");
+                continue;
+            }
+
             AddLoadSaveFileButton(item);
         }
     }
 
     public void AddLoadSaveFileButton(SaveState item)
     {
-        string savesPath = Path.Combine(ProfileHelper.CurrentProfile.Folder, "Saves");
-        string filePath = Path.Combine(savesPath, item.FileName);
+        // Validate required references and data early.
+        if (item == null)
+        {
+            Debug.LogError("AddLoadSaveFileButton received a null SaveState.");
+            return;
+        }
 
-        //Instantiate the prefab as a child of `content`
+        if (buttonPrefab == null)
+        {
+            Debug.LogError("Button prefab is null. Cannot create save file button.");
+            return;
+        }
+
+        if (content == null)
+        {
+            Debug.LogError("Content transform is null. Cannot parent save file button.");
+            return;
+        }
+
+        if (ProfileHelper.CurrentProfile == null)
+        {
+            Debug.LogError("CurrentProfile is null in AddLoadSaveFileButton.");
+            return;
+        }
+
+        string savesPath = Path.Combine(ProfileHelper.CurrentProfile.Folder ?? string.Empty, "Saves");
+        string filePath = Path.Combine(savesPath, item.FileName ?? string.Empty);
+
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            Debug.LogError("Computed file path is invalid for save button.");
+            return;
+        }
+
+        // Instantiate the prefab as a child of the content container.
         GameObject instance = Instantiate(buttonPrefab, content);
-        instance.name = $"Button_{Path.GetFileNameWithoutExtension(item.FileName)}";
+        instance.name = $"Button_{Path.GetFileNameWithoutExtension(item.FileName ?? "Unknown")}";
 
-        //Show the button size: 90% of width, 1/16th of height
-        //RectTransform buttonRect = instance.GetComponent<RectTransform>();
-        //buttonRect.sizeDelta = new Vector2(buttonWidth, buttonHeight);
-
-        //Show the button click event
+        // Wire up the click event to load the save.
         Button button = instance.GetComponent<Button>();
-        button.onClick.AddListener(() => OnLoadSaveFileButtonClicked(filePath));
+        if (button == null)
+        {
+            Debug.LogError("Instantiated save button is missing a Button component.");
+        }
+        else
+        {
+            // Disable clicking if the file is missing, but still render the row for visibility.
+            if (!File.Exists(filePath))
+            {
+                Debug.LogWarning($"Save file does not exist on disk: {filePath}");
+                button.interactable = false;
+            }
+            else
+            {
+                button.onClick.AddListener(() => OnLoadSaveFileButtonClicked(filePath));
+            }
+        }
 
-        //Apply textarea to labels
-        instance.transform.Find("SaveNumber").GetComponent<Label>().text = $"Save {item.Index:D3}";
-        instance.transform.Find("Timestamp").GetComponent<Label>().text = DateTimeHelper.ParseTimeElapsed(item.Timestamp);
+        // Apply text to labels with defensive lookups.
+        Transform saveNumberT = instance.transform.Find("SaveNumber");
+        Transform timestampT = instance.transform.Find("Timestamp");
+
+        if (saveNumberT == null || timestampT == null)
+        {
+            Debug.LogError("Save button prefab is missing SaveNumber or Timestamp child objects.");
+            return;
+        }
+
+        Label saveNumber = saveNumberT.GetComponent<Label>();
+        Label timestamp = timestampT.GetComponent<Label>();
+
+        if (saveNumber == null || timestamp == null)
+        {
+            Debug.LogError("SaveNumber or Timestamp is missing a TextMeshProUGUI component.");
+            return;
+        }
+
+        // Render the index and a friendly elapsed time string.
+        saveNumber.text = $"Save {item.Index:D3}";
+        timestamp.text = DateTimeHelper.ParseTimeElapsed(item.Timestamp);
     }
+
+    // ----------------------------------------------------------------------------------------------------
+    // Actions
+    // ----------------------------------------------------------------------------------------------------
 
     private void OnLoadSaveFileButtonClicked(string filePath)
     {
+        // Validate the path before any IO.
+        if (string.IsNullOrWhiteSpace(filePath))
+        {
+            Debug.LogError("OnLoadSaveFileButtonClicked received an invalid file path.");
+            return;
+        }
+
+        if (!File.Exists(filePath))
+        {
+            Debug.LogError($"Save file not found: {filePath}");
+            return;
+        }
+
         try
         {
             // Read and deserialize the selected save file.
             string json = File.ReadAllText(filePath);
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                Debug.LogError($"Save file is empty: {filePath}");
+                return;
+            }
+
             SaveState selectedSave = JsonConvert.DeserializeObject<SaveState>(json);
+
             if (selectedSave != null)
             {
-                ProfileHelper.CurrentProfile.CurrentSave = selectedSave;
+                // Apply the selected save to the current profile, then move to the game scene.
+                if (ProfileHelper.CurrentProfile == null)
+                {
+                    Debug.LogError("CurrentProfile is null when applying selected save.");
+                    return;
+                }
 
-                // Proceed to load the game scene using the active save.
+                ProfileHelper.CurrentProfile.CurrentSave = selectedSave;
                 scene.Change.ToGame();
             }
             else
@@ -121,9 +276,9 @@ public class SaveFileSelectManager : MonoBehaviour
         }
     }
 
-
     public void OnBackButtonClicked()
     {
+        // Navigate back to the previous scene as defined by your scene helper.
         scene.Change.ToPreviousScene();
     }
 }

@@ -3,21 +3,39 @@ using UnityEngine.UI;
 
 public class ScrollingBackground : MonoBehaviour
 {
-    [SerializeField] public Vector2 scrollFocus = new Vector2(0f, 0f);
+    public Vector2 scrollFocus = new Vector2(0f, 0f);
+    private Vector2 scrollFocusMin = new Vector2(-0.015f, -0.015f);
+    private Vector2 scrollFocusMax = new Vector2(0.015f, 0.015f);
+    private float minSecondsBetweenChanges = 5f;
+    private float maxSecondsBetweenChanges = 15f;
+    [Range(0f, 10f)] private float focusLerpSpeed = 3f;
+    private bool useUnscaledTime = true;
+
     private RawImage rawImage;
     private Rect uvRect;
+    private Vector2 targetScrollFocus;
+    private float nextChangeAt;
 
     void Start()
     {
-        //Get the RawImage component
         rawImage = GetComponent<RawImage>();
         if (rawImage == null)
         {
             Debug.LogError("ScrollingUITexture: No RawImage component found!");
+            return;
         }
 
-        // Show uvRect
+        // Start from current uvRect
         uvRect = rawImage.uvRect;
+
+        // Randomize the UV rect position at startup
+        uvRect.position = new Vector2(RNG.Float(), RNG.Float());
+
+        rawImage.uvRect = uvRect;
+
+        // Initialize target focus
+        targetScrollFocus = RandomFocusInRange();
+        ScheduleNextChange();
     }
 
     void Update()
@@ -25,10 +43,40 @@ public class ScrollingBackground : MonoBehaviour
         if (rawImage == null || !gameObject.activeInHierarchy)
             return;
 
-        // Increment the UV rect's position over time
-        uvRect.position += scrollFocus * Time.unscaledDeltaTime;
+        if (Now() >= nextChangeAt)
+        {
+            targetScrollFocus = RandomFocusInRange();
+            ScheduleNextChange();
+        }
 
-        // Apply the modified UV rect back to the RawImage
+        float dt = Dt();
+        float t = 1f - Mathf.Exp(-focusLerpSpeed * dt);
+        scrollFocus = Vector2.Lerp(scrollFocus, targetScrollFocus, t);
+
+        uvRect.position += scrollFocus * dt;
         rawImage.uvRect = uvRect;
+    }
+
+    private Vector2 RandomFocusInRange()
+    {
+        float x = RNG.Range(scrollFocusMin.x, scrollFocusMax.x);
+        float y = RNG.Range(scrollFocusMin.y, scrollFocusMax.y);
+        return new Vector2(x, y);
+    }
+
+    private void ScheduleNextChange()
+    {
+        float wait = RNG.Range(minSecondsBetweenChanges, maxSecondsBetweenChanges);
+        nextChangeAt = Now() + Mathf.Max(0f, wait);
+    }
+
+    private float Now()
+    {
+        return useUnscaledTime ? Time.unscaledTime : Time.time;
+    }
+
+    private float Dt()
+    {
+        return useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
     }
 }

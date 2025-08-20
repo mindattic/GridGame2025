@@ -378,8 +378,6 @@ public class DebugManager : MonoBehaviour
     public void TitleTest()
     {
         var text = DateTime.UtcNow.Ticks.ToString();
-        g.PauseOverlay.FadeIn();
-        g.PauseOverlay.FadeOut();
 
     }
 

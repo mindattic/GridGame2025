@@ -71,7 +71,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TargetIndicator targetIndicator;
 
     //Canvas
-    [HideInInspector] public PauseOverlay pauseOverlay;
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;
     [HideInInspector] public Vector3 tileScale;
@@ -173,7 +172,6 @@ public class GameManager : Singleton<GameManager>
 
         coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
         waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
-        pauseOverlay = GameObject.Find(GameObjectHelper.Game.PauseOverlay).GetComponent<PauseOverlay>();
         targetModeOverlay = GameObject.Find(GameObjectHelper.Game.TargetModeOverlay).GetComponent<TargetModeOverlay>();
 
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();

@@ -1,33 +1,42 @@
 using Assets.Helper;
+using Assets.Helpers;
 using UnityEngine;
 using UnityEngine.UI;
-using scene = Assets.Helpers.SceneHelper;
 using g = Assets.Helpers.GameHelper;
-using Assets.Helpers;
+using scene = Assets.Helpers.SceneHelper;
 
 public class PauseManager : MonoBehaviour
 {
+    // True when the game is paused by time scale.
     public bool IsPaused => Time.timeScale == 0f;
 
-    private PauseButton pauseButton;
+    // Visible pause icon image found under the pause button.
     private Image pauseIconImage;
+
+    // Sprites for pause and resume states.
     private Sprite pauseIcon;
     private Sprite resumeIcon;
+
+    // Root of the pause menu UI.
     private GameObject pauseMenu;
 
     /// <summary>
-    /// Grabs references to the PauseButton, its visible icon Image, and the PauseMenu root.
-    /// The icon Image is resolved from children so the correct visible sprite is updated.
+    /// Locate the PauseButton object, resolve its visible icon Image, and cache the pause menu root.
     /// </summary>
     private void Awake()
     {
+        // Find the pause button object by helper key.
         var pauseButtonGO = GameObject.Find(GameObjectHelper.Game.PauseButton);
-        if (pauseButtonGO != null)
+        if (pauseButtonGO == null)
         {
-            pauseButton = pauseButtonGO.GetComponent<PauseButton>();
-
-            // Prefer a child Image as the visible icon, since the root Image is a transparent hit area
+            Debug.LogError($"Pause button not found: {GameObjectHelper.Game.PauseButton}");
+        }
+        else
+        {
+            // Prefer a child Image as the visible icon (root may be a transparent hit area).
             var images = pauseButtonGO.GetComponentsInChildren<Image>(true);
+
+            // Scan children for the first Image that is not on the root.
             for (int i = 0; i < images.Length; i++)
             {
                 if (images[i] != null && images[i].transform != pauseButtonGO.transform)
@@ -37,84 +46,109 @@ public class PauseManager : MonoBehaviour
                 }
             }
 
-            // Fallback to the root Image if no child icon is present
-            if (pauseIconImage == null) pauseIconImage = pauseButtonGO.GetComponent<Image>();
+            // Fallback to the root Image if no child icon is present.
+            if (pauseIconImage == null)
+            {
+                pauseIconImage = pauseButtonGO.GetComponent<Image>();
+                if (pauseIconImage == null)
+                {
+                    Debug.LogError("Pause button is missing an Image component for the icon.");
+                }
+            }
         }
 
+        // Cache the pause menu root.
         pauseMenu = GameObject.Find(GameObjectHelper.Game.PauseMenu);
+        if (pauseMenu == null)
+        {
+            Debug.LogError($"Pause menu not found: {GameObjectHelper.Game.PauseMenu}");
+        }
     }
 
     /// <summary>
-    /// Loads sprites and initializes UI state. Ensures the icon is visible and preserves aspect.
+    /// Load sprites, initialize UI, and hide overlays and menu.
     /// </summary>
     private void Start()
     {
-        pauseIcon = SpriteLibrary.Sprites["Pause"];
-        resumeIcon = SpriteLibrary.Sprites["Paused"];
+        // Validate sprite library and fetch required sprites.
+        if (SpriteLibrary.Sprites == null ||
+            !SpriteLibrary.Sprites.ContainsKey("Pause") ||
+            !SpriteLibrary.Sprites.ContainsKey("Paused"))
+        {
+            Debug.LogError("SpriteLibrary missing required 'Pause' or 'Paused' sprites.");
+        }
+        else
+        {
+            pauseIcon = SpriteLibrary.Sprites["Pause"];
+            resumeIcon = SpriteLibrary.Sprites["Paused"];
+        }
 
-        if (pauseIconImage != null)
+        // Initialize the visible icon if available.
+        if (pauseIconImage != null && pauseIcon != null)
         {
             pauseIconImage.sprite = pauseIcon;
             pauseIconImage.preserveAspect = true;
             pauseIconImage.color = Color.white;
         }
 
-        g.PauseOverlay.Hide();
-
-        if (pauseMenu != null) pauseMenu.SetActive(false);
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(false);
+        }
     }
 
     /// <summary>
-    /// Disables interaction on the first Button found under the pause menu.
-    /// </summary>
-    private void DisableButtons()
-    {
-        if (pauseMenu == null) return;
-        var firstButton = pauseMenu.GetComponentInChildren<Button>();
-        if (firstButton != null) firstButton.interactable = false;
-    }
-
-    /// <summary>
-    /// Toggles between paused and unpaused states.
+    /// Toggle between paused and unpaused states.
     /// </summary>
     public void Toggle()
     {
-        if (IsPaused) OnResumeButtonClicked();
-        else OnPauseButtonClicked();
+        // Use current state to decide action.
+        if (IsPaused) 
+            OnResumeButtonClicked();
+        else 
+            OnPauseButtonClicked();
     }
 
     /// <summary>
-    /// Applies paused state, swaps the icon to the resume sprite, and shows the overlay/menu.
+    /// Apply paused state, swap icon to the resume sprite, and show overlay/menu.
     /// </summary>
     private void Pause()
     {
+        // Stop time to pause gameplay.
         Time.timeScale = 0f;
 
-        if (pauseIconImage != null)
+        // Update icon to show the "resume" state.
+        if (pauseIconImage != null && resumeIcon != null)
         {
             pauseIconImage.sprite = resumeIcon;
             pauseIconImage.preserveAspect = true;
         }
 
-        g.PauseOverlay.Show();
-        if (pauseMenu != null) pauseMenu.SetActive(true);
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(true);
+        }
     }
 
     /// <summary>
-    /// Clears paused state, swaps the icon to the pause sprite, and hides the overlay/menu.
+    /// Clear paused state, swap icon to the pause sprite, and hide overlay/menu.
     /// </summary>
     private void Resume()
     {
+        // Resume time to unpause gameplay.
         Time.timeScale = 1f;
 
-        if (pauseIconImage != null)
+        // Update icon to show the "pause" state.
+        if (pauseIconImage != null && pauseIcon != null)
         {
             pauseIconImage.sprite = pauseIcon;
             pauseIconImage.preserveAspect = true;
         }
 
-        g.PauseOverlay.Hide();
-        if (pauseMenu != null) pauseMenu.SetActive(false);
+        if (pauseMenu != null)
+        {
+            pauseMenu.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -122,6 +156,7 @@ public class PauseManager : MonoBehaviour
     /// </summary>
     public void OnPauseButtonClicked()
     {
+        // Enter paused state.
         Pause();
     }
 
@@ -130,72 +165,117 @@ public class PauseManager : MonoBehaviour
     /// </summary>
     public void OnResumeButtonClicked()
     {
+        // Exit paused state.
         Resume();
     }
 
-    /// <summary>
-    /// Saves the profile and resumes the game.
-    /// </summary>
-    public void OnSaveGameButtonClicked()
+    private bool QuickSave()
     {
-        ProfileHelper.Save(overwrite: true);
+        try
+        {
+            ProfileHelper.Save(overwrite: true);
+        }
+        catch
+        {
+            Debug.LogError("Overwrite Save failed during pause menu action.");
+            return false;
+        }
+        return true;
+    }
+
+    /// <summary>
+    /// Save the profile, then resume the game.
+    /// </summary>
+    public void OnQuickSaveGameButtonClicked()
+    {
+        // Save progress.
+        QuickSave();
+
+        // Return to gameplay.
         Resume();
     }
 
     /// <summary>
-    /// Restarts the stage and resumes the game.
+    /// Save the profile, then resume the game.
+    /// </summary>
+    public void OnCreateSaveGameButtonClicked()
+    {
+        // Try to persist progress.
+        try { ProfileHelper.Save(overwrite: false); } catch { Debug.LogError("Create Save failed during pause menu action."); }
+
+        // Return to gameplay.
+        Resume();
+    }
+
+    /// <summary>
+    /// Restart the current stage, then resume the game.
     /// </summary>
     public void OnRestartStageButtonClicked()
     {
-        g.StageManager.RestartStage();
+        // Restart stage through game helper.
+        try { g.StageManager.RestartStage(); } catch { Debug.LogError("Stage restart failed."); }
+
+        // Ensure gameplay resumes.
         Resume();
     }
 
     /// <summary>
-    /// Navigates to Party Manager scene and unpauses time.
+    /// Go to Party Manager scene and unpause time.
     /// </summary>
     public void OnPartyManagerButtonClicked()
     {
+        // Ensure time is running before scene change.
         Time.timeScale = 1f;
-        ProfileHelper.Save(overwrite: true);
+
+        // Save progress.
+        QuickSave();
+
+        // Navigate.
         scene.Change.ToPartyManager();
     }
 
     /// <summary>
-    /// Spawns a random enemy through the debug manager.
-    /// </summary>
-    public void OnSpawnEnemyButtonClicked()
-    {
-        g.DebugManager.SpawnRandomEnemy();
-    }
-
-    /// <summary>
-    /// Navigates to Stage Select and unpauses time.
+    /// Go to Stage Select and unpause time.
     /// </summary>
     public void OnStageSelectButtonClicked()
     {
+        // Ensure time is running before scene change.
         Time.timeScale = 1f;
-        ProfileHelper.Save(overwrite: true);
+
+        // Save progress.
+        QuickSave();
+
+        // Navigate.
         scene.Change.ToStageSelect();
     }
 
     /// <summary>
-    /// Navigates to Settings and unpauses time.
+    /// Go to Settings and unpause time.
     /// </summary>
     public void OnSettingsButtonClicked()
     {
+        // Ensure time is running before scene change.
         Time.timeScale = 1f;
-        ProfileHelper.Save(overwrite: true);
+
+        // Save progress.
+        QuickSave();
+
+        // Navigate.
         scene.Change.ToSettings();
     }
 
     /// <summary>
-    /// Navigates to Title Screen and unpauses time.
+    /// Go to Title Screen and unpause time.
     /// </summary>
     public void OnTitleScreenButtonClicked()
     {
+        // Ensure time is running before scene change.
         Time.timeScale = 1f;
-        ProfileHelper.Save(overwrite: true);
+
+        // Save progress.
+        QuickSave();
+
+        // Navigate.
         scene.Change.ToTitleScreen();
     }
 }

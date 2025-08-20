@@ -94,7 +94,6 @@ namespace Assets.Helpers
         public static TargetIndicator TargetIndicator => GameManager.instance.targetIndicator;
 
         // Canvas and UI
-        public static PauseOverlay PauseOverlay => GameManager.instance.pauseOverlay;
         public static Vector2 Viewport => GameManager.instance.viewport;
         public static float TileSize => GameManager.instance.tileSize;
         public static Vector3 TileScale => GameManager.instance.tileScale;

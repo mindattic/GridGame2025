@@ -185,7 +185,6 @@
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Barbarian.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\BoardOverlay.cs" />
-    <Compile Include="Assets\Scripts\Canvas\PauseOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\RectVector3.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
