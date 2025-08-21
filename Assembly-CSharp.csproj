@@ -135,7 +135,6 @@
     <Compile Include="Assets\Scripts\Managers\SequenceManager.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
-    <Compile Include="Assets\Scripts\Canvas\ScrollingBackground.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
@@ -219,6 +218,7 @@
     <Compile Include="Assets\Scripts\Managers\Portrait3DManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
+    <Compile Include="Assets\Scripts\Canvas\ParallaxBackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />

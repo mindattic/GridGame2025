@@ -1,21 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
+using g = Assets.Helpers.GameHelper;
 
-public class ScrollingBackground : MonoBehaviour
+public class ParallaxBackgroundInstance : MonoBehaviour
 {
     public Vector2 scrollFocus = new Vector2(0f, 0f);
     private Vector2 scrollFocusMin = new Vector2(-0.02f, -0.02f);
     private Vector2 scrollFocusMax = new Vector2(0.02f, 0.02f);
+
     private float minSecondsBetweenChanges = 10f;
     private float maxSecondsBetweenChanges = 30f;
-    [Range(0f, 10f)] private float focusLerpSpeed = 3f;
+    private float focusLerpSpeed = 3f;
     private bool useUnscaledTime = true;
+    private bool useLerpTransition = true;
 
     private RawImage rawImage;
     private Rect uvRect;
     private Vector2 targetScrollFocus;
     private float nextChangeAt;
 
+    /// <summary>
+    /// Initializes references, seeds the UV position, and schedules the first direction change.
+    /// </summary>
     void Start()
     {
         rawImage = GetComponent<RawImage>();
@@ -25,37 +31,55 @@ public class ScrollingBackground : MonoBehaviour
             return;
         }
 
-        // Start from current uvRect
         uvRect = rawImage.uvRect;
-
-        // Randomize the UV rect position at startup
         uvRect.position = new Vector2(RNG.Float(0, 1), RNG.Float(0, 1));
         rawImage.uvRect = uvRect;
 
-        // Initialize target focus
         targetScrollFocus = RandomFocusInRange();
+        if (!useLerpTransition)
+        {
+            scrollFocus = targetScrollFocus;
+        }
+
         ScheduleNextChange();
     }
 
+    /// <summary>
+    /// Drives timed direction changes and advances the UV rect based on the current focus.
+    /// Lerp can be toggled off to snap instantly to each new direction.
+    /// </summary>
     void Update()
     {
-        if (rawImage == null || !gameObject.activeInHierarchy)
+        if (rawImage == null || !gameObject.activeInHierarchy || !g.PauseManager.IsPaused)
             return;
 
-        if (Now() >= nextChangeAt)
+        if (Time.unscaledTime >= nextChangeAt)
         {
             targetScrollFocus = RandomFocusInRange();
+
+            if (!useLerpTransition)
+            {
+                scrollFocus = targetScrollFocus;
+            }
+
             ScheduleNextChange();
         }
 
-        float dt = Dt();
-        float t = 1f - Mathf.Exp(-focusLerpSpeed * dt);
-        scrollFocus = Vector2.Lerp(scrollFocus, targetScrollFocus, t);
+        float dt = Time.unscaledDeltaTime;
+
+        if (useLerpTransition)
+        {
+            float t = 1f - Mathf.Exp(-focusLerpSpeed * dt);
+            scrollFocus = Vector2.Lerp(scrollFocus, targetScrollFocus, t);
+        }
 
         uvRect.position += scrollFocus * dt;
         rawImage.uvRect = uvRect;
     }
 
+    /// <summary>
+    /// Picks a new scroll focus within the configured min and max range.
+    /// </summary>
     private Vector2 RandomFocusInRange()
     {
         float x = RNG.Range(scrollFocusMin.x, scrollFocusMax.x);
@@ -63,19 +87,13 @@ public class ScrollingBackground : MonoBehaviour
         return new Vector2(x, y);
     }
 
+    /// <summary>
+    /// Sets the timestamp for the next direction change using a random interval.
+    /// </summary>
     private void ScheduleNextChange()
     {
         float wait = RNG.Range(minSecondsBetweenChanges, maxSecondsBetweenChanges);
-        nextChangeAt = Now() + Mathf.Max(0f, wait);
+        nextChangeAt = Time.unscaledTime + Mathf.Max(0f, wait);
     }
 
-    private float Now()
-    {
-        return useUnscaledTime ? Time.unscaledTime : Time.time;
-    }
-
-    private float Dt()
-    {
-        return useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
-    }
 }
