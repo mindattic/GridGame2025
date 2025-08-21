@@ -94,7 +94,7 @@ public class BoardInstance : MonoBehaviour
 
                 var instance = go.GetComponent<TileInstance>();
                 instance.parent = transform;
-                instance.name = $"Tile_{col}s{row}";
+                instance.name = $"Tile_{col}x{row}";
                 instance.Initialize(col, row);
 
                 g.TileMap.Add(instance);
