@@ -4,10 +4,10 @@ using UnityEngine.UI;
 public class ScrollingBackground : MonoBehaviour
 {
     public Vector2 scrollFocus = new Vector2(0f, 0f);
-    private Vector2 scrollFocusMin = new Vector2(-0.015f, -0.015f);
-    private Vector2 scrollFocusMax = new Vector2(0.015f, 0.015f);
-    private float minSecondsBetweenChanges = 5f;
-    private float maxSecondsBetweenChanges = 15f;
+    private Vector2 scrollFocusMin = new Vector2(-0.02f, -0.02f);
+    private Vector2 scrollFocusMax = new Vector2(0.02f, 0.02f);
+    private float minSecondsBetweenChanges = 10f;
+    private float maxSecondsBetweenChanges = 30f;
     [Range(0f, 10f)] private float focusLerpSpeed = 3f;
     private bool useUnscaledTime = true;
 
@@ -29,7 +29,7 @@ public class ScrollingBackground : MonoBehaviour
         uvRect = rawImage.uvRect;
 
         // Randomize the UV rect position at startup
-        uvRect.position = new Vector2(RNG.Float(), RNG.Float());
+        uvRect.position = new Vector2(RNG.Float(0, 1), RNG.Float(0, 1));
 
         rawImage.uvRect = uvRect;
 
