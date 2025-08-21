@@ -11,7 +11,6 @@ public class ParallaxBackgroundInstance : MonoBehaviour
     private float minSecondsBetweenChanges = 10f;
     private float maxSecondsBetweenChanges = 30f;
     private float focusLerpSpeed = 3f;
-    private bool useUnscaledTime = true;
     private bool useLerpTransition = true;
 
     private RawImage rawImage;
