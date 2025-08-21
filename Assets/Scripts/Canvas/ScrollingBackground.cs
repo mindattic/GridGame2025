@@ -30,7 +30,6 @@ public class ScrollingBackground : MonoBehaviour
 
         // Randomize the UV rect position at startup
         uvRect.position = new Vector2(RNG.Float(0, 1), RNG.Float(0, 1));
-
         rawImage.uvRect = uvRect;
 
         // Initialize target focus
