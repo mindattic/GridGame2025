@@ -1,8 +1,10 @@
 using Assets.Helpers;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
-
+using Label = TMPro.TextMeshProUGUI;
 
 public class AbilityButtonManager : MonoBehaviour
 {
@@ -27,7 +29,8 @@ public class AbilityButtonManager : MonoBehaviour
             var a1 = new Ability()
             {
                 name = "Spark of Healing",
-                type = AbilityType.TargetAlly
+                type = AbilityType.TargetAlly,
+                button = SpriteLibrary.AbilityButtons["Heal"]
             };
             abilities.Add(a1);
 
@@ -37,6 +40,8 @@ public class AbilityButtonManager : MonoBehaviour
                 var go = Instantiate(abilityButtonPrefab, abilityButtonContainer);
                 var instance = go.GetComponent<AbilityButton>();
                 instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
+                instance.GetComponent<Image>().sprite = ability.button;
+                instance.GetComponentInChildren<Label>().text = "";
                 buttons.Add(instance);
                 instance.Initialize(ability, () => OnClick(actor, ability));
             }

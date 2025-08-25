@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Intermission.Before;
+using Label = TMPro.TextMeshProUGUI;
 
 public class AbilityButton : MonoBehaviour
 {
@@ -54,6 +55,7 @@ public class Ability
 {
     public string name;
     public AbilityType type;
+    public Sprite button;
 
     public bool requiresTarget =>
         type == AbilityType.TargetAlly || type == AbilityType.TargetOpponent || type == AbilityType.TargetAny;

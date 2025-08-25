@@ -14,6 +14,7 @@ public static class SpriteLibrary
     private static Dictionary<string, Sprite> leaves;
     private static Dictionary<string, Sprite> tutorialPages;
     private static Dictionary<string, Sprite> logos;
+    private static Dictionary<string, Sprite> abilityButtons;
 
     private static bool isLoaded = false;
 
@@ -89,11 +90,23 @@ public static class SpriteLibrary
         }
     }
 
-
+    public static Dictionary<string, Sprite> AbilityButtons
+    {
+        get
+        {
+            if (!isLoaded) Load();
+            return abilityButtons;
+        }
+    }
 
     private static void Load()
     {
         if (isLoaded) return;
+
+        abilityButtons = new Dictionary<string, Sprite>
+        {
+            { "Heal", AssetHelper.LoadAsset<Sprite>("Sprites/AbilityButtons/Heal") },
+        };
 
         #region Backgrounds
 
