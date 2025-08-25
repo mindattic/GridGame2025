@@ -124,12 +124,12 @@ public class SelectedHeroManager : MonoBehaviour
             g.Card.Clear();
             g.FocusIndicator.Hide();
             g.AudioManager.Play("Click");
-            //g.TimerBar2D.Play();
+            g.TimerBar2D.Play();
             //g.TimelineManager.Rebuild();
             //g.TimelineManager.BeginHeroWindow();
 
             // When the player begins a drag on a hero:
-            g.Timeline.HeroActionActive(true);
+            g.Timeline.Resume();
 
 
             g.ActorManager.CheckEnemyAP();
@@ -177,7 +177,7 @@ public class SelectedHeroManager : MonoBehaviour
         }
 
         // When the player releases the drag / ends the action:
-        g.Timeline.HeroActionActive(false);
+        g.Timeline.Pause();
 
         // Complete movement for promoted hero
         g.Actors.SelectedHero.Move.ToLocation();
@@ -190,8 +190,7 @@ public class SelectedHeroManager : MonoBehaviour
         pendingActor = null;
 
         // Finalize
-        //g.TimerBar2D.Pause();
-        g.Timeline.HeroActionActive(false);
+        g.TimerBar2D.Pause();
         g.PincerAttackManager.Check(Team.Hero);
     }
 }

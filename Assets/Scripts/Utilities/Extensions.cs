@@ -179,7 +179,7 @@ public static class ActorInstanceExtensions
     /// </summary>
     public static bool IsSpawnable(this ActorInstance actor)
         => actor != null && !actor.Flags.HasSpawned
-           && actor.spawnTurn <= g.TurnManager.currentTurn;
+           && actor.spawnTurn <= g.TurnManager.CurrentTurn;
 
     /// <summary>
     /// Actor has maximum Animation points.

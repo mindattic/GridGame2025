@@ -16,7 +16,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator ProcessRoutine()
         {
             // Ensure we only run on the attacker turn.
-            if (!g.TurnManager.isEnemyTurn)
+            if (!g.TurnManager.IsEnemyTurn)
                 yield break;
 
             // Disable input during AI resolution.

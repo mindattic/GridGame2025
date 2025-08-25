@@ -9,9 +9,9 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Canvas.Timeline
 {
     /// <summary>
-    /// Renders a horizontal schedule where the center indicator always represents "now".
-    /// Builds a 6 second hero window followed by enemy turns ordered by AP.
-    /// The content is positioned every frame so that elapsed time aligns beneath the center.
+    /// Timeline shows a row of fixed-size blocks that represent turn order.
+    /// The center indicator is "now". Each hero block is 6 seconds, enemies
+    /// get their own blocks. Order is simulated from enemy AP fill rates.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class Timeline : MonoBehaviour
@@ -23,249 +23,244 @@ namespace Assets.Scripts.Canvas.Timeline
         private RectTransform content;
         private Image indicator;
 
-        [Header("Config")]
-        [SerializeField] private float heroWindowSeconds = 6f;
+        [Header("Layout")]
+        [SerializeField] private float blockSizePixels = 96f;
+        [SerializeField] private float blockGapPixels = 6f;
         [SerializeField, Range(0f, 1f)] private float indicatorViewportRatio = 0.5f;
-        [SerializeField] private float pixelsPerSecond = 160f;
-        [SerializeField] private float blockGapPixels = 4f;
+        [SerializeField] private float snapLerp = 12f;
 
-        private readonly List<TimelineItem> plan = new List<TimelineItem>();
+        [Header("Turns")]
+        [SerializeField] private float heroSeconds = 6f;
+        [SerializeField] private Color enemyTint = new Color(0.10f, 0.60f, 1f, 1f);
+
+        [Header("AP Simulation")]
+        [Tooltip("AP gained per second per point of Intelligence used by the simulator to predict order.")]
+        [SerializeField] private float apGainPerIntPerSecond = 0.10f;
+
+        [Header("Queue Size")]
+        [Tooltip("How many blocks to keep scheduled ahead of the current one.")]
+        [SerializeField] private int futureBlocks = 10;
+
+        public void Pause() { running = false; }
+        public void Resume() { running = true; }
+
+
+        private readonly List<TurnBlock> blocks = new List<TurnBlock>();
         private readonly List<TimelineBlockInstance> pool = new List<TimelineBlockInstance>();
+        private readonly List<EnemySim> sim = new List<EnemySim>();
 
-        private float elapsedInCurrent;
-        private bool isRunning;
+        private int currentIndex;
+        private float elapsedInBlock;
         private float contentX;
+        private float targetContentX;
+        private bool running;
 
-        private struct TimelineItem
+        private struct TurnBlock
         {
             public bool isHero;
-            public ActorInstance actor;
+            public ActorInstance enemy;
             public float seconds;
             public Sprite portrait;
-            public Color color;
             public string label;
+            public Color color;
+        }
+
+        private sealed class EnemySim
+        {
+            public ActorInstance enemy;
+            public float ap;
+            public float max;
+            public float gainPerSecond;
         }
 
         /// <summary>
-        /// Finds Viewport, Content, and Indicator under this object, centers the indicator,
-        /// then builds the plan and snaps the timeline so time 0 is under the center.
+        /// Finds Viewport, Content, Indicator, centers the indicator, then builds and snaps.
         /// </summary>
         public void Initialize()
         {
             viewport = transform.Find("Viewport")?.GetComponent<RectTransform>();
-            if (viewport == null)
-            {
-                Debug.LogError("TimelineManager: Viewport not found under TimelineRoot.");
-                return;
-            }
+            if (viewport == null) { Debug.LogError("Timeline: Viewport not found."); return; }
 
             content = viewport.Find("Content")?.GetComponent<RectTransform>();
-            if (content == null)
-            {
-                Debug.LogError("TimelineManager: Content not found under Viewport.");
-                return;
-            }
+            if (content == null) { Debug.LogError("Timeline: Content not found."); return; }
 
             indicator = viewport.Find("Indicator")?.GetComponent<Image>();
-            if (indicator == null)
-            {
-                Debug.LogError("TimelineManager: Indicator not found under Viewport.");
-                return;
-            }
+            if (indicator == null) { Debug.LogError("Timeline: Indicator not found."); return; }
 
-            if (blockPrefab == null)
-            {
-                Debug.LogError("TimelineManager: Block Prefab is not assigned.");
-                return;
-            }
+            if (blockPrefab == null) { Debug.LogError("Timeline: Block prefab is not assigned."); return; }
 
             CenterIndicator();
-            Rebuild();
-            PositionAtTime(0f);
+            BuildSimulationFromScene();
+            BuildQueue(futureBlocks);
+            LayoutAll();
+            SnapToCurrent();
+            running = true;
         }
 
         /// <summary>
-        /// Rebuilds the timeline sequence: hero window then enemies by AP.
-        /// If no enemy is at max AP, adds another hero window.
-        /// After layout, positions content so the current elapsed time remains centered.
+        /// Rebuilds the enemy AP simulation from live actors.
         /// </summary>
-        public void Rebuild()
+        private void BuildSimulationFromScene()
         {
-            plan.Clear();
-
-            plan.Add(new TimelineItem
-            {
-                isHero = true,
-                actor = null,
-                seconds = Mathf.Max(0.1f, heroWindowSeconds),
-                portrait = null,
-                color = Color.white,
-                label = "Heroes"
-            });
+            sim.Clear();
 
             var enemies = g.Actors.Enemies
                 .Where(a => a != null && a.IsPlaying)
-                .OrderByDescending(a => a.Stats.AP)
                 .ToList();
 
             foreach (var e in enemies)
             {
-                float estimate = Mathf.Max(0.25f, e.EstimateTurnSeconds());
-                plan.Add(new TimelineItem
+                var s = new EnemySim
                 {
-                    isHero = false,
-                    actor = e,
-                    seconds = estimate,
-                    portrait = (e.Render != null && e.Render.thumbnail != null) ? e.Render.thumbnail.sprite : null,
-                    color = new Color(0.1f, 0.6f, 1f, 1f),
-                    label = e.name
-                });
+                    enemy = e,
+                    ap = e.Stats.AP,
+                    max = e.Stats.MaxAP,
+                    gainPerSecond = Mathf.Max(0.001f, e.Stats.Intelligence * apGainPerIntPerSecond)
+                };
+                sim.Add(s);
+            }
+        }
+
+        /// <summary>
+        /// Builds or extends the queue using the current simulator state.
+        /// Hero squares are inserted whenever no enemy is ready.
+        /// During a hero square, all enemies accrue AP.
+        /// When an enemy becomes ready, that enemy gets the next square and its AP resets.
+        /// </summary>
+        private void BuildQueue(int neededAhead)
+        {
+            if (blocks.Count == 0)
+            {
+                currentIndex = 0;
+                elapsedInBlock = 0f;
             }
 
-            if (!enemies.Any(a => a.HasMaxAP))
+            int need = Mathf.Max(0, (currentIndex + neededAhead) - (blocks.Count - 1));
+            while (need > 0)
             {
-                plan.Add(new TimelineItem
+                // Any enemy already ready?
+                var ready = sim
+                    .Where(s => s.ap >= s.max)
+                    .OrderByDescending(s => s.ap)
+                    .FirstOrDefault();
+
+                if (ready != null)
+                {
+                    // Schedule this enemy and reset its AP in the simulator.
+                    blocks.Add(new TurnBlock
+                    {
+                        isHero = false,
+                        enemy = ready.enemy,
+                        seconds = Mathf.Clamp(ready.enemy.EstimateTurnSeconds(), 0.5f, 6f),
+                        portrait = (ready.enemy.Render != null && ready.enemy.Render.thumbnail != null)
+                                   ? ready.enemy.Render.thumbnail.sprite
+                                   : null,
+                        label = ready.enemy.name,
+                        color = enemyTint
+                    });
+
+                    ready.ap = 0f;
+                    need--;
+                    // During enemy turn we do not accrue AP in the simulator.
+                    continue;
+                }
+
+                // No enemy is ready; add a hero square and accrue AP for its duration.
+                blocks.Add(new TurnBlock
                 {
                     isHero = true,
-                    actor = null,
-                    seconds = Mathf.Max(0.1f, heroWindowSeconds),
+                    enemy = null,
+                    seconds = heroSeconds,
                     portrait = null,
-                    color = Color.white,
-                    label = "Heroes"
+                    label = "Heroes",
+                    color = Color.white
                 });
+
+                // Enemies gain AP while the hero square plays.
+                float dt = heroSeconds;
+                for (int i = 0; i < sim.Count; i++)
+                {
+                    var s = sim[i];
+                    s.ap = Mathf.Min(s.max, s.ap + s.gainPerSecond * dt);
+                }
+
+                need--;
             }
-
-            elapsedInCurrent = Mathf.Clamp(elapsedInCurrent, 0f, GetTotalSeconds(plan));
-            LayoutBlocks();
-            PositionAtTime(elapsedInCurrent);
         }
 
         /// <summary>
-        /// Starts a new hero window and holds at t=0 under the center until the player acts.
+        /// Creates or reuses pooled visuals and places them in a horizontal strip.
+        /// Squares are uniform width and height.
         /// </summary>
-        public void StartHeroTurnWindow()
+        private void LayoutAll()
         {
-            elapsedInCurrent = 0f;
-            isRunning = false;
-            Rebuild();
-            PositionAtTime(0f);
-        }
+            EnsurePool(blocks.Count);
 
-        /// <summary>
-        /// Toggles whether the timeline advances. Call true when the hero is actively acting,
-        /// false when idle or after action completes.
-        /// </summary>
-        public void HeroActionActive(bool active)
-        {
-            isRunning = active;
-        }
-
-        /// <summary>
-        /// Updates the indicator alignment ratio and relayouts.
-        /// </summary>
-        public void SetIndicatorRatio(float ratio)
-        {
-            indicatorViewportRatio = Mathf.Clamp01(ratio);
-            CenterIndicator();
-            PositionAtTime(elapsedInCurrent);
-        }
-
-        /// <summary>
-        /// Updates hero window seconds and relayouts.
-        /// </summary>
-        public void SetHeroWindowSeconds(float seconds)
-        {
-            heroWindowSeconds = Mathf.Max(0.1f, seconds);
-            Rebuild();
-        }
-
-        /// <summary>
-        /// Updates pixels per second and relayouts.
-        /// </summary>
-        public void SetPixelsPerSecond(float pxPerSec)
-        {
-            pixelsPerSecond = Mathf.Max(4f, pxPerSec);
-            LayoutBlocks();
-            PositionAtTime(elapsedInCurrent);
-        }
-
-        /// <summary>
-        /// Advances time and keeps the current time centered under the indicator.
-        /// When the plan completes, rebuilds and restarts at t=0.
-        /// </summary>
-        private void Tick(float dt)
-        {
-            if (!isRunning || plan.Count == 0)
-                return;
-
-            elapsedInCurrent += Mathf.Max(0f, dt);
-            float total = GetTotalSeconds(plan);
-
-            if (elapsedInCurrent >= total)
-            {
-                elapsedInCurrent = 0f;
-                Rebuild();
-                isRunning = true;
-            }
-
-            PositionAtTime(elapsedInCurrent);
-        }
-
-        /// <summary>
-        /// Creates or reuses pooled UI blocks and places them left to right based on duration.
-        /// </summary>
-        private void LayoutBlocks()
-        {
-            if (viewport == null || content == null)
-                return;
-
-            EnsurePoolSize(plan.Count);
-
-            if (pool.Count < plan.Count)
-            {
-                Debug.LogError($"TimelineManager: Pool size {pool.Count} is less than plan size {plan.Count}.");
-                return;
-            }
-
+            float height = viewport.rect.height > 0f ? viewport.rect.height : blockSizePixels;
+            float size = Mathf.Max(1f, Mathf.Min(blockSizePixels, height)); // Square
             float x = 0f;
-            float height = viewport.rect.height > 0f ? viewport.rect.height : 120f;
 
-            for (int i = 0; i < plan.Count; i++)
+            for (int i = 0; i < blocks.Count; i++)
             {
-                var item = plan[i];
+                var b = blocks[i];
                 var ui = pool[i];
-                float width = item.seconds * pixelsPerSecond;
 
                 ui.gameObject.SetActive(true);
                 ui.transform.SetParent(content, false);
-                ui.SetSize(width, height);
-                ui.SetStyle(item.isHero, item.color);
-                ui.SetLabel(item.label);
+                ui.SetSize(size, size);
+                ui.SetStyle(b.isHero, b.color);
+                ui.SetLabel(b.label);
 
-                if (!item.isHero && item.portrait != null)
-                    ui.SetPortrait(item.portrait, true);
+                if (!b.isHero && b.portrait != null)
+                    ui.SetPortrait(b.portrait, true);
                 else
                     ui.SetPortrait(null, false);
 
-                ui.Rect.anchoredPosition = new Vector2(x, 0f);
-                x += width + blockGapPixels;
+                ui.Rect.anchoredPosition = new Vector2(x, Mathf.Round((height - size) * 0.5f));
+                x += size + blockGapPixels;
             }
 
-            for (int i = plan.Count; i < pool.Count; i++)
+            for (int i = blocks.Count; i < pool.Count; i++)
                 pool[i].gameObject.SetActive(false);
         }
 
         /// <summary>
-        /// Ensures the pool has at least count instances ready to use.
+        /// Aligns the current block so its center sits under the indicator.
         /// </summary>
-        private void EnsurePoolSize(int count)
+        private void SnapToCurrent()
         {
-            if (blockPrefab == null)
-            {
-                Debug.LogError("TimelineManager: Block Prefab is null. Assign it in the inspector.");
-                return;
-            }
+            targetContentX = GetTargetXForIndex(currentIndex);
+            contentX = targetContentX;
+            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
+        }
 
+        /// <summary>
+        /// Smoothly slides content toward the current target.
+        /// </summary>
+        private void SlideTowardTarget(float dt)
+        {
+            contentX = Mathf.Lerp(contentX, targetContentX, Mathf.Clamp01(dt * snapLerp));
+            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
+        }
+
+        /// <summary>
+        /// Returns the content X position needed to center the given index under the indicator.
+        /// </summary>
+        private float GetTargetXForIndex(int index)
+        {
+            float height = viewport.rect.height > 0f ? viewport.rect.height : blockSizePixels;
+            float size = Mathf.Max(1f, Mathf.Min(blockSizePixels, height));
+            float start = index * (size + blockGapPixels);
+            float centerOfBlock = start + size * 0.5f;
+            float indicatorX = viewport.rect.width * indicatorViewportRatio;
+            return indicatorX - centerOfBlock;
+        }
+
+        /// <summary>
+        /// Ensures the visual pool has at least count instances.
+        /// </summary>
+        private void EnsurePool(int count)
+        {
             while (pool.Count < count)
             {
                 var inst = Instantiate(blockPrefab, content);
@@ -275,28 +270,10 @@ namespace Assets.Scripts.Canvas.Timeline
         }
 
         /// <summary>
-        /// Places content so that the provided time (in seconds from plan start)
-        /// aligns under the indicator at the center ratio.
-        /// </summary>
-        private void PositionAtTime(float secondsFromPlanStart)
-        {
-            if (viewport == null || content == null)
-                return;
-
-            float pxAtTime = secondsFromPlanStart * pixelsPerSecond;
-            float indicatorX = viewport.rect.width * indicatorViewportRatio;
-            contentX = indicatorX - pxAtTime;
-            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
-        }
-
-        /// <summary>
-        /// Centers the indicator by anchors and updates its horizontal position based on ratio.
+        /// Centers the indicator anchors.
         /// </summary>
         private void CenterIndicator()
         {
-            if (indicator == null || viewport == null)
-                return;
-
             var rt = indicator.rectTransform;
             rt.anchorMin = new Vector2(0.5f, 0f);
             rt.anchorMax = new Vector2(0.5f, 1f);
@@ -305,23 +282,124 @@ namespace Assets.Scripts.Canvas.Timeline
         }
 
         /// <summary>
-        /// Sums the seconds in the plan.
+        /// Advances the timeline clock and switches blocks when the active block finishes.
+        /// Extends the queue as you approach the end so the belt never runs out.
         /// </summary>
-        private static float GetTotalSeconds(List<TimelineItem> items)
+        private void Tick(float dt)
         {
-            float s = 0f;
-            for (int i = 0; i < items.Count; i++)
-                s += items[i].seconds;
-            return s;
+            if (!running || blocks.Count == 0)
+                return;
+
+            elapsedInBlock += Mathf.Max(0f, dt);
+
+            var current = blocks[currentIndex];
+            if (elapsedInBlock >= current.seconds)
+            {
+                elapsedInBlock = 0f;
+                currentIndex = Mathf.Min(currentIndex + 1, blocks.Count - 1);
+
+                // If we are getting close to the end, extend using the same simulator state.
+                if (currentIndex >= blocks.Count - 3)
+                {
+                    BuildQueue(futureBlocks);
+                    LayoutAll();
+                }
+
+                targetContentX = GetTargetXForIndex(currentIndex);
+            }
+
+            SlideTowardTarget(dt);
         }
 
         /// <summary>
-        /// Unity Update loop. Advances time while running and keeps "now" centered.
+        /// Useful if something changed the actors list at runtime.
+        /// Rebuilds the simulator and the queue from the present moment.
         /// </summary>
+        public void RecomputeFromScene()
+        {
+            blocks.Clear();
+            BuildSimulationFromScene();
+            BuildQueue(futureBlocks);
+            LayoutAll();
+            currentIndex = 0;
+            elapsedInBlock = 0f;
+            SnapToCurrent();
+        }
+
+        /// <summary>
+        /// External control: jump back to the first block and pause.
+        /// </summary>
+        public void ResetAndPause()
+        {
+            currentIndex = 0;
+            elapsedInBlock = 0f;
+            running = false;
+            SnapToCurrent();
+        }
+
         private void Update()
         {
-            if (isRunning)
+            if (running)
                 Tick(Time.deltaTime);
         }
+
+        // Put this inside the Timeline class
+        public void StartHeroTurnNow()
+        {
+            // Ensure we have a sim and some blocks to work with
+            if (sim.Count == 0)
+                BuildSimulationFromScene();
+            if (blocks.Count == 0)
+            {
+                BuildQueue(futureBlocks);
+                LayoutAll();
+                currentIndex = 0;
+            }
+
+            // Create a hero block for "now"
+            var hero = new TurnBlock
+            {
+                isHero = true,
+                enemy = null,
+                seconds = Mathf.Max(0.01f, heroSeconds),
+                portrait = null,
+                label = "Heroes",
+                color = Color.white
+            };
+
+            // If current is already a hero block, refresh its duration; otherwise insert one at the current index
+            if (currentIndex < blocks.Count && blocks[currentIndex].isHero)
+            {
+                blocks[currentIndex] = hero;
+            }
+            else
+            {
+                blocks.Insert(currentIndex, hero);
+            }
+
+            // While the hero turn is scheduled, enemies accrue AP in the simulator
+            for (int i = 0; i < sim.Count; i++)
+            {
+                var s = sim[i];
+                s.ap = Mathf.Min(s.max, s.ap + s.gainPerSecond * heroSeconds);
+            }
+
+            // Make sure we have enough future blocks, then relayout
+            BuildQueue(futureBlocks);
+            LayoutAll();
+
+            // Reset timer for this block and center it under the indicator
+            elapsedInBlock = 0f;
+            targetContentX = GetTargetXForIndex(currentIndex);
+            contentX = targetContentX;
+            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
+
+            // Ensure the conveyor is running
+            running = true;
+        }
+
+
+
+
     }
 }

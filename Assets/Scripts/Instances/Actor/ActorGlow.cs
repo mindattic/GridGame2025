@@ -33,7 +33,7 @@ namespace Assets.Scripts.Instances.Actor
 
         private bool IsGlowing =>
             instance.IsPlaying
-            && (g.TurnManager.IsHeroTurn && isPlayer) || (g.TurnManager.isEnemyTurn && isEnemy);
+            && (g.TurnManager.IsHeroTurn && isPlayer) || (g.TurnManager.IsEnemyTurn && isEnemy);
 
 
         public void Glow()

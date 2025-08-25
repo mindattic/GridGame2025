@@ -253,12 +253,8 @@ public class GameManager : Singleton<GameManager>
         focusIndicator.Initialize();
         targetIndicator.Initialize();
         targetModeOverlay.Initialize();
+        timeline.Initialize();
         timerBar2D.Initialize();
         turnManager.Initialize();
-
-        // Timeline initialization
-        timeline.Initialize();
-        timeline.Rebuild();
-
     }
 }

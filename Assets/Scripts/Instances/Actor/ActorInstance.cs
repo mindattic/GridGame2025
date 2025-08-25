@@ -24,7 +24,7 @@ public class ActorInstance : MonoBehaviour
     public bool IsPlaying => IsActive && IsAlive;                 // Actor is active in the game (alive and enabled).
     public bool IsDying => IsActive && Stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
     public bool IsDead => !IsActive && !IsAlive;                  // Actor is dead when not active and HP is 0.
-    public bool IsSpawnable => !Flags.HasSpawned && spawnTurn <= g.TurnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
+    public bool IsSpawnable => !Flags.HasSpawned && spawnTurn <= g.TurnManager.CurrentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
     public bool HasMaxAP => Stats.AP == Stats.MaxAP;              // Actor has maximum Animation points.
 
     public bool IsReady => IsPlaying && HasMaxAP;

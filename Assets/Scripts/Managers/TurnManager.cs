@@ -12,8 +12,8 @@ namespace Assets.Scripts.Managers
     public class TurnManager : MonoBehaviour
     {
         public bool IsHeroTurn { get; private set; }
-        public bool isEnemyTurn => !IsHeroTurn;
-        public int currentTurn = 0;
+        public bool IsEnemyTurn => !IsHeroTurn;
+        public int CurrentTurn = 0;
 
         /// <summary>
         /// Set initial state and kick off the first side's start sequence.
@@ -32,17 +32,28 @@ namespace Assets.Scripts.Managers
         public void NextTurn()
         {
             IsHeroTurn = !IsHeroTurn;
-            if (IsHeroTurn)
-            {
-                currentTurn++;
 
-                // On the moment the hero turn begins:
-                g.Timeline.StartHeroTurnWindow();
+            // Sync the conveyor timeline with turn swaps
+            if (g.Timeline != null)
+            {
+                if (IsHeroTurn)
+                {
+                    // New hero window: rebuild with hero first and hold at center
+                    g.Timeline.StartHeroTurnNow();
+                }
+                else
+                {
+                    // Ensure the conveyor runs while enemies resolve
+                    g.Timeline.Resume();
+                }
             }
-              
+
+            if (IsHeroTurn)
+                CurrentTurn++;
 
             StartTurn();
         }
+
 
         /// <summary>
         /// EnqueueRoutine the appropriate start sequence for the active side.
