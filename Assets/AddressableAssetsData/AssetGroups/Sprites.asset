@@ -70,6 +70,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2173ccf42f76c8348ba503544c48876d
+    m_Address: Sprites/GUI/PortraitMask
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 220b3b17154498d4fbbb9b3afd501028
     m_Address: Sprites/Seamless/Background.LightBlue
     m_ReadOnly: 0
@@ -355,6 +360,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c71a45c529c9d774e9ced105fadb71a1
+    m_Address: Sprites/GUI/Indicator
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c8601886ebfbc264181191d0dd25b4ea
     m_Address: Sprites/Backgrounds/Moors/01
     m_ReadOnly: 0
@@ -452,6 +462,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ec90b83af9bd6a946a01cffd9f5dce36
     m_Address: Sprites/Seamless/RedFire1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ed2b08ca6a80b4142932274e210a8293
+    m_Address: Sprites/GUI/BlockBack
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -532,3 +532,31 @@ public static class CharactersExtensions
 
 
 }
+
+
+public static class ActorInstanceTimelineExtensions
+{
+    /// <summary>
+    /// Estimate total seconds this actor will spend to reach target and perform its action.
+    /// Uses simple heuristics so the UI stays synced without editing core actor logic.
+    /// </summary>
+    public static float EstimateTurnSeconds(this ActorInstance actor)
+    {
+        // Baseline time for thinking and windup
+        float baseSeconds = 0.6f;
+
+        // Movement estimate: distance in tiles times a per-tile travel time
+        // If you already select a target elsewhere, plug that distance in here.
+        float tilesToMove = 1f; // Safe default when unknown
+        float perTileSeconds = 0.35f;
+
+        // Attack or cast time heuristic. You can enrich this later by flags or ability data.
+        float attackSeconds = 0.7f;
+
+        // Very simple first pass
+        float total = baseSeconds + tilesToMove * perTileSeconds + attackSeconds;
+
+        // Clamp to a sane range so the UI looks consistent
+        return Mathf.Clamp(total, 0.6f, 4.0f);
+    }
+}

@@ -46,7 +46,8 @@ public static class PrefabLibrary
             { "SupportLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/SupportLinePrefab") },
             { "TargetLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TargetLinePrefab") },
             { "TilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TilePrefab") },
-            { "TooltipPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TooltipPrefab") }
+            { "TooltipPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TooltipPrefab") },
+            { "TimelineBlockPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TimelineBlockPrefab") },
         };
     }
 

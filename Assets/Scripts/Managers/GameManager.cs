@@ -1,5 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Canvas.Timeline;
 using Assets.Scripts.GUI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
@@ -9,27 +10,28 @@ using Game.Manager;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-    //Settings
+    // Settings
     public TextureResolution textureResolution = TextureResolution.NormalResolution;
     public float dragSensitivity = 0.05f;
 
-    //Device
+    // Device
     [HideInInspector] public string deviceType;
-    [HideInInspector] public int targetFramerate = 60;  //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/Application-targetFrameRate.html
-    [HideInInspector] public int vSyncCount = 2;        //https://docs.unity3d.com/6000.0/Documentation/ScriptReference/QualitySettings-vSyncCount.html
+    [HideInInspector] public int targetFramerate = 60;
+    [HideInInspector] public int vSyncCount = 2;
 
-    //AudioManager
+    // Audio
     [HideInInspector] public AudioSource soundSource;
     [HideInInspector] public AudioSource musicSource;
 
-    //GUI
+    // GUI
     [HideInInspector] public Card card;
     [HideInInspector] public TutorialPopup tutorialPopup;
 
-    //Managers
+    // Managers
     [HideInInspector] public InputManager inputManager;
     [HideInInspector] public CameraManager cameraManager;
     [HideInInspector] public StageManager stageManager;
@@ -62,15 +64,16 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TargetLineManager targetLineManager;
     [HideInInspector] public AbilityButtonManager abilityButtonManager;
     [HideInInspector] public SynergyLineManager synergyLineManager;
+    [HideInInspector] public Timeline timeline;
 
     [HideInInspector] public BackgroundInstance background;
 
-    //BoardManager
+    // Board
     [HideInInspector] public BoardOverlay boardOverlay;
     [HideInInspector] public FocusIndicator focusIndicator;
     [HideInInspector] public TargetIndicator targetIndicator;
 
-    //Canvas
+    // Canvas
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;
     [HideInInspector] public Vector3 tileScale;
@@ -78,19 +81,17 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
     [HideInInspector] public TargetModeOverlay targetModeOverlay;
 
-
-    //Mouse
+    // Mouse
     [HideInInspector] public Vector3 touchPosition2D;
     [HideInInspector] public Vector3 touchPosition3D;
     [HideInInspector] public Vector3 touchOffset;
     [HideInInspector] public float cursorFocus;
     [HideInInspector] public float swapFocus;
     [HideInInspector] public float moveFocus;
-    //[HideInInspector] public float snapThreshold;
     [HideInInspector] public float dragThreshold;
     [HideInInspector] public float bumpFocus;
 
-    //Actors
+    // Actors
     [HideInInspector] public List<ActorInstance> actors;
     [HideInInspector] public IEnumerable<ActorInstance> heroes => actors.Where(x => x.team == Team.Hero);
     [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team == Team.Enemy);
@@ -104,33 +105,35 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public ActorInstance targetActor;
     [HideInInspector] public bool hasTargetActor => targetActor != null;
 
-    //Instances
+    // Instances
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TimerBar2D timerBar2D;
     [HideInInspector] public RectTransform portraitsContainer;
-    //[HideInInspector] public TimerBar3D timerBar3D;
+    [HideInInspector] public RectTransform timelineRoot;
+    [HideInInspector] public RectTransform timelineViewport;
+    [HideInInspector] public RectTransform timelineContent;
+    [HideInInspector] public Image timelineIndicator;
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
     [HideInInspector] public List<SupportLineInstance> supportLines;
     [HideInInspector] public List<AttackLineInstance> attackLines;
 
-    //CoinManager
+    // CoinManager
     [HideInInspector] public CoinCounter coinCounter;
     [HideInInspector] public int totalCoins;
 
-    //AudioManager sources
+    // Audio indices
     [HideInInspector] public const int SoundSourceIndex = 0;
     [HideInInspector] public const int MusicSourceIndex = 1;
 
-    //Properties
+    // Properties
     public float gameFocus { get => Time.timeScale; set => Time.timeScale = value; }
     public float previousGameFocus;
 
-    //Debug Window
+    // Debug
     public bool reloadThumbnailSettings = false;
     public float gameSpeed = 1.0f;
     public bool applyMovementTilt = false;
-
 
     private void Awake()
     {
@@ -142,14 +145,8 @@ public class GameManager : Singleton<GameManager>
 
         previousGameFocus = Time.timeScale;
 
-        // Calculate 96% of canvas width
         float width97Percent = UnitConversionHelper.World.VisibleRect().width * 0.97f;
-
-
-        // Divide into sixths
         tileSize = width97Percent / 6f;
-
-        //tileSize = c;
         tileScale = new Vector3(tileSize, tileSize, 1f);
         tileMap = new TileMap();
 
@@ -157,38 +154,43 @@ public class GameManager : Singleton<GameManager>
         swapFocus = tileSize * 0.1666f;
         moveFocus = tileSize * 0.125f;
         bumpFocus = tileSize * 0.08f;
-
         dragThreshold = tileSize * 0.125f;
-        ShakeIntensity.Initialize(tileSize);
 
+        ShakeIntensity.Initialize(tileSize);
         totalCoins = 0;
 
-        //Canvas
+        // Canvas
         tutorialPopup = GameObject.Find(GameObjectHelper.Game.TutorialPopup).GetComponent<TutorialPopup>();
         card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<Card>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
         timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D.Root).GetComponent<TimerBar2D>();
         portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();
+        timelineRoot = GameObject.Find(GameObjectHelper.Game.TimelineRoot).GetComponent<RectTransform>();
+
+        // Timeline children
+        timelineViewport = timelineRoot.Find("Viewport").GetComponent<RectTransform>();
+        timelineContent = timelineViewport.Find("Content").GetComponent<RectTransform>();
+        timelineIndicator = timelineViewport.Find("Indicator").GetComponent<Image>();
+        timeline = timelineRoot.GetComponent<Timeline>();
 
         coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
         waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
         targetModeOverlay = GameObject.Find(GameObjectHelper.Game.TargetModeOverlay).GetComponent<TargetModeOverlay>();
-
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
-        //BoardManager
+        // Board
         board = GameObject.Find(GameObjectHelper.Game.Board.Root).GetComponent<BoardInstance>();
         boardOverlay = GameObject.Find(GameObjectHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
         focusIndicator = GameObject.Find(GameObjectHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>();
         targetIndicator = GameObject.Find(GameObjectHelper.Game.Board.TargetIndicator).GetComponent<TargetIndicator>();
 
-        var game = GameObject.Find("Game"); // No helper constant provided for the root "Game" object
+        var game = GameObject.Find("Game");
 
-        //AudioManager
+        // Audio
         soundSource = game.GetComponents<AudioSource>()[SoundSourceIndex];
         musicSource = game.GetComponents<AudioSource>()[MusicSourceIndex];
 
-        //Managers
+        // Managers
         cameraManager = game.GetComponent<CameraManager>();
         stageManager = game.GetComponent<StageManager>();
         boardManager = game.GetComponent<BoardManager>();
@@ -221,59 +223,42 @@ public class GameManager : Singleton<GameManager>
         targetLineManager = game.GetComponent<TargetLineManager>();
         abilityButtonManager = game.GetComponent<AbilityButtonManager>();
         synergyLineManager = game.GetComponent<SynergyLineManager>();
-
-
-
-        //timerBar3D = GameObject.Find(GameObjectHelper.Game.TimerBar3D).GetComponent<TimerBar3D>();
-
-
-        #region Platform Dependent Compilation
-
-        //https://docs.unity3d.com/520/Documentation/Manual/PlatformDependentCompilation.html
+      
+        // Platform-dependent compilation
 #if UNITY_STANDALONE_WIN
         deviceType = "UNITY_STANDALONE_WIN";
 #elif UNITY_STANDALONE_LINUX
-         deviceType = "UNITY_STANDALONE_LINUX";
+        deviceType = "UNITY_STANDALONE_LINUX";
 #elif UNITY_IPHONE
-               deviceType = "UNITY_IPHONE";
+        deviceType = "UNITY_IPHONE";
 #elif UNITY_STANDALONE_OSX
-           deviceType = "UNITY_STANDALONE_OSX"
+        deviceType = "UNITY_STANDALONE_OSX";
 #elif UNITY_WEBPLAYER
-         deviceType = "UNITY_WEBPLAYER";
+        deviceType = "UNITY_WEBPLAYER";
 #elif UNITY_WEBGL
-         deviceType = "UNITY_WEBGL";
+        deviceType = "UNITY_WEBGL";
 #else
         deviceType = "Unknown";
 #endif
-        //Debug.Log($"Running on `{deviceType}`");
-
-        //#if UNITY_EDITOR
-        //        Debug.Log($"Emulated on UNITY_EDITOR");
-        //#endif
-
-        #endregion
     }
 
-    //Method which is automatically called before the first frame update  
-    void Start()
+    private void Start()
     {
-        // By now, profiles are guaranteed to be loaded.
         if (!ProfileHelper.HasProfiles())
             return;
 
+        // Show in specific order
+        board.Initialize();
+        stageManager.Initialize();
+        focusIndicator.Initialize();
+        targetIndicator.Initialize();
+        targetModeOverlay.Initialize();
+        timerBar2D.Initialize();
+        turnManager.Initialize();
 
-        //Show in specific order:
-        board.Initialize();             //01
-        stageManager.Initialize();      //02
-        focusIndicator.Initialize();    //03
-        targetIndicator.Initialize();   //04
-        targetModeOverlay.Initialize(); //05
-        timerBar2D.Initialize();        //06
-        turnManager.Initialize();       //07
-
-
-
+        // Timeline initialization
+        timeline.Initialize();
+        timeline.Rebuild();
 
     }
-
 }

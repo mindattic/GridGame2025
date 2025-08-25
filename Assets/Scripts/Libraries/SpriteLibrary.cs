@@ -136,6 +136,10 @@ public static class SpriteLibrary
         gui = new Dictionary<string, Sprite>
         {
             { "BackButton", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/BackButton") },
+            { "BlockBack", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/BlockBack") },
+            { "Indicator", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Indicator") },
+            { "PortraitMask", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/PortraitMask") },
+
         };
 
         leaves = new Dictionary<string, Sprite>

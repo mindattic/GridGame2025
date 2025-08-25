@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.GUI;
+﻿using Assets.Scripts.Canvas.Timeline;
+using Assets.Scripts.GUI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
 using Game.Behaviors;
@@ -85,8 +86,8 @@ namespace Assets.Helpers
         public static SortingManager SortingManager => GameManager.instance.sortingManager;
         public static TargetLineManager TargetLineManager => GameManager.instance.targetLineManager;
         public static AbilityButtonManager AbilityButtonManager => GameManager.instance.abilityButtonManager;
-
        
+
         // Board visuals and overlays
         public static BackgroundInstance Background => GameManager.instance.background;
         public static BoardOverlay BoardOverlay => GameManager.instance.boardOverlay;
@@ -102,6 +103,7 @@ namespace Assets.Helpers
         public static TargetModeOverlay TargetModeOverlay => GameManager.instance.targetModeOverlay;
         public static Card Card => GameManager.instance.card;
         public static TutorialPopup TutorialPopup => GameManager.instance.tutorialPopup;
+        public static Timeline Timeline => GameManager.instance.timeline;
 
 
 

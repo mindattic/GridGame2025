@@ -59,6 +59,7 @@ namespace Assets.Helper
             public const string PauseButtonIcon = "PauseButton";
             public const string PauseMenu = "Canvas/PauseMenu";
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
+            public const string TimelineRoot = "Canvas/TimelineRoot";
 
             public static class TimerBar2D
             {

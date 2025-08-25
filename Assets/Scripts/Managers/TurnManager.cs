@@ -33,7 +33,13 @@ namespace Assets.Scripts.Managers
         {
             IsHeroTurn = !IsHeroTurn;
             if (IsHeroTurn)
+            {
                 currentTurn++;
+
+                // On the moment the hero turn begins:
+                g.Timeline.StartHeroTurnWindow();
+            }
+              
 
             StartTurn();
         }
@@ -47,6 +53,7 @@ namespace Assets.Scripts.Managers
             // EnqueueRoutine the correct start sequence for the active side
             g.SequenceManager.Add(IsHeroTurn ? new HeroStartSequence() : new EnemyStartSequence());
 
+         
             // Ensure execution is running
             g.SequenceManager.Execute();
         }

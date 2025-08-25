@@ -69,6 +69,7 @@
     <Compile Include="Assets\Editor\DebugWindow.GameSpeedOptions.cs" />
     <Compile Include="Assets\Editor\CombatLog.cs" />
     <Compile Include="Assets\Editor\DebugWindow.SceneOptions.cs" />
+    <Compile Include="Assets\Editor\TimelinePrefabBuilder.cs" />
     <Compile Include="Assets\Editor\DebugWindow.GameStats.cs" />
     <Compile Include="Assets\Editor\DebugWindow.cs" />
     <Compile Include="Assets\Editor\DebugWindow.ToggleOptions.cs" />

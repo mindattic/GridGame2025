@@ -127,6 +127,7 @@
     <Compile Include="Assets\Scripts\Libraries\TextStyleLibrary.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAnimation.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
+    <Compile Include="Assets\Scripts\Canvas\Timeline.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
@@ -249,6 +250,7 @@
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
+    <Compile Include="Assets\Scripts\Instances\TimelineBlockInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\VfxManager.cs" />
