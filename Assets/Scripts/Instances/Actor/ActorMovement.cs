@@ -12,6 +12,7 @@ namespace Assets.Scripts.Instances.Actor
     /// <summary>
     /// Handles movement and tilt effects for an ActorInstance.
     /// Adds a watchdog to prevent infinite movement loops that can stall the sequence queue.
+    /// Applies TouchOffset when following the cursor to avoid snap on new grab points.
     /// </summary>
     public class ActorMovement
     {
@@ -39,7 +40,7 @@ namespace Assets.Scripts.Instances.Actor
 
         public void Start()
         {
-            // Intentionally empty. Movement is driven by explicit calls.
+            // Movement is driven by explicit calls.
         }
 
         public void Initialize(ActorInstance parentInstance)
@@ -53,18 +54,20 @@ namespace Assets.Scripts.Instances.Actor
 
         /// <summary>
         /// Moves the actor toward the cursor while the actor is focused or selected.
-        /// If a swap is initiated (via overlap), the Move exits immediately.
+        /// Uses g.TouchOffset so the actor maintains the grab point without snapping.
+        /// Exits early if a swap begins.
         /// </summary>
         public IEnumerator MoveTowardCursorRoutine()
         {
-            // Before: set a high sorting order if needed, then mark moving
             flags.IsMoving = true;
 
-            // During: while we are in a moving state
             while (flags.IsMoving)
             {
                 previousPosition = instance.position;
-                instance.position = g.TouchPosition.ClampToBoard();
+
+                // Apply TouchOffset. If not set, it should be Vector3.zero.
+                Vector3 target = (g.TouchPosition3D + g.TouchOffset).ClampToBoard();
+                instance.position = target;
 
                 ApplyTilt(instance.position - previousPosition);
                 CheckLocationChanged();
@@ -72,37 +75,31 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.None();
             }
 
-            // After: clean up
             flags.IsMoving = false;
             instance.transform.localRotation = Quaternion.Euler(Vector3.zero);
         }
-
 
         // --------------------------------------------------------------------
         // Grid destination movement with watchdog
         // --------------------------------------------------------------------
 
         /// <summary>
-        /// Moves the actor toward its grid destination using right-angle (non-diagonal) Move.
-        /// Includes a watchdog to prevent infinite loops if MoveFocus or SnapThreshold are misconfigured.
+        /// Moves the actor toward its grid destination using right-angle Move.
+        /// Includes a watchdog to prevent infinite loops if misconfigured.
         /// </summary>
         public IEnumerator MoveTowardDestinationRoutine()
         {
-            // Before: begin Move
             flags.IsMoving = true;
             g.AudioManager.Play("Slide");
 
-            // Compute the world pos for the current logical location.
-            // Note: calling code should have set desired 'location' before starting the Move.
             Vector3 destination = Geometry.GetPositionByLocation(location);
 
-            // Watchdog config: hard cap duration and iteration count
-            const float MaxSeconds = 5.0f;   // Maximum time allowed for this Move
-            const int MaxIterations = 2000;  // Maximum frames allowed for this Move
+            const float MaxSeconds = 5.0f;
+            const int MaxIterations = 2000;
             float elapsed = 0f;
             int iterations = 0;
 
-            // --- Horizontal Movement ---
+            // Horizontal leg
             if (Mathf.Abs(this.position.x - destination.x) > g.SnapThreshold)
             {
                 Vector3 horizontalTarget = new Vector3(destination.x, this.position.y, this.position.z);
@@ -111,18 +108,14 @@ namespace Assets.Scripts.Instances.Actor
                 {
                     ApplyTilt(instance.position - previousPosition);
 
-                    // Seek along X only
                     previousPosition = instance.position;
                     this.position = Vector3.MoveTowards(this.position, horizontalTarget, g.MoveFocus).ClampToBoard();
 
-                    // Update grid state and potential overlap behaviors
                     CheckLocationChanged();
 
-                    // Advance time and frame counts for watchdog
                     elapsed += Time.deltaTime;
                     iterations++;
 
-                    // Watchdog: break if something is wrong
                     if (elapsed > MaxSeconds || iterations > MaxIterations)
                     {
                         Debug.LogWarning($"[ActorMovement] MoveTowardDestinationRoutine X watchdog fired. Forcing snap. Actor={instance?.name}");
@@ -132,16 +125,15 @@ namespace Assets.Scripts.Instances.Actor
                     yield return Wait.None();
                 }
 
-                // Snap X into place to guarantee loop exit
                 previousPosition = instance.position;
                 position = new Vector3(destination.x, position.y, position.z).ClampToBoard();
             }
 
-            // Reset per-axis watchdog counters before vertical leg
+            // Reset watchdog for vertical
             elapsed = 0f;
             iterations = 0;
 
-            // --- Vertical Movement ---
+            // Vertical leg
             if (Mathf.Abs(this.position.y - destination.y) > g.SnapThreshold)
             {
                 Vector3 verticalTarget = new Vector3(position.x, destination.y, position.z);
@@ -150,18 +142,14 @@ namespace Assets.Scripts.Instances.Actor
                 {
                     ApplyTilt(instance.position - previousPosition);
 
-                    // Seek along Y only
                     previousPosition = instance.position;
                     position = Vector3.MoveTowards(position, verticalTarget, g.MoveFocus).ClampToBoard();
 
-                    // Update grid state and potential overlap behaviors
                     CheckLocationChanged();
 
-                    // Advance time and frame counts for watchdog
                     elapsed += Time.deltaTime;
                     iterations++;
 
-                    // Watchdog: break if something is wrong
                     if (elapsed > MaxSeconds || iterations > MaxIterations)
                     {
                         Debug.LogWarning($"[ActorMovement] MoveTowardDestinationRoutine Y watchdog fired. Forcing snap. Actor={instance?.name}");
@@ -171,12 +159,10 @@ namespace Assets.Scripts.Instances.Actor
                     yield return Wait.None();
                 }
 
-                // Snap Y into place to guarantee loop exit
                 previousPosition = instance.position;
                 position = new Vector3(position.x, destination.y, position.z).ClampToBoard();
             }
 
-            // After: finished moving
             flags.IsMoving = false;
             flags.IsSwapping = false;
             scale = g.TileScale;
@@ -190,9 +176,9 @@ namespace Assets.Scripts.Instances.Actor
         {
             flags.IsMoving = false;
 
-            var closestTile = g.TileMap.GetTile(g.Actors.SelectedHero.location);
-            g.Actors.SelectedHero.location = closestTile.location;
-            g.Actors.SelectedHero.position = closestTile.position;
+            var closestTile = g.TileMap.GetTile(instance.location);
+            instance.location = closestTile.location;
+            instance.position = closestTile.position;
         }
 
         // --------------------------------------------------------------------
@@ -200,34 +186,28 @@ namespace Assets.Scripts.Instances.Actor
         // --------------------------------------------------------------------
 
         /// <summary>
-        /// Checks if the actor's pos crossed into a new tile.
-        /// If so, updates logical location and handles overlap rules.
+        /// Checks if the actor crossed into a new tile.
+        /// Updates logical location and handles overlap rules.
         /// </summary>
         private void CheckLocationChanged()
         {
-            // Ignore if the change is due to selection, not Move
             if (!flags.IsMoving)
                 return;
 
-            // Ignore if currently swapping location
             if (flags.IsSwapping)
                 return;
 
-            // Determine closest tile to the current pos
             var closestTile = Geometry.GetClosestTile(this.position);
 
-            // If location is unchanged, nothing to do
             if (location == closestTile.location)
                 return;
 
-            // Record change for highlighting and sorting
             previousLocation = location;
             location = closestTile.location;
 
             if (isSelectedHero)
                 g.TileManager.Hightlight(previousLocation, location);
 
-            // Determine if another actor occupies the new location
             ActorInstance overlappingActor = g.Actors.All.FirstOrDefault(x =>
                 x != instance &&
                 x.isPlaying &&
@@ -235,19 +215,17 @@ namespace Assets.Scripts.Instances.Actor
 
             if (overlappingActor == null)
             {
-                // Reorder sorting while moving
                 g.SortingManager.OnActorMoving(this.instance);
             }
             else
             {
-                // Signal overlap and let the other actor react
                 g.SortingManager.OnActorOverlap(this.instance, overlappingActor);
                 overlappingActor.Move.HandleOverlap(previousLocation);
             }
         }
 
         /// <summary>
-        /// Public entry to start MoveTowardCursorRoutine as a coroutine.
+        /// Public entry to start MoveTowardCursorRoutine.
         /// </summary>
         public void MoveTowardCursor()
         {
@@ -266,12 +244,10 @@ namespace Assets.Scripts.Instances.Actor
 
             if (currentTile.IsOccupied)
             {
-                // Cannot Move into an occupied tile
                 Debug.Log($"Tile {currentTile.location.x},{currentTile.location.y} is occupied.");
             }
             else
             {
-                // Mark swapping, update target location, and Move there
                 flags.IsSwapping = true;
                 location = currentTile.location;
                 instance.StartCoroutine(MoveTowardDestinationRoutine());
@@ -279,39 +255,24 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
-        /// Applies a tilt effect to the actor based on its Move velocity.
-        /// Horizontal motion tilts around Z.
-        /// Vertical motion tilts around both X and Y for a twisting card effect.
+        /// Applies a tilt effect based on movement velocity.
         /// </summary>
         public void ApplyTilt(Vector3 velocity)
         {
             if (!g.ApplyMovementTilt)
                 return;
 
-            // Tunables as vectors
-            Vector3 tiltFactor = new Vector3(5f, 0f, 5f); // X, Y, Z factors
-            Vector3 maxTilt = new Vector3(20f, 0, 20f); // X, Y, Z clamps
+            Vector3 tiltFactor = new Vector3(5f, 0f, 5f);
+            Vector3 maxTilt = new Vector3(20f, 0, 20f);
 
-            float rotateSpeed = 5f; // Slerp while moving
-            float resetSpeed = 5f; // Slerp when resetting
+            float rotateSpeed = 5f;
+            float resetSpeed = 5f;
 
             if (velocity.sqrMagnitude > 0.0001f)
             {
-                // Normalize so tilt responds to direction only
                 Vector3 v = velocity.normalized;
-
-                // Horizontal movement -> Z tilt
                 float tiltZ = Mathf.Clamp(v.x * tiltFactor.z, -maxTilt.z, maxTilt.z);
-
-                // Vertical movement -> X tilt
                 float tiltX = Mathf.Clamp(-v.y * tiltFactor.x, -maxTilt.x, maxTilt.x);
-
-                // Y twist = vertical contribution + horizontal coupling for banking
-                //float tiltY = Mathf.Clamp(
-                //    (-v.y * tiltFactor.y) + (v.s * (tiltFactor.y * 0.6f)),
-                //    -maxTilt.y,
-                //    maxTilt.y
-                //);
 
                 Vector3 targetEuler = new Vector3(tiltX, 0, tiltZ);
 
@@ -323,7 +284,6 @@ namespace Assets.Scripts.Instances.Actor
             }
             else
             {
-                // Reset smoothly to neutral
                 instance.transform.localRotation = Quaternion.Slerp(
                     instance.transform.localRotation,
                     Quaternion.Euler(Vector3.zero),
@@ -331,10 +291,5 @@ namespace Assets.Scripts.Instances.Actor
                 );
             }
         }
-
-
-
-
-
     }
 }

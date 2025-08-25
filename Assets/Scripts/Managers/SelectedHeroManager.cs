@@ -2,116 +2,176 @@
 using Assets.Helpers;
 using Game.Behaviors;
 using Game.Manager;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using g = Assets.Helpers.GameHelper;
+using Assets.Scripts.Instances.Actor; // For ActorInstance
 
 /// <summary>
-/// Handles selection, dragging, and dropping of g.Actors.Heroes during the correct turn/phase.
-/// Interacts with multiple core game systems via the GameManager singleton.
+/// Handles focus, drag, and drop for hero actors during the hero turn.
+/// Starts moving the focused actor immediately on drag. Promotes to SelectedHero
+/// only after the actor has moved at least half a tile from the drag start.
+/// Dropping before promotion snaps the actor back to its recorded start position.
+/// Always applies TouchOffset so there is no snap when clicking a different spot.
 /// </summary>
 public class SelectedHeroManager : MonoBehaviour
 {
+    // Drag state for delayed promotion
+    private ActorInstance pendingActor;
+    //private Vector3 pendingActorStartPosition;
+    //private Vector2Int pendingActorStartLocation;
+    private bool hasPendingDrag;
+    private float dragThreshold;
+
+    public void Awake()
+    {
+        dragThreshold = g.TileMap.tileSize / 2f;
+    }
+
     /// <summary>
-    /// Selects an actor under the mouse cursor, updates focus visuals, and refreshes ability buttons.
-    /// Allowed only during the hero's turn.
+    /// Focus an actor under the cursor and update visuals and buttons.
+    /// Only allowed during the hero turn.
     /// </summary>
     public void Focus()
     {
-        // Abort if not the hero's turn.
         if (!g.TurnManager.isHeroTurn)
             return;
 
-        // Try to find an actor under the current touch position.
         var target = TouchHelper.GetActorAtTouchPosition();
         if (target == null || !target.isPlaying)
             return;
 
-        // If selecting the same actor again, do nothing.
         if (g.Actors.FocusedActor == target)
             return;
 
-        // Always clear ability buttons when changing selection.
         g.AbilityButtonManager.Hide();
 
-        // Update focus reference and sorting when selection changes.
         g.Actors.FocusedActor = target;
         g.SortingManager.OnActorFocus();
 
-        // Recreate ability buttons for heroes only. Enemies leave the container empty.
         if (g.Actors.FocusedActor.isHero)
             g.AbilityButtonManager.Show(g.Actors.FocusedActor);
 
-        // Cache touch offset so drag begins from the same relative point.
+        // Cache offset from current finger to actor so the first move frame does not snap
         g.TouchOffset = g.Actors.FocusedActor.position - g.TouchPosition3D;
 
-        // Update focus indicator and card UI.
+        // Reset pending drag when focus changes
+        hasPendingDrag = false;
+        pendingActor = null;
+
         g.FocusIndicator.Show();
         g.Card.Assign();
 
-        // Notify editor to reload thumbnails while in the editor.
 #if UNITY_EDITOR
         GameManager.instance.reloadThumbnailSettings = true;
 #endif
     }
 
     /// <summary>
-    /// Begins dragging the focused hero if eligible and starts movement toward the cursor.
-    /// Also handles initial UI and sound feedback for a drag.
+    /// Begin or continue a drag. The focused actor follows the cursor immediately.
+    /// Promotion to SelectedHero is deferred until moved at least half a tile.
+    /// Always recomputes TouchOffset at drag start to avoid snap when clicking a new spot.
     /// </summary>
     public void Drag()
     {
-        // Only proceed if it is the hero's turn, a hero is focused, and that actor is not an enemy.
         if (!g.TurnManager.isHeroTurn || !g.Actors.HasFocusedActor || g.Actors.FocusedActor.isEnemy)
             return;
 
-        // Mark this focused hero as the selected hero for movement.
-        g.Actors.SelectedHero = g.Actors.FocusedActor;
-        g.SortingManager.OnSelectedHeroDrag();
+        var actor = g.Actors.FocusedActor;
 
-        // If the selected hero is already moving, do not process further drag logic.
-        if (g.Actors.SelectedHero.Flags.IsMoving)
-            return;
-
-        // Start moving the selected hero toward the cursor.
-        g.Actors.SelectedHero.Move.MoveTowardCursor();
-    
-        g.Card.Clear();
-        g.FocusIndicator.Hide();
-        g.AudioManager.Play("Click");
-        g.TimerBar2D.Play();
-        g.ActorManager.CheckEnemyAP();  
-    }
-
-    /// <summary>
-    /// Drops a dragged hero. Snaps to nearest tile, updates sorting, and checks pincer attacks.
-    /// Phase advancement is handled by the turn system/UI, not here.
-    /// </summary>
-    public void Drop()
-    {
-        // If not a valid drop state, gently reset any focused actor back to its tile.
-        if (!g.TurnManager.isHeroTurn
-            || !g.Actors.HasSelectedHero || !g.Actors.SelectedHero.Flags.IsMoving)
+        // Initialize pending drag on first Drag call or actor change
+        if (!hasPendingDrag || pendingActor != actor)
         {
-            if (g.Actors.HasFocusedActor)
-                g.Actors.FocusedActor.position = g.Actors.FocusedActor.currentTile.position;
+            hasPendingDrag = true;
+            pendingActor = actor;
+            //pendingActorStartPosition = actor.position;
+            //pendingActorStartLocation = actor.location;
+
+            // Recompute TouchOffset at drag begin so different grab points do not snap
+            g.TouchOffset = actor.position - g.TouchPosition3D;
+
+            if (!pendingActor.Flags.IsMoving)
+                pendingActor.Move.MoveTowardCursor();
+
             return;
         }
 
-        // Complete movement and restore sorting.
+        // Ensure movement continues while dragging
+        if (!pendingActor.Flags.IsMoving)
+            pendingActor.Move.MoveTowardCursor();
+
+        // Already promoted
+        if (g.Actors.HasSelectedHero)
+            return;
+
+        // Promote after clearing half a tile from start
+        float moved = Vector3.Distance(pendingActor.position, pendingActor.currentTile.position);
+        if (moved >= dragThreshold)
+        {
+            g.Actors.SelectedHero = pendingActor;
+            g.SortingManager.OnSelectedHeroDrag();
+
+            g.Card.Clear();
+            g.FocusIndicator.Hide();
+            g.AudioManager.Play("Click");
+            g.TimerBar2D.Play();
+            g.ActorManager.CheckEnemyAP();
+        }
+    }
+
+    /// <summary>
+    /// Handle drop.
+    /// If a promoted hero is moving, snap to grid and resolve.
+    /// If not promoted, snap the focused actor back to the exact start tile and position recorded at drag begin.
+    /// </summary>
+    public void Drop()
+    {
+        bool validSelectedMove =
+            g.TurnManager.isHeroTurn &&
+            g.Actors.HasSelectedHero &&
+            g.Actors.SelectedHero.Flags.IsMoving;
+
+        if (!validSelectedMove)
+        {
+            // No promotion occurred. Return focused actor to the recorded start tile and position.
+            if (hasPendingDrag && pendingActor != null)
+            {
+                //pendingActor.location = pendingActorStartLocation;
+
+                //var startTile = g.TileMap.GetTile(pendingActorStartLocation);
+                //var snapPosition = startTile != null ? startTile.position : pendingActorStartPosition;
+
+                pendingActor.Move.ToLocation();
+                pendingActor.Flags.IsMoving = false;
+                pendingActor.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+            else if (g.Actors.HasFocusedActor)
+            {
+                // Fallback: snap to the actor's current tile center
+                g.Actors.FocusedActor.Move.ToLocation();
+                g.Actors.FocusedActor.Flags.IsMoving = false;
+                g.Actors.FocusedActor.transform.localRotation = Quaternion.Euler(Vector3.zero);
+            }
+
+            // Clear pending drag state
+            hasPendingDrag = false;
+            pendingActor = null;
+            return;
+        }
+
+        // Complete movement for promoted hero
         g.Actors.SelectedHero.Move.ToLocation();
         g.SortingManager.OnSelectedHeroDrop();
 
-        // Clear selection references.
+        // Clear selection references and pending state
         g.Actors.SelectedHero = null;
         g.Actors.FocusedActor = null;
+        hasPendingDrag = false;
+        pendingActor = null;
 
-        // Pause timer and evaluate any pincer attacks for heroes.
+        // Finalize
         g.TimerBar2D.Pause();
         g.PincerAttackManager.Check(Team.Hero);
-
-        // Do not advance phase here. TurnManager/UI is responsible for that.
     }
 }
