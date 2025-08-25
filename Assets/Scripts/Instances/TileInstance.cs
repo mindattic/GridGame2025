@@ -6,7 +6,7 @@ using g = Assets.Helpers.GameHelper;
 public class TileInstance : MonoBehaviour
 {
 
-    public bool IsOccupied => g.Actors.All.Any(x => x.isPlaying && x.location == location);
+    public bool IsOccupied => g.Actors.All.Any(x => x.IsPlaying && x.location == location);
 
     public ActorInstance Occupier => g.Actors.All.FirstOrDefault(x => x.location == location);
 

@@ -78,7 +78,7 @@ public class DebugManager : MonoBehaviour
         foreach (var actor in g.Actors.All)
         {
             if (actor == null) continue;
-            if (!actor.isPlaying) continue;
+            if (!actor.IsPlaying) continue;
             if (group.Contains(actor)) continue;
 
             actor.Teleport(RNG.UnoccupiedLocation);
@@ -122,7 +122,7 @@ public class DebugManager : MonoBehaviour
         foreach (var actor in g.Actors.All)
         {
             if (actor == null) continue;
-            if (!actor.isPlaying) continue;
+            if (!actor.IsPlaying) continue;
             if (group.Contains(actor)) continue;
 
             actor.Teleport(RNG.UnoccupiedLocation);
@@ -168,7 +168,7 @@ public class DebugManager : MonoBehaviour
         foreach (var actor in g.Actors.All)
         {
             if (actor == null) continue;
-            if (!actor.isPlaying) continue;
+            if (!actor.IsPlaying) continue;
             if (group.Contains(actor)) continue;
 
             actor.Teleport(RNG.UnoccupiedLocation);
@@ -240,7 +240,7 @@ public class DebugManager : MonoBehaviour
 
     public void KillEnemies()
     {
-        var playingEnemies = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
+        var playingEnemies = g.Actors.Enemies.Where(x => x.IsPlaying).ToList();
         foreach (var enemy in playingEnemies)
         {
             var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitOutcome.Critical);
@@ -276,14 +276,14 @@ public class DebugManager : MonoBehaviour
     {
         var hero = RNG.Hero;
         var text = $"{RNG.Int(1, 100)}";
-        g.CombatTextManager.Spawn(text, hero.position, "Damage");
+        g.CombatTextManager.Spawn(text, hero.Position, "Damage");
     }
 
     public void SpawnHealText()
     {
         var hero = RNG.Hero;
         var text = $"{RNG.Int(1, 100)}";
-        g.CombatTextManager.Spawn(text, hero.position, "Heal");
+        g.CombatTextManager.Spawn(text, hero.Position, "Heal");
     }
 
 
@@ -360,17 +360,17 @@ public class DebugManager : MonoBehaviour
 
     public void TriggerEnemyMoveAttack()
     {
-        var attackingEnemies = g.Actors.Enemies.Where(x => x.isPlaying).ToList();
+        var attackingEnemies = g.Actors.Enemies.Where(x => x.IsPlaying).ToList();
         attackingEnemies.ForEach(x => x.SetReady());
 
-        if (g.TurnManager.isHeroTurn)
+        if (g.TurnManager.IsHeroTurn)
             g.TurnManager.NextTurn();
 
     }
 
     public void TriggerEnemyAttack()
     {
-        if (g.TurnManager.isHeroTurn)
+        if (g.TurnManager.IsHeroTurn)
             g.TurnManager.NextTurn();           // switch to attacker turn
     }
 
@@ -398,13 +398,13 @@ public class DebugManager : MonoBehaviour
             var i = 0;
             do
             {
-                g.CoinManager.Spawn(hero1.position);
+                g.CoinManager.Spawn(hero1.Position);
                 i++;
             } while (i < 10);
 
             yield return true;
         }
-        g.VfxManager.Spawn(vfx, hero1.position, spawnTenCoins());
+        g.VfxManager.Spawn(vfx, hero1.Position, spawnTenCoins());
     }
 
     public ActorInstance SpawnSlime()
@@ -460,7 +460,7 @@ public class DebugManager : MonoBehaviour
 
     public void Fireball()
     {
-        var startPosition = hero1.position;
+        var startPosition = hero1.Position;
         var target = hero2;
    
         // Use ProjectileManager helper which sets MotionStyle and pacing
@@ -470,7 +470,7 @@ public class DebugManager : MonoBehaviour
 
     public void Heal()
     {
-        var source = hero1.position;
+        var source = hero1.Position;
         var target = hero2;
 
         // Use ProjectileManager helper which sets MotionStyle and pacing
@@ -480,7 +480,7 @@ public class DebugManager : MonoBehaviour
 
     public void HomingSpiral()
     {
-        var source = hero1.position;
+        var source = hero1.Position;
         var target = hero2;
 
         // Use ProjectileManager helper which sets MotionStyle and pacing
@@ -500,214 +500,214 @@ public class DebugManager : MonoBehaviour
         if (attackResult.HitType == HitOutcome.Critical)
         {
             var crit = VfxLibrary.VisualEffects["YellowHit"];
-            g.VfxManager.Spawn(crit, hero1.position);
+            g.VfxManager.Spawn(crit, hero1.Position);
             attackResult.Damage = (int)Math.Round(attackResult.Damage * 1.5f);
         }
 
         var vfx = VfxLibrary.VisualEffects["BlueSlash1"];
-        g.VfxManager.Spawn(vfx, hero1.position, hero1.DamageRoutine(attackResult));
+        g.VfxManager.Spawn(vfx, hero1.Position, hero1.DamageRoutine(attackResult));
     }
 
     public void VFXTest_BlueSlash2()
     {
         var vfx = VfxLibrary.VisualEffects["BlueSlash2"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_BlueSlash3()
     {
         var vfx = VfxLibrary.VisualEffects["BlueSlash3"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_BlueSword()
     {
         var vfx = VfxLibrary.VisualEffects["BlueSword"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_BlueSword4X()
     {
         var vfx = VfxLibrary.VisualEffects["BlueSword4X"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_BloodClaw()
     {
         var vfx = VfxLibrary.VisualEffects["BloodClaw"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_LevelUp()
     {
         var vfx = VfxLibrary.VisualEffects["LevelUp"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_YellowHit()
     {
         var vfx = VfxLibrary.VisualEffects["YellowHit"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_DoubleClaw()
     {
         var vfx = VfxLibrary.VisualEffects["DoubleClaw"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_LightningExplosion()
     {
         var vfx = VfxLibrary.VisualEffects["LightningExplosion"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_BuffLife()
     {
         var vfx = VfxLibrary.VisualEffects["BuffLife"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_RotaryKnife()
     {
         var vfx = VfxLibrary.VisualEffects["RotaryKnife"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_AirSlash()
     {
         var vfx = VfxLibrary.VisualEffects["AirSlash"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_FireRain()
     {
         var vfx = VfxLibrary.VisualEffects["FireRain"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_RayBlast()
     {
         var vfx = VfxLibrary.VisualEffects["RayBlast"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_LightningStrike()
     {
         var vfx = VfxLibrary.VisualEffects["LightningStrike"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_PuffyExplosion()
     {
         var vfx = VfxLibrary.VisualEffects["PuffyExplosion"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_RedSlash2X()
     {
         var vfx = VfxLibrary.VisualEffects["RedSlash2X"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_GodRays()
     {
         var vfx = VfxLibrary.VisualEffects["GodRays"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_AcidSplash()
     {
         var vfx = VfxLibrary.VisualEffects["AcidSplash"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
     public void VFXTest_GreenBuff()
     {
         var vfx = VfxLibrary.VisualEffects["GreenBuff"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_GoldBuff()
     {
         var vfx = VfxLibrary.VisualEffects["GoldBuff"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_HexShield()
     {
         var vfx = VfxLibrary.VisualEffects["HexShield"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_ToxicCloud()
     {
         var vfx = VfxLibrary.VisualEffects["ToxicCloud"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_OrangeSlash()
     {
         var vfx = VfxLibrary.VisualEffects["OrangeSlash"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_MoonFeather()
     {
         var vfx = VfxLibrary.VisualEffects["MoonFeather"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_PinkSpark()
     {
         var vfx = VfxLibrary.VisualEffects["PinkSpark"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_BlueYellowSword()
     {
         var vfx = VfxLibrary.VisualEffects["BlueYellowSword"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_BlueYellowSword3X()
     {
         var vfx = VfxLibrary.VisualEffects["BlueYellowSword3X"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
     public void VFXTest_RedSword()
     {
         var vfx = VfxLibrary.VisualEffects["RedSword"];
-        g.VfxManager.Spawn(vfx, hero1.position);
-        g.VfxManager.Spawn(vfx, hero2.position);
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
 

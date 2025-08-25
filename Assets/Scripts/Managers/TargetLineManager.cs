@@ -81,8 +81,8 @@ public class TargetLineManager : MonoBehaviour
     private void SnapToTarget(ActorInstance actor)
     {
         hoveredTarget = actor;
-        instance.cursorPosition = actor.position;
-        instance.UpdateArcPoints(buttonOrigin, actor.position);
+        instance.cursorPosition = actor.Position;
+        instance.UpdateArcPoints(buttonOrigin, actor.Position);
     }
 
     private void EndTargeting()

@@ -28,12 +28,12 @@ static class RNG
     /// <summary>
     /// Random hero that is currently playing.
     /// </summary>
-    public static ActorInstance Hero => g.Actors.Heroes.Where(x => x.isPlaying).Shuffle().First();
+    public static ActorInstance Hero => g.Actors.Heroes.Where(x => x.IsPlaying).Shuffle().First();
 
     /// <summary>
     /// Random enemy that is currently playing.
     /// </summary>
-    public static ActorInstance Enemy => g.Actors.Enemies.Where(x => x.isPlaying).Shuffle().First();
+    public static ActorInstance Enemy => g.Actors.Enemies.Where(x => x.IsPlaying).Shuffle().First();
 
     /// <summary>
     /// Random tile from all tiles.

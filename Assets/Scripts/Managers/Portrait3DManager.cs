@@ -116,8 +116,8 @@ public class Portrait3DManager : MonoBehaviour
         instance.sprite = ActorLibrary.Actors[actor.characterName].Portrait;
         instance.transform.localScale = new Vector3(0.25f, 0.25f, 1);
         instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
-        instance.position = actor.position;
-        instance.startPosition = actor.position;
+        instance.position = actor.Position;
+        instance.startPosition = actor.Position;
 
         portraits.Add(instance);
         StartCoroutine(instance.DissolveRoutine());

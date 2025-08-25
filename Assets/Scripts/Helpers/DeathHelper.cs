@@ -12,7 +12,7 @@ namespace Assets.Helpers
         public static IEnumerator ProcessRoutine()
         {
             // find everyone who’s flagged as dying
-            var dyingActors = g.Actors.All.Where(x => x.isDying).ToList();
+            var dyingActors = g.Actors.All.Where(x => x.IsDying).ToList();
             if (dyingActors.IsNullOrEmpty())
                 yield break;
 

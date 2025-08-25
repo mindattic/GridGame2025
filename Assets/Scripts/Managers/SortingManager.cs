@@ -133,7 +133,7 @@ public class SortingManager : MonoBehaviour
     // These two rely on existing direct layering logic:
     public void OnSupportLineSpawn(SupportLineInstance supportLine)
     {
-        var isAbove = supportLine.supporter.sortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
+        var isAbove = supportLine.supporter.SortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
         supportLine.SetSorting(isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow);
     }
 
@@ -142,7 +142,7 @@ public class SortingManager : MonoBehaviour
     /// </summary>
     public void OnSynergyLineSpawn(SynergyLineInstance synergyLineInstance)
     {
-        var isAbove = synergyLineInstance.supporter.sortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
+        var isAbove = synergyLineInstance.supporter.SortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
         var layer = isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow;
         synergyLineInstance.SetSorting(layer);
     }

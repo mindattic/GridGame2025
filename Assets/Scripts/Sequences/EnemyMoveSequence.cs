@@ -20,7 +20,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator ProcessRoutine()
         {
             // Safety: null or not in play should quietly skip.
-            if (enemy == null || !enemy.isPlaying)
+            if (enemy == null || !enemy.IsPlaying)
                 yield break;
 
             // Optional pacing before movement.

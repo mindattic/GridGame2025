@@ -115,8 +115,8 @@ public class SupportLineInstance : MonoBehaviour
         // Unique name for debugging
         name = $"SupportLine_{Guid.NewGuid():N}";
 
-        lineRenderer.SetPosition(0, supporter.position);
-        lineRenderer.SetPosition(1, attacker.position);
+        lineRenderer.SetPosition(0, supporter.Position);
+        lineRenderer.SetPosition(1, attacker.Position);
 
         g.SortingManager.OnSupportLineSpawn(this);
 

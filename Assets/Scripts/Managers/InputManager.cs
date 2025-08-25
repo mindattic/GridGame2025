@@ -74,7 +74,7 @@ public class InputManager : MonoBehaviour
         {
             case TouchPhase.Began:
                 var target = TouchHelper.GetActorAtTouchPosition();
-                if (target == null || !target.isPlaying) return;
+                if (target == null || !target.IsPlaying) return;
 
                 if (g.Actors.TargetActor == target)
                 {
@@ -135,7 +135,7 @@ public class InputManager : MonoBehaviour
             case TouchPhase.Began:
                 {
                     var actor = TouchHelper.GetActorAtTouchPosition();
-                    if (actor != null && actor.isPlaying && actor.isHero)
+                    if (actor != null && actor.IsPlaying && actor.IsHero)
                     {
                         // Start dodge animation. If you have a duration overload, prefer Dodge(DodgeWindowSeconds).
                         actor.Animation.Dodge();

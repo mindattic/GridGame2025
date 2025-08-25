@@ -53,7 +53,7 @@ public class ActorActionBar
     // but only if the actor actors is active.
     private void Drain()
     {
-        if (instance.isActive)
+        if (instance.IsActive)
             instance.StartCoroutine(DrainRoutine());
     }
 
@@ -90,7 +90,7 @@ public class ActorActionBar
     // Fill starts the coroutine that fills the Animation fill (increasing AP) if conditions are met.
     public void Fill()
     {
-        if (instance.isActive)
+        if (instance.IsActive)
             instance.StartCoroutine(FillRoutine());
     }
 
@@ -105,7 +105,7 @@ public class ActorActionBar
         // - The actor is not playing,
         // - The actor already has max AP, or
         // - The actor is currently gaining AP.
-        if (g.DebugManager.isEnemyStunned || !g.Actors.HasSelectedHero|| !instance.isEnemy || !instance.isPlaying || instance.hasMaxAP || flags.isGainingAP)
+        if (g.DebugManager.isEnemyStunned || !g.Actors.HasSelectedHero|| !instance.IsEnemy || !instance.IsPlaying || instance.HasMaxAP || flags.isGainingAP)
             yield break;
 
         // Before starting, mark that the actor is gaining AP and calculate the increment amount.
@@ -113,7 +113,7 @@ public class ActorActionBar
         float amount = stats.Intelligence * 0.1f;
 
         // During: Gradually increase AP until max AP is reached.
-        while (g.Actors.HasSelectedHero && instance.isEnemy && instance.isPlaying && !instance.hasMaxAP)
+        while (g.Actors.HasSelectedHero && instance.IsEnemy && instance.IsPlaying && !instance.HasMaxAP)
         {
             stats.AP += amount;
             stats.AP = Mathf.Clamp(stats.AP, 0, stats.MaxAP);

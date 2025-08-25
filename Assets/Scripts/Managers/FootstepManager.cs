@@ -29,11 +29,11 @@ public class FootstepManager : MonoBehaviour
     /// </summary>
     public void Play(ActorInstance actor)
     {
-        if (!actor.isActive || !actor.isAlive)
+        if (!actor.IsActive || !actor.IsAlive)
             return;
 
         this.actor = actor;
-        previousPosition = this.actor.position;
+        previousPosition = this.actor.Position;
         StartCoroutine(CheckSpawnRoutine());
     }
 
@@ -51,9 +51,9 @@ public class FootstepManager : MonoBehaviour
     /// </summary>
     private IEnumerator CheckSpawnRoutine()
     {
-        while (actor != null && actor.isActive && actor.isAlive)
+        while (actor != null && actor.IsActive && actor.IsAlive)
         {
-            var distance = Vector3.Distance(actor.position, previousPosition);
+            var distance = Vector3.Distance(actor.Position, previousPosition);
             if (distance >= threshold)
             {
                 Spawn();
@@ -73,8 +73,8 @@ public class FootstepManager : MonoBehaviour
         instance.sprite = SpriteLibrary.Sprites["FootstepManager"];
         instance.name = $"Footstep_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
-        instance.Spawn(actor.position, RotationHelper.ByDirection(actor.position, previousPosition), isRightFoot);
-        previousPosition = actor.position;
+        instance.Spawn(actor.Position, RotationHelper.ByDirection(actor.Position, previousPosition), isRightFoot);
+        previousPosition = actor.Position;
         isRightFoot = !isRightFoot;
     }
 

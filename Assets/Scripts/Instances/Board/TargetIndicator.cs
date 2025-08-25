@@ -46,7 +46,7 @@ public class TargetIndicator : MonoBehaviour
     // Activates and positions the TargetIndicator based on whether a focused actor exists.
     public void Show()
     {
-        position = g.Actors.HasTargetActor ? g.Actors.TargetActor.position : PositionHelper.Nowhere;
+        position = g.Actors.HasTargetActor ? g.Actors.TargetActor.Position : PositionHelper.Nowhere;
     }
 
     // Hide deactivates the TargetIndicator and moves it off-screen.

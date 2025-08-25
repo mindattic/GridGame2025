@@ -36,7 +36,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator ProcessRoutine()
         {
             // Safety check: null or inactive attacker should skip this step.
-            if (enemy == null || !enemy.isPlaying)
+            if (enemy == null || !enemy.IsPlaying)
                 yield break;
 
             // Optional: short pacing after the attack animation.

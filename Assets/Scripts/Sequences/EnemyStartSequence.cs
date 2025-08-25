@@ -28,7 +28,7 @@ namespace Assets.Scripts.Events
             // Collect enemies that are "ready" at turn start.
             // "isReady" means isPlaying && hasMaxAP, so readiness is already established once.
             var ready = g.Actors.Enemies
-                .Where(x => x.isReady)
+                .Where(x => x.IsReady)
                 .ToList();
 
             // If none are ready, end the turn.

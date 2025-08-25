@@ -9,7 +9,7 @@ public class HeroManager : MonoBehaviour
 
     public void Glow()
     {
-        g.Actors.Heroes.Where(x => x.isPlaying).ToList().ForEach(x => x.Glow.Glow());
+        g.Actors.Heroes.Where(x => x.IsPlaying).ToList().ForEach(x => x.Glow.Glow());
     }
 
 }

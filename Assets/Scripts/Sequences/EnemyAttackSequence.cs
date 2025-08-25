@@ -37,13 +37,13 @@ namespace Assets.Scripts.Events
         /// </summary>
         public override IEnumerator ProcessRoutine()
         {
-            if (attacker == null || !attacker.isPlaying)
+            if (attacker == null || !attacker.IsPlaying)
                 yield break;
 
             yield return Wait.For(Intermission.Before.Enemy.Attack);
 
             var defendingHeroes = g.Actors.Heroes
-                .Where(x => x.isPlaying && Geometry.IsAdjacentTo(x.location, attacker.location))
+                .Where(x => x.IsPlaying && Geometry.IsAdjacentTo(x.location, attacker.location))
                 .ToList();
 
             if (defendingHeroes.Count > 0)
@@ -54,8 +54,8 @@ namespace Assets.Scripts.Events
 
                     if (attackResult == null
                         || attackResult.Opponent == null
-                        || attackResult.Opponent.isDying
-                        || attackResult.Opponent.isDead)
+                        || attackResult.Opponent.IsDying
+                        || attackResult.Opponent.IsDead)
                         continue;
 
                     //var impactRoutine = ImpactRoutineWithParry(attackResult, opponent);
@@ -100,13 +100,13 @@ namespace Assets.Scripts.Events
             if (timing == DefenseTiming.Parry)
             {
                 // Perfect timing
-                g.CombatTextManager.Spawn("Parry", opponent.position, "Damage");
+                g.CombatTextManager.Spawn("Parry", opponent.Position, "Damage");
                 yield break;
             }
             else if (timing == DefenseTiming.Dodge)
                 {
                     // Good timing
-                    g.CombatTextManager.Spawn("Dodge", opponent.position, "Damage");
+                    g.CombatTextManager.Spawn("Dodge", opponent.Position, "Damage");
                     yield break;
                 }
 
@@ -124,7 +124,7 @@ namespace Assets.Scripts.Events
         /// </summary>
         private IEnumerator PlayParryFeedback(ActorInstance source, ActorInstance target)
         {
-            g.CombatTextManager.Spawn("Parry", target.position, "Damage");
+            g.CombatTextManager.Spawn("Parry", target.Position, "Damage");
             // Hook for parry VFX/SFX or counter logic.
             // Example placeholders only; keep lightweight to preserve pacing.
             // yield return Wait.Ticks(1);

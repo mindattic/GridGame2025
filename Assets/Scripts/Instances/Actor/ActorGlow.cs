@@ -8,10 +8,10 @@ namespace Assets.Scripts.Instances.Actor
     public class ActorGlow
     {
         protected ActorRenderers render => instance.Render;
-        private bool isActive => instance.isActive;
-        private bool isAlive => instance.isAlive;
-        private bool isPlayer => instance.isHero;
-        private bool isEnemy => instance.isEnemy;
+        private bool isActive => instance.IsActive;
+        private bool isAlive => instance.IsAlive;
+        private bool isPlayer => instance.IsHero;
+        private bool isEnemy => instance.IsEnemy;
         protected AnimationCurve glowCurve => instance.glowCurve;
 
         //Fields
@@ -32,13 +32,13 @@ namespace Assets.Scripts.Instances.Actor
 
 
         private bool IsGlowing =>
-            instance.isPlaying
-            && (g.TurnManager.isHeroTurn && isPlayer) || (g.TurnManager.isEnemyTurn && isEnemy);
+            instance.IsPlaying
+            && (g.TurnManager.IsHeroTurn && isPlayer) || (g.TurnManager.isEnemyTurn && isEnemy);
 
 
         public void Glow()
         {
-            if (instance.isActive)
+            if (instance.IsActive)
                 instance.StartCoroutine(GlowRoutine());
         }
 

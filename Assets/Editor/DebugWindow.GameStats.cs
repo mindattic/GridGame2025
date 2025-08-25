@@ -16,7 +16,7 @@ public partial class DebugWindow
         var inputMode = g.InputManager.InputMode;
         GUILayout.Label($"Input Mode: {inputMode}", GUILayout.Width(Screen.width * 0.25f));
 
-        var currentTurn = g.TurnManager.isHeroTurn ? "Player" : "Opponent";
+        var currentTurn = g.TurnManager.IsHeroTurn ? "Player" : "Opponent";
         GUILayout.Label($"Current Turn: {currentTurn}", GUILayout.Width(Screen.width * 0.25f));
 
         GUILayout.EndHorizontal();

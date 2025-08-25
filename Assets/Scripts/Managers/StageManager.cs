@@ -13,7 +13,7 @@ using scene = Assets.Helpers.SceneHelper;
 public class StageManager : MonoBehaviour
 {
     // Internal property:
-    public int enemyCount => g.Actors.All.FindAll(x => x.isEnemy).Count;
+    public int enemyCount => g.Actors.All.FindAll(x => x.IsEnemy).Count;
 
     // Fields:
     private GameObject actorPrefab;
@@ -165,7 +165,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void CheckWaveCompletion()
     {
-        bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.isDead);
+        bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.IsDead);
         if (!allEnemiesDead)
             return;
 
@@ -204,7 +204,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void CheckGameOver()
     {
-        bool allPlayersDead = g.Actors.Heroes.All(x => x.Flags.HasSpawned && x.isDead);
+        bool allPlayersDead = g.Actors.Heroes.All(x => x.Flags.HasSpawned && x.IsDead);
         if (!allPlayersDead)
             return;
 

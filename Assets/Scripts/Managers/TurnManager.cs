@@ -11,8 +11,8 @@ namespace Assets.Scripts.Managers
     /// </summary>
     public class TurnManager : MonoBehaviour
     {
-        public bool isHeroTurn { get; private set; }
-        public bool isEnemyTurn => !isHeroTurn;
+        public bool IsHeroTurn { get; private set; }
+        public bool isEnemyTurn => !IsHeroTurn;
         public int currentTurn = 0;
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Managers
         /// </summary>
         public void Initialize()
         {
-            isHeroTurn = true;
+            IsHeroTurn = true;
             StartTurn();
         }
 
@@ -31,8 +31,8 @@ namespace Assets.Scripts.Managers
         /// </summary>
         public void NextTurn()
         {
-            isHeroTurn = !isHeroTurn;
-            if (isHeroTurn)
+            IsHeroTurn = !IsHeroTurn;
+            if (IsHeroTurn)
                 currentTurn++;
 
             StartTurn();
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Managers
         private void StartTurn()
         {
             // EnqueueRoutine the correct start sequence for the active side
-            g.SequenceManager.Add(isHeroTurn ? new HeroStartSequence() : new EnemyStartSequence());
+            g.SequenceManager.Add(IsHeroTurn ? new HeroStartSequence() : new EnemyStartSequence());
 
             // Ensure execution is running
             g.SequenceManager.Execute();

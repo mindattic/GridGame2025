@@ -45,8 +45,8 @@ namespace Game.Instances
             parent = g.Board.transform;
             name = $"AttackLine_{Guid.NewGuid():N}";
 
-            startPosition = actorPair.startActor.position;
-            endPosition = actorPair.endActor.position;
+            startPosition = actorPair.startActor.Position;
+            endPosition = actorPair.endActor.Position;
 
             Vector3 ul, ur, lr, ll;
             float offset = g.TileSize / 2;

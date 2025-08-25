@@ -21,7 +21,7 @@ namespace Assets.Helper
         public static List<Vector3> Gentle(Vector3 startPosition, ActorInstance target, float lateralScale = 0.12f, float verticalScale = 0.06f, float smoothness = 0.0f)
         {
             Vector3 start = startPosition;
-            Vector3 end = target.position;
+            Vector3 end = target.Position;
 
             float distance = Vector3.Distance(start, end);
             if (distance < 1e-6f)
@@ -53,7 +53,7 @@ namespace Assets.Helper
         public static List<Vector3> Wiggle(Vector3 startPosition, ActorInstance target, int waves = 4, float amplitudeScale = 0.18f, float verticalBobScale = 0.05f, float smoothness = 0.0f)
         {
             Vector3 start = startPosition;
-            Vector3 end = target.position;
+            Vector3 end = target.Position;
 
             float distance = Vector3.Distance(start, end);
             if (distance < 1e-6f)
@@ -91,7 +91,7 @@ namespace Assets.Helper
         public static List<Vector3> Lobbed(Vector3 startPosition, ActorInstance target, float peakHeightScale = 0.9f, int bounces = 2, float bounceForwardScale = 0.25f, float bounceHeightScale = 0.35f, float bounceDamping = 0.5f, float smoothness = 0.0f)
         {
             Vector3 start = startPosition;
-            Vector3 end = target.position;
+            Vector3 end = target.Position;
 
             float distance = Vector3.Distance(start, end);
             if (distance < 1e-6f)
@@ -140,7 +140,7 @@ namespace Assets.Helper
         public static List<Vector3> HomingSpiral(Vector3 startPosition, ActorInstance target, int turns = 2, int pointsPerTurn = 4, float startRadiusScale = 0.4f, float endRadiusScale = 0.05f, float verticalDriftScale = 0.15f, float smoothness = 0.0f)
         {
             Vector3 start = startPosition;
-            Vector3 center = target.position;
+            Vector3 center = target.Position;
 
             float d = Vector3.Distance(start, center);
             if (d < 1e-6f)
@@ -190,7 +190,7 @@ namespace Assets.Helper
         public static List<Vector3> Overshooting(Vector3 startPosition, ActorInstance target, float sideOffsetScale = 0.25f, float forwardLeadScale = 0.35f, float overshootForwardScale = 0.25f, float overshootHeightScale = 0.12f, float smoothness = 0.1f)
         {
             Vector3 start = startPosition;
-            Vector3 end = target.position;
+            Vector3 end = target.Position;
 
             float distance = Vector3.Distance(start, end);
             if (distance < 1e-6f)

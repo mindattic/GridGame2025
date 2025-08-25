@@ -46,7 +46,7 @@ public class FocusIndicator : MonoBehaviour
     // SelectProfile activates and positions the FocusIndicator based on whether a focused actor exists.
     public void Show()
     {
-        position = g.Actors.HasFocusedActor ? g.Actors.FocusedActor.position : PositionHelper.Nowhere;
+        position = g.Actors.HasFocusedActor ? g.Actors.FocusedActor.Position : PositionHelper.Nowhere;
     }
 
     // Hide deactivates the FocusIndicator and moves it off-screen.

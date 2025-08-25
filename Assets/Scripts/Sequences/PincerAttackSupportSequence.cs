@@ -21,7 +21,7 @@ namespace Assets.Scripts.Events
         {
             // If supporter is a Cleric, heal the attacker
             if (supporter.characterName == CharacterHelper.Cleric)
-                yield return new HealSupportSequence(supporter.position, attacker).ProcessRoutine();
+                yield return new HealSupportSequence(supporter.Position, attacker).ProcessRoutine();
         }
     }
 }

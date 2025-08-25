@@ -15,12 +15,12 @@ namespace Assets.Scripts.Instances.Actor
     {
         protected ActorRenderers render => instance.Render;
         protected ActorStats stats => instance.Stats;
-        private bool isActive => instance.isActive;
-        private bool isAlive => instance.isAlive;
-        private bool isPlaying => instance.isPlaying;
-        private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
-        private Vector3 position { get => instance.position; set => instance.position = value; }
-        private Vector3 scale { get => instance.scale; set => instance.scale = value; }
+        private bool isActive => instance.IsActive;
+        private bool isAlive => instance.IsAlive;
+        private bool isPlaying => instance.IsPlaying;
+        private Quaternion rotation { get => instance.Rotation; set => instance.Rotation = value; }
+        private Vector3 position { get => instance.Position; set => instance.Position = value; }
+        private Vector3 scale { get => instance.Scale; set => instance.Scale = value; }
 
         private ActorInstance instance;
 
@@ -69,7 +69,7 @@ namespace Assets.Scripts.Instances.Actor
                     0f
                 );
 
-                instance.thumbnailPosition = originalPosition + shakeOffset;
+                instance.ThumbnailPosition = originalPosition + shakeOffset;
 
                 yield return Wait.OneTick();
 
@@ -80,7 +80,7 @@ namespace Assets.Scripts.Instances.Actor
             if (routine != null)
                 yield return instance.StartCoroutine(routine);
 
-            instance.thumbnailPosition = originalPosition;
+            instance.ThumbnailPosition = originalPosition;
         }
 
         /// <summary>
@@ -242,7 +242,7 @@ namespace Assets.Scripts.Instances.Actor
         /// </summary>
         public void Grow(float maxSize = 0f, IEnumerator routine = null)
         {
-            if (!instance.isActive)
+            if (!instance.IsActive)
                 return;
 
             instance.StartCoroutine(GrowRoutine(maxSize, routine));
@@ -278,7 +278,7 @@ namespace Assets.Scripts.Instances.Actor
         /// </summary>
         public void Shrink(float minSize = 0f, IEnumerator routine = null)
         {
-            if (!instance.isActive)
+            if (!instance.IsActive)
                 return;
 
             instance.StartCoroutine(ShrinkRoutine(minSize, routine));

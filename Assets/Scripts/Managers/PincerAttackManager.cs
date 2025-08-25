@@ -57,7 +57,7 @@ public class PincerAttackManager : MonoBehaviour
 
         var teamActors = g.Actors
             .All
-            .Where(x => x.isPlaying && x.team == team)
+            .Where(x => x.IsPlaying && x.team == team)
             .ToList();
 
         var indexed = teamActors.Select((actor, idx) => (actor, idx));
@@ -74,11 +74,11 @@ public class PincerAttackManager : MonoBehaviour
 
                 var betweenActors = g.Actors
                     .All
-                    .Where(x => x.isPlaying && betweenLocs.Contains(x.location))
+                    .Where(x => x.IsPlaying && betweenLocs.Contains(x.location))
                     .ToList();
 
                 bool hasEnemy = betweenActors.Any(x => x.team != team);
-                bool allOpponents = betweenActors.All(x => x.isPlaying && x.team != team);
+                bool allOpponents = betweenActors.All(x => x.IsPlaying && x.team != team);
                 bool noGap = betweenLocs.Count == betweenActors.Count;
 
                 if (hasEnemy && allOpponents && noGap)
@@ -332,7 +332,7 @@ public class PincerAttackManager : MonoBehaviour
     {
         var candidates = g.Actors
             .All
-            .Where(x => x.isPlaying && x.team == attacker.team && x != attacker)
+            .Where(x => x.IsPlaying && x.team == attacker.team && x != attacker)
             .Where(x => Geometry.IsSameRow(x.location, attacker.location) || Geometry.IsSameColumn(x.location, attacker.location))
             .ToList();
 
@@ -358,6 +358,6 @@ public class PincerAttackManager : MonoBehaviour
             .GetLocationsBetween(a.location, b.location)
             .Where(loc => !loc.Equals(a.location) && !loc.Equals(b.location));
 
-        return g.Actors.All.Any(x => x.isPlaying && between.Contains(x.location));
+        return g.Actors.All.Any(x => x.IsPlaying && between.Contains(x.location));
     }
 }

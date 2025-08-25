@@ -29,7 +29,7 @@ public class GhostManager : MonoBehaviour
     public void Play(ActorInstance actor)
     {
         this.actor = actor;
-        previousPosition = this.actor.position;
+        previousPosition = this.actor.Position;
         StartCoroutine(CheckSpawnRoutine());
     }
 
@@ -46,12 +46,12 @@ public class GhostManager : MonoBehaviour
     /// </summary>
     private IEnumerator CheckSpawnRoutine()
     {
-        while (actor != null && actor.isActive && actor.isAlive)
+        while (actor != null && actor.IsActive && actor.IsAlive)
         {
-            var distance = Vector3.Distance(actor.position, previousPosition);
+            var distance = Vector3.Distance(actor.Position, previousPosition);
             if (distance >= threshold)
             {
-                previousPosition = actor.position;
+                previousPosition = actor.Position;
                 Spawn();
             }
 

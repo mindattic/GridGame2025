@@ -19,8 +19,6 @@ public class SelectedHeroManager : MonoBehaviour
 {
     // Drag state for delayed promotion
     private ActorInstance pendingActor;
-    //private Vector3 pendingActorStartPosition;
-    //private Vector2Int pendingActorStartLocation;
     private bool hasPendingDrag;
     private float dragThreshold;
 
@@ -35,13 +33,22 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Focus()
     {
-        if (!g.TurnManager.isHeroTurn)
+        if (!g.TurnManager.IsHeroTurn)
             return;
 
         var target = TouchHelper.GetActorAtTouchPosition();
-        if (target == null || !target.isPlaying)
-            return;
 
+        // Clicked on nothing or a non-playing target
+        if (target == null || !target.IsPlaying)
+        {
+            g.Actors.FocusedActor = null;
+            g.AbilityButtonManager.Hide();
+            g.FocusIndicator.Hide();
+            g.Card.Clear();
+            return;
+        }
+
+        // Same actor already focused
         if (g.Actors.FocusedActor == target)
             return;
 
@@ -50,11 +57,11 @@ public class SelectedHeroManager : MonoBehaviour
         g.Actors.FocusedActor = target;
         g.SortingManager.OnActorFocus();
 
-        if (g.Actors.FocusedActor.isHero)
+        if (g.Actors.FocusedActor.IsHero)
             g.AbilityButtonManager.Show(g.Actors.FocusedActor);
 
         // Cache offset from current finger to actor so the first move frame does not snap
-        g.TouchOffset = g.Actors.FocusedActor.position - g.TouchPosition3D;
+        g.TouchOffset = g.Actors.FocusedActor.Position - g.TouchPosition3D;
 
         // Reset pending drag when focus changes
         hasPendingDrag = false;
@@ -75,7 +82,7 @@ public class SelectedHeroManager : MonoBehaviour
     /// </summary>
     public void Drag()
     {
-        if (!g.TurnManager.isHeroTurn || !g.Actors.HasFocusedActor || g.Actors.FocusedActor.isEnemy)
+        if (!g.TurnManager.IsHeroTurn || !g.Actors.HasFocusedActor || g.Actors.FocusedActor.IsEnemy)
             return;
 
         var actor = g.Actors.FocusedActor;
@@ -85,11 +92,9 @@ public class SelectedHeroManager : MonoBehaviour
         {
             hasPendingDrag = true;
             pendingActor = actor;
-            //pendingActorStartPosition = actor.position;
-            //pendingActorStartLocation = actor.location;
-
+        
             // Recompute TouchOffset at drag begin so different grab points do not snap
-            g.TouchOffset = actor.position - g.TouchPosition3D;
+            g.TouchOffset = actor.Position - g.TouchPosition3D;
 
             if (!pendingActor.Flags.IsMoving)
                 pendingActor.Move.MoveTowardCursor();
@@ -106,7 +111,7 @@ public class SelectedHeroManager : MonoBehaviour
             return;
 
         // Promote after clearing half a tile from start
-        float moved = Vector3.Distance(pendingActor.position, pendingActor.currentTile.position);
+        float moved = Vector3.Distance(pendingActor.Position, pendingActor.currentTile.position);
         if (moved >= dragThreshold)
         {
             g.Actors.SelectedHero = pendingActor;
@@ -128,7 +133,7 @@ public class SelectedHeroManager : MonoBehaviour
     public void Drop()
     {
         bool validSelectedMove =
-            g.TurnManager.isHeroTurn &&
+            g.TurnManager.IsHeroTurn &&
             g.Actors.HasSelectedHero &&
             g.Actors.SelectedHero.Flags.IsMoving;
 

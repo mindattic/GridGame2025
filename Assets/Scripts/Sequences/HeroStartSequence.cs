@@ -15,7 +15,7 @@ namespace Assets.Scripts.Events
         public override IEnumerator ProcessRoutine()
         {
             // Only run during hero turns
-            if (!g.TurnManager.isHeroTurn)
+            if (!g.TurnManager.IsHeroTurn)
                 yield break;
 
             // Small pacing

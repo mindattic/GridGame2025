@@ -17,7 +17,7 @@ public partial class DebugWindow
         foreach (var x in g.Actors.Heroes.OrderBy(x => x.name))
         {
             GUILayout.BeginHorizontal();
-            string stats = $"{x.name}, IsAlive? {x.isAlive}, IsActive? {x.isActive}";
+            string stats = $"{x.name}, IsAlive? {x.IsAlive}, IsActive? {x.IsActive}";
             GUILayout.Label(stats, GUILayout.Width(Screen.width));
             GUILayout.EndHorizontal();
         }
@@ -28,7 +28,7 @@ public partial class DebugWindow
         foreach (var x in g.Actors.Enemies.OrderBy(x => x.name))
         {
             GUILayout.BeginHorizontal();
-            string stats = $"{x.name}, IsAlive? {x.isAlive}, IsActive? {x.isActive}";
+            string stats = $"{x.name}, IsAlive? {x.IsAlive}, IsActive? {x.IsActive}";
             GUILayout.Label(stats, GUILayout.Width(Screen.width));
             GUILayout.EndHorizontal();
         }

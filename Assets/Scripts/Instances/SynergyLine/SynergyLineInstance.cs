@@ -230,8 +230,8 @@ public class SynergyLineInstance : MonoBehaviour
 
     private void TickAll()
     {
-        if (supporter != null) { var pa = supporter.position; pa.z = 0f; supporter.position = pa; }
-        if (attacker != null) { var pb = attacker.position; pb.z = 0f; attacker.position = pb; }
+        if (supporter != null) { var pa = supporter.Position; pa.z = 0f; supporter.Position = pa; }
+        if (attacker != null) { var pb = attacker.Position; pb.z = 0f; attacker.Position = pb; }
 
         int n = Mathf.Min(waveformCount, strands.Count);
         for (int i = 0; i < n; i++) strands[i].Tick();

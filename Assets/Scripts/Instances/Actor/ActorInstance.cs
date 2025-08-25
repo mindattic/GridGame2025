@@ -17,32 +17,32 @@ public class ActorInstance : MonoBehaviour
 {
     #region Instance Properies
     public TileInstance currentTile => g.TileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
-    public bool isHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
-    public bool isEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an attacker.
-    public bool isActive => isActiveAndEnabled;                   // Checks if the GameObject is active.
-    public bool isAlive => Stats.HP > 0;                          // Actor is alive if HP is above zero.
-    public bool isPlaying => isActive && isAlive;                 // Actor is active in the game (alive and enabled).
-    public bool isDying => isActive && Stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
-    public bool isDead => !isActive && !isAlive;                  // Actor is dead when not active and HP is 0.
-    public bool isSpawnable => !Flags.HasSpawned && spawnTurn <= g.TurnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
-    public bool hasMaxAP => Stats.AP == Stats.MaxAP;              // Actor has maximum Animation points.
+    public bool IsHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
+    public bool IsEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an attacker.
+    public bool IsActive => isActiveAndEnabled;                   // Checks if the GameObject is active.
+    public bool IsAlive => Stats.HP > 0;                          // Actor is alive if HP is above zero.
+    public bool IsPlaying => IsActive && IsAlive;                 // Actor is active in the game (alive and enabled).
+    public bool IsDying => IsActive && Stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
+    public bool IsDead => !IsActive && !IsAlive;                  // Actor is dead when not active and HP is 0.
+    public bool IsSpawnable => !Flags.HasSpawned && spawnTurn <= g.TurnManager.currentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
+    public bool HasMaxAP => Stats.AP == Stats.MaxAP;              // Actor has maximum Animation points.
 
-    public bool isReady => isPlaying && hasMaxAP;
+    public bool IsReady => IsPlaying && HasMaxAP;
 
     //public bool IsSameColumn(Vector2Int other) => location.s == other.s;
     //public bool IsSameRow(Vector2Int other) => location.y == other.y;
     //public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(location, other).Equals(1);
 
     // Determines if the actor is invincible based on team-specific debug settings.
-    public bool isInvincible => (isEnemy && g.DebugManager.isEnemyInvincible) || (isHero && g.DebugManager.isHeroInvincible);
+    public bool IsInvincible => (IsEnemy && g.DebugManager.isEnemyInvincible) || (IsHero && g.DebugManager.isHeroInvincible);
 
     // Transform-related properties for position, rotation, scale and parent management.
-    public Transform parent
+    public Transform Parent
     {
         get => gameObject.transform.parent;
         set => gameObject.transform.SetParent(value, true); // Preserves world position when changing parent.
     }
-    public Vector3 position
+    public Vector3 Position
     {
         get => gameObject.transform.position;
         set => gameObject.transform.position = value;
@@ -50,24 +50,24 @@ public class ActorInstance : MonoBehaviour
 
 
     // Accessor for the position of the "Thumbnail" child object.
-    public Vector3 thumbnailPosition
+    public Vector3 ThumbnailPosition
     {
         get => gameObject.transform.GetChild("Thumbnail").gameObject.transform.position;
         set => gameObject.transform.GetChild("Thumbnail").gameObject.transform.position = value;
     }
 
-    public Quaternion rotation
+    public Quaternion Rotation
     {
         get => gameObject.transform.rotation;
         set => gameObject.transform.rotation = value;
     }
-    public Vector3 scale
+    public Vector3 Scale
     {
         get => gameObject.transform.localScale;
         set => gameObject.transform.localScale = value;
     }
 
-    public SortingGroup sortingGroup
+    public SortingGroup SortingGroup
     {
         get => this.GetComponent<SortingGroup>();
     }
@@ -82,8 +82,8 @@ public class ActorInstance : MonoBehaviour
     /// <param name="sortingOrder">Order number.</param>
     public void SetSorting(string sortingLayer, int sortingOrder = 0)
     {
-        sortingGroup.sortingLayerID = SortingLayer.NameToID(sortingLayer);
-        sortingGroup.sortingOrder = sortingOrder;
+        SortingGroup.sortingLayerID = SortingLayer.NameToID(sortingLayer);
+        SortingGroup.sortingOrder = sortingOrder;
     }
 
     /// <summary>
@@ -266,7 +266,7 @@ public class ActorInstance : MonoBehaviour
                 case Direction.East: checkPos += new Vector2Int(i, 0); break;
                 case Direction.West: checkPos += new Vector2Int(-i, 0); break;
             }
-            if (g.Actors.All.Any(actor => actor.isPlaying && actor.location == checkPos))
+            if (g.Actors.All.Any(actor => actor.IsPlaying && actor.location == checkPos))
                 return true;
         }
         return false;
@@ -287,7 +287,7 @@ public class ActorInstance : MonoBehaviour
                 case Direction.SouthEast: checkPos += new Vector2Int(i, i); break;
                 case Direction.SouthWest: checkPos += new Vector2Int(-i, i); break;
             }
-            if (g.Actors.All.Any(actor => actor.isPlaying && actor.location == checkPos))
+            if (g.Actors.All.Any(actor => actor.IsPlaying && actor.location == checkPos))
                 return true;
         }
         return false;
@@ -324,8 +324,8 @@ public class ActorInstance : MonoBehaviour
         previousLocation = location;
 
         // Save world position based on grid location.
-        position = Geometry.GetPositionByLocation(location);
-        previousPosition = position;
+        Position = Geometry.GetPositionByLocation(location);
+        previousPosition = Position;
 
         // Generate the Thumbnail for UI/display purposes.
         Thumbnail.Initialize(this);
@@ -340,7 +340,7 @@ public class ActorInstance : MonoBehaviour
         Render.weaponIcon.sprite = SpriteLibrary.WeaponTypes[Weapon.Type.ToString()];
 
         // Configure visual appearance and effects based on team.
-        if (isHero)
+        if (IsHero)
         {
             Render.SetOpaqueColor(ColorHelper.Solid.White);
             Render.SetQualityColor(ColorHelper.Solid.White);
@@ -350,7 +350,7 @@ public class ActorInstance : MonoBehaviour
             Render.SetParallaxAlpha(Opacity.Percent50);
             Vfx.Attack = VfxLibrary.VisualEffects["BlueSlash1"];
         }
-        else if (isEnemy)
+        else if (IsEnemy)
         {
             Render.SetOpaqueColor(ColorHelper.Solid.Black);
             Render.SetQualityColor(ColorHelper.Solid.GunMetal);
@@ -371,7 +371,7 @@ public class ActorInstance : MonoBehaviour
         ActionBar.Reset();
 
         // Activate the actor if it is spawnable; otherwise, keep it inactive.
-        if (isSpawnable)
+        if (IsSpawnable)
         {
             gameObject.SetActive(true);
             Flags.HasSpawned = true;
@@ -398,17 +398,17 @@ public class ActorInstance : MonoBehaviour
         {
             case AttackStrategy.AttackClosest:
                 // Pick the closest hero.
-                var targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderBy(x => Vector3.Distance(x.position, position)).FirstOrDefault();
+                var targetPlayer = g.Actors.Heroes.Where(x => x.IsPlaying).OrderBy(x => Vector3.Distance(x.Position, Position)).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackWeakest:
                 // Pick the hero with the lowest HP.
-                targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderBy(x => x.Stats.HP).FirstOrDefault();
+                targetPlayer = g.Actors.Heroes.Where(x => x.IsPlaying).OrderBy(x => x.Stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackStrongest:
                 // Pick the hero with the highest HP.
-                targetPlayer = g.Actors.Heroes.Where(x => x.isPlaying).OrderByDescending(x => x.Stats.HP).FirstOrDefault();
+                targetPlayer = g.Actors.Heroes.Where(x => x.IsPlaying).OrderByDescending(x => x.Stats.HP).FirstOrDefault();
                 targetLocation = targetPlayer.location;
                 break;
             case AttackStrategy.AttackRandom:
@@ -430,7 +430,7 @@ public class ActorInstance : MonoBehaviour
     public void FireDamage(float amount) => StartCoroutine(FireDamageRoutine(amount));
     public IEnumerator FireDamageRoutine(float amount)
     {
-        g.CombatTextManager.Spawn($"Fireball: - {amount} HP", position);
+        g.CombatTextManager.Spawn($"Fireball: - {amount} HP", Position);
         yield return Wait.None();
     }
 
@@ -439,7 +439,7 @@ public class ActorInstance : MonoBehaviour
     public IEnumerator HealRoutine(int amount)
     {
         // Immediately apply healing and update health.
-        if (!isInvincible)
+        if (!IsInvincible)
         {
             Stats.PreviousHP = Stats.HP;
             Stats.HP += amount;
@@ -448,7 +448,7 @@ public class ActorInstance : MonoBehaviour
         }
 
         // Display healing combat text and play sound.
-        g.CombatTextManager.Spawn(amount.ToString(), position, "Heal");
+        g.CombatTextManager.Spawn(amount.ToString(), Position, "Heal");
         g.AudioManager.Play("Heal"); // Replace with your healing SFX key
 
         yield break;
@@ -461,7 +461,7 @@ public class ActorInstance : MonoBehaviour
     public IEnumerator DamageRoutine(AttackResult attackResult)
     {
         // Immediately apply damage and update health.
-        if (!isInvincible)
+        if (!IsInvincible)
         {
             Stats.PreviousHP = Stats.HP;
             Stats.HP -= attackResult.Damage;
@@ -470,7 +470,7 @@ public class ActorInstance : MonoBehaviour
         }
 
         var style = CombatTextHelper.GetStyle(attackResult);
-        g.CombatTextManager.Spawn(attackResult.Damage.ToString(), position, style);
+        g.CombatTextManager.Spawn(attackResult.Damage.ToString(), Position, style);
         g.AudioManager.Play($"Slash{RNG.Int(1, 7)}");
 
         yield break;
@@ -480,7 +480,7 @@ public class ActorInstance : MonoBehaviour
     //AttackMissRoutine: StartCoroutine to display a miss message and attackResult a dodge Animation.
     public IEnumerator AttackMissRoutine()
     {
-        g.CombatTextManager.Spawn("Miss", position);
+        g.CombatTextManager.Spawn("Miss", Position);
         yield return Animation.DodgeRoutine();
     }
 
@@ -517,7 +517,7 @@ public class ActorInstance : MonoBehaviour
             Render.SetAlpha(alpha);
 
             //Show coins when attacker fades below 10% opacity, if not already spawned.
-            if (isEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
+            if (IsEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
             {
                 hasSpawnedCoins = true;
                 int amount = 10;
@@ -529,7 +529,7 @@ public class ActorInstance : MonoBehaviour
 
         //After: Reset location and position, deactivate the actor, and check death event.
         location = LocationHelper.Nowhere;
-        position = PositionHelper.Nowhere;
+        Position = PositionHelper.Nowhere;
         gameObject.SetActive(false);
         g.StageManager.OnActorDeath();
     }
@@ -537,7 +537,7 @@ public class ActorInstance : MonoBehaviour
     //SpawnCoins: Helper function to begin spawning coins upon attacker death.
     private void SpawnCoins(int amount)
     {
-        if (isPlaying)
+        if (IsPlaying)
             StartCoroutine(SpawnCoinsRoutine(amount)); // TODO: Adjust coin spawning based on attacker Stats if necessary.
     }
 
@@ -547,7 +547,7 @@ public class ActorInstance : MonoBehaviour
         var i = 0;
         do
         {
-            g.CoinManager.Spawn(position);
+            g.CoinManager.Spawn(Position);
             i++;
         } while (i < amount);
 
@@ -564,7 +564,7 @@ public class ActorInstance : MonoBehaviour
         if (!g.Board.InBounds(newLocation))
             return;
 
-        var occupant = g.Actors.All.FirstOrDefault(x => x.isPlaying && x.location == newLocation);
+        var occupant = g.Actors.All.FirstOrDefault(x => x.IsPlaying && x.location == newLocation);
         if (occupant.Exists())
             occupant.Teleport(RNG.Location);
 
@@ -627,7 +627,7 @@ public class ActorInstance : MonoBehaviour
     public void SetReady()
     {
         //Abort if the actor is not active, not alive, or not an attacker.
-        if (!isActive || !isAlive || !isEnemy)
+        if (!IsActive || !IsAlive || !IsEnemy)
             return;
 
         Stats.AP = Stats.MaxAP;

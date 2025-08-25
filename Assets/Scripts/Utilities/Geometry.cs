@@ -197,7 +197,7 @@ public class Geometry
         if (actor == null)
             return null;
 
-        var opponent = g.Actors.All.FirstOrDefault(x => x.isPlaying && x.team != actor.team && IsAdjacentTo(x.location, actor.location));
+        var opponent = g.Actors.All.FirstOrDefault(x => x.IsPlaying && x.team != actor.team && IsAdjacentTo(x.location, actor.location));
 
         return opponent.Exists() ? opponent : null;
     }

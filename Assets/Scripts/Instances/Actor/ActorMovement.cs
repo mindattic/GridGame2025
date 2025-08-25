@@ -20,14 +20,14 @@ namespace Assets.Scripts.Instances.Actor
         protected ActorFlags flags => instance.Flags;
         protected ActorRenderers render => instance.Render;
         protected ActorStats stats => instance.Stats;
-        private bool isActive => instance.isActive;
-        private bool isAlive => instance.isAlive;
-        private Quaternion rotation { get => instance.rotation; set => instance.rotation = value; }
+        private bool isActive => instance.IsActive;
+        private bool isAlive => instance.IsAlive;
+        private Quaternion rotation { get => instance.Rotation; set => instance.Rotation = value; }
         protected Vector2Int previousLocation { get => instance.previousLocation; set => instance.previousLocation = value; }
         private Vector2Int location { get => instance.location; set => instance.location = value; }
         protected Vector3 previousPosition { get => instance.previousPosition; set => instance.previousPosition = value; }
-        private Vector3 position { get => instance.position; set => instance.position = value; }
-        private Vector3 scale { get => instance.scale; set => instance.scale = value; }
+        private Vector3 position { get => instance.Position; set => instance.Position = value; }
+        private Vector3 scale { get => instance.Scale; set => instance.Scale = value; }
 
         protected bool isSelectedHero => g.Actors.HasSelectedHero && g.Actors.SelectedHero == instance;
 
@@ -63,13 +63,13 @@ namespace Assets.Scripts.Instances.Actor
 
             while (flags.IsMoving)
             {
-                previousPosition = instance.position;
+                previousPosition = instance.Position;
 
                 // Apply TouchOffset. If not set, it should be Vector3.zero.
                 Vector3 target = (g.TouchPosition3D + g.TouchOffset).ClampToBoard();
-                instance.position = target;
+                instance.Position = target;
 
-                ApplyTilt(instance.position - previousPosition);
+                ApplyTilt(instance.Position - previousPosition);
                 CheckLocationChanged();
 
                 yield return Wait.None();
@@ -106,9 +106,9 @@ namespace Assets.Scripts.Instances.Actor
 
                 while (Mathf.Abs(this.position.x - destination.x) > g.SnapThreshold)
                 {
-                    ApplyTilt(instance.position - previousPosition);
+                    ApplyTilt(instance.Position - previousPosition);
 
-                    previousPosition = instance.position;
+                    previousPosition = instance.Position;
                     this.position = Vector3.MoveTowards(this.position, horizontalTarget, g.MoveFocus).ClampToBoard();
 
                     CheckLocationChanged();
@@ -125,7 +125,7 @@ namespace Assets.Scripts.Instances.Actor
                     yield return Wait.None();
                 }
 
-                previousPosition = instance.position;
+                previousPosition = instance.Position;
                 position = new Vector3(destination.x, position.y, position.z).ClampToBoard();
             }
 
@@ -140,9 +140,9 @@ namespace Assets.Scripts.Instances.Actor
 
                 while (Mathf.Abs(position.y - destination.y) > g.SnapThreshold)
                 {
-                    ApplyTilt(instance.position - previousPosition);
+                    ApplyTilt(instance.Position - previousPosition);
 
-                    previousPosition = instance.position;
+                    previousPosition = instance.Position;
                     position = Vector3.MoveTowards(position, verticalTarget, g.MoveFocus).ClampToBoard();
 
                     CheckLocationChanged();
@@ -159,7 +159,7 @@ namespace Assets.Scripts.Instances.Actor
                     yield return Wait.None();
                 }
 
-                previousPosition = instance.position;
+                previousPosition = instance.Position;
                 position = new Vector3(position.x, destination.y, position.z).ClampToBoard();
             }
 
@@ -178,7 +178,7 @@ namespace Assets.Scripts.Instances.Actor
 
             var closestTile = g.TileMap.GetTile(instance.location);
             instance.location = closestTile.location;
-            instance.position = closestTile.position;
+            instance.Position = closestTile.position;
         }
 
         // --------------------------------------------------------------------
@@ -210,7 +210,7 @@ namespace Assets.Scripts.Instances.Actor
 
             ActorInstance overlappingActor = g.Actors.All.FirstOrDefault(x =>
                 x != instance &&
-                x.isPlaying &&
+                x.IsPlaying &&
                 x.location == location);
 
             if (overlappingActor == null)
