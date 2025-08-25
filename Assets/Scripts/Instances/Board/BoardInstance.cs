@@ -126,4 +126,15 @@ public class BoardInstance : MonoBehaviour
             && location.y >= 1 && location.y <= rowCount;
     }
 
+    /// <summary>
+    /// Returns true if the given world position is within the board’s world-space bounds.
+    /// </summary>
+    public bool IsInsideBoard(Vector3 worldPosition)
+    {
+        return worldPosition.x >= bounds.Left &&
+               worldPosition.x <= bounds.Right &&
+               worldPosition.y <= bounds.Top &&
+               worldPosition.y >= bounds.Bottom;
+    }
+
 }

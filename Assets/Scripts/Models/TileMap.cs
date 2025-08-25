@@ -453,5 +453,25 @@ namespace Assets.Scripts.Models
                 Tile = tile;
             }
         }
+
+        /// <summary>
+        /// Returns true if the given world position falls within the current board bounds.
+        /// Checks against gridOrigin, tileSize, and maxCol/maxRow.
+        /// Does not require the position to match an exact tile center.
+        /// </summary>
+        //public bool IsInsideBoard(Vector3 worldPosition)
+        //{
+        //    if (tileSize <= 0f || grid == null)
+        //        return false;
+
+        //    // Convert world position to board-relative coordinates
+        //    float rx = (worldPosition.x - gridOrigin.x) / tileSize;
+        //    float ry = (gridOrigin.y - worldPosition.y) / tileSize; // inverted Y
+
+        //    int col = Mathf.FloorToInt(rx) + 1;
+        //    int row = Mathf.FloorToInt(ry) + 1;
+
+        //    return InBounds(col, row);
+        //}
     }
 }

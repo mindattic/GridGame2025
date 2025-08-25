@@ -38,13 +38,17 @@ public class SelectedHeroManager : MonoBehaviour
 
         var target = TouchHelper.GetActorAtTouchPosition();
 
-        // Clicked on nothing or a non-playing target
+        // No actor under the cursor
         if (target == null || !target.IsPlaying)
         {
-            g.Actors.FocusedActor = null;
-            g.AbilityButtonManager.Hide();
-            g.FocusIndicator.Hide();
-            g.Card.Clear();
+            // Check if click is inside the board bounds
+            if (g.Board.IsInsideBoard(g.TouchPosition3D))
+            {
+                g.Actors.FocusedActor = null;
+                g.AbilityButtonManager.Hide();
+                g.FocusIndicator.Hide();
+                g.Card.Clear();
+            }
             return;
         }
 
