@@ -24,7 +24,7 @@ namespace Assets.Scripts.Managers
         public void Initialize()
         {
             var enemyAtCursor = (g.Timeline != null)
-                ? g.Timeline.GetActingEnemyForCurrentBlock()
+                ? g.Timeline.GetCurrentEnemy()
                 : null;
 
             IsHeroTurn = enemyAtCursor == null;
@@ -41,11 +41,11 @@ namespace Assets.Scripts.Managers
 
             // 1) Advance the belt exactly once.
             if (g.Timeline != null)
-                g.Timeline.AdvanceAfterTurnCompleted();
+                g.Timeline.NextBlock();
 
             // 2) Decide who acts based on the new current block.
             var enemyAtCursor = (g.Timeline != null)
-                ? g.Timeline.GetActingEnemyForCurrentBlock()
+                ? g.Timeline.GetCurrentEnemy()
                 : null;
 
             IsHeroTurn = enemyAtCursor == null;
@@ -54,9 +54,9 @@ namespace Assets.Scripts.Managers
             if (g.Timeline != null)
             {
                 if (IsHeroTurn)
-                    g.Timeline.FocusOnHeroTurnNow();
+                    g.Timeline.FocusOnHero();
                 else
-                    g.Timeline.FocusOnEnemyTurnNow(enemyAtCursor);
+                    g.Timeline.FocusOnEnemy(enemyAtCursor);
             }
 
             // 4) Enqueue the correct start sequence.
@@ -81,13 +81,13 @@ namespace Assets.Scripts.Managers
         {
             if (g.Timeline != null)
             {
-                var enemyAtCursor = g.Timeline.GetActingEnemyForCurrentBlock();
+                var enemyAtCursor = g.Timeline.GetCurrentEnemy();
                 IsHeroTurn = enemyAtCursor == null;
 
                 if (IsHeroTurn)
-                    g.Timeline.FocusOnHeroTurnNow();
+                    g.Timeline.FocusOnHero();
                 else
-                    g.Timeline.FocusOnEnemyTurnNow(enemyAtCursor);
+                    g.Timeline.FocusOnEnemy(enemyAtCursor);
             }
 
             if (IsHeroTurn)
@@ -98,7 +98,7 @@ namespace Assets.Scripts.Managers
             }
             else
             {
-                var enemyAtCursor = g.Timeline?.GetActingEnemyForCurrentBlock();
+                var enemyAtCursor = g.Timeline?.GetCurrentEnemy();
                 g.SequenceManager.Add(new EnemyTakeTurnSequence(enemyAtCursor));
             }
         }

@@ -1,10 +1,13 @@
 // --- File: Assets/Scripts/Canvas/Timeline.cs ---
+using Assets.Helper;
 using Assets.Scripts.Canvas.Timeline;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static Assets.Helper.GameObjectHelper.Game;
+using static Intermission.Before;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
@@ -17,11 +20,10 @@ using g = Assets.Helpers.GameHelper;
 /// </summary>
 public sealed class Timeline : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private RectTransform viewport;
-    [SerializeField] private RectTransform content;
-    [SerializeField] private TimelineBlockInstance blockPrefab;
-    [SerializeField] private Image indicator;
+    private RectTransform viewport;
+    private RectTransform content;  
+    private Image indicator;
+    private TimelineBlockInstance blockPrefab;
 
     [Header("Layout")]
     [SerializeField] private float blockSize = 96f;     // square block edge
@@ -42,6 +44,17 @@ public sealed class Timeline : MonoBehaviour
     [SerializeField] private int enemyBaseMinStep = 4;
     [SerializeField] private int enemyBaseMaxStep = 8;
     [SerializeField] private float enemyAgilityDivisor = 6f;
+
+    private void Awake()
+    {
+        // Find core objects
+        var root = GameObject.Find(GameObjectHelper.Game.Timeline.Root).GetComponent<RectTransform>();
+        viewport = GameObject.Find(GameObjectHelper.Game.Timeline.Viewport).GetComponent<RectTransform>();
+        content = GameObject.Find(GameObjectHelper.Game.Timeline.Content).GetComponent<RectTransform>();
+        indicator = GameObject.Find(GameObjectHelper.Game.Timeline.Indicator).GetComponent<Image>();
+
+        blockPrefab = PrefabLibrary.Prefabs["TimelineBlockPrefab"].GetComponent<TimelineBlockInstance>();
+    }
 
     private class Block
     {
@@ -80,14 +93,7 @@ public sealed class Timeline : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        if (viewport == null || content == null || blockPrefab == null || indicator == null)
-        {
-            Debug.LogError("Timeline.Initialize: assign viewport, content, blockPrefab, indicator.");
-            enabled = false;
-            return;
-        }
-
-        SizeAndCenterIndicator();
+        SetupIndicator();
         RebuildFromScene();
     }
 
@@ -97,14 +103,14 @@ public sealed class Timeline : MonoBehaviour
     /// </summary>
     public void RebuildFromScene()
     {
-        ClearAll();
+        Clear();
 
         BuildEnemySim();
         heroDelaySim = ComputeHeroStepFromAverageAgility();
         if (heroDelaySim < 1) heroDelaySim = 1;
 
         ExtendForecastUntil(forecastVisibleAhead);
-        LayoutAll();
+        SetupLayout();
 
         // Only snap at init or rebuild. Normal advances slide.
         SnapToCurrent();
@@ -114,7 +120,7 @@ public sealed class Timeline : MonoBehaviour
     /// Advance exactly one block after the current turn completes.
     /// This is the only place that moves the belt forward.
     /// </summary>
-    public void AdvanceAfterTurnCompleted()
+    public void NextBlock()
     {
         if (blocks.Count == 0) return;
 
@@ -151,18 +157,18 @@ public sealed class Timeline : MonoBehaviour
         targetContentX = GetTargetXForIndex(currentIndex);
 
         // Clean and extend the future.
-        CullDeadFutures();
+        RemoveDeadEnemyBlocks();
         ExtendForecastUntil(currentIndex + forecastVisibleAhead);
 
         // Trim old history and relayout.
-        TrimPast(trimLeftKeep);
-        LayoutAll();
+        TrimPastBlocks(trimLeftKeep);
+        SetupLayout();
     }
 
     /// <summary>
     /// Focus on the hero block at or after the current index. Slides.
     /// </summary>
-    public void FocusOnHeroTurnNow()
+    public void FocusOnHero()
     {
         int idx = FindNextIndex(b => b.isHero, currentIndex);
         if (idx >= 0) currentIndex = idx;
@@ -172,7 +178,7 @@ public sealed class Timeline : MonoBehaviour
     /// <summary>
     /// Focus on the next block for a specific enemy. Slides.
     /// </summary>
-    public void FocusOnEnemyTurnNow(ActorInstance enemy)
+    public void FocusOnEnemy(ActorInstance enemy)
     {
         if (enemy == null) return;
         int idx = FindNextIndex(b => !b.isHero && b.enemy == enemy, currentIndex);
@@ -183,7 +189,7 @@ public sealed class Timeline : MonoBehaviour
     /// <summary>
     /// Return the enemy assigned to the current block, or null for hero blocks.
     /// </summary>
-    public ActorInstance GetActingEnemyForCurrentBlock()
+    public ActorInstance GetCurrentEnemy()
     {
         if (blocks.Count == 0) return null;
         var b = blocks[Mathf.Clamp(currentIndex, 0, blocks.Count - 1)];
@@ -192,8 +198,6 @@ public sealed class Timeline : MonoBehaviour
 
     private void Update()
     {
-        if (content == null) return;
-
         float dist = Mathf.Abs(targetContentX - contentX);
         float step = slideBase * Time.deltaTime + slideScale * Time.deltaTime * dist;
         contentX = Mathf.MoveTowards(contentX, targetContentX, step);
@@ -306,7 +310,7 @@ public sealed class Timeline : MonoBehaviour
 
     // -------------- Layout --------------
 
-    private void LayoutAll()
+    private void SetupLayout()
     {
         // Position and size each view.
         for (int i = 0; i < blocks.Count; i++)
@@ -369,7 +373,7 @@ public sealed class Timeline : MonoBehaviour
         blocks.Add(b);
     }
 
-    private void CullDeadFutures()
+    private void RemoveDeadEnemyBlocks()
     {
         for (int i = blocks.Count - 1; i >= currentIndex; i--)
         {
@@ -384,7 +388,7 @@ public sealed class Timeline : MonoBehaviour
         sim.RemoveAll(s => s.enemy == null || !s.enemy.IsPlaying);
     }
 
-    private void TrimPast(int keepLeft)
+    private void TrimPastBlocks(int keepLeft)
     {
         int removable = Mathf.Max(0, currentIndex - keepLeft);
         if (removable <= 0) return;
@@ -416,7 +420,7 @@ public sealed class Timeline : MonoBehaviour
         return offset;
     }
 
-    private void SizeAndCenterIndicator()
+    private void SetupIndicator()
     {
         if (indicator == null || viewport == null) return;
 
@@ -439,7 +443,7 @@ public sealed class Timeline : MonoBehaviour
         content.anchoredPosition = new Vector2(contentX, 0f);
     }
 
-    private void ClearAll()
+    private void Clear()
     {
         foreach (var b in blocks)
             if (b.view != null) Destroy(b.view.gameObject);

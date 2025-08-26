@@ -21,7 +21,7 @@ namespace Assets.Scripts.Events
             g.InputManager.InputMode = InputMode.None;
 
             // Ask the Timeline which enemy is acting on the current block.
-            var actingEnemy = g.Timeline.GetActingEnemyForCurrentBlock();
+            var actingEnemy = g.Timeline.GetCurrentEnemy();
             if (actingEnemy == null || !actingEnemy.IsPlaying)
             {
                 // No enemy on this block (or dead): end turn cleanly.
@@ -31,7 +31,7 @@ namespace Assets.Scripts.Events
             }
 
             // Snap focus to the acting enemy's block for clarity.
-            g.Timeline.FocusOnEnemyTurnNow(actingEnemy);
+            g.Timeline.FocusOnEnemy(actingEnemy);
 
             // Execute the enemy's behavior.
             g.SequenceManager.Add(new EnemyMoveSequence(actingEnemy));

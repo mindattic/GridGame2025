@@ -3325,15 +3325,15 @@ RectTransform:
   - {fileID: 196576095}
   - {fileID: 862594377}
   - {fileID: 2014384096}
-  - {fileID: 1043321231}
   - {fileID: 570420154}
+  - {fileID: 1530474651}
+  - {fileID: 1043321231}
   - {fileID: 1911155772}
   - {fileID: 962657116}
   - {fileID: 377173716}
   - {fileID: 169650062}
   - {fileID: 1664637265}
   - {fileID: 2046477371}
-  - {fileID: 1530474651}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4460,7 +4460,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 888.2}
-  m_SizeDelta: {x: 1123.2, y: 24}
+  m_SizeDelta: {x: 128, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1043321232
 MonoBehaviour:
@@ -5774,10 +5774,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba34966f57382b40af1737f1971739c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Canvas.Timeline.TimelineManager
-  viewport: {fileID: 2098253317}
-  content: {fileID: 1612839020}
-  blockPrefab: {fileID: 5068978629056659464, guid: 54d93e22376e7c54e844e233d4084d1e, type: 3}
-  indicator: {fileID: 1535347496}
   blockSize: 96
   blockGutter: 8
   slideBase: 60
@@ -5962,7 +5958,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 64}
+  m_SizeDelta: {x: 128, y: 12}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1569990653
 MonoBehaviour:
@@ -6037,7 +6033,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1123.2, y: 64}
+  m_SizeDelta: {x: 128, y: 12}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1597459527
 MonoBehaviour:
@@ -9511,7 +9507,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1123.2, y: 64}
+  m_SizeDelta: {x: 128, y: 12}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &2021458399
 MonoBehaviour:

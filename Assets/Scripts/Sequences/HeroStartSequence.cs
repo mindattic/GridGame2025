@@ -24,7 +24,7 @@ namespace Assets.Scripts.Events
 
             // If you restore AP on hero start, do it here
             // foreach (var hero in g.Actors.Heroes) hero.RestoreAP();
-            g.Timeline.FocusOnHeroTurnNow();
+            g.Timeline.FocusOnHero();
 
             yield break;
         }

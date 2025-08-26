@@ -2,8 +2,7 @@ namespace Assets.Helper
 {
     public static class GameObjectHelper
     {
-        public const string Canvas = "Canvas";
-
+       
         public static class Actor
         {
             public static class Front
@@ -99,6 +98,14 @@ namespace Assets.Helper
                 public const string Portrait = "Canvas/Card/Portrait";
                 public const string Title = "Canvas/Card/Title";
                 public const string Details = "Canvas/Card/Details";
+            }
+
+            public static class Timeline
+            {
+                public const string Root = "Canvas/TimelineRoot";
+                public const string Viewport = "Canvas/TimelineRoot/Viewport";
+                public const string Content = "Canvas/TimelineRoot/Viewport/Content";
+                public const string Indicator = "Canvas/TimelineRoot/Viewport/Indicator";
             }
 
 

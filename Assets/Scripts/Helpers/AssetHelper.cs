@@ -1,61 +1,54 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using g = Assets.Helpers.GameHelper;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Assets.Helpers
 {
     public static class AssetHelper
     {
+        /// <summary>
+        /// Loads an addressable asset asynchronously.
+        /// Note: Caller owns the reference and must release it with Addressables.Release(result) when done.
+        /// </summary>
         public static async Task<T> LoadAssetAsync<T>(string address)
         {
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                Debug.LogError($"AssetHelper.LoadAssetAsync<{typeof(T).Name}> called with null/empty address.");
+                return default;
+            }
+
             var handle = Addressables.LoadAssetAsync<T>(address);
             await handle.Task;
 
-            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
-            {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
                 return handle.Result;
-            }
 
-            Debug.LogError($"Failed to load {typeof(T)} at address: {address}");
-            return default(T);
+            Debug.LogError($"Failed to load {typeof(T).Name} at address: '{address}' (Status: {handle.Status})");
+            return default;
         }
 
+        /// <summary>
+        /// Loads an addressable asset synchronously (blocks until complete).
+        /// Note: Caller owns the reference and must release it with Addressables.Release(result) when done.
+        /// </summary>
         public static T LoadAsset<T>(string address)
         {
-            var handle = Addressables.LoadAssetAsync<T>(address);
-            handle.WaitForCompletion(); // Block until the asset is fully loaded
-
-
-            if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
+            if (string.IsNullOrWhiteSpace(address))
             {
-                return handle.Result;
+                Debug.LogError($"AssetHelper.LoadAsset<{typeof(T).Name}> called with null/empty address.");
+                return default;
             }
 
-            Debug.LogError($"Failed to load {typeof(T)} at address: {address}");
-            return default(T);
+            var handle = Addressables.LoadAssetAsync<T>(address);
+            handle.WaitForCompletion();
+
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+                return handle.Result;
+
+            Debug.LogError($"Failed to load {typeof(T).Name} at address: '{address}' (Status: {handle.Status})");
+            return default;
         }
     }
-
-    /*
-     * Alternative: Let the Caller Handle the Release
-    If you want the caller to manage the handle (e.g., for long-term use of the asset), you can return the AsyncOperationHandle<Sprite> instead of the Sprite itself:
-
-    public static async Task<UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<Sprite>> LoadSpriteHandleAsync(string address)
-    {
-        var handle = Addressables.LoadAssetAsync<Sprite>(address);
-        await handle.Task;
-
-        if (handle.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Succeeded)
-        {
-            return handle;
-        }
-
-        Debug.LogError($"Failed to load sprite at address: {address}");
-        return default; // Return an empty handle if loading fails
-    }
-
-    */
-
 }
