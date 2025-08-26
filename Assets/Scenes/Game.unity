@@ -5774,15 +5774,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba34966f57382b40af1737f1971739c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Canvas.Timeline.TimelineManager
+  viewport: {fileID: 2098253317}
+  content: {fileID: 1612839020}
   blockPrefab: {fileID: 5068978629056659464, guid: 54d93e22376e7c54e844e233d4084d1e, type: 3}
-  blockSizePixels: 96
-  blockGapPixels: 6
-  indicatorViewportRatio: 0.5
-  snapLerp: 12
-  heroSeconds: 6
-  enemyTint: {r: 0.1, g: 0.6, b: 1, a: 1}
-  apGainPerIntPerSecond: 0.1
-  futureBlocks: 10
+  indicator: {fileID: 1535347496}
+  blockSize: 96
+  blockGutter: 8
+  slideBase: 60
+  slideScale: 12
+  snapEpsilon: 0.5
+  forecastVisibleAhead: 32
+  trimLeftKeep: 24
+  heroBaseStep: 6
+  heroAgilityDivisor: 8
+  enemyBaseMinStep: 4
+  enemyBaseMaxStep: 8
+  enemyAgilityDivisor: 6
 --- !u!1 &1535347494
 GameObject:
   m_ObjectHideFlags: 0

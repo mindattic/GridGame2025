@@ -1,3 +1,4 @@
+// --- File: Assets/Scripts/Instances/Actor/ActorInstance.cs ---
 using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.Behaviors.Actor;
@@ -7,125 +8,86 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using g = Assets.Helpers.GameHelper;
 
-// ActorInstance represents a game characterName (either hero or attacker) and encapsulates
-// its state, behaviors, rendering, Move, and interactions with game systems.
+/// <summary>
+/// Runtime actor instance for both heroes and enemies.
+/// All turn order is controlled by Timeline. This class does not track TurnDelay or readiness.
+/// Timeline may call SetTurnDelayText to display a countdown, but no gameplay logic depends on it.
+/// </summary>
 public class ActorInstance : MonoBehaviour
 {
-    #region Instance Properies
-    public TileInstance currentTile => g.TileMap.GetTile(location); // Retrieves the tile corresponding to the actor's grid location.
-    public bool IsHero => team.Equals(Team.Hero);              // Determines if this actor belongs to the hero's team.
-    public bool IsEnemy => team.Equals(Team.Enemy);                // Determines if this actor is an attacker.
-    public bool IsActive => isActiveAndEnabled;                   // Checks if the GameObject is active.
-    public bool IsAlive => Stats.HP > 0;                          // Actor is alive if HP is above zero.
-    public bool IsPlaying => IsActive && IsAlive;                 // Actor is active in the game (alive and enabled).
-    public bool IsDying => IsActive && Stats.HP < 1;              // Actor is in the process of dying (active but HP below 1).
-    public bool IsDead => !IsActive && !IsAlive;                  // Actor is dead when not active and HP is 0.
-    public bool IsSpawnable => !Flags.HasSpawned && spawnTurn <= g.TurnManager.CurrentTurn; // Actor can spawn if not already spawned and the spawn turn has arrived.
-    public bool HasMaxAP => Stats.AP == Stats.MaxAP;              // Actor has maximum Animation points.
+    #region Instance Properties
 
-    public bool IsReady => IsPlaying && HasMaxAP;
-
-    //public bool IsSameColumn(Vector2Int other) => location.s == other.s;
-    //public bool IsSameRow(Vector2Int other) => location.y == other.y;
-    //public bool IsAdjacentTo(Vector2Int other) => (IsSameColumn(other) || IsSameRow(other)) && Vector2Int.Distance(location, other).Equals(1);
-
-    // Determines if the actor is invincible based on team-specific debug settings.
+    public TileInstance currentTile => g.TileMap.GetTile(location);
+    public bool IsHero => team.Equals(Team.Hero);
+    public bool IsEnemy => team.Equals(Team.Enemy);
+    public bool IsActive => isActiveAndEnabled;
+    public bool IsAlive => Stats.HP > 0;
+    public bool IsPlaying => IsActive && IsAlive;
+    public bool IsDying => IsActive && Stats.HP < 1;
+    public bool IsDead => !IsActive && !IsAlive;
+    public bool IsSpawnable => !Flags.HasSpawned && spawnTurn <= g.TurnManager.CurrentTurn;
+    public bool HasMaxAP => Stats.AP == Stats.MaxAP;
     public bool IsInvincible => (IsEnemy && g.DebugManager.isEnemyInvincible) || (IsHero && g.DebugManager.isHeroInvincible);
 
-    // Transform-related properties for position, rotation, scale and parent management.
     public Transform Parent
     {
-        get => gameObject.transform.parent;
-        set => gameObject.transform.SetParent(value, true); // Preserves world position when changing parent.
+        get => transform.parent;
+        set => transform.SetParent(value, true);
     }
+
     public Vector3 Position
     {
-        get => gameObject.transform.position;
-        set => gameObject.transform.position = value;
+        get => transform.position;
+        set => transform.position = value;
     }
 
-
-    // Accessor for the position of the "Thumbnail" child object.
     public Vector3 ThumbnailPosition
     {
-        get => gameObject.transform.GetChild("Thumbnail").gameObject.transform.position;
-        set => gameObject.transform.GetChild("Thumbnail").gameObject.transform.position = value;
+        get => transform.GetChild("Thumbnail").position;
+        set => transform.GetChild("Thumbnail").position = value;
     }
 
     public Quaternion Rotation
     {
-        get => gameObject.transform.rotation;
-        set => gameObject.transform.rotation = value;
+        get => transform.rotation;
+        set => transform.rotation = value;
     }
+
     public Vector3 Scale
     {
-        get => gameObject.transform.localScale;
-        set => gameObject.transform.localScale = value;
+        get => transform.localScale;
+        set => transform.localScale = value;
     }
 
-    public SortingGroup SortingGroup
-    {
-        get => this.GetComponent<SortingGroup>();
-    }
+    public SortingGroup SortingGroup => GetComponent<SortingGroup>();
+
     #endregion
 
-    // --- Timeline Turn Order (TurnDelay) ------------------------------
-
-    private int turnDelay = -1;
+    #region Display-only helpers
 
     /// <summary>
-    /// Current turn delay for this actor. Heroes typically ignore this.
+    /// UI helper to show a numeric countdown beside this enemy.
+    /// Timeline owns the number. This method only paints the label.
+    /// Pass a negative value to clear the label.
     /// </summary>
-    public int TurnDelay => turnDelay;
-
-    /// <summary>
-    /// Set an initial delay for enemies if not already set. Heroes are ignored.
-    /// </summary>
-    public void SetInitialTurnDelay(int min, int max)
+    public void SetTurnDelayText(int value)
     {
-        if (!IsEnemy)
-            return;
-
-        if (turnDelay < 0)
-            turnDelay = RNG.Int(min, max);
+        if (Render != null && Render.turnDelayText != null)
+            Render.turnDelayText.text = value >= 0 ? value.ToString() : string.Empty;
     }
 
-    /// <summary>
-    /// Decrease delay by amount (default 1). Clamped to 0. Heroes ignored.
-    /// </summary>
-    public void DecrementTurnDelay(int amount = 1)
-    {
-        if (!IsEnemy)
-            return;
-
-        if (turnDelay < 0)
-            return;
-
-        turnDelay = Mathf.Max(0, turnDelay - Mathf.Max(1, amount));
-    }
-
-    /// <summary>
-    /// Apply a new delay value after this enemy completes its turn. Heroes ignored.
-    /// </summary>
-    public void ApplyNewTurnDelay(int value)
-    {
-        if (!IsEnemy)
-            return;
-
-        turnDelay = Mathf.Max(0, value);
-    }
+    #endregion
 
     #region Sorting
 
     /// <summary>
-    /// Sets sorting layer and order.
+    /// Apply sorting layer and explicit order.
     /// </summary>
-    /// <param name="sortingLayer">Layer name.</param>
-    /// <param name="sortingOrder">Order number.</param>
     public void SetSorting(string sortingLayer, int sortingOrder = 0)
     {
         SortingGroup.sortingLayerID = SortingLayer.NameToID(sortingLayer);
@@ -133,7 +95,7 @@ public class ActorInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Subscribe to global sort requests.
+    /// Subscribe to global sort events.
     /// </summary>
     private void OnEnable()
     {
@@ -141,7 +103,7 @@ public class ActorInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Unsubscribe to prevent memory leaks.
+    /// Unsubscribe to avoid leaks.
     /// </summary>
     private void OnDisable()
     {
@@ -149,88 +111,60 @@ public class ActorInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Respond to sort requests by applying layer/order based on event type.
+    /// Handle sort intents for focus, drag, overlap, etc.
     /// </summary>
-    /// <param name="e">Sort event context.</param>
     private void HandleSortEvent(SortEvent e)
     {
         switch (e.Type)
         {
             case SortEventType.Focus:
-                // Focused actor on top, others below
-                if (this == e.Initiator)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
-                else
-                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                if (this == e.Initiator) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
                 break;
 
             case SortEventType.Drag:
-                // Dragged actor on top
-                if (this == e.Initiator)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
-                else
-                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                if (this == e.Initiator) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
                 break;
 
             case SortEventType.LocationChanged:
-                // Location change: selected hero above all
-                if (this == e.Initiator)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
-                else
-                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                if (this == e.Initiator) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
                 break;
 
             case SortEventType.Drop:
-                // Reset all actors to below
                 SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
                 break;
 
             case SortEventType.ActorMoving:
-                // Moving actor slightly above
-                if (this == e.Initiator)
-                    SetSorting(SortingHelper.Layer.ActorAbove, 0);
-                else
-                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                if (this == e.Initiator) SetSorting(SortingHelper.Layer.ActorAbove, 0);
+                else SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
                 break;
 
             case SortEventType.Overlap:
-                // Initiator on top, target below
-                if (this == e.Initiator)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
-                else if (this == e.Target)
-                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                if (this == e.Initiator) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else if (this == e.Target) SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
                 break;
 
             case SortEventType.PincerAttack:
-                // Determine role in participants
-                bool isAttacker = e.Participants.pair
-                                    .Any(p => p.attacker1 == this || p.attacker2 == this);
-                bool isOpponent = e.Participants.pair
-                                    .SelectMany(p => p.opponents)
-                                    .Contains(this);
-                bool isSupporter = e.Participants.pair
-                                    .SelectMany(p => p.supporters1.Concat(p.supporters2))
-                                    .Contains(this);
+                {
+                    bool isAttacker = e.Participants.pair.Any(p => p.attacker1 == this || p.attacker2 == this);
+                    bool isOpponent = e.Participants.pair.SelectMany(p => p.opponents).Contains(this);
+                    bool isSupporter = e.Participants.pair.SelectMany(p => p.supporters1.Concat(p.supporters2)).Contains(this);
 
-                if (isAttacker)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Attacker);
-                else if (isOpponent)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Opponent);
-                else if (isSupporter)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Supporter);
-                else
-                    SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
-                break;
+                    if (isAttacker) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Attacker);
+                    else if (isOpponent) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Opponent);
+                    else if (isSupporter) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Supporter);
+                    else SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
+                    break;
+                }
 
             case SortEventType.Bump:
-                if (this == e.Initiator)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
-                else if (this == e.Target)
-                    SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Min);
+                if (this == e.Initiator) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Max);
+                else if (this == e.Target) SetSorting(SortingHelper.Layer.ActorAbove, SortingHelper.Order.Min);
                 break;
 
             default:
-                // Default fallback for all actors
                 SetSorting(SortingHelper.Layer.ActorBelow, SortingHelper.Order.Min);
                 break;
         }
@@ -238,17 +172,18 @@ public class ActorInstance : MonoBehaviour
 
     #endregion
 
-    // Fields: Core actors fields representing characterName Stats, state, and modules.
-    [SerializeField] public AnimationCurve glowCurve;   // Curve defining Glow Animation behavior.
-    public Vector2Int previousLocation;                 // Grid location before the last Move.
-    public Vector3 previousPosition;                    // World position before the last Move.
-    public Vector2Int location;                         // CurrentProfile grid location.
-    public Team team = Team.Neutral;                    // Actor's team affiliation.
-    public int spawnTurn = 0;                           // TurnManager number when the actor is eligible to spawn.
-    public string characterName;                                // characterName actors for this actor.
+    #region Core fields and modules
 
+    // Keep your existing module objects and data.
+    [SerializeField] public AnimationCurve glowCurve;
 
-    // Modules: Encapsulate various aspects of the actor such as rendering, Stats, Abilities, and animations.
+    public Vector2Int previousLocation;
+    public Vector3 previousPosition;
+    public Vector2Int location;
+    public Team team = Team.Neutral;
+    public int spawnTurn = 0;
+    public string characterName;
+
     public ActorRenderers Render = new ActorRenderers();
     public ActorStats Stats = new ActorStats();
     public ActorFlags Flags = new ActorFlags();
@@ -263,88 +198,93 @@ public class ActorInstance : MonoBehaviour
     public ActorThumbnail Thumbnail;
     public List<Ability> Abilities = new List<Ability>();
 
+    #endregion
 
-    // Determines the cardinal or diagonal direction from this actor to another.
-    // If mustBeAdjacent is true, returns Direction.None when the other actor is not adjacent.
+    #region Spatial helpers
+
+    /// <summary>
+    /// Get direction from this actor to another. Optionally enforce adjacency.
+    /// </summary>
     public Direction GetDirectionTo(ActorInstance other, bool mustBeAdjacent = true)
     {
-        // Validate target before any access
         if (other == null)
         {
             Debug.LogError($"GetDirectionTo called with null 'other' by {name}");
             return Direction.None;
         }
 
-        // Enforce adjacency only when requested
         if (mustBeAdjacent && !Geometry.IsAdjacentTo(this, other))
             return Direction.None;
 
-        var deltaX = location.x - other.location.x;
-        var deltaY = location.y - other.location.y;
+        var dx = location.x - other.location.x;
+        var dy = location.y - other.location.y;
 
-        // Cardinal directions
-        if (deltaX == 0 && deltaY > 0) return Direction.North;
-        if (deltaX == 0 && deltaY < 0) return Direction.South;
-        if (deltaX > 0 && deltaY == 0) return Direction.West;
-        if (deltaX < 0 && deltaY == 0) return Direction.East;
+        if (dx == 0 && dy > 0) return Direction.North;
+        if (dx == 0 && dy < 0) return Direction.South;
+        if (dx > 0 && dy == 0) return Direction.West;
+        if (dx < 0 && dy == 0) return Direction.East;
 
-        // Diagonals
-        if (deltaX > 0 && deltaY > 0) return Direction.NorthWest;
-        if (deltaX < 0 && deltaY > 0) return Direction.NorthEast;
-        if (deltaX > 0 && deltaY < 0) return Direction.SouthWest;
-        if (deltaX < 0 && deltaY < 0) return Direction.SouthEast;
+        if (dx > 0 && dy > 0) return Direction.NorthWest;
+        if (dx < 0 && dy > 0) return Direction.NorthEast;
+        if (dx > 0 && dy < 0) return Direction.SouthWest;
+        if (dx < 0 && dy < 0) return Direction.SouthEast;
 
         return Direction.None;
     }
 
     /// <summary>
-    /// Checks if there is any active actor within a given range in the specified cardinal direction.
+    /// True if any active actor is within the given range in a cardinal direction.
     /// </summary>
     public bool HasAdjacent(Direction direction, int range)
     {
         for (int i = 1; i <= range; i++)
         {
-            Vector2Int checkPos = location;
+            Vector2Int check = location;
             switch (direction)
             {
-                case Direction.North: checkPos += new Vector2Int(0, -i); break;
-                case Direction.South: checkPos += new Vector2Int(0, i); break;
-                case Direction.East: checkPos += new Vector2Int(i, 0); break;
-                case Direction.West: checkPos += new Vector2Int(-i, 0); break;
+                case Direction.North: check += new Vector2Int(0, -i); break;
+                case Direction.South: check += new Vector2Int(0, i); break;
+                case Direction.East: check += new Vector2Int(i, 0); break;
+                case Direction.West: check += new Vector2Int(-i, 0); break;
             }
-            if (g.Actors.All.Any(actor => actor.IsPlaying && actor.location == checkPos))
+
+            if (g.Actors.All.Any(a => a.IsPlaying && a.location == check))
                 return true;
         }
         return false;
     }
 
     /// <summary>
-    /// Checks if there is any active actor within a given range in the specified diagonal direction.
+    /// True if any active actor is within the given range in a diagonal direction.
     /// </summary>
     public bool HasDiagonal(Direction direction, int range)
     {
         for (int i = 1; i <= range; i++)
         {
-            Vector2Int checkPos = location;
+            Vector2Int check = location;
             switch (direction)
             {
-                case Direction.NorthEast: checkPos += new Vector2Int(i, -i); break;
-                case Direction.NorthWest: checkPos += new Vector2Int(-i, -i); break;
-                case Direction.SouthEast: checkPos += new Vector2Int(i, i); break;
-                case Direction.SouthWest: checkPos += new Vector2Int(-i, i); break;
+                case Direction.NorthEast: check += new Vector2Int(i, -i); break;
+                case Direction.NorthWest: check += new Vector2Int(-i, -i); break;
+                case Direction.SouthEast: check += new Vector2Int(i, i); break;
+                case Direction.SouthWest: check += new Vector2Int(-i, i); break;
             }
-            if (g.Actors.All.Any(actor => actor.IsPlaying && actor.location == checkPos))
+
+            if (g.Actors.All.Any(a => a.IsPlaying && a.location == check))
                 return true;
         }
         return false;
     }
 
+    #endregion
 
+    #region Lifecycle
 
-    // Awake: Initialization of the actor g.Actors.All. Sets up modules and subscribes to events.
+    /// <summary>
+    /// Initialize render and behavior modules.
+    /// </summary>
     private void Awake()
     {
-        // Show modules with this actor actors context.
         Render.Initialize(this);
         Animation.Initialize(this);
         Move.Initialize(this);
@@ -352,40 +292,34 @@ public class ActorInstance : MonoBehaviour
         ActionBar.Initialize(this);
         Glow.Initialize(this);
         Parallax.Initialize(this);
-        Thumbnail = this.transform.Find(GameObjectHelper.Actor.Front.Thumbnail).GetComponent<ActorThumbnail>();
 
+        Thumbnail = transform.Find(GameObjectHelper.Actor.Front.Thumbnail)
+                             .GetComponent<ActorThumbnail>();
     }
 
-    // OnDestroy: Clean up event subscriptions if necessary to prevent memory leaks.
     private void OnDestroy()
     {
-
     }
 
-    // Show: Initializes and spawns the actor at the specified start location.
+    /// <summary>
+    /// Spawn this actor at a grid location with visuals, stats, and FX seeded.
+    /// No TurnDelay is assigned here. Timeline will manage and display countdown numbers.
+    /// </summary>
     public void Spawn(Vector2Int startLocation)
     {
-        // Show CurrentProfile and previous locations.
         location = startLocation;
         previousLocation = location;
 
-        // Save world position based on grid location.
         Position = Geometry.GetPositionByLocation(location);
         previousPosition = Position;
 
-        // Generate the Thumbnail for UI/display purposes.
         Thumbnail.Initialize(this);
 
-        // Randomly assign Weapon type and attributes.
-        // TODO: Equip actor at stage manager load based on save file: party.json
         Weapon.Type = RNG.WeaponType();
         Weapon.Attack = RNG.Float(10, 15);
         Weapon.Defense = RNG.Float(0, 5);
         Weapon.Name = $"{Weapon.Type}";
-        // Show the Weapon icon using resources.
-        Render.weaponIcon.sprite = SpriteLibrary.WeaponTypes[Weapon.Type.ToString()];
 
-        // Configure visual appearance and effects based on team.
         if (IsHero)
         {
             Render.SetOpaqueColor(ColorHelper.Solid.White);
@@ -395,6 +329,8 @@ public class ActorInstance : MonoBehaviour
             Render.SetParallaxMaterial(MaterialLibrary.Materials["PlayerParallax"], Thumbnail.texture);
             Render.SetParallaxAlpha(Opacity.Percent50);
             Vfx.Attack = VfxLibrary.VisualEffects["BlueSlash1"];
+            Render.SetTurnDelayTextAlpha(Opacity.Transparent);
+            SetTurnDelayText(-1);
         }
         else if (IsEnemy)
         {
@@ -407,20 +343,16 @@ public class ActorInstance : MonoBehaviour
             Render.SetFrameColor(ColorHelper.Solid.GunMetal);
             Vfx.Attack = VfxLibrary.VisualEffects["DoubleClaw"];
 
-
-
-            SetInitialTurnDelay(3, 10);
+            // No TurnDelay assignment. Timeline seeds and displays countdowns.
+            SetTurnDelayText(-1);
         }
 
-        // Show name tag textarea and toggle its visibility based on debug settings.
         Render.SetNameTagText(characterName);
         Render.SetNameTagEnabled(isEnabled: g.DebugManager.showActorNameTag);
 
-        // Save health and Animation bars.
         HealthBar.Update();
         ActionBar.Reset();
 
-        // Activate the actor if it is spawnable; otherwise, keep it inactive.
         if (IsSpawnable)
         {
             gameObject.SetActive(true);
@@ -434,131 +366,136 @@ public class ActorInstance : MonoBehaviour
         }
     }
 
-    // CalculateAttackStrategy: Chooses an attackResult strategy based on weighted randomness and sets the target location.
+    #endregion
+
+    #region Combat API
+
+    /// <summary>
+    /// Pick a target policy and record a target location for the next action.
+    /// </summary>
     public void CalculateAttackStrategy()
     {
-        // Define weights for different strategies.
         int[] ratios = { 50, 20, 15, 10, 5 };
-        var attackStrategy = RNG.Strategy(ratios);
+        var strategy = RNG.Strategy(ratios);
 
         Vector2Int targetLocation = LocationHelper.Nowhere;
 
-        // SelectProfile target based on strategy.
-        switch (attackStrategy)
+        switch (strategy)
         {
             case AttackStrategy.AttackClosest:
-                // Pick the closest hero.
-                var targetPlayer = g.Actors.Heroes.Where(x => x.IsPlaying).OrderBy(x => Vector3.Distance(x.Position, Position)).FirstOrDefault();
-                targetLocation = targetPlayer.location;
+                var closest = g.Actors.Heroes.Where(x => x.IsPlaying)
+                                             .OrderBy(x => Vector3.Distance(x.Position, Position))
+                                             .FirstOrDefault();
+                targetLocation = closest.location;
                 break;
+
             case AttackStrategy.AttackWeakest:
-                // Pick the hero with the lowest HP.
-                targetPlayer = g.Actors.Heroes.Where(x => x.IsPlaying).OrderBy(x => x.Stats.HP).FirstOrDefault();
-                targetLocation = targetPlayer.location;
+                var weakest = g.Actors.Heroes.Where(x => x.IsPlaying)
+                                             .OrderBy(x => x.Stats.HP)
+                                             .FirstOrDefault();
+                targetLocation = weakest.location;
                 break;
+
             case AttackStrategy.AttackStrongest:
-                // Pick the hero with the highest HP.
-                targetPlayer = g.Actors.Heroes.Where(x => x.IsPlaying).OrderByDescending(x => x.Stats.HP).FirstOrDefault();
-                targetLocation = targetPlayer.location;
+                var strongest = g.Actors.Heroes.Where(x => x.IsPlaying)
+                                               .OrderByDescending(x => x.Stats.HP)
+                                               .FirstOrDefault();
+                targetLocation = strongest.location;
                 break;
+
             case AttackStrategy.AttackRandom:
-                // Pick a random hero's location.
                 targetLocation = RNG.Hero.location;
                 break;
+
             case AttackStrategy.MoveAnywhere:
-                // Pick a random location.
                 targetLocation = RNG.Location;
                 break;
         }
 
-        //Show the actor's location to the nearest valid attackResult location relative to the target.
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
-        //Note: nextPosition is commented out and could be used for future logic.
-        //nextPosition = Geometry.GetPositionByLocation(nextLocation.Value);
     }
 
     public void FireDamage(float amount) => StartCoroutine(FireDamageRoutine(amount));
+
+    /// <summary>
+    /// Apply fire damage feedback and text.
+    /// </summary>
     public IEnumerator FireDamageRoutine(float amount)
     {
         g.CombatTextManager.Spawn($"Fireball: - {amount} HP", Position);
         yield return Wait.None();
     }
 
-
     public void Heal(int amount) => StartCoroutine(HealRoutine(amount));
+
+    /// <summary>
+    /// Apply healing and show feedback.
+    /// </summary>
     public IEnumerator HealRoutine(int amount)
     {
-        // Immediately apply healing and update health.
         if (!IsInvincible)
         {
             Stats.PreviousHP = Stats.HP;
-            Stats.HP += amount;
-            Stats.HP = Mathf.Clamp(Stats.HP, 0, Stats.MaxHP);
+            Stats.HP = Mathf.Clamp(Stats.HP + amount, 0, Stats.MaxHP);
             HealthBar.Update();
         }
 
-        // Display healing combat text and play sound.
         g.CombatTextManager.Spawn(amount.ToString(), Position, "Heal");
-        g.AudioManager.Play("Heal"); // Replace with your healing SFX key
-
+        g.AudioManager.Play("Heal");
         yield break;
     }
 
-
-
-    //DamageRoutine: StartCoroutine that processes damage application, executes VfxManager and animations, and updates HP.
     public void Damage(AttackResult attackResult) => StartCoroutine(DamageRoutine(attackResult));
+
+    /// <summary>
+    /// Apply damage and show feedback.
+    /// </summary>
     public IEnumerator DamageRoutine(AttackResult attackResult)
     {
-        // Immediately apply damage and update health.
         if (!IsInvincible)
         {
             Stats.PreviousHP = Stats.HP;
-            Stats.HP -= attackResult.Damage;
-            Stats.HP = Mathf.Clamp(Stats.HP, 0, Stats.MaxHP);
+            Stats.HP = Mathf.Clamp(Stats.HP - attackResult.Damage, 0, Stats.MaxHP);
             HealthBar.Update();
         }
 
         var style = CombatTextHelper.GetStyle(attackResult);
         g.CombatTextManager.Spawn(attackResult.Damage.ToString(), Position, style);
         g.AudioManager.Play($"Slash{RNG.Int(1, 7)}");
-
         yield break;
     }
 
-
-    //AttackMissRoutine: StartCoroutine to display a miss message and attackResult a dodge Animation.
+    /// <summary>
+    /// Show a miss and play a dodge animation.
+    /// </summary>
     public IEnumerator AttackMissRoutine()
     {
         g.CombatTextManager.Spawn("Miss", Position);
         yield return Animation.DodgeRoutine();
     }
 
-    //Die: Initiates the actor's death sequence.
+    /// <summary>
+    /// Begin death sequence and notify stage manager when finished.
+    /// </summary>
     public void Die()
     {
         StartCoroutine(DieRoutine());
     }
 
-    //DieRoutine: StartCoroutine that handles the actor's death sequence, including fading out, spawning coins, and deactivation.
+    /// <summary>
+    /// Fade out, spawn coins, disable, and notify.
+    /// </summary>
     public IEnumerator DieRoutine()
     {
-        //Before: Show actor to fully opaque.
         var alpha = 1f;
         Render.SetAlpha(alpha);
 
-        //Wait until the health fill has finished draining.
         if (HealthBar.isDraining)
             yield return new WaitUntil(() => HealthBar.isEmpty);
 
-        //ProcessRoutine portrait dissolve effect and play death sound.
         g.Portrait3DManager.Dissolve(this);
         g.AudioManager.Play("Death");
 
-        //Show sorting order to maximum so that the death sequence renders on top.
-        //sortingOrder = SortingOrder.Max;
-
-        //During: Gradually reduce the alpha value for a overlay-out effect.
         var hasSpawnedCoins = false;
         while (alpha > 0f)
         {
@@ -566,33 +503,32 @@ public class ActorInstance : MonoBehaviour
             alpha = Mathf.Clamp(alpha, Increment.Transparent, Opacity.Opaque);
             Render.SetAlpha(alpha);
 
-            //Show coins when attacker fades below 10% opacity, if not already spawned.
             if (IsEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
             {
                 hasSpawnedCoins = true;
-                int amount = 10;
-                SpawnCoins(amount);
+                SpawnCoins(10);
             }
 
             yield return Wait.OneTick();
         }
 
-        //After: Reset location and position, deactivate the actor, and check death event.
         location = LocationHelper.Nowhere;
         Position = PositionHelper.Nowhere;
         gameObject.SetActive(false);
         g.StageManager.OnActorDeath();
     }
 
-    //SpawnCoins: Helper function to begin spawning coins upon attacker death.
+    #endregion
+
+    #region Coins and teleport
+
     private void SpawnCoins(int amount)
     {
         if (IsPlaying)
-            StartCoroutine(SpawnCoinsRoutine(amount)); // TODO: Adjust coin spawning based on attacker Stats if necessary.
+            StartCoroutine(SpawnCoinsRoutine(amount));
     }
 
-    //SpawnCoinsRoutine: StartCoroutine that spawns a specified number of coins at the actor's position.
-    IEnumerator SpawnCoinsRoutine(int amount)
+    private IEnumerator SpawnCoinsRoutine(int amount)
     {
         var i = 0;
         do
@@ -604,13 +540,11 @@ public class ActorInstance : MonoBehaviour
         yield return true;
     }
 
-    //Teleport: Moves the actor instantly to a new grid location if within board bounds.
+    /// <summary>
+    /// Teleport to a board location if in bounds. Kicks existing occupant elsewhere.
+    /// </summary>
     public void Teleport(Vector2Int newLocation)
     {
-        //if (newLocation == null)
-        //    newLocation = LocationHelper.Nowhere;
-
-        //Abort if the new location is out of bounds.
         if (!g.Board.InBounds(newLocation))
             return;
 
@@ -618,14 +552,12 @@ public class ActorInstance : MonoBehaviour
         if (occupant.Exists())
             occupant.Teleport(RNG.Location);
 
-        this.location = newLocation;
+        location = newLocation;
         transform.position = Geometry.GetPositionByLocation(location);
     }
 
     /// <summary>
-    /// Teleports this actor to the first unoccupied tile that comes AFTER the given position
-    /// using the board's natural order (top-left to bottom-right). Wraps around at the end.
-    /// Requires g.Tiles to be ordered top-left to bottom-right.
+    /// Teleport to the first unoccupied tile that comes after a reference tile in board order.
     /// </summary>
     public void TeleportAfter(Vector2Int after)
     {
@@ -643,7 +575,6 @@ public class ActorInstance : MonoBehaviour
             return;
         }
 
-        // Scan from the next tile, wrapping around once if needed
         for (int step = 1; step <= tiles.Count; step++)
         {
             int idx = (startIndex + step) % tiles.Count;
@@ -659,31 +590,37 @@ public class ActorInstance : MonoBehaviour
         Debug.LogWarning($"TeleportAfter: no unoccupied tile found after {after}.");
     }
 
-    //Seek: Attempts to Move the actor in the specified direction if the target location is valid.
+    /// <summary>
+    /// Teleport one step toward a direction if within bounds.
+    /// </summary>
     public void TeleportToward(Vector2Int direction)
     {
-        //Abort if the new location (CurrentProfile location + direction) is out of bounds.
         if (!g.Board.InBounds(location + direction))
             return;
 
         var newLocation = location + direction;
         var tile = g.TileMap.GetTile(newLocation);
         if (tile == null) return;
-        // Teleport to the new tile's location.
+
         Teleport(tile.location);
     }
 
-    //SetReady: Resets the attacker actor's Animation points for a new turn.
+    #endregion
+
+    #region AP gating
+
+    /// <summary>
+    /// Refresh AP for a new enemy turn.
+    /// </summary>
     public void SetReady()
     {
-        //Abort if the actor is not active, not alive, or not an attacker.
         if (!IsActive || !IsAlive || !IsEnemy)
             return;
 
         Stats.AP = Stats.MaxAP;
         Stats.PreviousAP = Stats.MaxAP;
-
-        //Save the Animation fill UI to reflect the refreshed Animation points.
         ActionBar.Update();
     }
+
+    #endregion
 }

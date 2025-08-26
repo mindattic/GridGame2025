@@ -1,4 +1,4 @@
-﻿// --- File: Assets/Scripts/Events/Sequences/EndTurnSequence.cs ---
+﻿// --- File: Assets/Scripts/Sequences/EndTurnSequence.cs ---
 using Assets.Helper;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
@@ -6,20 +6,20 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Ends the current team turn and flips to the next team.
-    /// TurnManager.NextTurn enqueues the appropriate side-start sequence.
+    /// Ends the current turn and flips to the next side.
+    /// Timeline advancement is handled centrally by TurnManager.NextTurn().
     /// </summary>
     public class EndTurnSequence : SequenceEvent
     {
+        /// <summary>
+        /// Yield a frame for pacing, then hand control to TurnManager.
+        /// Do not touch Timeline here to avoid double-advancing the belt.
+        /// </summary>
         public override IEnumerator ProcessRoutine()
         {
-            // Optional tiny pacing for any end-of-turn visuals
             yield return Wait.None();
 
-            // Flip sides and let TurnManager enqueue the next side's start sequence
             g.TurnManager.NextTurn();
-
-            yield break;
         }
     }
 }

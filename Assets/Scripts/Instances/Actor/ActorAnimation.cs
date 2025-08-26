@@ -440,36 +440,36 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// ProcessRoutine a Weapon wiggle when AP is full. Optional routine runs after wiggle stops.
         /// </summary>
-        public void WeaponWiggle(IEnumerator routine = null)
-        {
-            if (stats.AP < stats.MaxAP || !isActive || !isAlive)
-                return;
+        //public void WeaponWiggle(IEnumerator routine = null)
+        //{
+        //    if (stats.AP < stats.MaxAP || !isActive || !isAlive)
+        //        return;
 
-            instance.StartCoroutine(WeaponWiggleRoutine(routine));
-        }
+        //    instance.StartCoroutine(WeaponWiggleRoutine(routine));
+        //}
 
         /// <summary>
         /// Oscillates the Weapon icon while AP remains full, then optionally runs the routine routine.
         /// </summary>
-        private IEnumerator WeaponWiggleRoutine(IEnumerator routine = null)
-        {
-            float start = -45f;
-            float rotZ = start;
-            render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
+        //private IEnumerator WeaponWiggleRoutine(IEnumerator routine = null)
+        //{
+        //    float start = -45f;
+        //    float rotZ = start;
+        //    render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
 
-            while (instance.Stats.AP == instance.Stats.MaxAP)
-            {
-                rotZ = start + Mathf.Sin(Time.time * wiggleFocus) * wiggleAmplitude;
-                render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
-                yield return Wait.OneTick();
-            }
+        //    while (instance.Stats.AP == instance.Stats.MaxAP)
+        //    {
+        //        rotZ = start + Mathf.Sin(Time.time * wiggleFocus) * wiggleAmplitude;
+        //        render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
+        //        yield return Wait.OneTick();
+        //    }
 
-            if (routine != null)
-                yield return instance.StartCoroutine(routine);
+        //    if (routine != null)
+        //        yield return instance.StartCoroutine(routine);
 
-            rotZ = start;
-            render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
-        }
+        //    rotZ = start;
+        //    render.weaponIcon.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
+        //}
 
         /// <summary>
         /// ProcessRoutine a wiggle on the turn delay text with damping, then settles back to zero. Optional routine runs after settle.

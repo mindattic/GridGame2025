@@ -48,12 +48,12 @@ public class TimerBar2D : MonoBehaviour
         timeRemaining = maxDuration;
     }
 
-    private void OnDestroy()
-    {
-        // Unsubscribe if needed to avoid leaks
-        if (g.InputManager != null)
-            g.InputManager.OnInputModeChanged -= HandleModeChanged;
-    }
+    //private void OnDestroy()
+    //{
+    //    // Unsubscribe if needed to avoid leaks
+    //    if (g.InputManager != null)
+    //        g.InputManager.OnInputModeChanged -= HandleModeChanged;
+    //}
 
     /// <summary>
     /// Prepares layout, subscribes to mode changes, and positions the bar.

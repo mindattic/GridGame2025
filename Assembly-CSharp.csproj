@@ -285,6 +285,7 @@
     <Compile Include="Assets\Scripts\Managers\StageManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorThumbnail.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Yeti.cs" />
+    <Compile Include="Assets\Scripts\Sequences\EnemyTakeTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />

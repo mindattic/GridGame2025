@@ -46,7 +46,7 @@ namespace Game.Instances.Actor
             public const string RadialText = "RadialText";
             public const string TurnDelayText = "TurnDelayText";
             public const string NameTagText = "NameTagText";
-            public const string WeaponIcon = "WeaponIcon";
+            //public const string WeaponIcon = "WeaponIcon";
 
             //Armor Sub-Objects
             public static class Armor
@@ -91,7 +91,7 @@ namespace Game.Instances.Actor
             public const int RadialText = 19;
             public const int TurnDelayText = 20;
             public const int NameTagText = 21;
-            public const int WeaponIcon = 22;
+            //public const int WeaponIcon = 22;
            
 
             public static class Armor

@@ -44,7 +44,7 @@ public class ActorActionBar
         render.actionBarFill.transform.localScale = GetScale(stats.AP);
         render.actionBarText.text = $@"{stats.AP}/{stats.MaxAP}";
 
-        instance.Animation.WeaponWiggle();
+        //instance.Animation.WeaponWiggle();
 
         Drain();
     }

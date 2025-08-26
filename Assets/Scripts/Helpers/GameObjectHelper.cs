@@ -17,7 +17,7 @@ namespace Assets.Helper
                 public const string Frame = Root + "/Frame";
                 public const string StatusIcon = Root + "/StatusIcon";
                 public const string NameTagText = Root + "/NameTagText";
-                public const string WeaponIcon = Root + "/WeaponIcon";
+                //public const string WeaponIcon = Root + "/WeaponIcon";
 
                 public static class HealthBar
                 {

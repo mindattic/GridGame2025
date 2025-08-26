@@ -23,7 +23,9 @@ public class ActorRenderers
     public Color actionBarColor = ColorHelper.ActionBar.Blue;
     public Color actionBarDrainColor = ColorHelper.HealthBar.Yellow;
     public Color turnDelayColor = ColorHelper.Solid.Red;
-    public Color weaponIconColor = ColorHelper.Solid.White;
+    //public Color weaponIconColor = ColorHelper.Solid.White;
+    //public Color weaponIconColor = ColorHelper.Solid.White;
+
     public Color armorColor = ColorHelper.Solid.White;
 
     public Transform front;
@@ -52,7 +54,7 @@ public class ActorRenderers
     public TextMeshPro radialText;
     public TextMeshPro turnDelayText;
     public TextMeshPro nameTagText;
-    public SpriteRenderer weaponIcon;
+    //public SpriteRenderer weaponIcon;
     public SpriteRenderer armorNorth;
     public SpriteRenderer armorEast;
     public SpriteRenderer armorSouth;
@@ -86,7 +88,7 @@ public class ActorRenderers
         radialText = front.GetChild(ActorLayer.Name.RadialText).GetComponent<TextMeshPro>();
         turnDelayText = front.GetChild(ActorLayer.Name.TurnDelayText).GetComponent<TextMeshPro>();
         nameTagText = front.GetChild(ActorLayer.Name.NameTagText).GetComponent<TextMeshPro>();
-        weaponIcon = front.GetChild(ActorLayer.Name.WeaponIcon).GetComponent<SpriteRenderer>();
+        //weaponIcon = front.GetChild(ActorLayer.Name.WeaponIcon).GetComponent<SpriteRenderer>();
         armorNorth = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorNorth).GetComponent<SpriteRenderer>();
         armorEast = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorEast).GetComponent<SpriteRenderer>();
         armorSouth = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorSouth).GetComponent<SpriteRenderer>();
@@ -109,7 +111,7 @@ public class ActorRenderers
         SetRadialAlpha(alpha);
         SetTurnDelayTextAlpha(alpha);
         SetNameTagTextAlpha(alpha);
-        SetWeaponIconAlpha(alpha);
+        //SetWeaponIconAlpha(alpha);
         SetArmorAlpha(alpha);
     }
 
@@ -328,11 +330,11 @@ public class ActorRenderers
         actionBarFill.enabled = isEnabled;
     }
 
-    public void SetWeaponIconAlpha(float alpha)
-    {
-        weaponIconColor = new Color(1, 1, 1, alpha);
-        weaponIcon.color = weaponIconColor;
-    }
+    //public void SetWeaponIconAlpha(float alpha)
+    //{
+    //    weaponIconColor = new Color(1, 1, 1, alpha);
+    //    weaponIcon.color = weaponIconColor;
+    //}
 
     public void SetArmorAlpha(float alpha)
     {

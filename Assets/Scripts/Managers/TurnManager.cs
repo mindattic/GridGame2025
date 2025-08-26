@@ -1,13 +1,15 @@
 // --- File: Assets/Scripts/Managers/TurnManager.cs ---
 using Assets.Scripts.Events;
+using Assets.Scripts.Sequences;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Managers
 {
     /// <summary>
-    /// Controls which side is active and execute each side's start sequence when turns change.
-    /// Keeps turn flow centralized so sequencing cannot stall due to missing or misplaced calls.
+    /// Central turn flow controller. The timeline is the source of truth.
+    /// After each turn completes we advance the belt one block, read the new
+    /// current block, and enqueue the correct side's start sequence.
     /// </summary>
     public class TurnManager : MonoBehaviour
     {
@@ -16,46 +18,89 @@ namespace Assets.Scripts.Managers
         public int CurrentTurn = 0;
 
         /// <summary>
-        /// Set initial state and kick off the first side's start sequence.
-        /// Heroes begin first and currentTurn remains zero until their next activation.
+        /// Initialize the first turn from the timeline's current block.
+        /// Defaults to hero if the timeline is not yet available.
         /// </summary>
         public void Initialize()
         {
-            IsHeroTurn = true;
+            var enemyAtCursor = (g.Timeline != null)
+                ? g.Timeline.GetActingEnemyForCurrentBlock()
+                : null;
+
+            IsHeroTurn = enemyAtCursor == null;
             StartTurn();
         }
 
         /// <summary>
-        /// Flip the active side, increment hero turn counter when heroes become active,
-        /// then enqueue that side's start sequence.
+        /// Finish the current turn, advance the belt one block, then start
+        /// whatever block lands under the indicator. No blind toggling.
         /// </summary>
         public void NextTurn()
         {
-            IsHeroTurn = !IsHeroTurn;
+            CurrentTurn++;
 
-            // Keep the conveyor running; it manages hero/enemy holds itself.
-            g.Timeline.Resume();
+            // 1) Advance the belt exactly once.
+            if (g.Timeline != null)
+                g.Timeline.AdvanceAfterTurnCompleted();
 
+            // 2) Decide who acts based on the new current block.
+            var enemyAtCursor = (g.Timeline != null)
+                ? g.Timeline.GetActingEnemyForCurrentBlock()
+                : null;
+
+            IsHeroTurn = enemyAtCursor == null;
+
+            // 3) Focus the belt on the block that will act.
+            if (g.Timeline != null)
+            {
+                if (IsHeroTurn)
+                    g.Timeline.FocusOnHeroTurnNow();
+                else
+                    g.Timeline.FocusOnEnemyTurnNow(enemyAtCursor);
+            }
+
+            // 4) Enqueue the correct start sequence.
             if (IsHeroTurn)
-                CurrentTurn++;
-
-            StartTurn();
+            {
+               
+                g.SequenceManager.Add(new HeroStartSequence());
+            }
+            else
+            {
+                // Drive the exact enemy predicted by the timeline.
+                // EnemyStartSequence picks by readiness; EnemyTakeTurnSequence acts this one.
+                g.SequenceManager.Add(new EnemyTakeTurnSequence(enemyAtCursor));
+            }
         }
 
-
-
         /// <summary>
-        /// EnqueueRoutine the appropriate start sequence for the active side.
-        /// SequenceManager executes items in order, and ProcessRoutine is safe to call repeatedly.
+        /// Start the very first block without advancing the belt.
+        /// Uses the timeline's current block to pick hero or enemy.
         /// </summary>
         private void StartTurn()
         {
-            // EnqueueRoutine the correct start sequence for the active side
-            g.SequenceManager.Add(IsHeroTurn ? new HeroStartSequence() : new EnemyStartSequence());
+            if (g.Timeline != null)
+            {
+                var enemyAtCursor = g.Timeline.GetActingEnemyForCurrentBlock();
+                IsHeroTurn = enemyAtCursor == null;
 
+                if (IsHeroTurn)
+                    g.Timeline.FocusOnHeroTurnNow();
+                else
+                    g.Timeline.FocusOnEnemyTurnNow(enemyAtCursor);
+            }
 
-            // Ensure execution is running
-            g.SequenceManager.Execute();
+            if (IsHeroTurn)
+            {
+                // Do not increment CurrentTurn here. We count when a hero block begins
+                // because Initialize can be called multiple times during setup.
+                g.SequenceManager.Add(new HeroStartSequence());
+            }
+            else
+            {
+                var enemyAtCursor = g.Timeline?.GetActingEnemyForCurrentBlock();
+                g.SequenceManager.Add(new EnemyTakeTurnSequence(enemyAtCursor));
+            }
         }
     }
 }

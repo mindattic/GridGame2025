@@ -25,7 +25,7 @@ public class ActorThumbnail : MonoBehaviour
   
     //Properties
     public Texture2D texture => spriteRenderer.sprite.texture;
-
+    public Sprite sprite => spriteRenderer.sprite;
 
     public void Awake()
     {

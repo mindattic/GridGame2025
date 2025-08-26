@@ -494,6 +494,12 @@ public class DebugManager : MonoBehaviour
         g.Background.Randomize();
     }
 
+
+    public void TriggerNextTurn()
+    {
+        g.TurnManager.NextTurn();
+    }
+
     public void VFXTest_BlueSlash1()
     {
         var attackResult = new AttackResult(hero1, g.Actors.Enemies.First(), 3, HitOutcome.Normal);

@@ -1,60 +1,48 @@
-﻿// --- File: Assets/Scripts/Events/Sequences/EnemyStartSequence.cs ---
+﻿// --- File: Assets/Scripts/Events/EnemyStartSequence.cs ---
 using Assets.Helper;
 using Assets.Scripts.Sequences;
 using System.Collections;
-using System.Linq;
 using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Events
 {
     /// <summary>
-    /// Builds strict per-attacker order for the attacker team:
-    /// e1.Move -> e1.attack -> e2.Move -> e2.attack -> ... -> EndTurn
+    /// Starts the enemy turn using the Timeline as source of truth.
+    /// Centers on the acting enemy from the current timeline block,
+    /// runs its move/attack chain, then queues turn end.
     /// </summary>
     public class EnemyStartSequence : SequenceEvent
     {
         public override IEnumerator ProcessRoutine()
         {
-            // Ensure we only run on the attacker turn.
             if (!g.TurnManager.IsEnemyTurn)
                 yield break;
 
-            // Disable input during AI resolution.
             g.InputManager.InputMode = InputMode.None;
 
-            // Small pacing to let any visuals settle.
-            yield return Wait.None();
-
-            // Collect enemies that are "ready" at turn start.
-            // "isReady" means isPlaying && hasMaxAP, so readiness is already established once.
-            var ready = g.Actors.Enemies
-                .Where(x => x.IsReady)
-                .ToList();
-
-            // If none are ready, end the turn.
-            if (ready.Count == 0)
+            // Ask the Timeline which enemy is acting on the current block.
+            var actingEnemy = g.Timeline.GetActingEnemyForCurrentBlock();
+            if (actingEnemy == null || !actingEnemy.IsPlaying)
             {
+                // No enemy on this block (or dead): end turn cleanly.
                 g.SequenceManager.Add(new EndTurnSequence());
                 g.SequenceManager.Execute();
                 yield break;
             }
 
-            // For each ready attacker, enqueue a Move followed immediately by an attack for that same attacker.
-            foreach (var e in ready)
-            {
-                g.SequenceManager.Add(new EnemyMoveSequence(e));
-                g.SequenceManager.Add(new EnemyPreAttackSequence(e));
-                g.SequenceManager.Add(new EnemyAttackSequence(e));
-                g.SequenceManager.Add(new EnemyPostAttackSequence(e));
-            }
+            // Snap focus to the acting enemy's block for clarity.
+            g.Timeline.FocusOnEnemyTurnNow(actingEnemy);
 
-            // Run all queued enemy actions first, then deaths once
+            // Execute the enemy's behavior.
+            g.SequenceManager.Add(new EnemyMoveSequence(actingEnemy));
+            g.SequenceManager.Add(new EnemyPreAttackSequence(actingEnemy));
+            g.SequenceManager.Add(new EnemyAttackSequence(actingEnemy));
+            g.SequenceManager.Add(new EnemyPostAttackSequence(actingEnemy));
+
+            // Cleanup and advance one block.
             g.SequenceManager.Add(new DeathSequence());
-
-            // After all per-attacker chains, end the attacker turn.
             g.SequenceManager.Add(new EndTurnSequence());
 
-            // Run the global queue.
             g.SequenceManager.Execute();
         }
     }

@@ -18,15 +18,13 @@ namespace Assets.Scripts.Events
             if (!g.TurnManager.IsHeroTurn)
                 yield break;
 
-            // Small pacing
-            yield return Wait.None();
-
             // Put input back into hero mode and refill the turn timer UI
             g.InputManager.InputMode = InputMode.PlayerTurn;
             g.TimerBar2D.Refill();   // resets fill to full and timeRemaining to max
 
             // If you restore AP on hero start, do it here
             // foreach (var hero in g.Actors.Heroes) hero.RestoreAP();
+            g.Timeline.FocusOnHeroTurnNow();
 
             yield break;
         }
