@@ -33,26 +33,15 @@ namespace Assets.Scripts.Managers
         {
             IsHeroTurn = !IsHeroTurn;
 
-            // Sync the conveyor timeline with turn swaps
-            if (g.Timeline != null)
-            {
-                if (IsHeroTurn)
-                {
-                    // New hero window: rebuild with hero first and hold at center
-                    g.Timeline.StartHeroTurnNow();
-                }
-                else
-                {
-                    // Ensure the conveyor runs while enemies resolve
-                    g.Timeline.Resume();
-                }
-            }
+            // Keep the conveyor running; it manages hero/enemy holds itself.
+            g.Timeline.Resume();
 
             if (IsHeroTurn)
                 CurrentTurn++;
 
             StartTurn();
         }
+
 
 
         /// <summary>
@@ -64,7 +53,7 @@ namespace Assets.Scripts.Managers
             // EnqueueRoutine the correct start sequence for the active side
             g.SequenceManager.Add(IsHeroTurn ? new HeroStartSequence() : new EnemyStartSequence());
 
-         
+
             // Ensure execution is running
             g.SequenceManager.Execute();
         }

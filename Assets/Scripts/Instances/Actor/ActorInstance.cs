@@ -73,6 +73,52 @@ public class ActorInstance : MonoBehaviour
     }
     #endregion
 
+    // --- Timeline Turn Order (TurnDelay) ------------------------------
+
+    private int turnDelay = -1;
+
+    /// <summary>
+    /// Current turn delay for this actor. Heroes typically ignore this.
+    /// </summary>
+    public int TurnDelay => turnDelay;
+
+    /// <summary>
+    /// Set an initial delay for enemies if not already set. Heroes are ignored.
+    /// </summary>
+    public void SetInitialTurnDelay(int min, int max)
+    {
+        if (!IsEnemy)
+            return;
+
+        if (turnDelay < 0)
+            turnDelay = RNG.Int(min, max);
+    }
+
+    /// <summary>
+    /// Decrease delay by amount (default 1). Clamped to 0. Heroes ignored.
+    /// </summary>
+    public void DecrementTurnDelay(int amount = 1)
+    {
+        if (!IsEnemy)
+            return;
+
+        if (turnDelay < 0)
+            return;
+
+        turnDelay = Mathf.Max(0, turnDelay - Mathf.Max(1, amount));
+    }
+
+    /// <summary>
+    /// Apply a new delay value after this enemy completes its turn. Heroes ignored.
+    /// </summary>
+    public void ApplyNewTurnDelay(int value)
+    {
+        if (!IsEnemy)
+            return;
+
+        turnDelay = Mathf.Max(0, value);
+    }
+
     #region Sorting
 
     /// <summary>
@@ -360,6 +406,10 @@ public class ActorInstance : MonoBehaviour
             Render.SetParallaxAlpha(Opacity.Percent50);
             Render.SetFrameColor(ColorHelper.Solid.GunMetal);
             Vfx.Attack = VfxLibrary.VisualEffects["DoubleClaw"];
+
+
+
+            SetInitialTurnDelay(3, 10);
         }
 
         // Show name tag textarea and toggle its visibility based on debug settings.

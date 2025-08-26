@@ -124,9 +124,11 @@ public class SelectedHeroManager : MonoBehaviour
             g.Card.Clear();
             g.FocusIndicator.Hide();
             g.AudioManager.Play("Click");
+
+            // We just promoted to a real drag – start the 6s hero timer now.
+            g.TimerBar2D.SetDuration(6f);
+            g.TimerBar2D.ResetToFull();
             g.TimerBar2D.Play();
-            //g.TimelineManager.Rebuild();
-            //g.TimelineManager.BeginHeroWindow();
 
             // When the player begins a drag on a hero:
             g.Timeline.Resume();
@@ -178,6 +180,7 @@ public class SelectedHeroManager : MonoBehaviour
 
         // When the player releases the drag / ends the action:
         g.Timeline.Pause();
+        g.TimerBar2D.Pause();
 
         // Complete movement for promoted hero
         g.Actors.SelectedHero.Move.ToLocation();
@@ -190,7 +193,7 @@ public class SelectedHeroManager : MonoBehaviour
         pendingActor = null;
 
         // Finalize
-        g.TimerBar2D.Pause();
+      
         g.PincerAttackManager.Check(Team.Hero);
     }
 }

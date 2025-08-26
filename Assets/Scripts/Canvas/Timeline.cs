@@ -9,9 +9,15 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Canvas.Timeline
 {
     /// <summary>
-    /// Timeline shows a row of fixed-size blocks that represent turn order.
-    /// The center indicator is "now". Each hero block is 6 seconds, enemies
-    /// get their own blocks. Order is simulated from enemy AP fill rates.
+    /// Conveyor timeline made of fixed-size blocks. The center indicator represents "now".
+    /// Each block equals one turn: either Heroes or a single Enemy.
+    /// Turn order is built from each enemy's TurnDelay:
+    /// - If no enemy is ready (delay > 0), schedule a Hero block and tick down all delays by 1.
+    /// - If one or more are ready (delay == 0), schedule them in order of Stats.Speed (desc).
+    /// When a block completes, real delays are updated to match the forecast decision:
+    /// - Hero block completion decrements every enemy's real TurnDelay by 1.
+    /// - Enemy block completion sets that enemy's real TurnDelay to the pre-rolled next value.
+    /// Hero blocks last heroSeconds (default 6). Enemy blocks use enemySeconds for the hold.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class Timeline : MonoBehaviour
@@ -29,52 +35,58 @@ namespace Assets.Scripts.Canvas.Timeline
         [SerializeField, Range(0f, 1f)] private float indicatorViewportRatio = 0.5f;
         [SerializeField] private float snapLerp = 12f;
 
-        [Header("Turns")]
+        [Header("Turn Durations")]
         [SerializeField] private float heroSeconds = 6f;
+        [SerializeField] private float enemySeconds = 1.0f;
+
+        [Header("Forecast Settings")]
+        [Tooltip("How many blocks to keep visible ahead of the current one.")]
+        [SerializeField] private int futureBlocks = 12;
+
+        [Tooltip("New enemy delays are chosen in [minDelay, maxDelay] after each enemy acts.")]
+        [SerializeField] private int minDelay = 3;
+
+        [SerializeField] private int maxDelay = 10;
+
+        [Header("Colors")]
+        [SerializeField] private Color heroColor = Color.white;
         [SerializeField] private Color enemyTint = new Color(0.10f, 0.60f, 1f, 1f);
 
-        [Header("AP Simulation")]
-        [Tooltip("AP gained per second per point of Intelligence used by the simulator to predict order.")]
-        [SerializeField] private float apGainPerIntPerSecond = 0.10f;
-
-        [Header("Queue Size")]
-        [Tooltip("How many blocks to keep scheduled ahead of the current one.")]
-        [SerializeField] private int futureBlocks = 10;
-
-        public void Pause() { running = false; }
-        public void Resume() { running = true; }
-
-
+        // Runtime state
         private readonly List<TurnBlock> blocks = new List<TurnBlock>();
         private readonly List<TimelineBlockInstance> pool = new List<TimelineBlockInstance>();
-        private readonly List<EnemySim> sim = new List<EnemySim>();
+        private readonly List<SimNode> sim = new List<SimNode>();
 
         private int currentIndex;
-        private float elapsedInBlock;
+        private float holdRemaining;
         private float contentX;
         private float targetContentX;
         private bool running;
 
+        // Model for a rendered turn block
         private struct TurnBlock
         {
             public bool isHero;
-            public ActorInstance enemy;
-            public float seconds;
-            public Sprite portrait;
+            public ActorInstance enemy;      // null for hero blocks
             public string label;
             public Color color;
+            public Sprite portrait;          // enemy portrait only
+            public int presetNextDelay;      // next delay to apply when this enemy finishes
         }
 
-        private sealed class EnemySim
+        // Forecast simulator node
+        private sealed class SimNode
         {
             public ActorInstance enemy;
-            public float ap;
-            public float max;
-            public float gainPerSecond;
+            public int delay;     // simulated delay
+            public int speed;     // from Stats.Speed
+            public Sprite portrait;
+            public string label;
         }
 
         /// <summary>
-        /// Finds Viewport, Content, Indicator, centers the indicator, then builds and snaps.
+        /// Find Viewport, Content, Indicator, center the indicator, ensure enemies have an initial TurnDelay,
+        /// build forecast, lay out blocks, and snap to the first block.
         /// </summary>
         public void Initialize()
         {
@@ -90,114 +102,183 @@ namespace Assets.Scripts.Canvas.Timeline
             if (blockPrefab == null) { Debug.LogError("Timeline: Block prefab is not assigned."); return; }
 
             CenterIndicator();
-            BuildSimulationFromScene();
-            BuildQueue(futureBlocks);
+            EnsureInitialEnemyDelays();
+
+            BuildInitialForecast();
             LayoutAll();
-            SnapToCurrent();
+            SnapToIndex(0);
+            StartCurrentBlock();
+
             running = true;
         }
 
         /// <summary>
-        /// Rebuilds the enemy AP simulation from live actors.
+        /// Ensure every live enemy has a non-negative TurnDelay. If not, roll one in [minDelay, maxDelay].
         /// </summary>
-        private void BuildSimulationFromScene()
+        private void EnsureInitialEnemyDelays()
         {
-            sim.Clear();
-
-            var enemies = g.Actors.Enemies
-                .Where(a => a != null && a.IsPlaying)
-                .ToList();
-
+            var enemies = g.Actors.Enemies.Where(e => e != null && e.IsPlaying).ToList();
             foreach (var e in enemies)
             {
-                var s = new EnemySim
-                {
-                    enemy = e,
-                    ap = e.Stats.AP,
-                    max = e.Stats.MaxAP,
-                    gainPerSecond = Mathf.Max(0.001f, e.Stats.Intelligence * apGainPerIntPerSecond)
-                };
-                sim.Add(s);
+                if (e.TurnDelay < 0)
+                    e.SetInitialTurnDelay(minDelay, maxDelay);
             }
         }
 
         /// <summary>
-        /// Builds or extends the queue using the current simulator state.
-        /// Hero squares are inserted whenever no enemy is ready.
-        /// During a hero square, all enemies accrue AP.
-        /// When an enemy becomes ready, that enemy gets the next square and its AP resets.
+        /// Builds the initial forecast from real enemy delays by filling the sim and then appending blocks.
+        /// The simulator is kept in sync as we append and when real turns finish.
         /// </summary>
-        private void BuildQueue(int neededAhead)
+        private void BuildInitialForecast()
         {
-            if (blocks.Count == 0)
+            blocks.Clear();
+            sim.Clear();
+
+            var enemies = g.Actors.Enemies.Where(e => e != null && e.IsPlaying).ToList();
+            foreach (var e in enemies)
             {
-                currentIndex = 0;
-                elapsedInBlock = 0f;
+                sim.Add(new SimNode
+                {
+                    enemy = e,
+                    delay = Mathf.Max(0, e.TurnDelay),
+                    speed = e.Stats != null ? e.Stats.Agility.ToInt() : 0,
+                    portrait = (e.Render != null && e.Render.thumbnail != null) ? e.Render.thumbnail.sprite : null,
+                    label = e.name
+                });
             }
 
-            int need = Mathf.Max(0, (currentIndex + neededAhead) - (blocks.Count - 1));
-            while (need > 0)
-            {
-                // Any enemy already ready?
-                var ready = sim
-                    .Where(s => s.ap >= s.max)
-                    .OrderByDescending(s => s.ap)
-                    .FirstOrDefault();
+            AppendUntilCount(futureBlocks);
+            currentIndex = 0;
+        }
 
-                if (ready != null)
+        /// <summary>
+        /// Appends forecast blocks using the current simulator state until we have at least desiredCount items.
+        /// </summary>
+        private void AppendUntilCount(int desiredCount)
+        {
+            // Defensive upper bound so we never infinite loop
+            int safety = desiredCount + 128;
+
+            while (blocks.Count < desiredCount && safety-- > 0)
+            {
+                // Who is ready now?
+                var ready = sim.Where(s => s.delay == 0)
+                               .OrderByDescending(s => s.speed)
+                               .ToList();
+
+                if (ready.Count == 0)
                 {
-                    // Schedule this enemy and reset its AP in the simulator.
+                    // No enemy ready: schedule a Hero block and tick down everyone by 1
+                    blocks.Add(new TurnBlock
+                    {
+                        isHero = true,
+                        enemy = null,
+                        label = "Heroes",
+                        color = heroColor,
+                        portrait = null,
+                        presetNextDelay = -1
+                    });
+
+                    for (int i = 0; i < sim.Count; i++)
+                        sim[i].delay = Mathf.Max(0, sim[i].delay - 1);
+                }
+                else
+                {
+                    // Schedule the fastest ready enemy and give it a new delay for after its action
+                    var s = ready[0];
+
+                    int next = UnityEngine.Random.Range(minDelay, maxDelay + 1);
+
                     blocks.Add(new TurnBlock
                     {
                         isHero = false,
-                        enemy = ready.enemy,
-                        seconds = Mathf.Clamp(ready.enemy.EstimateTurnSeconds(), 0.5f, 6f),
-                        portrait = (ready.enemy.Render != null && ready.enemy.Render.thumbnail != null)
-                                   ? ready.enemy.Render.thumbnail.sprite
-                                   : null,
-                        label = ready.enemy.name,
-                        color = enemyTint
+                        enemy = s.enemy,
+                        label = s.label,
+                        color = enemyTint,
+                        portrait = s.portrait,
+                        presetNextDelay = next
                     });
 
-                    ready.ap = 0f;
-                    need--;
-                    // During enemy turn we do not accrue AP in the simulator.
-                    continue;
+                    // After scheduling, this enemy will get a fresh delay in the simulator
+                    s.delay = next;
                 }
-
-                // No enemy is ready; add a hero square and accrue AP for its duration.
-                blocks.Add(new TurnBlock
-                {
-                    isHero = true,
-                    enemy = null,
-                    seconds = heroSeconds,
-                    portrait = null,
-                    label = "Heroes",
-                    color = Color.white
-                });
-
-                // Enemies gain AP while the hero square plays.
-                float dt = heroSeconds;
-                for (int i = 0; i < sim.Count; i++)
-                {
-                    var s = sim[i];
-                    s.ap = Mathf.Min(s.max, s.ap + s.gainPerSecond * dt);
-                }
-
-                need--;
             }
         }
 
         /// <summary>
-        /// Creates or reuses pooled visuals and places them in a horizontal strip.
-        /// Squares are uniform width and height.
+        /// Begin holding on the current block and update TimerBar2D visibility if present.
+        /// </summary>
+        private void StartCurrentBlock()
+        {
+            if (blocks.Count == 0)
+                return;
+
+            var b = blocks[currentIndex];
+            holdRemaining = b.isHero ? heroSeconds : enemySeconds;
+
+            // Timer2D only during hero turns
+            if (g.TimerBar2D != null)
+            {
+                if (b.isHero)
+                {
+                    g.TimerBar2D.SetDuration(heroSeconds);
+                    g.TimerBar2D.ResetToFull();
+                    g.TimerBar2D.Play();
+                }
+                else
+                {
+                    g.TimerBar2D.Pause();
+                }
+            }
+
+            targetContentX = GetTargetXForIndex(currentIndex);
+        }
+
+        /// <summary>
+        /// Complete the current block, apply its effect to real delays, advance, and extend forecast if needed.
+        /// </summary>
+        private void CompleteCurrentBlock()
+        {
+            if (blocks.Count == 0)
+                return;
+
+            var finished = blocks[currentIndex];
+
+            // Apply to real delays so UI stays faithful to state
+            if (finished.isHero)
+            {
+                var enemies = g.Actors.Enemies.Where(e => e != null && e.IsPlaying).ToList();
+                foreach (var e in enemies)
+                    e.DecrementTurnDelay(1);
+            }
+            else if (finished.enemy != null)
+            {
+                finished.enemy.ApplyNewTurnDelay(finished.presetNextDelay);
+            }
+
+            // Move to the next block
+            currentIndex = Mathf.Min(currentIndex + 1, blocks.Count - 1);
+
+            // Keep enough forecast ahead by continuing the sim
+            if (blocks.Count - currentIndex < 4)
+                AppendUntilCount(currentIndex + futureBlocks);
+
+            // Relayout only newly added blocks if any were appended
+            LayoutAll();
+
+            // Begin holding on the new block
+            StartCurrentBlock();
+        }
+
+        /// <summary>
+        /// Lays out all blocks as fixed-size squares in a single horizontal strip.
         /// </summary>
         private void LayoutAll()
         {
             EnsurePool(blocks.Count);
 
             float height = viewport.rect.height > 0f ? viewport.rect.height : blockSizePixels;
-            float size = Mathf.Max(1f, Mathf.Min(blockSizePixels, height)); // Square
+            float size = Mathf.Round(Mathf.Clamp(blockSizePixels, 1f, height));
             float x = 0f;
 
             for (int i = 0; i < blocks.Count; i++)
@@ -225,39 +306,19 @@ namespace Assets.Scripts.Canvas.Timeline
         }
 
         /// <summary>
-        /// Aligns the current block so its center sits under the indicator.
+        /// Centers the indicator vertically and anchors it at the configured horizontal ratio.
         /// </summary>
-        private void SnapToCurrent()
+        private void CenterIndicator()
         {
-            targetContentX = GetTargetXForIndex(currentIndex);
-            contentX = targetContentX;
-            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
+            var rt = indicator.rectTransform;
+            rt.anchorMin = new Vector2(0.5f, 0f);
+            rt.anchorMax = new Vector2(0.5f, 1f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = new Vector2(0f, rt.anchoredPosition.y);
         }
 
         /// <summary>
-        /// Smoothly slides content toward the current target.
-        /// </summary>
-        private void SlideTowardTarget(float dt)
-        {
-            contentX = Mathf.Lerp(contentX, targetContentX, Mathf.Clamp01(dt * snapLerp));
-            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
-        }
-
-        /// <summary>
-        /// Returns the content X position needed to center the given index under the indicator.
-        /// </summary>
-        private float GetTargetXForIndex(int index)
-        {
-            float height = viewport.rect.height > 0f ? viewport.rect.height : blockSizePixels;
-            float size = Mathf.Max(1f, Mathf.Min(blockSizePixels, height));
-            float start = index * (size + blockGapPixels);
-            float centerOfBlock = start + size * 0.5f;
-            float indicatorX = viewport.rect.width * indicatorViewportRatio;
-            return indicatorX - centerOfBlock;
-        }
-
-        /// <summary>
-        /// Ensures the visual pool has at least count instances.
+        /// Instantiates pool objects as needed.
         /// </summary>
         private void EnsurePool(int count)
         {
@@ -270,136 +331,59 @@ namespace Assets.Scripts.Canvas.Timeline
         }
 
         /// <summary>
-        /// Centers the indicator anchors.
+        /// Returns content X such that the center of the block at index is under the indicator.
         /// </summary>
-        private void CenterIndicator()
+        private float GetTargetXForIndex(int index)
         {
-            var rt = indicator.rectTransform;
-            rt.anchorMin = new Vector2(0.5f, 0f);
-            rt.anchorMax = new Vector2(0.5f, 1f);
-            rt.pivot = new Vector2(0.5f, 0.5f);
-            rt.anchoredPosition = new Vector2(0f, rt.anchoredPosition.y);
+            float height = viewport.rect.height > 0f ? viewport.rect.height : blockSizePixels;
+            float size = Mathf.Round(Mathf.Clamp(blockSizePixels, 1f, height));
+            float start = index * (size + blockGapPixels);
+            float centerOfBlock = start + size * 0.5f;
+            float indicatorX = viewport.rect.width * indicatorViewportRatio;
+            return indicatorX - centerOfBlock;
         }
 
         /// <summary>
-        /// Advances the timeline clock and switches blocks when the active block finishes.
-        /// Extends the queue as you approach the end so the belt never runs out.
+        /// Immediately centers the current block under the indicator.
         /// </summary>
-        private void Tick(float dt)
+        private void SnapToIndex(int index)
+        {
+            targetContentX = GetTargetXForIndex(index);
+            contentX = targetContentX;
+            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
+        }
+
+        /// <summary>
+        /// Smoothly slides content toward the target position.
+        /// </summary>
+        private void SlideTowardTarget(float dt)
+        {
+            contentX = Mathf.Lerp(contentX, targetContentX, Mathf.Clamp01(dt * snapLerp));
+            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
+        }
+
+        /// <summary>
+        /// External control: pause the conveyor.
+        /// </summary>
+        public void Pause() { running = false; }
+
+        /// <summary>
+        /// External control: resume the conveyor.
+        /// </summary>
+        public void Resume() { running = true; }
+
+        private void Update()
         {
             if (!running || blocks.Count == 0)
                 return;
 
-            elapsedInBlock += Mathf.Max(0f, dt);
+            float dt = Time.deltaTime;
+            holdRemaining -= dt;
 
-            var current = blocks[currentIndex];
-            if (elapsedInBlock >= current.seconds)
-            {
-                elapsedInBlock = 0f;
-                currentIndex = Mathf.Min(currentIndex + 1, blocks.Count - 1);
-
-                // If we are getting close to the end, extend using the same simulator state.
-                if (currentIndex >= blocks.Count - 3)
-                {
-                    BuildQueue(futureBlocks);
-                    LayoutAll();
-                }
-
-                targetContentX = GetTargetXForIndex(currentIndex);
-            }
+            if (holdRemaining <= 0f)
+                CompleteCurrentBlock();
 
             SlideTowardTarget(dt);
         }
-
-        /// <summary>
-        /// Useful if something changed the actors list at runtime.
-        /// Rebuilds the simulator and the queue from the present moment.
-        /// </summary>
-        public void RecomputeFromScene()
-        {
-            blocks.Clear();
-            BuildSimulationFromScene();
-            BuildQueue(futureBlocks);
-            LayoutAll();
-            currentIndex = 0;
-            elapsedInBlock = 0f;
-            SnapToCurrent();
-        }
-
-        /// <summary>
-        /// External control: jump back to the first block and pause.
-        /// </summary>
-        public void ResetAndPause()
-        {
-            currentIndex = 0;
-            elapsedInBlock = 0f;
-            running = false;
-            SnapToCurrent();
-        }
-
-        private void Update()
-        {
-            if (running)
-                Tick(Time.deltaTime);
-        }
-
-        // Put this inside the Timeline class
-        public void StartHeroTurnNow()
-        {
-            // Ensure we have a sim and some blocks to work with
-            if (sim.Count == 0)
-                BuildSimulationFromScene();
-            if (blocks.Count == 0)
-            {
-                BuildQueue(futureBlocks);
-                LayoutAll();
-                currentIndex = 0;
-            }
-
-            // Create a hero block for "now"
-            var hero = new TurnBlock
-            {
-                isHero = true,
-                enemy = null,
-                seconds = Mathf.Max(0.01f, heroSeconds),
-                portrait = null,
-                label = "Heroes",
-                color = Color.white
-            };
-
-            // If current is already a hero block, refresh its duration; otherwise insert one at the current index
-            if (currentIndex < blocks.Count && blocks[currentIndex].isHero)
-            {
-                blocks[currentIndex] = hero;
-            }
-            else
-            {
-                blocks.Insert(currentIndex, hero);
-            }
-
-            // While the hero turn is scheduled, enemies accrue AP in the simulator
-            for (int i = 0; i < sim.Count; i++)
-            {
-                var s = sim[i];
-                s.ap = Mathf.Min(s.max, s.ap + s.gainPerSecond * heroSeconds);
-            }
-
-            // Make sure we have enough future blocks, then relayout
-            BuildQueue(futureBlocks);
-            LayoutAll();
-
-            // Reset timer for this block and center it under the indicator
-            elapsedInBlock = 0f;
-            targetContentX = GetTargetXForIndex(currentIndex);
-            contentX = targetContentX;
-            content.anchoredPosition = new Vector2(contentX, content.anchoredPosition.y);
-
-            // Ensure the conveyor is running
-            running = true;
-        }
-
-
-
-
     }
 }

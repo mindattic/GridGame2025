@@ -38,7 +38,7 @@ public class TimerBar2D : MonoBehaviour
         // Cache fill rect
         barRect = fill.GetComponent<RectTransform>();
 
-        // DrainRoutine to the left: pin the left edge, let the right edge retract left as width shrinks
+        // Drain left to right by shrinking width from the right side
         barRect.anchorMin = new Vector2(0f, 0.5f);
         barRect.anchorMax = new Vector2(0f, 0.5f);
         barRect.pivot = new Vector2(0f, 0.5f);
@@ -50,10 +50,9 @@ public class TimerBar2D : MonoBehaviour
 
     private void OnDestroy()
     {
-        // If you subscribe to events, unsubscribe here to avoid leaks.
-        // Example:
-        // if (g.InputManager != null)
-        //     g.InputManager.OnInputModeChanged -= HandleModeChanged;
+        // Unsubscribe if needed to avoid leaks
+        if (g.InputManager != null)
+            g.InputManager.OnInputModeChanged -= HandleModeChanged;
     }
 
     /// <summary>
@@ -61,7 +60,6 @@ public class TimerBar2D : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        // Compute initial layout and apply fill
         SetLayout();
         UpdateFill();
 
@@ -72,12 +70,10 @@ public class TimerBar2D : MonoBehaviour
         HandleModeChanged(g.InputManager.InputMode);
 
         // Position the bar at the top edge of the board in screen space.
-        // Canvas is Screen Space - Overlay, so screen point maps directly to rectTransform.position.
-        // Pivot at bottom center so the bar grows downward from the top edge.
         if (rootRect != null && g.Board != null && g.Board.screenEdges != null)
         {
-            rootRect.pivot = new Vector2(0.5f, 0f);              // bottom center
-            rootRect.position = g.Board.screenEdges.Top + new Vector3(0, 100);          // place at board top midpoint
+            rootRect.pivot = new Vector2(0.5f, 0f); // bottom center
+            rootRect.position = g.Board.screenEdges.Top + new Vector3(0, 100);
         }
     }
 
@@ -86,14 +82,12 @@ public class TimerBar2D : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        // DespawnRoutine existing countdown if running
         if (countdown != null)
         {
             StopCoroutine(countdown);
             countdown = null;
         }
 
-        // ProcessRoutine new countdown
         countdown = StartCoroutine(CountdownRoutine());
     }
 
@@ -110,16 +104,14 @@ public class TimerBar2D : MonoBehaviour
     }
 
     /// <summary>
-    /// Refills to full and resets the timer to maxDuration.
+    /// Refills to full and resets the timer to maxDuration. Also tints layers back to white.
     /// </summary>
     public void Refill()
     {
-        // Reset colors
         back.color = ColorHelper.Solid.White;
         fill.color = ColorHelper.Solid.White;
         front.color = ColorHelper.Solid.White;
 
-        // Reset time and apply full width
         timeRemaining = maxDuration;
         UpdateFill();
     }
@@ -132,6 +124,33 @@ public class TimerBar2D : MonoBehaviour
         back.color = ColorHelper.Translucent.Red;
         fill.color = ColorHelper.Translucent.Red;
         front.color = ColorHelper.Translucent.Red;
+    }
+
+    // =================================================================================================
+    // New API used by Timeline
+    // =================================================================================================
+
+    /// <summary>
+    /// Sets the countdown duration in seconds. Does not start playback.
+    /// Clamps current remaining time to the new duration and updates the fill.
+    /// </summary>
+    public void SetDuration(float seconds)
+    {
+        maxDuration = Mathf.Max(0.01f, seconds);
+        if (timeRemaining > maxDuration)
+            timeRemaining = maxDuration;
+
+        UpdateFill();
+    }
+
+    /// <summary>
+    /// Resets the remaining time to the current duration and updates the fill.
+    /// Does not change colors and does not start playback.
+    /// </summary>
+    public void ResetToFull()
+    {
+        timeRemaining = maxDuration;
+        UpdateFill();
     }
 
     // =================================================================================================
@@ -148,11 +167,9 @@ public class TimerBar2D : MonoBehaviour
             case InputMode.PlayerTurn:
                 gameObject.SetActive(true);
                 break;
-
             case InputMode.AbilityTarget:
                 gameObject.SetActive(false);
                 break;
-
             default:
                 break;
         }
@@ -197,10 +214,7 @@ public class TimerBar2D : MonoBehaviour
     {
         if (barRect == null) return;
 
-        // Compute normalized remaining time
         float t = Mathf.Approximately(maxDuration, 0f) ? 0f : Mathf.Clamp01(timeRemaining / maxDuration);
-
-        // Compute width and apply to the fill rect
         float width = maxWidth * t;
 
         Vector2 size = barRect.sizeDelta;
@@ -213,33 +227,25 @@ public class TimerBar2D : MonoBehaviour
     /// </summary>
     private void SetLayout()
     {
-        // Compute 97 percent of canvas width for sizing
         float targetWidth = Mathf.Max(0f, c.CanvasRect.rect.width * CanvasPercent);
 
-        // Keep current height from root
         float targetHeight = rootRect.rect.height;
 
-        // Apply to this container so parent layout understands our width
         if (rootRect != null)
         {
             Vector2 selfSize = rootRect.sizeDelta;
             selfSize.x = targetWidth;
             rootRect.sizeDelta = selfSize;
             rootRect.anchoredPosition = UnitConversionHelper.World.ToCanvas(rootRect, g.Board.screenEdges.Top);
-
         }
 
-        // Apply to background and front overlays
         SetSize(back.GetComponent<RectTransform>(), targetWidth, targetHeight);
         SetSize(front.GetComponent<RectTransform>(), targetWidth, targetHeight);
 
-        // Full width for the fill when timeRemaining is max
         maxWidth = targetWidth;
 
-        // Ensure current fill size matches current timeRemaining
         UpdateFill();
     }
-
 
     /// <summary>
     /// Sets width and height on a RectTransform using sizeDelta.
