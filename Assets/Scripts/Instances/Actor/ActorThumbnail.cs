@@ -1,11 +1,14 @@
-﻿
-using Assets.Scripts.Models;
+﻿using Assets.Scripts.Models;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ActorThumbnail : MonoBehaviour
 {
+    private static readonly int MainTexId = Shader.PropertyToID("_MainTex");
+    private static readonly int MainTexOffsetId = Shader.PropertyToID("_MainTexOffset");
+    private const float Epsilon = 0.0001f;
+
     private ActorInstance instance;
     public ThumbnailSettings settings;
     private SpriteRenderer spriteRenderer;
@@ -18,14 +21,15 @@ public class ActorThumbnail : MonoBehaviour
     public float nextPauseInterval;
     public float pauseDuration;
     public float pauseRampDuration;
+
     private float effectiveNoiseTime;
     private float cycleTime;
     private float cyclePeriod;
     private Vector2 noiseSeed;
-  
-    //Properties
-    public Texture2D texture => spriteRenderer.sprite.texture;
-    public Sprite sprite => spriteRenderer.sprite;
+
+    // Properties
+    public Texture2D texture => spriteRenderer != null && spriteRenderer.sprite != null ? spriteRenderer.sprite.texture : null;
+    public Sprite sprite => spriteRenderer != null ? spriteRenderer.sprite : null;
 
     public void Awake()
     {
@@ -33,27 +37,33 @@ public class ActorThumbnail : MonoBehaviour
 
         noiseSeed = new Vector2(RNG.Float(0f, 100f), RNG.Float(0f, 100f));
 
-        // Scale multiplier proportionally
-        float textureSize = Mathf.Max(texture.width, texture.height);
-        rangeMultiplier = 0.05f * (textureSize / g.TextureResolution.ToFloat());
-
-
         panFocus = 0.25f;
-    
         effectiveNoiseTime = 0f;
         cycleTime = 0f;
 
-        nextPauseInterval = RNG.Float(3f, 7f);
-        pauseDuration = RNG.Float(2f, 5f);
-        pauseRampDuration = RNG.Float(0.25f, 0.75f);
-        cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
+        ResetCycle();
 
-
+        // Defaults
         range = new Vector2(0.1f, 0.1f);
         wobbleAmplitudeFactorX = 0.2f;
         wobbleAmplitudeFactorY = 0.2f;
 
+        // Avoid NRE if sprite not assigned in editor yet; compute once sprite is set.
+        rangeMultiplier = 0f;
+        if (spriteRenderer.sprite != null)
+        {
+            // If a sprite exists on the renderer at Awake, ensure shader has the texture.
+            spriteRenderer.material.SetTexture(MainTexId, spriteRenderer.sprite.texture);
+            RecalculateRangeMultiplier();
+        }
 
+        // Ensure settings exist to avoid null reads in Update before Initialize/Set is called.
+        if (settings == null)
+        {
+            settings = new ThumbnailSettings(Vector2.zero, Vector2.one);
+            transform.localPosition = settings.Position;
+            transform.localScale = settings.Scale;
+        }
     }
 
     public void Set(Vector3 position, Vector3 scale)
@@ -70,16 +80,18 @@ public class ActorThumbnail : MonoBehaviour
         var actorData = ActorLibrary.Get(instance.characterName);
 
         spriteRenderer.sprite = actorData.Portrait;
-        spriteRenderer.material.SetTexture("_MainTex", spriteRenderer.sprite.texture);
+        if (spriteRenderer.sprite != null)
+        {
+            spriteRenderer.material.SetTexture(MainTexId, spriteRenderer.sprite.texture);
+        }
 
         settings = new ThumbnailSettings(actorData.ThumbnailSettings);
         transform.localPosition = settings.Position;
         transform.localScale = settings.Scale;
 
-        // Dynamic range based on texture size
-        float textureSize = Mathf.Max(texture.width, texture.height);
-        rangeMultiplier = 0.05f * (textureSize / g.TextureResolution.ToInt());
+        RecalculateRangeMultiplier();
 
+        // Override defaults for initialized thumbnails
         range = new Vector2(0.1f, 0.1f);
         wobbleAmplitudeFactorX = 0.25f;
         wobbleAmplitudeFactorY = 0.25f;
@@ -87,69 +99,88 @@ public class ActorThumbnail : MonoBehaviour
 
     private void Update()
     {
-        float fullWidth = Mathf.Max(settings.Scale.x * range.x, 0.0001f);
-        float fullHeight = Mathf.Max(settings.Scale.y * range.y, 0.0001f);
+        if (spriteRenderer == null || settings == null)
+            return;
 
-        Vector2 maxOffset = new Vector2(range.x / fullWidth, range.y / fullHeight);
+        // maxOffset simplifies to inverse of scale; range cancels out.
+        float invScaleX = 1f / Mathf.Max(settings.Scale.x, Epsilon);
+        float invScaleY = 1f / Mathf.Max(settings.Scale.y, Epsilon);
+        Vector2 maxOffset = new Vector2(invScaleX, invScaleY);
 
-        // Update the cycle timer
+        // Advance cycle timer
         cycleTime += Time.deltaTime;
         if (cycleTime >= cyclePeriod)
         {
             cycleTime -= cyclePeriod;
-
-            nextPauseInterval = RNG.Float(3f, 7f);
-            pauseDuration = RNG.Float(2f, 5f);
-            pauseRampDuration = RNG.Float(0.25f, 0.75f);
-            cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
-
+            ResetCycle();
         }
-
 
         // Determine speed multiplier based on pause cycle
-        float multiplier = 1f;
-        if (cycleTime < (nextPauseInterval - pauseRampDuration))
-        {
-            multiplier = 1f;
-        }
-        else if (cycleTime < nextPauseInterval)
-        {
-            float t = (cycleTime - (nextPauseInterval - pauseRampDuration)) / pauseRampDuration;
-            multiplier = Mathf.Lerp(1f, 0f, t);
-        }
-        else if (cycleTime < (nextPauseInterval + pauseDuration))
-        {
-            multiplier = 0f;
-        }
-        else if (cycleTime < (nextPauseInterval + pauseDuration + pauseRampDuration))
-        {
-            float t = (cycleTime - (nextPauseInterval + pauseDuration)) / pauseRampDuration;
-            multiplier = Mathf.Lerp(0f, 1f, t);
-        }
-        else
-        {
-            multiplier = 1f;
-        }
+        float multiplier = EvaluatePauseMultiplier(cycleTime);
 
         // Advance effective noise time
         effectiveNoiseTime += Time.deltaTime * multiplier * panFocus;
 
-        // Generate Perlin noise values
+        // Perlin noise sampling
         float noiseX = Mathf.PerlinNoise(effectiveNoiseTime, noiseSeed.x);
         float noiseY = Mathf.PerlinNoise(effectiveNoiseTime, noiseSeed.y);
 
-        // Center noise and calculate UV offset
+        // Center noise and compute UV offset
         float centeredNoiseX = noiseX - 0.5f;
         float centeredNoiseY = noiseY - 0.5f;
+
         float wobbleX = centeredNoiseX * maxOffset.x * wobbleAmplitudeFactorX * 0.5f;
         float wobbleY = centeredNoiseY * maxOffset.y * wobbleAmplitudeFactorY * 0.5f;
+
         float baseOffsetX = maxOffset.x * 0.5f;
         float baseOffsetY = maxOffset.y * 0.5f;
+
         float offsetX = baseOffsetX + wobbleX;
         float offsetY = baseOffsetY + wobbleY;
-        spriteRenderer.material.SetVector("_MainTexOffset", new Vector4(offsetX, offsetY, 0, 0));
+
+        spriteRenderer.material.SetVector(MainTexOffsetId, new Vector4(offsetX, offsetY, 0f, 0f));
     }
 
+    private void RecalculateRangeMultiplier()
+    {
+        var tex = texture;
+        if (tex == null)
+        {
+            rangeMultiplier = 0f;
+            return;
+        }
 
+        float textureSize = Mathf.Max(tex.width, tex.height);
+        rangeMultiplier = 0.05f * (textureSize / g.TextureResolution.ToFloat());
+    }
+
+    private void ResetCycle()
+    {
+        nextPauseInterval = RNG.Float(3f, 7f);
+        pauseDuration = RNG.Float(2f, 5f);
+        pauseRampDuration = RNG.Float(0.25f, 0.75f);
+        cyclePeriod = nextPauseInterval + pauseDuration + 2f * pauseRampDuration;
+    }
+
+    private float EvaluatePauseMultiplier(float t)
+    {
+        float rampDownStart = nextPauseInterval - pauseRampDuration;
+        float pauseStart = nextPauseInterval;
+        float pauseEnd = nextPauseInterval + pauseDuration;
+        float rampUpEnd = pauseEnd + pauseRampDuration;
+
+        if (t < rampDownStart)
+            return 1f;
+
+        if (t < pauseStart)
+            return Mathf.Lerp(1f, 0f, (t - rampDownStart) / pauseRampDuration);
+
+        if (t < pauseEnd)
+            return 0f;
+
+        if (t < rampUpEnd)
+            return Mathf.Lerp(0f, 1f, (t - pauseEnd) / pauseRampDuration);
+
+        return 1f;
+    }
 }
-

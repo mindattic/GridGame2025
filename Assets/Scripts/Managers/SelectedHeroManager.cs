@@ -1,11 +1,6 @@
 // --- File: Assets/Scripts/Managers/SelectedHeroManager.cs ---
 using Assets.Helpers;
-using Assets.Scripts.Events;
-using Assets.Scripts.Instances.Actor;
-using Assets.Scripts.Models;
 using Assets.Scripts.Sequences;
-using Game.Behaviors;
-using Game.Manager;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 

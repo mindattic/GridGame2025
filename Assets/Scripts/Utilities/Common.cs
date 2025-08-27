@@ -1,10 +1,12 @@
 using Assets.Helper;
+using System;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
 /// Global numeric constants used across the game.
 /// </summary>
-public static class Constants
+public static class Common
 {
     public const int MaxPartyMemberCount = 6;
 }
@@ -187,7 +189,22 @@ public static class Wait
     public static WaitForSeconds Ticks(int amount) => new WaitForSeconds(Interval.OneTick * amount);
     public static WaitForSeconds For(float seconds) => new WaitForSeconds(seconds);
 
-    public static readonly WaitForEndOfFrame endOfFrame = new WaitForEndOfFrame();
+    //Immediate completion enumerator for coroutines that need to yield but have nothing to wait for.
+    public static object None() => Immediate.Instance;
 
-    public static object None() => endOfFrame;
+    // Wait until end of frame
+    public static readonly WaitForEndOfFrame EndOfFrame = new WaitForEndOfFrame();
+    public static object UntilEndOfFrame() => EndOfFrame;
+
+    // Wait until next frame (equivalent to yield return null)
+    public static object UntilNextFrame() => null;
+
+    // Singleton no-op IEnumerator (MoveNext returns false immediately).
+    private sealed class Immediate : IEnumerator
+    {
+        public static readonly Immediate Instance = new Immediate();
+        public bool MoveNext() => false;
+        public void Reset() { }
+        public object Current => null;
+    }
 }

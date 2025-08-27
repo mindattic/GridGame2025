@@ -1,9 +1,8 @@
 ﻿// --- File: Assets/Scripts/Sequences/EndTurnSequence.cs ---
-using Assets.Helper;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// Ends the current turn and flips to the next side.

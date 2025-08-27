@@ -1,8 +1,7 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyMoveSequence.cs ---
-using Assets.Helper;
 using System.Collections;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// Moves one attacker toward its target.

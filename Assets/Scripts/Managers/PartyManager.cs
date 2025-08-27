@@ -299,7 +299,7 @@ public class PartyManager : MonoBehaviour
 
     private void UpdatePartyMemberCountLabel()
     {
-        partyMemberCountLabel.text = $"{partyMemberCount}/{Constants.MaxPartyMemberCount}";
+        partyMemberCountLabel.text = $"{partyMemberCount}/{Common.MaxPartyMemberCount}";
     }
 
     private void UpdateSlideCheckmark(string characterName, bool isInParty)
@@ -333,9 +333,9 @@ public class PartyManager : MonoBehaviour
 
     private void AddToParty(string characterName)
     {
-        if (partyMemberCount >= Constants.MaxPartyMemberCount)
+        if (partyMemberCount >= Common.MaxPartyMemberCount)
         {
-            Debug.LogWarning($"Cannot add more than {Constants.MaxPartyMemberCount} members to the party.");
+            Debug.LogWarning($"Cannot add more than {Common.MaxPartyMemberCount} members to the party.");
             return;
         }
 

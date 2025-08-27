@@ -1,5 +1,4 @@
 // --- File: Assets/Scripts/Managers/PincerAttackManager.cs ---
-using Assets.Scripts.Events;
 using Assets.Scripts.Models;
 using Assets.Scripts.Sequences;
 using System.Collections;

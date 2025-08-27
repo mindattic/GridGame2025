@@ -1,7 +1,6 @@
-using Assets.Helper;
 using Assets.Helpers;
-using Assets.Scripts.Events;
 using Assets.Scripts.Models;
+using Assets.Scripts.Sequences;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -462,7 +461,7 @@ public class DebugManager : MonoBehaviour
     {
         var startPosition = hero1.Position;
         var target = hero2;
-   
+
         // Use ProjectileManager helper which sets MotionStyle and pacing
         g.ProjectileManager.EnqueueFireball(startPosition, target);
         g.SequenceManager.Execute();

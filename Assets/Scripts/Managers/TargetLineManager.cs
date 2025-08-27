@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using Assets.Scripts.Events;
 using g = Assets.Helpers.GameHelper;
+
 public class TargetLineManager : MonoBehaviour
 {
     private Camera mainCamera;

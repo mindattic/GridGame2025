@@ -68,20 +68,6 @@ public class ActorInstance : MonoBehaviour
 
     #endregion
 
-    #region Display-only helpers
-
-    /// <summary>
-    /// UI helper to show a numeric countdown beside this enemy.
-    /// Timeline owns the number. This method only paints the label.
-    /// Pass a negative value to clear the label.
-    /// </summary>
-    public void SetTurnDelayText(int value)
-    {
-        if (Render != null && Render.turnDelayText != null)
-            Render.turnDelayText.text = value >= 0 ? value.ToString() : string.Empty;
-    }
-
-    #endregion
 
     #region Sorting
 
@@ -330,7 +316,7 @@ public class ActorInstance : MonoBehaviour
             Render.SetParallaxAlpha(Opacity.Percent50);
             Vfx.Attack = VfxLibrary.VisualEffects["BlueSlash1"];
             Render.SetTurnDelayTextAlpha(Opacity.Transparent);
-            SetTurnDelayText(-1);
+            Render.SetTurnDelayText(-1);
         }
         else if (IsEnemy)
         {
@@ -344,7 +330,7 @@ public class ActorInstance : MonoBehaviour
             Vfx.Attack = VfxLibrary.VisualEffects["DoubleClaw"];
 
             // No TurnDelay assignment. Timeline seeds and displays countdowns.
-            SetTurnDelayText(-1);
+            Render.SetTurnDelayText(-1);
         }
 
         Render.SetNameTagText(characterName);

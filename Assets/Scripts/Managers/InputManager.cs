@@ -1,7 +1,6 @@
 // --- File: Assets/Scripts/Managers/InputManager.cs ---
 using Assets.Helpers;
-using Assets.Scripts.Events;
-using Assets.Scripts.Models;
+using Assets.Scripts.Sequences;
 using System;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;

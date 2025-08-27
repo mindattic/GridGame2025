@@ -135,10 +135,7 @@ public sealed class Timeline : MonoBehaviour
             // Reset hero cadence to a fresh step based on current average agility.
             heroDelaySim = ComputeHeroStepFromAverageAgility();
 
-            // Optional: mirror numbers to UI labels.
-            foreach (var s in sim)
-                if (s.enemy != null && s.enemy.IsPlaying)
-                    s.enemy.SetTurnDelayText(s.delay);
+            // Do not mirror SIM ticks to UI here. UI shows forecast distance instead.
         }
         else
         {
@@ -148,7 +145,6 @@ public sealed class Timeline : MonoBehaviour
             {
                 var s = sim.FirstOrDefault(z => z.enemy == e);
                 if (s != null) s.delay = EnemyStepFromAgility(s.enemy, s.agility);
-                if (s != null) e.SetTurnDelayText(s.delay);
             }
         }
 
@@ -163,6 +159,9 @@ public sealed class Timeline : MonoBehaviour
         // Trim old history and relayout.
         TrimPastBlocks(trimLeftKeep);
         SetupLayout();
+
+        // After forecast and layout are ready, update labels using forecast distance.
+        UpdateAllEnemyDelayLabels();
     }
 
     /// <summary>
@@ -217,8 +216,7 @@ public sealed class Timeline : MonoBehaviour
             int seed = EnemyStepFromAgility(e, agi);
             sim.Add(new EnemySim { enemy = e, delay = seed, agility = agi });
 
-            // Optional UI mirror
-            e.SetTurnDelayText(seed);
+            // UI label will be set after forecast is extended (see UpdateAllEnemyDelayLabels).
         }
     }
 
@@ -335,11 +333,12 @@ public sealed class Timeline : MonoBehaviour
             isHero = true,
             enemy = null,
             label = "Heroes",
-            color = Color.white,
-            portrait = null
+            color = ColorHelper.Transparent.White,
+            portrait = SpriteLibrary.GUI["TeamIcon"]
         };
 
         var view = Instantiate(blockPrefab, content);
+        view.SetPortraitYOffset(0f);              // Center portrait for hero blocks
         view.SetSquareMask(blockSize);
         view.Set(b.label, b.color, b.portrait);
         b.view = view;
@@ -351,18 +350,13 @@ public sealed class Timeline : MonoBehaviour
     {
         if (enemy == null) return;
 
-        var portraitSprite =
-            (enemy.Render != null && enemy.Render.thumbnail != null)
-            ? enemy.Render.thumbnail.sprite
-            : null;
-
         var b = new Block
         {
             isHero = false,
             enemy = enemy,
             label = string.IsNullOrEmpty(enemy.characterName) ? "Enemy" : enemy.characterName,
             color = new Color(0.10f, 0.60f, 1f, 1f),
-            portrait = portraitSprite
+            portrait = enemy.Render.thumbnail.sprite
         };
 
         var view = Instantiate(blockPrefab, content);
@@ -453,5 +447,37 @@ public sealed class Timeline : MonoBehaviour
         currentIndex = 0;
         contentX = 0f;
         targetContentX = 0f;
+    }
+
+    // -------------- Turn delay label helpers --------------
+
+    // Returns number of blocks until this enemy acts next (1 means 'next block').
+    private int BlocksUntilNextTurn(ActorInstance enemy)
+    {
+        if (enemy == null) return -1;
+        for (int i = currentIndex + 1; i < blocks.Count; i++)
+        {
+            var b = blocks[i];
+            if (!b.isHero && b.enemy == enemy)
+                return i - currentIndex; // 1-based distance in blocks
+        }
+        return -1;
+    }
+
+    private void UpdateEnemyDelayLabel(ActorInstance enemy)
+    {
+        if (enemy == null || !enemy.IsPlaying) return;
+        int dist = BlocksUntilNextTurn(enemy);
+        // Pass -1 to clear if not in forecast yet (shouldn’t happen as we extend ahead).
+        enemy.Render.SetTurnDelayText(dist);
+    }
+
+    private void UpdateAllEnemyDelayLabels()
+    {
+        foreach (var s in sim)
+        {
+            if (s.enemy != null && s.enemy.IsPlaying)
+                UpdateEnemyDelayLabel(s.enemy);
+        }
     }
 }

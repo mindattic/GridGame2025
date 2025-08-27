@@ -1,10 +1,8 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/HeroStartSequence.cs ---
-using Assets.Helper;
-using Assets.Scripts.Models;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// Performs start-of-turn logic for the hero team.

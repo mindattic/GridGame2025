@@ -1,8 +1,7 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyPostAttackSequence.cs ---
-using Assets.Helper;
 using System.Collections;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// EnemyPostAttackSequence

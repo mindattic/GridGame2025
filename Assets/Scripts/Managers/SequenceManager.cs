@@ -1,14 +1,13 @@
 // --- File: Assets/Scripts/Managers/SequenceManager.cs ---
 using Assets.Scripts.Models;
+using Assets.Scripts.Sequences;
 using System;
 using System.Collections;
 using UnityEngine;
-using Assets.Scripts.Events;
-using g = Assets.Helpers.GameHelper;
 
 public class SequenceManager : MonoBehaviour
 {
- 
+
     //Members
     private QueueCollection<SequenceEvent> queue = new QueueCollection<SequenceEvent>();
     private bool isExecuting;
@@ -30,7 +29,7 @@ public class SequenceManager : MonoBehaviour
     /// </summary>
     public void Add(SequenceEvent e)
     {
-        if (e == null) 
+        if (e == null)
             return;
 
         queue.Add(e);
@@ -41,7 +40,7 @@ public class SequenceManager : MonoBehaviour
     /// </summary>
     public void AddFirst(SequenceEvent e)
     {
-        if (e == null) 
+        if (e == null)
             return;
 
         queue.AddFirst(e);

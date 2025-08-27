@@ -1,9 +1,8 @@
-﻿using Assets.Helper;
-using System.Collections;
+﻿using System.Collections;
 using System.Linq;
 using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     public class EnemySpawnSequence : SequenceEvent
     {

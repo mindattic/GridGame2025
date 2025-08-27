@@ -1,5 +1,4 @@
 // --- File: Assets/Scripts/Managers/TurnManager.cs ---
-using Assets.Scripts.Events;
 using Assets.Scripts.Sequences;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
@@ -62,7 +61,7 @@ namespace Assets.Scripts.Managers
             // 4) Enqueue the correct start sequence.
             if (IsHeroTurn)
             {
-               
+
                 g.SequenceManager.Add(new HeroStartSequence());
             }
             else

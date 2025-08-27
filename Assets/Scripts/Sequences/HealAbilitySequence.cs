@@ -1,10 +1,9 @@
 ﻿// File: Assets/Scripts/Events/HealAbilitySequence.cs
 using System.Collections;
 using UnityEngine;
-using Assets.Scripts.Models;
 using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// Runs a simple heal ability: locks input, bounces the portrait,

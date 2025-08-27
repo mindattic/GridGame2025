@@ -2,12 +2,10 @@
 using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     // SequenceEvent for processing a single attacking PincerAttackPair
     public class PincerAttackSequence : SequenceEvent

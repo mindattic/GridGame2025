@@ -2,7 +2,7 @@
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     public class PortraitPopInSequence : SequenceEvent
     {

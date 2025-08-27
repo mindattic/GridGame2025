@@ -77,11 +77,11 @@ public class ActorRenderers
         healthBarBack = front.GetChild(ActorLayer.Name.HealthBar.Root).GetChild(ActorLayer.Name.HealthBar.Back).GetComponent<SpriteRenderer>();
         healthBarDrain = front.GetChild(ActorLayer.Name.HealthBar.Root).GetChild(ActorLayer.Name.HealthBar.Drain).GetComponent<SpriteRenderer>();
         healthBarFill = front.GetChild(ActorLayer.Name.HealthBar.Root).GetChild(ActorLayer.Name.HealthBar.Fill).GetComponent<SpriteRenderer>();
-        healthBarText = front.GetChild(ActorLayer.Name.HealthBar.Root).GetChild(ActorLayer.Name.HealthBar.Text).GetComponent<TextMeshPro>();      
+        healthBarText = front.GetChild(ActorLayer.Name.HealthBar.Root).GetChild(ActorLayer.Name.HealthBar.Text).GetComponent<TextMeshPro>();
         actionBarBack = front.GetChild(ActorLayer.Name.ActionBar.Root).GetChild(ActorLayer.Name.ActionBar.Back).GetComponent<SpriteRenderer>();
         actionBarDrain = front.GetChild(ActorLayer.Name.ActionBar.Root).GetChild(ActorLayer.Name.ActionBar.Drain).GetComponent<SpriteRenderer>();
         actionBarFill = front.GetChild(ActorLayer.Name.ActionBar.Root).GetChild(ActorLayer.Name.ActionBar.Fill).GetComponent<SpriteRenderer>();
-        actionBarText = front.GetChild(ActorLayer.Name.ActionBar.Root).GetChild(ActorLayer.Name.ActionBar.Text).GetComponent<TextMeshPro>();      
+        actionBarText = front.GetChild(ActorLayer.Name.ActionBar.Root).GetChild(ActorLayer.Name.ActionBar.Text).GetComponent<TextMeshPro>();
         mask = front.GetChild(ActorLayer.Name.Mask).GetComponent<SpriteMask>();
         radialBack = front.GetChild(ActorLayer.Name.RadialBack).GetComponent<SpriteRenderer>();
         radial = front.GetChild(ActorLayer.Name.RadialFill).GetComponent<SpriteRenderer>();
@@ -287,9 +287,26 @@ public class ActorRenderers
         turnDelayText.fontSize = key > 9 ? 1f : fontSizeKeyValueMap[key];
     }
 
-    public void SetTurnDelayText(string text)
+    /// <summary>
+    /// UI helper to show a numeric countdown beside this enemy.
+    /// Timeline owns the number. This method only paints the label.
+    /// Pass a negative value to clear the label.
+    /// Displays turns remaining as 1-based (next = 1).
+    /// </summary>
+    public void SetTurnDelayText(int value)
     {
-        turnDelayText.text = text;
+
+        if (value < 0)
+        {
+            turnDelayText.text = string.Empty;
+        }
+        else
+        {
+            // Convert 0-based delay to 1-based display (next = 1)
+            int turnsRemaining = value + 1;
+            turnDelayText.text = turnsRemaining.ToString();
+        }
+
     }
 
     public void SetTurnDelayTextEnabled(bool isEnabled)

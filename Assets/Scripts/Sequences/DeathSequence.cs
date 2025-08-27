@@ -1,5 +1,4 @@
 ﻿using Assets.Helpers;
-using Assets.Scripts.Events;
 using System.Collections;
 
 namespace Assets.Scripts.Sequences

@@ -158,6 +158,7 @@
     <Compile Include="Assets\Scripts\Helpers\LocationHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
+    <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
@@ -202,7 +203,6 @@
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Libraries\SpriteLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
-    <Compile Include="Assets\Scripts\Utilities\Constants.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />

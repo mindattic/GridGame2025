@@ -1,10 +1,8 @@
 ﻿// File: Assets/Scripts/Events/HealSupportSequence.cs
 using System.Collections;
 using UnityEngine;
-using Assets.Scripts.Models;
-using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// Runs a support heal: launches a wiggle style projectile from a source point to the target,

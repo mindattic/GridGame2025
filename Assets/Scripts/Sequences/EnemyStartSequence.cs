@@ -1,10 +1,8 @@
 ﻿// --- File: Assets/Scripts/Events/EnemyStartSequence.cs ---
-using Assets.Helper;
-using Assets.Scripts.Sequences;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// Starts the enemy turn using the Timeline as source of truth.

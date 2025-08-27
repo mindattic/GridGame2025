@@ -22,6 +22,9 @@ namespace Assets.Scripts.Canvas.Timeline
 
         public RectTransform Rect { get; private set; }
 
+        // Optional override for portrait anchoredPosition.y (pixels). If null, use default (-s * 0.5f).
+        private float? portraitYOffsetOverride;
+
         private void Awake()
         {
             Rect = GetComponent<RectTransform>();
@@ -39,6 +42,16 @@ namespace Assets.Scripts.Canvas.Timeline
             SetPortraitTopHalf(portraitSprite);
             EnforceSquare();
             ConfigureMask();
+        }
+
+        /// <summary>
+        /// Allows callers to override the portrait's Y offset in pixels (default is -blockSize * 0.5).
+        /// Pass 0 to center the portrait within the mask.
+        /// </summary>
+        public void SetPortraitYOffset(float y)
+        {
+            portraitYOffsetOverride = y;
+            FitPortraitRect();
         }
 
         /// <summary>
@@ -110,9 +123,12 @@ namespace Assets.Scripts.Canvas.Timeline
             pr.anchorMax = new Vector2(0.5f, 0.5f);
             pr.pivot = new Vector2(0.5f, 0.5f);
 
-            // Double height and shift down so the top half shows inside the square mask.
+            // Double height so top-half can be shown by default.
             pr.sizeDelta = new Vector2(s, s * 2f);
-            pr.anchoredPosition = new Vector2(0f, -s * 0.5f);
+
+            // Use override if provided, else default to showing the top half (-s * 0.5f).
+            float y = portraitYOffsetOverride.HasValue ? portraitYOffsetOverride.Value : -s * 0.5f;
+            pr.anchoredPosition = new Vector2(0f, y);
 
             pr.localRotation = Quaternion.identity;
             pr.localScale = Vector3.one;

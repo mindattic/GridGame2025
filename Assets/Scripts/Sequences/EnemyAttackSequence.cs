@@ -1,16 +1,11 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyAttackSequence.cs ---
-using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.Models;
-using System;
 using System.Collections;
-using System.ComponentModel;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.UIElements;
 using g = Assets.Helpers.GameHelper;
 
-namespace Assets.Scripts.Events
+namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// Executes a single enemy attack turn for one attacker.
@@ -104,11 +99,11 @@ namespace Assets.Scripts.Events
                 yield break;
             }
             else if (timing == DefenseTiming.Dodge)
-                {
-                    // Good timing
-                    g.CombatTextManager.Spawn("Dodge", opponent.Position, "Damage");
-                    yield break;
-                }
+            {
+                // Good timing
+                g.CombatTextManager.Spawn("Dodge", opponent.Position, "Damage");
+                yield break;
+            }
 
             // No defense timing; run normal damage
             yield return AttackHelper.SingleAttackRoutine(result);

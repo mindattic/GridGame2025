@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using Assets.Scripts.Models;
+using Assets.Scripts.Sequences;
+using System.Collections;
 using UnityEngine;
-using Assets.Scripts.Models;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
@@ -34,7 +35,7 @@ public class ProjectileManager : MonoBehaviour
             arriveRadiusTiles = 0.1f
         };
 
-        g.SequenceManager.Add(new Assets.Scripts.Events.FireProjectileSequence(heal));
+        g.SequenceManager.Add(new FireProjectileSequence(heal));
     }
 
     /// <summary>
@@ -60,7 +61,7 @@ public class ProjectileManager : MonoBehaviour
             arriveRadiusTiles = 0.1f
         };
 
-        g.SequenceManager.Add(new Assets.Scripts.Events.FireProjectileSequence(fireball));
+        g.SequenceManager.Add(new FireProjectileSequence(fireball));
     }
 
 
@@ -94,7 +95,7 @@ public class ProjectileManager : MonoBehaviour
             faceDirection = false
         };
 
-        g.SequenceManager.Add(new Assets.Scripts.Events.FireProjectileSequence(heal));
+        g.SequenceManager.Add(new FireProjectileSequence(heal));
     }
 
 
