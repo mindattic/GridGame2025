@@ -203,7 +203,7 @@ public class Portrait3DInstance : MonoBehaviour
         if (isBeingDestroyed || spriteRenderer == null)
             yield break;
 
-        
+
         Transform front = actor.Render.front.transform;
         Vector3 originalFrontPos = front.position;
         float yOffset = -g.TileSize * 0.33f; // Lowered by 33%
@@ -312,15 +312,16 @@ public class Portrait3DInstance : MonoBehaviour
     }
 
     // DissolveRoutine: fancy overlay-out with shake/shrink
-    public IEnumerator DissolveRoutine()
+    public IEnumerator DissolveRoutine(IEnumerator routine = null)
     {
         if (isBeingDestroyed || spriteRenderer == null)
             yield break;
-
+   
         float alpha = 1f;
         spriteRenderer.color = new Color(1, 1, 1, alpha);
+        Coroutine runningCoroutine = null;
 
-        while (alpha > 0)
+        while (alpha > 0f)
         {
             if (isBeingDestroyed || spriteRenderer == null)
                 yield break;
@@ -328,8 +329,12 @@ public class Portrait3DInstance : MonoBehaviour
             position = startPosition;
             position += new Vector3(RNG.Range(ShakeIntensity.Medium), RNG.Range(ShakeIntensity.Medium), 1);
             transform.localScale *= 0.99f;
-            alpha -= Increment.Percent1;
-            alpha = Mathf.Clamp(alpha, 0, 1);
+
+            alpha = Mathf.Clamp01(alpha - Increment.Percent1);
+
+            if (routine != null && runningCoroutine == null && alpha <= Opacity.Percent10)
+                runningCoroutine = StartCoroutine(routine); // starts once
+
             spriteRenderer.color = new Color(1, 1, 1, alpha);
             yield return Wait.None();
         }

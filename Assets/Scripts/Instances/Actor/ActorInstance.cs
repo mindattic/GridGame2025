@@ -11,6 +11,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static Assets.Helper.GameObjectHelper;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
@@ -479,29 +480,72 @@ public class ActorInstance : MonoBehaviour
         if (HealthBar.isDraining)
             yield return new WaitUntil(() => HealthBar.isEmpty);
 
+        // Compute XP once and distribute to the entire opposing team
+        int xp = ExperienceHelper.Calculate(this);
+        if (xp > 0)
+        {
+            var pool = team switch
+            {
+                Team.Enemy => g.Actors.Heroes,
+                Team.Hero => g.Actors.Enemies,
+                _ => Enumerable.Empty<ActorInstance>()
+            };
+
+            // If an enemy dies, all playing heroes receive XP; if a hero dies, all playing enemies receive XP.
+            foreach (var actor in pool.Where(a => a != null && a.IsPlaying))
+            {
+                ExperienceHelper.Gain(actor, xp);
+                g.AudioManager.Play("Click");
+                g.CombatTextManager.Spawn($"+{xp}xp", actor.Position, "GainExperience");
+            }
+        }
+
         g.Portrait3DManager.Dissolve(this);
         g.AudioManager.Play("Death");
-
-        var hasSpawnedCoins = false;
-        while (alpha > 0f)
-        {
-            alpha -= Increment.Percent1;
-            alpha = Mathf.Clamp(alpha, Increment.Transparent, Opacity.Opaque);
-            Render.SetAlpha(alpha);
-
-            if (IsEnemy && !hasSpawnedCoins && alpha < Opacity.Percent10)
-            {
-                hasSpawnedCoins = true;
-                SpawnCoins(10);
-            }
-
-            yield return Wait.OneTick();
-        }
+        g.CoinManager.SpawnBurst(Position, Mathf.RoundToInt(xp * g.CoinCountMulitiplier));
 
         location = LocationHelper.Nowhere;
         Position = PositionHelper.Nowhere;
         gameObject.SetActive(false);
         g.StageManager.OnActorDeath();
+    }
+
+    /// <summary>
+    /// Increase this hero's level and refresh stats and visuals. Persists to the current save.
+    /// </summary>
+    public void LevelUp(int levels = 1)
+    {
+        if (!IsHero || string.IsNullOrEmpty(characterName) || levels == 0)
+            return;
+
+        // Update save data (party member level)
+        var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
+        var entry = party?.FirstOrDefault(m => m != null && m.Character == characterName);
+        if (entry == null)
+            return;
+
+        int oldLevel = entry.Level;
+        int newLevel = Mathf.Max(1, oldLevel + levels);
+        entry.Level = newLevel;
+
+        // Recalculate stats keeping current HP ratio
+        var actorData = ActorLibrary.Actors[characterName];
+        var newStats = actorData.GetStats(newLevel);
+
+        float hpRatio = (Stats.MaxHP > 0f) ? Mathf.Clamp01(Stats.HP / Stats.MaxHP) : 1f;
+        Stats = new ActorStats(newStats);
+        Stats.HP = Stats.MaxHP;
+        Stats.PreviousHP = Stats.HP;
+        HealthBar.Update();
+
+        // Feedback
+        if (VfxLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
+            g.VfxManager.Spawn(vfx, Position);
+        g.CombatTextManager.Spawn("Level Up!", Position, "Heal");
+        Animation.Grow();
+
+        // Persist
+        ProfileHelper.Save(true);
     }
 
     #endregion

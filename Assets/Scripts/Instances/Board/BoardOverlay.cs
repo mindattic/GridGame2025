@@ -9,7 +9,7 @@ using UnityEngine;
 public class BoardOverlay : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
-    private Coroutine fadeCoroutine;
+    private Coroutine runningCoroutine;
 
     [SerializeField] private float fadeDuration = 0.25f; // Duration of overlay effect
     [SerializeField] private float minAlpha = Opacity.Transparent; // Fully transparent
@@ -44,16 +44,16 @@ public class BoardOverlay : MonoBehaviour
 
     public IEnumerator FadeInRoutine()
     {
-        if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
-        yield return fadeCoroutine = StartCoroutine(FadeRoutine(maxAlpha, true));
+        if (runningCoroutine != null)
+            StopCoroutine(runningCoroutine);
+        yield return runningCoroutine = StartCoroutine(FadeRoutine(maxAlpha, true));
     }
 
     public IEnumerator FadeOutRoutine()
     {
-        if (fadeCoroutine != null)
-            StopCoroutine(fadeCoroutine);
-        yield return fadeCoroutine = StartCoroutine(FadeRoutine(minAlpha, false));
+        if (runningCoroutine != null)
+            StopCoroutine(runningCoroutine);
+        yield return runningCoroutine = StartCoroutine(FadeRoutine(minAlpha, false));
     }
 
 

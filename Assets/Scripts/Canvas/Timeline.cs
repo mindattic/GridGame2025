@@ -43,7 +43,7 @@ public sealed class Timeline : MonoBehaviour
     [SerializeField] private float heroAgilityDivisor = 8f;
     [SerializeField] private int enemyBaseMinStep = 4;
     [SerializeField] private int enemyBaseMaxStep = 8;
-    [SerializeField] private float enemyAgilityDivisor = 6f;
+    [SerializeField] private float enemySpeedDivisor = 6f;
 
     private void Awake()
     {
@@ -63,14 +63,14 @@ public sealed class Timeline : MonoBehaviour
         public string label;
         public Color color;
         public Sprite portrait;
-        public TimelineBlockInstance view;
+        public TimelineBlockInstance instance;
     }
 
     private class EnemySim
     {
         public ActorInstance enemy;
         public int delay;                 // ticks down on hero turns
-        public int agility;
+        public int speed;
     }
 
     private readonly List<Block> blocks = new List<Block>();
@@ -144,7 +144,7 @@ public sealed class Timeline : MonoBehaviour
             if (e != null && e.IsPlaying)
             {
                 var s = sim.FirstOrDefault(z => z.enemy == e);
-                if (s != null) s.delay = EnemyStepFromAgility(s.enemy, s.agility);
+                if (s != null) s.delay = EnemyStepFromAgility(s.enemy, s.speed);
             }
         }
 
@@ -214,7 +214,7 @@ public sealed class Timeline : MonoBehaviour
         {
             int spd = e.Stats.Speed.ToInt();
             int seed = EnemyStepFromAgility(e, spd);
-            sim.Add(new EnemySim { enemy = e, delay = seed, agility = spd });
+            sim.Add(new EnemySim { enemy = e, delay = seed, speed = spd });
 
             // UI label will be set after forecast is extended (see UpdateAllEnemyDelayLabels).
         }
@@ -240,7 +240,7 @@ public sealed class Timeline : MonoBehaviour
         {
             enemy = s.enemy,
             delay = s.delay,
-            agility = s.agility
+            speed = s.speed
         }).ToList();
 
         while (blocks.Count < requiredCount)
@@ -258,7 +258,7 @@ public sealed class Timeline : MonoBehaviour
 
             // Ready enemies take priority. Break ties by agility.
             var readyEnemies = look.Where(s => s.delay <= 0 && s.enemy != null && s.enemy.IsPlaying)
-                                   .OrderByDescending(s => s.agility)
+                                   .OrderByDescending(s => s.speed)
                                    .ToList();
 
             if (readyEnemies.Count > 0)
@@ -266,7 +266,7 @@ public sealed class Timeline : MonoBehaviour
                 var pick = readyEnemies[0];
                 AddEnemyBlock(pick.enemy);
                 // Reseed the picked enemy in the lookahead.
-                pick.delay = EnemyStepFromAgility(pick.enemy, pick.agility);
+                pick.delay = EnemyStepFromAgility(pick.enemy, pick.speed);
                 continue;
             }
 
@@ -298,10 +298,10 @@ public sealed class Timeline : MonoBehaviour
         return step;
     }
 
-    private int EnemyStepFromAgility(ActorInstance enemy, int agility)
+    private int EnemyStepFromAgility(ActorInstance enemy, int speed)
     {
         int baseStep = RNG.Int(enemyBaseMinStep, enemyBaseMaxStep);
-        float raw = baseStep - (agility / Mathf.Max(1f, enemyAgilityDivisor));
+        float raw = baseStep - (speed / Mathf.Max(1f, enemySpeedDivisor));
         int step = Mathf.Clamp(Mathf.RoundToInt(raw), 1, 16);
         return step;
     }
@@ -314,11 +314,11 @@ public sealed class Timeline : MonoBehaviour
         for (int i = 0; i < blocks.Count; i++)
         {
             var b = blocks[i];
-            if (b.view == null) continue;
+            if (b.instance == null) continue;
 
             float x = i * UnitWidth;
-            b.view.Rect.anchoredPosition = new Vector2(x, 0f);
-            b.view.Resize(blockSize, blockSize);
+            b.instance.Rect.anchoredPosition = new Vector2(x, 0f);
+            b.instance.Resize(blockSize, blockSize);
         }
 
         // Content width large enough to hold all blocks or at least the viewport.
@@ -337,11 +337,11 @@ public sealed class Timeline : MonoBehaviour
             portrait = SpriteLibrary.GUI["TeamIcon"]
         };
 
-        var view = Instantiate(blockPrefab, content);
-        view.SetPortraitYOffset(0f);              // Center portrait for hero blocks
-        view.SetSquareMask(blockSize);
-        view.Set(b.label, b.color, b.portrait);
-        b.view = view;
+        var go = Instantiate(blockPrefab, content);
+        go.SetPortraitYOffset(0f);              // Center portrait for hero blocks
+        go.SetSquareMask(blockSize);
+        go.Set(b.label, b.color, b.portrait);
+        b.instance = go;
 
         blocks.Add(b);
     }
@@ -359,10 +359,10 @@ public sealed class Timeline : MonoBehaviour
             portrait = enemy.Render.thumbnail.sprite
         };
 
-        var view = Instantiate(blockPrefab, content);
-        view.SetSquareMask(blockSize);
-        view.Set(b.label, b.color, b.portrait);
-        b.view = view;
+        var go = Instantiate(blockPrefab, content);
+        go.SetSquareMask(blockSize);
+        go.Set(b.label, b.color, b.portrait);
+        b.instance = go;
 
         blocks.Add(b);
     }
@@ -374,7 +374,7 @@ public sealed class Timeline : MonoBehaviour
             var b = blocks[i];
             if (!b.isHero && (b.enemy == null || !b.enemy.IsPlaying))
             {
-                if (b.view != null) Destroy(b.view.gameObject);
+                if (b.instance != null) Destroy(b.instance.gameObject);
                 blocks.RemoveAt(i);
             }
         }
@@ -390,7 +390,7 @@ public sealed class Timeline : MonoBehaviour
         for (int i = 0; i < removable; i++)
         {
             var b = blocks[0];
-            if (b.view != null) Destroy(b.view.gameObject);
+            if (b.instance != null) Destroy(b.instance.gameObject);
             blocks.RemoveAt(0);
         }
 
@@ -440,7 +440,7 @@ public sealed class Timeline : MonoBehaviour
     private void Clear()
     {
         foreach (var b in blocks)
-            if (b.view != null) Destroy(b.view.gameObject);
+            if (b.instance != null) Destroy(b.instance.gameObject);
 
         blocks.Clear();
         sim.Clear();

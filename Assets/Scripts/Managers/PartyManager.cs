@@ -399,8 +399,8 @@ public class PartyManager : MonoBehaviour
         float targetWidth = backImage.rectTransform.rect.width * (value / maxValue);
 
         // Cancel any existing Animation on this row
-        if (barAnimations.TryGetValue(row, out Coroutine routine))
-            StopCoroutine(routine);
+        if (barAnimations.TryGetValue(row, out Coroutine runningCoroutine))
+            StopCoroutine(runningCoroutine);
 
         // BounceRoutine new Animation
         barAnimations[row] = StartCoroutine(AnimateBarFillRoutine(row, fillImage.rectTransform, targetWidth));

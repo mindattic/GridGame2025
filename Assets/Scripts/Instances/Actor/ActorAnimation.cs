@@ -23,7 +23,6 @@ namespace Assets.Scripts.Instances.Actor
         private Vector3 scale { get => instance.Scale; set => instance.Scale = value; }
 
         private ActorInstance instance;
-
         private float wiggleFocus;
         private float wiggleAmplitude;
 
@@ -116,6 +115,7 @@ namespace Assets.Scripts.Instances.Actor
             );
 
             float elapsedTime = 0f;
+            Coroutine runningCoroutine = null;
 
             while (elapsedTime < duration)
             {
@@ -134,7 +134,8 @@ namespace Assets.Scripts.Instances.Actor
                 yield return Wait.OneTick();
             }
 
-            if (routine != null)
+            // Run additional routine (if provided)
+            if (routine != null && runningCoroutine == null)
                 yield return instance.StartCoroutine(routine);
 
             elapsedTime = 0f;
@@ -162,7 +163,7 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// Starts a bump animation toward the target. Optional routine runs at the bump apex.
         /// </summary>
-        public void Bump(ActorInstance target, IEnumerator routine = null) 
+        public void Bump(ActorInstance target, IEnumerator routine = null)
             => instance.StartCoroutine(BumpRoutine(target, routine));
 
         /// <summary>
@@ -222,7 +223,7 @@ namespace Assets.Scripts.Instances.Actor
             if (routine != null)
                 instance.StartCoroutine(routine);
 
-           
+
             elapsedTime = 0f;
             while (elapsedTime < returnDuration)
             {
@@ -330,6 +331,7 @@ namespace Assets.Scripts.Instances.Actor
             float rotY = 0f;
             float spinFocus = g.TileSize * 24f;
             rotation = Geometry.Rotation(0f, rotY, 0f);
+            Coroutine runningCoroutine = null;
 
             bool isDone = false;
             while (!isDone)
@@ -340,7 +342,8 @@ namespace Assets.Scripts.Instances.Actor
                 {
                     rotY = 90f;
 
-                    if (routine != null)
+                    // Run additional routine (if provided)
+                    if (routine != null && runningCoroutine == null)
                         yield return instance.StartCoroutine(routine);
 
                     hasTriggered = true;
@@ -378,6 +381,7 @@ namespace Assets.Scripts.Instances.Actor
             float rotY = 0f;
             float speed = g.TileSize * 24f;
             rotation = Geometry.Rotation(0f, rotY, 0f);
+            Coroutine runningCoroutine = null;
 
             bool isDone = false;
             while (!isDone)
@@ -387,7 +391,8 @@ namespace Assets.Scripts.Instances.Actor
 
                 if (!hasTriggered && rotY >= 240f)
                 {
-                    if (routine != null)
+                    // Run additional routine (if provided)
+                    if (routine != null && runningCoroutine == null)
                         yield return instance.StartCoroutine(routine);
 
                     hasTriggered = true;
@@ -474,47 +479,47 @@ namespace Assets.Scripts.Instances.Actor
         /// <summary>
         /// ProcessRoutine a wiggle on the turn delay text with damping, then settles back to zero. Optional routine runs after settle.
         /// </summary>
-        public void TurnDelayWiggle(IEnumerator routine = null)
-        {
-            if (!isActive || !isAlive)
-                return;
+        //public void TurnDelayWiggle(IEnumerator routine = null)
+        //{
+        //    if (!isActive || !isAlive)
+        //        return;
 
-            instance.StartCoroutine(TurnDelayWiggleRoutine(routine));
-        }
+        //    instance.StartCoroutine(TurnDelayWiggleRoutine(routine));
+        //}
 
         /// <summary>
         /// Oscillates the turn delay text with damping, then smoothly returns to zero. Optionally runs a routine routine.
         /// </summary>
-        private IEnumerator TurnDelayWiggleRoutine(IEnumerator routine = null)
-        {
-            float timeElapsed = 0f;
-            float amplitude = 10f;
-            float dampingRate = 0.99f;
-            float cutoff = 0.1f;
-            render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        //private IEnumerator TurnDelayWiggleRoutine(IEnumerator routine = null)
+        //{
+        //    float timeElapsed = 0f;
+        //    float amplitude = 10f;
+        //    float dampingRate = 0.99f;
+        //    float cutoff = 0.1f;
+        //    render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
 
-            while (amplitude > cutoff)
-            {
-                timeElapsed += Time.deltaTime;
-                float rotZ = Mathf.Sin(timeElapsed * wiggleFocus) * amplitude;
-                render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
-                amplitude *= dampingRate;
-                yield return Wait.OneTick();
-            }
+        //    while (amplitude > cutoff)
+        //    {
+        //        timeElapsed += Time.deltaTime;
+        //        float rotZ = Mathf.Sin(timeElapsed * wiggleFocus) * amplitude;
+        //        render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, rotZ);
+        //        amplitude *= dampingRate;
+        //        yield return Wait.OneTick();
+        //    }
 
-            float currentZ = render.turnDelayText.transform.rotation.eulerAngles.z;
-            while (Mathf.Abs(Mathf.DeltaAngle(currentZ, 0f)) > cutoff)
-            {
-                timeElapsed += Time.deltaTime * wiggleFocus;
-                currentZ = Mathf.LerpAngle(currentZ, 0f, timeElapsed);
-                render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, currentZ);
-                yield return Wait.OneTick();
-            }
+        //    float currentZ = render.turnDelayText.transform.rotation.eulerAngles.z;
+        //    while (Mathf.Abs(Mathf.DeltaAngle(currentZ, 0f)) > cutoff)
+        //    {
+        //        timeElapsed += Time.deltaTime * wiggleFocus;
+        //        currentZ = Mathf.LerpAngle(currentZ, 0f, timeElapsed);
+        //        render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, currentZ);
+        //        yield return Wait.OneTick();
+        //    }
 
-            if (routine != null)
-                yield return instance.StartCoroutine(routine);
+        //    if (routine != null)
+        //        yield return instance.StartCoroutine(routine);
 
-            render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
-        }
+        //    render.turnDelayText.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        //}
     }
 }

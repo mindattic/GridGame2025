@@ -30,6 +30,7 @@ public class FadeOverlayInstance : MonoBehaviour
         // Start fully opaque
         SetAlpha(1f);
         float elapsedTime = 0f;
+        Coroutine runningCoroutine = null;
 
         // Reduce alpha to 0 over time
         while (elapsedTime < fadeDuration)
@@ -43,8 +44,8 @@ public class FadeOverlayInstance : MonoBehaviour
         // Ensure fully transparent
         SetAlpha(0f);
 
-        // Run additional routine if provided
-        if (routine != null)
+        // Run additional routine (if provided)
+        if (routine != null && runningCoroutine == null)
             yield return routine;
     }
 
@@ -58,6 +59,7 @@ public class FadeOverlayInstance : MonoBehaviour
         // Start fully transparent
         SetAlpha(0f);
         float elapsedTime = 0f;
+        Coroutine runningCoroutine = null;
 
         // Increase alpha to 1 over time
         while (elapsedTime < fadeDuration)
@@ -71,8 +73,8 @@ public class FadeOverlayInstance : MonoBehaviour
         // Ensure fully opaque
         SetAlpha(1f);
 
-        // Run additional routine if provided
-        if (routine != null)
+        // Run additional routine (if provided)
+        if (routine != null && runningCoroutine == null)
             yield return routine;
     }
 
@@ -84,8 +86,9 @@ public class FadeOverlayInstance : MonoBehaviour
     private IEnumerator ShowRoutine(IEnumerator routine = null)
     {
         SetAlpha(0f);
+        Coroutine runningCoroutine = null;
 
-        if (routine != null)
+        if (routine != null && runningCoroutine == null)
             yield return routine;
     }
 
@@ -97,8 +100,10 @@ public class FadeOverlayInstance : MonoBehaviour
     private IEnumerator HideRoutine(IEnumerator routine = null)
     {
         SetAlpha(1f);
+        Coroutine runningCoroutine = null;
 
-        if (routine != null)
+        // Run additional routine (if provided)
+        if (routine != null && runningCoroutine == null)
             yield return routine;
     }
 

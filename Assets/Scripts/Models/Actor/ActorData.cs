@@ -12,8 +12,10 @@ public class ActorData
     public string Expectations;
     public string Lore;
 
-    public ActorGroup Groups { get; set; }
+    // Base XP awarded when this actor is defeated. Can be overridden per actor Data().
+    public int BonusXP = 10;
 
+    public ActorGroup Groups { get; set; }
 
 
     public ActorStats BaseStats;
@@ -37,6 +39,8 @@ public class ActorData
         Level = other.Level;
         Character = other.Character;
         Description = other.Description;
+
+        BonusXP = other.BonusXP;
 
         BaseStats = other.BaseStats != null ? new ActorStats(other.BaseStats) : new ActorStats();
         StatGrowth = other.StatGrowth != null ? new StatGrowth(other.StatGrowth) : new StatGrowth();
@@ -66,11 +70,6 @@ public class ActorData
         return GetStatsWithOptions(level, DefaultMilestoneWindow, true);
     }
 
-    public ActorStats GetStatsLegacy(int level)
-    {
-        return GetStatsWithOptions(level, 1, false);
-    }
-
     public ActorStats GetStatsWithOptions(int level, int milestoneWindow, bool distributeMilestones)
     {
         if (level < 1) level = 1;
@@ -78,21 +77,21 @@ public class ActorData
 
         var stats = new ActorStats
         {
-            Level = 1f,
-            Strength = BaseStats != null ? BaseStats.Strength : 0f,
-            Vitality = BaseStats != null ? BaseStats.Vitality : 0f,
-            Agility = BaseStats != null ? BaseStats.Agility : 0f,
-            Speed = BaseStats != null ? BaseStats.Speed : 0f,
-            Stamina = BaseStats != null ? BaseStats.Stamina : 0f,
-            Intelligence = BaseStats != null ? BaseStats.Intelligence : 0f,
-            Wisdom = BaseStats != null ? BaseStats.Wisdom : 0f,
-            Luck = BaseStats != null ? BaseStats.Luck : 0f,
-            PreviousHP = 0f,
-            HP = 0f,
-            MaxHP = 0f,
-            PreviousAP = 0f,
-            AP = 0f,
-            MaxAP = 100f
+            Level = 1,
+            Strength = BaseStats != null ? BaseStats.Strength : 0,
+            Vitality = BaseStats != null ? BaseStats.Vitality : 0,
+            Agility = BaseStats != null ? BaseStats.Agility : 0,
+            Speed = BaseStats != null ? BaseStats.Speed : 0,
+            Stamina = BaseStats != null ? BaseStats.Stamina : 0,
+            Intelligence = BaseStats != null ? BaseStats.Intelligence : 0,
+            Wisdom = BaseStats != null ? BaseStats.Wisdom : 0,
+            Luck = BaseStats != null ? BaseStats.Luck : 0,
+            PreviousHP = 0,
+            HP = 0,
+            MaxHP = 0,
+            PreviousAP = 0,
+            AP = 0,
+            MaxAP = 100
         };
 
         var distributed = new List<(int start, int end, StatGrowth perLevel)>();
@@ -125,14 +124,14 @@ public class ActorData
         {
             stats.Level = L;
 
-            stats.Strength += StatGrowth != null ? StatGrowth.Strength : 0f;
-            stats.Vitality += StatGrowth != null ? StatGrowth.Vitality : 0f;
-            stats.Agility += StatGrowth != null ? StatGrowth.Agility : 0f;
-            stats.Speed += StatGrowth != null ? StatGrowth.Speed : 0f;
-            stats.Stamina += StatGrowth != null ? StatGrowth.Stamina : 0f;
-            stats.Intelligence += StatGrowth != null ? StatGrowth.Intelligence : 0f;
-            stats.Wisdom += StatGrowth != null ? StatGrowth.Wisdom : 0f;
-            stats.Luck += StatGrowth != null ? StatGrowth.Luck : 0f;
+            stats.Strength += StatGrowth != null ? StatGrowth.Strength : 0;
+            stats.Vitality += StatGrowth != null ? StatGrowth.Vitality : 0;
+            stats.Agility += StatGrowth != null ? StatGrowth.Agility : 0;
+            stats.Speed += StatGrowth != null ? StatGrowth.Speed : 0;
+            stats.Stamina += StatGrowth != null ? StatGrowth.Stamina : 0;
+            stats.Intelligence += StatGrowth != null ? StatGrowth.Intelligence : 0;
+            stats.Wisdom += StatGrowth != null ? StatGrowth.Wisdom : 0;
+            stats.Luck += StatGrowth != null ? StatGrowth.Luck : 0;
 
             if (distributeMilestones)
             {
@@ -177,7 +176,7 @@ public class ActorData
         stats.HP = Formulas.Health(stats);
         stats.MaxHP = stats.HP;
 
-        if (stats.HP < 1f) stats.HP = 0f;
+        if (stats.HP < 1f) stats.HP = 0;
 
         return stats;
     }

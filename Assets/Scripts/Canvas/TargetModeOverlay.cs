@@ -17,7 +17,7 @@ public class TargetModeOverlay : MonoBehaviour
 
     private Image image;                 // Background image that we fade
     private TextMeshProUGUI label;       // Child label we also fade
-    private Coroutine fadeCoroutine;     // Active fade routine if any
+    private Coroutine runningCoroutine;  // Active fade routine if any
 
     // Fade parameters
     [SerializeField] private float minAlpha = 0f;          // Fully transparent
@@ -95,7 +95,7 @@ public class TargetModeOverlay : MonoBehaviour
         StopFade();
         float from = GetAlpha();
         float to = targetVisible ? maxAlpha : minAlpha;
-        fadeCoroutine = StartCoroutine(FadeRoutine(from, to, duration));
+        runningCoroutine = StartCoroutine(FadeRoutine(from, to, duration));
     }
 
     // ---------------------------------------------------------------------
@@ -114,10 +114,10 @@ public class TargetModeOverlay : MonoBehaviour
 
     private void StopFade()
     {
-        if (fadeCoroutine != null)
+        if (runningCoroutine != null)
         {
-            StopCoroutine(fadeCoroutine);
-            fadeCoroutine = null;
+            StopCoroutine(runningCoroutine);
+            runningCoroutine = null;
         }
     }
 
@@ -159,7 +159,7 @@ public class TargetModeOverlay : MonoBehaviour
         if (seconds <= 0f)
         {
             SetAlpha(to);
-            fadeCoroutine = null;
+            runningCoroutine = null;
             yield break;
         }
 
@@ -173,7 +173,7 @@ public class TargetModeOverlay : MonoBehaviour
         }
 
         SetAlpha(to);
-        fadeCoroutine = null;
+        runningCoroutine = null;
     }
 
     // Apply alpha to both background and label

@@ -36,6 +36,15 @@ public class DebugManager : MonoBehaviour
     public bool isTimerInfinite = false;
     public bool isEnemyStunned = false;
 
+
+    public void AddExperience()
+    {
+        var hero = RNG.Hero;
+        var nextLevel = ExperienceHelper.NextLevel(hero.Stats.Level);
+        var xp = (nextLevel * RNG.Float(0.01f, 0.33f)).ToInt();
+        ExperienceHelper.Gain(hero, xp);
+    }
+
     /// <summary>
     /// Lays out a single horizontal pincer lane for quick debugging.
     /// Spawns six slimes, destroys all other enemies, teleports up to two heroes and the six slimes

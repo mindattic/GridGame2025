@@ -25,7 +25,9 @@ public static class FontLibrary
         fonts = new Dictionary<string, TMP_FontAsset>
         {
             { "Damage", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
-            { "Heal", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Arial") },
+            { "Heal", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
+            { "GainExperience", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Arial") },
+
         };
 
         isLoaded = true;

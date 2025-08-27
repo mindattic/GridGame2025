@@ -12,8 +12,24 @@ namespace Assets.Helpers
     public static class GameHelper
     {
 
-        //public static Canvas Canvas => CanvasHelper.Canvas;
-        //public static RectTransform CanvasRect => CanvasHelper.CanvasRect;
+        //
+        //
+
+
+        public static float DragSensitiviry
+        {
+            get => GameManager.instance.dragSensitivity;
+            set => GameManager.instance.dragSensitivity = value;
+        }
+
+       
+
+        public static float CoinCountMulitiplier
+        {
+            get => GameManager.instance.coinCountMultiplier;
+            set => GameManager.instance.coinCountMultiplier = value;
+        }
+
 
         public static bool ReloadThumbnailSettings
         {
@@ -178,10 +194,24 @@ namespace Assets.Helpers
 
         // CoinManager
         public static CoinCounter CoinCounter => GameManager.instance.coinCounter;
+
+        // Move coin total into the active save instead of GameManager
         public static int TotalCoins
         {
-            get => GameManager.instance.totalCoins;
-            set => GameManager.instance.totalCoins = value;
+            get
+            {
+                var save = ProfileHelper.CurrentProfile?.CurrentSave;
+                return save?.Global?.TotalCoins ?? 0;
+            }
+            set
+            {
+                var save = ProfileHelper.CurrentProfile?.CurrentSave;
+                if (save == null || save.Global == null) return;
+
+                save.Global.TotalCoins = Mathf.Max(0, value);
+                // Persist immediately; consider batching if this is called frequently
+                ProfileHelper.Save(true);
+            }
         }
     }
 

@@ -135,7 +135,6 @@ namespace Assets.Helpers
                 }
 
                 folders = Directory.GetDirectories(FolderHelper.Folder.Profiles).ToList();
-
                 profiles.Clear();
 
                 foreach (var folder in folders)
@@ -145,6 +144,9 @@ namespace Assets.Helpers
                     if (profile != null)
                     {
                         profiles[key] = profile;
+
+                        // Ensure a current save exists for each loaded profile
+                        EnsureCurrentSave(profile);
                     }
                     else
                     {
@@ -160,6 +162,9 @@ namespace Assets.Helpers
 
                 if (string.IsNullOrWhiteSpace(currentProfileKey) || !profiles.ContainsKey(currentProfileKey))
                     currentProfileKey = profiles.Keys.First();
+
+                // Also ensure current save on the selected profile
+                EnsureCurrentSave(CurrentProfile);
 
                 return true;
             }
@@ -347,9 +352,8 @@ namespace Assets.Helpers
                 // Load settings or fall back to defaults.
                 profile.Settings = LoadSettings(profile);
 
-                // Ensure a current save is selected if any exist.
-                if (profile.HasSaves && profile.CurrentSave == null)
-                    profile.CurrentSave = profile.LatestSave;
+                // Ensure a current save exists/selected
+                EnsureCurrentSave(profile);
 
                 return profile;
             }
@@ -357,6 +361,100 @@ namespace Assets.Helpers
             {
                 Debug.LogError($"[ProfileHelper] GetProfile failed for '{key}': {ex.Message}");
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Ensures the profile has a valid CurrentSave. Creates and persists a default one if missing.
+        /// </summary>
+        public static void EnsureCurrentSave(Profile profile)
+        {
+            if (profile == null) return;
+
+            if (profile.SaveStates == null)
+                profile.SaveStates = new List<SaveState>();
+
+            if (profile.SaveStates.Any())
+            {
+                if (profile.CurrentSave == null)
+                    profile.CurrentSave = profile.LatestSave;
+                return;
+            }
+
+            // Create and persist a default save
+            try
+            {
+                var newSave = new SaveState(
+                    1,
+                    DateTime.UtcNow,
+                    new GlobalSaveData(DefaultGlobal),
+                    new StageSaveData(DefaultStage),
+                    new RosterSaveData(DefaultRoster),
+                    new PartySaveData(DefaultParty));
+
+                profile.SaveStates.Add(newSave);
+                profile.CurrentSave = newSave;
+
+                string savesDir = Path.Combine(profile.Folder, "Saves");
+                Directory.CreateDirectory(savesDir);
+                File.WriteAllText(Path.Combine(savesDir, newSave.FileName), JsonConvert.SerializeObject(newSave, Formatting.Indented));
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[ProfileHelper] EnsureCurrentSave failed for '{profile?.Key}': {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Creates a snapshot of the current save without changing CurrentSave.
+        /// The snapshot is written as AutoSave_yyyyMMdd_HHmmss.json and old snapshots are pruned.
+        /// </summary>
+        public static bool AutoSave(string reason = null, int maxSnapshots = 10)
+        {
+            if (!HasCurrentSave) return false;
+
+            try
+            {
+                var profile = CurrentProfile;
+                var src = profile.CurrentSave;
+                var snapshot = new SaveState(
+                    profile.SaveStates.Count + 1,
+                    DateTime.UtcNow,
+                    new GlobalSaveData(src.Global),
+                    new StageSaveData(src.Stage),
+                    new RosterSaveData(src.Roster),
+                    new PartySaveData(src.Party));
+
+                string savesDir = Path.Combine(profile.Folder, "Saves");
+                Directory.CreateDirectory(savesDir);
+
+                string stamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
+                string filename = $"AutoSave_{stamp}.json";
+                string path = Path.Combine(savesDir, filename);
+
+                File.WriteAllText(path, JsonConvert.SerializeObject(snapshot, Formatting.Indented));
+
+                // Optionally keep a record in memory (not required for functionality)
+                profile.SaveStates.Insert(0, snapshot);
+
+                // Prune old autosaves
+                var autos = Directory.GetFiles(savesDir, "AutoSave_*.json")
+                                     .OrderByDescending(f => f)
+                                     .ToList();
+                foreach (var old in autos.Skip(maxSnapshots))
+                {
+                    try { File.Delete(old); } catch { /* ignore */ }
+                }
+
+                if (!string.IsNullOrEmpty(reason))
+                    Debug.Log($"[ProfileHelper] AutoSave created: {filename} ({reason})");
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[ProfileHelper] AutoSave failed: {ex.Message}");
+                return false;
             }
         }
 

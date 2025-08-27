@@ -22,7 +22,8 @@ public partial class DebugWindow
     {
         switch (selectedOption)
         {
-
+          
+            case DebugOptions.AddExperience: g.DebugManager.AddExperience(); break;
             case DebugOptions.ArrangeSingleCombo: g.DebugManager.ArrangeSingleCombo(); break;
             case DebugOptions.ArrangeDoubleCombo: g.DebugManager.ArrangeDoubleCombo(); break;
             case DebugOptions.ArrangeTripleCombo: g.DebugManager.ArrangeTripleCombo(); break;

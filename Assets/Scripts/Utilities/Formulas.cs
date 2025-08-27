@@ -129,7 +129,7 @@ public static class Formulas
     /// </summary>
     public static float Health(ActorStats stats)
     {
-        return 50f + stats.Vitality * 10f + stats.Level * 2f;
+        return Mathf.Floor(50f + stats.Vitality * 10f + stats.Level * 2f);
     }
 
     /// <summary>

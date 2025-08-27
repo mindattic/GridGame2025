@@ -39,7 +39,7 @@ public class SynergyLineInstance : MonoBehaviour
 
     private bool playing;
     private bool despawnRequested;
-    private Coroutine loopCo;
+    private Coroutine runningCoroutine;
 
     // Cached per-strand weights for reconfigure
     private float[] wNormPerStrand;
@@ -135,7 +135,7 @@ public class SynergyLineInstance : MonoBehaviour
         if (playing) return;
         playing = true;
         despawnRequested = false;
-        loopCo = StartCoroutine(LoopRoutine());
+        runningCoroutine = StartCoroutine(LoopRoutine());
     }
 
     /// <summary>

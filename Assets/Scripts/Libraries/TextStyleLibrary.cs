@@ -26,10 +26,12 @@ public static class TextStyleLibrary
 
         textStyles = new Dictionary<string, TextStyle>
         {
-            { "Damage", new TextStyle("Damage", FontLibrary.Get("Damage"), 32, ColorHelper.Solid.White, TextMotion.Bounce) },
-            { "Heal", new TextStyle("Heal", FontLibrary.Get("Heal"), 32, ColorHelper.Solid.Green, TextMotion.Float) },
-            { "CriticalHit", new TextStyle("CriticalHit", FontLibrary.Get("Damage"), 40, ColorHelper.Solid.Yellow, TextMotion.Bounce) },
-            { "GlancingBlow", new TextStyle("GlancingBlow", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.Gray, TextMotion.Float) }
+            { "Damage", new TextStyle("Damage", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.White, TextMotion.Bounce) },
+            { "Heal", new TextStyle("Heal", FontLibrary.Get("Heal"), 24, ColorHelper.Solid.Green, TextMotion.Float) },
+            { "CriticalHit", new TextStyle("CriticalHit", FontLibrary.Get("Damage"), 32, ColorHelper.Solid.Yellow, TextMotion.Bounce) },
+            { "GlancingBlow", new TextStyle("GlancingBlow", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.Gray, TextMotion.Float) },
+            { "LevelUp", new TextStyle("LevelUp", FontLibrary.Get("GainExperience"), 40, ColorHelper.Solid.Cyan, TextMotion.Bounce) },
+            { "GainExperience", new TextStyle("GainExperience", FontLibrary.Get("GainExperience"), 12, ColorHelper.Solid.White, TextMotion.Float) }
         };
     }
 

@@ -80,6 +80,7 @@ public enum CoinState
 public enum DebugOptions
 {
     None,
+    AddExperience,
     ArrangeSingleCombo,
     ArrangeDoubleCombo,
     ArrangeTripleCombo,
@@ -330,6 +331,20 @@ public enum TextureResolution
 {
     NormalResolution = 1024,
     HighResolution = 4096
+}
+
+public enum TargetFrameRate
+{
+    Fps60 = 60,
+    Fps45 = 45,
+    Fps30
+}
+
+public enum VSyncCount
+{
+    VSync2 = 2,
+    VSync1 = 1,
+    VSync0 = 0
 }
 
 [Flags]

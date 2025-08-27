@@ -45,6 +45,7 @@ namespace Assets.Helpers
         /// </summary>
         public static void FadeIn(IEnumerator routine = null)
         {
+
             var overlay = FadeOverlayHelper.Overlay;
             if (overlay != null)
             {

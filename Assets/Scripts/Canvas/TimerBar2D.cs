@@ -23,7 +23,7 @@ public class TimerBar2D : MonoBehaviour
 
     private float timeRemaining;
     private float maxWidth;
-    private Coroutine countdown;
+    private Coroutine runningCoroutine;
 
     private void Awake()
     {
@@ -82,13 +82,13 @@ public class TimerBar2D : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        if (countdown != null)
+        if (runningCoroutine != null)
         {
-            StopCoroutine(countdown);
-            countdown = null;
+            StopCoroutine(runningCoroutine);
+            runningCoroutine = null;
         }
 
-        countdown = StartCoroutine(CountdownRoutine());
+        runningCoroutine = StartCoroutine(CountdownRoutine());
     }
 
     /// <summary>
@@ -96,10 +96,10 @@ public class TimerBar2D : MonoBehaviour
     /// </summary>
     public void Pause()
     {
-        if (countdown != null)
+        if (runningCoroutine != null)
         {
-            StopCoroutine(countdown);
-            countdown = null;
+            StopCoroutine(runningCoroutine);
+            runningCoroutine = null;
         }
     }
 
@@ -204,7 +204,7 @@ public class TimerBar2D : MonoBehaviour
         g.SelectedHeroManager.Drop();
 
         // Clear handle
-        countdown = null;
+        runningCoroutine = null;
     }
 
     /// <summary>

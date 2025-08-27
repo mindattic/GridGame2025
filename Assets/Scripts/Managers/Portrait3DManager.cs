@@ -106,7 +106,7 @@ public class Portrait3DManager : MonoBehaviour
         }
     }
 
-    public void Dissolve(ActorInstance actor)
+    public void Dissolve(ActorInstance actor, IEnumerator routine = null)
     {
         var go = Instantiate(portraitPrefab, Vector2.zero, Quaternion.identity);
         var instance = go.GetComponent<Portrait3DInstance>();
@@ -120,7 +120,7 @@ public class Portrait3DManager : MonoBehaviour
         instance.startPosition = actor.Position;
 
         portraits.Add(instance);
-        StartCoroutine(instance.DissolveRoutine());
+        StartCoroutine(instance.DissolveRoutine(routine));
     }
 
     public IEnumerator SpawnPairRoutine(ActorPair actorPair)

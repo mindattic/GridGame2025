@@ -126,6 +126,7 @@
     <Compile Include="Assets\Scripts\Libraries\TextStyleLibrary.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAnimation.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
+    <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Timeline.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\StatGrowth.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TimelineBlockInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\Portrait2DManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\PrefabLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
@@ -249,10 +251,8 @@
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
-    <Compile Include="Assets\Scripts\Instances\TimelineBlockInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
-    <Compile Include="Assets\Scripts\Managers\VfxManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
@@ -261,6 +261,7 @@
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Pugilist.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Paladin.cs" />
+    <Compile Include="Assets\Scripts\Helpers\ExperienceHelper.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleInstance.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />

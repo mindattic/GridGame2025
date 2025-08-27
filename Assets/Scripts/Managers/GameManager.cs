@@ -14,22 +14,36 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
-    // Settings
-    public TextureResolution textureResolution = TextureResolution.NormalResolution;
-    public float dragSensitivity = 0.05f;
-
     // Device
     [HideInInspector] public string deviceType;
-    [HideInInspector] public int targetFramerate = 60;
-    [HideInInspector] public int vSyncCount = 2;
+
+    // Settings
+    [HideInInspector] public TextureResolution textureResolution = TextureResolution.NormalResolution;
+    [HideInInspector] public TargetFrameRate targetFramerate = TargetFrameRate.Fps60;
+    [HideInInspector] public VSyncCount vSyncCount = VSyncCount.VSync1;
+    [HideInInspector] public float dragSensitivity = 0.05f;
+    [HideInInspector] public float coinCountMultiplier = 0.05f;
+
+   
+    public float gameSpeed = 1.0f;
+    public bool applyMovementTilt = false;
+    
+    //Debug
+    public bool reloadThumbnailSettings = false;
 
     // Audio
     [HideInInspector] public AudioSource soundSource;
     [HideInInspector] public AudioSource musicSource;
 
-    // GUI
+    // Canvas
     [HideInInspector] public Card card;
     [HideInInspector] public TutorialPopup tutorialPopup;
+    [HideInInspector] public Vector2 viewport;
+    [HideInInspector] public float tileSize;
+    [HideInInspector] public Vector3 tileScale;
+    [HideInInspector] public Canvas canvas3D;
+    [HideInInspector] public WaveAnnouncement waveAnnouncement;
+    [HideInInspector] public TargetModeOverlay targetModeOverlay;
 
     // Managers
     [HideInInspector] public InputManager inputManager;
@@ -73,15 +87,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public FocusIndicator focusIndicator;
     [HideInInspector] public TargetIndicator targetIndicator;
 
-    // Canvas
-    [HideInInspector] public Vector2 viewport;
-    [HideInInspector] public float tileSize;
-    [HideInInspector] public Vector3 tileScale;
-    [HideInInspector] public Canvas canvas3D;
-    [HideInInspector] public WaveAnnouncement waveAnnouncement;
-    [HideInInspector] public TargetModeOverlay targetModeOverlay;
-
-    // Mouse
+    // Input
     [HideInInspector] public Vector3 touchPosition2D;
     [HideInInspector] public Vector3 touchPosition3D;
     [HideInInspector] public Vector3 touchOffset;
@@ -120,30 +126,23 @@ public class GameManager : Singleton<GameManager>
 
     // CoinManager
     [HideInInspector] public CoinCounter coinCounter;
-    [HideInInspector] public int totalCoins;
 
     // Audio indices
     [HideInInspector] public const int SoundSourceIndex = 0;
     [HideInInspector] public const int MusicSourceIndex = 1;
 
-    // Properties
-    public float gameFocus { get => Time.timeScale; set => Time.timeScale = value; }
-    public float previousGameFocus;
 
     // Debug
-    public bool reloadThumbnailSettings = false;
-    public float gameSpeed = 1.0f;
-    public bool applyMovementTilt = false;
+ 
 
     private void Awake()
     {
         if (!ProfileHelper.HasProfiles())
             return;
 
-        Application.targetFrameRate = targetFramerate;
-        QualitySettings.vSyncCount = vSyncCount;
-
-        previousGameFocus = Time.timeScale;
+        //Apply settings
+        Application.targetFrameRate = targetFramerate.ToInt();
+        QualitySettings.vSyncCount = VSyncCount.VSync1.ToInt();
 
         float width97Percent = UnitConversionHelper.World.VisibleRect().width * 0.97f;
         tileSize = width97Percent / 6f;
@@ -157,7 +156,6 @@ public class GameManager : Singleton<GameManager>
         dragThreshold = tileSize * 0.125f;
 
         ShakeIntensity.Initialize(tileSize);
-        totalCoins = 0;
 
         // Canvas
         tutorialPopup = GameObject.Find(GameObjectHelper.Game.TutorialPopup).GetComponent<TutorialPopup>();
