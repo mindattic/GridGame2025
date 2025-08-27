@@ -112,15 +112,14 @@
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Helpers\AlignmentHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopInSequence.cs" />
-    <Compile Include="Assets\Scripts\Models\Vector7.cs" />
     <Compile Include="Assets\Scripts\Instances\CombatTextInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Scorpion.cs" />
     <Compile Include="Assets\Scripts\Libraries\ActorLibrary.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameObjectHelper.cs" />
-    <Compile Include="Assets\Scripts\Instances\TimerBar3D.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Thief.cs" />
     <Compile Include="Assets\Scripts\Helpers\UnitConversionHelper.cs" />
+    <Compile Include="Assets\Scripts\Models\VectorStats.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />

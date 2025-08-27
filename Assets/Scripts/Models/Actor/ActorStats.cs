@@ -31,7 +31,7 @@ public class ActorStats : BaseStats
 
         Strength = other.Strength;
         Vitality = other.Vitality;
-        Agility = other.Agility;
+        Speed = other.Speed;
         Stamina = other.Stamina;
         Intelligence = other.Intelligence;
         Wisdom = other.Wisdom;

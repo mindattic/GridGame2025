@@ -2,35 +2,38 @@
 
 // Summary:
 //   Seven-component stat vector in this order:
-//   Strength, Vitality, Agility, Stamina, Intelligence, Wisdom, Luck.
+//   Strength, Vitality, Speed, Stamina, Intelligence, Wisdom, Luck.
 [System.Serializable]
-public struct Vector7
+public struct VectorStats
 {
     public float str;
     public float vit;
     public float agi;
+    public float spd;
     public float sta;
     public float intel;
     public float wis;
     public float lck;
 
-    public Vector7(float str, float vit, float agi, float sta, float intel, float wis, float lck)
+    public VectorStats(float str, float vit, float agi, float spd, float sta, float intel, float wis, float lck)
     {
         this.str = str;
         this.vit = vit;
         this.agi = agi;
+        this.spd = spd;
         this.sta = sta;
         this.intel = intel;
         this.wis = wis;
         this.lck = lck;
     }
 
-    public static Vector7 operator +(Vector7 a, Vector7 b)
+    public static VectorStats operator +(VectorStats a, VectorStats b)
     {
-        return new Vector7(
+        return new VectorStats(
             a.str + b.str,
             a.vit + b.vit,
             a.agi + b.agi,
+            a.spd + b.spd,
             a.sta + b.sta,
             a.intel + b.intel,
             a.wis + b.wis,
@@ -38,12 +41,13 @@ public struct Vector7
         );
     }
 
-    public static Vector7 operator *(Vector7 a, float m)
+    public static VectorStats operator *(VectorStats a, float m)
     {
-        return new Vector7(
+        return new VectorStats(
             a.str * m,
             a.vit * m,
             a.agi * m,
+            a.spd * m,
             a.sta * m,
             a.intel * m,
             a.wis * m,

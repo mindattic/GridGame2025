@@ -63,10 +63,11 @@ public class SynergyLineInstance : MonoBehaviour
             return;
         }
 
-        Vector7 weights = new Vector7(
+        VectorStats weights = new VectorStats(
             this.supporter.Stats.Strength + this.attacker.Stats.Strength,
             this.supporter.Stats.Vitality + this.attacker.Stats.Vitality,
             this.supporter.Stats.Agility + this.attacker.Stats.Agility,
+            this.supporter.Stats.Speed + this.attacker.Stats.Speed,
             this.supporter.Stats.Stamina + this.attacker.Stats.Stamina,
             this.supporter.Stats.Intelligence + this.attacker.Stats.Intelligence,
             this.supporter.Stats.Wisdom + this.attacker.Stats.Wisdom,
@@ -88,7 +89,7 @@ public class SynergyLineInstance : MonoBehaviour
     /// <summary>
     /// Gathers rendering components from endpoints, prepares strands, normalizes weights, and applies settings.
     /// </summary>
-    public void Configure(Vector7 weights)
+    public void Configure(VectorStats weights)
     {
         if (supporter == null || attacker == null)
         {
@@ -108,7 +109,7 @@ public class SynergyLineInstance : MonoBehaviour
         float[] w = new float[7];
         w[0] = Mathf.Max(0f, weights.str);
         w[1] = Mathf.Max(0f, weights.vit);
-        w[2] = Mathf.Max(0f, weights.agi);
+        w[2] = Mathf.Max(0f, weights.spd);
         w[3] = Mathf.Max(0f, weights.sta);
         w[4] = Mathf.Max(0f, weights.intel);
         w[5] = Mathf.Max(0f, weights.wis);

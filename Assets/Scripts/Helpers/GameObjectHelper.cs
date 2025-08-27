@@ -71,9 +71,7 @@ namespace Assets.Helper
             public const string Portraits = "Canvas/Portraits";
 
 
-            //public const string TimerBar3D = "TimerBar3D";
-
-
+   
             public const string CoinCounter = "Canvas/CoinCounter";
             public const string TutorialPopup = "Canvas/TutorialPopup";
             public const string TargetModeOverlay = "Canvas/TargetModeOverlay";

@@ -17,6 +17,7 @@ public class StatGrowth : BaseStats
         float strength,
         float vitality,
         float agility,
+        float speed,
         float stamina,
         float intelligence,
         float wisdom,
@@ -25,6 +26,7 @@ public class StatGrowth : BaseStats
         Strength = strength;
         Vitality = vitality;
         Agility = agility;
+        Speed = speed;
         Stamina = stamina;
         Intelligence = intelligence;
         Wisdom = wisdom;
@@ -38,6 +40,7 @@ public class StatGrowth : BaseStats
         Strength = other.Strength;
         Vitality = other.Vitality;
         Agility = other.Agility;
+        Speed = other.Speed;
         Stamina = other.Stamina;
         Intelligence = other.Intelligence;
         Wisdom = other.Wisdom;
@@ -63,6 +66,7 @@ public class StatGrowth : BaseStats
             Strength = a.Strength + b.Strength,
             Vitality = a.Vitality + b.Vitality,
             Agility = a.Agility + b.Agility,
+            Speed = a.Speed + b.Speed,
             Stamina = a.Stamina + b.Stamina,
             Intelligence = a.Intelligence + b.Intelligence,
             Wisdom = a.Wisdom + b.Wisdom,

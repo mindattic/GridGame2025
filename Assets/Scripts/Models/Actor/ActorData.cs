@@ -82,6 +82,7 @@ public class ActorData
             Strength = BaseStats != null ? BaseStats.Strength : 0f,
             Vitality = BaseStats != null ? BaseStats.Vitality : 0f,
             Agility = BaseStats != null ? BaseStats.Agility : 0f,
+            Speed = BaseStats != null ? BaseStats.Speed : 0f,
             Stamina = BaseStats != null ? BaseStats.Stamina : 0f,
             Intelligence = BaseStats != null ? BaseStats.Intelligence : 0f,
             Wisdom = BaseStats != null ? BaseStats.Wisdom : 0f,
@@ -108,6 +109,7 @@ public class ActorData
                     Strength = bonus.Strength / milestoneWindow,
                     Vitality = bonus.Vitality / milestoneWindow,
                     Agility = bonus.Agility / milestoneWindow,
+                    Speed = bonus.Speed / milestoneWindow,
                     Stamina = bonus.Stamina / milestoneWindow,
                     Intelligence = bonus.Intelligence / milestoneWindow,
                     Wisdom = bonus.Wisdom / milestoneWindow,
@@ -126,6 +128,7 @@ public class ActorData
             stats.Strength += StatGrowth != null ? StatGrowth.Strength : 0f;
             stats.Vitality += StatGrowth != null ? StatGrowth.Vitality : 0f;
             stats.Agility += StatGrowth != null ? StatGrowth.Agility : 0f;
+            stats.Speed += StatGrowth != null ? StatGrowth.Speed : 0f;
             stats.Stamina += StatGrowth != null ? StatGrowth.Stamina : 0f;
             stats.Intelligence += StatGrowth != null ? StatGrowth.Intelligence : 0f;
             stats.Wisdom += StatGrowth != null ? StatGrowth.Wisdom : 0f;
@@ -140,6 +143,7 @@ public class ActorData
                         stats.Strength += slice.perLevel.Strength;
                         stats.Vitality += slice.perLevel.Vitality;
                         stats.Agility += slice.perLevel.Agility;
+                        stats.Speed += slice.perLevel.Speed;
                         stats.Stamina += slice.perLevel.Stamina;
                         stats.Intelligence += slice.perLevel.Intelligence;
                         stats.Wisdom += slice.perLevel.Wisdom;
@@ -152,6 +156,7 @@ public class ActorData
                 stats.Strength += instant.Strength;
                 stats.Vitality += instant.Vitality;
                 stats.Agility += instant.Agility;
+                stats.Speed += instant.Speed;
                 stats.Stamina += instant.Stamina;
                 stats.Intelligence += instant.Intelligence;
                 stats.Wisdom += instant.Wisdom;
@@ -163,6 +168,7 @@ public class ActorData
         stats.Strength = Mathf.Floor(stats.Strength);
         stats.Vitality = Mathf.Floor(stats.Vitality);
         stats.Agility = Mathf.Floor(stats.Agility);
+        stats.Speed = Mathf.Floor(stats.Speed);
         stats.Stamina = Mathf.Floor(stats.Stamina);
         stats.Intelligence = Mathf.Floor(stats.Intelligence);
         stats.Wisdom = Mathf.Floor(stats.Wisdom);

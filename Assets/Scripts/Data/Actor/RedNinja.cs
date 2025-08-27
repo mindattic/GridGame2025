@@ -21,7 +21,8 @@ namespace Assets.Data.Actor
                     Level = 1,
                     Strength = 7f,
                     Vitality = 4f,
-                    Agility = 7f,
+                    Agility = 8f,
+                    Speed = 7f,
                     Stamina = 5f,
                     Intelligence = 3f,
                     Wisdom = 2f,
@@ -31,7 +32,8 @@ namespace Assets.Data.Actor
                 {
                     Strength = 1.55f,
                     Vitality = 1.0f,
-                    Agility = 1.6f,
+                    Agility = 1.8f,
+                    Speed = 1.6f,
                     Stamina = 1.1f,
                     Intelligence = 0.6f,
                     Wisdom = 0.5f,
@@ -39,10 +41,10 @@ namespace Assets.Data.Actor
                 },
                 MilestoneStatGrowth = new Dictionary<int, StatGrowth>
                 {
-                    { 5, new StatGrowth { Strength = 1.7f, Vitality = 1.0f, Agility = 1.9f, Stamina = 1.1f, Intelligence = 0.5f, Wisdom = 0.5f, Luck = 1.1f } },
-                    { 10, new StatGrowth { Strength = 2.1f, Vitality = 1.2f, Agility = 2.2f, Stamina = 1.4f, Intelligence = 0.9f, Wisdom = 0.8f, Luck = 1.4f } },
-                    { 20, new StatGrowth { Strength = 2.6f, Vitality = 1.5f, Agility = 2.7f, Stamina = 1.8f, Intelligence = 1.4f, Wisdom = 1.0f, Luck = 1.9f } },
-                    { 40, new StatGrowth { Strength = 3.4f, Vitality = 2.0f, Agility = 3.5f, Stamina = 2.3f, Intelligence = 1.9f, Wisdom = 1.5f, Luck = 2.3f } }
+                    { 5,  new StatGrowth { Strength = 1.7f, Vitality = 1.0f, Agility = 2.1f, Speed = 1.9f, Stamina = 1.1f, Intelligence = 0.5f, Wisdom = 0.5f, Luck = 1.1f } },
+                    { 10, new StatGrowth { Strength = 2.1f, Vitality = 1.2f, Agility = 2.5f, Speed = 2.2f, Stamina = 1.4f, Intelligence = 0.9f, Wisdom = 0.8f, Luck = 1.4f } },
+                    { 20, new StatGrowth { Strength = 2.6f, Vitality = 1.5f, Agility = 3.0f, Speed = 2.7f, Stamina = 1.8f, Intelligence = 1.4f, Wisdom = 1.0f, Luck = 1.9f } },
+                    { 40, new StatGrowth { Strength = 3.4f, Vitality = 2.0f, Agility = 3.8f, Speed = 3.5f, Stamina = 2.3f, Intelligence = 1.9f, Wisdom = 1.5f, Luck = 2.3f } }
                 },
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings

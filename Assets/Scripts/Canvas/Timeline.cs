@@ -212,9 +212,9 @@ public sealed class Timeline : MonoBehaviour
 
         foreach (var e in g.Actors.Enemies.Where(x => x != null && x.IsPlaying))
         {
-            int agi = e.Stats.Agility.ToInt();
-            int seed = EnemyStepFromAgility(e, agi);
-            sim.Add(new EnemySim { enemy = e, delay = seed, agility = agi });
+            int spd = e.Stats.Speed.ToInt();
+            int seed = EnemyStepFromAgility(e, spd);
+            sim.Add(new EnemySim { enemy = e, delay = seed, agility = spd });
 
             // UI label will be set after forecast is extended (see UpdateAllEnemyDelayLabels).
         }
@@ -292,8 +292,8 @@ public sealed class Timeline : MonoBehaviour
         var heroes = g.Actors.Heroes.Where(h => h != null && h.IsPlaying).ToList();
         if (heroes.Count == 0) return Mathf.Max(1, Mathf.RoundToInt(heroBaseStep));
 
-        float avgAgi = heroes.Average(h => (float)h.Stats.Agility.ToInt());
-        float raw = heroBaseStep - (avgAgi / Mathf.Max(1f, heroAgilityDivisor));
+        float avgSpeed = heroes.Average(h => h.Stats.Speed);
+        float raw = heroBaseStep - (avgSpeed / Mathf.Max(1f, heroAgilityDivisor));
         int step = Mathf.Clamp(Mathf.RoundToInt(raw), 1, 12);
         return step;
     }

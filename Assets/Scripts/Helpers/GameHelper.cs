@@ -173,7 +173,6 @@ namespace Assets.Helpers
 
         public static List<TileInstance> Tiles => GameManager.instance.tiles;
 
-        //public static TimerBar3D TimerBar3D => GameManager.instance.timerBar3D;
         public static RectTransform PortraitsContainer => GameManager.instance.portraitsContainer;
 
 

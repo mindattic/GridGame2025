@@ -43,6 +43,9 @@ public class PartyManager : MonoBehaviour
     private RectTransform vitRow;
     private RectTransform agiRow;
     private RectTransform spdRow;
+    private RectTransform staRow;
+    private RectTransform intRow;
+    private RectTransform wisRow;
     private RectTransform lckRow;
     private float centeredX;
 
@@ -91,6 +94,9 @@ public class PartyManager : MonoBehaviour
         vitRow = panel.transform.GetChild("VIT").GetComponent<RectTransform>();
         agiRow = panel.transform.GetChild("AGI").GetComponent<RectTransform>();
         spdRow = panel.transform.GetChild("SPD").GetComponent<RectTransform>();
+        staRow = panel.transform.GetChild("STA").GetComponent<RectTransform>();
+        intRow = panel.transform.GetChild("INT").GetComponent<RectTransform>();
+        wisRow = panel.transform.GetChild("WIS").GetComponent<RectTransform>();
         lckRow = panel.transform.GetChild("LCK").GetComponent<RectTransform>();
 
         float parentWidth = statsDisplay.rect.width;
@@ -370,8 +376,11 @@ public class PartyManager : MonoBehaviour
         UpdateStatRow(hpRow, "HP", stats.HP, stats.MaxHP);
         UpdateStatRow(strRow, "STR", stats.Strength); // Assuming max stat value is 100
         UpdateStatRow(vitRow, "VIT", stats.Vitality);
-        UpdateStatRow(agiRow, "AGI", stats.Agility);
-        UpdateStatRow(spdRow, "SPD", stats.Intelligence);
+        UpdateStatRow(agiRow, "SPD", stats.Agility);
+        UpdateStatRow(spdRow, "SPD", stats.Speed);
+        UpdateStatRow(staRow, "STA", stats.Stamina);
+        UpdateStatRow(intRow, "INT", stats.Intelligence);
+        UpdateStatRow(wisRow, "WIS", stats.Wisdom);
         UpdateStatRow(lckRow, "LCK", stats.Luck);
     }
 

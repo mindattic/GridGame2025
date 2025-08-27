@@ -33,6 +33,12 @@ public enum HitOutcome
 /// </summary>
 public static class Formulas
 {
+    // Add explicit level advantage so +5 feels "nearly impossible"
+    private const float HitShiftPerLevel = 4f;        // +4% hit per level advantage
+    private const float DamageScalePerLevel = 1.10f;  // +10% damage per level advantage
+    private static int LevelAdvantage(ActorStats atk, ActorStats def)
+        => Mathf.RoundToInt(atk.Level - def.Level);
+
     // Note: Do not keep cached managers here. These helpers must stay pure.
 
     /// <summary>
@@ -65,8 +71,9 @@ public static class Formulas
     /// </summary>
     public static float LuckModifier(ActorStats stats)
     {
-        float multiplier = 0.01f * stats.Level;
-        return RNG.Float(1f, 1f + stats.Luck * multiplier);
+        // Make Luck a small additive bonus, not a huge RNG spike that scales with Level.
+        // ~0–20 points at 0–100 Luck
+        return Mathf.Clamp(stats.Luck * 0.2f, 0f, 20f);
     }
 
     /// <summary>
@@ -75,10 +82,9 @@ public static class Formulas
     /// </summary>
     public static float Accuracy(ActorStats stats)
     {
-        float baseAccuracy = 75f + stats.Level * 0.5f;
-        float precision = stats.Wisdom * 1.25f;
+        float baseAccuracy = 75f + stats.Level * 0.25f; // slightly softer level scaling
+        float precision = stats.Wisdom * 0.8f;          // lower coeff to avoid easy 95% caps
         float luck = LuckModifier(stats);
-
         return baseAccuracy + precision + luck;
     }
 
@@ -88,11 +94,12 @@ public static class Formulas
     /// </summary>
     public static float Evasion(ActorStats stats)
     {
-        float agility = stats.Agility * 2f;
-        float staminaBonus = stats.Stamina * 0.5f;
-        float luck = LuckModifier(stats);
-
-        return agility + staminaBonus + luck;
+        // Keep Agility primary but avoid trivial 5%/95% saturation
+        float agility = stats.Agility * 1.4f;
+        float speed = stats.Speed * 0.9f;
+        float staminaBonus = stats.Stamina * 0.3f;
+        float luck = Mathf.Min(10f, LuckModifier(stats)); // cap Luck influence on evasion
+        return agility + speed + staminaBonus + luck;
     }
 
     /// <summary>
@@ -103,22 +110,17 @@ public static class Formulas
     {
         float accuracy = Accuracy(attacker.Stats);
         float evade = Evasion(opponent.Stats);
-        float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);
+        int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
 
-        // Miss becomes a glancing blow
+        float hitChance = Mathf.Clamp(accuracy - evade + adv * HitShiftPerLevel, 5f, 95f);
         if (RNG.Float(0f, 100f) >= hitChance)
             return HitOutcome.Weak;
 
-        // Connected: check for crit
         float baseCrit = 5f;
-        float focus = attacker.Stats.Wisdom * 0.4f;
-        float luck = attacker.Stats.Luck * 0.3f;
-        float critChance = baseCrit + focus + luck;
-
-        if (RNG.Float(0f, 100f) < critChance)
-            return HitOutcome.Critical;
-
-        return HitOutcome.Normal;
+        float focus = attacker.Stats.Wisdom * 0.35f;
+        float luck = Mathf.Min(20f, attacker.Stats.Luck * 0.25f);
+        float critChance = Mathf.Clamp(baseCrit + focus + luck, 0f, 60f);
+        return RNG.Float(0f, 100f) < critChance ? HitOutcome.Critical : HitOutcome.Normal;
     }
 
     /// <summary>
@@ -183,26 +185,24 @@ public static class Formulas
     /// All math remains float until the final conversion to int damage.
     /// </summary>
     public static AttackResult CalculateAttackResult(
-        ActorInstance attacker,
-        ActorInstance opponent,
-        float weaponPower = 0f,
-        float armorRating = 0f,
-        ElementalDamageType element = ElementalDamageType.Physical,
-        float resistance = 0f)
+        ActorInstance attacker, ActorInstance opponent,
+        float weaponPower = 0f, float armorRating = 0f,
+        ElementalDamageType element = ElementalDamageType.Physical, float resistance = 0f)
     {
         float off = Offense(attacker.Stats, weaponPower);
         float def = Defense(opponent.Stats, armorRating);
         float raw = off - def;
 
         float resisted = ApplyResistance(raw, resistance);
-        float amplified = resisted * 2f;
-        float varied = amplified * SampleVarianceWithLuck(attacker.Stats, 0.33f);
+        float varied = resisted * SampleVarianceWithLuck(attacker.Stats, 0.20f); // ±20%
 
         HitOutcome type = CalculateHitType(attacker, opponent);
+        float typeMult = type == HitOutcome.Critical ? 1.5f : (type == HitOutcome.Weak ? 0.5f : 1f);
 
-        // Single rounding step at the end. Preserve behavior of floor with a minimum of 1.
-        int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied));
+        int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
+        float levelMult = Mathf.Pow(DamageScalePerLevel, adv);
 
+        int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied * typeMult * levelMult));
         return new AttackResult(attacker, opponent, finalDamage, type);
     }
 
@@ -211,24 +211,23 @@ public static class Formulas
     /// All math remains float until the final conversion to int damage.
     /// </summary>
     public static AttackResult CalculateMagicDamage(
-        ActorInstance caster,
-        ActorInstance target,
-        ElementalDamageType element = ElementalDamageType.Arcane,
-        float resistance = 0f)
+        ActorInstance caster, ActorInstance target,
+        ElementalDamageType element = ElementalDamageType.Arcane, float resistance = 0f)
     {
         float off = MagicOffense(caster.Stats);
         float res = MagicResistance(target.Stats);
         float raw = off - res;
 
         float resisted = ApplyResistance(raw, resistance);
-        float amplified = resisted * 2f;
-        float varied = amplified * SampleVarianceWithLuck(caster.Stats, 0.33f);
+        float varied = resisted * SampleVarianceWithLuck(caster.Stats, 0.20f);
 
         HitOutcome type = CalculateHitType(caster, target);
+        float typeMult = type == HitOutcome.Critical ? 1.5f : (type == HitOutcome.Weak ? 0.5f : 1f);
 
-        // Single rounding step at the end. Preserve behavior of floor with a minimum of 1.
-        int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied));
+        int adv = LevelAdvantage(caster.Stats, target.Stats);
+        float levelMult = Mathf.Pow(DamageScalePerLevel, adv);
 
+        int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied * typeMult * levelMult));
         return new AttackResult(caster, target, finalDamage, type);
     }
 
@@ -257,20 +256,18 @@ public static class Formulas
         // First, compute hit chance to ensure attack connects.
         float accuracy = Accuracy(attacker.Stats);
         float evade = Evasion(opponent.Stats);
-        float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);
+        int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
 
+        float hitChance = Mathf.Clamp(accuracy - evade + adv * HitShiftPerLevel, 5f, 95f);
         // If it can't hit at all, crit chance is effectively 0.
         if (hitChance <= 0f)
             return 0f;
 
         // Crit chance formula from CalculateHitType.
         float baseCrit = 5f;
-        float focus = attacker.Stats.Wisdom * 0.4f;
-        float luck = attacker.Stats.Luck * 0.3f;
-        float critChance = baseCrit + focus + luck;
-
-        // Ensure range safety.
-        return Mathf.Clamp(critChance, 0f, 100f);
+        float focus = attacker.Stats.Wisdom * 0.35f;
+        float luck = Mathf.Min(20f, attacker.Stats.Luck * 0.25f);
+        return Mathf.Clamp(baseCrit + focus + luck, 0f, 60f);
     }
 
     /// <summary>
@@ -281,13 +278,9 @@ public static class Formulas
     {
         float accuracy = Accuracy(attacker.Stats);
         float evade = Evasion(opponent.Stats);
+        int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
 
-        // Glancing chance is just the miss chance in the existing model.
-        float hitChance = Mathf.Clamp(accuracy - evade, 5f, 95f);
-        float glanceChance = 100f - hitChance;
-
-        return Mathf.Clamp(glanceChance, 0f, 100f);
+        float hitChance = Mathf.Clamp(accuracy - evade + adv * HitShiftPerLevel, 5f, 95f);
+        return Mathf.Clamp(100f - hitChance, 0f, 100f);
     }
-
-
 }

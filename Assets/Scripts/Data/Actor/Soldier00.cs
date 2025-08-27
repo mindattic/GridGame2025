@@ -23,6 +23,7 @@ namespace Assets.Data.Actor
                     Strength = 3f,
                     Vitality = 2f,
                     Agility = 2f,
+                    Speed = 2f,
                     Stamina = 2f,
                     Intelligence = 1f,
                     Wisdom = 1f,
@@ -33,6 +34,7 @@ namespace Assets.Data.Actor
                     Strength = 0.5f,
                     Vitality = 0.4f,
                     Agility = 0.3f,
+                    Speed = 0.3f,
                     Stamina = 0.2f,
                     Intelligence = 0.2f,
                     Wisdom = 0.2f,
@@ -40,8 +42,8 @@ namespace Assets.Data.Actor
                 },
                 MilestoneStatGrowth = new Dictionary<int, StatGrowth>
                 {
-                    { 5, new StatGrowth { Strength = 0.6f, Vitality = 0.5f, Agility = 0.3f, Stamina = 0.3f, Intelligence = 0.3f, Wisdom = 0.3f, Luck = 0.3f } },
-                    { 10, new StatGrowth { Strength = 0.8f, Vitality = 0.6f, Agility = 0.4f, Stamina = 0.4f, Intelligence = 0.4f, Wisdom = 0.4f, Luck = 0.4f } }
+                    { 5,  new StatGrowth { Strength = 0.6f, Vitality = 0.5f, Agility = 0.3f, Speed = 0.3f, Stamina = 0.3f, Intelligence = 0.3f, Wisdom = 0.3f, Luck = 0.3f } },
+                    { 10, new StatGrowth { Strength = 0.8f, Vitality = 0.6f, Agility = 0.4f, Speed = 0.4f, Stamina = 0.4f, Intelligence = 0.4f, Wisdom = 0.4f, Luck = 0.4f } }
                 },
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
