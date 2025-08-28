@@ -1,5 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Utilities;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -50,6 +51,8 @@ public class Card : MonoBehaviour
 
         RecomputeLayout();
         Clear();
+
+        GameReady.Begin(this);
     }
 
     private void Start()
