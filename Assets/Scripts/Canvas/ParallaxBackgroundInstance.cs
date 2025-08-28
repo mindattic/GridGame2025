@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Utilities;
 using g = Assets.Helpers.GameHelper;
 
 public class ParallaxBackgroundInstance : MonoBehaviour
@@ -17,6 +18,11 @@ public class ParallaxBackgroundInstance : MonoBehaviour
     private Rect uvRect;
     private Vector2 targetScrollFocus;
     private float nextChangeAt;
+
+    private void Awake()
+    {
+        GameReady.Begin(this);
+    }
 
     /// <summary>
     /// Initializes references, seeds the UV position, and schedules the first direction change.
@@ -49,7 +55,10 @@ public class ParallaxBackgroundInstance : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (rawImage == null || !gameObject.activeInHierarchy || !g.PauseManager.IsPaused)
+        if (rawImage == null || !gameObject.activeInHierarchy)
+            return;
+
+        if (g.PauseManager == null || !g.PauseManager.IsPaused)
             return;
 
         if (Time.unscaledTime >= nextChangeAt)
@@ -57,9 +66,7 @@ public class ParallaxBackgroundInstance : MonoBehaviour
             targetScrollFocus = RandomFocusInRange();
 
             if (!useLerpTransition)
-            {
                 scrollFocus = targetScrollFocus;
-            }
 
             ScheduleNextChange();
         }

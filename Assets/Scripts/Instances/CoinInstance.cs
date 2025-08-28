@@ -186,7 +186,7 @@ public class CoinInstance : MonoBehaviour
         particles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         g.TotalCoins++;
         g.CoinCounter.value.text = g.TotalCoins.ToString("D7");
-        g.AudioManager.Play($"Seek{RNG.Int(1, 6)}");
+        g.AudioManager.Play($"Click");
         Destroy(gameObject);
     }
 }

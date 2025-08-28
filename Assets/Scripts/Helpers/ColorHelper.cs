@@ -33,7 +33,8 @@ namespace Assets.Helper
             public static Color DarkGray = RGB(64, 64, 64);
             public static Color Silver = RGB(192, 192, 192);
             public static Color GunMetal = RGB(42, 52, 57);
-
+            public static Color Gold = RGB(255, 223, 0);
+            
             // Primary
             public static Color Red = RGB(255, 0, 0);
             public static Color Green = RGB(0, 255, 0);
@@ -45,7 +46,6 @@ namespace Assets.Helper
             public static Color Magenta = RGB(255, 0, 255);
 
             // Common UI accents
-            public static Color Gold = RGB(255, 215, 0);
             public static Color Orange = RGB(255, 165, 0);
             public static Color DarkOrange = RGB(255, 140, 0);
             public static Color OrangeRed = RGB(255, 69, 0);
@@ -119,6 +119,7 @@ namespace Assets.Helper
             public static Color DarkGray = RGBA(64, 64, 64, 128);
             public static Color Silver = RGBA(192, 192, 192, 128);
             public static Color GunMetal = RGBA(42, 52, 57, 128);
+            public static Color Gold = RGBA(255, 223, 0, 128);
 
             // Primary/Secondary
             public static Color Red = RGBA(255, 0, 0, 128);
@@ -129,7 +130,6 @@ namespace Assets.Helper
             public static Color Magenta = RGBA(255, 0, 255, 128);
 
             // Accents
-            public static Color Gold = RGBA(255, 215, 0, 128);
             public static Color Orange = RGBA(255, 165, 0, 128);
             public static Color DarkOrange = RGBA(255, 140, 0, 128);
             public static Color OrangeRed = RGBA(255, 69, 0, 128);
@@ -171,7 +171,7 @@ namespace Assets.Helper
             public static Color Yellow = RGBA(255, 255, 0, 0);
             public static Color Cyan = RGBA(0, 255, 255, 0);
             public static Color Magenta = RGBA(255, 0, 255, 0);
-            public static Color Gold = RGBA(255, 215, 0, 0);
+            public static Color Gold = RGBA(255, 223, 0, 0);
         }
 
         // Tile overlay palette (board highlights). Alpha ~96 for subtle overlays.

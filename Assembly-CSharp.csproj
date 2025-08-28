@@ -159,6 +159,7 @@
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
+    <Compile Include="Assets\Scripts\Utilities\GameReady.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
@@ -214,7 +215,6 @@
     <Compile Include="Assets\Scripts\Models\CanvasLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\SortingManager.cs" />
-    <Compile Include="Assets\Scripts\Managers\Managers.cs" />
     <Compile Include="Assets\Scripts\Helpers\CharacterHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EndTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\Portrait3DManager.cs" />

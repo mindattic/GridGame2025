@@ -22,8 +22,7 @@ public partial class DebugWindow
     {
         switch (selectedOption)
         {
-          
-            case DebugOptions.AddExperience: g.DebugManager.AddExperience(); break;
+            case DebugOptions.AddExperience: g.DebugManager.AddExperience(); break;  
             case DebugOptions.ArrangeSingleCombo: g.DebugManager.ArrangeSingleCombo(); break;
             case DebugOptions.ArrangeDoubleCombo: g.DebugManager.ArrangeDoubleCombo(); break;
             case DebugOptions.ArrangeTripleCombo: g.DebugManager.ArrangeTripleCombo(); break;
@@ -39,7 +38,9 @@ public partial class DebugWindow
             case DebugOptions.Portrait3DSlideIn: g.DebugManager.Portrait3DSlideIn(); break;
             case DebugOptions.RandomizeBackground: g.DebugManager.RandomizeBackground(); break;
             case DebugOptions.Shake: g.DebugManager.Shake(); break;
+
             case DebugOptions.SpawnCoins: g.DebugManager.SpawnCoins(); break;
+
             case DebugOptions.SpawnDamageText: g.DebugManager.SpawnDamageText(); break;
             case DebugOptions.SpawnHealText: g.DebugManager.SpawnHealText(); break;
             case DebugOptions.SpawnSupportLines: g.DebugManager.SpawnSupportLines(); break;

@@ -1,14 +1,16 @@
 using Assets.Helper;
 using Assets.Helpers;
-using Assets.Scripts.Canvas.Timeline;
 using Assets.Scripts.GUI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
+using Assets.Scripts.Utilities;
 using Game.Behaviors;
 using Game.Instances;
 using Game.Manager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,10 +26,10 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public float dragSensitivity = 0.05f;
     [HideInInspector] public float coinCountMultiplier = 0.05f;
 
-   
+
     public float gameSpeed = 1.0f;
     public bool applyMovementTilt = false;
-    
+
     //Debug
     public bool reloadThumbnailSettings = false;
 
@@ -133,7 +135,7 @@ public class GameManager : Singleton<GameManager>
 
 
     // Debug
- 
+
 
     private void Awake()
     {
@@ -221,7 +223,7 @@ public class GameManager : Singleton<GameManager>
         targetLineManager = game.GetComponent<TargetLineManager>();
         abilityButtonManager = game.GetComponent<AbilityButtonManager>();
         synergyLineManager = game.GetComponent<SynergyLineManager>();
-      
+
         // Platform-dependent compilation
 #if UNITY_STANDALONE_WIN
         deviceType = "UNITY_STANDALONE_WIN";
@@ -254,5 +256,7 @@ public class GameManager : Singleton<GameManager>
         timeline.Initialize();
         timerBar2D.Initialize();
         turnManager.Initialize();
+
+        GameReady.Confirm();
     }
 }

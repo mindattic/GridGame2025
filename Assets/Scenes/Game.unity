@@ -5571,7 +5571,7 @@ MonoBehaviour:
   heroAgilityDivisor: 8
   enemyBaseMinStep: 4
   enemyBaseMaxStep: 8
-  enemyAgilityDivisor: 6
+  enemySpeedDivisor: 6
 --- !u!1 &1535347494
 GameObject:
   m_ObjectHideFlags: 0
@@ -6803,15 +6803,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0478287252763a488809bbb1143549e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textureResolution: 1024
-  dragSensitivity: 0.05
   deviceType: 
+  textureResolution: 1024
   targetFramerate: 60
   vSyncCount: 0
+  dragSensitivity: 0.05
+  coinCountMultiplier: 0.05
+  gameSpeed: 1
+  applyMovementTilt: 0
+  reloadThumbnailSettings: 0
   soundSource: {fileID: 0}
   musicSource: {fileID: 0}
   card: {fileID: 0}
   tutorialPopup: {fileID: 0}
+  viewport: {x: 0, y: 0}
+  tileSize: 0
+  tileScale: {x: 0, y: 0, z: 0}
+  canvas3D: {fileID: 0}
+  waveAnnouncement: {fileID: 0}
+  targetModeOverlay: {fileID: 0}
   inputManager: {fileID: 0}
   cameraManager: {fileID: 0}
   stageManager: {fileID: 0}
@@ -6849,12 +6859,6 @@ MonoBehaviour:
   boardOverlay: {fileID: 0}
   focusIndicator: {fileID: 0}
   targetIndicator: {fileID: 0}
-  viewport: {x: 0, y: 0}
-  tileSize: 0
-  tileScale: {x: 0, y: 0, z: 0}
-  canvas3D: {fileID: 0}
-  waveAnnouncement: {fileID: 0}
-  targetModeOverlay: {fileID: 0}
   touchPosition2D: {x: 0, y: 0, z: 0}
   touchPosition3D: {x: 0, y: 0, z: 0}
   touchOffset: {x: 0, y: 0, z: 0}
@@ -6878,11 +6882,6 @@ MonoBehaviour:
   supportLines: []
   attackLines: []
   coinCounter: {fileID: 0}
-  totalCoins: 0
-  previousGameFocus: 0
-  reloadThumbnailSettings: 0
-  gameSpeed: 1
-  applyMovementTilt: 0
 --- !u!114 &1751276278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9553,7 +9552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.8745098, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

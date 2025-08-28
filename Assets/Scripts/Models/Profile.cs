@@ -1,86 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.TextCore.Text;
+
+// Add this definition if ProfileSettings does not exist elsewhere
+[Serializable]
+public class ProfileSettings
+{
+    public float ActorPanMultiplier;
+    public float GameSpeed;
+
+    public ProfileSettings() { }
+
+    public ProfileSettings(ProfileSettings other)
+    {
+        this.ActorPanMultiplier = other.ActorPanMultiplier;
+        this.GameSpeed = other.GameSpeed;
+    }
+}
 
 namespace Game.Models.Profile
 {
     [Serializable]
     public class Profile
     {
-        // Fields
         public string Key;
         public string Folder;
-        public List<SaveState> SaveStates = new List<SaveState>();
-        public ProfileSettings Settings;
+        public List<SaveState> SaveStates;
         public SaveState CurrentSave;
-
-        // Properties
-        public bool HasSaves => SaveStates.Any();
-        public bool HasCurrentSave => CurrentSave != null;
-        public SaveState LatestSave => HasSaves ? SaveStates.OrderByDescending(x => x.Timestamp).First() : null;
-
-        public Profile() { }
-    }
-
-    [Serializable]
-    public class ProfileSettings
-    {
-        public float ActorPanMultiplier;
-        public float GameFocus;
-
-        public ProfileSettings() { }
-
-        public ProfileSettings(ProfileSettings other)
-        {
-            this.ActorPanMultiplier = other.ActorPanMultiplier;
-            this.GameFocus = other.GameFocus;
-        }
+        public bool HasSaves => SaveStates != null && SaveStates.Count > 0;
+        public SaveState LatestSave => HasSaves ? SaveStates[0] : null;
+        public ProfileSettings Settings;
     }
 
     [Serializable]
     public class SaveState
     {
-        //public string Folder;
-        public string FileName;
-        public DateTime Timestamp;
         public int Index;
+        public DateTime Timestamp;
+        public string FileName;
         public GlobalSaveData Global;
         public StageSaveData Stage;
         public RosterSaveData Roster;
         public PartySaveData Party;
 
         public SaveState() { }
-
-        public SaveState(int index, DateTime timestamp, 
-            GlobalSaveData global, 
-            StageSaveData stage, 
-            RosterSaveData roster,
-            PartySaveData party)
-        {
-            Index = index;
-            Timestamp = timestamp;
-            //Folder = Path.Combine(ProfileHelper.CurrentProfile.Folder, "Saves");
-            FileName = $"Save{index:D3}.json";
-            Global = global;
-            Stage = stage;
-            Roster = roster;
-            Party = party;
-        }
-
-        //Copy constructor
         public SaveState(SaveState other)
         {
             this.Index = other.Index;
             this.Timestamp = other.Timestamp;
-            //this.Folder = other.Folder;
             this.FileName = other.FileName;
             this.Global = new GlobalSaveData(other.Global);
             this.Stage = new StageSaveData(other.Stage);
             this.Roster = new RosterSaveData(other.Roster);
             this.Party = new PartySaveData(other.Party);
+        }
+        public SaveState(int index, DateTime timestamp, GlobalSaveData global, StageSaveData stage, RosterSaveData roster, PartySaveData party)
+        {
+            Index = index;
+            Timestamp = timestamp;
+            FileName = $"Save_{timestamp:yyyyMMdd_HHmmss}.json";
+            Global = global;
+            Stage = stage;
+            Roster = roster;
+            Party = party;
         }
     }
 
@@ -116,13 +97,8 @@ namespace Game.Models.Profile
         public List<CharacterLevelPair> Members = new List<CharacterLevelPair>();
 
         public RosterSaveData() { }
-
-        public RosterSaveData(RosterSaveData other)
-        {
-            this.Members = other.Members;
-        }
+        public RosterSaveData(RosterSaveData other) { this.Members = other.Members; }
     }
-
 
     [Serializable]
     public class PartySaveData
@@ -130,26 +106,26 @@ namespace Game.Models.Profile
         public List<CharacterLevelPair> Members = new List<CharacterLevelPair>();
 
         public PartySaveData() { }
-
-        public PartySaveData(PartySaveData other)
-        {
-            this.Members = other.Members;
-        }
+        public PartySaveData(PartySaveData other) { this.Members = other.Members; }
     }
-
 
     [Serializable]
     public class CharacterLevelPair
     {
         public string Character;
         public int Level;
+
+        // New: per-hero XP persistence
+        public int CurrentXP;
+        public int TotalXP;
+
         public CharacterLevelPair() { }
-        public CharacterLevelPair(string character, int level = 1)
+        public CharacterLevelPair(string character, int level = 1, int currentXP = 0, int totalXP = 0)
         {
             Character = character;
             Level = level;
+            CurrentXP = currentXP;
+            TotalXP = totalXP;
         }
     }
-
-
 }

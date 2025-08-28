@@ -3,8 +3,9 @@
 [Serializable]
 public class ActorStats : BaseStats
 {
-    public int Level = 1;
-    public int Experience;
+    public int Level = 1; 
+    public int CurrentXP;
+    public int TotalXP;
 
     public float PreviousHP;
     public float HP;
@@ -21,7 +22,8 @@ public class ActorStats : BaseStats
         if (other == null) return;
 
         Level = other.Level;
-        Experience = other.Experience;
+        CurrentXP = other.CurrentXP;
+        TotalXP = other.TotalXP;
 
         PreviousHP = other.HP;
         HP = other.HP;

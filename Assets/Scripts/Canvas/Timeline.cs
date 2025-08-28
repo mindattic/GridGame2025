@@ -75,7 +75,8 @@ public sealed class Timeline : MonoBehaviour
 
     private readonly List<Block> blocks = new List<Block>();
     private readonly List<EnemySim> sim = new List<EnemySim>();
-
+    
+    private int nextBlockId;
     private int currentIndex;
     private float contentX;
     private float targetContentX;
@@ -342,7 +343,7 @@ public sealed class Timeline : MonoBehaviour
         go.SetSquareMask(blockSize);
         go.Set(b.label, b.color, b.portrait);
         b.instance = go;
-
+        b.instance.name = $"TimelineBlock_{nextBlockId++}";
         blocks.Add(b);
     }
 
@@ -363,6 +364,7 @@ public sealed class Timeline : MonoBehaviour
         go.SetSquareMask(blockSize);
         go.Set(b.label, b.color, b.portrait);
         b.instance = go;
+        b.instance.name = $"TimelineBlock_{nextBlockId++}";
 
         blocks.Add(b);
     }
@@ -447,6 +449,7 @@ public sealed class Timeline : MonoBehaviour
         currentIndex = 0;
         contentX = 0f;
         targetContentX = 0f;
+        nextBlockId = 0; // restart numbering on full rebuild
     }
 
     // -------------- Turn delay label helpers --------------

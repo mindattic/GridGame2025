@@ -2,7 +2,8 @@ using Assets.Helper;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;   // Needed for TextMeshProUGUI
+using TMPro;
+using Assets.Scripts.Utilities; // added
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
@@ -57,6 +58,8 @@ public class TargetModeOverlay : MonoBehaviour
             lc.a = 0f;
             label.color = lc;
         }
+
+        GameReady.Begin(this);
     }
 
     public void Initialize()

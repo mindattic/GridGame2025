@@ -1,20 +1,17 @@
-﻿using Assets.Scripts.Canvas.Timeline;
-using Assets.Scripts.GUI;
+﻿using Assets.Scripts.GUI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
 using Game.Behaviors;
 using Game.Manager;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Helpers
 {
     public static class GameHelper
     {
-
-        //
-        //
-
+        private static GameManager gm => GameManager.instance;
 
         public static float DragSensitiviry
         {
@@ -22,14 +19,11 @@ namespace Assets.Helpers
             set => GameManager.instance.dragSensitivity = value;
         }
 
-       
-
         public static float CoinCountMulitiplier
         {
             get => GameManager.instance.coinCountMultiplier;
             set => GameManager.instance.coinCountMultiplier = value;
         }
-
 
         public static bool ReloadThumbnailSettings
         {
@@ -61,139 +55,131 @@ namespace Assets.Helpers
             set => GameManager.instance.dragSensitivity = value;
         }
 
-        public static AudioSource SoundSource => GameManager.instance.soundSource;
+        public static AudioSource SoundSource => gm != null ? gm.soundSource : null;
+        public static AudioSource MusicSource => gm != null ? gm.musicSource : null;
 
         // Component properties
-        public static InputManager InputManager => GameManager.instance.inputManager;
-        public static CameraManager CameraManager => GameManager.instance.cameraManager;
-        public static StageManager StageManager => GameManager.instance.stageManager;
-        public static BoardManager BoardManager => GameManager.instance.boardManager;
-        public static TurnManager TurnManager => GameManager.instance.turnManager;
+        public static InputManager InputManager => gm != null ? gm.inputManager : null;
+        public static CameraManager CameraManager => gm != null ? gm.cameraManager : null;
+        public static StageManager StageManager => gm != null ? gm.stageManager : null;
+        public static BoardManager BoardManager => gm != null ? gm.boardManager : null;
+        public static TurnManager TurnManager => gm != null ? gm.turnManager : null;
 
-        public static SupportLineManager SupportLineManager => GameManager.instance.supportLineManager;
-        public static SynergyLineManager SynergyLineManager => GameManager.instance.synergyLineManager;
+        public static SupportLineManager SupportLineManager => gm != null ? gm.supportLineManager : null;
+        public static SynergyLineManager SynergyLineManager => gm != null ? gm.synergyLineManager : null;
 
-        public static AttackLineManager AttackLineManager => GameManager.instance.attackLineManager;
-        public static CombatTextManager CombatTextManager => GameManager.instance.combatTextManager;
-        public static GhostManager GhostManager => GameManager.instance.ghostManager;
+        public static AttackLineManager AttackLineManager => gm != null ? gm.attackLineManager : null;
+        public static CombatTextManager CombatTextManager => gm != null ? gm.combatTextManager : null;
+        public static GhostManager GhostManager => gm != null ? gm.ghostManager : null;
 
-        public static Portrait2DManager Portrait2DManager => GameManager.instance.portrait2DManager;
-        public static Portrait3DManager Portrait3DManager => GameManager.instance.portrait3DManager;
-        // public static ActorManager ActorManager => GameManager.actorManager;
-        // public static SelectedHeroManager SelectedHeroManager => GameManager.selectedHeroManager;
-        // public static HeroManager HeroManager => GameManager.heroManager;
-        // public static EnemyManager EnemyManager => GameManager.enemyManager;
-        public static TileManager TileManager => GameManager.instance.tileManager;
-        public static FootstepManager FootstepManager => GameManager.instance.footstepManager;
-        public static AudioManager AudioManager => GameManager.instance.audioManager;
-        public static VfxManager VfxManager => GameManager.instance.vfxManager;
-        public static CoinManager CoinManager => GameManager.instance.coinManager;
-        public static PauseManager PauseManager => GameManager.instance.pauseManager;
-        public static DebugManager DebugManager => GameManager.instance.debugManager;
-        public static ConsoleManager ConsoleManager => GameManager.instance.consoleManager;
-        public static LogManager LogManager => GameManager.instance.logManager;
-        public static ActorManager ActorManager => GameManager.instance.actorManager;
+        public static Portrait2DManager Portrait2DManager => gm != null ? gm.portrait2DManager : null;
+        public static Portrait3DManager Portrait3DManager => gm != null ? gm.portrait3DManager : null;
 
-        public static SelectedHeroManager SelectedHeroManager => GameManager.instance.selectedHeroManager;
-        public static DottedLineManager DottedLineManager => GameManager.instance.dottedLineManager;
-        public static ProjectileManager ProjectileManager => GameManager.instance.projectileManager;
-        public static SequenceManager SequenceManager => GameManager.instance.sequenceManager;
-        public static PincerAttackManager PincerAttackManager => GameManager.instance.pincerAttackManager;
-        public static SortingManager SortingManager => GameManager.instance.sortingManager;
-        public static TargetLineManager TargetLineManager => GameManager.instance.targetLineManager;
-        public static AbilityButtonManager AbilityButtonManager => GameManager.instance.abilityButtonManager;
-       
+        public static TileManager TileManager => gm != null ? gm.tileManager : null;
+        public static FootstepManager FootstepManager => gm != null ? gm.footstepManager : null;
+        public static AudioManager AudioManager => gm != null ? gm.audioManager : null;
+        public static VfxManager VfxManager => gm != null ? gm.vfxManager : null;
+        public static CoinManager CoinManager => gm != null ? gm.coinManager : null;
+        public static PauseManager PauseManager => gm != null ? gm.pauseManager : null;
+        public static DebugManager DebugManager => gm != null ? gm.debugManager : null;
+        public static ConsoleManager ConsoleManager => gm != null ? gm.consoleManager : null;
+        public static LogManager LogManager => gm != null ? gm.logManager : null;
+        public static ActorManager ActorManager => gm != null ? gm.actorManager : null;
 
-        // Board visuals and overlays
-        public static BackgroundInstance Background => GameManager.instance.background;
-        public static BoardOverlay BoardOverlay => GameManager.instance.boardOverlay;
-        public static FocusIndicator FocusIndicator => GameManager.instance.focusIndicator;
-        public static TargetIndicator TargetIndicator => GameManager.instance.targetIndicator;
+        public static SelectedHeroManager SelectedHeroManager => gm != null ? gm.selectedHeroManager : null;
+        public static DottedLineManager DottedLineManager => gm != null ? gm.dottedLineManager : null;
+        public static ProjectileManager ProjectileManager => gm != null ? gm.projectileManager : null;
+        public static SequenceManager SequenceManager => gm != null ? gm.sequenceManager : null;
+        public static PincerAttackManager PincerAttackManager => gm != null ? gm.pincerAttackManager : null;
+        public static SortingManager SortingManager => gm != null ? gm.sortingManager : null;
+        public static TargetLineManager TargetLineManager => gm != null ? gm.targetLineManager : null;
+        public static AbilityButtonManager AbilityButtonManager => gm != null ? gm.abilityButtonManager : null;
 
-        // Canvas and UI
-        public static Vector2 Viewport => GameManager.instance.viewport;
-        public static float TileSize => GameManager.instance.tileSize;
-        public static Vector3 TileScale => GameManager.instance.tileScale;
-        public static Canvas Canvas3D => GameManager.instance.canvas3D;
-        public static WaveAnnouncement WaveAnnouncement => GameManager.instance.waveAnnouncement;
-        public static TargetModeOverlay TargetModeOverlay => GameManager.instance.targetModeOverlay;
-        public static Card Card => GameManager.instance.card;
-        public static TutorialPopup TutorialPopup => GameManager.instance.tutorialPopup;
-        public static Timeline Timeline => GameManager.instance.timeline;
+  
+        public static BackgroundInstance Background => gm != null ? gm.background : null;
+        public static BoardOverlay BoardOverlay => gm != null ? gm.boardOverlay : null;
+        public static FocusIndicator FocusIndicator => gm != null ? gm.focusIndicator : null;
+        public static TargetIndicator TargetIndicator => gm != null ? gm.targetIndicator : null;
 
+      
+        public static Vector2 Viewport => GameManager.instance.viewport;      
+        public static float TileSize => GameManager.instance.tileSize;          
+        public static Vector3 TileScale => GameManager.instance.tileScale;    
+        public static Canvas Canvas3D => gm != null ? gm.canvas3D : null;
+        public static WaveAnnouncement WaveAnnouncement => gm != null ? gm.waveAnnouncement : null;
+        public static TargetModeOverlay TargetModeOverlay => gm != null ? gm.targetModeOverlay : null;
+        public static Card Card => gm != null ? gm.card : null;
+        public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;
+        public static Timeline Timeline => gm != null ? gm.timeline : null;
 
-
-        // Mouse-related fields
-        public static Vector3 TouchPosition2D => GameManager.instance.touchPosition2D;
-        public static Vector3 TouchPosition3D => GameManager.instance.touchPosition3D;
-
+     
+        public static Vector3 TouchPosition2D => GameManager.instance.touchPosition2D; 
+        public static Vector3 TouchPosition3D => GameManager.instance.touchPosition3D; 
 
         public static Vector3 TouchOffset
         {
-            get => GameManager.instance.touchOffset;
-            set => GameManager.instance.touchOffset = value;
+            get => GameManager.instance.touchOffset; 
+            set { if (gm != null) gm.touchOffset = value; }
         }
-
 
         public static Vector3 TouchPosition => TouchPosition3D + TouchOffset;
 
-        public static float CursorFocus => GameManager.instance.cursorFocus;
-        public static float SwapFocus => GameManager.instance.swapFocus;
-        public static float MoveFocus => GameManager.instance.moveFocus;
-        public static float SnapThreshold => GameManager.instance.actorManager.snapTheshold;
+        public static float CursorFocus => GameManager.instance.cursorFocus;     
+        public static float SwapFocus => GameManager.instance.swapFocus;         
+        public static float MoveFocus => GameManager.instance.moveFocus;         
+        public static float SnapThreshold => GameManager.instance.actorManager.snapTheshold; 
 
-        public static float DragThreshold => GameManager.instance.dragThreshold;
-        public static float BumpFocus => GameManager.instance.bumpFocus;
+        public static float DragThreshold => GameManager.instance.dragThreshold; 
+        public static float BumpFocus => GameManager.instance.bumpFocus;         
 
         // Actor references
         public static class Actors
         {
             public static List<ActorInstance> All
             {
-                get => GameManager.instance.actors;
-                set => GameManager.instance.actors = value;
+                get => gm != null ? gm.actors : null;
+                set { if (gm != null) gm.actors = value; }
             }
 
-            public static IEnumerable<ActorInstance> Heroes => GameManager.instance.heroes;
-
-            public static IEnumerable<ActorInstance> Enemies => GameManager.instance.enemies;
+            public static IEnumerable<ActorInstance> Heroes => gm != null ? gm.heroes : Enumerable.Empty<ActorInstance>();
+            public static IEnumerable<ActorInstance> Enemies => gm != null ? gm.enemies : Enumerable.Empty<ActorInstance>();
 
             public static ActorInstance FocusedActor
             {
-                get => GameManager.instance.focusedActor;
-                set => GameManager.instance.focusedActor = value;
+                get => gm != null ? gm.focusedActor : null;
+                set { if (gm != null) gm.focusedActor = value; }
             }
 
-            public static bool HasFocusedActor => GameManager.instance.hasFocusedActor;
+            public static bool HasFocusedActor => gm != null && gm.hasFocusedActor;
 
             public static ActorInstance SelectedHero
             {
-                get => GameManager.instance.selectedHero;
-                set => GameManager.instance.selectedHero = value;
+                get => gm != null ? gm.selectedHero : null;
+                set { if (gm != null) gm.selectedHero = value; }
             }
 
-            public static bool HasSelectedHero => GameManager.instance.hasSelectedHero;
+            public static bool HasSelectedHero => gm != null && gm.hasSelectedHero;
 
             public static ActorInstance TargetActor
             {
-                get => GameManager.instance.targetActor;
-                set => GameManager.instance.targetActor = value;
+                get => gm != null ? gm.targetActor : null;
+                set { if (gm != null) gm.targetActor = value; }
             }
-            public static bool HasTargetActor => GameManager.instance.hasTargetActor;
+
+            public static bool HasTargetActor => gm != null && gm.hasTargetActor;
         }
 
         // World instances
-        public static TileMap TileMap => GameManager.instance.tileMap;
-        public static TimerBar2D TimerBar2D => GameManager.instance.timerBar2D;
-        public static BoardInstance Board => GameManager.instance.board;
+        public static TileMap TileMap => gm != null ? gm.tileMap : null;
+        public static TimerBar2D TimerBar2D => gm != null ? gm.timerBar2D : null;
+        public static BoardInstance Board => gm != null ? gm.board : null;
 
-        public static List<TileInstance> Tiles => GameManager.instance.tiles;
+        public static List<TileInstance> Tiles => gm != null ? gm.tiles : null;
 
-        public static RectTransform PortraitsContainer => GameManager.instance.portraitsContainer;
-
+        public static RectTransform PortraitsContainer => gm != null ? gm.portraitsContainer : null;
 
         // CoinManager
-        public static CoinCounter CoinCounter => GameManager.instance.coinCounter;
+        public static CoinCounter CoinCounter => gm != null ? gm.coinCounter : null;
 
         // Move coin total into the active save instead of GameManager
         public static int TotalCoins
@@ -214,5 +200,4 @@ namespace Assets.Helpers
             }
         }
     }
-
 }

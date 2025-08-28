@@ -21,7 +21,7 @@ namespace Assets.Helpers
         public static ProfileSettings DefaultSettings = new ProfileSettings()
         {
             ActorPanMultiplier = 0.05f,
-            GameFocus = 1.0f,
+            GameSpeed = 1.0f,
         };
 
         public static GlobalSaveData DefaultGlobal = new GlobalSaveData()

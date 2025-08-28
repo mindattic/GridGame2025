@@ -11,20 +11,11 @@ using g = Assets.Helpers.GameHelper;
 
 public class DebugManager : MonoBehaviour
 {
-
     //DEBUG: No gaurentee these values exist, define and use inside tests...
     ActorInstance hero1 => g.Actors.Heroes.Skip(0).Take(1).First();
     ActorInstance hero2 => g.Actors.Heroes.Skip(1).Take(1).First();
     ActorInstance hero3 => g.Actors.Heroes.Skip(2).Take(1).First();
     ActorInstance hero4 => g.Actors.Heroes.Skip(3).Take(1).First();
-
-    ActorInstance enemy1 => g.Actors.Enemies.Skip(0).Take(1).First();
-    ActorInstance enemy2 => g.Actors.Enemies.Skip(1).Take(1).First();
-    ActorInstance enemy3 => g.Actors.Enemies.Skip(2).Take(1).First();
-    ActorInstance enemy4 => g.Actors.Enemies.Skip(3).Take(1).First();
-    ActorInstance enemy5 => g.Actors.Enemies.Skip(4).Take(1).First();
-    ActorInstance enemy6 => g.Actors.Enemies.Skip(5).Take(1).First();
-
 
     //Fields
     [SerializeField] private TMP_Dropdown Dropdown;
@@ -36,13 +27,54 @@ public class DebugManager : MonoBehaviour
     public bool isTimerInfinite = false;
     public bool isEnemyStunned = false;
 
-
+    // Gain a small, random chunk of XP for a random hero (wired in DebugWindow DebugOptions -> AddExperience)
     public void AddExperience()
     {
         var hero = RNG.Hero;
+        if (hero == null) return;
+
         var nextLevel = ExperienceHelper.NextLevel(hero.Stats.Level);
-        var xp = (nextLevel * RNG.Float(0.01f, 0.33f)).ToInt();
+        var xp = Mathf.Max(1, (nextLevel * RNG.Float(0.25f, 0.33f)).ToInt());
         ExperienceHelper.Gain(hero, xp);
+
+        g.CombatTextManager.Spawn($"+{xp} XP", hero.Position, "Heal");
+        g.AudioManager.Play("Click");
+    }
+
+    // New: Gain exact XP for the selected/random hero (utility)
+    public void AddExperience(int amount)
+    {
+        var hero = RNG.Hero;
+        if (hero == null || amount <= 0) return;
+
+        ExperienceHelper.Gain(hero, amount);
+        g.CombatTextManager.Spawn($"+{amount} XP", hero.Position, "Heal");
+        g.AudioManager.Play("Click");
+    }
+
+    // TODO: Should be controlled by CoinManager
+    // Wired in DebugWindow DebugOptions -> SpawnCoins
+    //public void SpawnCoins()
+    //{
+    //    var target = hero1 ?? RNG.Hero;
+    //    if (target == null) return;
+
+    //    // Default burst of 10
+    //    SpawnCoins(10);
+    //}
+
+    // New: spawn an exact number of coins at hero1 (or a random hero) using CoinManager
+    public void SpawnCoins()
+    {
+        var target = hero1 ?? RNG.Hero;
+        var amount = RNG.Int(10, 20);
+        if (target == null || amount <= 0) return;
+
+        // Optional VFX gate, then spawn coins
+        //if (VfxLibrary.VisualEffects.TryGetValue("YellowHit", out var vfx))
+        //    g.VfxManager.Spawn(vfx, target.Position);
+
+        g.CoinManager.SpawnBurst(target.Position, amount);
     }
 
     /// <summary>
@@ -393,26 +425,6 @@ public class DebugManager : MonoBehaviour
     {
         var tutorial = TutorialLibrary.Tutorials["Tutorial1"];
         g.TutorialPopup.Load(tutorial);
-    }
-
-    //TODO: Should be controlled by CoinManager
-    public void SpawnCoins()
-    {
-        var vfx = VfxLibrary.VisualEffects["YellowHit"];
-
-
-        IEnumerator spawnTenCoins()
-        {
-            var i = 0;
-            do
-            {
-                g.CoinManager.Spawn(hero1.Position);
-                i++;
-            } while (i < 10);
-
-            yield return true;
-        }
-        g.VfxManager.Spawn(vfx, hero1.Position, spawnTenCoins());
     }
 
     public ActorInstance SpawnSlime()
