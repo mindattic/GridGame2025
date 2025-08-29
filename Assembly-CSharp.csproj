@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Cleric.cs" />
+    <Compile Include="Assets\Scripts\Canvas\MapIcon.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\RedNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="Assets\Scripts\Helpers\ProjectileHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
+    <Compile Include="Assets\Scripts\Canvas\OverworldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
