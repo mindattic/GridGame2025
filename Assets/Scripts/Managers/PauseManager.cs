@@ -217,9 +217,7 @@ public class PauseManager : MonoBehaviour
     /// </summary>
     public void OnRestartStageButtonClicked()
     {
-        // Restart stage through game helper.
-        try { g.StageManager.RestartStage(); } catch { Debug.LogError("Stage restart failed."); }
-
+        g.StageManager.RestartStage();
         // Ensure gameplay resumes.
         Resume();
     }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum Maps
+public enum Map
 {
     Test,
     GreenValley,
@@ -33,9 +33,9 @@ public static class StageLibrary
         stages = new Dictionary<string, Stage>
         {
 
-            { $"{Maps.GreenValley}-00", new Stage
+            { $"{Map.GreenValley}-00", new Stage
                 {
-                    Name = $"{Maps.GreenValley}-00",
+                    Name = $"{Map.GreenValley}-00",
                     Description = "DefeatAllEnemies",
                     CompletionCondition = "DefeatAllEnemies",
                     CompletionValue = 0,
@@ -47,9 +47,9 @@ public static class StageLibrary
                     })
                 }
             },
-            { $"{Maps.GreenValley}-01", new Stage
+            { $"{Map.GreenValley}-01", new Stage
                 {
-                    Name = $"{Maps.GreenValley}-01",
+                    Name = $"{Map.GreenValley}-01",
                     Description = "DefeatAllEnemies",
                     CompletionCondition = "DefeatAllEnemies",
                     CompletionValue = 0,
@@ -61,9 +61,9 @@ public static class StageLibrary
                     })
                 }
             },
-            { $"{Maps.Test}-00", new Stage
+            { $"{Map.Test}-00", new Stage
                 {
-                    Name = $"{Maps.Test}-00",
+                    Name = $"{Map.Test}-00",
                     Description = "Intro Battle",
                     CompletionCondition = "DefeatAllEnemies",
                     CompletionValue = 0,
@@ -123,9 +123,9 @@ public static class StageLibrary
                     }
                 }
             },
-            { $"{Maps.Test}-01", new Stage
+            { $"{Map.Test}-01", new Stage
                 {
-                    Name = $"{Maps.Test}-01",
+                    Name = $"{Map.Test}-01",
                     Description = "DefeatAllEnemies",
                     CompletionCondition = "DefeatAllEnemies",
                     CompletionValue = 0,

@@ -149,7 +149,7 @@ namespace Game.Models.Profile
     [Serializable]
     public class OverworldSaveData
     {
-        public string MapName = "GreenValley";
+        public string MapName = Map.Test.ToString();
         public float HeroX;
         public float HeroY;
         public string HeroDirection = "Idle"; // MoveDirection as name
@@ -162,9 +162,9 @@ namespace Game.Models.Profile
             HeroY = other.HeroY;
             HeroDirection = other.HeroDirection;
         }
-        public OverworldSaveData(string mapName, Vector2 pos, string facing, bool inEncounter)
+        public OverworldSaveData(string mapName, Vector2 pos, string facing)
         {
-            MapName = string.IsNullOrWhiteSpace(mapName) ? "GreenValley" : mapName;
+            MapName = mapName;
             HeroX = pos.x;
             HeroY = pos.y;
             HeroDirection = string.IsNullOrWhiteSpace(facing) ? "Idle" : facing;

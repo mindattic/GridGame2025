@@ -15,7 +15,7 @@ public class OverworldHero : MonoBehaviour
 {
     public RectTransform rect;           // The icon’s RectTransform (anchored to Content)
     public Animator animator;
-    public float moveSpeed = 60f;
+    private float moveSpeed = 128f;
 
     [Header("Bindings")]
     [SerializeField] private RectTransform mapRect;   // Optional; if null, auto-find
@@ -30,6 +30,9 @@ public class OverworldHero : MonoBehaviour
     [SerializeField] private bool ignoreClicksWhenOffscreen = false;    // If true, ignore clicks when offscreen
     [SerializeField] private bool allowVirtualJoystick = true;          // Enable joystick/analog movement
     [SerializeField] private bool idleWhileOffscreen = true;            // Idle when offscreen and movement gated
+
+    [SerializeField, Tooltip("How far ahead (in step length units) to sample for speed/slow zones. Typical: 0.5-1.0")]
+    private float speedSampleAheadFactor = 0.7f;
 
     [Header("Click Movement Mode")]
     [SerializeField] private OverworldHeroTouchMode touchMoveMode = OverworldHeroTouchMode.MoveToPoint;
@@ -49,6 +52,36 @@ public class OverworldHero : MonoBehaviour
     [SerializeField] private string downState = "MoveDown";
     [SerializeField] private string leftState = "MoveLeft";
 
+    // --- Collision Mask (added) ---
+    [Header("Collision Mask")]
+    [Tooltip("Black/white texture aligned to the map. White = walkable, Black = blocked (pure-black only).")]
+    [SerializeField] private Texture2D collisionMask;
+    // UV sub-rect (for atlas/cropped sprites). Defaults to full texture.
+    [SerializeField, HideInInspector] private Rect collisionMaskUV = new Rect(0, 0, 1, 1);
+
+    // Note: threshold kept for back-compat sliders only (not used for blocking).
+    [Range(0f, 0.1f)]
+    [SerializeField] private float blockThreshold = 0.01f;
+
+    [Tooltip("Probe radius in canvas units around hero to reduce corner clipping.")]
+    [SerializeField] private float collisionProbeRadius = 0f;
+    [Tooltip("Number of radial probes around the hero in addition to center (0 enables an automatic 8-ray ring).")]
+    [SerializeField] private int collisionProbeRays = 0;
+
+    [Header("Slow Zones (optional)")]
+    [SerializeField] private bool useSlowZones = false;
+    [SerializeField, Range(0f, 1f)] private float slowBandCenter = 0.5f;
+    [SerializeField, Range(0f, 1f)] private float slowBandHalfWidth = 0.1f;
+    [SerializeField, Range(0.05f, 1f)] private float slowMultiplier = 0.5f;
+
+    // --- Debug Visualization ---
+    [Header("Collision Debug (Scene view)")]
+    [SerializeField] private bool debugCollisionGizmos = true;
+    [SerializeField] private float debugGizmoSize = 6f;
+
+    private Color32[] maskPixels;
+    private int maskW, maskH;
+
     private bool isMoving;
     private Vector2 targetPosition;
     private MoveDirection lastDirection = MoveDirection.Idle;
@@ -62,22 +95,28 @@ public class OverworldHero : MonoBehaviour
 
     // Expose current facing as string for saving
     public string CurrentFacingName => lastDirection.ToString();
+    public bool IsMoving => isMoving;
+    private readonly Vector3[] _mapWorldCorners = new Vector3[4];
 
     private void Awake()
     {
         if (rect == null) rect = GetComponent<RectTransform>();
         if (animator == null) animator = GetComponent<Animator>();
 
+        // Auto-find Terrain for clamp (no legacy Map)
         if (mapRect == null)
         {
-            var go = GameObject.Find(GameObjectHelper.Overworld.Map);
+            var go = GameObject.Find(GameObjectHelper.Overworld.Terrain);
             if (go != null) mapRect = go.GetComponent<RectTransform>();
         }
+
         if (viewport == null)
         {
             var vp = GameObject.Find(GameObjectHelper.Overworld.Viewport);
             if (vp != null) viewport = vp.GetComponent<RectTransform>();
         }
+
+        InitializeCollisionMask(); // keep existing collision/slows behavior
     }
 
     private void Update()
@@ -107,12 +146,22 @@ public class OverworldHero : MonoBehaviour
             }
 
             Vector2 current = rect.anchoredPosition;
-            Vector2 step = effectiveInput * moveSpeed * Time.deltaTime;
-            Vector2 next = ClampToMap(current + step);
+
+            float inputMag = Mathf.Clamp01(effectiveInput.magnitude);
+            Vector2 dir = inputMag > 1e-6f ? effectiveInput / inputMag : Vector2.zero;
+            float baseStepLen = moveSpeed * Time.deltaTime * inputMag;
+
+            float mult = GetSpeedMultiplierLocal(current + dir * (baseStepLen * speedSampleAheadFactor));
+            Vector2 step = dir * (baseStepLen * mult);
+
+            Vector2 desired = ClampToMap(current + step);
+            Vector2 next = ResolveCollision(current, desired);
             Vector2 frameDelta = next - current;
 
             if (frameDelta.sqrMagnitude > 1e-6f)
                 SetAnimation(frameDelta);
+            else
+                SetIdle();
 
             rect.anchoredPosition = next;
             OnHeroMoved?.Invoke(next);
@@ -155,14 +204,30 @@ public class OverworldHero : MonoBehaviour
             return;
         }
 
-        // Advance towards target and animate
-        Vector2 nextPos = Vector2.MoveTowards(cur, targetPosition, moveSpeed * Time.deltaTime);
-        Vector2 delta = nextPos - cur;
-        if (delta.sqrMagnitude > 1e-6f)
-            SetAnimation(delta);
+        // Advance towards target and animate (stepwise, with collision)
+        Vector2 toTarget = targetPosition - cur;
+        float maxStep = moveSpeed * Time.deltaTime;
+        Vector2 stepDir = toTarget.sqrMagnitude > 1e-6f ? toTarget.normalized : Vector2.zero;
 
-        rect.anchoredPosition = nextPos;
-        OnHeroMoved?.Invoke(nextPos);
+        float moveMult = GetSpeedMultiplierLocal(cur + stepDir * (maxStep * speedSampleAheadFactor));
+        Vector2 stepVec = stepDir * (maxStep * moveMult);
+
+        Vector2 desiredNext = ClampToMap(cur + stepVec);
+        Vector2 nextPos = ResolveCollision(cur, desiredNext);
+        Vector2 delta = nextPos - cur;
+
+        if (delta.sqrMagnitude > 1e-6f)
+        {
+            SetAnimation(delta);
+            rect.anchoredPosition = nextPos;
+            OnHeroMoved?.Invoke(nextPos);
+        }
+        else
+        {
+            // Blocked; stop moving this path
+            isMoving = false;
+            SetIdle();
+        }
     }
 
     public void SetAnalogInput(Vector2 input)
@@ -385,5 +450,228 @@ public class OverworldHero : MonoBehaviour
         int hash = Animator.StringToHash(stateName);
         if (animator.HasState(layer, hash))
             animator.CrossFadeInFixedTime(hash, fade, layer, 0f);
+    }
+
+    // ------------- Collision + Speed helpers ------------
+
+    public void BindMapAndViewport(RectTransform map, RectTransform view)
+    {
+        mapRect = map;
+        viewport = view;
+    }
+
+    private void InitializeCollisionMask()
+    {
+        maskPixels = null;
+        maskW = maskH = 0;
+
+        if (collisionMask == null) return;
+
+        try
+        {
+            maskW = collisionMask.width;
+            maskH = collisionMask.height;
+            maskPixels = collisionMask.GetPixels32(); // requires Read/Write Enabled
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning($"OverworldHero: Could not read collision mask pixels. Ensure Read/Write Enabled. {ex.Message}");
+            maskPixels = null;
+            maskW = maskH = 0;
+        }
+    }
+
+    public void SetCollisionMask(Texture2D mask)
+    {
+        collisionMask = mask;
+        collisionMaskUV = new Rect(0, 0, 1, 1);
+        InitializeCollisionMask();
+    }
+
+    public void SetCollisionMask(Texture2D mask, Rect uvRect01)
+    {
+        collisionMask = mask;
+        collisionMaskUV = uvRect01;
+        InitializeCollisionMask();
+    }
+
+    private bool MaskReady => collisionMask != null && maskPixels != null && maskPixels.Length == maskW * maskH && mapRect != null;
+
+    // Robust, rotation/scale-safe mapping from Content-local point to mask UV
+    private Vector2 LocalToMaskUV(Vector2 local)
+    {
+        if (mapRect == null) return Vector2.zero;
+
+        // Get the map rect corners in the parent's local space (works for any pivot/anchors/scale/rotation)
+        mapRect.GetWorldCorners(_mapWorldCorners);
+        var parent = (RectTransform)mapRect.parent;
+        Vector2 bl = parent.InverseTransformPoint(_mapWorldCorners[0]); // bottom-left
+        Vector2 tl = parent.InverseTransformPoint(_mapWorldCorners[1]); // top-left
+        Vector2 tr = parent.InverseTransformPoint(_mapWorldCorners[2]); // top-right
+
+        Vector2 rightVec = tr - tl;   float width = rightVec.magnitude;
+        Vector2 downVec  = bl - tl;   float height = downVec.magnitude;
+        if (width <= 1e-6f || height <= 1e-6f) return Vector2.zero;
+
+        Vector2 rightN = rightVec / width;
+        Vector2 downN  = downVec  / height;
+
+        // Project the vector from TL to the local point onto the rect's local axes
+        Vector2 toP = local - tl;
+        float u01 = Mathf.Clamp01(Vector2.Dot(toP, rightN) / width);
+        float v01 = Mathf.Clamp01(Vector2.Dot(toP, downN)  / height); // top->0 .. bottom->1
+
+        // Apply sub-UV in case the mask comes from an atlas/cropped sprite
+        //return new Vector2(
+        //    collisionMaskUV.x + u01 * collisionMaskUV.width,
+        //    collisionMaskUV.y + v01 * collisionMaskUV.height
+        //);
+
+        // Apply sub-UV in case the mask comes from an atlas/cropped sprite
+        // Texture V grows up from bottom. Our v01 grows down from top.
+        // Flip only when the uvRect height is positive, otherwise RawImage already flipped it.
+        float vInput = (collisionMaskUV.height >= 0f) ? (1f - v01) : v01;
+
+        return new Vector2(
+            collisionMaskUV.x + u01 * collisionMaskUV.width,
+            collisionMaskUV.y + vInput * collisionMaskUV.height
+        );
+
+    }
+
+    // New: sample raw pixel color at local position
+    private bool TrySamplePixel(Vector2 local, out Color32 color)
+    {
+        color = default;
+        if (!MaskReady) return false;
+
+        Vector2 uv = LocalToMaskUV(local);
+        if (uv.x < 0f || uv.x > 1f || uv.y < 0f || uv.y > 1f)
+            return false;
+
+        int x = Mathf.Clamp(Mathf.RoundToInt(uv.x * (maskW - 1)), 0, maskW - 1);
+        int y = Mathf.Clamp(Mathf.RoundToInt(uv.y * (maskH - 1)), 0, maskH - 1);
+        int idx = y * maskW + x;
+
+        color = maskPixels[idx];
+        return true;
+    }
+
+    // Only pure black is blocked (RGB exactly 0,0,0)
+    private static bool IsBlockedColor(Color32 c)
+    {
+        return c.r == 0 && c.g == 0 && c.b == 0;
+    }
+
+    private bool IsWalkableLocal(Vector2 local)
+    {
+        if (!MaskReady) return true;
+
+        // 1) Center probe
+        if (!IsWalkablePoint(local)) return false;
+
+        // 2) Neighborhood ring probes: use configured rays/radius; otherwise auto 8 rays with a radius based on the hero icon
+        int rays = collisionProbeRays > 0 ? collisionProbeRays : 8;
+        float radius = collisionProbeRadius > 0f
+            ? collisionProbeRadius
+            : (rect != null ? Mathf.Min(rect.rect.width, rect.rect.height) * 0.35f : 8f);
+
+        if (radius > 0f && rays > 0)
+        {
+            float step = 360f / rays;
+            for (int i = 0; i < rays; i++)
+            {
+                float ang = step * i * Mathf.Deg2Rad;
+                Vector2 offset = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * radius;
+                if (!IsWalkablePoint(local + offset))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    private bool IsWalkablePoint(Vector2 local)
+    {
+        if (TrySamplePixel(local, out Color32 px))
+            return !IsBlockedColor(px);
+
+        // Fallback: if we couldn't sample, treat as walkable
+        return true;
+    }
+
+    // Returns a multiplier (0.05..1). Blocked is handled elsewhere; this only slows.
+    private float GetSpeedMultiplierLocal(Vector2 local)
+    {
+        return 1f; // no slowdowns; movement speed is constant
+    }
+
+    private Vector2 ResolveCollision(Vector2 current, Vector2 desired)
+    {
+        // If desired is walkable, go there
+        if (IsWalkableLocal(desired))
+            return desired;
+
+        // Try sliding along X
+        Vector2 tryX = new Vector2(desired.x, current.y);
+        tryX = ClampToMap(tryX);
+        if (IsWalkableLocal(tryX))
+            return tryX;
+
+        // Try sliding along Y
+        Vector2 tryY = new Vector2(current.x, desired.y);
+        tryY = ClampToMap(tryY);
+        if (IsWalkableLocal(tryY))
+            return tryY;
+
+        // Blocked; stay put
+        return current;
+    }
+
+    // ---------- Scene gizmos for visual verification ----------
+    private void OnDrawGizmos()
+    {
+        if (!debugCollisionGizmos || rect == null || rect.parent == null) return;
+        DrawCollisionDebugGizmos();
+    }
+
+    private void DrawCollisionDebugGizmos()
+    {
+        var parent = (RectTransform)rect.parent;
+        Vector2 centerLocal = rect.anchoredPosition;
+
+        // Draw center
+        Gizmos.color = SampleColor(centerLocal);
+        Vector3 centerWorld = parent.TransformPoint(centerLocal);
+        Gizmos.DrawSphere(centerWorld, debugGizmoSize);
+
+        // Ring
+        int rays = collisionProbeRays > 0 ? collisionProbeRays : 8;
+        float radius = collisionProbeRadius > 0f
+            ? collisionProbeRadius
+            : (rect != null ? Mathf.Min(rect.rect.width, rect.rect.height) * 0.35f : 8f);
+
+        if (rays <= 0 || radius <= 0f) return;
+
+        float step = 360f / rays;
+        for (int i = 0; i < rays; i++)
+        {
+            float ang = step * i * Mathf.Deg2Rad;
+            Vector2 offset = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * radius;
+            Vector2 pLocal = centerLocal + offset;
+
+            Gizmos.color = SampleColor(pLocal);
+            Vector3 pWorld = parent.TransformPoint(pLocal);
+            Gizmos.DrawSphere(pWorld, debugGizmoSize);
+        }
+    }
+
+    private Color SampleColor(Vector2 local)
+    {
+        if (!MaskReady) return new Color(0.3f, 0.3f, 0.3f, 1f); // gray
+        if (!TrySamplePixel(local, out Color32 px)) return Color.gray;
+
+        bool blocked = IsBlockedColor(px);
+        return blocked ? Color.red : Color.green;
     }
 }

@@ -11,8 +11,14 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private ScrollRect scrollRect;
     private RectTransform viewport;
     private RectTransform content;
-    private RectTransform map;
-    private RawImage mapImage;
+
+    // Layered map
+    private RectTransform terrainRect;
+    private RectTransform surfaceRect;
+    private RectTransform canopyRect;
+    private RawImage terrainImage;
+    private RawImage surfaceImage;
+    private RawImage canopyImage;
 
     private OverworldHero hero;
 
@@ -22,9 +28,9 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private VirtualJoystick virtualJoystick;
     private RectTransform joystickRect;
 
-    [SerializeField] private bool hasRandomEncounters = true;
-    [SerializeField] private float indicatorPadding = 24f; // distance from viewport edge
-    [SerializeField] private float arrowFadeSpeed = 8f;    // alpha units/sec (0..1)
+    private bool hasRandomEncounters = false;
+    private float indicatorPadding = 64f; // distance from viewport edge
+    private float arrowFadeSpeed = 8f;    // alpha units/sec (0..1)
     private float arrowTargetAlpha;                        // 0 when visible, 1 when off-screen
 
     private Coroutine centeringRoutine;
@@ -46,13 +52,12 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private const float tapMaxSqrDistance = 12f * 12f;
 
     private const float centeringSnapThreshold = 0.01f; // when to snap to target
-   
+
     private void Awake()
     {
         if (!ProfileHelper.HasProfiles())
             return;
 
-        //Validate a current profile exists
         if (!ProfileHelper.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
@@ -60,7 +65,6 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
             return;
         }
 
-        //Validate a current save exists
         if (!ProfileHelper.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
@@ -76,10 +80,17 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         viewport = GameObject.Find(GameObjectHelper.Overworld.Viewport)?.GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.Overworld.Content)?.GetComponent<RectTransform>();
 
-        go = GameObject.Find(GameObjectHelper.Overworld.Map);
-        map = go.GetComponent<RectTransform>();
-        mapImage = go.GetComponent<RawImage>();
+        // Ensure layered map nodes exist and are configured
+        terrainRect = EnsureLayer(GameObjectHelper.Overworld.Terrain, desiredSiblingIndex: 0);
+        surfaceRect = EnsureLayer(GameObjectHelper.Overworld.Surface);
+        canopyRect = EnsureLayer(GameObjectHelper.Overworld.Canopy);
+        if (canopyRect != null) canopyRect.SetAsLastSibling(); // canopy above hero
 
+        terrainImage = terrainRect != null ? terrainRect.GetComponent<RawImage>() : null;
+        surfaceImage = surfaceRect != null ? surfaceRect.GetComponent<RawImage>() : null;
+        canopyImage = canopyRect != null ? canopyRect.GetComponent<RawImage>() : null;
+
+        // Offscreen arrow and hero/joystick
         go = GameObject.Find(GameObjectHelper.Overworld.OffscreenArrow);
         offscreenArrow = go.GetComponent<RectTransform>();
         offscreenArrowImage = go.GetComponent<Image>();
@@ -101,27 +112,16 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         content.anchorMax = new Vector2(0f, 1f);
         content.pivot = new Vector2(0f, 1f);
 
-        // Map is top-left anchored
-        map.anchorMin = new Vector2(0f, 1f);
-        map.anchorMax = new Vector2(0f, 1f);
-        map.pivot = new Vector2(0f, 1f);
-        map.anchoredPosition = Vector2.zero;
-
-        // Load map sprite from profile and size map/content to match
+        // Load map data from profile
         var overworld = ProfileHelper.CurrentProfile.CurrentSave.Overworld;
-        var sprite = MapLibrary.Get(overworld.MapName); // Sprite expected
-        var t = sprite.texture;
-        var r = sprite.rect;
-        mapImage.texture = t;
-        mapImage.uvRect = new Rect(
-            r.x / t.width, r.y / t.height,
-            r.width / t.width, r.height / t.height
-        );
-        map.sizeDelta = r.size;
+        var data = MapLibrary.Get(overworld.MapName);
 
-        // Size content to match map
-        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, map.sizeDelta.x);
-        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, map.sizeDelta.y);
+        // Apply each layer
+        ApplySpriteToLayer(terrainRect, ref terrainImage, data.Terrain);
+        ApplySpriteToLayer(surfaceRect, ref surfaceImage, data.Surface);
+        ApplySpriteToLayer(canopyRect, ref canopyImage, data.Canopy);
+    
+        SizeContentFromSprite(data.Terrain);
 
         // Wire hero
         if (hero != null)
@@ -137,9 +137,22 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
         ConfigureScrollBounds();
 
-        // Snap viewport to hero location immediately (no tween)
+        // Make sure the hero samples against the exact rects used by the ScrollView
         if (hero != null)
-            SnapCentering(hero.rect.anchoredPosition);
+        {
+            hero.BindMapAndViewport(terrainRect, viewport);
+        }
+
+        // Use the same texture AND uvRect that the RawImage displays.
+        // If your BW art is on Terrain, keep this; if it is on Surface, switch to surfaceImage.
+        if (hero != null && terrainImage != null && terrainImage.texture is Texture2D tex)
+        {
+            hero.SetCollisionMask(tex, terrainImage.uvRect);
+        }
+
+        // Snap viewport to hero location immediately (no tween)
+        SnapCentering(hero.rect.anchoredPosition);
+
     }
 
     private void OnDestroy()
@@ -154,7 +167,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
     private void Update()
     {
-        if (map == null) return;
+        if (terrainRect == null) return;
 
         bool isDirectional = hero != null && hero.TouchMoveMode == OverworldHeroTouchMode.DirectionalClick;
 
@@ -316,15 +329,15 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
     private IEnumerator ConfigureBoundsRoutine()
     {
-        yield return null; // wait one frame so map.rect is valid
+        yield return null; // wait one frame so rects are valid
         ConfigureScrollBounds();
     }
 
     private void ConfigureScrollBounds()
     {
-        if (scrollRect == null || viewport == null || content == null || map == null) return;
+        if (scrollRect == null || viewport == null || content == null || terrainRect == null) return;
 
-        Vector2 mapSize = map.rect.size;
+        Vector2 mapSize = terrainRect.rect.size;
         content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, mapSize.x);
         content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, mapSize.y);
     }
@@ -462,7 +475,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     // Trigger scene change to a random stage after sustained movement
     private void TriggerRandomEncounter()
     {
-        if (isLoadingEncounter) return;
+        if (!hasRandomEncounters || isLoadingEncounter) return;
         if (StageLibrary.Stages == null || StageLibrary.Stages.Count == 0) return;
 
         string mapName = ProfileHelper.Overworld.MapName;
@@ -483,5 +496,84 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
         isLoadingEncounter = true;
         scene.Change.ToGame();
+    }
+
+    // -------- helpers for layered map --------
+
+    private RectTransform EnsureLayer(string path, int? desiredSiblingIndex = null)
+    {
+        // Find node; if missing, create it under Content
+        var go = GameObject.Find(path);
+        if (go == null)
+        {
+            if (content == null) return null;
+
+            string name = path.Substring(path.LastIndexOf('/') + 1);
+            go = new GameObject(name, typeof(RectTransform));
+            var rt = go.GetComponent<RectTransform>();
+            rt.SetParent(content, false);
+            SetupLayerRect(rt);
+            rt.anchoredPosition = Vector2.zero;
+
+            // Attach RawImage so layer is renderable
+            go.AddComponent<RawImage>();
+
+            if (desiredSiblingIndex.HasValue)
+                rt.SetSiblingIndex(Mathf.Max(0, desiredSiblingIndex.Value));
+
+            return rt;
+        }
+        else
+        {
+            var rt = go.GetComponent<RectTransform>();
+            SetupLayerRect(rt);
+            if (desiredSiblingIndex.HasValue)
+                rt.SetSiblingIndex(Mathf.Max(0, desiredSiblingIndex.Value));
+            return rt;
+        }
+    }
+
+    private static void SetupLayerRect(RectTransform rt)
+    {
+        if (rt == null) return;
+        rt.anchorMin = new Vector2(0f, 1f);
+        rt.anchorMax = new Vector2(0f, 1f);
+        rt.pivot = new Vector2(0f, 1f);
+        rt.anchoredPosition = Vector2.zero;
+    }
+
+    private void ApplySpriteToLayer(RectTransform rt, ref RawImage img, Sprite s)
+    {
+        if (rt == null) return;
+
+        if (s == null)
+        {
+            if (img != null) img.enabled = false;
+            return;
+        }
+
+        if (img == null)
+            img = rt.gameObject.GetComponent<RawImage>() ?? rt.gameObject.AddComponent<RawImage>();
+
+        img.enabled = true;
+        var t = s.texture;
+        var r = s.rect;
+        img.texture = t;
+        img.uvRect = new Rect(
+            r.x / t.width, r.y / t.height,
+            r.width / t.width, r.height / t.height
+        );
+
+        // Size rect to sprite rect
+        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, r.size.x);
+        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, r.size.y);
+    }
+
+    private void SizeContentFromSprite(Sprite s)
+    {
+        if (s == null || content == null) return;
+        var r = s.rect.size;
+        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, r.x);
+        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, r.y);
     }
 }

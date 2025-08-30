@@ -15,8 +15,33 @@ MonoBehaviour:
   m_GroupName: Maps
   m_GUID: 63ca1ac6963effb4a831d76c108bea8c
   m_SerializeEntries:
-  - m_GUID: 5e74a43268119414481c6e08d1813979
-    m_Address: Maps/GreenValley
+  - m_GUID: 38dca3bb31b86ee438957fd7b9c14d70
+    m_Address: Maps/Test/Canopy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d4dbe6db32eec149ae1475cde1fde6e
+    m_Address: Maps/GreenValley/Surface
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d5eeea86f1a10043b2a267799f7989e
+    m_Address: Maps/GreenValley/Canopy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a465d21796bee7140933e95ced73cb5c
+    m_Address: Maps/GreenValley/Terrain
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c08e755b69b1f294b934071e05336ef0
+    m_Address: Maps/Test/Terrain
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db4613c1f2cc2e14d8fe1a7374499750
+    m_Address: Maps/Test/Surface
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

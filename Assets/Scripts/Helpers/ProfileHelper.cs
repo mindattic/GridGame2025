@@ -31,7 +31,7 @@ namespace Assets.Helpers
 
         public static StageSaveData DefaultStage = new StageSaveData()
         {
-            CurrentStage = RNG.Stage(Maps.Test),
+            CurrentStage = RNG.Stage(Map.Test),
             CurrentWave = 0,
         };
 
@@ -64,9 +64,9 @@ namespace Assets.Helpers
 
         public static OverworldSaveData DefaultOverworld = new OverworldSaveData
         {
-            MapName = Maps.GreenValley.ToString(),
-            HeroX = 830,
-            HeroY = -1000,
+            MapName = Map.Test.ToString(),
+            HeroX = 1000,
+            HeroY = -1250,
             HeroDirection = "Idle"
         };
 

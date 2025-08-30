@@ -399,7 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -437,7 +437,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rect: {fileID: 0}
   animator: {fileID: 163499844}
-  moveSpeed: 60
   mapRect: {fileID: 0}
   viewport: {fileID: 0}
   snapThreshold: 0.24
@@ -445,6 +444,7 @@ MonoBehaviour:
   ignoreClicksWhenOffscreen: 0
   allowVirtualJoystick: 1
   idleWhileOffscreen: 1
+  speedSampleAheadFactor: 0.5
   touchMoveMode: 0
   directionalClickMagnitude: 1
   idleState: Idle
@@ -452,6 +452,22 @@ MonoBehaviour:
   rightState: MoveRight
   downState: MoveDown
   leftState: MoveLeft
+  collisionMask: {fileID: 0}
+  collisionMaskUV:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  blockThreshold: 0.1
+  collisionProbeRadius: 6
+  collisionProbeRays: 8
+  useSlowZones: 1
+  slowBandCenter: 0.5
+  slowBandHalfWidth: 0.15
+  slowMultiplier: 0.5
+  debugCollisionGizmos: 1
+  debugGizmoSize: 6
 --- !u!95 &163499844
 Animator:
   serializedVersion: 7
@@ -783,9 +799,8 @@ GameObject:
   - component: {fileID: 417901355}
   - component: {fileID: 417901357}
   - component: {fileID: 417901356}
-  - component: {fileID: 417901358}
   m_Layer: 5
-  m_Name: Map
+  m_Name: Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -830,7 +845,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 5e74a43268119414481c6e08d1813979, type: 3}
+  m_Texture: {fileID: 2800000, guid: 4d4dbe6db32eec149ae1475cde1fde6e, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -845,18 +860,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 417901354}
   m_CullTransparentMesh: 1
---- !u!114 &417901358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 417901354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff31ad9868c182d4e8f65ed526a15b10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OverworldMapInstance
 --- !u!1 &553248449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,9 +1125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22fb5e2ecde678c4f8da4cd87aaf04e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasRandomEncounters: 1
-  indicatorPadding: 64
-  arrowFadeSpeed: 8
 --- !u!1 &985573457
 GameObject:
   m_ObjectHideFlags: 0
@@ -1321,6 +1321,98 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029122421}
   m_CullTransparentMesh: 1
+--- !u!1 &1370846921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1370846922}
+  - component: {fileID: 1370846925}
+  - component: {fileID: 1370846924}
+  - component: {fileID: 1370846926}
+  m_Layer: 5
+  m_Name: Terrain
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1370846922
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370846921}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1520924334}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 2048, y: -2048}
+  m_SizeDelta: {x: 4096, y: 4096}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1370846924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370846921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: a465d21796bee7140933e95ced73cb5c, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &1370846925
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370846921}
+  m_CullTransparentMesh: 1
+--- !u!114 &1370846926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370846921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc874d9ac52e8b40a5915d54685527a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  terrainImage: {fileID: 1370846924}
+  terrainRect: {fileID: 1370846922}
+  sampleStepPixels: 24
+  drawOnlyBlocked: 1
+  blockedColor: {r: 1, g: 0, b: 0, a: 0.9}
+  walkableColor: {r: 1, g: 1, b: 1, a: 0.25}
+  pointRadius: 14
 --- !u!1 &1451543602
 GameObject:
   m_ObjectHideFlags: 0
@@ -1426,6 +1518,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1370846922}
   - {fileID: 417901355}
   - {fileID: 163499840}
   - {fileID: 1931103578}
@@ -2002,7 +2095,7 @@ GameObject:
   - component: {fileID: 1931103580}
   - component: {fileID: 1931103579}
   m_Layer: 5
-  m_Name: Top
+  m_Name: Canopy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2047,7 +2140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 215c5e40a5a902540a9df1a36f006e17, type: 3}
+  m_Texture: {fileID: 2800000, guid: 5d5eeea86f1a10043b2a267799f7989e, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
