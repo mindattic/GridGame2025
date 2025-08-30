@@ -8,7 +8,6 @@ using UnityEngine.AddressableAssets;
 
 namespace Assets.Helpers
 {
-
     public static class AttackHelper
     {
         /// <summary>
@@ -16,7 +15,11 @@ namespace Assets.Helpers
         /// </summary>
         public static IEnumerator SingleAttackRoutine(AttackResult attackResult)
         {
-            attackResult.Opponent.Damage(attackResult);
+            var opp = attackResult?.Opponent;
+            if (opp == null || !opp.IsPlaying)           // guard: opponent might have died/deactivated earlier this frame
+                yield break;
+
+            opp.Damage(attackResult);
 
             // Preserve original yield
             yield return Wait.None();
@@ -34,9 +37,8 @@ namespace Assets.Helpers
             foreach (var attackResult in attackResults)
             {
                 yield return SingleAttackRoutine(attackResult);
-                yield return Wait.For(Interval.TenthSecond); //Short delay to produce domino effect
+                yield return Wait.For(Interval.TenthSecond); // Short delay to produce domino effect
             }
         }
     }
-
 }

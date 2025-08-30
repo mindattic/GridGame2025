@@ -39,7 +39,12 @@ public static class StageLibrary
                     Description = "DefeatAllEnemies",
                     CompletionCondition = "DefeatAllEnemies",
                     CompletionValue = 0,
-                    Waves = GenerateWaves(1, new List<string> { CharacterHelper.Slime, CharacterHelper.Bat })
+                    Waves = GenerateWaves(1, new List<string> { 
+                        CharacterHelper.Slime00,
+                        CharacterHelper.Slime01,
+                        CharacterHelper.Slime02,
+                        CharacterHelper.Slime03,
+                    })
                 }
             },
             { $"{Maps.GreenValley}-01", new Stage
@@ -48,16 +53,12 @@ public static class StageLibrary
                     Description = "DefeatAllEnemies",
                     CompletionCondition = "DefeatAllEnemies",
                     CompletionValue = 0,
-                    Waves = GenerateWaves(1, new List<string> { CharacterHelper.Slime })
-                }
-            },
-            { $"{Maps.GreenValley}-02", new Stage
-                {
-                    Name = $"{Maps.GreenValley}-02",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    Waves = GenerateWaves(5, new List<string> { CharacterHelper.Bat })
+                    Waves = GenerateWaves(1, new List<string> {
+                        CharacterHelper.Wolf00,
+                        CharacterHelper.Wolf01,
+                        CharacterHelper.Wolf02,
+                        CharacterHelper.Wolf03,
+                    })
                 }
             },
             { $"{Maps.Test}-00", new Stage

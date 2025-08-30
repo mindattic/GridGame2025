@@ -24,12 +24,20 @@ namespace Assets.Helpers
         public const string Sellsword = "Sellsword";
         public const string Scorpion = "Scorpion";
         public const string Soldier00 = "Soldier00";
-        public const string Soldier01 = "Soldier02";
-        public const string Soldier02 = "Soldier01";
+        public const string Soldier01 = "Soldier01";
+        public const string Soldier02 = "Soldier02";
         public const string Soldier03 = "Soldier03";
         public const string Slime = "Slime";
+        public const string Slime00 = "Slime00";
+        public const string Slime01 = "Slime01";
+        public const string Slime02 = "Slime02";
+        public const string Slime03 = "Slime03";
         public const string Thief = "Thief";
         public const string Vampire = "Vampire";
+        public const string Wolf00 = "Wolf00";
+        public const string Wolf01 = "Wolf01";
+        public const string Wolf02 = "Wolf02";
+        public const string Wolf03 = "Wolf03";
         public const string Yeti = "Yeti";
 
 
@@ -52,12 +60,17 @@ namespace Assets.Helpers
             Soldier02,
             Soldier03,
             Slime,
+            Slime00,
+            Slime01,
+            Slime02,
+            Slime03,
             Thief,
             Vampire,
-            Yeti
+            Wolf00,
+            Wolf01,
+            Wolf02,
+            Wolf03,
+            Yeti,
         };
     }
-
-
-
 }

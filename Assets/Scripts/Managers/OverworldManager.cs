@@ -27,6 +27,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private float arrowTargetAlpha;                        // 0 when visible, 1 when off-screen
 
     private Coroutine centeringRoutine;
+    private float centeringSpeed = 8f;
     private bool followHero;        // used when joystick is active
     private bool lastAnalogActive;  // edge detection
 
@@ -132,7 +133,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         ConfigureScrollBounds();
 
         // Snap viewport to hero location immediately (no tween)
-        SnapToPosition(hero.rect.anchoredPosition);
+        SnapCentering(hero.rect.anchoredPosition);
     }
 
     private void OnDestroy()
@@ -195,7 +196,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         // On press outside deadzone -> center and start following
         if (analogActive && !lastAnalogActive && hero != null && hero.rect != null)
         {
-            CenterOnPosition(hero.rect.anchoredPosition, 10f, 0.01f);
+            SmoothCentering(hero.rect.anchoredPosition);
             followHero = true;
         }
         // On release -> stop following and stop any centering tween
@@ -268,7 +269,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     public void OnCenterOnHeroClicked()
     {
         if (hero == null || hero.rect == null) return;
-        CenterOnPosition(hero.rect.anchoredPosition, 8f, 0.01f);
+        SmoothCentering(hero.rect.anchoredPosition);
     }
 
     private Vector2 GetMapPosition(Vector2 position)
@@ -286,18 +287,18 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         return new Vector2(nx, ny);
     }
 
-    public void CenterOnPosition(Vector2 position, float speed, float snapThreshold = centeringSnapThreshold)
+    public void SmoothCentering(Vector2 position)
     {
         CancelCentering();
-        centeringRoutine = StartCoroutine(SmoothCenteringRoutine(position, speed, snapThreshold));
+        centeringRoutine = StartCoroutine(SmoothCenteringRoutine(position));
     }
 
-    private IEnumerator SmoothCenteringRoutine(Vector2 targetLocalPosition, float speed, float snapThreshold = centeringSnapThreshold)
+    private IEnumerator SmoothCenteringRoutine(Vector2 targetLocalPosition)
     {
         Vector2 targetPosition = GetMapPosition(targetLocalPosition);
-        while (scrollRect != null && Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > snapThreshold)
+        while (scrollRect != null && Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > centeringSnapThreshold)
         {
-            scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * speed);
+            scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * centeringSpeed);
             yield return null;
         }
         if (scrollRect != null) scrollRect.normalizedPosition = targetPosition;
@@ -305,7 +306,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     }
 
     // Instantly center the viewport on the given local position (no tween)
-    public void SnapToPosition(Vector2 position)
+    public void SnapCentering(Vector2 position)
     {
         CancelCentering();
         if (scrollRect == null) return;

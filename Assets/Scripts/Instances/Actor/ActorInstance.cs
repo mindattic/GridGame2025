@@ -402,7 +402,11 @@ public class ActorInstance : MonoBehaviour
         location = Geometry.GetClosestAttackLocation(location, targetLocation);
     }
 
-    public void FireDamage(float amount) => StartCoroutine(FireDamageRoutine(amount));
+    public void FireDamage(float amount)
+    {
+        if (!IsPlaying) return;              // avoid starting coroutine on inactive/dead objects
+        StartCoroutine(FireDamageRoutine(amount));
+    }
 
     /// <summary>
     /// Apply fire damage feedback and text.
@@ -413,7 +417,11 @@ public class ActorInstance : MonoBehaviour
         yield return Wait.None();
     }
 
-    public void Heal(int amount) => StartCoroutine(HealRoutine(amount));
+    public void Heal(int amount)
+    {
+        if (!IsPlaying) return;              // avoid starting coroutine on inactive/dead objects
+        StartCoroutine(HealRoutine(amount));
+    }
 
     /// <summary>
     /// Apply healing and show feedback.
@@ -432,7 +440,11 @@ public class ActorInstance : MonoBehaviour
         yield break;
     }
 
-    public void Damage(AttackResult attackResult) => StartCoroutine(DamageRoutine(attackResult));
+    public void Damage(AttackResult attackResult)
+    {
+        if (!IsPlaying) return;              // avoid starting coroutine on inactive/dead objects
+        StartCoroutine(DamageRoutine(attackResult));
+    }
 
     /// <summary>
     /// Apply damage and show feedback.

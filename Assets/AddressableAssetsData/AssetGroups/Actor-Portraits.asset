@@ -35,6 +35,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 10363c21faed9834ba5f245fcdf59c66
+    m_Address: 1024/Slime00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1109e0450f08ba04187607ccf3450294
     m_Address: 1024/Vampire
     m_ReadOnly: 0
@@ -100,6 +105,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 47c28ba45b56e0d4c99e3b56da9074b2
+    m_Address: 1024/Slime02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 504b8afbba1becb45b2828993099c5cb
     m_Address: 4096/ShieldMaiden.png
     m_ReadOnly: 0
@@ -160,6 +170,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6a08a619c9429fe4ba2ade95b6f5cb06
+    m_Address: 1024/Slime01
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 72bef3fdc53d888449c4855675a9dbee
     m_Address: 4096/Barbarian
     m_ReadOnly: 0
@@ -172,6 +187,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7b8647357d607cd4eba22bb28a7f370e
     m_Address: Sprites/DottedLineArrow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7bd6fa9091a2ada49b3431f6854c00fc
+    m_Address: 1024/Wolf01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -230,8 +250,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad2e94a46cf303449a302877d89fcf5a
+    m_Address: 1024/Wolf00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b011d9ffb88d3df48a8c3a4420e7456e
     m_Address: 4096/GreenNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b860603a39fdd6c478f9d86cd16bdd8c
+    m_Address: 1024/Wolf02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -242,6 +272,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c4ef9ab115a56c24289b15f8802be7d2
     m_Address: 4096/BlackNinja
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cd0bad8f8a09f84429ded45a5e3bd44d
+    m_Address: 1024/Wolf00
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -292,6 +327,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f0e0c3f4a1d67504ab6131b1c8035947
     m_Address: 4096/Thief
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f37ed818f85ffba458f280788d9ff707
+    m_Address: 1024/Slime03
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

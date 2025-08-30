@@ -356,7 +356,7 @@ public sealed class Timeline : MonoBehaviour
             isHero = false,
             enemy = enemy,
             label = string.IsNullOrEmpty(enemy.characterName) ? "Enemy" : enemy.characterName,
-            color = new Color(0.10f, 0.60f, 1f, 1f),
+            color = ColorHelper.Solid.GunMetal, //new Color(0.10f, 0.60f, 1f, 1f),
             portrait = enemy.Render.thumbnail.sprite
         };
 

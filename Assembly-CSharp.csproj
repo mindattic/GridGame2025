@@ -61,6 +61,7 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\6000.2.1f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.UIToolkit.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Data\Actor\Wolf03.cs" />
     <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
@@ -121,8 +122,10 @@
     <Compile Include="Assets\Scripts\Libraries\ActorLibrary.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Thief.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Wolf00.cs" />
     <Compile Include="Assets\Scripts\Helpers\UnitConversionHelper.cs" />
     <Compile Include="Assets\Scripts\Models\VectorStats.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Slime00.cs" />
     <Compile Include="Assets\Scripts\Canvas\VirtualJoystick.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
@@ -138,8 +141,10 @@
     <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
     <Compile Include="Assets\Scripts\Managers\SequenceManager.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Slime02.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Slime01.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
@@ -164,6 +169,7 @@
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Card.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Slime03.cs" />
     <Compile Include="Assets\Scripts\Utilities\GameReady.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
@@ -227,6 +233,7 @@
     <Compile Include="Assets\Scripts\Canvas\ParallaxBackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Wolf01.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
@@ -269,6 +276,7 @@
     <Compile Include="Assets\Scripts\Helpers\ExperienceHelper.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleInstance.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Wolf02.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
     <Compile Include="Assets\Scripts\Sequences\PincerAttackSequence.cs" />
