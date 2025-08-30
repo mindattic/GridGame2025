@@ -1,36 +1,40 @@
 using Assets.Helper;
 using Assets.Helpers;
-using Assets.Scripts.Utilities;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Label = TMPro.TextMeshProUGUI;
 using scene = Assets.Helpers.SceneHelper;
 
 public class OverworldManager : MonoBehaviour, IBeginDragHandler
 {
-    private RectTransform scrollView;
     private ScrollRect scrollRect;
     private RectTransform viewport;
     private RectTransform content;
     private RectTransform map;
-    private PlayerStageMover hero;
+    private RawImage mapImage;
 
-    // Off-screen arrow (optional; will be auto-found)
-    [SerializeField] private RectTransform offscreenArrow; // assign in Inspector or found by path
+    private OverworldHero hero;
+
+    private RectTransform offscreenArrow;
     private Image offscreenArrowImage;
+
+    private VirtualJoystick virtualJoystick;
 
     // Indicator settings
     [SerializeField] private float indicatorPadding = 24f; // distance from viewport edge
     [SerializeField] private float arrowFadeSpeed = 8f;    // alpha units/sec (0..1)
     private float arrowTargetAlpha;                        // 0 when visible, 1 when off-screen
 
-    [SerializeField] private Label centerModeLabel;
-
     private Coroutine centeringRoutine;
-    private bool hasCenteredInitially;
-    private bool followHero = false; // default: free scroll (do not follow)
+    private bool followHero;        // used when joystick is active
+    private bool lastAnalogActive;  // edge detection
+
+    // Random encounter
+    private float encounterTimer;                       // accumulates only while moving
+    private const float encounterIntervalSeconds = 3f;  // trigger threshold
+    private bool movedThisFrame;                        // set by HandleHeroMoved each frame
+    private bool isLoadingEncounter;                    // prevent double loads
 
     // Tap vs Drag detection
     private bool pointerDownOnMap;
@@ -39,118 +43,96 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private const float tapMaxTime = 0.30f;
     private const float tapMaxSqrDistance = 12f * 12f;
 
+    private const float centeringSnapThreshold = 0.01f; // when to snap to target
+   
     private void Awake()
     {
+        if (!ProfileHelper.HasProfiles())
+            return;
+
+        //Validate a current profile exists
+        if (!ProfileHelper.HasCurrentProfile)
+        {
+            Debug.LogError("No current profile selected.");
+            scene.Change.ToProfileCreate();
+            return;
+        }
+
+        //Validate a current save exists
+        if (!ProfileHelper.HasCurrentSave)
+        {
+            Debug.LogError("No current save selected.");
+            scene.Change.ToSaveFileSelect();
+            return;
+        }
+
+        GameObject go;
+
         // Gather references safely
-        scrollView = GameObject.Find(GameObjectHelper.Overworld.ScrollView)?.GetComponent<RectTransform>();
-        scrollRect = GameObject.Find(GameObjectHelper.Overworld.ScrollView)?.GetComponent<ScrollRect>();
+        go = GameObject.Find(GameObjectHelper.Overworld.ScrollView);
+        scrollRect = go.GetComponent<ScrollRect>();
         viewport = GameObject.Find(GameObjectHelper.Overworld.Viewport)?.GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.Overworld.Content)?.GetComponent<RectTransform>();
-        map = GameObject.Find(GameObjectHelper.Overworld.Map)?.GetComponent<RectTransform>();
-        hero = GameObject.Find(GameObjectHelper.Overworld.Hero)?.GetComponent<PlayerStageMover>();
 
-        if (offscreenArrow == null)
-            offscreenArrow = GameObject.Find(GameObjectHelper.Overworld.OffscreenArrow)?.GetComponent<RectTransform>();
+        go = GameObject.Find(GameObjectHelper.Overworld.Map);
+        map = go.GetComponent<RectTransform>();
+        mapImage = go.GetComponent<RawImage>();
 
-        // Fallbacks for naming mismatch (OffScreenArrow vs OffscreenArrow)
-        if (offscreenArrow == null && viewport != null)
-        {
-            var t = viewport.Find("OffScreenArrow") ?? viewport.Find("OffscreenArrow");
-            if (t != null) offscreenArrow = t as RectTransform;
-        }
+        go = GameObject.Find(GameObjectHelper.Overworld.OffscreenArrow);
+        offscreenArrow = go.GetComponent<RectTransform>();
+        offscreenArrowImage = go.GetComponent<Image>();
 
-        // Resolve Image even if only RectTransform was found
-        if (offscreenArrowImage == null)
-        {
-            if (offscreenArrow != null)
-                offscreenArrowImage = offscreenArrow.GetComponent<Image>();
-            else
-                offscreenArrowImage = GameObject.Find(GameObjectHelper.Overworld.OffscreenArrow)?.GetComponent<Image>();
-        }
+        hero = GameObject.Find(GameObjectHelper.Overworld.Hero)?.GetComponent<OverworldHero>();
+        virtualJoystick = GameObject.Find(GameObjectHelper.Overworld.VirtualJoystick)?.GetComponent<VirtualJoystick>();
 
         // Wire ScrollRect if available
-        if (scrollRect != null && viewport != null && content != null)
-        {
-            scrollRect.viewport = viewport;
-            scrollRect.content = content;
-            scrollRect.movementType = ScrollRect.MovementType.Clamped;
-            scrollRect.inertia = true;
-            scrollRect.horizontal = true;
-            scrollRect.vertical = true;
-            if (viewport.GetComponent<RectMask2D>() == null)
-                viewport.gameObject.AddComponent<RectMask2D>();
-        }
-        else
-        {
-            if (scrollRect == null) Debug.LogWarning("OverworldManager: ScrollRect not found.");
-            if (viewport == null) Debug.LogWarning("OverworldManager: Viewport not found.");
-            if (content == null) Debug.LogWarning("OverworldManager: Content not found.");
-        }
+        scrollRect.viewport = viewport;
+        scrollRect.content = content;
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        scrollRect.inertia = true;
+        scrollRect.horizontal = true;
+        scrollRect.vertical = true;
 
         // Layout constraints
-        if (content != null)
-        {
-            content.anchorMin = new Vector2(0f, 1f);
-            content.anchorMax = new Vector2(0f, 1f);
-            content.pivot = new Vector2(0f, 1f);
-        }
-        if (map != null)
-        {
-            map.anchorMin = new Vector2(0f, 1f);
-            map.anchorMax = new Vector2(0f, 1f);
-            map.pivot = new Vector2(0f, 1f);
-            map.anchoredPosition = Vector2.zero;
+        content.anchorMin = new Vector2(0f, 1f);
+        content.anchorMax = new Vector2(0f, 1f);
+        content.pivot = new Vector2(0f, 1f);
 
-            if (content != null)
-            {
-                Vector2 mapSize = map.rect.size;
-                content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, mapSize.x);
-                content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, mapSize.y);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("OverworldManager: Map not found.");
-        }
+        // Map is top-left anchored
+        map.anchorMin = new Vector2(0f, 1f);
+        map.anchorMax = new Vector2(0f, 1f);
+        map.pivot = new Vector2(0f, 1f);
+        map.anchoredPosition = Vector2.zero;
 
-        if (hero != null)
-        {
-            hero.AllowClickToMove = true;
-            hero.OnHeroMoved += HandleHeroMoved;
-        }
-        else
-        {
-            Debug.LogWarning("OverworldManager: Hero not found.");
-        }
+        // Load map sprite from profile and size map/content to match
+        var overworld = ProfileHelper.CurrentProfile.CurrentSave.Overworld;
+        var sprite = MapLibrary.Get(overworld.MapName); // Sprite expected
+        var t = sprite.texture;
+        var r = sprite.rect;
+        mapImage.texture = t;
+        mapImage.uvRect = new Rect(
+            r.x / t.width, r.y / t.height,
+            r.width / t.width, r.height / t.height
+        );
+        map.sizeDelta = r.size;
 
-        // Configure the indicator (center anchors, always active, start invisible)
-        if (offscreenArrow != null)
-        {
-            offscreenArrow.anchorMin = new Vector2(0.5f, 0.5f);
-            offscreenArrow.anchorMax = new Vector2(0.5f, 0.5f);
-            offscreenArrow.pivot = new Vector2(0.5f, 0.5f);
-            offscreenArrow.gameObject.SetActive(true); // never disable
-            offscreenArrow.SetAsLastSibling();         // draw above Content
-        }
-        else
-        {
-            Debug.LogWarning("OverworldManager: OffscreenArrow not found under Viewport. Assign it in the Inspector or name it 'OffscreenArrow'.");
-        }
+        // Size content to match map
+        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, map.sizeDelta.x);
+        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, map.sizeDelta.y);
 
-        if (offscreenArrowImage != null)
-        {
-            // Ensure it doesn't block clicks and start transparent
-            offscreenArrowImage.raycastTarget = false;
-            SetArrowAlpha(0f);
-        }
-        else
-        {
-            Debug.LogWarning("OverworldManager: OffscreenArrow Image component not found.");
-        }
+        // Wire hero
+        hero.AllowClickToMove = false;
+        hero.OnHeroMoved += HandleHeroMoved;
+        hero.rect.anchoredPosition = new Vector2(overworld.HeroX, overworld.HeroY);
+        hero.SetFacing(overworld.HeroDirection);
 
-        // Defer size/bounds setup
-        StartCoroutine(ConfigureBoundsRoutine());
+        // Off-screen arrow config
+        SetOffscreenArrowAlpha(0f);
 
+        ConfigureScrollBounds();
+
+        // Snap viewport to hero location immediately (no tween)
+        SnapToPosition(hero.rect.anchoredPosition);
     }
 
     private void OnDestroy()
@@ -170,34 +152,77 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         // Touch
         if (Input.touchCount > 0)
         {
-            var t = Input.GetTouch(0);
+            Touch t = Input.GetTouch(0);
             if (t.phase == TouchPhase.Began)
             {
                 if (map != null)
                     pointerDownOnMap = RectTransformUtility.RectangleContainsScreenPoint(map, t.position, null);
-                pointerDownPos = t.position; pointerDownTime = Time.unscaledTime;
+                pointerDownPos = t.position;
+                pointerDownTime = Time.unscaledTime;
             }
-            else if (t.phase == TouchPhase.Ended && pointerDownOnMap && IsTap(t.position)) HandleTap(t.position);
+            else if (t.phase == TouchPhase.Ended && pointerDownOnMap && IsTap(t.position))
+            {
+                HandleTap(t.position);
+            }
             return;
         }
+
         // Mouse
         if (Input.GetMouseButtonDown(0))
         {
-            var pos = (Vector2)Input.mousePosition;
+            Vector2 pos = (Vector2)Input.mousePosition;
             if (map != null)
                 pointerDownOnMap = RectTransformUtility.RectangleContainsScreenPoint(map, pos, null);
-            pointerDownPos = pos; pointerDownTime = Time.unscaledTime;
+            pointerDownPos = pos;
+            pointerDownTime = Time.unscaledTime;
         }
         if (Input.GetMouseButtonUp(0))
         {
-            var pos = (Vector2)Input.mousePosition;
+            Vector2 pos = (Vector2)Input.mousePosition;
             if (pointerDownOnMap && IsTap(pos)) HandleTap(pos);
         }
     }
 
-    // Run after layout/movement so the indicator updates even when touch logic early-returns
     private void LateUpdate()
     {
+        // Feed analog input to the hero every frame
+        Vector2 stick = virtualJoystick != null ? virtualJoystick.Direction : Vector2.zero;
+        bool analogActive = stick.sqrMagnitude > 1e-6f;
+
+        if (hero != null)
+            hero.SetAnalogInput(stick);
+
+        // On press outside deadzone -> center and start following
+        if (analogActive && !lastAnalogActive && hero != null && hero.rect != null)
+        {
+            CenterOnPosition(hero.rect.anchoredPosition, 10f, 0.01f);
+            followHero = true;
+        }
+        // On release -> stop following and stop any centering tween
+        if (!analogActive && lastAnalogActive)
+        {
+            followHero = false;
+            CancelCentering();
+        }
+        lastAnalogActive = analogActive;
+
+        // Random encounter: accumulate only while actually moving (based on OnHeroMoved)
+        if (movedThisFrame)
+        {
+            encounterTimer += Time.deltaTime;
+            if (encounterTimer >= encounterIntervalSeconds)
+            {
+                encounterTimer = 0f;
+                TriggerRandomEncounter();
+            }
+        }
+        else
+        {
+            // require continuous movement
+            encounterTimer = 0f;
+        }
+        movedThisFrame = false; // reset for the next frame
+
         UpdateOffscreenArrow();
     }
 
@@ -209,19 +234,21 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
     private void HandleTap(Vector2 screenPos)
     {
-        if (hero == null || hero.rect == null || content == null) return;
-
+        // Click-to-move disabled
+        if (hero == null || hero.rect == null || content == null || !hero.AllowClickToMove) return;
         Vector2 local = UnitConversionHelper.Screen.ToCanvas(content, screenPos);
         hero.SetDestinationLocal(local);
     }
 
-    private void OnRectTransformDimensionsChange() { ConfigureScrollBounds(); }
+    private void OnRectTransformDimensionsChange()
+    {
+        ConfigureScrollBounds();
+    }
 
     private IEnumerator ConfigureBoundsRoutine()
     {
         yield return null; // wait one frame so map.rect is valid
         ConfigureScrollBounds();
-        hasCenteredInitially = true;
     }
 
     private void ConfigureScrollBounds()
@@ -233,9 +260,11 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, mapSize.y);
     }
 
-    public void OnBackButtonClicked() { scene.Change.ToPreviousScene(); }
+    public void OnBackButtonClicked()
+    {
+        scene.Change.ToPreviousScene();
+    }
 
-    // One-shot center helper (does not toggle follow; still allows scrolling after)
     public void OnCenterOnHeroClicked()
     {
         if (hero == null || hero.rect == null) return;
@@ -257,91 +286,133 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         return new Vector2(nx, ny);
     }
 
-    public void CenterOnPosition(Vector2 targetLocalPosition, float speed, float snapThreshold)
+    public void CenterOnPosition(Vector2 position, float speed, float snapThreshold = centeringSnapThreshold)
     {
         CancelCentering();
-        centeringRoutine = StartCoroutine(SmoothCenteringRoutine(targetLocalPosition, speed, snapThreshold));
+        centeringRoutine = StartCoroutine(SmoothCenteringRoutine(position, speed, snapThreshold));
     }
 
-    private IEnumerator SmoothCenteringRoutine(Vector2 targetLocalPosition, float speed, float snapThreshold)
+    private IEnumerator SmoothCenteringRoutine(Vector2 targetLocalPosition, float speed, float snapThreshold = centeringSnapThreshold)
     {
         Vector2 targetPosition = GetMapPosition(targetLocalPosition);
         while (scrollRect != null && Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > snapThreshold)
         {
             scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * speed);
-            yield return Wait.None();
+            yield return null;
         }
         if (scrollRect != null) scrollRect.normalizedPosition = targetPosition;
         centeringRoutine = null;
     }
 
-    private void CancelCentering() { if (centeringRoutine != null) { StopCoroutine(centeringRoutine); centeringRoutine = null; } }
+    // Instantly center the viewport on the given local position (no tween)
+    public void SnapToPosition(Vector2 position)
+    {
+        CancelCentering();
+        if (scrollRect == null) return;
 
-    public void OnBeginDrag(PointerEventData eventData) { CancelCentering(); }
+        Vector2 targetPosition = GetMapPosition(position);
+        scrollRect.normalizedPosition = targetPosition;
+    }
 
+    // Cancel any ongoing centering coroutine
+    private void CancelCentering()
+    {
+        if (centeringRoutine != null)
+        {
+            StopCoroutine(centeringRoutine);
+            centeringRoutine = null;
+        }
+    }
+
+    // IBeginDragHandler
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        CancelCentering();
+    }
+
+    // Follow hero while moving and flag movement for encounter timer
     private void HandleHeroMoved(Vector2 heroLocalPos)
     {
+        movedThisFrame = true;
+
         if (!followHero || scrollRect == null) return;
         scrollRect.normalizedPosition = GetMapPosition(heroLocalPos);
     }
 
-    // Shows an arrow on the viewport edge pointing toward the hero when off-screen; fades in/out instead of SetActive
+    // Update the offscreen arrow position/alpha to point toward the hero
     private void UpdateOffscreenArrow()
     {
         if (offscreenArrow == null || offscreenArrowImage == null || viewport == null || hero == null || hero.rect == null)
             return;
 
-        bool heroVisible = PlayerStageMover.IsTargetVisible(hero.rect, viewport);
+        bool heroVisible = OverworldHero.IsTargetVisible(hero.rect, viewport);
 
-        // Drive fade target
         arrowTargetAlpha = heroVisible ? 0f : 1f;
-
-        // Fade alpha
         float current = offscreenArrowImage.color.a;
         float next = Mathf.MoveTowards(current, arrowTargetAlpha, arrowFadeSpeed * Time.unscaledDeltaTime);
         if (!Mathf.Approximately(current, next))
-            SetArrowAlpha(next);
+            SetOffscreenArrowAlpha(next);
 
-        // Only update placement when hero is off-screen (or while fading in)
         if (!heroVisible || next > 0.001f)
         {
-            // Hero center in viewport local space
+            // Hero position in viewport local space
             Vector3 heroWorldCenter = hero.rect.TransformPoint(hero.rect.rect.center);
             Vector2 heroLocal = viewport.InverseTransformPoint(heroWorldCenter);
 
             // Viewport rect in local space
             Vector3[] vc = new Vector3[4];
             viewport.GetLocalCorners(vc);
-            Vector2 min = vc[0];           // bottom-left
-            Vector2 max = vc[2];           // top-right
+            Vector2 min = vc[0];
+            Vector2 max = vc[2];
             Vector2 center = (min + max) * 0.5f;
             Vector2 extents = (max - min) * 0.5f;
 
-            // Direction from center to hero (local)
             Vector2 dir = heroLocal - center;
             if (dir.sqrMagnitude < 0.0001f) dir = Vector2.up;
 
-            // Shrink extents by padding and scale dir to the edge
             float pad = Mathf.Max(0f, indicatorPadding);
             Vector2 ex = new Vector2(Mathf.Max(0.001f, extents.x - pad), Mathf.Max(0.001f, extents.y - pad));
             float sx = Mathf.Abs(dir.x) > 0.0001f ? ex.x / Mathf.Abs(dir.x) : float.PositiveInfinity;
             float sy = Mathf.Abs(dir.y) > 0.0001f ? ex.y / Mathf.Abs(dir.y) : float.PositiveInfinity;
             float s = Mathf.Min(sx, sy);
 
-            // Place relative to the viewport center (indicator anchored to center)
             offscreenArrow.anchoredPosition = dir * s;
-
-            // Rotate to point at hero (assumes arrow graphic points "right")
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg; // arrow graphic points right
             offscreenArrow.localRotation = Quaternion.Euler(0f, 0f, angle);
         }
     }
 
-    private void SetArrowAlpha(float a)
+    // Helper to set arrow alpha
+    private void SetOffscreenArrowAlpha(float a)
     {
-        if (offscreenArrowImage == null) return;
         Color c = offscreenArrowImage.color;
         c.a = Mathf.Clamp01(a);
         offscreenArrowImage.color = c;
+    }
+
+    // Trigger scene change to a random stage after sustained movement
+    private void TriggerRandomEncounter()
+    {
+        if (isLoadingEncounter) return;
+        if (StageLibrary.Stages == null || StageLibrary.Stages.Count == 0) return;
+
+        string mapName = ProfileHelper.Overworld.MapName;
+
+        // Persist overworld location and facing
+        if (hero != null && hero.rect != null)
+        {
+            ProfileHelper.CurrentProfile.LatestSave.Overworld.MapName = mapName;
+            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroX = hero.rect.anchoredPosition.x;
+            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroY = hero.rect.anchoredPosition.y;
+            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroDirection = hero.CurrentFacingName ?? "Idle";
+            ProfileHelper.SaveOverworldPosition(hero.rect.anchoredPosition, mapName, hero.CurrentFacingName ?? "Idle");
+        }
+
+        // Get a random stage for this map from RNG
+        string stageName = RNG.Stage(mapName);
+        ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
+
+        isLoadingEncounter = true;
+        scene.Change.ToGame();
     }
 }

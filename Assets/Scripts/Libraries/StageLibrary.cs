@@ -3,6 +3,14 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum Maps
+{
+    Test,
+    GreenValley,
+}
+
+
 public static class StageLibrary
 {
     private static Dictionary<string, Stage> stages;
@@ -24,13 +32,40 @@ public static class StageLibrary
 
         stages = new Dictionary<string, Stage>
         {
-            { "Stage 1", new Stage
+
+            { $"{Maps.GreenValley}-00", new Stage
                 {
-                    Name = "Stage 1",
+                    Name = $"{Maps.GreenValley}-00",
+                    Description = "DefeatAllEnemies",
+                    CompletionCondition = "DefeatAllEnemies",
+                    CompletionValue = 0,
+                    Waves = GenerateWaves(1, new List<string> { CharacterHelper.Slime, CharacterHelper.Bat })
+                }
+            },
+            { $"{Maps.GreenValley}-01", new Stage
+                {
+                    Name = $"{Maps.GreenValley}-01",
+                    Description = "DefeatAllEnemies",
+                    CompletionCondition = "DefeatAllEnemies",
+                    CompletionValue = 0,
+                    Waves = GenerateWaves(1, new List<string> { CharacterHelper.Slime })
+                }
+            },
+            { $"{Maps.GreenValley}-02", new Stage
+                {
+                    Name = $"{Maps.GreenValley}-02",
+                    Description = "DefeatAllEnemies",
+                    CompletionCondition = "DefeatAllEnemies",
+                    CompletionValue = 0,
+                    Waves = GenerateWaves(5, new List<string> { CharacterHelper.Bat })
+                }
+            },
+            { $"{Maps.Test}-00", new Stage
+                {
+                    Name = $"{Maps.Test}-00",
                     Description = "Intro Battle",
                     CompletionCondition = "DefeatAllEnemies",
                     CompletionValue = 0,
-                    NextStage = "Stage 2",
                     Waves = new List<StageWave>
                     {
                         new StageWave
@@ -87,46 +122,15 @@ public static class StageLibrary
                     }
                 }
             },
-            { "Stage 2", new Stage
+            { $"{Maps.Test}-01", new Stage
                 {
-                    Name = "Stage 2",
+                    Name = $"{Maps.Test}-01",
                     Description = "DefeatAllEnemies",
                     CompletionCondition = "DefeatAllEnemies",
                     CompletionValue = 0,
-                    NextStage = "Stage 3",
                     Waves = GenerateWaves(4, new List<string> { CharacterHelper.Slime, CharacterHelper.Scorpion, CharacterHelper.Bat })
                 }
             },
-            { "Stage 3", new Stage
-                {
-                    Name = "Stage 3",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 4",
-                    Waves = GenerateWaves(5, new List<string> { CharacterHelper.Slime, CharacterHelper.Yeti, CharacterHelper.Scorpion, CharacterHelper.Bat })
-                }
-            },
-            { "Stage 4", new Stage
-                {
-                    Name = "Stage 4",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 5",
-                    Waves = GenerateWaves(3, new List<string> { CharacterHelper.Yeti, CharacterHelper.Slime, CharacterHelper.Bat, CharacterHelper.Scorpion })
-                }
-            },
-            { "Stage 5", new Stage
-                {
-                    Name = "Stage 5",
-                    Description = "DefeatAllEnemies",
-                    CompletionCondition = "DefeatAllEnemies",
-                    CompletionValue = 0,
-                    NextStage = "Stage 6",
-                    Waves = GenerateWaves(5, new List<string> { CharacterHelper.Yeti, CharacterHelper.Slime, CharacterHelper.Scorpion, CharacterHelper.Bat })
-                }
-            }
         };
 
         isLoaded = true;

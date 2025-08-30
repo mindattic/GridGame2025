@@ -188,15 +188,18 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void OnStageComplete()
     {
-        IEnumerator loadNextStageRoutine()
-        {
-            var stageName = currentStage.NextStage;
-            currentStage = StageLibrary.Get(stageName);
-            RestartStage();
-            yield return Wait.None();
-        }
+        //IEnumerator loadNextStageRoutine()
+        //{
+        //    var stageName = currentStage.NextStage;
+        //    currentStage = StageLibrary.Get(stageName);
+        //    RestartStage();
+        //    yield return Wait.None();
+        //}
 
-        scene.FadeOut(loadNextStageRoutine());
+
+        scene.Change.ToOverworld();
+
+        //scene.FadeOut(scene.Change.ToOverworld());
     }
 
     /// <summary>

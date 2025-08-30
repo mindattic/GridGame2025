@@ -283,4 +283,17 @@ static class RNG
     {
         return EnumValue<HitOutcome>();
     }
+
+
+
+    public static string Stage(Maps map)
+    {
+        return StageLibrary.Stages.Keys.Where(x => x.StartsWith(map.ToString())).Shuffle().First();
+    }
+
+    public static string Stage(string mapName)
+    {
+        Maps map = (Maps)Enum.Parse(typeof(Maps), mapName);
+        return StageLibrary.Stages.Keys.Where(x => x.StartsWith(map.ToString())).Shuffle().First();
+    }
 }

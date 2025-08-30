@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Canvas\MapIcon.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\RedNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
+    <Compile Include="Assets\Scripts\UI\VirtualJoystick.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\StageWave.cs" />
     <Compile Include="Assets\Scripts\Helpers\BezierCurveHelper.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\Thief.cs" />
     <Compile Include="Assets\Scripts\Helpers\UnitConversionHelper.cs" />
     <Compile Include="Assets\Scripts\Models\VectorStats.cs" />
+    <Compile Include="Assets\Scripts\Canvas\VirtualJoystick.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
     <Compile Include="Assets\Scripts\Managers\FootstepManager.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\CombatLogHelper.cs" />
+    <Compile Include="Assets\Scripts\Libraries\MapLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier02.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
@@ -180,7 +183,6 @@
     <Compile Include="Assets\Scripts\Managers\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SynergyLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Portrait2DInstance.cs" />
-    <Compile Include="Assets\Scripts\Canvas\PlayerStageMover.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergySpark.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
@@ -253,6 +255,7 @@
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
+    <Compile Include="Assets\Scripts\Canvas\OverworldHero.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />

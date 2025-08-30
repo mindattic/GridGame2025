@@ -16,7 +16,6 @@ namespace Assets.Scripts.Models
             Description = other.Description;
             CompletionCondition = other.CompletionCondition;
             CompletionValue = other.CompletionValue;
-            NextStage = other.NextStage;
             Tutorials = other.Tutorials != null ? new List<string>(other.Tutorials) : new List<string>();
 
             // Deep copy each StageWave using its copy constructor
@@ -30,7 +29,6 @@ namespace Assets.Scripts.Models
         public string Description;
         public string CompletionCondition;
         public int CompletionValue;
-        public string NextStage = "Stage 2";
         public List<string> Tutorials;
         public List<StageWave> Waves; // Replacing Actors and DottedLines with waves
     }

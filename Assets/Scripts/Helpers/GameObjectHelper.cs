@@ -129,6 +129,7 @@ namespace Assets.Helper
             public const string Map = "Canvas/ScrollView/Viewport/Content/Map";
             public const string Hero = "Canvas/ScrollView/Viewport/Content/Hero";
             public const string OffscreenArrow = "Canvas/ScrollView/Viewport/OffscreenArrow";
+            public const string VirtualJoystick = "Canvas/VirtualJoystick";
         }
 
         public static class ProfileCreate

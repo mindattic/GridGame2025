@@ -60,6 +60,9 @@ public class PartyManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!ProfileHelper.HasProfiles())
+            return;
+
         //Validate a current profile exists
         if (!ProfileHelper.HasCurrentProfile)
         {

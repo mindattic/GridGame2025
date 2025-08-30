@@ -20,7 +20,7 @@ public class CreditsManager : MonoBehaviour
         //scrollView = GameObject.Find(GameObjectHelper.Credits.ScrollView).GetComponent<RectTransform>();
         //content = GameObject.Find(GameObjectHelper.Credits.Content).GetComponent<RectTransform>();
         textarea = GameObject.Find(GameObjectHelper.Credits.Textarea).GetComponent<RectTransform>();
-      
+
         //var startX = canvas.rect.width;
         //var startY = canvas.rect.height;
         //var buttonWidth = 0.9f * startX;
@@ -32,6 +32,10 @@ public class CreditsManager : MonoBehaviour
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         //content.GetComponent<VerticalLayoutGroup>().spacing = rowSpacing;
 
+        //Joystick graphics:
+        //Hannemann: https://hannemann.itch.io/virtual-joystick-pack-free
+
+
         const string NL = "\r\n";
         string text
             = $"{NL}{NL}"
@@ -39,9 +43,12 @@ public class CreditsManager : MonoBehaviour
             + $"<size=150%>Ryan DeBraal</size>{NL}{NL}"
             + $"<size=80%>Typography</size>{NL}"
             + $"<size=150%>Brian Willson</size> <size=50%>(Attic)</size>{NL}"
-            + $"<size=150%>Jonas Hecksher</size> <size=50%>(SpawnPairRoutine)</size>{NL}{NL}"
+            + $"<size=150%>Jonas Hecksher</size> <size=50%>(???)</size>{NL}{NL}"
             + $"<size=80%>Visual Effects</size>{NL}"
-            + $"<size=150%>Eric Wang</size>{NL}"
+            + $"<size=150%>Eric Wang</size>{NL}{{NL"
+            + $"<size=80%>Graphics</size>{NL}"
+            + $"<size=150%>Hannemann (Virtual Joystick)</size>{NL}"
+             + $"<size=10%>https://hannemann.itch.io/virtual-joystick-pack-free</size>{NL}"
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"

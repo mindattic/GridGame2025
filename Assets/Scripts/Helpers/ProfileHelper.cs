@@ -31,7 +31,7 @@ namespace Assets.Helpers
 
         public static StageSaveData DefaultStage = new StageSaveData()
         {
-            CurrentStage = "Stage 1",
+            CurrentStage = RNG.Stage(Maps.Test),
             CurrentWave = 0,
         };
 
@@ -60,6 +60,14 @@ namespace Assets.Helpers
                 new CharacterLevelPair(CharacterHelper.Barbarian),
                 new CharacterLevelPair(CharacterHelper.Cleric),
             }
+        };
+
+        public static OverworldSaveData DefaultOverworld = new OverworldSaveData
+        {
+            MapName = Maps.GreenValley.ToString(),
+            HeroX = 830,
+            HeroY = -1000,
+            HeroDirection = "Idle"
         };
 
         // ---------------------------------------------------------------------
@@ -94,6 +102,17 @@ namespace Assets.Helpers
 
         // All loaded profiles keyed by profile name.
         public static Dictionary<string, Profile> Profiles => profiles;
+
+        // Convenience: get/set Overworld save from current save
+        public static OverworldSaveData Overworld
+        {
+            get => CurrentProfile?.CurrentSave?.Overworld ?? DefaultOverworld;
+            set
+            {
+                if (!HasCurrentSave) return;
+                CurrentProfile.CurrentSave.Overworld = value ?? new OverworldSaveData(DefaultOverworld);
+            }
+        }
 
         // ---------------------------------------------------------------------
         // Load and Presence Checks
@@ -225,7 +244,9 @@ namespace Assets.Helpers
                     new GlobalSaveData(ProfileHelper.DefaultGlobal),
                     new StageSaveData(ProfileHelper.DefaultStage),
                     new RosterSaveData(ProfileHelper.DefaultRoster),
-                    new PartySaveData(ProfileHelper.DefaultParty));
+                    new PartySaveData(ProfileHelper.DefaultParty),
+                    new OverworldSaveData(DefaultOverworld)
+                );
 
                 newProfile.SaveStates.Add(newSave);
                 profiles[key] = newProfile;
@@ -378,6 +399,9 @@ namespace Assets.Helpers
             {
                 if (profile.CurrentSave == null)
                     profile.CurrentSave = profile.LatestSave;
+                // Ensure Overworld exists
+                if (profile.CurrentSave.Overworld == null)
+                    profile.CurrentSave.Overworld = new OverworldSaveData(DefaultOverworld);
                 return;
             }
 
@@ -390,7 +414,8 @@ namespace Assets.Helpers
                     new GlobalSaveData(DefaultGlobal),
                     new StageSaveData(DefaultStage),
                     new RosterSaveData(DefaultRoster),
-                    new PartySaveData(DefaultParty));
+                    new PartySaveData(DefaultParty),
+                    new OverworldSaveData(DefaultOverworld));
 
                 profile.SaveStates.Add(newSave);
                 profile.CurrentSave = newSave;
@@ -423,7 +448,8 @@ namespace Assets.Helpers
                     new GlobalSaveData(src.Global),
                     new StageSaveData(src.Stage),
                     new RosterSaveData(src.Roster),
-                    new PartySaveData(src.Party));
+                    new PartySaveData(src.Party),
+                    new OverworldSaveData(src.Overworld ?? DefaultOverworld));
 
                 string savesDir = Path.Combine(profile.Folder, "Saves");
                 Directory.CreateDirectory(savesDir);
@@ -513,17 +539,11 @@ namespace Assets.Helpers
         // Save Management
         // ---------------------------------------------------------------------
 
-        /// <summary>
-        /// Creates a new save or overwrites the current one.
-        /// </summary>
         public static bool Save(bool overwrite = false)
         {
             return overwrite ? OverwriteSave() : CreateSave();
         }
 
-        /// <summary>
-        /// Creates a new save based on the current save data.
-        /// </summary>
         private static bool CreateSave()
         {
             if (!HasCurrentSave)
@@ -537,7 +557,8 @@ namespace Assets.Helpers
                     CurrentProfile.CurrentSave.Global,
                     CurrentProfile.CurrentSave.Stage,
                     CurrentProfile.CurrentSave.Roster,
-                    CurrentProfile.CurrentSave.Party);
+                    CurrentProfile.CurrentSave.Party,
+                    CurrentProfile.CurrentSave.Overworld ?? new OverworldSaveData(DefaultOverworld));
 
                 string savesDir = Path.Combine(CurrentProfile.Folder, "Saves");
                 Directory.CreateDirectory(savesDir);
@@ -556,9 +577,6 @@ namespace Assets.Helpers
             }
         }
 
-        /// <summary>
-        /// Overwrites the current save on disk and updates it to the front of the list.
-        /// </summary>
         private static bool OverwriteSave()
         {
             if (!HasCurrentSave)
@@ -586,6 +604,7 @@ namespace Assets.Helpers
                 return false;
             }
         }
+
 
         // ---------------------------------------------------------------------
         // Party Management
@@ -625,5 +644,22 @@ namespace Assets.Helpers
             if (party.RemoveAll(hero => hero.Character == character) > 0)
                 Save(true);
         }
+
+        // ---------------------------------------------------------------------
+        // Overworld helpers
+        // ---------------------------------------------------------------------
+        public static void SaveOverworldPosition(Vector2 heroLocal, string mapName, string facing)
+        {
+            if (!HasCurrentSave) return;
+            var ow = CurrentProfile.CurrentSave.Overworld ?? new OverworldSaveData(DefaultOverworld);
+            ow.MapName = string.IsNullOrWhiteSpace(mapName) ? ow.MapName : mapName;
+            ow.HeroX = heroLocal.x;
+            ow.HeroY = heroLocal.y;
+            if (!string.IsNullOrEmpty(facing)) ow.HeroDirection = facing;
+            CurrentProfile.CurrentSave.Overworld = ow;
+            Save(true);
+        }
+
+        public static OverworldSaveData GetOverworld() => Overworld;
     }
 }

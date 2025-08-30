@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 // Add this definition if ProfileSettings does not exist elsewhere
 [Serializable]
@@ -41,6 +42,8 @@ namespace Game.Models.Profile
         public StageSaveData Stage;
         public RosterSaveData Roster;
         public PartySaveData Party;
+        // New: Overworld persistence
+        public OverworldSaveData Overworld;
 
         public SaveState() { }
         public SaveState(SaveState other)
@@ -52,6 +55,7 @@ namespace Game.Models.Profile
             this.Stage = new StageSaveData(other.Stage);
             this.Roster = new RosterSaveData(other.Roster);
             this.Party = new PartySaveData(other.Party);
+            this.Overworld = other.Overworld != null ? new OverworldSaveData(other.Overworld) : null;
         }
         public SaveState(int index, DateTime timestamp, GlobalSaveData global, StageSaveData stage, RosterSaveData roster, PartySaveData party)
         {
@@ -62,6 +66,18 @@ namespace Game.Models.Profile
             Stage = stage;
             Roster = roster;
             Party = party;
+            Overworld = new OverworldSaveData(); // default
+        }
+        public SaveState(int index, DateTime timestamp, GlobalSaveData global, StageSaveData stage, RosterSaveData roster, PartySaveData party, OverworldSaveData overworld)
+        {
+            Index = index;
+            Timestamp = timestamp;
+            FileName = $"Save_{timestamp:yyyyMMdd_HHmmss}.json";
+            Global = global;
+            Stage = stage;
+            Roster = roster;
+            Party = party;
+            Overworld = overworld ?? new OverworldSaveData();
         }
     }
 
@@ -126,6 +142,32 @@ namespace Game.Models.Profile
             Level = level;
             CurrentXP = currentXP;
             TotalXP = totalXP;
+        }
+    }
+
+    // New: OverworldSaveData
+    [Serializable]
+    public class OverworldSaveData
+    {
+        public string MapName = "GreenValley";
+        public float HeroX;
+        public float HeroY;
+        public string HeroDirection = "Idle"; // MoveDirection as name
+
+        public OverworldSaveData() { }
+        public OverworldSaveData(OverworldSaveData other)
+        {
+            MapName = other.MapName;
+            HeroX = other.HeroX;
+            HeroY = other.HeroY;
+            HeroDirection = other.HeroDirection;
+        }
+        public OverworldSaveData(string mapName, Vector2 pos, string facing, bool inEncounter)
+        {
+            MapName = string.IsNullOrWhiteSpace(mapName) ? "GreenValley" : mapName;
+            HeroX = pos.x;
+            HeroY = pos.y;
+            HeroDirection = string.IsNullOrWhiteSpace(facing) ? "Idle" : facing;
         }
     }
 }

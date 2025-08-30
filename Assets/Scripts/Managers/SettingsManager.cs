@@ -23,6 +23,9 @@ public class SettingsManager : MonoBehaviour
 
     private void Awake()
     {
+        if (!ProfileHelper.HasProfiles())
+            return;
+
         actorPanMultiplier = GameObject.Find(GameObjectHelper.Settings.ActorPanMultiplier).GetComponent<RectTransform>();
 
     }
