@@ -37,8 +37,8 @@ namespace Assets.Data.Actor
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.44f, 0.37f, 0f),
-                    Scale = new Vector3(1f, 1f, 0f),
+                    Position = new Vector3(0.05f, 0.1f, 0f),
+                    Scale = new Vector3(2f, 2f, 0f),
                 },
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Wolf02}"),
                 Details = new ActorDetails { Description = "Balanced for a wolf.", Card = "Still goes down fast." }

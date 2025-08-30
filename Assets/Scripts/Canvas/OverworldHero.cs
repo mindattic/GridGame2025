@@ -19,10 +19,10 @@ public class OverworldHero : MonoBehaviour
 
     [Header("Tuning")]
     [SerializeField] private float snapThreshold = 0.24f;
-    [SerializeField] private bool requireVisibleToMove = true;     // Only step when visible
-    [SerializeField] private bool ignoreClicksWhenOffscreen = false; // If true, ignore clicks when offscreen
-    [SerializeField] private bool idleWhileOffscreen = true;       // Show Idle while paused off-screen
-    [SerializeField] private bool allowAnalogMove = true;          // Enable joystick/analog movement
+    [SerializeField] private bool requireVisibleToMove = true;      // Only step when visible
+    [SerializeField] private bool ignoreClicksWhenOffscreen = false;// If true, ignore clicks when offscreen
+    [SerializeField] private bool allowAnalogMove = true;           // Enable joystick/analog movement
+    [SerializeField] private bool idleWhileOffscreen = true;        // Idle when offscreen and movement gated
 
     [Header("Animator States (optional overrides)")]
     [SerializeField] private string idleState = "Idle";
@@ -162,6 +162,16 @@ public class OverworldHero : MonoBehaviour
         SetDestinationLocal(local);
     }
 
+    // Freeze movement immediately (used for encounters)
+    public void FreezeMovement(bool idle = true)
+    {
+        AllowClickToMove = false;
+        allowAnalogMove = false;
+        isMoving = false;
+        analogInput = Vector2.zero;
+        if (idle) SetIdle();
+    }
+
     // Teleport to an exact local position (used when restoring overworld)
     public void TeleportToLocal(Vector2 local, bool notify = true)
     {
@@ -170,7 +180,6 @@ public class OverworldHero : MonoBehaviour
         if (notify) OnHeroMoved?.Invoke(rect.anchoredPosition);
     }
 
-    // Set facing by name (e.g., "Idle", "Up", "Right", "Down", "Left")
     public void SetFacing(string facingName)
     {
         if (string.IsNullOrEmpty(facingName)) return;
@@ -182,7 +191,6 @@ public class OverworldHero : MonoBehaviour
         CrossFadeIfExists(DirectionToStateName(dir));
     }
 
-    // True if any corner of target is inside viewport
     public static bool IsTargetVisible(RectTransform target, RectTransform view)
     {
         if (target == null || view == null) return true; // fail-open

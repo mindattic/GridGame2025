@@ -55,4 +55,11 @@ public class VirtualJoystick : MonoBehaviour, IPointerDownHandler, IDragHandler,
         output = Vector2.zero;
         if (handle != null) handle.anchoredPosition = Vector2.zero;
     }
+
+    // Added: allow external reset (e.g., on encounter)
+    public void ResetOutput()
+    {
+        output = Vector2.zero;
+        if (handle != null) handle.anchoredPosition = Vector2.zero;
+    }
 }

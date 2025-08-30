@@ -295,17 +295,17 @@ public class ActorRenderers
     /// </summary>
     public void SetTurnDelayText(int value)
     {
-
-        if (value < 0)
-        {
-            turnDelayText.text = string.Empty;
-        }
-        else
-        {
-            // Convert 0-based delay to 1-based display (next = 1)
-            int turnsRemaining = value + 1;
-            turnDelayText.text = turnsRemaining.ToString();
-        }
+        turnDelayText.text = string.Empty;
+        //if (value < 0)
+        //{
+        //    turnDelayText.text = string.Empty;
+        //}
+        //else
+        //{
+        //    // Convert 0-based delay to 1-based display (next = 1)
+        //    int turnsRemaining = value + 1;
+        //    turnDelayText.text = turnsRemaining.ToString();
+        //}
 
     }
 

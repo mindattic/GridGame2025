@@ -20,6 +20,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private Image offscreenArrowImage;
 
     private VirtualJoystick virtualJoystick;
+    private RectTransform joystickRect;
 
     // Indicator settings
     [SerializeField] private float indicatorPadding = 24f; // distance from viewport edge
@@ -38,7 +39,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private bool isLoadingEncounter;                    // prevent double loads
 
     // Tap vs Drag detection
-    private bool pointerDownOnMap;
+    private bool pointerDownAllowed; // true if not over joystick
     private Vector2 pointerDownPos;
     private float pointerDownTime;
     private const float tapMaxTime = 0.30f;
@@ -85,6 +86,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
         hero = GameObject.Find(GameObjectHelper.Overworld.Hero)?.GetComponent<OverworldHero>();
         virtualJoystick = GameObject.Find(GameObjectHelper.Overworld.VirtualJoystick)?.GetComponent<VirtualJoystick>();
+        joystickRect = virtualJoystick != null ? virtualJoystick.GetComponent<RectTransform>() : null;
 
         // Wire ScrollRect if available
         scrollRect.viewport = viewport;
@@ -122,10 +124,13 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, map.sizeDelta.y);
 
         // Wire hero
-        hero.AllowClickToMove = false;
-        hero.OnHeroMoved += HandleHeroMoved;
-        hero.rect.anchoredPosition = new Vector2(overworld.HeroX, overworld.HeroY);
-        hero.SetFacing(overworld.HeroDirection);
+        if (hero != null)
+        {
+            hero.AllowClickToMove = true; // enable tap-to-move
+            hero.OnHeroMoved += HandleHeroMoved;
+            hero.rect.anchoredPosition = new Vector2(overworld.HeroX, overworld.HeroY);
+            hero.SetFacing(overworld.HeroDirection);
+        }
 
         // Off-screen arrow config
         SetOffscreenArrowAlpha(0f);
@@ -133,7 +138,8 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         ConfigureScrollBounds();
 
         // Snap viewport to hero location immediately (no tween)
-        SnapCentering(hero.rect.anchoredPosition);
+        if (hero != null)
+            SnapCentering(hero.rect.anchoredPosition);
     }
 
     private void OnDestroy()
@@ -156,12 +162,11 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
             Touch t = Input.GetTouch(0);
             if (t.phase == TouchPhase.Began)
             {
-                if (map != null)
-                    pointerDownOnMap = RectTransformUtility.RectangleContainsScreenPoint(map, t.position, null);
+                pointerDownAllowed = !IsOverJoystick(t.position);
                 pointerDownPos = t.position;
                 pointerDownTime = Time.unscaledTime;
             }
-            else if (t.phase == TouchPhase.Ended && pointerDownOnMap && IsTap(t.position))
+            else if (t.phase == TouchPhase.Ended && pointerDownAllowed && IsTap(t.position) && !IsOverJoystick(t.position))
             {
                 HandleTap(t.position);
             }
@@ -172,15 +177,15 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 pos = (Vector2)Input.mousePosition;
-            if (map != null)
-                pointerDownOnMap = RectTransformUtility.RectangleContainsScreenPoint(map, pos, null);
+            pointerDownAllowed = !IsOverJoystick(pos);
             pointerDownPos = pos;
             pointerDownTime = Time.unscaledTime;
         }
         if (Input.GetMouseButtonUp(0))
         {
             Vector2 pos = (Vector2)Input.mousePosition;
-            if (pointerDownOnMap && IsTap(pos)) HandleTap(pos);
+            if (pointerDownAllowed && IsTap(pos) && !IsOverJoystick(pos))
+                HandleTap(pos);
         }
     }
 
@@ -233,12 +238,17 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         return (releasePos - pointerDownPos).sqrMagnitude <= tapMaxSqrDistance;
     }
 
+    private bool IsOverJoystick(Vector2 screenPos)
+    {
+        return joystickRect != null && RectTransformUtility.RectangleContainsScreenPoint(joystickRect, screenPos, null);
+    }
+
     private void HandleTap(Vector2 screenPos)
     {
-        // Click-to-move disabled
-        if (hero == null || hero.rect == null || content == null || !hero.AllowClickToMove) return;
-        Vector2 local = UnitConversionHelper.Screen.ToCanvas(content, screenPos);
-        hero.SetDestinationLocal(local);
+        if (hero == null || hero.rect == null || content == null) return;
+
+        // Move hero to the tapped screen position (converted/clamped inside hero code)
+        hero.SetDestinationScreen(screenPos, content);
     }
 
     private void OnRectTransformDimensionsChange()
@@ -396,6 +406,18 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     {
         if (isLoadingEncounter) return;
         if (StageLibrary.Stages == null || StageLibrary.Stages.Count == 0) return;
+
+        // Freeze hero immediately and stop camera tween/joystick
+        if (hero != null)
+        {
+            hero.FreezeMovement();
+            followHero = false;
+            CancelCentering();
+        }
+        if (virtualJoystick != null)
+        {
+            virtualJoystick.ResetOutput();
+        }
 
         string mapName = ProfileHelper.Overworld.MapName;
 
