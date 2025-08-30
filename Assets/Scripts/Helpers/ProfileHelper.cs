@@ -539,7 +539,7 @@ namespace Assets.Helpers
         // Save Management
         // ---------------------------------------------------------------------
 
-        public static bool Save(bool overwrite = false)
+        public static bool Save(bool overwrite = true)
         {
             return overwrite ? OverwriteSave() : CreateSave();
         }

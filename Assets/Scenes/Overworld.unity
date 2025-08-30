@@ -1122,6 +1122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22fb5e2ecde678c4f8da4cd87aaf04e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasRandomEncounters: 1
   indicatorPadding: 64
   arrowFadeSpeed: 8
 --- !u!1 &985573457
@@ -1142,7 +1143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &985573458
 RectTransform:
   m_ObjectHideFlags: 0

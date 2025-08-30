@@ -22,7 +22,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private VirtualJoystick virtualJoystick;
     private RectTransform joystickRect;
 
-    // Indicator settings
+    [SerializeField] private bool hasRandomEncounters = true;
     [SerializeField] private float indicatorPadding = 24f; // distance from viewport edge
     [SerializeField] private float arrowFadeSpeed = 8f;    // alpha units/sec (0..1)
     private float arrowTargetAlpha;                        // 0 when visible, 1 when off-screen

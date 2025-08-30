@@ -557,7 +557,7 @@ public class ActorInstance : MonoBehaviour
         Animation.Grow();
 
         // Persist
-        ProfileHelper.Save(true);
+        //ProfileHelper.Save(true);
     }
 
     #endregion

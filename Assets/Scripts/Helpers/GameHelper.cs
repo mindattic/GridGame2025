@@ -196,7 +196,7 @@ namespace Assets.Helpers
 
                 save.Global.TotalCoins = Mathf.Max(0, value);
                 // Persist immediately; consider batching if this is called frequently
-                ProfileHelper.Save(true);
+                //ProfileHelper.Save(true);
             }
         }
     }

@@ -99,7 +99,7 @@ namespace Assets.Helpers
             entry.CurrentXP = actor.Stats.CurrentXP;
             entry.TotalXP = actor.Stats.TotalXP;
 
-            ProfileHelper.Save(true);
+            //ProfileHelper.Save(true);
         }
     }
 }

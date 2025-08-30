@@ -151,6 +151,21 @@ public class PauseManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// Clear paused state, swap icon to the pause sprite, and hide overlay/menu.
+    /// </summary>
+    private void Runaway()
+    {
+        // Ensure time is running before scene change.
+        Time.timeScale = 1f;
+
+        // Navigate.
+        //TODO: Cause party to drop coins like FF IV...
+        scene.Change.ToOverworld();
+    }
+
+
     /// <summary>
     /// UI button hook to pause.
     /// </summary>
@@ -169,18 +184,9 @@ public class PauseManager : MonoBehaviour
         Resume();
     }
 
-    private bool QuickSave()
+    public void OnRunAwayClicked()
     {
-        try
-        {
-            ProfileHelper.Save(overwrite: true);
-        }
-        catch
-        {
-            Debug.LogError("Overwrite Save failed during pause menu action.");
-            return false;
-        }
-        return true;
+        Runaway();
     }
 
     /// <summary>
@@ -189,7 +195,7 @@ public class PauseManager : MonoBehaviour
     public void OnQuickSaveGameButtonClicked()
     {
         // Save progress.
-        QuickSave();
+        ProfileHelper.Save(overwrite: true);
 
         // Return to gameplay.
         Resume();
@@ -200,8 +206,7 @@ public class PauseManager : MonoBehaviour
     /// </summary>
     public void OnCreateSaveGameButtonClicked()
     {
-        // Try to persist progress.
-        try { ProfileHelper.Save(overwrite: false); } catch { Debug.LogError("Create Save failed during pause menu action."); }
+        ProfileHelper.Save(overwrite: false);
 
         // Return to gameplay.
         Resume();
@@ -227,9 +232,6 @@ public class PauseManager : MonoBehaviour
         // Ensure time is running before scene change.
         Time.timeScale = 1f;
 
-        // Save progress.
-        QuickSave();
-
         // Navigate.
         scene.Change.ToPartyManager();
     }
@@ -241,9 +243,6 @@ public class PauseManager : MonoBehaviour
     {
         // Ensure time is running before scene change.
         Time.timeScale = 1f;
-
-        // Save progress.
-        QuickSave();
 
         // Navigate.
         scene.Change.ToStageSelect();
@@ -257,9 +256,6 @@ public class PauseManager : MonoBehaviour
         // Ensure time is running before scene change.
         Time.timeScale = 1f;
 
-        // Save progress.
-        QuickSave();
-
         // Navigate.
         scene.Change.ToSettings();
     }
@@ -271,9 +267,6 @@ public class PauseManager : MonoBehaviour
     {
         // Ensure time is running before scene change.
         Time.timeScale = 1f;
-
-        // Save progress.
-        QuickSave();
 
         // Navigate.
         scene.Change.ToTitleScreen();

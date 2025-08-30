@@ -88,6 +88,10 @@ namespace Assets.Helpers
 
                 IEnumerator afterFade()
                 {
+                    //Always save before changing scenes
+                    ProfileHelper.Save(overwrite: false);
+                    ProfileHelper.Save(overwrite: true);
+
                     SceneLoader.Load(sceneName);
                     yield return Wait.None();
                 }
