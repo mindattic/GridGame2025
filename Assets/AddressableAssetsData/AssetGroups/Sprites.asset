@@ -275,6 +275,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 94dbeb1c77a0a494fa7cbfad79352f28
+    m_Address: Sprites/GUI/Joystick00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 96a963b79ecbeda4a8ddcd843268c79f
     m_Address: Sprites/Leaves/MapleLeaf2
     m_ReadOnly: 0
@@ -327,6 +332,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b5393b208835cd649b137cfa74eb31e9
     m_Address: Sprites/WeaponTypes/Shuriken
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b60e42908dfdb994299dacf1a2104e0a
+    m_Address: Sprites/GUI/Joystick01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -457,6 +467,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e6445dce8ae655e4598f47e5f6eef956
     m_Address: Sprites/Seamless/Swords2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e68c9548b3393f24a828fd51075d85f3
+    m_Address: Sprites/GUI/Joystick02
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

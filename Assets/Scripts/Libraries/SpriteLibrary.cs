@@ -141,7 +141,9 @@ public static class SpriteLibrary
             { "PortraitMask", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/PortraitMask") },
             { "TeamIcon", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/TeamIcon") },
             { "BlockMask", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/BlockMask") },
-            
+            { "Joystick00", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick00") },
+            { "Joystick01", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick01") },
+            { "Joystick02", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick02") },
         };
 
         leaves = new Dictionary<string, Sprite>

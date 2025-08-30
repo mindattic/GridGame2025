@@ -126,7 +126,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         // Wire hero
         if (hero != null)
         {
-            hero.AllowClickToMove = true; // enable tap-to-move
+            hero.AllowClickToMove = true; // enable click handling
             hero.OnHeroMoved += HandleHeroMoved;
             hero.rect.anchoredPosition = new Vector2(overworld.HeroX, overworld.HeroY);
             hero.SetFacing(overworld.HeroDirection);
@@ -156,41 +156,96 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     {
         if (map == null) return;
 
-        // Touch
+        bool isDirectional = hero != null && hero.TouchMoveMode == OverworldHeroTouchMode.DirectionalClick;
+
+        // Touch (hold-to-move in directional mode)
         if (Input.touchCount > 0)
         {
             Touch t = Input.GetTouch(0);
+
             if (t.phase == TouchPhase.Began)
             {
                 pointerDownAllowed = !IsOverJoystick(t.position);
                 pointerDownPos = t.position;
                 pointerDownTime = Time.unscaledTime;
+
+                if (pointerDownAllowed && isDirectional)
+                    hero.BeginDirectionalFromScreen(t.position, content);
             }
-            else if (t.phase == TouchPhase.Ended && pointerDownAllowed && IsTap(t.position) && !IsOverJoystick(t.position))
+            else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
             {
-                HandleTap(t.position);
+                if (pointerDownAllowed && isDirectional)
+                    hero.UpdateDirectionalFromScreen(t.position, content);
+            }
+            else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
+            {
+                if (isDirectional)
+                {
+                    hero.EndDirectional();
+                }
+                else if (pointerDownAllowed && IsTap(t.position) && !IsOverJoystick(t.position))
+                {
+                    HandleTap(t.position);
+                }
             }
             return;
         }
 
-        // Mouse
+        // Mouse (hold-to-move in directional mode)
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 pos = (Vector2)Input.mousePosition;
             pointerDownAllowed = !IsOverJoystick(pos);
             pointerDownPos = pos;
             pointerDownTime = Time.unscaledTime;
+
+            if (pointerDownAllowed && isDirectional)
+                hero.BeginDirectionalFromScreen(pos, content);
+        }
+        if (Input.GetMouseButton(0))
+        {
+            if (pointerDownAllowed && isDirectional)
+            {
+                Vector2 pos = (Vector2)Input.mousePosition;
+                hero.UpdateDirectionalFromScreen(pos, content);
+            }
         }
         if (Input.GetMouseButtonUp(0))
         {
             Vector2 pos = (Vector2)Input.mousePosition;
-            if (pointerDownAllowed && IsTap(pos) && !IsOverJoystick(pos))
+            if (isDirectional)
+            {
+                hero.EndDirectional();
+            }
+            else if (pointerDownAllowed && IsTap(pos) && !IsOverJoystick(pos))
+            {
                 HandleTap(pos);
+            }
         }
     }
 
     private void LateUpdate()
     {
+        // If directional mode, always follow hero and disable dragging
+        bool directionalMode = hero != null && hero.TouchMoveMode == OverworldHeroTouchMode.DirectionalClick;
+
+        if (directionalMode)
+        {
+            if (scrollRect != null)
+            {
+                scrollRect.horizontal = false;
+                scrollRect.vertical = false;
+            }
+        }
+        else
+        {
+            if (scrollRect != null)
+            {
+                scrollRect.horizontal = true;
+                scrollRect.vertical = true;
+            }
+        }
+
         // Feed analog input to the hero every frame
         Vector2 stick = virtualJoystick != null ? virtualJoystick.Direction : Vector2.zero;
         bool analogActive = stick.sqrMagnitude > 1e-6f;
@@ -199,20 +254,20 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
             hero.SetAnalogInput(stick);
 
         // On press outside deadzone -> center and start following
-        if (analogActive && !lastAnalogActive && hero != null && hero.rect != null)
+        if (!directionalMode && analogActive && !lastAnalogActive && hero != null && hero.rect != null)
         {
             SmoothCentering(hero.rect.anchoredPosition);
             followHero = true;
         }
         // On release -> stop following and stop any centering tween
-        if (!analogActive && lastAnalogActive)
+        if (!directionalMode && !analogActive && lastAnalogActive)
         {
             followHero = false;
             CancelCentering();
         }
         lastAnalogActive = analogActive;
 
-        // Random encounter: accumulate only while actually moving (based on OnHeroMoved)
+        // Random encounter timer
         if (movedThisFrame)
         {
             encounterTimer += Time.deltaTime;
@@ -224,10 +279,15 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         }
         else
         {
-            // require continuous movement
             encounterTimer = 0f;
         }
-        movedThisFrame = false; // reset for the next frame
+        movedThisFrame = false;
+
+        // Hard-follow centering when in directional mode
+        if (directionalMode && hero != null && hero.rect != null && scrollRect != null)
+        {
+            scrollRect.normalizedPosition = GetMapPosition(hero.rect.anchoredPosition);
+        }
 
         UpdateOffscreenArrow();
     }
@@ -246,9 +306,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private void HandleTap(Vector2 screenPos)
     {
         if (hero == null || hero.rect == null || content == null) return;
-
-        // Move hero to the tapped screen position (converted/clamped inside hero code)
-        hero.SetDestinationScreen(screenPos, content);
+        hero.HandleClickScreen(screenPos, content); // delegate to hero; mode decides behavior
     }
 
     private void OnRectTransformDimensionsChange()
@@ -406,18 +464,6 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     {
         if (isLoadingEncounter) return;
         if (StageLibrary.Stages == null || StageLibrary.Stages.Count == 0) return;
-
-        // Freeze hero immediately and stop camera tween/joystick
-        if (hero != null)
-        {
-            hero.FreezeMovement();
-            followHero = false;
-            CancelCentering();
-        }
-        if (virtualJoystick != null)
-        {
-            virtualJoystick.ResetOutput();
-        }
 
         string mapName = ProfileHelper.Overworld.MapName;
 

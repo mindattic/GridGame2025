@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 
+public enum OverworldHeroTouchMode
+{
+    MoveToPoint,
+    DirectionalClick
+}
+
+
 public class OverworldHero : MonoBehaviour
 {
     public RectTransform rect;           // The icon’s RectTransform (anchored to Content)
@@ -19,10 +26,21 @@ public class OverworldHero : MonoBehaviour
 
     [Header("Tuning")]
     [SerializeField] private float snapThreshold = 0.24f;
-    [SerializeField] private bool requireVisibleToMove = true;      // Only step when visible
-    [SerializeField] private bool ignoreClicksWhenOffscreen = false;// If true, ignore clicks when offscreen
-    [SerializeField] private bool allowAnalogMove = true;           // Enable joystick/analog movement
-    [SerializeField] private bool idleWhileOffscreen = true;        // Idle when offscreen and movement gated
+    [SerializeField] private bool requireVisibleToMove = true;          // Only step when visible
+    [SerializeField] private bool ignoreClicksWhenOffscreen = false;    // If true, ignore clicks when offscreen
+    [SerializeField] private bool allowVirtualJoystick = true;          // Enable joystick/analog movement
+    [SerializeField] private bool idleWhileOffscreen = true;            // Idle when offscreen and movement gated
+
+    [Header("Click Movement Mode")]
+    [SerializeField] private OverworldHeroTouchMode touchMoveMode = OverworldHeroTouchMode.MoveToPoint;
+    [SerializeField] private float directionalClickMagnitude = 1f; // 0..1 strength fed into analog
+
+    // Expose mode to other systems (e.g., OverworldManager)
+    public OverworldHeroTouchMode TouchMoveMode
+    {
+        get => touchMoveMode;
+        set => touchMoveMode = value;
+    }
 
     [Header("Animator States (optional overrides)")]
     [SerializeField] private string idleState = "Idle";
@@ -37,6 +55,10 @@ public class OverworldHero : MonoBehaviour
 
     // Analog input (-1..1). Set by OverworldManager each frame.
     private Vector2 analogInput;
+
+    // Directional click override (-1..1). Latched while pressed.
+    private bool directionalActive;
+    private Vector2 directionalOverride;
 
     // Expose current facing as string for saving
     public string CurrentFacingName => lastDirection.ToString();
@@ -62,10 +84,21 @@ public class OverworldHero : MonoBehaviour
     {
         if (rect == null) return;
 
-        bool analogActive = allowAnalogMove && (analogInput.sqrMagnitude > 1e-6f);
+        // Analog (joystick) has priority; otherwise use directional click override if any
+        Vector2 effectiveInput = Vector2.zero;
+        bool joystickActive = allowVirtualJoystick && (analogInput.sqrMagnitude > 1e-6f);
+        if (joystickActive)
+        {
+            effectiveInput = analogInput;
+            directionalActive = false; // joystick cancels directional latch
+        }
+        else if (allowVirtualJoystick && directionalActive && directionalOverride.sqrMagnitude > 1e-6f)
+        {
+            effectiveInput = directionalOverride;
+        }
 
-        // 1) Analog move (priority)
-        if (analogActive)
+        // 1) Analog-like move (joystick or directional click)
+        if (effectiveInput.sqrMagnitude > 1e-6f)
         {
             if (requireVisibleToMove && !IsTargetVisible(rect, viewport))
             {
@@ -74,7 +107,7 @@ public class OverworldHero : MonoBehaviour
             }
 
             Vector2 current = rect.anchoredPosition;
-            Vector2 step = analogInput * moveSpeed * Time.deltaTime;
+            Vector2 step = effectiveInput * moveSpeed * Time.deltaTime;
             Vector2 next = ClampToMap(current + step);
             Vector2 frameDelta = next - current;
 
@@ -84,11 +117,11 @@ public class OverworldHero : MonoBehaviour
             rect.anchoredPosition = next;
             OnHeroMoved?.Invoke(next);
 
-            isMoving = false; // cancel click path while stick held
+            isMoving = false; // cancel click path while analog/dir is active
             return;
         }
 
-        // 2) No analog input -> force Idle when not using click-to-move
+        // 2) No analog-like input -> force Idle when not using click-to-move to a point
         if (!AllowClickToMove)
         {
             SetIdle();
@@ -96,8 +129,8 @@ public class OverworldHero : MonoBehaviour
             return;
         }
 
-        // 3) Click-to-move path (only if allowed)
-        if (!isMoving)
+        // 3) MoveToPoint path (only when mode is MoveToPoint)
+        if (touchMoveMode != OverworldHeroTouchMode.MoveToPoint || !isMoving)
         {
             SetIdle();
             return;
@@ -136,15 +169,43 @@ public class OverworldHero : MonoBehaviour
     {
         analogInput = Vector2.ClampMagnitude(input, 1f);
         if (analogInput.sqrMagnitude > 1e-6f)
-            isMoving = false; // cancel click-to-move while analog active
+        {
+            isMoving = false;        // cancel click-to-move while analog active
+            directionalActive = false;
+        }
     }
 
-    public void SetDestinationLocal(Vector2 local)
+    // Entry point used by OverworldManager for clicks/taps (MoveToPoint only)
+    public void HandleClickScreen(Vector2 screenPos, RectTransform content)
+    {
+        if (content == null) return;
+        var local = UnitConversionHelper.Screen.ToCanvas(content, screenPos);
+        HandleClickLocal(local);
+    }
+
+    public void HandleClickLocal(Vector2 local)
     {
         if (!AllowClickToMove || rect == null || rect.parent == null) return;
 
         if (requireVisibleToMove && ignoreClicksWhenOffscreen && !IsTargetVisible(rect, viewport))
             return;
+
+        switch (touchMoveMode)
+        {
+            case OverworldHeroTouchMode.MoveToPoint:
+                SetDestinationLocal(local);
+                break;
+
+            case OverworldHeroTouchMode.DirectionalClick:
+                // In hold-to-move mode, OverworldManager will call Begin/Update/End
+                SetDirectionalOverride(local);
+                break;
+        }
+    }
+
+    public void SetDestinationLocal(Vector2 local)
+    {
+        if (!AllowClickToMove || rect == null || rect.parent == null) return;
 
         targetPosition = ClampToMap(local);
 
@@ -153,6 +214,7 @@ public class OverworldHero : MonoBehaviour
             SetAnimation(delta);
 
         isMoving = true;
+        directionalActive = false; // ensure point-move owns motion
     }
 
     public void SetDestinationScreen(Vector2 screenPos, RectTransform content)
@@ -162,13 +224,58 @@ public class OverworldHero : MonoBehaviour
         SetDestinationLocal(local);
     }
 
+    // Public API: begin/update/end directional hold-to-move
+    public void BeginDirectionalFromScreen(Vector2 screenPos, RectTransform content)
+    {
+        if (touchMoveMode != OverworldHeroTouchMode.DirectionalClick) return;
+        if (content == null) return;
+        var local = UnitConversionHelper.Screen.ToCanvas(content, screenPos);
+        SetDirectionalOverride(local);
+    }
+
+    public void UpdateDirectionalFromScreen(Vector2 screenPos, RectTransform content)
+    {
+        if (!directionalActive) return;
+        if (content == null) return;
+        var local = UnitConversionHelper.Screen.ToCanvas(content, screenPos);
+        SetDirectionalOverride(local);
+    }
+
+    public void EndDirectional()
+    {
+        directionalActive = false;
+        directionalOverride = Vector2.zero;
+        SetIdle();
+    }
+
+    // Compute a latched direction vector from hero to click position and start moving
+    private void SetDirectionalOverride(Vector2 local)
+    {
+        Vector2 delta = ClampToMap(local) - rect.anchoredPosition;
+        if (delta.sqrMagnitude < 1e-6f)
+        {
+            directionalActive = false;
+            return;
+        }
+
+        Vector2 dir = delta.normalized * Mathf.Clamp01(directionalClickMagnitude);
+        directionalOverride = dir;
+        directionalActive = true;
+
+        // Play appropriate move animation immediately
+        SetAnimation(dir);
+        isMoving = false; // use analog-like path instead
+    }
+
     // Freeze movement immediately (used for encounters)
     public void FreezeMovement(bool idle = true)
     {
         AllowClickToMove = false;
-        allowAnalogMove = false;
+        allowVirtualJoystick = false;
         isMoving = false;
         analogInput = Vector2.zero;
+        directionalActive = false;
+        directionalOverride = Vector2.zero;
         if (idle) SetIdle();
     }
 
