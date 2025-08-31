@@ -1,11 +1,12 @@
 using Assets.Helper;
 using Assets.Helpers;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum OverworldHeroInputMode
 {
-    MoveToPoint,
-    DirectionalClick
+    ClickToMove,
+    DirectionalPress
 }
 
 // OverworldHero reads inputs (fed by manager), moves within map bounds,
@@ -36,7 +37,7 @@ public class OverworldHero : MonoBehaviour
     private float speedSampleAheadFactor = 0.7f;
 
     [Header("Click Movement Mode")]
-    [SerializeField] private OverworldHeroInputMode inputMode = OverworldHeroInputMode.MoveToPoint;
+    [SerializeField] private OverworldHeroInputMode inputMode = OverworldHeroInputMode.ClickToMove;
     [SerializeField] private float directionalClickMagnitude = 1f; // 0..1 strength fed into analog
 
     // Expose mode to other systems (e.g., OverworldManager)
@@ -62,6 +63,26 @@ public class OverworldHero : MonoBehaviour
     [Header("Collision Debug (Scene view)")]
     [SerializeField] private bool debugCollisionGizmos = true;
     [SerializeField] private float debugGizmoSize = 6f;
+
+    [Header("Destination Marker")]
+    [SerializeField] private RectTransform destinationMarker;                    // Optional (auto-created)
+    [SerializeField] private RectTransform destinationMarkerPrefab;   // If set, this prefab is used
+    [SerializeField] private bool tintDestinationMarkerPrefab = false; // Tint all child Images to destinationMarkerColor
+    [SerializeField] private bool destinationMarkerEnabled = true;
+    [SerializeField] private Color destinationMarkerColor = new Color(1f, 1f, 1f, 0.9f);
+    [SerializeField, Range(4f, 64f)] private float destinationMarkerSize = 16f;
+    [SerializeField, Range(1f, 6f)] private float destinationMarkerThickness = 2f;
+
+    // Fade settings
+    [SerializeField] private bool destinationMarkerFade = true;
+    [SerializeField, Min(0f)] private float destinationMarkerFadeStart = 128f;  // distance where alpha  1
+    [SerializeField, Min(0f)] private float destinationMarkerFadeEnd = 16f;     // distance where alpha  0
+    [SerializeField, Range(0f, 1f)] private float destinationMarkerMinAlpha = 0.05f;
+    [SerializeField, Min(0f)] private float destinationMarkerFadeSpeed = 8f;    // alpha units/sec
+
+    // Runtime cache
+    private Image[] _markerImages;
+    private float _markerAlpha;
 
     private bool isMoving;                 // True while following a MoveToPoint target
     private Vector2 targetPosition;        // Destination for MoveToPoint mode
@@ -127,10 +148,12 @@ public class OverworldHero : MonoBehaviour
         {
             effectiveInput = analogInput;
             directionalActive = false; // joystick cancels directional latch
+            HideDestinationMarker();
         }
         else if (allowVirtualJoystick && directionalActive && directionalOverride.sqrMagnitude > 1e-6f)
         {
             effectiveInput = directionalOverride;
+            HideDestinationMarker();
         }
 
         // 1) Analog-like move (joystick or directional click)
@@ -176,11 +199,12 @@ public class OverworldHero : MonoBehaviour
         {
             SetIdle();
             isMoving = false;
+            HideDestinationMarker();
             return;
         }
 
         // 3) MoveToPoint path (only when mode is MoveToPoint)
-        if (inputMode != OverworldHeroInputMode.MoveToPoint || !isMoving)
+        if (inputMode != OverworldHeroInputMode.ClickToMove || !isMoving)
         {
             SetIdle();
             return;
@@ -202,6 +226,7 @@ public class OverworldHero : MonoBehaviour
 
             isMoving = false;
             SetIdle();
+            HideDestinationMarker();
             return;
         }
 
@@ -227,12 +252,14 @@ public class OverworldHero : MonoBehaviour
             SetAnimation(delta);
             rect.anchoredPosition = nextPos;
             OnHeroMoved?.Invoke(nextPos);
+            UpdateDestinationMarkerVisuals(); // fade as we approach
         }
         else
         {
             // Blocked; stop moving this path
             isMoving = false;
             SetIdle();
+            HideDestinationMarker();
         }
     }
 
@@ -248,6 +275,7 @@ public class OverworldHero : MonoBehaviour
         {
             isMoving = false;        // cancel click-to-move while analog active
             directionalActive = false;
+            HideDestinationMarker();
         }
     }
 
@@ -268,11 +296,12 @@ public class OverworldHero : MonoBehaviour
 
         switch (inputMode)
         {
-            case OverworldHeroInputMode.MoveToPoint:
+            case OverworldHeroInputMode.ClickToMove:
                 SetDestinationLocal(local);
                 break;
 
-            case OverworldHeroInputMode.DirectionalClick:
+            case OverworldHeroInputMode.DirectionalPress:
+                HideDestinationMarker();
                 SetDirectionalOverride(local);
                 break;
         }
@@ -291,6 +320,13 @@ public class OverworldHero : MonoBehaviour
 
         isMoving = true;
         directionalActive = false; // ensure point-move owns motion
+
+        // Show predicted final stop (considering collisions)
+        if (destinationMarkerEnabled)
+        {
+            Vector2 predicted = PredictStop(rect.anchoredPosition, targetPosition);
+            ShowDestinationMarker(predicted);
+        }
     }
 
     public void SetDestinationScreen(Vector2 screenPos, RectTransform content)
@@ -303,8 +339,9 @@ public class OverworldHero : MonoBehaviour
     // Public API for hold-to-move directional clicks.
     public void BeginDirectionalFromScreen(Vector2 screenPos, RectTransform content)
     {
-        if (inputMode != OverworldHeroInputMode.DirectionalClick) return;
+        if (inputMode != OverworldHeroInputMode.DirectionalPress) return;
         if (content == null) return;
+        HideDestinationMarker();
         var local = UnitConversionHelper.Screen.ToCanvas(content, screenPos);
         SetDirectionalOverride(local);
     }
@@ -313,6 +350,7 @@ public class OverworldHero : MonoBehaviour
     {
         if (!directionalActive) return;
         if (content == null) return;
+        HideDestinationMarker();
         var local = UnitConversionHelper.Screen.ToCanvas(content, screenPos);
         SetDirectionalOverride(local);
     }
@@ -322,16 +360,13 @@ public class OverworldHero : MonoBehaviour
         directionalActive = false;
         directionalOverride = Vector2.zero;
         SetIdle();
+        HideDestinationMarker();
     }
 
     // ----------------------------------------------------------------------
     // Animation helpers for 8-way blend tree
     // ----------------------------------------------------------------------
 
-    /// <summary>
-    /// Computes direction from a point click and latches it for hold-to-move.
-    /// Also kicks the Animator to the correct moving state immediately.
-    /// </summary>
     private void SetDirectionalOverride(Vector2 local)
     {
         Vector2 delta = ClampToMap(local) - rect.anchoredPosition;
@@ -350,10 +385,6 @@ public class OverworldHero : MonoBehaviour
         isMoving = false; // use analog-like path instead
     }
 
-    /// <summary>
-    /// Applies direction and speed from a movement delta to the Animator.
-    /// Updates last look so idle keeps facing.
-    /// </summary>
     private void SetAnimation(Vector2 delta)
     {
         if (animator == null) return;
@@ -367,18 +398,12 @@ public class OverworldHero : MonoBehaviour
         ApplyAnimatorParameters(dir, speed);
     }
 
-    /// <summary>
-    /// Forces idle using the last facing direction.
-    /// </summary>
     private void SetIdle()
     {
         lastDirection = MoveDirection.Idle;
         ApplyAnimatorParameters(lastLook, 0f);
     }
 
-    /// <summary>
-    /// Writes MoveX, MoveY, and Speed to the Animator in one place.
-    /// </summary>
     private void ApplyAnimatorParameters(Vector2 dir, float speed)
     {
         if (animator == null) return;
@@ -388,10 +413,6 @@ public class OverworldHero : MonoBehaviour
         animator.SetFloat("Speed", speed);
     }
 
-    /// <summary>
-    /// Maintains legacy facing API using 4-way directions for save/load.
-    /// Also updates blend-tree direction so idle pose matches.
-    /// </summary>
     public void SetFacing(string facingName)
     {
         if (string.IsNullOrEmpty(facingName)) return;
@@ -416,7 +437,6 @@ public class OverworldHero : MonoBehaviour
         ApplyAnimatorParameters(lastLook, 0f);
     }
 
-    // Converts any delta into the nearest 4-way for legacy state text.
     private static MoveDirection DetermineDirection4Way(Vector2 delta)
     {
         if (delta.sqrMagnitude < 1e-6f) return MoveDirection.Idle;
@@ -431,7 +451,6 @@ public class OverworldHero : MonoBehaviour
     // Visibility and clamping
     // ----------------------------------------------------------------------
 
-    // Returns true if any of the 4 world-corners projects inside the viewport rect
     public static bool IsTargetVisible(RectTransform target, RectTransform view)
     {
         if (target == null || view == null) return true; // fail-open
@@ -449,7 +468,6 @@ public class OverworldHero : MonoBehaviour
         return false;
     }
 
-    // Clamp a Content-local point to the Terrain rect area
     private Vector2 ClampToMap(Vector2 local)
     {
         if (mapRect == null || mapRect.parent != rect.parent) return local;
@@ -471,7 +489,6 @@ public class OverworldHero : MonoBehaviour
     // Collision and speed sampling
     // ----------------------------------------------------------------------
 
-    // Bind the map rect (for clamping) and viewport (for visibility)
     public void BindMapAndViewport(RectTransform map, RectTransform view)
     {
         mapRect = map;
@@ -480,13 +497,11 @@ public class OverworldHero : MonoBehaviour
             collisionProvider = mapRect.GetComponent<MapTerrain>();
     }
 
-    // Bind the collision provider explicitly
     public void BindCollisionProvider(MapTerrain provider)
     {
         collisionProvider = provider;
     }
 
-    // Returns a multiplier (0.05..1). Blocked is handled elsewhere; this only slows.
     private float GetSpeedMultiplierLocal(Vector2 local)
     {
         // Placeholder for slow-zone sampling if you choose to use it later
@@ -585,6 +600,149 @@ public class OverworldHero : MonoBehaviour
         return anchored + pivotToCenter;
     }
 
+    // Predict a final stop position using the same collision logic; fixed step for determinism
+    private Vector2 PredictStop(Vector2 start, Vector2 target)
+    {
+        Vector2 cur = start;
+        const int maxIters = 256;
+        float stepLen = Mathf.Max(1f, moveSpeed / 60f); // ~60Hz equivalent
+
+        for (int i = 0; i < maxIters; i++)
+        {
+            Vector2 toTarget = target - cur;
+            float dist = toTarget.magnitude;
+            if (dist <= snapThreshold) return target;
+
+            Vector2 dir = dist > 1e-6f ? (toTarget / dist) : Vector2.zero;
+            float len = Mathf.Min(stepLen, dist);
+            Vector2 desired = ClampToMap(cur + dir * len);
+            Vector2 next = ResolveCollision(cur, desired);
+            if ((next - cur).sqrMagnitude <= 1e-6f)
+                return cur; // blocked before target
+            cur = next;
+        }
+        return cur;
+    }
+
+    // Destination marker helpers
+    private void EnsureDestinationMarker()
+    {
+        if (!destinationMarkerEnabled || rect == null || rect.parent == null) return;
+
+        // Prefab path
+        if (destinationMarkerPrefab != null)
+        {
+            // Instantiate once (avoid using the asset reference as instance)
+            if (destinationMarker == null || destinationMarker == destinationMarkerPrefab)
+            {
+                var inst = Instantiate(destinationMarkerPrefab, rect.parent);
+                inst.name = "DestinationMarker";
+                destinationMarker = inst;
+                // Ensure sensible UI anchors/pivot in Content space
+                destinationMarker.anchorMin = new Vector2(0f, 1f);
+                destinationMarker.anchorMax = new Vector2(0f, 1f);
+                destinationMarker.pivot = new Vector2(0.5f, 0.5f);
+                destinationMarker.gameObject.SetActive(false);
+            }
+
+            CacheMarkerImages();
+            return;
+        }
+
+        // Procedural crosshair path (existing behavior)
+        if (destinationMarker == null)
+        {
+            var go = new GameObject("DestinationMarker", typeof(RectTransform));
+            destinationMarker = go.GetComponent<RectTransform>();
+            destinationMarker.SetParent(rect.parent, false);
+            destinationMarker.anchorMin = new Vector2(0f, 1f);
+            destinationMarker.anchorMax = new Vector2(0f, 1f);
+            destinationMarker.pivot = new Vector2(0.5f, 0.5f);
+            destinationMarker.sizeDelta = new Vector2(destinationMarkerSize, destinationMarkerSize);
+            BuildMarkerGraphic(destinationMarker);
+            destinationMarker.gameObject.SetActive(false);
+        }
+        else
+        {
+            // Rebuild in case size changed
+            BuildMarkerGraphic(destinationMarker);
+        }
+
+        CacheMarkerImages();
+    }
+
+    private void BuildMarkerGraphic(RectTransform root)
+    {
+        // Crosshair made of two Image quads using the default UI sprite
+        CreateLine("H", root, new Vector2(destinationMarkerSize, destinationMarkerThickness), 0f);
+        CreateLine("V", root, new Vector2(destinationMarkerThickness, destinationMarkerSize), 0f);
+    }
+
+    private void CreateLine(string name, RectTransform parent, Vector2 size, float zRot)
+    {
+        var go = new GameObject(name, typeof(RectTransform), typeof(Image));
+        var rt = go.GetComponent<RectTransform>();
+        rt.SetParent(parent, false);
+        rt.anchorMin = new Vector2(0.5f, 0.5f);
+        rt.anchorMax = new Vector2(0.5f, 0.5f);
+        rt.pivot = new Vector2(0.5f, 0.5f);
+        rt.sizeDelta = size;
+        rt.localRotation = Quaternion.Euler(0f, 0f, zRot);
+
+        var img = go.GetComponent<Image>();
+        img.color = destinationMarkerColor;
+    }
+
+    private void ShowDestinationMarker(Vector2 local)
+    {
+        if (!destinationMarkerEnabled) return;
+        EnsureDestinationMarker();
+        if (destinationMarker == null) return;
+
+        // Keep prefab size as-authored; only size procedural marker
+        if (destinationMarkerPrefab == null)
+            destinationMarker.sizeDelta = new Vector2(destinationMarkerSize, destinationMarkerSize);
+
+        // Place at the visual center corresponding to the given anchored (pivot) position
+        Vector2 centerLocal = GetRectCenterLocal(local);
+        destinationMarker.anchoredPosition = centerLocal;
+        destinationMarker.gameObject.SetActive(true);
+
+        // Tint prefab variant if assigned
+        if (destinationMarkerPrefab != null && tintDestinationMarkerPrefab)
+        {
+            var images = destinationMarkerPrefab.GetComponentsInChildren<Image>(true);
+            foreach (var img in images)
+            {
+                img.color = destinationMarkerColor;
+            }
+        }
+
+        // Update colors on children
+        for (int i = 0; i < destinationMarker.childCount; i++)
+        {
+            var img = destinationMarker.GetChild(i).GetComponent<Image>();
+            if (img != null) img.color = destinationMarkerColor;
+        }
+    }
+
+    private void HideDestinationMarker()
+    {
+        if (destinationMarker != null)
+            destinationMarker.gameObject.SetActive(false);
+        _markerAlpha = 0f;
+    }
+
+    // ----------------------------------------------------------------------
+    // Debug gizmos
+    // ----------------------------------------------------------------------
+
+    private void OnDrawGizmos()
+    {
+        if (!debugCollisionGizmos || rect == null || rect.parent == null) return;
+        DrawCollisionDebugGizmos();
+    }
+
     private void DrawCollisionDebugGizmos()
     {
         var parent = (RectTransform)rect.parent;
@@ -624,5 +782,51 @@ public class OverworldHero : MonoBehaviour
 
         // Provider missing or sample failed
         return new Color(0.3f, 0.3f, 0.3f, 1f);
+    }
+
+    // Compute alpha target from remaining distance and tween to it
+    private void UpdateDestinationMarkerVisuals()
+    {
+        if (!destinationMarkerEnabled || destinationMarker == null || !destinationMarker.gameObject.activeSelf)
+            return;
+
+        if (!destinationMarkerFade)
+            return;
+
+        // Use hero's visual center for distance, not the pivot
+        Vector2 heroCenter = GetRectCenterLocal(rect.anchoredPosition);
+        float dist = Vector2.Distance(heroCenter, destinationMarker.anchoredPosition);
+
+        // 1 at far (fadeStart), 0 at near (fadeEnd)
+        float t = Mathf.InverseLerp(destinationMarkerFadeEnd, destinationMarkerFadeStart, dist);
+        float desired = Mathf.Lerp(destinationMarkerMinAlpha, destinationMarkerColor.a, t);
+
+        // Smooth alpha change
+        _markerAlpha = Mathf.MoveTowards(_markerAlpha, desired, destinationMarkerFadeSpeed * Time.deltaTime);
+        SetMarkerAlpha(_markerAlpha);
+    }
+
+    private void CacheMarkerImages()
+    {
+        if (destinationMarker == null) return;
+        _markerImages = destinationMarker.GetComponentsInChildren<Image>(true);
+    }
+
+    private void SetMarkerAlpha(float a)
+    {
+        if (_markerImages == null || _markerImages.Length == 0)
+            CacheMarkerImages();
+
+        if (_markerImages == null) return;
+
+        // Apply alpha while preserving RGB
+        for (int i = 0; i < _markerImages.Length; i++)
+        {
+            var img = _markerImages[i];
+            if (img == null) continue;
+            var c = img.color;
+            c.a = a;
+            img.color = c;
+        }
     }
 }

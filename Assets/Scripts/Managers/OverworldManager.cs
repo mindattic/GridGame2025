@@ -173,7 +173,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     {
         if (terrainRect == null) return;
 
-        bool isDirectional = hero != null && hero.TouchMoveMode == OverworldHeroInputMode.DirectionalClick;
+        bool isDirectional = hero != null && hero.TouchMoveMode == OverworldHeroInputMode.DirectionalPress;
 
         // Touch (hold-to-move in directional mode)
         if (Input.touchCount > 0)
@@ -244,7 +244,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private void LateUpdate()
     {
         // If directional mode, always follow hero and disable dragging
-        bool directionalMode = hero != null && hero.TouchMoveMode == OverworldHeroInputMode.DirectionalClick;
+        bool directionalMode = hero != null && hero.TouchMoveMode == OverworldHeroInputMode.DirectionalPress;
 
         if (directionalMode)
         {

@@ -27,6 +27,7 @@ public static class PrefabLibrary
             { "CanvasParticlePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CanvasParticlePrefab") },
             { "CoinPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CoinPrefab") },
             { "ConfirmationDialogPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/ConfirmationDialogPrefab") },
+            { "DestinationMarkerPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/DestinationMarkerPrefab") },
             { "CombatTextPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/CombatTextPrefab") },
             { "DottedLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/DottedLinePrefab") },
             { "FootstepPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/FootstepPrefab") },

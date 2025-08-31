@@ -110,6 +110,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bedc8e4184d38a244aea9f2b68f9d98e
+    m_Address: Prefabs/DestinationMarkerPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c20c54f089a20c94ea7d832de372f35f
     m_Address: Prefabs/GhostPrefab
     m_ReadOnly: 0

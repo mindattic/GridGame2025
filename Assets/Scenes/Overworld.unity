@@ -446,7 +446,7 @@ MonoBehaviour:
   allowVirtualJoystick: 1
   idleWhileOffscreen: 1
   speedSampleAheadFactor: 0.5
-  touchMoveMode: 0
+  inputMode: 0
   directionalClickMagnitude: 1
   collisionProbeRadius: 6
   collisionProbeRays: 8
@@ -456,6 +456,18 @@ MonoBehaviour:
   slowMultiplier: 0.5
   debugCollisionGizmos: 1
   debugGizmoSize: 6
+  destinationMarker: {fileID: 8024242774535082788, guid: bedc8e4184d38a244aea9f2b68f9d98e, type: 3}
+  destinationMarkerPrefab: {fileID: 8024242774535082788, guid: bedc8e4184d38a244aea9f2b68f9d98e, type: 3}
+  tintDestinationMarkerPrefab: 0
+  destinationMarkerEnabled: 1
+  destinationMarkerColor: {r: 1, g: 1, b: 1, a: 0.9}
+  destinationMarkerSize: 16
+  destinationMarkerThickness: 2
+  destinationMarkerFade: 1
+  destinationMarkerFadeStart: 128
+  destinationMarkerFadeEnd: 16
+  destinationMarkerMinAlpha: 0.05
+  destinationMarkerFadeSpeed: 8
 --- !u!95 &163499844
 Animator:
   serializedVersion: 7
