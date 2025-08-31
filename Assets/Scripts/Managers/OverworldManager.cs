@@ -145,8 +145,9 @@ public class OverworldManager : MonoBehaviour
         hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
         hero.SetFacing(overworld.HeroDirection);
 
-        // Initialize camera target
-        cameraTarget = hero != null ? hero.transform.position : (cam != null ? cam.transform.position : Vector3.zero);
+        // Configure FollowCursor speed ramp so distance scales speed noticeably
+        hero.SetFollowSpeedRampDistance(8f);
+
 
         // Initialize UI state
         UpdateInputModeUI();

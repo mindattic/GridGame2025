@@ -3,13 +3,15 @@ using Game.Behaviors.Actor;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 using g = Assets.Helpers.GameHelper;
 
 public class FootstepManager : MonoBehaviour
 {
     // Fields
     private GameObject FootstepPrefab;
-    ActorInstance actor;
+
+    [SerializeField] Transform target;
     Vector3 previousPosition;
     bool isRightFoot = false;
     float threshold;
@@ -17,32 +19,24 @@ public class FootstepManager : MonoBehaviour
     public void Awake()
     {
         FootstepPrefab = PrefabLibrary.Prefabs["FootstepPrefab"];
+        threshold = 0.01f;
     }
 
     private void Start()
     {
-        threshold = g.TileSize / 4;
-    }
-
-    /// <summary>
-    /// Starts playing footstep effects for a given actor.
-    /// </summary>
-    public void Play(ActorInstance actor)
-    {
-        if (!actor.IsActive || !actor.IsAlive)
+        if (target == null)
             return;
 
-        this.actor = actor;
-        previousPosition = this.actor.Position;
+        previousPosition = target.position;
         StartCoroutine(CheckSpawnRoutine());
     }
+
 
     /// <summary>
     /// Stops playing footstep effects.
     /// </summary>
     public void Stop()
     {
-        actor = null;
         isRightFoot = false;
     }
 
@@ -51,16 +45,15 @@ public class FootstepManager : MonoBehaviour
     /// </summary>
     private IEnumerator CheckSpawnRoutine()
     {
-        while (actor != null && actor.IsActive && actor.IsAlive)
-        {
-            var distance = Vector3.Distance(actor.Position, previousPosition);
-            if (distance >= threshold)
-            {
-                Spawn();
-            }
 
-            yield return Wait.None();
+        var distance = Vector3.Distance(target.position, previousPosition);
+        if (distance >= threshold)
+        {
+            Spawn();
         }
+
+        yield return Wait.None();
+
     }
 
     /// <summary>
@@ -70,11 +63,11 @@ public class FootstepManager : MonoBehaviour
     {
         GameObject prefab = Instantiate(FootstepPrefab, Vector2.zero, Quaternion.identity);
         var instance = prefab.GetComponent<FootstepInstance>();
-        instance.sprite = SpriteLibrary.Sprites["FootstepManager"];
+        instance.sprite = SpriteLibrary.Sprites["Footstep"];
         instance.name = $"Footstep_{Guid.NewGuid():N}";
-        instance.parent = g.Board.transform;
-        instance.Spawn(actor.Position, RotationHelper.ByDirection(actor.Position, previousPosition), isRightFoot);
-        previousPosition = actor.Position;
+        instance.parent = target.parent;
+        instance.Spawn(target.position, RotationHelper.ByDirection(target.position, previousPosition), isRightFoot);
+        previousPosition = target.position;
         isRightFoot = !isRightFoot;
     }
 

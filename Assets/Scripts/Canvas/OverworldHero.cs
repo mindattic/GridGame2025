@@ -1,6 +1,8 @@
 using Assets.Helper;
 using UnityEngine;
 using UnityEngine.UIElements;
+using System.Collections.Generic;
+using System;
 
 public enum OverworldHeroInputMode
 {
@@ -35,6 +37,17 @@ public class OverworldHero : MonoBehaviour
 
     // Sampling
     private float speedSampleAheadFactor = 0.7f; // Future-proof: speed zones, currently constant 1x
+
+
+    private float probeRadiusMultiplier = 0.2f; // fraction of hero bounds to use for collision probe radius (used only if fixed radius disabled)
+
+    // Wall-slide tuning (reduce stickiness)
+    private float wallSlideUnstick = 0.02f;      // small push away from wall along normal
+    private int wallSlideAttempts = 3;           // try partial tangent steps if full slide is blocked
+    private float wallSlideMinFraction = 0.25f;  // smallest tangent fraction to try
+
+    // FollowCursor speed ramp: distance at which input magnitude reaches 1
+    private float followSpeedRampDistance = 6.0f;
 
     // Input mode
     private OverworldHeroInputMode inputMode = OverworldHeroInputMode.FollowCursor;
@@ -71,7 +84,7 @@ public class OverworldHero : MonoBehaviour
     public string CurrentFacingName => lastDirection.ToString();
 
     // Events
-    public event System.Action<Vector2> OnHeroMoved;  // Invoked with world position after movement
+    public event Action<Vector2> OnHeroMoved;  // Invoked with world position after movement
 
     // Runtime state
     private bool isMoving;                 // True while following a MoveToPoint target
@@ -97,13 +110,19 @@ public class OverworldHero : MonoBehaviour
     private int navMaxExpanded = 8000;        // Solver cap
     private float waypointArrive = 0.1f;      // Waypoint arrive distance
 
-    private System.Collections.Generic.List<Vector2> _path; // world waypoints
+    private List<Vector2> _path; // world waypoints
     private int _pathIndex;
 
-    // Collision center offset (world-space)
-    private Vector2 collisionOffset = Vector2.zero;
+    // Direction stabilization for animator (prevents flicker between pure down and diagonals)
+    private const float axisSnapEpsilon = 0.12f;   // if minor axis below this, snap to 0
+    private const float axisDominance = 1.35f;     // major must be >= minor * dominance
 
-  
+    // Collision center and radius
+    // Always sample collisions at the Animator/Sprite pivot (transform.position) plus an optional feet offset.
+    private Vector2 collisionFeetOffsetLocal = Vector2.zero; // local-space offset from pivot to feet (e.g., Vector2.down * 0.05f)
+    private bool useFixedCollisionRadius = true;             // stabilize radius across animation frames
+    private float collisionRadiusWorld = 0.2f;               // world units radius when fixed
+
     // Destination marker prefab to spawn on click
     private GameObject destinationMarkerPrefab;
 
@@ -412,13 +431,18 @@ public class OverworldHero : MonoBehaviour
     {
         if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         Vector2 delta = ClampToMap(world) - GetPosition();
-        if (delta.sqrMagnitude < 1e-6f)
+        float dist = delta.magnitude;
+        if (dist < 1e-6f)
         {
             directionalActive = false;
             return;
         }
 
-        Vector2 dir = delta.normalized * Mathf.Clamp01(directionalClickMagnitude);
+        // Map distance -> analog magnitude [0..1] so we reuse joystick movement
+        float ramp = followSpeedRampDistance > 0f ? (dist / followSpeedRampDistance) : 1f;
+        float mag = Mathf.Clamp01(ramp) * Mathf.Clamp01(directionalClickMagnitude);
+        Vector2 dir = (delta / dist) * mag;
+
         directionalOverride = dir;
         directionalActive = true;
 
@@ -431,9 +455,10 @@ public class OverworldHero : MonoBehaviour
     {
         float speed = delta.magnitude;           // units moved this frame
         Vector2 dir = speed > 1e-6f ? delta.normalized : lastLook;
+        dir = StabilizeDirectionForBlend(dir);
 
         lastLook = dir;                          // remember facing for idle
-        lastDirection = DetermineDirection4Way(delta); // maintain legacy 4-way for save text
+        lastDirection = DetermineDirection4Way(dir); // maintain legacy 4-way for save text
 
         ApplyAnimatorParameters(dir, speed);
     }
@@ -446,6 +471,7 @@ public class OverworldHero : MonoBehaviour
             return;
         }
         dir = dir.normalized;
+        dir = StabilizeDirectionForBlend(dir);
         lastLook = dir;
         lastDirection = DetermineDirection4Way(dir);
         ApplyAnimatorParameters(dir, speed);
@@ -466,6 +492,28 @@ public class OverworldHero : MonoBehaviour
         if (Application.isPlaying && Time.deltaTime > 0f)
             speedPerSecond = speed / Time.deltaTime;
         animator.SetFloat("Speed", speedPerSecond);
+    }
+
+    private Vector2 StabilizeDirectionForBlend(Vector2 dir)
+    {
+        if (dir.sqrMagnitude < 1e-6f) return dir;
+        float ax = Mathf.Abs(dir.x);
+        float ay = Mathf.Abs(dir.y);
+        Vector2 d = dir;
+
+        // Snap to pure vertical when vertical dominates and horizontal is tiny
+        if (ay >= ax * axisDominance && ax < axisSnapEpsilon)
+        {
+            d.x = 0f;
+            d = d.normalized;
+        }
+        // Snap to pure horizontal when horizontal dominates and vertical is tiny
+        else if (ax >= ay * axisDominance && ay < axisSnapEpsilon)
+        {
+            d.y = 0f;
+            d = d.normalized;
+        }
+        return d;
     }
 
     public void SetFacing(string facingName)
@@ -536,12 +584,7 @@ public class OverworldHero : MonoBehaviour
         collisionProvider = provider;
     }
 
-    // Set collision offset (world units). Positive Y moves the probe up; positive X moves right.
-    public void SetCollisionOffset(float offsetX, float offsetY) => collisionOffset = new Vector2(offsetX, offsetY);
-    public void SetCollisionOffset(Vector2 offset) => collisionOffset = offset;
-    public Vector2 GetCollisionOffset() => collisionOffset;
-
-
+  
     private float GetSpeedMultiplier(Vector2 world)
     {
         return 1f; // constant speed (slow zones can be added later)
@@ -566,16 +609,24 @@ public class OverworldHero : MonoBehaviour
         Vector2 n = collisionProvider.EstimateObstacleNormal(desiredCenter, nRadius, nRays);
         if (n.sqrMagnitude > 1e-6f)
         {
-            Vector2 slide = step - Vector2.Dot(step, n) * n;
-            if (slide.sqrMagnitude > 1e-6f)
+            // Remove normal component -> tangent slide
+            Vector2 tangent = step - Vector2.Dot(step, n) * n;
+            // Try full slide first, then smaller fractions with a small push away from the wall
+            if (tangent.sqrMagnitude > 1e-6f)
             {
-                Vector2 candidate = ClampToMap(current + slide);
-                if (IsWalkableWorld(candidate))
-                    return candidate;
+                float frac = 1f;
+                for (int i = 0; i < Mathf.Max(1, wallSlideAttempts); i++)
+                {
+                    Vector2 candidate = ClampToMap(current + tangent * frac + n * wallSlideUnstick);
+                    if (IsWalkableWorld(candidate))
+                        return candidate;
+                    frac *= 0.5f;
+                    if (frac < wallSlideMinFraction) break;
+                }
             }
         }
 
-        // Fallback: axis-aligned slides (robust on corners)
+        // Fallback: axis-aligned slides (robust on corners) with slight unstick when available
         Vector2 tryX = new Vector2(desired.x, current.y);
         tryX = ClampToMap(tryX);
         if (IsWalkableWorld(tryX))
@@ -593,7 +644,7 @@ public class OverworldHero : MonoBehaviour
     // Walkable according to MapTerrain (world space)
     private bool IsWalkableWorld(Vector2 p)
     {
-        Vector2 center = GetVisualCenter(p); // includes collision offset
+        Vector2 center = GetVisualCenter(p); // pivot + feet offset at desired world pos
         float radius = GetProbeRadius();
         int rays = Mathf.Max(8, 8);
 
@@ -614,14 +665,28 @@ public class OverworldHero : MonoBehaviour
 
     private float GetProbeRadius()
     {
-        var scale = 0.2f;
-        return Mathf.Min(heroSprite.bounds.extents.x * scale, heroSprite.bounds.extents.y * scale);
+        if (useFixedCollisionRadius && collisionRadiusWorld > 0f)
+            return collisionRadiusWorld;
+
+        // Fallback: infer from current sprite bounds (can vary with animation)
+        return Mathf.Min(
+            heroSprite.bounds.extents.x * probeRadiusMultiplier,
+            heroSprite.bounds.extents.y * probeRadiusMultiplier);
     }
 
-    // Collision-probe center: world position plus optional offset (e.g., toward the character's feet)
-    private Vector2 GetVisualCenter(Vector2 p)
+    // Collision-probe center: always use Animator/Sprite pivot plus optional feet offset.
+    private Vector2 GetVisualCenter(Vector2 desiredWorldPosition)
     {
-        return p + collisionOffset;
+        // In 2D SpriteRenderer, transform.position == sprite pivot in world units.
+        // We evaluate at the desired position passed in, not the current transform, to test feasibility.
+        Vector2 pivotWorld = desiredWorldPosition;
+        if (collisionFeetOffsetLocal != Vector2.zero)
+        {
+            // Convert local-space offset to world considering only rotation (scale assumed uniform for world-space sprites)
+            Vector2 worldOffset = (Vector2)(transform.rotation * (Vector3)collisionFeetOffsetLocal);
+            pivotWorld += worldOffset;
+        }
+        return pivotWorld;
     }
 
     // Predict a final stop position using the same collision logic; fixed step for determinism
@@ -874,4 +939,15 @@ public class OverworldHero : MonoBehaviour
     public void SetSnapThreshold(float value) => snapThreshold = Mathf.Max(0f, value);
     public void SetPathfinding(bool enabled) => usePathfinding = enabled;
     public void SetInputMode(OverworldHeroInputMode mode) => inputMode = mode;
+
+    // Exposed setters for tuning friction and clearance
+    public void SetProbeRadiusMultiplier(float value) => probeRadiusMultiplier = Mathf.Max(0f, value);
+    public void SetNavClearance(float value) => navObstacleBuffer = Mathf.Max(0f, value);
+    public void SetWallSlideUnstick(float epsilon) => wallSlideUnstick = Mathf.Max(0f, epsilon);
+    public void SetFollowSpeedRampDistance(float dist) => followSpeedRampDistance = Mathf.Max(0.01f, dist);
+
+    // New: control collision sampling relative to animator pivot
+    public void SetFeetOffsetLocal(Vector2 offset) => collisionFeetOffsetLocal = offset;
+    public void SetFixedCollisionRadius(float worldRadius) { useFixedCollisionRadius = true; collisionRadiusWorld = Mathf.Max(0f, worldRadius); }
+    public void UseInferredCollisionRadius(bool enabled) => useFixedCollisionRadius = !enabled;
 }
