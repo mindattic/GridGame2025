@@ -1,4 +1,4 @@
-﻿// File: Assets/Editor/EightWayAnimatorGenerator_CustomOrder_UIImage.cs
+﻿// File: Assets/Editor/EightWayAnimatorGenerator_CustomOrder_SpriteRenderer.cs
 #if UNITY_EDITOR
 using System;
 using System.IO;
@@ -7,20 +7,19 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
-/// Builds 16 clips and a two-blend-tree Animator for an 8-way character.
+/// Builds 16 clips and a two-blend-tree Animator for an 8-way character using SpriteRenderer.
 /// Format enforced:
-///   Idle indices: D, DR, R, UR, U, UL, L, DL  (exact sprite index order 0..7)
+///   Idle indices: D, DR, R, UR, U, UL, L, DL  (sprite index order 0..7)
 ///   Move rows:    D, DR, R, UR, U, UL, L, DL  (each row has 4 frames)
 /// Assumptions:
 ///   Idle sheet is 8 sprites total (4x2).
-///   Move sheet is 32 sprites total (4 columns x 8 rows).
-/// Clips target UI.Image.m_Sprite so this works for characters under a Canvas.
+///   Move sheet is 32 sprites total (4x8).
+/// Clips target SpriteRenderer.m_Sprite so this works for world-space characters.
 /// Blend trees are 2D Freeform Directional using parameters MoveX, MoveY, Speed.
 /// </summary>
-public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
+public sealed class EightWayAnimatorGenerator_CustomOrder_SpriteRenderer : EditorWindow
 {
     // Input sheets
     private Texture2D idleSheet;
@@ -34,7 +33,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
     private int moveSamples = 12;
     private int idleSamples = 1;
 
-    // Standard 2D directional slots used by Unity's Freeform Directional blend tree
+    // Standard 2D directional slots used by Freeform Directional blend tree
     private static readonly string[] StandardDirNames = { "U", "UR", "R", "DR", "D", "DL", "L", "UL" };
     private static readonly Vector2[] StandardVectors = new[]
     {
@@ -62,18 +61,16 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         "Move_D","Move_DR","Move_R","Move_UR","Move_U","Move_UL","Move_L","Move_DL"
     };
 
-    [MenuItem("Tools/Generate 8-Way Animator")]
+    [MenuItem("Tools/Generate 8-Way Animator (SpriteRenderer)")]
     private static void Open()
     {
-        var win = CreateInstance<EightWayAnimatorGenerator_CustomOrder_UIImage>();
-        win.titleContent = new GUIContent("8-Way Animator (UI.Image)");
+        var win = CreateInstance<EightWayAnimatorGenerator_CustomOrder_SpriteRenderer>();
+        win.titleContent = new GUIContent("8-Way Animator (SpriteRenderer)");
         win.minSize = new Vector2(480, 320);
         win.ShowUtility();
     }
 
-    /// <summary>
-    /// Draws the tool UI.
-    /// </summary>
+    // Window UI
     private void OnGUI()
     {
         GUILayout.Label("Input Spritesheets", EditorStyles.boldLabel);
@@ -95,7 +92,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
             "Ordering:\n" +
             "Idle sprites index 0..7: D, DR, R, UR, U, UL, L, DL\n" +
             "Move rows top..bottom:   D, DR, R, UR, U, UL, L, DL\n" +
-            "Clips target UI.Image.m_Sprite. No placeholders.",
+            "Clips target SpriteRenderer.m_Sprite. No placeholders.",
             MessageType.Info
         );
 
@@ -105,9 +102,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         }
     }
 
-    /// <summary>
-    /// Validates input, creates clips for UI.Image, and builds the Animator with real clips.
-    /// </summary>
+    // Validate input, create SpriteRenderer clips, and build the Animator
     private void GenerateAll()
     {
         try
@@ -124,17 +119,17 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
 
             EnsureFolder(outputFolder);
 
-            // Idle clips: one sprite each, UI.Image binding
+            // Idle clips: one sprite each, SpriteRenderer binding
             var idleClips = new AnimationClip[8];
             for (int i = 0; i < 8; i++)
             {
-                var clip = CreateSpriteClipSingleImage(idleSprites[i], idleSamples);
+                var clip = CreateSpriteClipSingle_SpriteRenderer(idleSprites[i], idleSamples);
                 var path = Path.Combine(outputFolder, IdleClipNames[i] + ".anim");
                 AssetDatabase.CreateAsset(clip, path);
                 idleClips[i] = clip;
             }
 
-            // Move clips: 4 frames per row, UI.Image binding
+            // Move clips: 4 frames per row, SpriteRenderer binding
             var moveClips = new AnimationClip[8];
             for (int row = 0; row < 8; row++)
             {
@@ -147,7 +142,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
                     moveSprites[start + 3]
                 };
 
-                var clip = CreateSpriteClipImage(frames, moveSamples);
+                var clip = CreateSpriteClip_SpriteRenderer(frames, moveSamples);
                 var path = Path.Combine(outputFolder, MoveClipNames[row] + ".anim");
                 AssetDatabase.CreateAsset(clip, path);
                 moveClips[row] = clip;
@@ -186,7 +181,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
-            EditorUtility.DisplayDialog("Success", "Animator and UI.Image clips generated.", "OK");
+            EditorUtility.DisplayDialog("Success", "Animator and SpriteRenderer clips generated.", "OK");
         }
         catch (Exception ex)
         {
@@ -195,9 +190,6 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         }
     }
 
-    /// <summary>
-    /// Basic input validation.
-    /// </summary>
     private void ValidateInput()
     {
         if (idleSheet == null) throw new Exception("Assign Idle Sheet.");
@@ -207,9 +199,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
             throw new Exception("Animator Name must end with .controller");
     }
 
-    /// <summary>
-    /// Loads sliced sprites from a sheet sorted by trailing numeric index.
-    /// </summary>
+    // Load sliced sprites sorted by trailing numeric index
     private static Sprite[] LoadSlicedSprites(Texture2D sheet)
     {
         var path = AssetDatabase.GetAssetPath(sheet);
@@ -218,9 +208,6 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         return all;
     }
 
-    /// <summary>
-    /// Extracts trailing numeric index from a typical Unity sprite name.
-    /// </summary>
     private static int ExtractIndex(string spriteName)
     {
         var m = Regex.Match(spriteName, @"_(\d+)$");
@@ -230,16 +217,14 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         return 0;
     }
 
-    /// <summary>
-    /// Creates a single-frame looping clip that targets UI.Image.m_Sprite.
-    /// </summary>
-    private static AnimationClip CreateSpriteClipSingleImage(Sprite sprite, int samples)
+    // Single-frame looping clip for SpriteRenderer.m_Sprite
+    private static AnimationClip CreateSpriteClipSingle_SpriteRenderer(Sprite sprite, int samples)
     {
         var clip = new AnimationClip { frameRate = Mathf.Max(1, samples) };
 
         var binding = new EditorCurveBinding
         {
-            type = typeof(Image),
+            type = typeof(SpriteRenderer),
             path = "",
             propertyName = "m_Sprite"
         };
@@ -252,16 +237,14 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         return clip;
     }
 
-    /// <summary>
-    /// Creates a multi-frame looping clip that targets UI.Image.m_Sprite.
-    /// </summary>
-    private static AnimationClip CreateSpriteClipImage(Sprite[] sprites, int samples)
+    // Multi-frame looping clip for SpriteRenderer.m_Sprite
+    private static AnimationClip CreateSpriteClip_SpriteRenderer(Sprite[] sprites, int samples)
     {
         var clip = new AnimationClip { frameRate = Mathf.Max(1, samples) };
 
         var binding = new EditorCurveBinding
         {
-            type = typeof(Image),
+            type = typeof(SpriteRenderer),
             path = "",
             propertyName = "m_Sprite"
         };
@@ -278,9 +261,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         return clip;
     }
 
-    /// <summary>
-    /// Sets loop flags on a clip.
-    /// </summary>
+    // Loop settings
     private static void SetLoop(AnimationClip clip, bool loop)
     {
         var s = AnimationUtility.GetAnimationClipSettings(clip);
@@ -290,11 +271,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         AnimationUtility.SetAnimationClipSettings(clip, s);
     }
 
-    /// <summary>
-    /// Builds a 2D Freeform Directional blend tree and adds the provided clips directly.
-    /// The clips array corresponds to your tokenOrder which is D, DR, R, UR, U, UL, L, DL.
-    /// The tree positions are mapped to Unity's standard slot vectors.
-    /// </summary>
+    // Build a 2D Freeform Directional blend tree using provided clips, mapped to standard vectors
     private static BlendTree CreateDirectionalBlendTree(
         string name,
         AnimatorController controller,
@@ -325,9 +302,7 @@ public sealed class EightWayAnimatorGenerator_CustomOrder_UIImage : EditorWindow
         return tree;
     }
 
-    /// <summary>
-    /// Ensures the output folder exists under an existing root.
-    /// </summary>
+    // Ensure target folder exists
     private static void EnsureFolder(string folder)
     {
         if (AssetDatabase.IsValidFolder(folder)) return;

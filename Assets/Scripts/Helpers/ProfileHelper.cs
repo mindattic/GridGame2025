@@ -65,8 +65,8 @@ namespace Assets.Helpers
         public static OverworldSaveData DefaultOverworld = new OverworldSaveData
         {
             MapName = Map.Test.ToString(),
-            HeroX = 1000,
-            HeroY = -1250,
+            HeroX = 0,
+            HeroY = 0,
             HeroDirection = "Idle"
         };
 

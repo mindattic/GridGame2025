@@ -6,39 +6,21 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 
-// OverworldManager orchestrates UI input, scrolling, centering, and scene transitions.
-// It wires the layered map, hero, joystick, and the collision provider on the Terrain.
-public class OverworldManager : MonoBehaviour, IBeginDragHandler
+// OverworldManager orchestrates input and scene transitions for the world-space overworld.
+// World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
+public class OverworldManager : MonoBehaviour
 {
-    private ScrollRect scrollRect;
-    private RectTransform viewport;
-    private RectTransform content;
-
-    // Layered map
-    private RectTransform terrainRect;
-    private RectTransform surfaceRect;
-    private RectTransform canopyRect;
-    private RawImage terrainImage;
-    private RawImage surfaceImage;
-    private RawImage canopyImage;
+    // World layers
+    private SpriteRenderer terrainSR;
+    private SpriteRenderer surfaceSR;
+    private SpriteRenderer canopySR;
 
     private OverworldHero hero;
-
-    private RectTransform offscreenArrow;
-    private Image offscreenArrowImage;
 
     private VirtualJoystick virtualJoystick;
     private RectTransform joystickRect;
 
     private bool hasRandomEncounters = false;
-    private float indicatorPadding = 64f; // distance from viewport edge
-    private float arrowFadeSpeed = 8f;    // alpha units/sec (0..1)
-    private float arrowTargetAlpha;       // 0 when visible, 1 when off-screen
-
-    private Coroutine centeringRoutine;
-    private float centeringSpeed = 8f;
-    private bool followHero;        // used when joystick is active
-    private bool lastAnalogActive;  // edge detection
 
     // Random encounter
     private float encounterTimer;                       // accumulates only while moving
@@ -53,10 +35,13 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private const float tapMaxTime = 0.30f;
     private const float tapMaxSqrDistance = 12f * 12f;
 
-    private const float centeringSnapThreshold = 0.01f; // when to snap to target
+    private Camera cam;
+    private Transform mapRoot; // parent for map components
 
     private void Awake()
     {
+        cam = Camera.main;
+
         if (!ProfileHelper.HasProfiles())
             return;
 
@@ -74,89 +59,54 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
             return;
         }
 
-        GameObject go;
-
-        // Gather references safely
-        go = GameObject.Find(GameObjectHelper.Overworld.ScrollView);
-        scrollRect = go.GetComponent<ScrollRect>();
-        viewport = GameObject.Find(GameObjectHelper.Overworld.Viewport)?.GetComponent<RectTransform>();
-        content = GameObject.Find(GameObjectHelper.Overworld.Content)?.GetComponent<RectTransform>();
-
-        // Ensure layered map nodes exist and are configured
-        terrainRect = EnsureLayer(GameObjectHelper.Overworld.Terrain, desiredSiblingIndex: 0);
-        surfaceRect = EnsureLayer(GameObjectHelper.Overworld.Surface);
-        canopyRect = EnsureLayer(GameObjectHelper.Overworld.Canopy);
-        if (canopyRect != null) canopyRect.SetAsLastSibling(); // canopy above hero
-
-        terrainImage = terrainRect != null ? terrainRect.GetComponent<RawImage>() : null;
-        surfaceImage = surfaceRect != null ? surfaceRect.GetComponent<RawImage>() : null;
-        canopyImage = canopyRect != null ? canopyRect.GetComponent<RawImage>() : null;
-
-        // Ensure the terrain has a collision provider component
-        MapTerrain collisionProvider = null;
-        if (terrainRect != null)
-        {
-            collisionProvider = terrainRect.GetComponent<MapTerrain>();
-            if (collisionProvider == null)
-                collisionProvider = terrainRect.gameObject.AddComponent<MapTerrain>();
-        }
-
-        // Offscreen arrow and hero/joystick
-        go = GameObject.Find(GameObjectHelper.Overworld.OffscreenArrow);
-        offscreenArrow = go.GetComponent<RectTransform>();
-        offscreenArrowImage = go.GetComponent<Image>();
-
-        hero = GameObject.Find(GameObjectHelper.Overworld.Hero)?.GetComponent<OverworldHero>();
-        virtualJoystick = GameObject.Find(GameObjectHelper.Overworld.VirtualJoystick)?.GetComponent<VirtualJoystick>();
+        // Load UI joystick and hero
+        virtualJoystick = GameObject.Find(GameObjectHelper.Overworld.Canvas.VirtualJoystick)?.GetComponent<VirtualJoystick>();
         joystickRect = virtualJoystick != null ? virtualJoystick.GetComponent<RectTransform>() : null;
 
-        // Wire ScrollRect if available
-        scrollRect.viewport = viewport;
-        scrollRect.content = content;
-        scrollRect.movementType = ScrollRect.MovementType.Clamped;
-        scrollRect.inertia = true;
-        scrollRect.horizontal = true;
-        scrollRect.vertical = true;
-
-        // Layout constraints
-        content.anchorMin = new Vector2(0f, 1f);
-        content.anchorMax = new Vector2(0f, 1f);
-        content.pivot = new Vector2(0f, 1f);
+        // Find Map root
+        var mapGo = GameObject.Find("Map");
+        mapRoot = mapGo != null ? mapGo.transform : null;
 
         // Load map data from profile
         var overworld = ProfileHelper.CurrentProfile.CurrentSave.Overworld;
         var data = MapLibrary.Get(overworld.MapName);
 
-        // Apply each layer
-        ApplySpriteToLayer(terrainRect, ref terrainImage, data.Terrain);
-        ApplySpriteToLayer(surfaceRect, ref surfaceImage, data.Surface);
-        ApplySpriteToLayer(canopyRect, ref canopyImage, data.Canopy);
-    
-        SizeContentFromSprite(data.Terrain);
+        // Ensure world-space layers exist as SpriteRenderers (preserve scene scale)
+        terrainSR = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Terrain"), data.Terrain, sortingOrder: 0);
+        surfaceSR = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Surface"), data.Surface, sortingOrder: 1);
+        canopySR  = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Canopy"),  data.Canopy,  sortingOrder: 10);
+
+        // Ensure the terrain has a collision provider component
+        MapTerrain collisionProvider = null;
+        if (terrainSR != null)
+        {
+            collisionProvider = terrainSR.GetComponent<MapTerrain>();
+            if (collisionProvider == null)
+                collisionProvider = terrainSR.gameObject.AddComponent<MapTerrain>();
+            collisionProvider.ForceRefresh();
+        }
+
+        // Find hero under Map/Hero or by helper as fallback
+        hero = (RelativeOrGlobal(mapRoot, "Hero")?.GetComponent<OverworldHero>())
+              ?? GameObject.Find(GameObjectHelper.Overworld.Map.Hero)?.GetComponent<OverworldHero>();
 
         // Wire hero
         if (hero != null)
         {
             hero.AllowClickToMove = true; // enable click handling
             hero.OnHeroMoved += HandleHeroMoved;
-            hero.rect.anchoredPosition = new Vector2(overworld.HeroX, overworld.HeroY);
-            hero.SetFacing(overworld.HeroDirection);
 
-            // Bind map/viewport and collision provider
-            hero.BindMapAndViewport(terrainRect, viewport);
+            // Bind world mode
+            hero.BindWorld(terrainSR, cam);
             if (collisionProvider != null)
                 hero.BindCollisionProvider(collisionProvider);
+
+            // Position hero from save (world units)
+            hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
+            hero.SetFacing(overworld.HeroDirection);
         }
 
-        // Off-screen arrow config
-        SetOffscreenArrowAlpha(0f);
-
-        ConfigureScrollBounds();
-
-        // Snap viewport to hero location immediately (no tween)
-        if (hero != null)
-            SnapCentering(hero.rect.anchoredPosition);
-
+        scene.FadeIn();
     }
 
     private void OnDestroy()
@@ -164,14 +114,9 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         if (hero != null) hero.OnHeroMoved -= HandleHeroMoved;
     }
 
-    private void Start()
-    {
-        scene.FadeIn();
-    }
-
     private void Update()
     {
-        if (terrainRect == null) return;
+        if (terrainSR == null) return;
 
         bool isDirectional = hero != null && hero.TouchMoveMode == OverworldHeroInputMode.DirectionalPress;
 
@@ -186,17 +131,17 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
                 pointerDownPos = t.position;
                 pointerDownTime = Time.unscaledTime;
 
-                if (pointerDownAllowed && isDirectional)
-                    hero.BeginDirectionalFromScreen(t.position, content);
+                if (pointerDownAllowed && isDirectional && hero != null)
+                    hero.BeginDirectionalFromScreen(t.position, null);
             }
             else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
             {
-                if (pointerDownAllowed && isDirectional)
-                    hero.UpdateDirectionalFromScreen(t.position, content);
+                if (pointerDownAllowed && isDirectional && hero != null)
+                    hero.UpdateDirectionalFromScreen(t.position, null);
             }
             else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
             {
-                if (isDirectional)
+                if (isDirectional && hero != null)
                 {
                     hero.EndDirectional();
                 }
@@ -216,21 +161,21 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
             pointerDownPos = pos;
             pointerDownTime = Time.unscaledTime;
 
-            if (pointerDownAllowed && isDirectional)
-                hero.BeginDirectionalFromScreen(pos, content);
+            if (pointerDownAllowed && isDirectional && hero != null)
+                hero.BeginDirectionalFromScreen(pos, null);
         }
         if (Input.GetMouseButton(0))
         {
-            if (pointerDownAllowed && isDirectional)
+            if (pointerDownAllowed && isDirectional && hero != null)
             {
                 Vector2 pos = (Vector2)Input.mousePosition;
-                hero.UpdateDirectionalFromScreen(pos, content);
+                hero.UpdateDirectionalFromScreen(pos, null);
             }
         }
         if (Input.GetMouseButtonUp(0))
         {
             Vector2 pos = (Vector2)Input.mousePosition;
-            if (isDirectional)
+            if (isDirectional && hero != null)
             {
                 hero.EndDirectional();
             }
@@ -243,46 +188,12 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
     private void LateUpdate()
     {
-        // If directional mode, always follow hero and disable dragging
-        bool directionalMode = hero != null && hero.TouchMoveMode == OverworldHeroInputMode.DirectionalPress;
-
-        if (directionalMode)
-        {
-            if (scrollRect != null)
-            {
-                scrollRect.horizontal = false;
-                scrollRect.vertical = false;
-            }
-        }
-        else
-        {
-            if (scrollRect != null)
-            {
-                scrollRect.horizontal = true;
-                scrollRect.vertical = true;
-            }
-        }
-
         // Feed analog input to the hero every frame
         Vector2 stick = virtualJoystick != null ? virtualJoystick.Direction : Vector2.zero;
         bool analogActive = stick.sqrMagnitude > 1e-6f;
 
         if (hero != null)
             hero.SetAnalogInput(stick);
-
-        // On press outside deadzone -> center and start following
-        if (!directionalMode && analogActive && !lastAnalogActive && hero != null && hero.rect != null)
-        {
-            SmoothCentering(hero.rect.anchoredPosition);
-            followHero = true;
-        }
-        // On release -> stop following and stop any centering tween
-        if (!directionalMode && !analogActive && lastAnalogActive)
-        {
-            followHero = false;
-            CancelCentering();
-        }
-        lastAnalogActive = analogActive;
 
         // Random encounter timer
         if (movedThisFrame)
@@ -300,13 +211,12 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         }
         movedThisFrame = false;
 
-        // Hard-follow centering when in directional mode
-        if (directionalMode && hero != null && hero.rect != null && scrollRect != null)
+        // Always center camera on hero
+        if (cam != null && hero != null)
         {
-            scrollRect.normalizedPosition = GetMapPosition(hero.rect.anchoredPosition);
+            var hp = hero.transform.position;
+            cam.transform.position = new Vector3(hp.x, hp.y, cam.transform.position.z);
         }
-
-        UpdateOffscreenArrow();
     }
 
     private bool IsTap(Vector2 releasePos)
@@ -322,154 +232,14 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
     private void HandleTap(Vector2 screenPos)
     {
-        if (hero == null || hero.rect == null || content == null) return;
-        hero.HandleClickScreen(screenPos, content); // delegate to hero; mode decides behavior
-    }
-
-    private void OnRectTransformDimensionsChange()
-    {
-        ConfigureScrollBounds();
-    }
-
-    // Adjust Content size to match the Terrain rect so clamping works correctly
-    private void ConfigureScrollBounds()
-    {
-        if (scrollRect == null || viewport == null || content == null || terrainRect == null) return;
-
-        Vector2 mapSize = terrainRect.rect.size;
-        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, mapSize.x);
-        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, mapSize.y);
-    }
-
-    public void OnBackButtonClicked()
-    {
-        scene.Change.ToPreviousScene();
-    }
-
-    public void OnCenterOnHeroClicked()
-    {
-        if (hero == null || hero.rect == null) return;
-        SmoothCentering(hero.rect.anchoredPosition);
-    }
-
-    // Convert a Content-local target position to ScrollRect.normalizedPosition
-    private Vector2 GetMapPosition(Vector2 position)
-    {
-        if (viewport == null || content == null) return new Vector2(0.5f, 0.5f);
-
-        Vector2 vp = viewport.rect.size, cs = content.rect.size;
-        float x = position.x;
-        float y = -position.y;
-        float maxLeft = Mathf.Max(0f, cs.x - vp.x), maxTop = Mathf.Max(0f, cs.y - vp.y);
-        float desiredLeft = Mathf.Clamp(x - vp.x * 0.5f, 0f, maxLeft);
-        float desiredTop = Mathf.Clamp(y - vp.y * 0.5f, 0f, maxTop);
-        float nx = maxLeft <= 0.001f ? 0.5f : desiredLeft / maxLeft;
-        float ny = maxTop <= 0.001f ? 0.5f : 1f - (desiredTop / maxTop);
-        return new Vector2(nx, ny);
-    }
-
-    public void SmoothCentering(Vector2 position)
-    {
-        CancelCentering();
-        centeringRoutine = StartCoroutine(SmoothCenteringRoutine(position));
-    }
-
-    private IEnumerator SmoothCenteringRoutine(Vector2 targetLocalPosition)
-    {
-        Vector2 targetPosition = GetMapPosition(targetLocalPosition);
-        while (scrollRect != null && Vector2.Distance(scrollRect.normalizedPosition, targetPosition) > centeringSnapThreshold)
-        {
-            scrollRect.normalizedPosition = Vector2.Lerp(scrollRect.normalizedPosition, targetPosition, Time.deltaTime * centeringSpeed);
-            yield return null;
-        }
-        if (scrollRect != null) scrollRect.normalizedPosition = targetPosition;
-        centeringRoutine = null;
-    }
-
-    // Instantly center the viewport on the given local position (no tween)
-    public void SnapCentering(Vector2 position)
-    {
-        CancelCentering();
-        if (scrollRect == null) return;
-
-        Vector2 targetPosition = GetMapPosition(position);
-        scrollRect.normalizedPosition = targetPosition;
-    }
-
-    // Cancel any ongoing centering coroutine
-    private void CancelCentering()
-    {
-        if (centeringRoutine != null)
-        {
-            StopCoroutine(centeringRoutine);
-            centeringRoutine = null;
-        }
-    }
-
-    // IBeginDragHandler
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        CancelCentering();
+        if (hero == null) return;
+        hero.HandleClickScreen(screenPos, null); // world mode path inside hero
     }
 
     // Follow hero while moving and flag movement for encounter timer
-    private void HandleHeroMoved(Vector2 heroLocalPos)
+    private void HandleHeroMoved(Vector2 heroPos)
     {
         movedThisFrame = true;
-
-        if (!followHero || scrollRect == null) return;
-        scrollRect.normalizedPosition = GetMapPosition(heroLocalPos);
-    }
-
-    // Update the offscreen arrow position/alpha to point toward the hero
-    private void UpdateOffscreenArrow()
-    {
-        if (offscreenArrow == null || offscreenArrowImage == null || viewport == null || hero == null || hero.rect == null)
-            return;
-
-        bool heroVisible = OverworldHero.IsTargetVisible(hero.rect, viewport);
-
-        arrowTargetAlpha = heroVisible ? 0f : 1f;
-        float current = offscreenArrowImage.color.a;
-        float next = Mathf.MoveTowards(current, arrowTargetAlpha, arrowFadeSpeed * Time.unscaledDeltaTime);
-        if (!Mathf.Approximately(current, next))
-            SetOffscreenArrowAlpha(next);
-
-        if (!heroVisible || next > 0.001f)
-        {
-            // Hero position in viewport local space
-            Vector3 heroWorldCenter = hero.rect.TransformPoint(hero.rect.rect.center);
-            Vector2 heroLocal = viewport.InverseTransformPoint(heroWorldCenter);
-
-            // Viewport rect in local space
-            Vector3[] vc = new Vector3[4];
-            viewport.GetLocalCorners(vc);
-            Vector2 min = (Vector2)vc[0];
-            Vector2 max = (Vector2)vc[2];
-            Vector2 center = (min + max) * 0.5f;
-            Vector2 extents = (max - min) * 0.5f;
-
-            Vector2 dir = heroLocal - center;
-            if (dir.sqrMagnitude < 0.0001f) dir = Vector2.up;
-
-            float pad = Mathf.Max(0f, indicatorPadding);
-            Vector2 ex = new Vector2(Mathf.Max(0.001f, extents.x - pad), Mathf.Max(0.001f, extents.y - pad));
-            float sx = Mathf.Abs(dir.x) > 0.0001f ? ex.x / Mathf.Abs(dir.x) : float.PositiveInfinity;
-            float sy = Mathf.Abs(dir.y) > 0.0001f ? ex.y / Mathf.Abs(dir.y) : float.PositiveInfinity;
-            float s = Mathf.Min(sx, sy);
-
-            offscreenArrow.anchoredPosition = dir * s;
-            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg; // arrow graphic points right
-            offscreenArrow.localRotation = Quaternion.Euler(0f, 0f, angle);
-        }
-    }
-
-    // Helper to set arrow alpha
-    private void SetOffscreenArrowAlpha(float a)
-    {
-        Color c = offscreenArrowImage.color;
-        c.a = Mathf.Clamp01(a);
-        offscreenArrowImage.color = c;
     }
 
     // Trigger scene change to a random stage after sustained movement
@@ -481,13 +251,13 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         string mapName = ProfileHelper.Overworld.MapName;
 
         // Persist overworld location and facing
-        if (hero != null && hero.rect != null)
+        if (hero != null)
         {
             ProfileHelper.CurrentProfile.LatestSave.Overworld.MapName = mapName;
-            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroX = hero.rect.anchoredPosition.x;
-            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroY = hero.rect.anchoredPosition.y;
+            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroX = hero.transform.position.x;
+            ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroY = hero.transform.position.y;
             ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroDirection = hero.CurrentFacingName ?? "Idle";
-            ProfileHelper.SaveOverworldPosition(hero.rect.anchoredPosition, mapName, hero.CurrentFacingName ?? "Idle");
+            ProfileHelper.SaveOverworldPosition(new Vector2(hero.transform.position.x, hero.transform.position.y), mapName, hero.CurrentFacingName ?? "Idle");
         }
 
         // Get a random stage for this map from RNG
@@ -498,89 +268,82 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         scene.Change.ToGame();
     }
 
-    // -------- helpers for layered map --------
+    // -------- helpers for layered map (world-space) --------
 
-    // Ensure a child RectTransform exists under Content for the given path; size and sibling it.
-    private RectTransform EnsureLayer(string path, int? desiredSiblingIndex = null)
+    private SpriteRenderer EnsureWorldLayerSR(Transform existingOrParent, Sprite s, int sortingOrder = 0)
     {
-        var go = GameObject.Find(path);
+        GameObject go = null;
+        SpriteRenderer sr = null;
+
+        if (existingOrParent != null)
+        {
+            // If passed a Transform of the existing object, use it. Otherwise, create under parent.
+            sr = existingOrParent.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                go = existingOrParent.gameObject;
+            }
+            else
+            {
+                // Create a new child with this transform as parent
+                go = new GameObject("Layer");
+                go.transform.SetParent(existingOrParent, false);
+            }
+        }
+
         if (go == null)
         {
-            if (content == null) return null;
-
-            string name = path.Substring(path.LastIndexOf('/') + 1);
-            go = new GameObject(name, typeof(RectTransform));
-            var rt = go.GetComponent<RectTransform>();
-            rt.SetParent(content, false);
-            SetupLayerRect(rt);
-            rt.anchoredPosition = Vector2.zero;
-
-            // Attach RawImage so layer is renderable
-            go.AddComponent<RawImage>();
-
-            if (desiredSiblingIndex.HasValue)
-                rt.SetSiblingIndex(Mathf.Max(0, desiredSiblingIndex.Value));
-
-            return rt;
+            // Fallback: try to find by GameObjectHelper path, then by name
+            go = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain);
+            if (go == null)
+            {
+                go = new GameObject("Layer");
+                if (mapRoot != null) go.transform.SetParent(mapRoot, false);
+            }
         }
-        else
+
+        sr = go.GetComponent<SpriteRenderer>() ?? go.AddComponent<SpriteRenderer>();
+        sr.sprite = s;
+        sr.sortingOrder = sortingOrder;
+
+        // Parent under Map root if not already
+        if (mapRoot != null && go.transform.parent != mapRoot && (go.name == "Surface" || go.name == "Canopy" || go.name == "Terrain" || go.name == "Layer"))
         {
-            var rt = go.GetComponent<RectTransform>();
-            SetupLayerRect(rt);
-            if (desiredSiblingIndex.HasValue)
-                rt.SetSiblingIndex(Mathf.Max(0, desiredSiblingIndex.Value));
-            return rt;
+            go.transform.SetParent(mapRoot, false);
         }
+
+        // Preserve authored scale: do not modify go.transform.localScale here.
+
+        // If this is the terrain, ensure collision provider exists
+        if (go.name == "Terrain")
+        {
+            var cp = go.GetComponent<MapTerrain>();
+            if (cp == null) cp = go.AddComponent<MapTerrain>();
+            cp.ForceRefresh();
+        }
+
+        return sr;
     }
 
-    private static void SetupLayerRect(RectTransform rt)
+    private Transform RelativeOrGlobal(Transform parent, string childName)
     {
-        if (rt == null) return;
-        rt.anchorMin = new Vector2(0f, 1f);
-        rt.anchorMax = new Vector2(0f, 1f);
-        rt.pivot = new Vector2(0f, 1f);
-        rt.anchoredPosition = Vector2.zero;
-    }
-
-    private void ApplySpriteToLayer(RectTransform rt, ref RawImage img, Sprite s)
-    {
-        if (rt == null) return;
-
-        if (s == null)
+        Transform t = null;
+        if (parent != null)
         {
-            if (img != null) img.enabled = false;
-            return;
+            var child = parent.Find(childName);
+            if (child != null) t = child;
         }
-
-        if (img == null)
-            img = rt.gameObject.GetComponent<RawImage>() ?? rt.gameObject.AddComponent<RawImage>();
-
-        img.enabled = true;
-        var t = s.texture;
-        var r = s.rect;
-        img.texture = t;
-        img.uvRect = new Rect(
-            r.x / t.width, r.y / t.height,
-            r.width / t.width, r.height / t.height
-        );
-
-        // Size rect to sprite rect
-        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, r.size.x);
-        rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, r.size.y);
-
-        // If this is the terrain layer and it has a collision provider, force refresh its cached pixels
-        var provider = rt.GetComponent<MapTerrain>();
-        if (provider != null)
+        if (t == null)
         {
-            provider.ForceRefresh();
+            // Fallbacks
+            var byPath = GameObject.Find("Map/" + childName);
+            if (byPath != null) t = byPath.transform;
         }
-    }
-
-    private void SizeContentFromSprite(Sprite s)
-    {
-        if (s == null || content == null) return;
-        var r = s.rect.size;
-        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, r.x);
-        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, r.y);
+        if (t == null)
+        {
+            var byName = GameObject.Find(childName);
+            if (byName != null) t = byName.transform;
+        }
+        return t;
     }
 }

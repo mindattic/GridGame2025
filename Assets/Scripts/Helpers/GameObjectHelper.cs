@@ -122,16 +122,22 @@ namespace Assets.Helper
 
         public static class Overworld
         {
-            public const string Title = "Canvas/Title";
-            public const string ScrollView = "Canvas/ScrollView";
-            public const string Viewport = "Canvas/ScrollView/Viewport";
-            public const string Content = "Canvas/ScrollView/Viewport/Content";
-            public const string Terrain = "Canvas/ScrollView/Viewport/Content/Terrain";
-            public const string Surface = "Canvas/ScrollView/Viewport/Content/Surface";
-            public const string Canopy = "Canvas/ScrollView/Viewport/Content/Canopy";
-            public const string Hero = "Canvas/ScrollView/Viewport/Content/Hero";
-            public const string OffscreenArrow = "Canvas/ScrollView/Viewport/OffscreenArrow";
-            public const string VirtualJoystick = "Canvas/VirtualJoystick";
+            public static class Canvas
+            {
+                public const string Root = "Canvas";
+                public const string Title = "Canvas/Title";
+                public const string OffscreenArrow = "Canvas/OffscreenArrow";
+                public const string VirtualJoystick = "Canvas/VirtualJoystick";
+            }
+            public static class Map
+            {
+                public const string Root = "Map";
+                public const string Terrain = "Map/Terrain";
+                public const string Surface = "Map/Surface";
+                public const string Canopy = "Map/Canopy";
+                public const string Hero = "Map/Hero";
+            }
+
         }
 
         public static class ProfileCreate

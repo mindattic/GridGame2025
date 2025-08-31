@@ -1,26 +1,23 @@
+using Assets.Helper;
 using UnityEngine;
-using UnityEngine.UI;
 
 // MapTerrain is the single source of truth for collision sampling and gizmo visualization
-// for the Terrain RawImage. It reads the displayed texture (and uvRect) and exposes
-// helpers to sample walkability in the same space used by the hero (Content-local).
+// for a world-space SpriteRenderer map. It reads the sprite's texture (atlas aware via textureRect)
+// and exposes helpers to sample walkability in world space (the same space used by the hero).
 [ExecuteAlways]
 public sealed class MapTerrain : MonoBehaviour
 {
-    [Header("Target (auto if omitted)")]
-    [SerializeField] private RawImage terrainImage;          // RawImage that holds the collision mask
-    [SerializeField] private RectTransform terrainRect;      // The Terrain RectTransform
+    // Target (auto)
+    private SpriteRenderer terrainSprite;   // SpriteRenderer for world-space mode
 
-    [Header("Sampling")]
-    [Tooltip("Sample stride in source texture pixels (bigger = fewer points) for gizmos only.")]
-    [SerializeField, Range(2, 256)] private int sampleStepPixels = 24;
-    [Tooltip("Draw dots only for blocked pixels (pure black) to keep scene clear.")]
-    [SerializeField] private bool drawOnlyBlocked = true;
+    // Gizmo sampling (debug only)
+    private int sampleStepPixels = 24;                       // Sample stride in source texture pixels (gizmos only)
+    private bool drawOnlyBlocked = true;                     // Draw only blocked pixels to keep scene clear
 
-    [Header("Gizmo Appearance")]
-    [SerializeField] private Color blockedColor = new Color(1f, 0f, 0f, 0.9f);
-    [SerializeField] private Color walkableColor = new Color(0f, 1f, 0f, 0.25f);
-    [SerializeField, Range(1f, 100f)] private float pointRadius = 8f;
+    // Gizmo appearance
+    private Color blockedColor = new Color(1f, 0f, 0f, 0.9f);
+    private Color walkableColor = new Color(0f, 1f, 0f, 0.25f);
+    private float worldPointRadius = 0.02f; // world-space gizmo radius
 
     private Texture2D _tex;
     private Color32[] _pixels;
@@ -28,10 +25,7 @@ public sealed class MapTerrain : MonoBehaviour
 
     // Change tracking for hot-reloading
     private Texture _lastTexture;
-    private Rect _lastUvRect;
     private int _lastW, _lastH;
-
-    private readonly Vector3[] _corners = new Vector3[4];
 
     private void OnEnable() { TryBind(true); }
     private void OnValidate() { TryBind(true); }
@@ -40,64 +34,55 @@ public sealed class MapTerrain : MonoBehaviour
     // Draw a sampled grid of points showing blocked/walkable areas directly from the mask
     private void OnDrawGizmos()
     {
-        // Ensure we’re sampling the current texture/uv before drawing
-        TryBind(false);
+        TryBind(false); // ensure current texture cached
+        if (_tex == null || _pixels == null) return;
+        if (terrainSprite == null || terrainSprite.sprite == null) return;
+        DrawSpriteGizmos();
+    }
 
-        if (terrainRect == null || terrainImage == null || _tex == null || _pixels == null) return;
+    private void DrawSpriteGizmos()
+    {
+        var sr = terrainSprite;
+        var sp = sr.sprite;
+        Rect tr = sp.textureRect; // pixel rect in atlas/texture
+        float ppu = sp.pixelsPerUnit > 0f ? sp.pixelsPerUnit : 100f;
+        Vector2 pivotPx = sp.pivot; // pivot in pixels within sprite rect
 
-        // Rect corners in world space (Canvas-aware)
-        terrainRect.GetWorldCorners(_corners);
-        // Local axes from top-left
-        Vector3 tl = _corners[1];
-        Vector3 tr = _corners[2];
-        Vector3 bl = _corners[0];
-
-        Vector3 rightVec = tr - tl;
-        Vector3 downVec = bl - tl;
-
-        float width = rightVec.magnitude;
-        float height = downVec.magnitude;
-        if (width <= 1e-6f || height <= 1e-6f) return;
-
-        Vector3 rightN = rightVec / width;
-        Vector3 downN = downVec / height;
-
-        // Respect RawImage.uvRect (sprite atlas or cropped)
-        Rect uv = terrainImage.uvRect; // 0..1 space sub-rect
-
-        // Choose sampling stride in UV from pixel stride
         int stepX = Mathf.Max(2, sampleStepPixels);
         int stepY = Mathf.Max(2, sampleStepPixels);
 
-        int startX = Mathf.RoundToInt(uv.xMin * (_w - 1));
-        int endX = Mathf.RoundToInt(uv.xMax * (_w - 1));
-        int startY = Mathf.RoundToInt(uv.yMin * (_h - 1));
-        int endY = Mathf.RoundToInt(uv.yMax * (_h - 1));
+        int xMin = Mathf.RoundToInt(tr.xMin);
+        int xMax = Mathf.RoundToInt(tr.xMax);
+        int yMin = Mathf.RoundToInt(tr.yMin);
+        int yMax = Mathf.RoundToInt(tr.yMax);
 
-        for (int y = startY; y <= endY; y += stepY)
+        for (int y = yMin; y <= yMax; y += stepY)
         {
-            // Texture V runs bottom->top, but our Rect "down" runs top->bottom.
-            // Flip only when RawImage.uvRect.height is positive to avoid double-flip.
-            float vTex01 = Mathf.InverseLerp(uv.yMin, uv.yMax, (y + 0.5f) / (_h - 1));
-            float vDown01 = (uv.height >= 0f) ? (1f - vTex01) : vTex01;
-
-            for (int x = startX; x <= endX; x += stepX)
+            for (int x = xMin; x <= xMax; x += stepX)
             {
-                float u01 = Mathf.InverseLerp(uv.xMin, uv.xMax, (x + 0.5f) / (_w - 1));
-
-                // Fetch pixel (clamped)
                 int xi = Mathf.Clamp(x, 0, _w - 1);
                 int yi = Mathf.Clamp(y, 0, _h - 1);
                 Color32 px = _pixels[yi * _w + xi];
-
                 bool blocked = IsBlockedColor(px);
                 if (drawOnlyBlocked && !blocked) continue;
 
-                // Convert (u,v) -> world point on the Terrain rect:
-                Vector3 world = tl + (rightN * (u01 * width)) + (downN * (vDown01 * height));
+                // Sample at pixel center (+0.5)
+                float xCenter = Mathf.Clamp(x + 0.5f, tr.xMin, tr.xMax);
+                float yCenter = Mathf.Clamp(y + 0.5f, tr.yMin, tr.yMax);
+
+                // Convert pixel -> local units relative to pivot (Unity Y-up)
+                float lx = (xCenter - tr.xMin - pivotPx.x) / ppu;
+                float ly = (yCenter - tr.yMin - pivotPx.y) / ppu;
+
+                // Account for SpriteRenderer flips (flipX/flipY are not in Transform)
+                if (sr.flipX) lx = -lx;
+                if (sr.flipY) ly = -ly;
+
+                Vector3 local = new Vector3(lx, ly, 0f);
+                Vector3 world = sr.transform.TransformPoint(local);
 
                 Gizmos.color = blocked ? blockedColor : walkableColor;
-                Gizmos.DrawSphere(world, pointRadius);
+                Gizmos.DrawSphere(world, Mathf.Max(0.001f, worldPointRadius));
             }
         }
     }
@@ -109,18 +94,18 @@ public sealed class MapTerrain : MonoBehaviour
         TryBind(true);
     }
 
-    // Public API: check walkability at a Content-local point (same space as terrainRect.parent)
-    public bool IsWalkableLocal(Vector2 local)
+    // Public API: check walkability at a world-space point
+    public bool IsWalkableLocal(Vector2 p)
     {
-        if (TrySamplePixelLocal(local, out var px))
+        if (TrySamplePixelLocal(p, out var px))
             return !IsBlockedColor(px);
-        return true; // fail-open if we cannot sample
+        return true; // fail-open if we cannot sample (e.g., texture not readable)
     }
 
     // Public API: walkability with radial probes
-    public bool IsWalkableLocal(Vector2 local, float probeRadius, int probeRays)
+    public bool IsWalkableLocal(Vector2 p, float probeRadius, int probeRays)
     {
-        if (!IsWalkableLocal(local)) return false;
+        if (!IsWalkableLocal(p)) return false;
 
         if (probeRadius > 0f && probeRays > 0)
         {
@@ -129,27 +114,41 @@ public sealed class MapTerrain : MonoBehaviour
             {
                 float ang = step * i * Mathf.Deg2Rad;
                 Vector2 offset = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * probeRadius;
-                if (!IsWalkableLocal(local + offset))
+                if (!IsWalkableLocal(p + offset))
                     return false;
             }
         }
         return true;
     }
 
-    // Public API: sample raw mask pixel at a Content-local point
-    public bool TrySamplePixelLocal(Vector2 local, out Color32 color)
+    // Public API: sample raw mask pixel at a world-space point
+    public bool TrySamplePixelLocal(Vector2 p, out Color32 color)
     {
         color = default;
-        if (_tex == null || _pixels == null || _w <= 0 || _h <= 0 || terrainRect == null) return false;
+        if (_tex == null || _pixels == null || _w <= 0 || _h <= 0) return false;
+        if (terrainSprite == null || terrainSprite.sprite == null) return false;
 
-        Vector2 uv = LocalToMaskUV(local);
-        if (uv.x < 0f || uv.x > 1f || uv.y < 0f || uv.y > 1f)
-            return false;
+        var sr = terrainSprite;
+        var sp = sr.sprite;
+        Rect tr = sp.textureRect; // pixel rect in atlas
+        float ppu = Mathf.Max(1f, sp.pixelsPerUnit);
+        Vector2 pivotPx = sp.pivot;
 
-        int x = Mathf.Clamp(Mathf.RoundToInt(uv.x * (_w - 1)), 0, _w - 1);
-        int y = Mathf.Clamp(Mathf.RoundToInt(uv.y * (_h - 1)), 0, _h - 1);
-        int idx = y * _w + x;
-        color = _pixels[idx];
+        // Transform world -> local (units, pivot at origin)
+        Vector3 local = sr.transform.InverseTransformPoint(new Vector3(p.x, p.y, sr.transform.position.z));
+
+        // Account for SpriteRenderer flips
+        if (sr.flipX) local.x = -local.x;
+        if (sr.flipY) local.y = -local.y;
+
+        // Convert local units -> pixel coordinates relative to texture
+        float px = tr.xMin + pivotPx.x + (local.x * ppu);
+        float py = tr.yMin + pivotPx.y + (local.y * ppu);
+
+        int xi = Mathf.RoundToInt(px);
+        int yi = Mathf.RoundToInt(py);
+        if (xi < 0 || yi < 0 || xi >= _w || yi >= _h) return false;
+        color = _pixels[yi * _w + xi];
         return true;
     }
 
@@ -159,61 +158,29 @@ public sealed class MapTerrain : MonoBehaviour
         return c.r == 0 && c.g == 0 && c.b == 0;
     }
 
-    // Convert Content-local point to mask UV (respects uvRect and rotated/scaled rects)
-    private Vector2 LocalToMaskUV(Vector2 local)
-    {
-        if (terrainRect == null) return Vector2.negativeInfinity;
-
-        // Corners in world, then to parent local
-        terrainRect.GetWorldCorners(_corners);
-        var parent = terrainRect.parent as RectTransform;
-        if (parent == null) return Vector2.negativeInfinity;
-
-        Vector2 bl = parent.InverseTransformPoint(_corners[0]); // bottom-left
-        Vector2 tl = parent.InverseTransformPoint(_corners[1]); // top-left
-        Vector2 tr = parent.InverseTransformPoint(_corners[2]); // top-right
-
-        Vector2 rightVec = tr - tl; float width = rightVec.magnitude;
-        Vector2 downVec = bl - tl;  float height = downVec.magnitude;
-        if (width <= 1e-6f || height <= 1e-6f) return Vector2.negativeInfinity;
-
-        Vector2 rightN = rightVec / width;
-        Vector2 downN = downVec / height;
-
-        // Project from TL
-        Vector2 toP = local - tl;
-        float u01 = Mathf.Clamp01(Vector2.Dot(toP, rightN) / width);
-        float v01 = Mathf.Clamp01(Vector2.Dot(toP, downN) / height); // top->0 .. bottom->1
-
-        Rect uv = terrainImage != null ? terrainImage.uvRect : new Rect(0, 0, 1, 1);
-        // Texture V grows up from bottom. Our v01 grows down from top.
-        // Flip only when the uvRect height is positive, otherwise RawImage already flipped it.
-        float vInput = (uv.height >= 0f) ? (1f - v01) : v01;
-
-        return new Vector2(
-            uv.x + u01 * uv.width,
-            uv.y + vInput * uv.height
-        );
-    }
-
-    // Bind to current RawImage/texture and cache pixels if readable
+    // Bind to current target and cache pixels if readable
     private void TryBind(bool force)
     {
-        if (terrainImage == null) terrainImage = GetComponent<RawImage>();
-        if (terrainRect == null) terrainRect = GetComponent<RectTransform>();
+        if (terrainSprite == null)
+        {
+            var terrainGo = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain);
+            terrainSprite = terrainGo != null ? terrainGo.GetComponent<SpriteRenderer>() : GetComponent<SpriteRenderer>();
+        }
 
-        var rawTex = terrainImage != null ? terrainImage.texture : null;
+        Texture rawTex = null;
+        if (terrainSprite != null && terrainSprite.sprite != null)
+        {
+            rawTex = terrainSprite.sprite.texture;
+        }
+
         var tex2D = rawTex as Texture2D;
-        Rect uv = terrainImage != null ? terrainImage.uvRect : new Rect(0, 0, 1, 1);
 
         bool texChanged = force || (rawTex != _lastTexture);
-        bool uvChanged = force || !Approximately(_lastUvRect, uv);
         bool dimsChanged = force || (tex2D != null && (tex2D.width != _lastW || tex2D.height != _lastH));
 
-        if (texChanged || uvChanged || dimsChanged)
+        if (texChanged || dimsChanged)
         {
             _lastTexture = rawTex;
-            _lastUvRect = uv;
 
             if (tex2D != null)
             {
@@ -225,7 +192,7 @@ public sealed class MapTerrain : MonoBehaviour
 
                 try
                 {
-                    _pixels = _tex.GetPixels32(); // requires Read/Write Enabled
+                    _pixels = _tex.GetPixels32(); // requires Read/Write Enabled in import settings
                 }
                 catch
                 {
@@ -241,17 +208,9 @@ public sealed class MapTerrain : MonoBehaviour
         }
     }
 
-    private static bool Approximately(Rect a, Rect b, float eps = 1e-6f)
-    {
-        return Mathf.Abs(a.x - b.x) <= eps &&
-               Mathf.Abs(a.y - b.y) <= eps &&
-               Mathf.Abs(a.width - b.width) <= eps &&
-               Mathf.Abs(a.height - b.height) <= eps;
-    }
-
-    // Estimate an outward normal (away from blocked area) near a given local point.
+    // Estimate an outward normal (away from blocked area) near a given point.
     // Returns Vector2.zero if no blocked samples are nearby.
-    public Vector2 EstimateObstacleNormal(Vector2 local, float sampleRadius = 4f, int rays = 8)
+    public Vector2 EstimateObstacleNormal(Vector2 p, float sampleRadius = 0.2f, int rays = 8)
     {
         if (sampleRadius <= 0f || rays <= 0) return Vector2.zero;
 
@@ -263,9 +222,9 @@ public sealed class MapTerrain : MonoBehaviour
         {
             float ang = step * i * Mathf.Deg2Rad;
             Vector2 dir = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang));
-            Vector2 p = local + dir * sampleRadius;
+            Vector2 s = p + dir * sampleRadius;
 
-            if (!IsWalkableLocal(p))
+            if (!IsWalkableLocal(s))
             {
                 towardBlocked += dir; // points toward blocked region
             }
