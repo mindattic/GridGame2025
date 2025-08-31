@@ -15,7 +15,6 @@ namespace Assets.Helper
                 public const string Thumbnail = Root + "/Thumbnail";
                 public const string Frame = Root + "/Frame";
                 public const string StatusIcon = Root + "/StatusIcon";
-                public const string NameTagText = Root + "/NameTagText";
                 //public const string WeaponIcon = Root + "/WeaponIcon";
 
                 public static class HealthBar
@@ -128,6 +127,9 @@ namespace Assets.Helper
                 public const string Title = "Canvas/Title";
                 public const string OffscreenArrow = "Canvas/OffscreenArrow";
                 public const string VirtualJoystick = "Canvas/VirtualJoystick";
+                public const string InputModeButton = "Canvas/InputModeButton";
+                public const string InputModeImage = "Canvas/InputModeButton/Image";
+                public const string InputModeLabel = "Canvas/InputModeButton/Label";
             }
             public static class Map
             {

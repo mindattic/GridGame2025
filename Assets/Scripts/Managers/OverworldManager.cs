@@ -4,7 +4,9 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.StandaloneInputModule;
 using scene = Assets.Helpers.SceneHelper;
+using Label = TMPro.TextMeshProUGUI;
 
 // OverworldManager orchestrates input and scene transitions for the world-space overworld.
 // World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
@@ -19,6 +21,11 @@ public class OverworldManager : MonoBehaviour
 
     private VirtualJoystick virtualJoystick;
     private RectTransform joystickRect;
+
+    // Input mode UI
+    private Button inputModeButton;
+    private Image inputModeImage;
+    private Label inputModeLabel;
 
     private bool hasRandomEncounters = false;
 
@@ -63,6 +70,19 @@ public class OverworldManager : MonoBehaviour
         virtualJoystick = GameObject.Find(GameObjectHelper.Overworld.Canvas.VirtualJoystick)?.GetComponent<VirtualJoystick>();
         joystickRect = virtualJoystick != null ? virtualJoystick.GetComponent<RectTransform>() : null;
 
+        // Input mode button + icon
+        var btnGo = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeButton);
+        if (btnGo != null)
+        {
+            inputModeButton = btnGo.GetComponent<Button>();
+            if (inputModeButton != null)
+                inputModeButton.onClick.AddListener(CycleInputMode);
+        }
+        var imgGo = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeImage);
+        inputModeImage = imgGo.GetComponent<Image>();
+        var labelGo = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeLabel);
+        inputModeLabel = labelGo.GetComponent<Label>();
+
         // Find Map root
         var mapGo = GameObject.Find("Map");
         mapRoot = mapGo != null ? mapGo.transform : null;
@@ -106,19 +126,85 @@ public class OverworldManager : MonoBehaviour
             hero.SetFacing(overworld.HeroDirection);
         }
 
+        // Initialize UI state
+        UpdateInputModeUI();
+
         scene.FadeIn();
     }
 
     private void OnDestroy()
     {
         if (hero != null) hero.OnHeroMoved -= HandleHeroMoved;
+        if (inputModeButton != null) inputModeButton.onClick.RemoveListener(CycleInputMode);
+    }
+
+    // Called by InputMode button
+    public void CycleInputMode()
+    {
+        if (hero == null) return;
+
+        hero.InputMode = (OverworldHeroInputMode)(((int)hero.InputMode + 1) % 3);
+        ApplyInputModeEffects();
+    }
+
+    // Apply visuals and clear inputs when switching mode
+    private void ApplyInputModeEffects()
+    {
+        UpdateInputModeUI();
+
+        // Reset joystick output when not in joystick mode
+        if (hero.InputMode != OverworldHeroInputMode.VirtualJoystick)
+        {
+            if (virtualJoystick != null) virtualJoystick.ResetOutput();
+            hero.SetAnalogInput(Vector2.zero);
+        }
+
+        // Ensure no latched directional state when not in directional mode
+        if (hero.InputMode != OverworldHeroInputMode.DirectionalPress)
+        {
+            hero.EndDirectional();
+        }
+    }
+
+    // Set the input-mode icon and show/hide the joystick canvas object
+    private void UpdateInputModeUI()
+    {
+        // Icon
+        if (inputModeImage != null)
+        {
+            string key = "Joystick00";
+            switch (hero != null ? hero.InputMode : OverworldHeroInputMode.VirtualJoystick)
+            {
+                case OverworldHeroInputMode.VirtualJoystick: key = "Joystick00"; break;
+                case OverworldHeroInputMode.ClickToMove:      key = "Joystick01"; break;
+                case OverworldHeroInputMode.DirectionalPress: key = "Joystick02"; break;
+            }
+
+            inputModeImage.sprite = SpriteLibrary.GUI[key];
+            inputModeLabel.text = key switch
+            {
+                "Joystick00" => "Joystick",
+                "Joystick01" => "Click",
+                "Joystick02" => "Directional",
+                _ => "Unknown"
+            };
+        }
+
+        // Joystick visibility
+        bool showStick = hero != null && hero.InputMode == OverworldHeroInputMode.VirtualJoystick;
+        if (virtualJoystick != null)
+        {
+            var go = virtualJoystick.gameObject;
+            if (go.activeSelf != showStick)
+                go.SetActive(showStick);
+        }
     }
 
     private void Update()
     {
         if (terrainSR == null) return;
 
-        bool isDirectional = hero != null && hero.TouchMoveMode == OverworldHeroInputMode.DirectionalPress;
+        bool isDirectional = hero != null && hero.InputMode == OverworldHeroInputMode.DirectionalPress;
 
         // Touch (hold-to-move in directional mode)
         if (Input.touchCount > 0)
@@ -188,9 +274,8 @@ public class OverworldManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Feed analog input to the hero every frame
+        // Feed analog input to the hero every frame (hero ignores it unless in VirtualJoystick mode)
         Vector2 stick = virtualJoystick != null ? virtualJoystick.Direction : Vector2.zero;
-        bool analogActive = stick.sqrMagnitude > 1e-6f;
 
         if (hero != null)
             hero.SetAnalogInput(stick);
@@ -227,7 +312,9 @@ public class OverworldManager : MonoBehaviour
 
     private bool IsOverJoystick(Vector2 screenPos)
     {
-        return joystickRect != null && RectTransformUtility.RectangleContainsScreenPoint(joystickRect, screenPos, null);
+        // Do not block taps when the joystick is hidden or missing
+        if (joystickRect == null || !joystickRect.gameObject.activeInHierarchy) return false;
+        return RectTransformUtility.RectangleContainsScreenPoint(joystickRect, screenPos, null);
     }
 
     private void HandleTap(Vector2 screenPos)

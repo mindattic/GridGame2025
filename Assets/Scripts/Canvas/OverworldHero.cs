@@ -3,15 +3,17 @@ using UnityEngine;
 
 public enum OverworldHeroInputMode
 {
+    VirtualJoystick,
     ClickToMove,
     DirectionalPress
 }
 
 // OverworldHero (world-space only)
-// - Reads inputs (analog or click-to-move)
-// - Moves the hero Transform in world coordinates within the SpriteRenderer map bounds
-// - Delegates walkability and collision checks to MapTerrain
-// - Updates Animator parameters (MoveX, MoveY, Speed) for an 8-way blend tree
+// Movement types (mutually exclusive):
+// - VirtualJoystick: analog stick movement only
+// - ClickToMove: path or straight toward a click destination
+// - DirectionalPress: hold near a point to move in that direction
+// All three share the same collision and pathfinding helpers below.
 [ExecuteAlways]
 public class OverworldHero : MonoBehaviour
 {
@@ -33,8 +35,13 @@ public class OverworldHero : MonoBehaviour
     // Sampling
     private float speedSampleAheadFactor = 0.7f; // Future-proof: speed zones, currently constant 1x
 
-    // Input mode (kept for API compatibility)
-    private OverworldHeroInputMode inputMode = OverworldHeroInputMode.DirectionalPress;
+    // Input mode
+    private OverworldHeroInputMode inputMode = OverworldHeroInputMode.VirtualJoystick;
+    public OverworldHeroInputMode InputMode
+    {
+        get => inputMode;
+        set => inputMode = value;
+    }
     private float directionalClickMagnitude = 1f; // 0..1 strength fed into analog
 
     // External toggles
@@ -78,6 +85,9 @@ public class OverworldHero : MonoBehaviour
     private System.Collections.Generic.List<Vector2> _path; // world waypoints
     private int _pathIndex;
 
+    // Collision center offset (world-space)
+    private Vector2 collisionOffset = Vector2.zero;
+
     private void Awake()
     {
         // Auto-bind core components using exact hierarchy paths
@@ -98,104 +108,94 @@ public class OverworldHero : MonoBehaviour
 
     private void Update()
     {
-        // Effective input is either joystick/analog or directional click override
+        switch (inputMode)
+        {
+            case OverworldHeroInputMode.VirtualJoystick:
+                TickVirtualJoystick();
+                break;
+            case OverworldHeroInputMode.ClickToMove:
+                TickClickToMove();
+                break;
+            case OverworldHeroInputMode.DirectionalPress:
+                TickDirectionalPress();
+                break;
+        }
+    }
+
+    // ---------------- VirtualJoystick ----------------
+    private void TickVirtualJoystick()
+    {
         Vector2 effectiveInput = Vector2.zero;
-        bool joystickActive = allowVirtualJoystick && (analogInput.sqrMagnitude > 0.01f); // deadzone
+        bool joystickActive = allowVirtualJoystick && (analogInput.sqrMagnitude > 0.01f);
         if (joystickActive)
         {
             effectiveInput = Vector2.ClampMagnitude(analogInput, 1f);
             directionalActive = false; // joystick cancels directional latch
         }
-        else if (allowVirtualJoystick && directionalActive && directionalOverride.sqrMagnitude > 1e-6f)
-        {
-            effectiveInput = directionalOverride;
-        }
 
-        // 1) Analog-like move (joystick or directional click)
         if (effectiveInput.sqrMagnitude > 1e-6f)
         {
-            if (requireVisibleToMove && !IsVisible())
-            {
-                if (idleWhileOffscreen) SetIdle();
-                return;
-            }
+            if (requireVisibleToMove && !IsVisible()) { if (idleWhileOffscreen) SetIdle(); return; }
 
             Vector2 current = GetPosition();
-
             float inputMag = Mathf.Clamp01(effectiveInput.magnitude);
             Vector2 dir = inputMag > 1e-6f ? effectiveInput / inputMag : Vector2.zero;
             float baseStepLen = moveSpeed * Time.deltaTime * inputMag;
-
             float mult = GetSpeedMultiplier(current + dir * (baseStepLen * speedSampleAheadFactor));
             Vector2 step = dir * (baseStepLen * mult);
+
+            SetAnimationFromInput(dir, step.magnitude); // always drive animator
 
             Vector2 desired = ClampToMap(current + step);
             Vector2 next = ResolveCollision(current, desired);
             Vector2 frameDelta = next - current;
 
-            if (frameDelta.sqrMagnitude > 1e-6f)
-                SetAnimation(frameDelta);
-            else
-                SetIdle();
-
             SetPosition(next);
-            OnHeroMoved?.Invoke(next);
+            if (frameDelta.sqrMagnitude > 1e-6f) OnHeroMoved?.Invoke(next);
 
-            isMoving = false; // cancel click path while analog/dir is active
-            _path = null;     // cancel any existing path
-            return;
+            isMoving = false; _path = null; // ensure click path cancelled
         }
+        else
+        {
+            SetIdle();
+            isMoving = false; _path = null;
+        }
+    }
 
-        // 2) No analog-like input -> force Idle when not using click-to-move to a point
+    // ---------------- ClickToMove ----------------
+    private void TickClickToMove()
+    {
+        // Ignore analog input entirely
+        directionalActive = false; // ensure no directional override
+
         if (!AllowClickToMove)
         {
-            SetIdle();
-            isMoving = false;
-            _path = null;
-            return;
+            SetIdle(); isMoving = false; _path = null; return;
         }
 
-        // 3) MoveToPoint path (only when mode is ClickToMove)
-        if (inputMode != OverworldHeroInputMode.ClickToMove || !isMoving)
+        if (!isMoving)
         {
-            SetIdle();
-            return;
+            SetIdle(); return;
         }
 
-        if (requireVisibleToMove && !IsVisible())
-        {
-            if (idleWhileOffscreen) SetIdle();
-            return;
-        }
+        if (requireVisibleToMove && !IsVisible()) { if (idleWhileOffscreen) SetIdle(); return; }
 
         Vector2 cur = GetPosition();
 
-        // Walk path waypoints if available
         if (_path != null && _pathIndex < _path.Count)
         {
             Vector2 wp = _path[_pathIndex];
-            Vector2 toWp = wp - cur;
-            float distWp = toWp.magnitude;
-
+            Vector2 toWp = wp - cur; float distWp = toWp.magnitude;
             if (distWp <= Mathf.Max(waypointArrive, snapThreshold))
             {
-                // Advance to next waypoint
                 _pathIndex++;
                 if (_pathIndex >= _path.Count)
                 {
-                    // Reached final waypoint -> finish
-                    SetPosition(wp);
-                    OnHeroMoved?.Invoke(wp);
-                    isMoving = false;
-                    SetIdle();
-                    return;
+                    SetPosition(wp); OnHeroMoved?.Invoke(wp); isMoving = false; SetIdle(); return;
                 }
-                wp = _path[_pathIndex];
-                toWp = wp - cur;
-                distWp = toWp.magnitude;
+                wp = _path[_pathIndex]; toWp = wp - cur; distWp = toWp.magnitude;
             }
 
-            // Step toward current waypoint, clamped to avoid overshoot
             float maxStep = moveSpeed * Time.deltaTime;
             Vector2 dir = distWp > 1e-6f ? (toWp / distWp) : Vector2.zero;
             float moveMult = GetSpeedMultiplier(cur + dir * (maxStep * speedSampleAheadFactor));
@@ -212,36 +212,22 @@ public class OverworldHero : MonoBehaviour
             }
             else
             {
-                // Could not advance -> abort path
-                _path = null;
-                isMoving = false;
-                SetIdle();
+                _path = null; isMoving = false; SetIdle();
             }
             return;
         }
 
-        // No path -> direct straight-line finish
         if (Vector2.Distance(cur, targetPosition) <= snapThreshold)
         {
-            SetPosition(targetPosition);
-            OnHeroMoved?.Invoke(targetPosition);
-            isMoving = false;
-            SetIdle();
-            return;
+            SetPosition(targetPosition); OnHeroMoved?.Invoke(targetPosition); isMoving = false; SetIdle(); return;
         }
 
-        Vector2 toTarget = targetPosition - cur;
-        float dist = toTarget.magnitude;
-        float maxStep2 = moveSpeed * Time.deltaTime;
-        Vector2 stepDir = dist > 1e-6f ? (toTarget / dist) : Vector2.zero;
-
+        Vector2 toTarget = targetPosition - cur; float dist = toTarget.magnitude;
+        float maxStep2 = moveSpeed * Time.deltaTime; Vector2 stepDir = dist > 1e-6f ? (toTarget / dist) : Vector2.zero;
         float moveMult2 = GetSpeedMultiplier(cur + stepDir * (maxStep2 * speedSampleAheadFactor));
         float stepLen2 = Mathf.Min(maxStep2 * moveMult2, dist);
-        Vector2 stepVec = stepDir * stepLen2;
-
-        Vector2 desiredNext2 = ClampToMap(cur + stepVec);
-        Vector2 nextPos2 = ResolveCollision(cur, desiredNext2);
-        Vector2 delta2 = nextPos2 - cur;
+        Vector2 desiredNext2 = ClampToMap(cur + stepDir * stepLen2);
+        Vector2 nextPos2 = ResolveCollision(cur, desiredNext2); Vector2 delta2 = nextPos2 - cur;
 
         if (delta2.sqrMagnitude > 1e-6f)
         {
@@ -251,10 +237,44 @@ public class OverworldHero : MonoBehaviour
         }
         else
         {
-            // Blocked; stop moving this path
-            isMoving = false;
+            isMoving = false; SetIdle();
+        }
+    }
+
+    // ---------------- DirectionalPress ----------------
+    private void TickDirectionalPress()
+    {
+        // Ignore analog input, use directional override only
+        Vector2 effectiveInput = (directionalActive && directionalOverride.sqrMagnitude > 1e-6f)
+            ? Vector2.ClampMagnitude(directionalOverride, 1f) : Vector2.zero;
+
+        if (effectiveInput.sqrMagnitude > 1e-6f)
+        {
+            if (requireVisibleToMove && !IsVisible()) { if (idleWhileOffscreen) SetIdle(); return; }
+
+            Vector2 current = GetPosition();
+            float inputMag = Mathf.Clamp01(effectiveInput.magnitude);
+            Vector2 dir = inputMag > 1e-6f ? effectiveInput / inputMag : Vector2.zero;
+            float baseStepLen = moveSpeed * Time.deltaTime * inputMag;
+            float mult = GetSpeedMultiplier(current + dir * (baseStepLen * speedSampleAheadFactor));
+            Vector2 step = dir * (baseStepLen * mult);
+
+            SetAnimationFromInput(dir, step.magnitude);
+
+            Vector2 desired = ClampToMap(current + step);
+            Vector2 next = ResolveCollision(current, desired);
+            Vector2 frameDelta = next - current;
+
+            SetPosition(next);
+            if (frameDelta.sqrMagnitude > 1e-6f) OnHeroMoved?.Invoke(next);
+        }
+        else
+        {
             SetIdle();
         }
+
+        // While in directional mode we never follow click paths
+        isMoving = false; _path = null;
     }
 
     // ---------------- External input API ----------------
@@ -263,7 +283,7 @@ public class OverworldHero : MonoBehaviour
     public void SetAnalogInput(Vector2 input)
     {
         analogInput = Vector2.ClampMagnitude(input, 1f);
-        if (analogInput.sqrMagnitude > 0.01f)
+        if (inputMode == OverworldHeroInputMode.VirtualJoystick && analogInput.sqrMagnitude > 0.01f)
         {
             isMoving = false;        // cancel click-to-move while analog active
             directionalActive = false;
@@ -282,30 +302,23 @@ public class OverworldHero : MonoBehaviour
 
     public void HandleClickLocal(Vector2 world)
     {
+        if (inputMode != OverworldHeroInputMode.ClickToMove) return;
         if (!AllowClickToMove) return;
         if (requireVisibleToMove && ignoreClicksWhenOffscreen && !IsVisible()) return;
 
-        switch (inputMode)
-        {
-            case OverworldHeroInputMode.ClickToMove:
-                SetDestinationLocal(world);
-                break;
-            case OverworldHeroInputMode.DirectionalPress:
-                SetDirectionalOverride(world);
-                break;
-        }
+        SetDestinationLocal(world);
     }
 
     // Sets a click-to-move destination (world space)
     public void SetDestinationLocal(Vector2 world)
     {
+        if (inputMode != OverworldHeroInputMode.ClickToMove) return;
         if (!AllowClickToMove) return;
 
         targetPosition = ClampToMap(world);
 
         Vector2 delta = targetPosition - GetPosition();
-        if (delta.sqrMagnitude > 1e-6f)
-            SetAnimation(delta);
+        if (delta.sqrMagnitude > 1e-6f) SetAnimation(delta);
 
         isMoving = true;
         directionalActive = false; // ensure point-move owns motion
@@ -322,14 +335,6 @@ public class OverworldHero : MonoBehaviour
         }
     }
 
-    public void SetDestinationScreen(Vector2 screenPos, UnityEngine.RectTransform _)
-    {
-        var cam = worldCamera != null ? worldCamera : Camera.main;
-        float zDist = Mathf.Abs(cam.transform.position.z - transform.position.z);
-        Vector3 wp = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, zDist));
-        SetDestinationLocal(new Vector2(wp.x, wp.y));
-    }
-
     // Hold-to-move directional clicks (screen param kept for compatibility)
     public void BeginDirectionalFromScreen(Vector2 screenPos, UnityEngine.RectTransform _)
     {
@@ -342,6 +347,7 @@ public class OverworldHero : MonoBehaviour
 
     public void UpdateDirectionalFromScreen(Vector2 screenPos, UnityEngine.RectTransform _)
     {
+        if (inputMode != OverworldHeroInputMode.DirectionalPress) return;
         if (!directionalActive) return;
         var cam = worldCamera != null ? worldCamera : Camera.main;
         float zDist = Mathf.Abs(cam.transform.position.z - transform.position.z);
@@ -360,6 +366,7 @@ public class OverworldHero : MonoBehaviour
 
     private void SetDirectionalOverride(Vector2 world)
     {
+        if (inputMode != OverworldHeroInputMode.DirectionalPress) return;
         Vector2 delta = ClampToMap(world) - GetPosition();
         if (delta.sqrMagnitude < 1e-6f)
         {
@@ -384,6 +391,19 @@ public class OverworldHero : MonoBehaviour
         lastLook = dir;                          // remember facing for idle
         lastDirection = DetermineDirection4Way(delta); // maintain legacy 4-way for save text
 
+        ApplyAnimatorParameters(dir, speed);
+    }
+
+    private void SetAnimationFromInput(Vector2 dir, float speed)
+    {
+        if (dir.sqrMagnitude < 1e-6f)
+        {
+            SetIdle();
+            return;
+        }
+        dir = dir.normalized;
+        lastLook = dir;
+        lastDirection = DetermineDirection4Way(dir);
         ApplyAnimatorParameters(dir, speed);
     }
 
@@ -468,6 +488,11 @@ public class OverworldHero : MonoBehaviour
         collisionProvider = provider;
     }
 
+    // Set collision offset (world units). Positive Y moves the probe up; positive X moves right.
+    public void SetCollisionOffset(float offsetX, float offsetY) => collisionOffset = new Vector2(offsetX, offsetY);
+    public void SetCollisionOffset(Vector2 offset) => collisionOffset = offset;
+    public Vector2 GetCollisionOffset() => collisionOffset;
+
     private float GetSpeedMultiplier(Vector2 world)
     {
         return 1f; // constant speed (slow zones can be added later)
@@ -483,7 +508,7 @@ public class OverworldHero : MonoBehaviour
         if (step.sqrMagnitude <= 1e-10f)
             return current;
 
-        // Try sliding along the obstacle using a contact normal
+        // Try sliding along the obstacle using a contact normal (at the collision-probe center)
         Vector2 desiredCenter = GetVisualCenter(desired);
         float nRadius = Mathf.Max(2f, GetProbeRadius() > 0f ? GetProbeRadius() * 0.5f : 6f);
         int nRays = Mathf.Max(8, 8);
@@ -518,7 +543,7 @@ public class OverworldHero : MonoBehaviour
     // Walkable according to MapTerrain (world space)
     private bool IsWalkableWorld(Vector2 p)
     {
-        Vector2 center = GetVisualCenter(p);
+        Vector2 center = GetVisualCenter(p); // includes collision offset
         float radius = GetProbeRadius();
         int rays = Mathf.Max(8, 8);
 
@@ -547,10 +572,10 @@ public class OverworldHero : MonoBehaviour
         return 0.35f; // fallback
     }
 
-    // For world sprites the visual center is the Transform position (pivot at center)
+    // Collision-probe center: world position plus optional offset (e.g., toward the character's feet)
     private Vector2 GetVisualCenter(Vector2 p)
     {
-        return p;
+        return p + collisionOffset;
     }
 
     // Predict a final stop position using the same collision logic; fixed step for determinism
@@ -803,4 +828,5 @@ public class OverworldHero : MonoBehaviour
     public void SetSnapThreshold(float value) => snapThreshold = Mathf.Max(0f, value);
     public void SetPathfinding(bool enabled) => usePathfinding = enabled;
     public void SetInputMode(OverworldHeroInputMode mode) => inputMode = mode;
+
 }
