@@ -261,6 +261,7 @@
     <Compile Include="Assets\Scripts\Models\ProjectileNode.cs" />
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
+    <Compile Include="Assets\Scripts\Canvas\DestinationMarker.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
     <Compile Include="Assets\Scripts\Canvas\OverworldHero.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />

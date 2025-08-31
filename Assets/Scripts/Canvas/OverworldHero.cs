@@ -1,5 +1,6 @@
 using Assets.Helper;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public enum OverworldHeroInputMode
 {
@@ -45,11 +46,10 @@ public class OverworldHero : MonoBehaviour
             if (inputMode == value) return;
             var prev = inputMode;
             inputMode = value;
-            // When leaving ClickToMove, clear any destination marker and path state
+            // When leaving ClickToMove, clear any path state
             if (prev == OverworldHeroInputMode.ClickToMove && inputMode != OverworldHeroInputMode.ClickToMove)
             {
                 isMoving = false; _path = null; directionalActive = false;
-                ClearDestinationMarker();
             }
         }
     }
@@ -93,7 +93,7 @@ public class OverworldHero : MonoBehaviour
     // Pathfinding (A*)
     private bool usePathfinding = true;
     private int navCellSize = 1;              // In world units
-    private float navObstacleBuffer = 0.1f;   // Extra clearance from walls
+    private float navObstacleBuffer = 0.05f;   // Extra clearance from walls
     private int navMaxExpanded = 8000;        // Solver cap
     private float waypointArrive = 0.1f;      // Waypoint arrive distance
 
@@ -103,9 +103,9 @@ public class OverworldHero : MonoBehaviour
     // Collision center offset (world-space)
     private Vector2 collisionOffset = Vector2.zero;
 
-    // Destination marker
+  
+    // Destination marker prefab to spawn on click
     private GameObject destinationMarkerPrefab;
-    private GameObject activeDestinationMarker;
 
     private void Awake()
     {
@@ -113,19 +113,23 @@ public class OverworldHero : MonoBehaviour
         worldCamera = Camera.main;
 
         // Map terrain (SpriteRenderer + MapTerrain provider)
-        terrainSprite = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain).GetComponent<SpriteRenderer>();
-        collisionProvider = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain).GetComponent<MapTerrain>();
+        var terrainGo = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain);
+        if (terrainGo != null)
+        {
+            terrainSprite = terrainGo.GetComponent<SpriteRenderer>();
+            collisionProvider = terrainGo.GetComponent<MapTerrain>();
+        }
 
         // Hero sprite and animator
         heroSprite = GetComponent<SpriteRenderer>();
-        animator = GetComponent<Animator>();
+        if (animator == null) animator = GetComponent<Animator>();
 
         // Initialize animator with default idle facing
         ApplyAnimatorParameters(lastLook, 0f);
 
         // Cache destination marker prefab
-
-        destinationMarkerPrefab = PrefabLibrary.Prefabs["DestinationMarkerPrefab"];
+        if (PrefabLibrary.Prefabs.TryGetValue("DestinationMarkerPrefab", out var prefab))
+            destinationMarkerPrefab = prefab;
     }
 
     private void Update()
@@ -192,7 +196,7 @@ public class OverworldHero : MonoBehaviour
 
         if (!AllowClickToMove)
         {
-            SetIdle(); isMoving = false; _path = null; ClearDestinationMarker(); return;
+            SetIdle(); isMoving = false; _path = null; return;
         }
 
         if (!isMoving)
@@ -213,7 +217,7 @@ public class OverworldHero : MonoBehaviour
                 _pathIndex++;
                 if (_pathIndex >= _path.Count)
                 {
-                    SetPosition(wp); OnHeroMoved?.Invoke(wp); isMoving = false; SetIdle(); ClearDestinationMarker(); return;
+                    SetPosition(wp); OnHeroMoved?.Invoke(wp); isMoving = false; SetIdle(); return;
                 }
                 wp = _path[_pathIndex]; toWp = wp - cur; distWp = toWp.magnitude;
             }
@@ -234,14 +238,14 @@ public class OverworldHero : MonoBehaviour
             }
             else
             {
-                _path = null; isMoving = false; SetIdle(); ClearDestinationMarker();
+                _path = null; isMoving = false; SetIdle();
             }
             return;
         }
 
         if (Vector2.Distance(cur, targetPosition) <= snapThreshold)
         {
-            SetPosition(targetPosition); OnHeroMoved?.Invoke(targetPosition); isMoving = false; SetIdle(); ClearDestinationMarker(); return;
+            SetPosition(targetPosition); OnHeroMoved?.Invoke(targetPosition); isMoving = false; SetIdle(); return;
         }
 
         Vector2 toTarget = targetPosition - cur; float dist = toTarget.magnitude;
@@ -259,7 +263,7 @@ public class OverworldHero : MonoBehaviour
         }
         else
         {
-            isMoving = false; SetIdle(); ClearDestinationMarker();
+            isMoving = false; SetIdle();
         }
     }
 
@@ -310,7 +314,6 @@ public class OverworldHero : MonoBehaviour
             isMoving = false;        // cancel click-to-move while analog active
             directionalActive = false;
             _path = null;
-            ClearDestinationMarker();
         }
     }
 
@@ -346,9 +349,6 @@ public class OverworldHero : MonoBehaviour
         isMoving = true;
         directionalActive = false; // ensure point-move owns motion
 
-        // Spawn/refresh destination marker
-        PlaceDestinationMarker(targetPosition);
-
         // Build path (if enabled)
         _path = null; _pathIndex = 0;
         if (usePathfinding && collisionProvider != null)
@@ -358,6 +358,24 @@ public class OverworldHero : MonoBehaviour
                 _path = path;
                 _pathIndex = 0;
             }
+        }
+
+        // Choose a visual marker position matching the final stop
+        Vector2 markerPos;
+        if (_path != null && _path.Count > 0)
+        {
+            markerPos = _path[_path.Count - 1];
+        }
+        else
+        {
+            markerPos = PredictStop(GetPosition(), targetPosition);
+        }
+
+        // Spawn a destination marker (self-managed)
+        if (destinationMarkerPrefab != null)
+        {
+            var marker = Instantiate(destinationMarkerPrefab);
+            marker.transform.position = new Vector3(markerPos.x, markerPos.y, transform.position.z);
         }
     }
 
@@ -523,6 +541,7 @@ public class OverworldHero : MonoBehaviour
     public void SetCollisionOffset(Vector2 offset) => collisionOffset = offset;
     public Vector2 GetCollisionOffset() => collisionOffset;
 
+
     private float GetSpeedMultiplier(Vector2 world)
     {
         return 1f; // constant speed (slow zones can be added later)
@@ -540,7 +559,8 @@ public class OverworldHero : MonoBehaviour
 
         // Try sliding along the obstacle using a contact normal (at the collision-probe center)
         Vector2 desiredCenter = GetVisualCenter(desired);
-        float nRadius = Mathf.Max(2f, GetProbeRadius() > 0f ? GetProbeRadius() * 0.5f : 6f);
+        float pr = GetProbeRadius();
+        float nRadius = Mathf.Max(2f, pr > 0f ? pr * 0.5f : 6f);
         int nRays = Mathf.Max(8, 8);
 
         Vector2 n = collisionProvider.EstimateObstacleNormal(desiredCenter, nRadius, nRays);
@@ -594,12 +614,8 @@ public class OverworldHero : MonoBehaviour
 
     private float GetProbeRadius()
     {
-        if (heroSprite != null)
-        {
-            var b = heroSprite.bounds; // world extents
-            return Mathf.Min(b.extents.x, b.extents.y);
-        }
-        return 0.35f; // fallback
+        var scale = 0.2f;
+        return Mathf.Min(heroSprite.bounds.extents.x * scale, heroSprite.bounds.extents.y * scale);
     }
 
     // Collision-probe center: world position plus optional offset (e.g., toward the character's feet)
@@ -853,28 +869,9 @@ public class OverworldHero : MonoBehaviour
         transform.position = new Vector3(v.x, v.y, transform.position.z);
     }
 
-    private void PlaceDestinationMarker(Vector2 world)
-    {
-        ClearDestinationMarker();
-        if (destinationMarkerPrefab == null) return;
-        activeDestinationMarker = Instantiate(destinationMarkerPrefab);
-        var z = transform.position.z;
-        activeDestinationMarker.transform.position = new Vector3(world.x, world.y, z);
-    }
-
-    private void ClearDestinationMarker()
-    {
-        if (activeDestinationMarker != null)
-        {
-            Destroy(activeDestinationMarker);
-            activeDestinationMarker = null;
-        }
-    }
-
     // Inspector toggles via code (optional helpers)
     public void SetMoveSpeed(float unitsPerSecond) => moveSpeed = Mathf.Max(0f, unitsPerSecond);
     public void SetSnapThreshold(float value) => snapThreshold = Mathf.Max(0f, value);
     public void SetPathfinding(bool enabled) => usePathfinding = enabled;
     public void SetInputMode(OverworldHeroInputMode mode) => inputMode = mode;
-
 }

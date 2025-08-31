@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8024242774535082788}
   - component: {fileID: 3933779073338741789}
   - component: {fileID: 8233176617928527344}
-  m_Layer: 5
+  - component: {fileID: -1439429438870334407}
+  m_Layer: 0
   m_Name: DestinationMarkerPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,8 +92,8 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 170482c518ea30d4ea3acb519978c357, type: 3}
+  m_SortingOrder: 99
+  m_Sprite: {fileID: 21300000, guid: 804d6e62b88be2043a437a193965b1ba, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -103,3 +104,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-1439429438870334407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8780078509562558409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89d7e5d3a79e5e14d80f655d1e99ca06, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Canvas.DestinationMarker
+  arriveDistance: 0.1
+  destroyAtZero: 1

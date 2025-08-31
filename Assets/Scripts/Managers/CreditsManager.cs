@@ -32,9 +32,7 @@ public class CreditsManager : MonoBehaviour
         //scrollView.anchoredPosition = scrollView.anchoredPosition.SetY(-buttonHeight);
         //content.GetComponent<VerticalLayoutGroup>().spacing = rowSpacing;
 
-        //Joystick graphics:
-        //Hannemann: https://hannemann.itch.io/virtual-joystick-pack-free
-
+    
 
         const string NL = "\r\n";
         string text

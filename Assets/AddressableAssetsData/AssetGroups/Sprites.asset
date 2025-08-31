@@ -210,6 +210,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f192de73303222458a541d786cbeaf8
+    m_Address: Sprites/GUI/Camera00
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6f27d800d92dc01458cc0c90ccb3c652
     m_Address: Sprites/Forest
     m_ReadOnly: 0
@@ -237,6 +242,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7d138ee776549614f96c88c0457703d0
     m_Address: Sprites/WeaponTypes/Crossbow
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 804d6e62b88be2043a437a193965b1ba
+    m_Address: Sprites/GUI/DestinationMarker
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -447,6 +457,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d5625f17c8b64674fa077f1339346b70
     m_Address: Sprites/Backgrounds/CyberNecropolis/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: de426a64ce259e642a7ea939d801deff
+    m_Address: Sprites/GUI/Camera01
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

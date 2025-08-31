@@ -1,4 +1,5 @@
 ﻿using Assets.Helpers;
+using Assets.Scripts.Canvas;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
@@ -144,6 +145,9 @@ public static class SpriteLibrary
             { "Joystick00", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick00") },
             { "Joystick01", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick01") },
             { "Joystick02", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick02") },
+            { "Camera00", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Camera00") },
+            { "Camera01", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Camera01") },
+            { "DestinationMarker", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/DestinationMarker") },
         };
 
         leaves = new Dictionary<string, Sprite>
