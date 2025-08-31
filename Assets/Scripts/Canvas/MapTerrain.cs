@@ -248,4 +248,33 @@ public sealed class MapTerrain : MonoBehaviour
                Mathf.Abs(a.width - b.width) <= eps &&
                Mathf.Abs(a.height - b.height) <= eps;
     }
+
+    // Estimate an outward normal (away from blocked area) near a given local point.
+    // Returns Vector2.zero if no blocked samples are nearby.
+    public Vector2 EstimateObstacleNormal(Vector2 local, float sampleRadius = 4f, int rays = 8)
+    {
+        if (sampleRadius <= 0f || rays <= 0) return Vector2.zero;
+
+        // Accumulate directions toward blocked samples
+        Vector2 towardBlocked = Vector2.zero;
+        float step = 360f / rays;
+
+        for (int i = 0; i < rays; i++)
+        {
+            float ang = step * i * Mathf.Deg2Rad;
+            Vector2 dir = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang));
+            Vector2 p = local + dir * sampleRadius;
+
+            if (!IsWalkableLocal(p))
+            {
+                towardBlocked += dir; // points toward blocked region
+            }
+        }
+
+        if (towardBlocked.sqrMagnitude < 1e-6f)
+            return Vector2.zero;
+
+        // Outward normal is away from blocked
+        return (-towardBlocked).normalized;
+    }
 }

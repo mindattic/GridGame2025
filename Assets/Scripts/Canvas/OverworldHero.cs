@@ -2,7 +2,7 @@ using Assets.Helper;
 using Assets.Helpers;
 using UnityEngine;
 
-public enum OverworldHeroTouchMode
+public enum OverworldHeroInputMode
 {
     MoveToPoint,
     DirectionalClick
@@ -36,14 +36,14 @@ public class OverworldHero : MonoBehaviour
     private float speedSampleAheadFactor = 0.7f;
 
     [Header("Click Movement Mode")]
-    [SerializeField] private OverworldHeroTouchMode touchMoveMode = OverworldHeroTouchMode.MoveToPoint;
+    [SerializeField] private OverworldHeroInputMode inputMode = OverworldHeroInputMode.MoveToPoint;
     [SerializeField] private float directionalClickMagnitude = 1f; // 0..1 strength fed into analog
 
     // Expose mode to other systems (e.g., OverworldManager)
-    public OverworldHeroTouchMode TouchMoveMode
+    public OverworldHeroInputMode TouchMoveMode
     {
-        get => touchMoveMode;
-        set => touchMoveMode = value;
+        get => inputMode;
+        set => inputMode = value;
     }
 
     [Header("Collision Probing")]
@@ -180,7 +180,7 @@ public class OverworldHero : MonoBehaviour
         }
 
         // 3) MoveToPoint path (only when mode is MoveToPoint)
-        if (touchMoveMode != OverworldHeroTouchMode.MoveToPoint || !isMoving)
+        if (inputMode != OverworldHeroInputMode.MoveToPoint || !isMoving)
         {
             SetIdle();
             return;
@@ -266,13 +266,13 @@ public class OverworldHero : MonoBehaviour
         if (requireVisibleToMove && ignoreClicksWhenOffscreen && !IsTargetVisible(rect, viewport))
             return;
 
-        switch (touchMoveMode)
+        switch (inputMode)
         {
-            case OverworldHeroTouchMode.MoveToPoint:
+            case OverworldHeroInputMode.MoveToPoint:
                 SetDestinationLocal(local);
                 break;
 
-            case OverworldHeroTouchMode.DirectionalClick:
+            case OverworldHeroInputMode.DirectionalClick:
                 SetDirectionalOverride(local);
                 break;
         }
@@ -303,7 +303,7 @@ public class OverworldHero : MonoBehaviour
     // Public API for hold-to-move directional clicks.
     public void BeginDirectionalFromScreen(Vector2 screenPos, RectTransform content)
     {
-        if (touchMoveMode != OverworldHeroTouchMode.DirectionalClick) return;
+        if (inputMode != OverworldHeroInputMode.DirectionalClick) return;
         if (content == null) return;
         var local = UnitConversionHelper.Screen.ToCanvas(content, screenPos);
         SetDirectionalOverride(local);
@@ -493,20 +493,47 @@ public class OverworldHero : MonoBehaviour
         return 1f; // constant speed
     }
 
-    // Simple 4-way collision resolution with axis slides
+    // Simple normal-based slide + axis fallback
     private Vector2 ResolveCollision(Vector2 current, Vector2 desired)
     {
         // If desired is walkable, go there
         if (IsWalkableLocal(desired))
             return desired;
 
-        // Try sliding along X
+        Vector2 step = desired - current;
+        if (step.sqrMagnitude <= 1e-10f)
+            return current;
+
+        // Try sliding along the obstacle using a contact normal
+        if (collisionProvider != null)
+        {
+            // Compute desired sampling center (hero visual center)
+            Vector2 desiredCenter = GetRectCenterLocal(desired);
+
+            // Reuse hero probe settings to get a decent normal
+            float nRadius = Mathf.Max(2f, collisionProbeRadius > 0f ? collisionProbeRadius * 0.5f : 6f);
+            int nRays = Mathf.Max(8, collisionProbeRays > 0 ? collisionProbeRays : 8);
+
+            Vector2 n = collisionProvider.EstimateObstacleNormal(desiredCenter, nRadius, nRays);
+            if (n.sqrMagnitude > 1e-6f)
+            {
+                // Project step onto tangent (remove normal component)
+                Vector2 slide = step - Vector2.Dot(step, n) * n;
+                if (slide.sqrMagnitude > 1e-6f)
+                {
+                    Vector2 candidate = ClampToMap(current + slide);
+                    if (IsWalkableLocal(candidate))
+                        return candidate;
+                }
+            }
+        }
+
+        // Fallback: axis-aligned slides (robust on corners)
         Vector2 tryX = new Vector2(desired.x, current.y);
         tryX = ClampToMap(tryX);
         if (IsWalkableLocal(tryX))
             return tryX;
 
-        // Try sliding along Y
         Vector2 tryY = new Vector2(current.x, desired.y);
         tryY = ClampToMap(tryY);
         if (IsWalkableLocal(tryY))
