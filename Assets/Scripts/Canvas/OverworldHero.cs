@@ -1,8 +1,6 @@
 using Assets.Helper;
 using Assets.Helpers;
 using UnityEngine;
-using UnityEngine.UI;
-using scene = Assets.Helpers.SceneHelper;
 
 public enum OverworldHeroTouchMode
 {
@@ -10,24 +8,27 @@ public enum OverworldHeroTouchMode
     DirectionalClick
 }
 
-
+// OverworldHero reads inputs (fed by manager), moves within map bounds,
+// and updates the Animator parameters (MoveX, MoveY, Speed) for an 8-way blend tree.
+// Walkability and collision checks are delegated to MapTerrain.
 public class OverworldHero : MonoBehaviour
 {
-    public RectTransform rect;           // The icon’s RectTransform (anchored to Content)
-    public Animator animator;
-    private float moveSpeed = 128f;
+    public RectTransform rect;           // The hero icon RectTransform (anchored to Content)
+    public Animator animator;            // Animator that uses MoveX, MoveY, Speed
+    private float moveSpeed = 128f;      // Canvas units per second
 
     [Header("Bindings")]
-    [SerializeField] private RectTransform mapRect;   // Optional; if null, auto-find
+    [SerializeField] private RectTransform mapRect;   // Terrain rect for clamping movement
     [SerializeField] private RectTransform viewport;  // ScrollRect viewport; used for visibility gating
+    [SerializeField] private MapTerrain collisionProvider; // Central collision provider on Terrain
 
     public bool AllowClickToMove { get; set; } = true;
-    public event System.Action<Vector2> OnHeroMoved;
+    public event System.Action<Vector2> OnHeroMoved;  // Invoked every time hero position changes
 
     [Header("Tuning")]
-    [SerializeField] private float snapThreshold = 0.24f;
+    [SerializeField] private float snapThreshold = 0.24f; // Snap-to-target distance (for MoveToPoint)
     [SerializeField] private bool requireVisibleToMove = true;          // Only step when visible
-    [SerializeField] private bool ignoreClicksWhenOffscreen = false;    // If true, ignore clicks when offscreen
+    [SerializeField] private bool ignoreClicksWhenOffscreen = false;    // Ignore taps when hero offscreen
     [SerializeField] private bool allowVirtualJoystick = true;          // Enable joystick/analog movement
     [SerializeField] private bool idleWhileOffscreen = true;            // Idle when offscreen and movement gated
 
@@ -45,45 +46,28 @@ public class OverworldHero : MonoBehaviour
         set => touchMoveMode = value;
     }
 
-    [Header("Animator States (optional overrides)")]
-    [SerializeField] private string idleState = "Idle";
-    [SerializeField] private string upState = "MoveUp";
-    [SerializeField] private string rightState = "MoveRight";
-    [SerializeField] private string downState = "MoveDown";
-    [SerializeField] private string leftState = "MoveLeft";
-
-    // --- Collision Mask (added) ---
-    [Header("Collision Mask")]
-    [Tooltip("Black/white texture aligned to the map. White = walkable, Black = blocked (pure-black only).")]
-    [SerializeField] private Texture2D collisionMask;
-    // UV sub-rect (for atlas/cropped sprites). Defaults to full texture.
-    [SerializeField, HideInInspector] private Rect collisionMaskUV = new Rect(0, 0, 1, 1);
-
-    // Note: threshold kept for back-compat sliders only (not used for blocking).
-    [Range(0f, 0.1f)]
-    [SerializeField] private float blockThreshold = 0.01f;
-
+    [Header("Collision Probing")]
     [Tooltip("Probe radius in canvas units around hero to reduce corner clipping.")]
     [SerializeField] private float collisionProbeRadius = 0f;
     [Tooltip("Number of radial probes around the hero in addition to center (0 enables an automatic 8-ray ring).")]
     [SerializeField] private int collisionProbeRays = 0;
 
+    // Optional slow-zone tuning (currently no effect; keep for future)
     [Header("Slow Zones (optional)")]
     [SerializeField] private bool useSlowZones = false;
     [SerializeField, Range(0f, 1f)] private float slowBandCenter = 0.5f;
     [SerializeField, Range(0f, 1f)] private float slowBandHalfWidth = 0.1f;
     [SerializeField, Range(0.05f, 1f)] private float slowMultiplier = 0.5f;
 
-    // --- Debug Visualization ---
     [Header("Collision Debug (Scene view)")]
     [SerializeField] private bool debugCollisionGizmos = true;
     [SerializeField] private float debugGizmoSize = 6f;
 
-    private Color32[] maskPixels;
-    private int maskW, maskH;
+    private bool isMoving;                 // True while following a MoveToPoint target
+    private Vector2 targetPosition;        // Destination for MoveToPoint mode
 
-    private bool isMoving;
-    private Vector2 targetPosition;
+    // The project uses a MoveDirection enum elsewhere for save/load and basic facing.
+    // We continue to maintain it, but animation is driven by lastLook for 8-way.
     private MoveDirection lastDirection = MoveDirection.Idle;
 
     // Analog input (-1..1). Set by OverworldManager each frame.
@@ -93,30 +77,43 @@ public class OverworldHero : MonoBehaviour
     private bool directionalActive;
     private Vector2 directionalOverride;
 
+    // 8-way facing memory for idle pose. Defaults to down.
+    private Vector2 lastLook = Vector2.down;
+
     // Expose current facing as string for saving
     public string CurrentFacingName => lastDirection.ToString();
     public bool IsMoving => isMoving;
     private readonly Vector3[] _mapWorldCorners = new Vector3[4];
+
+    // ----------------------------------------------------------------------
+    // Unity lifecycle
+    // ----------------------------------------------------------------------
 
     private void Awake()
     {
         if (rect == null) rect = GetComponent<RectTransform>();
         if (animator == null) animator = GetComponent<Animator>();
 
-        // Auto-find Terrain for clamp (no legacy Map)
+        // Auto-find Terrain for clamping if not assigned
         if (mapRect == null)
         {
             var go = GameObject.Find(GameObjectHelper.Overworld.Terrain);
             if (go != null) mapRect = go.GetComponent<RectTransform>();
         }
 
+        // Auto-find viewport for visibility gating if not assigned
         if (viewport == null)
         {
             var vp = GameObject.Find(GameObjectHelper.Overworld.Viewport);
             if (vp != null) viewport = vp.GetComponent<RectTransform>();
         }
 
-        InitializeCollisionMask(); // keep existing collision/slows behavior
+        // Auto-bind collision provider from the map rect if present
+        if (collisionProvider == null && mapRect != null)
+            collisionProvider = mapRect.GetComponent<MapTerrain>();
+
+        // Initialize animator with default idle facing
+        ApplyAnimatorParameters(lastLook, 0f);
     }
 
     private void Update()
@@ -159,9 +156,13 @@ public class OverworldHero : MonoBehaviour
             Vector2 frameDelta = next - current;
 
             if (frameDelta.sqrMagnitude > 1e-6f)
+            {
                 SetAnimation(frameDelta);
+            }
             else
+            {
                 SetIdle();
+            }
 
             rect.anchoredPosition = next;
             OnHeroMoved?.Invoke(next);
@@ -206,11 +207,16 @@ public class OverworldHero : MonoBehaviour
 
         // Advance towards target and animate (stepwise, with collision)
         Vector2 toTarget = targetPosition - cur;
+        float dist = toTarget.magnitude;
         float maxStep = moveSpeed * Time.deltaTime;
-        Vector2 stepDir = toTarget.sqrMagnitude > 1e-6f ? toTarget.normalized : Vector2.zero;
+        Vector2 stepDir = dist > 1e-6f ? (toTarget / dist) : Vector2.zero;
 
+        // Optional speed multiplier (kept for future/slow zones)
         float moveMult = GetSpeedMultiplierLocal(cur + stepDir * (maxStep * speedSampleAheadFactor));
-        Vector2 stepVec = stepDir * (maxStep * moveMult);
+
+        // Clamp step to remaining distance so we cannot overshoot
+        float stepLen = Mathf.Min(maxStep * moveMult, dist);
+        Vector2 stepVec = stepDir * stepLen;
 
         Vector2 desiredNext = ClampToMap(cur + stepVec);
         Vector2 nextPos = ResolveCollision(cur, desiredNext);
@@ -230,6 +236,11 @@ public class OverworldHero : MonoBehaviour
         }
     }
 
+    // ----------------------------------------------------------------------
+    // External input API
+    // ----------------------------------------------------------------------
+
+    // Accepts analog input from OverworldManager each frame.
     public void SetAnalogInput(Vector2 input)
     {
         analogInput = Vector2.ClampMagnitude(input, 1f);
@@ -262,12 +273,12 @@ public class OverworldHero : MonoBehaviour
                 break;
 
             case OverworldHeroTouchMode.DirectionalClick:
-                // In hold-to-move mode, OverworldManager will call Begin/Update/End
                 SetDirectionalOverride(local);
                 break;
         }
     }
 
+    // Sets a click-to-move destination in Content-local space.
     public void SetDestinationLocal(Vector2 local)
     {
         if (!AllowClickToMove || rect == null || rect.parent == null) return;
@@ -289,7 +300,7 @@ public class OverworldHero : MonoBehaviour
         SetDestinationLocal(local);
     }
 
-    // Public API: begin/update/end directional hold-to-move
+    // Public API for hold-to-move directional clicks.
     public void BeginDirectionalFromScreen(Vector2 screenPos, RectTransform content)
     {
         if (touchMoveMode != OverworldHeroTouchMode.DirectionalClick) return;
@@ -313,7 +324,14 @@ public class OverworldHero : MonoBehaviour
         SetIdle();
     }
 
-    // Compute a latched direction vector from hero to click position and start moving
+    // ----------------------------------------------------------------------
+    // Animation helpers for 8-way blend tree
+    // ----------------------------------------------------------------------
+
+    /// <summary>
+    /// Computes direction from a point click and latches it for hold-to-move.
+    /// Also kicks the Animator to the correct moving state immediately.
+    /// </summary>
     private void SetDirectionalOverride(Vector2 local)
     {
         Vector2 delta = ClampToMap(local) - rect.anchoredPosition;
@@ -327,42 +345,93 @@ public class OverworldHero : MonoBehaviour
         directionalOverride = dir;
         directionalActive = true;
 
-        // Play appropriate move animation immediately
+        // Immediate visual feedback
         SetAnimation(dir);
         isMoving = false; // use analog-like path instead
     }
 
-    // Freeze movement immediately (used for encounters)
-    public void FreezeMovement(bool idle = true)
+    /// <summary>
+    /// Applies direction and speed from a movement delta to the Animator.
+    /// Updates last look so idle keeps facing.
+    /// </summary>
+    private void SetAnimation(Vector2 delta)
     {
-        AllowClickToMove = false;
-        allowVirtualJoystick = false;
-        isMoving = false;
-        analogInput = Vector2.zero;
-        directionalActive = false;
-        directionalOverride = Vector2.zero;
-        if (idle) SetIdle();
+        if (animator == null) return;
+
+        float speed = delta.magnitude;           // canvas units moved this frame
+        Vector2 dir = speed > 1e-6f ? delta.normalized : lastLook;
+
+        lastLook = dir;                          // remember facing for idle
+        lastDirection = DetermineDirection4Way(delta); // maintain legacy 4-way for save text
+
+        ApplyAnimatorParameters(dir, speed);
     }
 
-    // Teleport to an exact local position (used when restoring overworld)
-    public void TeleportToLocal(Vector2 local, bool notify = true)
+    /// <summary>
+    /// Forces idle using the last facing direction.
+    /// </summary>
+    private void SetIdle()
     {
-        if (rect == null) return;
-        rect.anchoredPosition = ClampToMap(local);
-        if (notify) OnHeroMoved?.Invoke(rect.anchoredPosition);
+        lastDirection = MoveDirection.Idle;
+        ApplyAnimatorParameters(lastLook, 0f);
     }
 
+    /// <summary>
+    /// Writes MoveX, MoveY, and Speed to the Animator in one place.
+    /// </summary>
+    private void ApplyAnimatorParameters(Vector2 dir, float speed)
+    {
+        if (animator == null) return;
+
+        animator.SetFloat("MoveX", dir.x);
+        animator.SetFloat("MoveY", dir.y);
+        animator.SetFloat("Speed", speed);
+    }
+
+    /// <summary>
+    /// Maintains legacy facing API using 4-way directions for save/load.
+    /// Also updates blend-tree direction so idle pose matches.
+    /// </summary>
     public void SetFacing(string facingName)
     {
         if (string.IsNullOrEmpty(facingName)) return;
+
         MoveDirection dir;
         if (!System.Enum.TryParse(facingName, true, out dir))
             dir = MoveDirection.Idle;
+
         lastDirection = dir;
-        SetAnimatorDirection(dir);
-        CrossFadeIfExists(DirectionToStateName(dir));
+
+        Vector2 look = lastLook;
+        switch (dir)
+        {
+            case MoveDirection.Up: look = Vector2.up; break;
+            case MoveDirection.Right: look = Vector2.right; break;
+            case MoveDirection.Down: look = Vector2.down; break;
+            case MoveDirection.Left: look = Vector2.left; break;
+            case MoveDirection.Idle: default: break;
+        }
+
+        lastLook = look;
+        ApplyAnimatorParameters(lastLook, 0f);
     }
 
+    // Converts any delta into the nearest 4-way for legacy state text.
+    private static MoveDirection DetermineDirection4Way(Vector2 delta)
+    {
+        if (delta.sqrMagnitude < 1e-6f) return MoveDirection.Idle;
+
+        if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y))
+            return delta.x >= 0 ? MoveDirection.Right : MoveDirection.Left;
+        else
+            return delta.y >= 0 ? MoveDirection.Up : MoveDirection.Down;
+    }
+
+    // ----------------------------------------------------------------------
+    // Visibility and clamping
+    // ----------------------------------------------------------------------
+
+    // Returns true if any of the 4 world-corners projects inside the viewport rect
     public static bool IsTargetVisible(RectTransform target, RectTransform view)
     {
         if (target == null || view == null) return true; // fail-open
@@ -380,6 +449,7 @@ public class OverworldHero : MonoBehaviour
         return false;
     }
 
+    // Clamp a Content-local point to the Terrain rect area
     private Vector2 ClampToMap(Vector2 local)
     {
         if (mapRect == null || mapRect.parent != rect.parent) return local;
@@ -397,215 +467,33 @@ public class OverworldHero : MonoBehaviour
         return new Vector2(clampedX, clampedY);
     }
 
-    private void SetAnimation(Vector2 delta)
-    {
-        var newDir = DetermineDirection(delta);
-        if (newDir == lastDirection) return;
+    // ----------------------------------------------------------------------
+    // Collision and speed sampling
+    // ----------------------------------------------------------------------
 
-        lastDirection = newDir;
-        SetAnimatorDirection(newDir);
-        CrossFadeIfExists(DirectionToStateName(newDir));
-    }
-
-    private void SetIdle()
-    {
-        if (lastDirection != MoveDirection.Idle)
-        {
-            lastDirection = MoveDirection.Idle;
-            SetAnimatorDirection(lastDirection);
-            CrossFadeIfExists(idleState);
-        }
-    }
-
-    private void SetAnimatorDirection(MoveDirection dir)
-    {
-        if (animator != null)
-            animator.SetInteger("MoveDirection", (int)dir);
-    }
-
-    private static MoveDirection DetermineDirection(Vector2 delta)
-    {
-        if (Mathf.Abs(delta.x) >= Mathf.Abs(delta.y))
-            return delta.x >= 0 ? MoveDirection.Right : MoveDirection.Left;
-        else
-            return delta.y >= 0 ? MoveDirection.Up : MoveDirection.Down;
-    }
-
-    private string DirectionToStateName(MoveDirection dir)
-    {
-        switch (dir)
-        {
-            case MoveDirection.Up: return upState;
-            case MoveDirection.Right: return rightState;
-            case MoveDirection.Down: return downState;
-            case MoveDirection.Left: return leftState;
-            default: return idleState;
-        }
-    }
-
-    private void CrossFadeIfExists(string stateName, float fade = 0.05f)
-    {
-        if (animator == null || string.IsNullOrEmpty(stateName)) return;
-        int layer = 0;
-        int hash = Animator.StringToHash(stateName);
-        if (animator.HasState(layer, hash))
-            animator.CrossFadeInFixedTime(hash, fade, layer, 0f);
-    }
-
-    // ------------- Collision + Speed helpers ------------
-
+    // Bind the map rect (for clamping) and viewport (for visibility)
     public void BindMapAndViewport(RectTransform map, RectTransform view)
     {
         mapRect = map;
         viewport = view;
+        if (collisionProvider == null && mapRect != null)
+            collisionProvider = mapRect.GetComponent<MapTerrain>();
     }
 
-    private void InitializeCollisionMask()
+    // Bind the collision provider explicitly
+    public void BindCollisionProvider(MapTerrain provider)
     {
-        maskPixels = null;
-        maskW = maskH = 0;
-
-        if (collisionMask == null) return;
-
-        try
-        {
-            maskW = collisionMask.width;
-            maskH = collisionMask.height;
-            maskPixels = collisionMask.GetPixels32(); // requires Read/Write Enabled
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogWarning($"OverworldHero: Could not read collision mask pixels. Ensure Read/Write Enabled. {ex.Message}");
-            maskPixels = null;
-            maskW = maskH = 0;
-        }
-    }
-
-    public void SetCollisionMask(Texture2D mask)
-    {
-        collisionMask = mask;
-        collisionMaskUV = new Rect(0, 0, 1, 1);
-        InitializeCollisionMask();
-    }
-
-    public void SetCollisionMask(Texture2D mask, Rect uvRect01)
-    {
-        collisionMask = mask;
-        collisionMaskUV = uvRect01;
-        InitializeCollisionMask();
-    }
-
-    private bool MaskReady => collisionMask != null && maskPixels != null && maskPixels.Length == maskW * maskH && mapRect != null;
-
-    // Robust, rotation/scale-safe mapping from Content-local point to mask UV
-    private Vector2 LocalToMaskUV(Vector2 local)
-    {
-        if (mapRect == null) return Vector2.zero;
-
-        // Get the map rect corners in the parent's local space (works for any pivot/anchors/scale/rotation)
-        mapRect.GetWorldCorners(_mapWorldCorners);
-        var parent = (RectTransform)mapRect.parent;
-        Vector2 bl = parent.InverseTransformPoint(_mapWorldCorners[0]); // bottom-left
-        Vector2 tl = parent.InverseTransformPoint(_mapWorldCorners[1]); // top-left
-        Vector2 tr = parent.InverseTransformPoint(_mapWorldCorners[2]); // top-right
-
-        Vector2 rightVec = tr - tl;   float width = rightVec.magnitude;
-        Vector2 downVec  = bl - tl;   float height = downVec.magnitude;
-        if (width <= 1e-6f || height <= 1e-6f) return Vector2.zero;
-
-        Vector2 rightN = rightVec / width;
-        Vector2 downN  = downVec  / height;
-
-        // Project the vector from TL to the local point onto the rect's local axes
-        Vector2 toP = local - tl;
-        float u01 = Mathf.Clamp01(Vector2.Dot(toP, rightN) / width);
-        float v01 = Mathf.Clamp01(Vector2.Dot(toP, downN)  / height); // top->0 .. bottom->1
-
-        // Apply sub-UV in case the mask comes from an atlas/cropped sprite
-        //return new Vector2(
-        //    collisionMaskUV.x + u01 * collisionMaskUV.width,
-        //    collisionMaskUV.y + v01 * collisionMaskUV.height
-        //);
-
-        // Apply sub-UV in case the mask comes from an atlas/cropped sprite
-        // Texture V grows up from bottom. Our v01 grows down from top.
-        // Flip only when the uvRect height is positive, otherwise RawImage already flipped it.
-        float vInput = (collisionMaskUV.height >= 0f) ? (1f - v01) : v01;
-
-        return new Vector2(
-            collisionMaskUV.x + u01 * collisionMaskUV.width,
-            collisionMaskUV.y + vInput * collisionMaskUV.height
-        );
-
-    }
-
-    // New: sample raw pixel color at local position
-    private bool TrySamplePixel(Vector2 local, out Color32 color)
-    {
-        color = default;
-        if (!MaskReady) return false;
-
-        Vector2 uv = LocalToMaskUV(local);
-        if (uv.x < 0f || uv.x > 1f || uv.y < 0f || uv.y > 1f)
-            return false;
-
-        int x = Mathf.Clamp(Mathf.RoundToInt(uv.x * (maskW - 1)), 0, maskW - 1);
-        int y = Mathf.Clamp(Mathf.RoundToInt(uv.y * (maskH - 1)), 0, maskH - 1);
-        int idx = y * maskW + x;
-
-        color = maskPixels[idx];
-        return true;
-    }
-
-    // Only pure black is blocked (RGB exactly 0,0,0)
-    private static bool IsBlockedColor(Color32 c)
-    {
-        return c.r == 0 && c.g == 0 && c.b == 0;
-    }
-
-    private bool IsWalkableLocal(Vector2 local)
-    {
-        if (!MaskReady) return true;
-
-        // 1) Center probe
-        if (!IsWalkablePoint(local)) return false;
-
-        // 2) Neighborhood ring probes: use configured rays/radius; otherwise auto 8 rays with a radius based on the hero icon
-        int rays = collisionProbeRays > 0 ? collisionProbeRays : 8;
-        float radius = collisionProbeRadius > 0f
-            ? collisionProbeRadius
-            : (rect != null ? Mathf.Min(rect.rect.width, rect.rect.height) * 0.35f : 8f);
-
-        if (radius > 0f && rays > 0)
-        {
-            float step = 360f / rays;
-            for (int i = 0; i < rays; i++)
-            {
-                float ang = step * i * Mathf.Deg2Rad;
-                Vector2 offset = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * radius;
-                if (!IsWalkablePoint(local + offset))
-                    return false;
-            }
-        }
-
-        return true;
-    }
-
-    private bool IsWalkablePoint(Vector2 local)
-    {
-        if (TrySamplePixel(local, out Color32 px))
-            return !IsBlockedColor(px);
-
-        // Fallback: if we couldn't sample, treat as walkable
-        return true;
+        collisionProvider = provider;
     }
 
     // Returns a multiplier (0.05..1). Blocked is handled elsewhere; this only slows.
     private float GetSpeedMultiplierLocal(Vector2 local)
     {
-        return 1f; // no slowdowns; movement speed is constant
+        // Placeholder for slow-zone sampling if you choose to use it later
+        return 1f; // constant speed
     }
 
+    // Simple 4-way collision resolution with axis slides
     private Vector2 ResolveCollision(Vector2 current, Vector2 desired)
     {
         // If desired is walkable, go there
@@ -628,7 +516,24 @@ public class OverworldHero : MonoBehaviour
         return current;
     }
 
-    // ---------- Scene gizmos for visual verification ----------
+    // Returns true if the given Content-local point is walkable according to MapTerrain
+    private bool IsWalkableLocal(Vector2 local)
+    {
+        int rays = collisionProbeRays > 0 ? collisionProbeRays : 8;
+        float radius = collisionProbeRadius > 0f
+            ? collisionProbeRadius
+            : (rect != null ? Mathf.Min(rect.rect.width, rect.rect.height) * 0.35f : 8f);
+
+        if (collisionProvider == null)
+            return true; // fail-open if provider missing
+
+        return collisionProvider.IsWalkableLocal(local, radius, rays);
+    }
+
+    // ----------------------------------------------------------------------
+    // Debug gizmos
+    // ----------------------------------------------------------------------
+
     private void OnDrawGizmos()
     {
         if (!debugCollisionGizmos || rect == null || rect.parent == null) return;
@@ -640,12 +545,12 @@ public class OverworldHero : MonoBehaviour
         var parent = (RectTransform)rect.parent;
         Vector2 centerLocal = rect.anchoredPosition;
 
-        // Draw center
+        // Draw center sample
         Gizmos.color = SampleColor(centerLocal);
         Vector3 centerWorld = parent.TransformPoint(centerLocal);
         Gizmos.DrawSphere(centerWorld, debugGizmoSize);
 
-        // Ring
+        // Ring samples
         int rays = collisionProbeRays > 0 ? collisionProbeRays : 8;
         float radius = collisionProbeRadius > 0f
             ? collisionProbeRadius
@@ -668,10 +573,10 @@ public class OverworldHero : MonoBehaviour
 
     private Color SampleColor(Vector2 local)
     {
-        if (!MaskReady) return new Color(0.3f, 0.3f, 0.3f, 1f); // gray
-        if (!TrySamplePixel(local, out Color32 px)) return Color.gray;
+        if (collisionProvider != null && collisionProvider.TrySamplePixelLocal(local, out Color32 px))
+            return MapTerrain.IsBlockedColor(px) ? Color.red : Color.green;
 
-        bool blocked = IsBlockedColor(px);
-        return blocked ? Color.red : Color.green;
+        // Provider missing or sample failed
+        return new Color(0.3f, 0.3f, 0.3f, 1f);
     }
 }

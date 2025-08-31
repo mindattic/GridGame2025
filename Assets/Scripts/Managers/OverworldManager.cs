@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 
+// OverworldManager orchestrates UI input, scrolling, centering, and scene transitions.
+// It wires the layered map, hero, joystick, and the collision provider on the Terrain.
 public class OverworldManager : MonoBehaviour, IBeginDragHandler
 {
     private ScrollRect scrollRect;
@@ -31,7 +33,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
     private bool hasRandomEncounters = false;
     private float indicatorPadding = 64f; // distance from viewport edge
     private float arrowFadeSpeed = 8f;    // alpha units/sec (0..1)
-    private float arrowTargetAlpha;                        // 0 when visible, 1 when off-screen
+    private float arrowTargetAlpha;       // 0 when visible, 1 when off-screen
 
     private Coroutine centeringRoutine;
     private float centeringSpeed = 8f;
@@ -90,6 +92,15 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         surfaceImage = surfaceRect != null ? surfaceRect.GetComponent<RawImage>() : null;
         canopyImage = canopyRect != null ? canopyRect.GetComponent<RawImage>() : null;
 
+        // Ensure the terrain has a collision provider component
+        MapTerrain collisionProvider = null;
+        if (terrainRect != null)
+        {
+            collisionProvider = terrainRect.GetComponent<MapTerrain>();
+            if (collisionProvider == null)
+                collisionProvider = terrainRect.gameObject.AddComponent<MapTerrain>();
+        }
+
         // Offscreen arrow and hero/joystick
         go = GameObject.Find(GameObjectHelper.Overworld.OffscreenArrow);
         offscreenArrow = go.GetComponent<RectTransform>();
@@ -130,6 +141,11 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
             hero.OnHeroMoved += HandleHeroMoved;
             hero.rect.anchoredPosition = new Vector2(overworld.HeroX, overworld.HeroY);
             hero.SetFacing(overworld.HeroDirection);
+
+            // Bind map/viewport and collision provider
+            hero.BindMapAndViewport(terrainRect, viewport);
+            if (collisionProvider != null)
+                hero.BindCollisionProvider(collisionProvider);
         }
 
         // Off-screen arrow config
@@ -137,21 +153,9 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
         ConfigureScrollBounds();
 
-        // Make sure the hero samples against the exact rects used by the ScrollView
-        if (hero != null)
-        {
-            hero.BindMapAndViewport(terrainRect, viewport);
-        }
-
-        // Use the same texture AND uvRect that the RawImage displays.
-        // If your BW art is on Terrain, keep this; if it is on Surface, switch to surfaceImage.
-        if (hero != null && terrainImage != null && terrainImage.texture is Texture2D tex)
-        {
-            hero.SetCollisionMask(tex, terrainImage.uvRect);
-        }
-
         // Snap viewport to hero location immediately (no tween)
-        SnapCentering(hero.rect.anchoredPosition);
+        if (hero != null)
+            SnapCentering(hero.rect.anchoredPosition);
 
     }
 
@@ -327,12 +331,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         ConfigureScrollBounds();
     }
 
-    private IEnumerator ConfigureBoundsRoutine()
-    {
-        yield return null; // wait one frame so rects are valid
-        ConfigureScrollBounds();
-    }
-
+    // Adjust Content size to match the Terrain rect so clamping works correctly
     private void ConfigureScrollBounds()
     {
         if (scrollRect == null || viewport == null || content == null || terrainRect == null) return;
@@ -353,6 +352,7 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         SmoothCentering(hero.rect.anchoredPosition);
     }
 
+    // Convert a Content-local target position to ScrollRect.normalizedPosition
     private Vector2 GetMapPosition(Vector2 position)
     {
         if (viewport == null || content == null) return new Vector2(0.5f, 0.5f);
@@ -444,8 +444,8 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
             // Viewport rect in local space
             Vector3[] vc = new Vector3[4];
             viewport.GetLocalCorners(vc);
-            Vector2 min = vc[0];
-            Vector2 max = vc[2];
+            Vector2 min = (Vector2)vc[0];
+            Vector2 max = (Vector2)vc[2];
             Vector2 center = (min + max) * 0.5f;
             Vector2 extents = (max - min) * 0.5f;
 
@@ -500,9 +500,9 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
 
     // -------- helpers for layered map --------
 
+    // Ensure a child RectTransform exists under Content for the given path; size and sibling it.
     private RectTransform EnsureLayer(string path, int? desiredSiblingIndex = null)
     {
-        // Find node; if missing, create it under Content
         var go = GameObject.Find(path);
         if (go == null)
         {
@@ -567,6 +567,13 @@ public class OverworldManager : MonoBehaviour, IBeginDragHandler
         // Size rect to sprite rect
         rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, r.size.x);
         rt.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, r.size.y);
+
+        // If this is the terrain layer and it has a collision provider, force refresh its cached pixels
+        var provider = rt.GetComponent<MapTerrain>();
+        if (provider != null)
+        {
+            provider.ForceRefresh();
+        }
     }
 
     private void SizeContentFromSprite(Sprite s)

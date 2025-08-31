@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Data\Actor\Wolf03.cs" />
+    <Compile Include="Assets\Scripts\Canvas\MapTerrain.cs" />
     <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
@@ -75,7 +76,6 @@
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\StageWave.cs" />
     <Compile Include="Assets\Scripts\Helpers\BezierCurveHelper.cs" />
-    <Compile Include="Assets\Scripts\Canvas\MapTerrainInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\FontLibrary.cs" />
     <Compile Include="Assets\Scripts\Libraries\MaterialLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\TimerBar2D.cs" />
@@ -106,7 +106,6 @@
     <Compile Include="Assets\Scripts\Helpers\ProjectileHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
-    <Compile Include="Assets\Scripts\Canvas\OverworldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />

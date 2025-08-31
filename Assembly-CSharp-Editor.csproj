@@ -65,6 +65,7 @@
     <Compile Include="Assets\Editor\DebugWindow.ActorStats.cs" />
     <Compile Include="Assets\Editor\DebugWindow.SpawnOptions.cs" />
     <Compile Include="Assets\Editor\DebugWindow.Keyboard.cs" />
+    <Compile Include="Assets\Editor\EightWayAnimatorGenerator.cs" />
     <Compile Include="Assets\Editor\DebugWindow.StageOptions.cs" />
     <Compile Include="Assets\Editor\DebugWindow.GameSpeedOptions.cs" />
     <Compile Include="Assets\Editor\CombatLog.cs" />

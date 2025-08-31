@@ -383,7 +383,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 2040, y: -2085}
-  m_SizeDelta: {x: 64, y: 64}
+  m_SizeDelta: {x: 24, y: 24}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &163499841
 MonoBehaviour:
@@ -405,7 +405,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 723612185289372031, guid: 1ee0f2061291fa74cbdf9c27a7e4e9e8, type: 3}
+  m_Sprite: {fileID: 4262177298367310080, guid: 404586e72fb03c34b8b9cac75072740a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -439,6 +439,7 @@ MonoBehaviour:
   animator: {fileID: 163499844}
   mapRect: {fileID: 0}
   viewport: {fileID: 0}
+  collisionProvider: {fileID: 0}
   snapThreshold: 0.24
   requireVisibleToMove: 1
   ignoreClicksWhenOffscreen: 0
@@ -447,19 +448,6 @@ MonoBehaviour:
   speedSampleAheadFactor: 0.5
   touchMoveMode: 0
   directionalClickMagnitude: 1
-  idleState: Idle
-  upState: MoveUp
-  rightState: MoveRight
-  downState: MoveDown
-  leftState: MoveLeft
-  collisionMask: {fileID: 0}
-  collisionMaskUV:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  blockThreshold: 0.1
   collisionProbeRadius: 6
   collisionProbeRays: 8
   useSlowZones: 1
@@ -478,7 +466,7 @@ Animator:
   m_GameObject: {fileID: 163499839}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 794db2ce99248cc4285cdad2b44d2e93, type: 2}
+  m_Controller: {fileID: 9100000, guid: e816ff77d65d4144f8086c3d51414cf3, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
