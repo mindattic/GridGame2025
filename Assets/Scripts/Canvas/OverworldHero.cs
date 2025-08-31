@@ -106,6 +106,21 @@ public class OverworldHero : MonoBehaviour
     public bool IsMoving => isMoving;
     private readonly Vector3[] _mapWorldCorners = new Vector3[4];
 
+    // ---------------- Pathfinding (A*) ----------------
+    [Header("ClickToMove Pathfinding")]
+    [SerializeField] private bool usePathfinding = true;
+    [SerializeField, Tooltip("Navigation grid cell size in canvas units (coarser = faster).")]
+    private int navCellSize = 16;
+    [SerializeField, Tooltip("Extra clearance from walls in canvas units to avoid hugging.")]
+    private float navObstacleBuffer = 6f;
+    [SerializeField, Tooltip("Max nodes the solver will expand before giving up.")]
+    private int navMaxExpanded = 8000;
+    [SerializeField, Tooltip("How close we must get to a waypoint before advancing.")]
+    private float waypointArrive = 6f;
+
+    private System.Collections.Generic.List<Vector2> _path; // local-space waypoints (centers)
+    private int _pathIndex;
+
     // ----------------------------------------------------------------------
     // Unity lifecycle
     // ----------------------------------------------------------------------
@@ -191,6 +206,7 @@ public class OverworldHero : MonoBehaviour
             OnHeroMoved?.Invoke(next);
 
             isMoving = false; // cancel click path while analog/dir is active
+            _path = null; // cancel any existing path
             return;
         }
 
@@ -200,10 +216,11 @@ public class OverworldHero : MonoBehaviour
             SetIdle();
             isMoving = false;
             HideDestinationMarker();
+            _path = null;
             return;
         }
 
-        // 3) MoveToPoint path (only when mode is MoveToPoint)
+        // 3) MoveToPoint path (only when mode is ClickToMove)
         if (inputMode != OverworldHeroInputMode.ClickToMove || !isMoving)
         {
             SetIdle();
@@ -218,6 +235,60 @@ public class OverworldHero : MonoBehaviour
 
         Vector2 cur = rect.anchoredPosition;
 
+        // If we have a path, walk it waypoint-by-waypoint
+        if (_path != null && _pathIndex < _path.Count)
+        {
+            Vector2 wp = _path[_pathIndex];
+            Vector2 toWp = wp - cur;
+            float distWp = toWp.magnitude;
+
+            if (distWp <= Mathf.Max(waypointArrive, snapThreshold))
+            {
+                // Advance to next waypoint
+                _pathIndex++;
+                if (_pathIndex >= _path.Count)
+                {
+                    // Reached final waypoint -> finish
+                    rect.anchoredPosition = wp;
+                    OnHeroMoved?.Invoke(wp);
+                    isMoving = false;
+                    SetIdle();
+                    HideDestinationMarker();
+                    return;
+                }
+                wp = _path[_pathIndex];
+                toWp = wp - cur;
+                distWp = toWp.magnitude;
+            }
+
+            // Step toward current waypoint, clamped to avoid overshoot
+            float maxStep = moveSpeed * Time.deltaTime;
+            Vector2 dir = distWp > 1e-6f ? (toWp / distWp) : Vector2.zero;
+            float moveMult = GetSpeedMultiplierLocal(cur + dir * (maxStep * speedSampleAheadFactor));
+            float stepLen = Mathf.Min(maxStep * moveMult, distWp);
+            Vector2 desiredNext = ClampToMap(cur + dir * stepLen);
+            Vector2 nextPos = ResolveCollision(cur, desiredNext);
+            Vector2 delta = nextPos - cur;
+
+            if (delta.sqrMagnitude > 1e-6f)
+            {
+                SetAnimation(delta);
+                rect.anchoredPosition = nextPos;
+                OnHeroMoved?.Invoke(nextPos);
+                UpdateDestinationMarkerVisuals();
+            }
+            else
+            {
+                // Could not advance -> abort path
+                _path = null;
+                isMoving = false;
+                SetIdle();
+                HideDestinationMarker();
+            }
+            return;
+        }
+
+        // No path -> direct straight-line finish with overshoot clamp
         // Arrived (snap and finish)
         if (Vector2.Distance(cur, targetPosition) <= snapThreshold)
         {
@@ -233,25 +304,22 @@ public class OverworldHero : MonoBehaviour
         // Advance towards target and animate (stepwise, with collision)
         Vector2 toTarget = targetPosition - cur;
         float dist = toTarget.magnitude;
-        float maxStep = moveSpeed * Time.deltaTime;
+        float maxStep2 = moveSpeed * Time.deltaTime;
         Vector2 stepDir = dist > 1e-6f ? (toTarget / dist) : Vector2.zero;
 
-        // Optional speed multiplier (kept for future/slow zones)
-        float moveMult = GetSpeedMultiplierLocal(cur + stepDir * (maxStep * speedSampleAheadFactor));
+        float moveMult2 = GetSpeedMultiplierLocal(cur + stepDir * (maxStep2 * speedSampleAheadFactor));
+        float stepLen2 = Mathf.Min(maxStep2 * moveMult2, dist);
+        Vector2 stepVec = stepDir * stepLen2;
 
-        // Clamp step to remaining distance so we cannot overshoot
-        float stepLen = Mathf.Min(maxStep * moveMult, dist);
-        Vector2 stepVec = stepDir * stepLen;
+        Vector2 desiredNext2 = ClampToMap(cur + stepVec);
+        Vector2 nextPos2 = ResolveCollision(cur, desiredNext2);
+        Vector2 delta2 = nextPos2 - cur;
 
-        Vector2 desiredNext = ClampToMap(cur + stepVec);
-        Vector2 nextPos = ResolveCollision(cur, desiredNext);
-        Vector2 delta = nextPos - cur;
-
-        if (delta.sqrMagnitude > 1e-6f)
+        if (delta2.sqrMagnitude > 1e-6f)
         {
-            SetAnimation(delta);
-            rect.anchoredPosition = nextPos;
-            OnHeroMoved?.Invoke(nextPos);
+            SetAnimation(delta2);
+            rect.anchoredPosition = nextPos2;
+            OnHeroMoved?.Invoke(nextPos2);
             UpdateDestinationMarkerVisuals(); // fade as we approach
         }
         else
@@ -276,6 +344,7 @@ public class OverworldHero : MonoBehaviour
             isMoving = false;        // cancel click-to-move while analog active
             directionalActive = false;
             HideDestinationMarker();
+            _path = null;
         }
     }
 
@@ -321,11 +390,21 @@ public class OverworldHero : MonoBehaviour
         isMoving = true;
         directionalActive = false; // ensure point-move owns motion
 
-        // Show predicted final stop (considering collisions)
+        // Build path (if enabled) and show final waypoint marker
+        _path = null; _pathIndex = 0;
+        if (usePathfinding && collisionProvider != null && mapRect != null)
+        {
+            if (TryComputePath(rect.anchoredPosition, targetPosition, out var path))
+            {
+                _path = path;
+                _pathIndex = 0;
+            }
+        }
+
         if (destinationMarkerEnabled)
         {
-            Vector2 predicted = PredictStop(rect.anchoredPosition, targetPosition);
-            ShowDestinationMarker(predicted);
+            Vector2 finalPoint = (_path != null && _path.Count > 0) ? _path[_path.Count - 1] : PredictStop(rect.anchoredPosition, targetPosition);
+            ShowDestinationMarker(finalPoint);
         }
     }
 
@@ -828,5 +907,208 @@ public class OverworldHero : MonoBehaviour
             c.a = a;
             img.color = c;
         }
+    }
+
+    // ----------------- A* Pathfinding helpers -----------------
+
+    private bool TryComputePath(Vector2 startLocal, Vector2 goalLocal, out System.Collections.Generic.List<Vector2> path)
+    {
+        path = null;
+        if (mapRect == null || collisionProvider == null || navCellSize <= 0) return false;
+
+        // Map bounds
+        var size = mapRect.rect.size;
+        var pos = mapRect.anchoredPosition; // top-left
+        float minX = pos.x;
+        float maxX = pos.x + size.x;
+        float maxY = pos.y;
+        float minY = pos.y - size.y;
+
+        int cols = Mathf.Max(1, Mathf.CeilToInt((maxX - minX) / navCellSize));
+        int rows = Mathf.Max(1, Mathf.CeilToInt((maxY - minY) / navCellSize));
+
+        // Local <-> Grid converters
+        System.Func<Vector2, (int gx, int gy)> L2G = (Vector2 p) =>
+        {
+            int gx = Mathf.Clamp((int)Mathf.Floor((p.x - minX) / navCellSize), 0, cols - 1);
+            int gy = Mathf.Clamp((int)Mathf.Floor((maxY - p.y) / navCellSize), 0, rows - 1);
+            return (gx, gy);
+        };
+        System.Func<int, int, Vector2> G2L = (int gx, int gy) =>
+        {
+            float x = minX + (gx + 0.5f) * navCellSize;
+            float y = maxY - (gy + 0.5f) * navCellSize;
+            return new Vector2(x, y);
+        };
+
+        // Clearance radius (hero body + buffer)
+        float heroRadius = collisionProbeRadius > 0f ? collisionProbeRadius : (rect != null ? Mathf.Min(rect.rect.width, rect.rect.height) * 0.35f : 8f);
+        float clearance = heroRadius + Mathf.Max(0f, navObstacleBuffer);
+        int rays = Mathf.Max(8, collisionProbeRays > 0 ? collisionProbeRays : 8);
+
+        // Cell walkability cache
+        var walkCache = new System.Collections.Generic.Dictionary<int, bool>(1024);
+        System.Func<int, int, bool> CellWalkable = (int gx, int gy) =>
+        {
+            if (gx < 0 || gy < 0 || gx >= cols || gy >= rows) return false;
+            int key = (gy * 32749) ^ gx; // simple hash
+            if (walkCache.TryGetValue(key, out bool ok)) return ok;
+            Vector2 sample = G2L(gx, gy);
+            bool w = collisionProvider.IsWalkableLocal(sample, clearance, rays);
+            walkCache[key] = w;
+            return w;
+        };
+
+        // A* node structure
+        var open = new System.Collections.Generic.List<(int gx, int gy, float f, float g)>();
+        var came = new System.Collections.Generic.Dictionary<int, (int px, int py)>();
+        var gScore = new System.Collections.Generic.Dictionary<int, float>();
+        var closed = new System.Collections.Generic.HashSet<int>();
+
+        (int sx, int sy) = L2G(startLocal);
+        (int tx, int ty) = L2G(goalLocal);
+
+        if (!CellWalkable(tx, ty))
+        {
+            // If target cell is blocked by clearance, try nearby cells in a small ring
+            bool foundAlt = false;
+            int maxRing = 3;
+            for (int r = 1; r <= maxRing && !foundAlt; r++)
+            {
+                for (int dy = -r; dy <= r; dy++)
+                {
+                    for (int dx = -r; dx <= r; dx++)
+                    {
+                        int nx = tx + dx, ny = ty + dy;
+                        if (CellWalkable(nx, ny)) { tx = nx; ty = ny; foundAlt = true; break; }
+                    }
+                    if (foundAlt) break;
+                }
+            }
+            if (!foundAlt) return false;
+        }
+
+        int startKey = (sy * 32749) ^ sx;
+        int goalKey = (ty * 32749) ^ tx;
+
+        System.Func<int, int, float> Heuristic = (int gx, int gy) =>
+        {
+            // Octile distance
+            float dx = Mathf.Abs(gx - tx);
+            float dy = Mathf.Abs(gy - ty);
+            float h = (dx + dy) + (1.41421356f - 2f) * Mathf.Min(dx, dy);
+            return h * navCellSize;
+        };
+
+        void OpenPush(int gx, int gy, float g)
+        {
+            float f = g + Heuristic(gx, gy);
+            open.Add((gx, gy, f, g));
+        }
+
+        OpenPush(sx, sy, 0f);
+        gScore[startKey] = 0f;
+
+        int expanded = 0;
+        int[] n8x = { -1, 0, 1, -1, 1, -1, 0, 1 };
+        int[] n8y = { -1, -1, -1, 0, 0, 1, 1, 1 };
+        float[] nCost = { 1.41421356f, 1f, 1.41421356f, 1f, 1f, 1.41421356f, 1f, 1.41421356f };
+
+        while (open.Count > 0)
+        {
+            // pop lowest f (linear scan; small lists)
+            int bestI = 0; float bestF = open[0].f;
+            for (int i = 1; i < open.Count; i++) if (open[i].f < bestF) { bestF = open[i].f; bestI = i; }
+            var node = open[bestI]; open.RemoveAt(bestI);
+            int key = (node.gy * 32749) ^ node.gx;
+            if (closed.Contains(key)) continue;
+            closed.Add(key);
+
+            expanded++;
+            if (expanded > navMaxExpanded) break;
+
+            if (node.gx == tx && node.gy == ty)
+            {
+                // Reconstruct
+                var rev = new System.Collections.Generic.List<Vector2>(64);
+                int cx = node.gx, cy = node.gy; int ckey = (cy * 32749) ^ cx;
+                rev.Add(G2L(cx, cy));
+                while (came.TryGetValue(ckey, out var p))
+                {
+                    cx = p.px; cy = p.py; ckey = (cy * 32749) ^ cx;
+                    rev.Add(G2L(cx, cy));
+                }
+                rev.Reverse();
+
+                // Basic string-pull smoothing (line-of-sight)
+                var smoothed = StringPull(rev, clearance, rays);
+                path = smoothed;
+                return path != null && path.Count > 0;
+            }
+
+            // Explore neighbors (prevent cutting corners through blocked adjacents)
+            for (int ni = 0; ni < 8; ni++)
+            {
+                int nx = node.gx + n8x[ni];
+                int ny = node.gy + n8y[ni];
+                if (!CellWalkable(nx, ny)) continue;
+
+                // For diagonals, ensure both orthogonal neighbors are walkable
+                bool diagonal = (n8x[ni] != 0 && n8y[ni] != 0);
+                if (diagonal)
+                {
+                    if (!CellWalkable(node.gx, ny) || !CellWalkable(nx, node.gy)) continue;
+                }
+
+                int nkey = (ny * 32749) ^ nx;
+                float tg = node.g + nCost[ni] * navCellSize;
+                if (gScore.TryGetValue(nkey, out float oldG) && oldG <= tg) continue;
+
+                gScore[nkey] = tg;
+                came[nkey] = (node.gx, node.gy);
+                OpenPush(nx, ny, tg);
+            }
+        }
+
+        return false;
+    }
+
+    private System.Collections.Generic.List<Vector2> StringPull(System.Collections.Generic.List<Vector2> pts, float clearance, int rays)
+    {
+        if (pts == null || pts.Count == 0) return pts;
+        var result = new System.Collections.Generic.List<Vector2>();
+        Vector2 a = pts[0];
+        result.Add(a);
+        int i = 0;
+        while (i < pts.Count - 1)
+        {
+            int j = pts.Count - 1;
+            // Find furthest visible from a
+            for (; j > i + 1; j--)
+            {
+                if (SegmentClear(a, pts[j], clearance, rays))
+                    break;
+            }
+            a = pts[j];
+            result.Add(a);
+            i = j;
+        }
+        return result;
+    }
+
+    private bool SegmentClear(Vector2 a, Vector2 b, float clearance, int rays)
+    {
+        // Sample along the segment at ~half cell length
+        float len = (b - a).magnitude;
+        if (len <= 1e-4f) return true;
+        int steps = Mathf.Max(1, Mathf.CeilToInt(len / Mathf.Max(1f, navCellSize * 0.5f)));
+        for (int i = 0; i <= steps; i++)
+        {
+            float t = (float)i / steps;
+            Vector2 p = Vector2.Lerp(a, b, t);
+            if (!collisionProvider.IsWalkableLocal(p, clearance, rays))
+                return false;
+        }
+        return true;
     }
 }
