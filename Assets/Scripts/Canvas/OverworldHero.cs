@@ -3,9 +3,9 @@ using UnityEngine;
 
 public enum OverworldHeroInputMode
 {
-    VirtualJoystick,
-    ClickToMove,
-    DirectionalPress
+    FollowCursor = 1,
+    ClickToMove = 2,
+    VirtualJoystick = 3,
 }
 
 // OverworldHero (world-space only)
@@ -19,7 +19,7 @@ public class OverworldHero : MonoBehaviour
 {
     // Bindings (resolved at runtime from hierarchy paths)
     public Animator animator;                 // Animator driving 8-way blend tree
-    private SpriteRenderer mapSprite;         // Map SpriteRenderer used for world bounds
+    private SpriteRenderer terrainSprite;         // Map SpriteRenderer used for world bounds
     private SpriteRenderer heroSprite;        // Hero's SpriteRenderer (for probe radius inference)
     private MapTerrain collisionProvider;     // Central collision provider on Terrain
     private Camera worldCamera;               // Camera for screen->world and visibility tests
@@ -36,12 +36,27 @@ public class OverworldHero : MonoBehaviour
     private float speedSampleAheadFactor = 0.7f; // Future-proof: speed zones, currently constant 1x
 
     // Input mode
-    private OverworldHeroInputMode inputMode = OverworldHeroInputMode.VirtualJoystick;
+    private OverworldHeroInputMode inputMode = OverworldHeroInputMode.FollowCursor;
     public OverworldHeroInputMode InputMode
     {
         get => inputMode;
-        set => inputMode = value;
+        set
+        {
+            if (inputMode == value) return;
+            var prev = inputMode;
+            inputMode = value;
+            // When leaving ClickToMove, clear any destination marker and path state
+            if (prev == OverworldHeroInputMode.ClickToMove && inputMode != OverworldHeroInputMode.ClickToMove)
+            {
+                isMoving = false; _path = null; directionalActive = false;
+                ClearDestinationMarker();
+            }
+        }
     }
+
+
+    public bool UsingJoystick => inputMode == OverworldHeroInputMode.VirtualJoystick;
+
     private float directionalClickMagnitude = 1f; // 0..1 strength fed into analog
 
     // External toggles
@@ -88,22 +103,29 @@ public class OverworldHero : MonoBehaviour
     // Collision center offset (world-space)
     private Vector2 collisionOffset = Vector2.zero;
 
+    // Destination marker
+    private GameObject destinationMarkerPrefab;
+    private GameObject activeDestinationMarker;
+
     private void Awake()
     {
         // Auto-bind core components using exact hierarchy paths
         worldCamera = Camera.main;
 
         // Map terrain (SpriteRenderer + MapTerrain provider)
-        var terrainGo = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain);
-        mapSprite = terrainGo.GetComponent<SpriteRenderer>();
-        collisionProvider = terrainGo.GetComponent<MapTerrain>();
+        terrainSprite = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain).GetComponent<SpriteRenderer>();
+        collisionProvider = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain).GetComponent<MapTerrain>();
 
         // Hero sprite and animator
         heroSprite = GetComponent<SpriteRenderer>();
-        if (animator == null) animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
 
         // Initialize animator with default idle facing
         ApplyAnimatorParameters(lastLook, 0f);
+
+        // Cache destination marker prefab
+
+        destinationMarkerPrefab = PrefabLibrary.Prefabs["DestinationMarkerPrefab"];
     }
 
     private void Update()
@@ -116,7 +138,7 @@ public class OverworldHero : MonoBehaviour
             case OverworldHeroInputMode.ClickToMove:
                 TickClickToMove();
                 break;
-            case OverworldHeroInputMode.DirectionalPress:
+            case OverworldHeroInputMode.FollowCursor:
                 TickDirectionalPress();
                 break;
         }
@@ -170,7 +192,7 @@ public class OverworldHero : MonoBehaviour
 
         if (!AllowClickToMove)
         {
-            SetIdle(); isMoving = false; _path = null; return;
+            SetIdle(); isMoving = false; _path = null; ClearDestinationMarker(); return;
         }
 
         if (!isMoving)
@@ -191,7 +213,7 @@ public class OverworldHero : MonoBehaviour
                 _pathIndex++;
                 if (_pathIndex >= _path.Count)
                 {
-                    SetPosition(wp); OnHeroMoved?.Invoke(wp); isMoving = false; SetIdle(); return;
+                    SetPosition(wp); OnHeroMoved?.Invoke(wp); isMoving = false; SetIdle(); ClearDestinationMarker(); return;
                 }
                 wp = _path[_pathIndex]; toWp = wp - cur; distWp = toWp.magnitude;
             }
@@ -212,14 +234,14 @@ public class OverworldHero : MonoBehaviour
             }
             else
             {
-                _path = null; isMoving = false; SetIdle();
+                _path = null; isMoving = false; SetIdle(); ClearDestinationMarker();
             }
             return;
         }
 
         if (Vector2.Distance(cur, targetPosition) <= snapThreshold)
         {
-            SetPosition(targetPosition); OnHeroMoved?.Invoke(targetPosition); isMoving = false; SetIdle(); return;
+            SetPosition(targetPosition); OnHeroMoved?.Invoke(targetPosition); isMoving = false; SetIdle(); ClearDestinationMarker(); return;
         }
 
         Vector2 toTarget = targetPosition - cur; float dist = toTarget.magnitude;
@@ -237,7 +259,7 @@ public class OverworldHero : MonoBehaviour
         }
         else
         {
-            isMoving = false; SetIdle();
+            isMoving = false; SetIdle(); ClearDestinationMarker();
         }
     }
 
@@ -288,6 +310,7 @@ public class OverworldHero : MonoBehaviour
             isMoving = false;        // cancel click-to-move while analog active
             directionalActive = false;
             _path = null;
+            ClearDestinationMarker();
         }
     }
 
@@ -323,6 +346,9 @@ public class OverworldHero : MonoBehaviour
         isMoving = true;
         directionalActive = false; // ensure point-move owns motion
 
+        // Spawn/refresh destination marker
+        PlaceDestinationMarker(targetPosition);
+
         // Build path (if enabled)
         _path = null; _pathIndex = 0;
         if (usePathfinding && collisionProvider != null)
@@ -338,7 +364,7 @@ public class OverworldHero : MonoBehaviour
     // Hold-to-move directional clicks (screen param kept for compatibility)
     public void BeginDirectionalFromScreen(Vector2 screenPos, UnityEngine.RectTransform _)
     {
-        if (inputMode != OverworldHeroInputMode.DirectionalPress) return;
+        if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         var cam = worldCamera != null ? worldCamera : Camera.main;
         float zDist = Mathf.Abs(cam.transform.position.z - transform.position.z);
         Vector3 wp = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, zDist));
@@ -347,7 +373,7 @@ public class OverworldHero : MonoBehaviour
 
     public void UpdateDirectionalFromScreen(Vector2 screenPos, UnityEngine.RectTransform _)
     {
-        if (inputMode != OverworldHeroInputMode.DirectionalPress) return;
+        if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         if (!directionalActive) return;
         var cam = worldCamera != null ? worldCamera : Camera.main;
         float zDist = Mathf.Abs(cam.transform.position.z - transform.position.z);
@@ -355,7 +381,7 @@ public class OverworldHero : MonoBehaviour
         SetDirectionalOverride(new Vector2(wp.x, wp.y));
     }
 
-    public void EndDirectional()
+    public void FullStop()
     {
         directionalActive = false;
         directionalOverride = Vector2.zero;
@@ -366,7 +392,7 @@ public class OverworldHero : MonoBehaviour
 
     private void SetDirectionalOverride(Vector2 world)
     {
-        if (inputMode != OverworldHeroInputMode.DirectionalPress) return;
+        if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         Vector2 delta = ClampToMap(world) - GetPosition();
         if (delta.sqrMagnitude < 1e-6f)
         {
@@ -417,7 +443,11 @@ public class OverworldHero : MonoBehaviour
     {
         animator.SetFloat("MoveX", dir.x);
         animator.SetFloat("MoveY", dir.y);
-        animator.SetFloat("Speed", speed);
+        // Convert per-frame distance into units/second so transitions with Speed>0.1f work reliably
+        float speedPerSecond = speed;
+        if (Application.isPlaying && Time.deltaTime > 0f)
+            speedPerSecond = speed / Time.deltaTime;
+        animator.SetFloat("Speed", speedPerSecond);
     }
 
     public void SetFacing(string facingName)
@@ -467,7 +497,7 @@ public class OverworldHero : MonoBehaviour
     private Vector2 ClampToMap(Vector2 p)
     {
         // World-space clamp against sprite bounds
-        Bounds b = mapSprite.bounds;
+        Bounds b = terrainSprite.bounds;
         float cx = Mathf.Clamp(p.x, b.min.x, b.max.x);
         float cy = Mathf.Clamp(p.y, b.min.y, b.max.y);
         return new Vector2(cx, cy);
@@ -477,10 +507,10 @@ public class OverworldHero : MonoBehaviour
 
     public void BindWorld(SpriteRenderer map, Camera cam)
     {
-        mapSprite = map;
+        terrainSprite = map;
         worldCamera = cam;
-        if (collisionProvider == null && mapSprite != null)
-            collisionProvider = mapSprite.GetComponent<MapTerrain>();
+        if (collisionProvider == null && terrainSprite != null)
+            collisionProvider = terrainSprite.GetComponent<MapTerrain>();
     }
 
     public void BindCollisionProvider(MapTerrain provider)
@@ -609,7 +639,7 @@ public class OverworldHero : MonoBehaviour
         path = null;
         if (navCellSize <= 0) return false;
 
-        Bounds b = mapSprite.bounds;
+        Bounds b = terrainSprite.bounds;
         float minX = b.min.x, maxX = b.max.x;
         float minY = b.min.y, maxY = b.max.y;
 
@@ -821,6 +851,24 @@ public class OverworldHero : MonoBehaviour
     private void SetPosition(Vector2 v)
     {
         transform.position = new Vector3(v.x, v.y, transform.position.z);
+    }
+
+    private void PlaceDestinationMarker(Vector2 world)
+    {
+        ClearDestinationMarker();
+        if (destinationMarkerPrefab == null) return;
+        activeDestinationMarker = Instantiate(destinationMarkerPrefab);
+        var z = transform.position.z;
+        activeDestinationMarker.transform.position = new Vector3(world.x, world.y, z);
+    }
+
+    private void ClearDestinationMarker()
+    {
+        if (activeDestinationMarker != null)
+        {
+            Destroy(activeDestinationMarker);
+            activeDestinationMarker = null;
+        }
     }
 
     // Inspector toggles via code (optional helpers)

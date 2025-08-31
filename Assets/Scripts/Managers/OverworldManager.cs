@@ -68,24 +68,15 @@ public class OverworldManager : MonoBehaviour
 
         // Load UI joystick and hero
         virtualJoystick = GameObject.Find(GameObjectHelper.Overworld.Canvas.VirtualJoystick)?.GetComponent<VirtualJoystick>();
-        joystickRect = virtualJoystick != null ? virtualJoystick.GetComponent<RectTransform>() : null;
+        joystickRect = virtualJoystick.GetComponent<RectTransform>();
 
         // Input mode button + icon
-        var btnGo = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeButton);
-        if (btnGo != null)
-        {
-            inputModeButton = btnGo.GetComponent<Button>();
-            if (inputModeButton != null)
-                inputModeButton.onClick.AddListener(CycleInputMode);
-        }
-        var imgGo = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeImage);
-        inputModeImage = imgGo.GetComponent<Image>();
-        var labelGo = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeLabel);
-        inputModeLabel = labelGo.GetComponent<Label>();
+        inputModeButton = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeButton).GetComponent<Button>();
+        inputModeImage = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeImage).GetComponent<Image>();
+        inputModeLabel = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeLabel).GetComponent<Label>();
 
         // Find Map root
-        var mapGo = GameObject.Find("Map");
-        mapRoot = mapGo != null ? mapGo.transform : null;
+        mapRoot = GameObject.Find("Map").transform;
 
         // Load map data from profile
         var overworld = ProfileHelper.CurrentProfile.CurrentSave.Overworld;
@@ -94,7 +85,7 @@ public class OverworldManager : MonoBehaviour
         // Ensure world-space layers exist as SpriteRenderers (preserve scene scale)
         terrainSR = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Terrain"), data.Terrain, sortingOrder: 0);
         surfaceSR = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Surface"), data.Surface, sortingOrder: 1);
-        canopySR  = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Canopy"),  data.Canopy,  sortingOrder: 10);
+        canopySR = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Canopy"), data.Canopy, sortingOrder: 10);
 
         // Ensure the terrain has a collision provider component
         MapTerrain collisionProvider = null;
@@ -107,24 +98,19 @@ public class OverworldManager : MonoBehaviour
         }
 
         // Find hero under Map/Hero or by helper as fallback
-        hero = (RelativeOrGlobal(mapRoot, "Hero")?.GetComponent<OverworldHero>())
-              ?? GameObject.Find(GameObjectHelper.Overworld.Map.Hero)?.GetComponent<OverworldHero>();
+        hero = GameObject.Find(GameObjectHelper.Overworld.Map.Hero).GetComponent<OverworldHero>();
+        hero.AllowClickToMove = true; // enable click handling
+        hero.OnHeroMoved += HandleHeroMoved;
 
-        // Wire hero
-        if (hero != null)
-        {
-            hero.AllowClickToMove = true; // enable click handling
-            hero.OnHeroMoved += HandleHeroMoved;
+        // Bind world mode
+        hero.BindWorld(terrainSR, cam);
+        if (collisionProvider != null)
+            hero.BindCollisionProvider(collisionProvider);
 
-            // Bind world mode
-            hero.BindWorld(terrainSR, cam);
-            if (collisionProvider != null)
-                hero.BindCollisionProvider(collisionProvider);
+        // Position hero from save (world units)
+        hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
+        hero.SetFacing(overworld.HeroDirection);
 
-            // Position hero from save (world units)
-            hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
-            hero.SetFacing(overworld.HeroDirection);
-        }
 
         // Initialize UI state
         UpdateInputModeUI();
@@ -143,14 +129,12 @@ public class OverworldManager : MonoBehaviour
     {
         if (hero == null) return;
 
-        hero.InputMode = (OverworldHeroInputMode)(((int)hero.InputMode + 1) % 3);
-        ApplyInputModeEffects();
-    }
-
-    // Apply visuals and clear inputs when switching mode
-    private void ApplyInputModeEffects()
-    {
-        UpdateInputModeUI();
+        hero.InputMode = hero.InputMode switch
+        {
+            OverworldHeroInputMode.FollowCursor => OverworldHeroInputMode.ClickToMove,
+            OverworldHeroInputMode.ClickToMove => OverworldHeroInputMode.VirtualJoystick,
+            _ => OverworldHeroInputMode.FollowCursor,
+        };
 
         // Reset joystick output when not in joystick mode
         if (hero.InputMode != OverworldHeroInputMode.VirtualJoystick)
@@ -159,52 +143,35 @@ public class OverworldManager : MonoBehaviour
             hero.SetAnalogInput(Vector2.zero);
         }
 
-        // Ensure no latched directional state when not in directional mode
-        if (hero.InputMode != OverworldHeroInputMode.DirectionalPress)
-        {
-            hero.EndDirectional();
-        }
+        UpdateInputModeUI();
+        hero.FullStop();
     }
 
     // Set the input-mode icon and show/hide the joystick canvas object
     private void UpdateInputModeUI()
     {
-        // Icon
-        if (inputModeImage != null)
+        //Map input mode to button sprite and label
+        var mapping = hero.InputMode switch
         {
-            string key = "Joystick00";
-            switch (hero != null ? hero.InputMode : OverworldHeroInputMode.VirtualJoystick)
-            {
-                case OverworldHeroInputMode.VirtualJoystick: key = "Joystick00"; break;
-                case OverworldHeroInputMode.ClickToMove:      key = "Joystick01"; break;
-                case OverworldHeroInputMode.DirectionalPress: key = "Joystick02"; break;
-            }
+            OverworldHeroInputMode.FollowCursor => ("Joystick00", "Follow"),
+            OverworldHeroInputMode.ClickToMove => ("Joystick01", "Click"),
+            OverworldHeroInputMode.VirtualJoystick => ("Joystick02", "Joystick"),
+            _ => ("Joystick00", "Follow"),
+        };
 
-            inputModeImage.sprite = SpriteLibrary.GUI[key];
-            inputModeLabel.text = key switch
-            {
-                "Joystick00" => "Joystick",
-                "Joystick01" => "Click",
-                "Joystick02" => "Directional",
-                _ => "Unknown"
-            };
-        }
+        // Set button sprite and label
+        inputModeImage.sprite = SpriteLibrary.GUI[mapping.Item1];
+        inputModeLabel.text = mapping.Item2;
 
-        // Joystick visibility
-        bool showStick = hero != null && hero.InputMode == OverworldHeroInputMode.VirtualJoystick;
-        if (virtualJoystick != null)
-        {
-            var go = virtualJoystick.gameObject;
-            if (go.activeSelf != showStick)
-                go.SetActive(showStick);
-        }
+        //Toggle joystick visibility
+        virtualJoystick.gameObject.SetActive(hero.UsingJoystick);
     }
 
     private void Update()
     {
         if (terrainSR == null) return;
 
-        bool isDirectional = hero != null && hero.InputMode == OverworldHeroInputMode.DirectionalPress;
+        bool isDirectional = hero != null && hero.InputMode == OverworldHeroInputMode.FollowCursor;
 
         // Touch (hold-to-move in directional mode)
         if (Input.touchCount > 0)
@@ -229,7 +196,7 @@ public class OverworldManager : MonoBehaviour
             {
                 if (isDirectional && hero != null)
                 {
-                    hero.EndDirectional();
+                    hero.FullStop();
                 }
                 else if (pointerDownAllowed && IsTap(t.position) && !IsOverJoystick(t.position))
                 {
@@ -263,7 +230,7 @@ public class OverworldManager : MonoBehaviour
             Vector2 pos = (Vector2)Input.mousePosition;
             if (isDirectional && hero != null)
             {
-                hero.EndDirectional();
+                hero.FullStop();
             }
             else if (pointerDownAllowed && IsTap(pos) && !IsOverJoystick(pos))
             {
