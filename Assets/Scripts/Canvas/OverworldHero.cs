@@ -519,6 +519,9 @@ public class OverworldHero : MonoBehaviour
     // Returns true if the given Content-local point is walkable according to MapTerrain
     private bool IsWalkableLocal(Vector2 local)
     {
+        // Offset the sampling point from the RectTransform pivot to its visual center
+        Vector2 centerLocal = GetRectCenterLocal(local);
+
         int rays = collisionProbeRays > 0 ? collisionProbeRays : 8;
         float radius = collisionProbeRadius > 0f
             ? collisionProbeRadius
@@ -527,23 +530,39 @@ public class OverworldHero : MonoBehaviour
         if (collisionProvider == null)
             return true; // fail-open if provider missing
 
-        return collisionProvider.IsWalkableLocal(local, radius, rays);
+        // Probe at center + ring
+        if (!collisionProvider.IsWalkableLocal(centerLocal)) return false;
+
+        if (radius > 0f && rays > 0)
+        {
+            float step = 360f / rays;
+            for (int i = 0; i < rays; i++)
+            {
+                float ang = step * i * Mathf.Deg2Rad;
+                Vector2 offset = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * radius;
+                if (!collisionProvider.IsWalkableLocal(centerLocal + offset))
+                    return false;
+            }
+        }
+        return true;
     }
 
-    // ----------------------------------------------------------------------
-    // Debug gizmos
-    // ----------------------------------------------------------------------
-
-    private void OnDrawGizmos()
+    // Compute the rect's visual center in parent (Content) local space for a given anchored position
+    private Vector2 GetRectCenterLocal(Vector2 anchored)
     {
-        if (!debugCollisionGizmos || rect == null || rect.parent == null) return;
-        DrawCollisionDebugGizmos();
+        if (rect == null) return anchored;
+        Vector2 size = rect.rect.size;
+        Vector2 pivot = rect.pivot;
+        // From pivot position to center: (0.5 - pivot) * size
+        Vector2 pivotToCenter = new Vector2((0.5f - pivot.x) * size.x, (0.5f - pivot.y) * size.y);
+        return anchored + pivotToCenter;
     }
 
     private void DrawCollisionDebugGizmos()
     {
         var parent = (RectTransform)rect.parent;
-        Vector2 centerLocal = rect.anchoredPosition;
+        // Sample at the visual center, not the pivot
+        Vector2 centerLocal = GetRectCenterLocal(rect.anchoredPosition);
 
         // Draw center sample
         Gizmos.color = SampleColor(centerLocal);
