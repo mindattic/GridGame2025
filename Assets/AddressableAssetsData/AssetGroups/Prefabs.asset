@@ -85,6 +85,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5de8a0642b078da4a854fcb2ec314857
+    m_Address: Prefabs/OverworldEncounterInstancePrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 70ed2dcb9cfeb86489b788049c8eeb4c
     m_Address: Prefabs/CombatTextPrefab
     m_ReadOnly: 0

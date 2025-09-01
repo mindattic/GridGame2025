@@ -35,7 +35,7 @@ public class OverworldManager : MonoBehaviour
     // Offscreen arrow (now handled by its own component)
     private OffscreenArrowIndicator offscreenArrow;
 
-    private bool hasRandomEncounters = false;
+    [SerializeField] private bool hasRandomEncounters = false;
 
     // Random encounter
     private float encounterTimer;                       // accumulates only while moving
@@ -44,7 +44,7 @@ public class OverworldManager : MonoBehaviour
     private bool isLoadingEncounter;                    // prevent double loads
 
     // Tap vs Drag detection
-    private bool pointerDownAllowed; // true if not over joystick
+    private bool pointerDownAllowed; // true if not over UI (except joystick)
     private Vector2 pointerDownPos;
     private float pointerDownTime;
     private const float tapMaxTime = 0.30f;
@@ -84,6 +84,7 @@ public class OverworldManager : MonoBehaviour
 
         // Load UI joystick and hero
         virtualJoystick = GameObject.Find(GameObjectHelper.Overworld.Canvas.VirtualJoystick)?.GetComponent<VirtualJoystick>();
+        if (virtualJoystick != null) joystickRect = virtualJoystick.GetComponent<RectTransform>();
 
         // Input mode button + icon
         inputModeButton = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeButton)?.GetComponent<Button>();
@@ -96,7 +97,7 @@ public class OverworldManager : MonoBehaviour
         cameraModeLabel = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeLabel)?.GetComponent<Label>();
 
         // Offscreen arrow indicator
-       
+        
 
 
         // Find Map root
@@ -240,14 +241,14 @@ public class OverworldManager : MonoBehaviour
         if (Input.touchCount > 0)
         {
             Touch t = Input.GetTouch(0);
+            bool overUiNow = IsOverUI(t.position) || (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject(t.fingerId));
 
             if (t.phase == TouchPhase.Began)
             {
-                pointerDownAllowed = !IsOverJoystick(t.position);
+                pointerDownAllowed = !overUiNow;
                 pointerDownPos = t.position;
                 pointerDownTime = Time.unscaledTime;
 
-                // Start camera pan when in FreeCamera
                 if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera)
                 {
                     isPanning = true;
@@ -255,7 +256,6 @@ public class OverworldManager : MonoBehaviour
                     panStartCameraTarget = cameraTarget;
                 }
 
-                // Begin directional only when not in FreeCamera
                 if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
                     hero.BeginDirectionalFromScreen(t.position, null);
             }
@@ -278,7 +278,7 @@ public class OverworldManager : MonoBehaviour
                 {
                     hero.FullStop();
                 }
-                else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && IsTap(t.position) && !IsOverJoystick(t.position))
+                else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && IsTap(t.position) && !overUiNow)
                 {
                     HandleTap(t.position);
                 }
@@ -290,7 +290,8 @@ public class OverworldManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 pos = (Vector2)Input.mousePosition;
-            pointerDownAllowed = !IsOverJoystick(pos);
+            bool overUiNow = IsOverUI(pos) || (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject());
+            pointerDownAllowed = !overUiNow;
             pointerDownPos = pos;
             pointerDownTime = Time.unscaledTime;
 
@@ -320,6 +321,7 @@ public class OverworldManager : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             Vector2 pos = (Vector2)Input.mousePosition;
+            bool overUiNow = IsOverUI(pos) || (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject());
             if (isPanning)
             {
                 isPanning = false;
@@ -328,7 +330,7 @@ public class OverworldManager : MonoBehaviour
             {
                 hero.FullStop();
             }
-            else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && IsTap(pos) && !IsOverJoystick(pos))
+            else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && IsTap(pos) && !overUiNow)
             {
                 HandleTap(pos);
             }
@@ -358,6 +360,24 @@ public class OverworldManager : MonoBehaviour
     {
         // Feed analog input to the hero every frame (hero ignores it unless in VirtualJoystick mode)
         Vector2 stick = virtualJoystick != null ? virtualJoystick.Direction : Vector2.zero;
+
+        // If currently over non-joystick UI, suppress joystick feed entirely
+        bool blockByUI = false;
+        if (EventSystem.current != null)
+        {
+            if (Input.touchCount > 0)
+            {
+                var t = Input.GetTouch(0);
+                blockByUI = IsOverUI(t.position) || EventSystem.current.IsPointerOverGameObject(t.fingerId);
+            }
+            else
+            {
+                Vector2 mp = Input.mousePosition;
+                blockByUI = IsOverUI(mp) || EventSystem.current.IsPointerOverGameObject();
+            }
+        }
+
+        if (blockByUI) stick = Vector2.zero;
 
         if (hero != null)
         {
@@ -419,14 +439,29 @@ public class OverworldManager : MonoBehaviour
         return (releasePos - pointerDownPos).sqrMagnitude <= tapMaxSqrDistance;
     }
 
-    private bool IsOverJoystick(Vector2 screenPos)
+    private bool IsOverUI(Vector2 screenPos)
     {
-        // In FreeCamera, always allow panning regardless of joystick area
-        if (cameraMode == OverworldCameraMode.FreeCamera) return false;
+        // Treat any UI under the pointer as blocking, except the virtual joystick hierarchy.
+        if (EventSystem.current == null) return false;
+        var ped = new PointerEventData(EventSystem.current) { position = screenPos };
+        var results = new System.Collections.Generic.List<RaycastResult>();
+        EventSystem.current.RaycastAll(ped, results);
+        if (results == null || results.Count == 0) return false;
 
-        // Do not block taps when the joystick is hidden or missing
-        if (joystickRect == null || !joystickRect.gameObject.activeInHierarchy) return false;
-        return RectTransformUtility.RectangleContainsScreenPoint(joystickRect, screenPos, null);
+        foreach (var r in results)
+        {
+            if (joystickRect != null)
+            {
+                var tr = r.gameObject.transform as RectTransform;
+                if (tr == joystickRect || tr != null && tr.IsChildOf(joystickRect))
+                {
+                    // Over joystick -> not blocking
+                    continue;
+                }
+            }
+            return true; // some UI hit that's not the joystick
+        }
+        return false;
     }
 
     private void HandleTap(Vector2 screenPos)

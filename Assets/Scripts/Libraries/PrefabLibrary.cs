@@ -35,6 +35,7 @@ public static class PrefabLibrary
             { "KeyboardDialog", AssetHelper.LoadAsset<GameObject>("Prefabs/KeyboardDialog") },
             { "KeyButtonPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/KeyButtonPrefab") },
             { "MessageBoxPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/MessageBoxPrefab") },
+            { "OverworldEncounterInstancePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/OverworldEncounterInstancePrefab") },
             { "Portrait2DPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/Portrait2DPrefab") },
             { "Portrait3DPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/Portrait3DPrefab") },
             { "RosterSlidePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/RosterSlidePrefab") },

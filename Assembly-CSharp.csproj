@@ -92,6 +92,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyStrand.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldEncounterManager.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Utilities\SceneLoader.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldEncounterInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\CombatLogHelper.cs" />
@@ -171,7 +173,6 @@
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime03.cs" />
     <Compile Include="Assets\Scripts\Utilities\GameReady.cs" />
-    <Compile Include="Assets\Scripts\Canvas\OffscreenArrowIndicator.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Assets\Scripts\Models\RectVector3.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\FocusIndicator.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldHero.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPostAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Captain.cs" />
@@ -228,6 +230,7 @@
     <Compile Include="Assets\Scripts\Managers\SortingManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\CharacterHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EndTurnSequence.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OffscreenArrowIndicator.cs" />
     <Compile Include="Assets\Scripts\Managers\Portrait3DManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
@@ -264,7 +267,6 @@
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\DestinationMarker.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
-    <Compile Include="Assets\Scripts\Canvas\OverworldHero.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />

@@ -745,7 +745,7 @@ public class OverworldHero : MonoBehaviour
         System.Func<int, int, Vector2> toSpace,
         int cols,
         int rows,
-        out System.Collections.Generic.List<Vector2> path)
+        out List<Vector2> path)
     {
         path = null;
 
