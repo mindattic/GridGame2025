@@ -130,6 +130,11 @@ namespace Assets.Helper
                 public const string InputModeButton = "Canvas/InputModeButton";
                 public const string InputModeImage = "Canvas/InputModeButton/Image";
                 public const string InputModeLabel = "Canvas/InputModeButton/Label";
+
+                public const string CameraModeButton = "Canvas/CameraModeButton";
+                public const string CameraModeImage = "Canvas/CameraModeButton/Image";
+                public const string CameraModeLabel = "Canvas/CameraModeButton/Label";
+
             }
             public static class Map
             {

@@ -8,12 +8,6 @@ using static UnityEngine.EventSystems.StandaloneInputModule;
 using scene = Assets.Helpers.SceneHelper;
 using Label = TMPro.TextMeshProUGUI;
 
-public enum OverworldCameraMode
-{
-    FollowHero,
-    FreeCamera,
-}
-
 // OverworldManager orchestrates input and scene transitions for the world-space overworld.
 // World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
 public class OverworldManager : MonoBehaviour
@@ -38,9 +32,8 @@ public class OverworldManager : MonoBehaviour
     private Image cameraModeImage;
     private Label cameraModeLabel;
 
-    // Offscreen arrow
-    private RectTransform offscreenArrowRect;
-    private RectTransform canvasRect;
+    // Offscreen arrow (now handled by its own component)
+    private OffscreenArrowIndicator offscreenArrow;
 
     private bool hasRandomEncounters = false;
 
@@ -91,7 +84,6 @@ public class OverworldManager : MonoBehaviour
 
         // Load UI joystick and hero
         virtualJoystick = GameObject.Find(GameObjectHelper.Overworld.Canvas.VirtualJoystick)?.GetComponent<VirtualJoystick>();
-        if (virtualJoystick != null) joystickRect = virtualJoystick.GetComponent<RectTransform>();
 
         // Input mode button + icon
         inputModeButton = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeButton)?.GetComponent<Button>();
@@ -99,15 +91,13 @@ public class OverworldManager : MonoBehaviour
         inputModeLabel = GameObject.Find(GameObjectHelper.Overworld.Canvas.InputModeLabel)?.GetComponent<Label>();
 
         // Camera mode button + icon (optional wiring from scene)
-        cameraModeButton = GameObject.Find("Canvas/CameraModeButton")?.GetComponent<Button>();
-        cameraModeImage = GameObject.Find("Canvas/CameraModeButton/Image")?.GetComponent<Image>();
-        cameraModeLabel = GameObject.Find("Canvas/CameraModeButton/Label")?.GetComponent<Label>();
+        cameraModeButton = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeButton)?.GetComponent<Button>();
+        cameraModeImage = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeImage)?.GetComponent<Image>();
+        cameraModeLabel = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeLabel)?.GetComponent<Label>();
 
-        // Offscreen arrow and canvas
-        var canvasGo = GameObject.Find(GameObjectHelper.Overworld.Canvas.Root);
-        canvasRect = canvasGo != null ? canvasGo.GetComponent<RectTransform>() : null;
-        offscreenArrowRect = GameObject.Find(GameObjectHelper.Overworld.Canvas.OffscreenArrow)?.GetComponent<RectTransform>();
-        if (offscreenArrowRect != null) offscreenArrowRect.gameObject.SetActive(false);
+        // Offscreen arrow indicator
+       
+
 
         // Find Map root
         mapRoot = GameObject.Find("Map").transform;
@@ -117,38 +107,30 @@ public class OverworldManager : MonoBehaviour
         var data = MapLibrary.Get(overworld.MapName);
 
         // Ensure world-space layers exist as SpriteRenderers (preserve scene scale)
-        terrainSR = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Terrain"), data.Terrain, sortingOrder: 0);
-        surfaceSR = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Surface"), data.Surface, sortingOrder: 1);
-        canopySR = EnsureWorldLayerSR(RelativeOrGlobal(mapRoot, "Canopy"), data.Canopy, sortingOrder: 10);
+        terrainSR = GameObject.Find(GameObjectHelper.Overworld.Map.Terrain).GetComponent<SpriteRenderer>();
+        surfaceSR = GameObject.Find(GameObjectHelper.Overworld.Map.Surface).GetComponent<SpriteRenderer>();
+        canopySR = GameObject.Find(GameObjectHelper.Overworld.Map.Canopy).GetComponent<SpriteRenderer>();
 
         // Ensure the terrain has a collision provider component
-        MapTerrain collisionProvider = null;
-        if (terrainSR != null)
-        {
-            collisionProvider = terrainSR.GetComponent<MapTerrain>();
-            if (collisionProvider == null)
-                collisionProvider = terrainSR.gameObject.AddComponent<MapTerrain>();
-            collisionProvider.ForceRefresh();
-        }
+        var collisionProvider = terrainSR.GetComponent<MapTerrain>();
+        collisionProvider.ForceRefresh();
 
         // Find hero under Map/Hero or by helper as fallback
         hero = GameObject.Find(GameObjectHelper.Overworld.Map.Hero).GetComponent<OverworldHero>();
         hero.AllowClickToMove = true; // enable click handling
         hero.OnHeroMoved += HandleHeroMoved;
-
-        // Bind world mode
-        hero.BindWorld(terrainSR, cam);
-        if (collisionProvider != null)
-            hero.BindCollisionProvider(collisionProvider);
-
-        // Position hero from save (world units)
         hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
         hero.SetFacing(overworld.HeroDirection);
-
-        // Configure FollowCursor speed ramp so distance scales speed noticeably
         hero.SetFollowSpeedRampDistance(8f);
+        hero.BindWorld(terrainSR, cam);
+        hero.BindCollisionProvider(collisionProvider);
 
+        // Wire offscreen indicator target now that we have hero
+        offscreenArrow = GameObject.Find(GameObjectHelper.Overworld.Canvas.OffscreenArrow).GetComponent<OffscreenArrowIndicator>();
+        offscreenArrow.WorldCamera = Camera.main;
+        //offscreenArrow.Target = (cameraMode == OverworldCameraMode.FreeCamera && hero != null) ? hero.transform : null; // null -> fade out
 
+     
         // Initialize UI state
         UpdateInputModeUI();
         UpdateCameraModeUI();
@@ -214,11 +196,24 @@ public class OverworldManager : MonoBehaviour
         {
             cameraTarget = hero.transform.position;
             isPanning = false;
+            hero.AllowClickToMove = true; // re-enable click move
+        }
+        else if (cameraMode == OverworldCameraMode.FreeCamera)
+        {
+            // Stop hero and block inputs while in free camera
+            if (hero != null)
+            {
+                hero.FullStop();
+                hero.SetAnalogInput(Vector2.zero);
+                hero.AllowClickToMove = false; // cancel click-to-move and block new ones
+            }
+            // Start free camera target from current camera position
+            cameraTarget = cam != null ? cam.transform.position : cameraTarget;
         }
         UpdateCameraModeUI();
     }
 
-  
+
 
     private void UpdateCameraModeUI()
     {
@@ -252,15 +247,16 @@ public class OverworldManager : MonoBehaviour
                 pointerDownPos = t.position;
                 pointerDownTime = Time.unscaledTime;
 
-                // Start camera pan when in FreeCamera and not using directional mode
-                if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera && !isDirectional)
+                // Start camera pan when in FreeCamera
+                if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera)
                 {
                     isPanning = true;
                     panStartScreen = t.position;
                     panStartCameraTarget = cameraTarget;
                 }
 
-                if (pointerDownAllowed && isDirectional && hero != null)
+                // Begin directional only when not in FreeCamera
+                if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
                     hero.BeginDirectionalFromScreen(t.position, null);
             }
             else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
@@ -269,7 +265,7 @@ public class OverworldManager : MonoBehaviour
                 {
                     UpdatePanTarget(t.position);
                 }
-                else if (pointerDownAllowed && isDirectional && hero != null)
+                else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
                     hero.UpdateDirectionalFromScreen(t.position, null);
             }
             else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
@@ -278,11 +274,11 @@ public class OverworldManager : MonoBehaviour
                 {
                     isPanning = false;
                 }
-                else if (isDirectional && hero != null)
+                else if (cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
                 {
                     hero.FullStop();
                 }
-                else if (pointerDownAllowed && IsTap(t.position) && !IsOverJoystick(t.position))
+                else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && IsTap(t.position) && !IsOverJoystick(t.position))
                 {
                     HandleTap(t.position);
                 }
@@ -298,14 +294,14 @@ public class OverworldManager : MonoBehaviour
             pointerDownPos = pos;
             pointerDownTime = Time.unscaledTime;
 
-            if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera && !isDirectional)
+            if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera)
             {
                 isPanning = true;
                 panStartScreen = pos;
                 panStartCameraTarget = cameraTarget;
             }
 
-            if (pointerDownAllowed && isDirectional && hero != null)
+            if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
                 hero.BeginDirectionalFromScreen(pos, null);
         }
         if (Input.GetMouseButton(0))
@@ -315,7 +311,7 @@ public class OverworldManager : MonoBehaviour
                 Vector2 pos = (Vector2)Input.mousePosition;
                 UpdatePanTarget(pos);
             }
-            else if (pointerDownAllowed && isDirectional && hero != null)
+            else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
             {
                 Vector2 pos = (Vector2)Input.mousePosition;
                 hero.UpdateDirectionalFromScreen(pos, null);
@@ -328,11 +324,11 @@ public class OverworldManager : MonoBehaviour
             {
                 isPanning = false;
             }
-            else if (isDirectional && hero != null)
+            else if (cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
             {
                 hero.FullStop();
             }
-            else if (pointerDownAllowed && IsTap(pos) && !IsOverJoystick(pos))
+            else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && IsTap(pos) && !IsOverJoystick(pos))
             {
                 HandleTap(pos);
             }
@@ -364,7 +360,17 @@ public class OverworldManager : MonoBehaviour
         Vector2 stick = virtualJoystick != null ? virtualJoystick.Direction : Vector2.zero;
 
         if (hero != null)
-            hero.SetAnalogInput(stick);
+        {
+            if (cameraMode == OverworldCameraMode.FreeCamera)
+            {
+                hero.SetAnalogInput(Vector2.zero);
+            }
+            else
+            {
+                hero.SetAnalogInput(stick);
+                hero.AllowClickToMove = true; // ensure re-enabled while following
+            }
+        }
 
         // Update camera position
         if (cam != null)
@@ -399,8 +405,12 @@ public class OverworldManager : MonoBehaviour
         }
         movedThisFrame = false;
 
-        // Offscreen arrow in FreeCamera
-        UpdateOffscreenArrow();
+        // Offscreen arrow indicator wiring/toggle (fade-based)
+        if (offscreenArrow != null)
+        {
+            offscreenArrow.WorldCamera = cam;
+            offscreenArrow.Target = (cameraMode == OverworldCameraMode.FreeCamera && hero != null) ? hero.transform : null; // null when not in FreeCamera -> fade out
+        }
     }
 
     private bool IsTap(Vector2 releasePos)
@@ -411,6 +421,9 @@ public class OverworldManager : MonoBehaviour
 
     private bool IsOverJoystick(Vector2 screenPos)
     {
+        // In FreeCamera, always allow panning regardless of joystick area
+        if (cameraMode == OverworldCameraMode.FreeCamera) return false;
+
         // Do not block taps when the joystick is hidden or missing
         if (joystickRect == null || !joystickRect.gameObject.activeInHierarchy) return false;
         return RectTransformUtility.RectangleContainsScreenPoint(joystickRect, screenPos, null);
@@ -569,82 +582,5 @@ public class OverworldManager : MonoBehaviour
         float x = Mathf.Clamp(target.x, minX, maxX);
         float y = Mathf.Clamp(target.y, minY, maxY);
         return new Vector3(x, y, target.z);
-    }
-
-    private void UpdateOffscreenArrow()
-    {
-        if (offscreenArrowRect == null || cam == null || hero == null)
-        {
-            if (offscreenArrowRect != null) offscreenArrowRect.gameObject.SetActive(false);
-            return;
-        }
-        if (cameraMode != OverworldCameraMode.FreeCamera)
-        {
-            offscreenArrowRect.gameObject.SetActive(false);
-            return;
-        }
-
-        Vector3 sp = cam.WorldToScreenPoint(hero.transform.position);
-        bool visible = sp.z > 0f && sp.x >= 0f && sp.x <= Screen.width && sp.y >= 0f && sp.y <= Screen.height;
-        if (visible)
-        {
-            offscreenArrowRect.gameObject.SetActive(false);
-            return;
-        }
-
-        // Determine point on screen edge pointing toward hero
-        Vector2 center = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-        Vector2 toHero = new Vector2(sp.x, sp.y) - center;
-        if (toHero.sqrMagnitude < 1e-6f)
-        {
-            offscreenArrowRect.gameObject.SetActive(false);
-            return;
-        }
-        Vector2 dir = toHero.normalized;
-        float margin = 40f;
-        float halfW = Screen.width * 0.5f - margin;
-        float halfH = Screen.height * 0.5f - margin;
-
-        float vx, vy;
-        if (Mathf.Abs(dir.x) > 1e-4f)
-        {
-            float sx = dir.x > 0 ? halfW : -halfW;
-            float sy = dir.y / Mathf.Abs(dir.x) * Mathf.Abs(sx);
-            if (Mathf.Abs(sy) <= halfH)
-            {
-                vx = center.x + sx;
-                vy = center.y + sy;
-            }
-            else
-            {
-                float sy2 = dir.y > 0 ? halfH : -halfH;
-                float sx2 = (dir.x / Mathf.Abs(dir.y)) * Mathf.Abs(sy2);
-                vx = center.x + sx2;
-                vy = center.y + sy2;
-            }
-        }
-        else
-        {
-            // Vertical
-            vx = center.x;
-            vy = center.y + (dir.y > 0 ? halfH : -halfH);
-        }
-
-        Vector2 edge = new Vector2(vx, vy);
-
-        // Place arrow on canvas
-        if (canvasRect != null)
-        {
-            Vector2 localPos;
-            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, edge, null, out localPos))
-            {
-                offscreenArrowRect.anchoredPosition = localPos;
-            }
-        }
-
-        // Rotate to face hero direction
-        float ang = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        offscreenArrowRect.localEulerAngles = new Vector3(0f, 0f, ang);
-        if (!offscreenArrowRect.gameObject.activeSelf) offscreenArrowRect.gameObject.SetActive(true);
     }
 }

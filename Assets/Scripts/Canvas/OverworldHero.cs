@@ -4,12 +4,7 @@ using UnityEngine.UIElements;
 using System.Collections.Generic;
 using System;
 
-public enum OverworldHeroInputMode
-{
-    FollowCursor = 1,
-    ClickToMove = 2,
-    VirtualJoystick = 3,
-}
+
 
 // OverworldHero (world-space only)
 // Movement types (mutually exclusive):

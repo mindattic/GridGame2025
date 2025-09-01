@@ -2038,11 +2038,11 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2066561939}
   - {fileID: 1910504889}
   - {fileID: 40629339}
   - {fileID: 2051155026}
   - {fileID: 780870253}
+  - {fileID: 2066561939}
   - {fileID: 985573458}
   - {fileID: 729210059}
   m_Father: {fileID: 0}
@@ -2466,6 +2466,8 @@ GameObject:
   - component: {fileID: 2066561939}
   - component: {fileID: 2066561941}
   - component: {fileID: 2066561940}
+  - component: {fileID: 2066561943}
+  - component: {fileID: 2066561942}
   m_Layer: 5
   m_Name: OffscreenArrow
   m_TagString: Untagged
@@ -2530,6 +2532,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2066561938}
   m_CullTransparentMesh: 1
+--- !u!114 &2066561942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066561938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d112ce78c7faf6409c2924816e8cf2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OffscreenArrowIndicator
+  target: {fileID: 163499840}
+  worldCamera: {fileID: 362152976}
+  margin: 40
+--- !u!225 &2066561943
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2066561938}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

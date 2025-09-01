@@ -171,6 +171,7 @@
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime03.cs" />
     <Compile Include="Assets\Scripts\Utilities\GameReady.cs" />
+    <Compile Include="Assets\Scripts\Canvas\OffscreenArrowIndicator.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
