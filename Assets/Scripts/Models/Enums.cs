@@ -378,12 +378,6 @@ public enum MotionStyle
     HomingSpiral
 }
 
-public enum OverworldHeroInputMode
-{
-    FollowCursor = 1,
-    ClickToMove = 2,
-    VirtualJoystick = 3,
-}
 
 public enum OverworldCameraMode
 {

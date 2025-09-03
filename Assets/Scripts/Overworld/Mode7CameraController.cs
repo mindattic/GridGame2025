@@ -58,17 +58,7 @@ public class Mode7CameraController : MonoBehaviour
             var hero = FindObjectOfType<OverworldHero>();
             if (hero != null) target = hero.transform;
         }
-        if (terrain == null)
-        {
-            // Try a few heuristics to locate terrain renderer
-            var mt = FindObjectOfType<MapTerrain>();
-            if (mt != null) terrain = mt.GetComponent<SpriteRenderer>();
-            if (terrain == null)
-            {
-                var go = GameObject.Find("Terrain");
-                if (go != null) terrain = go.GetComponent<SpriteRenderer>();
-            }
-        }
+  
     }
 
     private void LateUpdate()

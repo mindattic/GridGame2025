@@ -1,12 +1,10 @@
 using Assets.Helper;
 using Assets.Helpers;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEngine.EventSystems.StandaloneInputModule;
-using scene = Assets.Helpers.SceneHelper;
 using Label = TMPro.TextMeshProUGUI;
+using scene = Assets.Helpers.SceneHelper;
 
 // OverworldManager orchestrates input and scene transitions for the world-space overworld.
 // World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
@@ -112,7 +110,7 @@ public class OverworldManager : MonoBehaviour
         cameraModeLabel = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeLabel)?.GetComponent<Label>();
 
         // Offscreen arrow indicator
-        
+
 
 
         // Find Map root
@@ -128,26 +126,24 @@ public class OverworldManager : MonoBehaviour
         canopySR = GameObject.Find(GameObjectHelper.Overworld.Map.Canopy).GetComponent<SpriteRenderer>();
 
         // Ensure the terrain has a collision provider component
-        var collisionProvider = terrainSR.GetComponent<MapTerrain>();
-        collisionProvider.ForceRefresh();
+        //var collisionProvider = terrainSR.GetComponent<MapTerrain>();
+        //collisionProvider.ForceRefresh();
 
         // Find hero under Map/Hero or by helper as fallback
         hero = GameObject.Find(GameObjectHelper.Overworld.Map.Hero).GetComponent<OverworldHero>();
-        hero.AllowClickToMove = true; // enable click handling
         hero.OnHeroMoved += HandleHeroMoved;
         hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
         hero.SetFacing(overworld.HeroDirection);
         hero.BindWorld(terrainSR, cam);
-        hero.BindCollisionProvider(collisionProvider);
+        //hero.BindCollisionProvider(collisionProvider);
 
         // Wire offscreen indicator target now that we have hero
         offscreenArrow = GameObject.Find(GameObjectHelper.Overworld.Canvas.OffscreenArrow).GetComponent<OffscreenArrowIndicator>();
         offscreenArrow.WorldCamera = Camera.main;
         //offscreenArrow.Target = (cameraMode == OverworldCameraMode.FreeCamera && hero != null) ? hero.transform : null; // null -> fade out
 
-     
+
         // Initialize UI state
-        UpdateInputModeUI();
         UpdateCameraModeUI();
 
         scene.FadeIn();
@@ -156,52 +152,7 @@ public class OverworldManager : MonoBehaviour
     private void OnDestroy()
     {
         if (hero != null) hero.OnHeroMoved -= HandleHeroMoved;
-        if (inputModeButton != null) inputModeButton.onClick.RemoveListener(CycleInputMode);
         if (cameraModeButton != null) cameraModeButton.onClick.RemoveListener(CycleCameraMode);
-    }
-
-    // Called by InputMode button
-    public void CycleInputMode()
-    {
-        if (hero == null) return;
-
-        hero.InputMode = hero.InputMode switch
-        {
-            OverworldHeroInputMode.FollowCursor => OverworldHeroInputMode.ClickToMove,
-            OverworldHeroInputMode.ClickToMove => OverworldHeroInputMode.VirtualJoystick,
-            _ => OverworldHeroInputMode.FollowCursor,
-        };
-
-        // Reset joystick output when not in joystick mode
-        if (hero.InputMode != OverworldHeroInputMode.VirtualJoystick)
-        {
-            if (virtualJoystick != null) virtualJoystick.ResetOutput();
-            hero.SetAnalogInput(Vector2.zero);
-        }
-
-        UpdateInputModeUI();
-        hero.FullStop();
-    }
-
-    // Set the input-mode icon and show/hide the joystick canvas object
-    private void UpdateInputModeUI()
-    {
-        //Map input mode to button sprite and label
-        var mapping = hero.InputMode switch
-        {
-            OverworldHeroInputMode.FollowCursor => ("Joystick00", "Follow"),
-            OverworldHeroInputMode.ClickToMove => ("Joystick01", "Click"),
-            OverworldHeroInputMode.VirtualJoystick => ("Joystick02", "Joystick"),
-            _ => ("Joystick00", "Follow"),
-        };
-
-        // Set button sprite and label
-        if (inputModeImage != null) inputModeImage.sprite = SpriteLibrary.GUI[mapping.Item1];
-        if (inputModeLabel != null) inputModeLabel.text = mapping.Item2;
-
-        //Toggle joystick visibility
-        if (virtualJoystick != null)
-            virtualJoystick.gameObject.SetActive(hero.UsingJoystick);
     }
 
     public void CycleCameraMode()
@@ -219,7 +170,6 @@ public class OverworldManager : MonoBehaviour
         {
             cameraTarget = hero.transform.position;
             isPanning = false;
-            hero.AllowClickToMove = true; // re-enable click move
         }
         else if (cameraMode == OverworldCameraMode.FreeCamera)
         {
@@ -227,8 +177,7 @@ public class OverworldManager : MonoBehaviour
             if (hero != null)
             {
                 hero.FullStop();
-                hero.SetAnalogInput(Vector2.zero);
-                hero.AllowClickToMove = false; // cancel click-to-move and block new ones
+
             }
             // Start free camera target from current camera position
             cameraTarget = cam != null ? cam.transform.position : cameraTarget;
@@ -257,8 +206,6 @@ public class OverworldManager : MonoBehaviour
     {
         if (terrainSR == null) return;
 
-        bool isDirectional = hero != null && hero.InputMode == OverworldHeroInputMode.FollowCursor;
-
         // Touch (hold-to-move in directional mode) or pan camera in FreeCamera
         if (Input.touchCount > 0)
         {
@@ -278,7 +225,7 @@ public class OverworldManager : MonoBehaviour
                     panStartCameraTarget = cameraTarget;
                 }
 
-                if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
+                if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && hero != null)
                     hero.BeginDirectionalFromScreen(t.position, null);
             }
             else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
@@ -287,7 +234,7 @@ public class OverworldManager : MonoBehaviour
                 {
                     UpdatePanTarget(t.position);
                 }
-                else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
+                else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && hero != null)
                     hero.UpdateDirectionalFromScreen(t.position, null);
             }
             else if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
@@ -296,14 +243,11 @@ public class OverworldManager : MonoBehaviour
                 {
                     isPanning = false;
                 }
-                else if (cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
+                else if (cameraMode != OverworldCameraMode.FreeCamera && hero != null)
                 {
                     hero.FullStop();
                 }
-                else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && IsTap(t.position) && !overUiNow)
-                {
-                    HandleTap(t.position);
-                }
+
             }
             return;
         }
@@ -324,7 +268,7 @@ public class OverworldManager : MonoBehaviour
                 panStartCameraTarget = cameraTarget;
             }
 
-            if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
+            if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && hero != null)
                 hero.BeginDirectionalFromScreen(pos, null);
         }
         if (Input.GetMouseButton(0))
@@ -334,7 +278,7 @@ public class OverworldManager : MonoBehaviour
                 Vector2 pos = (Vector2)Input.mousePosition;
                 UpdatePanTarget(pos);
             }
-            else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
+            else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && hero != null)
             {
                 Vector2 pos = (Vector2)Input.mousePosition;
                 hero.UpdateDirectionalFromScreen(pos, null);
@@ -348,14 +292,11 @@ public class OverworldManager : MonoBehaviour
             {
                 isPanning = false;
             }
-            else if (cameraMode != OverworldCameraMode.FreeCamera && isDirectional && hero != null)
+            else if (cameraMode != OverworldCameraMode.FreeCamera && hero != null)
             {
                 hero.FullStop();
             }
-            else if (pointerDownAllowed && cameraMode != OverworldCameraMode.FreeCamera && IsTap(pos) && !overUiNow)
-            {
-                HandleTap(pos);
-            }
+
         }
 
         // Also allow right mouse to pan in FreeCamera (editor convenience)
@@ -400,19 +341,6 @@ public class OverworldManager : MonoBehaviour
         }
 
         if (blockByUI) stick = Vector2.zero;
-
-        if (hero != null)
-        {
-            if (cameraMode == OverworldCameraMode.FreeCamera && !Mode7Active)
-            {
-                hero.SetAnalogInput(Vector2.zero);
-            }
-            else
-            {
-                hero.SetAnalogInput(stick);
-                hero.AllowClickToMove = true; // ensure re-enabled while following
-            }
-        }
 
         // Update camera position unless Mode7 is driving it
         if (cam != null && !Mode7Active)
@@ -486,11 +414,7 @@ public class OverworldManager : MonoBehaviour
         return false;
     }
 
-    private void HandleTap(Vector2 screenPos)
-    {
-        if (hero == null) return;
-        hero.HandleClickScreen(screenPos, null); // world mode path inside hero
-    }
+
 
     // Follow hero while moving and flag movement for encounter timer
     private void HandleHeroMoved(Vector2 heroPos)
@@ -571,12 +495,12 @@ public class OverworldManager : MonoBehaviour
         // Preserve authored scale: do not modify go.transform.localScale here.
 
         // If this is the terrain, ensure collision provider exists
-        if (go.name == "Terrain")
-        {
-            var cp = go.GetComponent<MapTerrain>();
-            if (cp == null) cp = go.AddComponent<MapTerrain>();
-            cp.ForceRefresh();
-        }
+        //if (go.name == "Terrain")
+        //{
+        //    var cp = go.GetComponent<MapTerrain>();
+        //    if (cp == null) cp = go.AddComponent<MapTerrain>();
+        //    cp.ForceRefresh();
+        //}
 
         return sr;
     }

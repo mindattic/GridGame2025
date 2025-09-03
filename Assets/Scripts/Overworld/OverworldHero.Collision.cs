@@ -2,11 +2,11 @@ using UnityEngine;
 
 public partial class OverworldHero
 {
-    // Predict a final stop position using the same collision logic; fixed step for determinism
+    // Predict a final stop position using a simple cast-based approach; fixed step for determinism
     private Vector2 PredictStop(Vector2 start, Vector2 target)
     {
         Vector2 cur = start;
-        const int maxIters = 256;
+        const int maxIters = 128;
         float stepLen = Mathf.Max(1f, moveSpeed / 60f); // ~60Hz equivalent
 
         for (int i = 0; i < maxIters; i++)
@@ -15,11 +15,10 @@ public partial class OverworldHero
             float dist = toTarget.magnitude;
             if (dist <= snapThreshold) return target;
 
-
             Vector2 dir = dist > 1e-6f ? (toTarget / dist) : Vector2.zero;
             float len = Mathf.Min(stepLen, dist);
-            Vector2 desired = ClampToMap(cur + dir * len);
-            Vector2 next = ResolveCollision(cur, desired);
+            Vector2 next = cur;
+            PlanCastMove(ref next, dir, len);
             if ((next - cur).sqrMagnitude <= 1e-6f)
                 return cur; // blocked before target
             cur = next;
@@ -27,298 +26,137 @@ public partial class OverworldHero
         return cur;
     }
 
-    // Walkable according to MapTerrain (world space)
-    private bool IsWalkableWorld(Vector2 p)
+    // Performs a cast and updates nextPos with the planned position (with slide)
+    private void PlanCastMove(ref Vector2 nextPos, Vector2 dir, float distance)
     {
-        Vector2 center = GetVisualCenter(p); // pivot + feet offset at desired world pos
-        float radius = GetProbeRadius();
-        int rays = Mathf.Max(8, 8);
+        if (distance <= 1e-6f || dir.sqrMagnitude <= 1e-12f) return;
+        dir = dir.normalized;
 
-        if (!collisionProvider.IsWalkableLocal(center)) return false;
-        if (radius > 0f && rays > 0)
+        // Ensure casts originate from current rb position
+        Vector2 origin = rb.position;
+        int hitCount = rb.Cast(dir, contactFilter, hitBuffer, distance + skin);
+        if (hitCount == 0)
         {
-            float step = 360f / rays;
-            for (int i = 0; i < rays; i++)
-            {
-                float ang = step * i * Mathf.Deg2Rad;
-                Vector2 offset = new Vector2(Mathf.Cos(ang), Mathf.Sin(ang)) * radius;
-                if (!collisionProvider.IsWalkableLocal(center + offset))
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    private float GetProbeRadius()
-    {
-        return collisionRadiusWorld;
-    }
-
-    // Collision-probe center: always use Animator/Sprite pivot plus optional feet offset.
-    private Vector2 GetVisualCenter(Vector2 desiredWorldPosition)
-    {
-        // In 2D SpriteRenderer, transform.position == sprite pivot in world units.
-        // We evaluate at the desired position passed in, not the current transform, to test feasibility.
-        Vector2 pivotWorld = desiredWorldPosition;
-        if (feetOffset != Vector2.zero)
-        {
-            // Convert local-space offset to world considering only rotation (scale assumed uniform for world-space sprites)
-            Vector2 worldOffset = (Vector2)(transform.rotation * (Vector3)feetOffset);
-            pivotWorld += worldOffset;
-        }
-        return pivotWorld;
-    }
-
-    // Try to compute a sliding target along the obstacle tangent; returns true if a slide position is valid
-    private bool TrySlide(Vector2 current, Vector2 step, out Vector2 slideTarget)
-    {
-        slideTarget = current;
-        if (collisionProvider == null) return false;
-        if (step.sqrMagnitude <= 1e-10f) return false;
-
-        Vector2 desired = ClampToMap(current + step);
-
-        // Prefer physics cast normal if a Rigidbody2D exists and a hit occurs along the step
-        Vector2 n = Vector2.zero;
-        if (UsingPhysicsCast())
-        {
-            Vector2 dirCast = step.normalized;
-            float distCast = step.magnitude + Mathf.Max(0f, skin);
-            int hitCount = rb.Cast(dirCast, contactFilter, hitBuffer, distCast);
-            if (hitCount > 0)
-            {
-                float closest = Mathf.Infinity; int idx = -1;
-                for (int h = 0; h < hitCount; h++)
-                {
-                    float d = hitBuffer[h].distance;
-                    if (d >= 0f && d < closest) { closest = d; idx = h; }
-                }
-                if (idx >= 0)
-                    n = hitBuffer[idx].normal;
-            }
-        }
-
-        // If physics gave no normal, estimate obstacle normal from MapTerrain near desired/current
-        if (n == Vector2.zero)
-        {
-            float sampleRadius = Mathf.Max(0.05f, GetProbeRadius() + navObstacleBuffer);
-            Vector2 centerDesired = GetVisualCenter(desired);
-            n = collisionProvider.EstimateObstacleNormal(centerDesired, sampleRadius, 12);
-            if (n == Vector2.zero)
-            {
-                Vector2 centerCurrent = GetVisualCenter(current);
-                n = collisionProvider.EstimateObstacleNormal(centerCurrent, sampleRadius, 12);
-            }
-        }
-        if (n == Vector2.zero) return false;
-
-        Vector2 dir = step.normalized;
-        // Tangent: remove the component into the normal
-        Vector2 tangent = dir - Vector2.Dot(dir, n) * n;
-        if (tangent.sqrMagnitude < 1e-6f) return false;
-        tangent.Normalize();
-
-        float stepLen = step.magnitude;
-        // Slide along tangent plus a tiny nudge away from wall to avoid re-penetration
-        float nudge = Mathf.Max(0.001f, GetProbeRadius() * 0.15f);
-        Vector2 candidate = ClampToMap(current + tangent * stepLen + n * nudge);
-
-        if (IsWalkableWorld(candidate))
-        {
-            slideTarget = candidate;
-            return true;
-        }
-
-        // Try without nudge if the nudged position was too aggressive
-        Vector2 candidateNoNudge = ClampToMap(current + tangent * stepLen);
-        if (IsWalkableWorld(candidateNoNudge))
-        {
-            slideTarget = candidateNoNudge;
-            return true;
-        }
-
-        // Final small nudge along normal only, helps separate when stuck
-        Vector2 candidateNudgeOnly = ClampToMap(current + n * nudge);
-        if (IsWalkableWorld(candidateNudgeOnly))
-        {
-            slideTarget = candidateNudgeOnly;
-            return true;
-        }
-
-        return false;
-    }
-
-    // Resolve collision by accepting desired if walkable, or sliding along obstacle if not
-    private Vector2 ResolveCollision(Vector2 current, Vector2 desired)
-    {
-        if (IsWalkableWorld(desired))
-            return desired;
-
-        // Blocked: attempt to slide
-        Vector2 step = desired - current;
-        if (TrySlide(current, step, out var slide))
-            return slide;
-
-        // Blocked; stay put
-        return current;
-    }
-
-    private bool WillHitWall(Vector2 current, Vector2 step)
-    {
-        if (step.sqrMagnitude <= 1e-10f) return false;
-
-        // Desired hero pivot position after the step
-        Vector2 desired = ClampToMap(current + step);
-
-        // If fully walkable, nothing to block
-        if (IsWalkableWorld(desired)) return false;
-
-        // If no collision provider, fall back to conservative block
-        if (collisionProvider == null) return true;
-
-        // Compute percentage coverage of blocked samples on the forward semicircle
-        float coverage = ForwardBlockedCoverage(desired, step, GetProbeRadius(), forwardCoverageSamples);
-
-        // If coverage exceeds threshold, treat as wall UNLESS we can slide along it
-        if (coverage >= forwardCoverageBlockThreshold)
-        {
-            // If a slide is possible, we shouldn't treat this as a hard wall block
-            if (TrySlide(current, step, out _))
-                return false;
-            return true;
-        }
-
-        return false;
-    }
-
-    // Sample blocked ratio on the forward semicircle of the hero's probe at a desired position
-    private float ForwardBlockedCoverage(Vector2 desiredPosition, Vector2 step, float radius, int samples)
-    {
-        // Use the collision-probe center (pivot + feet offset) at the desired world position
-        Vector2 center = GetVisualCenter(desiredPosition);
-
-        // If probe radius is non-positive, just test the center
-        if (radius <= 0f || samples <= 0)
-            return collisionProvider.IsWalkableLocal(center) ? 0f : 1f;
-
-        Vector2 dir = step.sqrMagnitude > 1e-12f ? step.normalized : Vector2.zero;
-        if (dir == Vector2.zero)
-            return 0f;
-
-        // Sample the forward semicircle: angles from -90 to +90 around 'dir'
-        int blocked = 0;
-        int total = Mathf.Max(1, samples);
-
-        for (int i = 0; i < total; i++)
-        {
-            // Equal-spaced semicircle, centered on dir
-            float t = (i + 0.5f) / total;              // 0..1
-            float ang = (t - 0.5f) * Mathf.PI;         // -PI/2 .. +PI/2
-            // Build a basis around dir: rotate dir by ang on the XY plane
-            float s = Mathf.Sin(ang);
-            float c = Mathf.Cos(ang);
-            Vector2 rotated = new Vector2(
-                dir.x * c - dir.y * s,
-                dir.x * s + dir.y * c
-            );
-
-            Vector2 sample = center + rotated * radius;
-
-            // Count blocked samples
-            if (!collisionProvider.IsWalkableLocal(sample))
-                blocked++;
-        }
-
-        return (float)blocked / total;
-    }
-
-    // Should we use physics cast this frame for this step? Only if a collider blocks the path.
-    private bool ShouldUseCast(Vector2 displacement)
-    {
-        if (!UsingPhysicsCast()) return false;
-        if (displacement.sqrMagnitude <= 1e-10f) return false;
-        Vector2 dir = displacement.normalized;
-        float dist = displacement.magnitude + Mathf.Max(0f, skin);
-        int hitCount = rb.Cast(dir, contactFilter, hitBuffer, dist);
-        return hitCount > 0;
-    }
-
-    // Plans the move by casting along the path, clamping to just before any hit.
-    // If we hit, we project the remaining movement along the surface to slide.
-    private void MoveWithCast(Vector2 displacement)
-    {
-        // We use rb.Cast for normals and distances, but still move transform to keep existing smoothness
-        if (!UsingPhysicsCast())
-        {
-            // Fallback: simple resolver using MapTerrain sampling
-            Vector2 current = GetPosition();
-            Vector2 desired = ClampToMap(current + displacement);
-            Vector2 next = ResolveCollision(current, desired);
-            SetPosition(next);
-            if ((next - current).sqrMagnitude > 1e-6f) OnHeroMoved?.Invoke(next);
+            origin += dir * distance;
+            nextPos = origin;
             return;
         }
 
-        Vector2 remainingMove = displacement;
-        Vector2 currentPos = GetPosition();
-
-        // Limit slide loops to avoid edge jitter
-        for (int i = 0; i < maxSlideIterations; i++)
+        float closest = Mathf.Infinity;
+        int closestIndex = -1;
+        bool anyOverlap = false;
+        Vector2 overlapNormalSum = Vector2.zero;
+        for (int h = 0; h < hitCount; h++)
         {
-            // No more movement needed
-            if (remainingMove.sqrMagnitude <= 0.000001f)
-                break;
-
-            Vector2 dir = remainingMove.normalized;
-            float dist = remainingMove.magnitude;
-
-            // Cast from the current body along dir
-            int hitCount = rb.Cast(dir, contactFilter, hitBuffer, dist + skin);
-
-            if (hitCount == 0)
+            float d = hitBuffer[h].distance;
+            if (d >= 0f)
             {
-                // Free path, take the whole step
-                currentPos += dir * dist;
-                remainingMove = Vector2.zero;
-                break;
+                if (d < closest) { closest = d; closestIndex = h; }
             }
-
-            // Find the closest valid hit
-            float closest = Mathf.Infinity;
-            int closestIndex = -1;
-
-            for (int h = 0; h < hitCount; h++)
+            else
             {
-                float d = hitBuffer[h].distance;
-                if (d >= 0f && d < closest)
-                {
-                    closest = d;
-                    closestIndex = h;
-                }
+                anyOverlap = true;
+                overlapNormalSum += hitBuffer[h].normal;
             }
-
-            if (closestIndex < 0)
-            {
-                // No usable hit, abort movement this frame
-                break;
-            }
-
-            // Move up to just before contact
-            float allowed = Mathf.Max(0f, closest - skin);
-            currentPos += dir * allowed;
-
-            // Compute slide direction by removing normal component
-            Vector2 hitNormal = hitBuffer[closestIndex].normal;
-            Vector2 remainingAfterStep = dir * Mathf.Max(0f, dist - allowed);
-
-            // Slide along the surface
-            Vector2 slide = remainingAfterStep - Vector2.Dot(remainingAfterStep, hitNormal) * hitNormal;
-
-            remainingMove = slide;
         }
 
-        // Apply the planned position (transform-based to keep prior smoothing)
-        SetPosition(currentPos);
-        OnHeroMoved?.Invoke(currentPos);
+        if (closestIndex < 0)
+        {
+            // Fully overlapping at origin: nudge outward to depenetrate
+            Vector2 push;
+            if (anyOverlap && overlapNormalSum.sqrMagnitude > 1e-6f)
+                push = overlapNormalSum.normalized * Mathf.Max(skin, 0.02f);
+            else
+                push = dir * Mathf.Max(skin, 0.02f); // no reliable normal; escape along intent
+            origin += push;
+            nextPos = origin;
+            return;
+        }
+
+        float allowed = Mathf.Max(0f, closest - skin);
+        origin += dir * allowed;
+
+        // Slide remaining along surface with a few iterations to avoid sticking
+        float remain = Mathf.Max(0f, distance - allowed);
+        if (remain <= 1e-6f) { nextPos = origin; return; }
+
+        Vector2 moveDir = dir;
+        int iterations = Mathf.Max(1, maxSlideIterations);
+        for (int i = 0; i < iterations && remain > 1e-6f; i++)
+        {
+            // Use the normal from the initial blocking hit for first slide
+            Vector2 n = hitBuffer[closestIndex].normal;
+            Vector2 remainingVec = moveDir * remain;
+            Vector2 slide = remainingVec - Vector2.Dot(remainingVec, n) * n; // tangent component
+            if (slide.sqrMagnitude <= 1e-8f) break;
+
+            Vector2 sDir = slide.normalized;
+            float sLen = slide.magnitude;
+
+            int hitsSlide = rb.Cast(sDir, contactFilter, hitBuffer, sLen + skin);
+            if (hitsSlide == 0)
+            {
+                origin += sDir * sLen;
+                remain = 0f;
+                break;
+            }
+            else
+            {
+                float closestSlide = Mathf.Infinity;
+                int slideHitIndex = -1;
+                for (int h = 0; h < hitsSlide; h++)
+                {
+                    float d = hitBuffer[h].distance;
+                    if (d >= 0f && d < closestSlide) { closestSlide = d; slideHitIndex = h; }
+                }
+
+                float allowSlide = Mathf.Max(0f, closestSlide - skin);
+                if (allowSlide > 1e-6f)
+                {
+                    origin += sDir * allowSlide;
+                    remain = Mathf.Max(0f, remain - allowSlide);
+                    // update moveDir to keep sliding along last direction
+                    moveDir = sDir;
+                    if (slideHitIndex >= 0) closestIndex = slideHitIndex;
+                }
+                else
+                {
+                    // tiny progress or corner pinch; apply micro-nudge along tangent and stop
+                    origin += sDir * Mathf.Max(0.001f, skin * 0.5f);
+                    break;
+                }
+            }
+        }
+
+        nextPos = origin;
+
+
+        // Clamp inside map bounds after planning
+        nextPos = ClampToMap(nextPos);
+    }
+
+    // Chooses cast-and-slide; applies position and event
+    private void MoveWithCast(Vector2 displacement)
+    {
+        if (displacement.sqrMagnitude <= 1e-10f) return;
+
+        // If collision is disabled, move freely (still clamp to map)
+        if (!enableCollision)
+        {
+            Vector2 freeNext = ClampToMap(GetPosition() + displacement);
+            SetPosition(freeNext);
+            OnHeroMoved?.Invoke(freeNext);
+            return;
+        }
+
+        // Read from Rigidbody2D when present for authoritative pose
+        Vector2 currentPos = GetPosition();
+        Vector2 nextPos = currentPos;
+        PlanCastMove(ref nextPos, displacement.normalized, displacement.magnitude);
+        if ((nextPos - currentPos).sqrMagnitude > 1e-8f)
+        {
+            SetPosition(nextPos);
+            OnHeroMoved?.Invoke(nextPos);
+        }
     }
 }

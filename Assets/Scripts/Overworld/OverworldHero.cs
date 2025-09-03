@@ -18,7 +18,7 @@ public partial class OverworldHero : MonoBehaviour
     // Bindings (resolved at runtime from hierarchy paths)
     private SpriteRenderer terrainSprite;         // Map SpriteRenderer used for world bounds
     private SpriteRenderer heroSprite;        // Hero's SpriteRenderer (for probe radius inference)
-    private MapTerrain collisionProvider;     // Central collision provider on Terrain
+    //private MapTerrain collisionProvider;     // Central collision provider on Terrain
     private Camera worldCamera;               // Camera for screen->world and visibility tests
 
     // Movement tuning (set in code)
@@ -30,6 +30,10 @@ public partial class OverworldHero : MonoBehaviour
     [SerializeField] private bool allowVirtualJoystick = true; // Enable joystick/analog movement
     [SerializeField] private bool idleWhileOffscreen = true;   // Idle when offscreen and movement gated
 
+    // Collision toggle
+    [Header("Collision")]
+    [SerializeField] private bool enableCollision = false;     // When false, hero moves freely without casts
+
     // Sampling
     private float speedSampleAheadFactor = 0.7f; // Future-proof: speed zones, currently constant 1x
 
@@ -38,36 +42,10 @@ public partial class OverworldHero : MonoBehaviour
     private float followSpeedRampDistance = 6.0f;
 
     // Input mode
-    private OverworldHeroInputMode inputMode = OverworldHeroInputMode.FollowCursor;
-    public OverworldHeroInputMode InputMode
-    {
-        get => inputMode;
-        set
-        {
-            if (inputMode == value) return;
-            var prev = inputMode;
-            inputMode = value;
-            // When leaving ClickToMove, clear any path state
-            if (prev == OverworldHeroInputMode.ClickToMove && inputMode != OverworldHeroInputMode.ClickToMove)
-            {
-                isMoving = false; _path = null; directionalActive = false;
-            }
-        }
-    }
-
-    public bool UsingJoystick => inputMode == OverworldHeroInputMode.VirtualJoystick;
-
+ 
     private float directionalClickMagnitude = 1f; // 0..1 strength fed into analog
 
-    // External toggles
-    public bool AllowClickToMove { get; set; } = true;
-
-    // Back-compat properties for manager/save
-    public OverworldHeroInputMode TouchMoveMode
-    {
-        get => inputMode;
-        set => inputMode = value;
-    }
+   
 
     // Events
     public event Action<Vector2> OnHeroMoved;  // Invoked with world position after movement
@@ -126,7 +104,7 @@ public partial class OverworldHero : MonoBehaviour
         if (terrainGo != null)
         {
             terrainSprite = terrainGo.GetComponent<SpriteRenderer>();
-            collisionProvider = terrainGo.GetComponent<MapTerrain>();
+   
         }
 
         // Hero sprite and animator
@@ -141,6 +119,12 @@ public partial class OverworldHero : MonoBehaviour
             contactFilter.useTriggers = false;
             contactFilter.useLayerMask = true;
             contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+
+            // Movement is driven manually via casts; lock rotation and smooth visuals
+            rb.freezeRotation = true;
+            rb.interpolation = RigidbodyInterpolation2D.Interpolate;
+            if (rb.bodyType == RigidbodyType2D.Dynamic)
+                rb.bodyType = RigidbodyType2D.Kinematic;
         }
 
         // Initialize animator with default idle facing
@@ -153,34 +137,10 @@ public partial class OverworldHero : MonoBehaviour
 
     private void Update()
     {
-        switch (inputMode)
-        {
-            case OverworldHeroInputMode.VirtualJoystick:
-                TickVirtualJoystick();
-                break;
-            case OverworldHeroInputMode.ClickToMove:
-                TickClickToMove();
-                break;
-            case OverworldHeroInputMode.FollowCursor:
-                TickDirectionalPress();
-                break;
-        }
+        TickFollowCursor();
     }
 
-    // ---------------- External input API ----------------
-
-    // Accepts analog input from OverworldManager each frame.
-    public void SetAnalogInput(Vector2 input)
-    {
-        analogInput = Vector2.ClampMagnitude(input, 1f);
-        if (inputMode == OverworldHeroInputMode.VirtualJoystick && analogInput.sqrMagnitude > 0.01f)
-        {
-            isMoving = false;        // cancel click-to-move while analog active
-            directionalActive = false;
-            _path = null;
-        }
-    }
-
+ 
     // ---------------- Visibility and clamping (world space) ----------------
 
     private bool IsVisible()
@@ -210,14 +170,9 @@ public partial class OverworldHero : MonoBehaviour
     {
         terrainSprite = map;
         worldCamera = cam;
-        if (collisionProvider == null && terrainSprite != null)
-            collisionProvider = terrainSprite.GetComponent<MapTerrain>();
     }
 
-    public void BindCollisionProvider(MapTerrain provider)
-    {
-        collisionProvider = provider;
-    }
+
 
     // Speed sampling hook (placeholder for zones)
     private float GetSpeedMultiplier(Vector2 world)
@@ -230,21 +185,27 @@ public partial class OverworldHero : MonoBehaviour
 
     private Vector2 GetPosition()
     {
+        if (rb != null)
+            return rb.position;
         return new Vector2(transform.position.x, transform.position.y);
     }
 
     private void SetPosition(Vector2 v)
     {
+        // Keep Z from transform but drive both Transform and Rigidbody2D when available
+        if (rb != null)
+        {
+            rb.position = v; // immediate update of physics body
+        }
         transform.position = new Vector3(v.x, v.y, transform.position.z);
+        Physics2D.SyncTransforms();
     }
 
-    private bool UsingPhysicsCast() => rb != null;
 
     // Inspector toggles via code (optional helpers)
     public void SetMoveSpeed(int unitsPerSecond) => moveSpeed = Mathf.Max(0f, unitsPerSecond);
     public void SetSnapThreshold(int value) => snapThreshold = Mathf.Max(0f, value);
     public void SetPathfinding(bool enabled) => usePathfinding = enabled;
-    public void SetInputMode(OverworldHeroInputMode mode) => inputMode = mode;
 
     // Exposed setters for tuning friction and clearance
     public void SetNavClearance(float value) => navObstacleBuffer = Mathf.Max(0f, value);

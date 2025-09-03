@@ -3,7 +3,7 @@ using UnityEngine;
 public partial class OverworldHero
 {
     // ---------------- FollowCursor (DirectionalPress) ----------------
-    private void TickDirectionalPress()
+    private void TickFollowCursor()
     {
         // Ignore analog input, use directional override only
         Vector2 effectiveInput = (directionalActive && directionalOverride.sqrMagnitude > 1e-6f)
@@ -20,25 +20,11 @@ public partial class OverworldHero
             float mult = GetSpeedMultiplier(current + dir * (baseStepLen * speedSampleAheadFactor));
             Vector2 step = dir * (baseStepLen * mult);
 
-            // Look-ahead: stop before intersecting a wall
-            if (WillHitWall(current, step)) { SetIdle(); return; }
+            // Move using collider cast-and-slide
+            MoveWithCast(step);
 
+            // Drive animator from desired input direction and speed
             SetAnimationFromInput(dir, step.magnitude);
-
-            if (ShouldUseCast(step))
-            {
-                MoveWithCast(step);
-            }
-            else
-            {
-                Vector2 desired = ClampToMap(current + step);
-                Vector2 next = ResolveCollision(current, desired);
-                Vector2 frameDelta = next - current;
-
-                SetPosition(next);
-                bool moved = frameDelta.sqrMagnitude > 1e-6f;
-                if (moved) OnHeroMoved?.Invoke(next);
-            }
         }
         else
         {
@@ -52,7 +38,6 @@ public partial class OverworldHero
     // Hold-to-move directional clicks (screen param kept for compatibility)
     public void BeginDirectionalFromScreen(Vector2 screenPos, RectTransform _)
     {
-        if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         var cam = worldCamera != null ? worldCamera : Camera.main;
         Vector3 wp = Mode7CameraController.ScreenToWorldOnZPlane(cam, screenPos, transform.position.z);
         SetDirectionalOverride(new Vector2(wp.x, wp.y));
@@ -60,7 +45,6 @@ public partial class OverworldHero
 
     public void UpdateDirectionalFromScreen(Vector2 screenPos, RectTransform _)
     {
-        if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         if (!directionalActive) return;
         var cam = worldCamera != null ? worldCamera : Camera.main;
         Vector3 wp = Mode7CameraController.ScreenToWorldOnZPlane(cam, screenPos, transform.position.z);
@@ -76,7 +60,6 @@ public partial class OverworldHero
 
     private void SetDirectionalOverride(Vector2 world)
     {
-        if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         Vector2 delta = ClampToMap(world) - GetPosition();
         float dist = delta.magnitude;
         if (dist < 1e-6f)

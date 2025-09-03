@@ -93,7 +93,6 @@
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyStrand.cs" />
     <Compile Include="Assets\Scripts\Overworld\Mode7CameraController.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
-    <Compile Include="Assets\Scripts\Overworld\OverworldEncounterManager.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
@@ -146,13 +145,11 @@
     <Compile Include="Assets\Scripts\Data\Actor\Slime02.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
-    <Compile Include="Assets\Scripts\Overworld\OverworldHero.VirtualJoystick.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime01.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Utilities\SceneLoader.cs" />
-    <Compile Include="Assets\Scripts\Overworld\OverworldEncounterInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\CombatLogHelper.cs" />
@@ -217,7 +214,6 @@
     <Compile Include="Assets\Scripts\Managers\Portrait2DManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\PrefabLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
-    <Compile Include="Assets\Scripts\Overworld\OverworldHero.ClickToMove.cs" />
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Libraries\SpriteLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
@@ -244,6 +240,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
+    <Compile Include="Assets\Scripts\Overworld\MapTerrain.cs" />
     <Compile Include="Assets\Scripts\Canvas\Clock.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
