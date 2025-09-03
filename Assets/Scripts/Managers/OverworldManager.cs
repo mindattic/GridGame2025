@@ -61,6 +61,21 @@ public class OverworldManager : MonoBehaviour
     private Camera cam;
     private Transform mapRoot; // parent for map components
 
+    // Mode7 controller (optional)
+    private Mode7CameraController mode7;
+    private bool Mode7Active
+    {
+        get
+        {
+            if (mode7 == null)
+            {
+                var c = Camera.main;
+                if (c != null) mode7 = c.GetComponent<Mode7CameraController>();
+            }
+            return mode7 != null && mode7.enabled && mode7.enableMode7;
+        }
+    }
+
     private void Awake()
     {
         cam = Camera.main;
@@ -122,7 +137,6 @@ public class OverworldManager : MonoBehaviour
         hero.OnHeroMoved += HandleHeroMoved;
         hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
         hero.SetFacing(overworld.HeroDirection);
-        hero.SetFollowSpeedRampDistance(8f);
         hero.BindWorld(terrainSR, cam);
         hero.BindCollisionProvider(collisionProvider);
 
@@ -192,6 +206,14 @@ public class OverworldManager : MonoBehaviour
 
     public void CycleCameraMode()
     {
+        // When Mode7 camera drives the pose, keep FollowHero
+        if (Mode7Active)
+        {
+            cameraMode = OverworldCameraMode.FollowHero;
+            UpdateCameraModeUI();
+            return;
+        }
+
         cameraMode = cameraMode == OverworldCameraMode.FollowHero ? OverworldCameraMode.FreeCamera : OverworldCameraMode.FollowHero;
         if (cameraMode == OverworldCameraMode.FollowHero && hero != null)
         {
@@ -249,7 +271,7 @@ public class OverworldManager : MonoBehaviour
                 pointerDownPos = t.position;
                 pointerDownTime = Time.unscaledTime;
 
-                if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera)
+                if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera && !Mode7Active)
                 {
                     isPanning = true;
                     panStartScreen = t.position;
@@ -261,7 +283,7 @@ public class OverworldManager : MonoBehaviour
             }
             else if (t.phase == TouchPhase.Moved || t.phase == TouchPhase.Stationary)
             {
-                if (isPanning && cameraMode == OverworldCameraMode.FreeCamera)
+                if (isPanning && cameraMode == OverworldCameraMode.FreeCamera && !Mode7Active)
                 {
                     UpdatePanTarget(t.position);
                 }
@@ -295,7 +317,7 @@ public class OverworldManager : MonoBehaviour
             pointerDownPos = pos;
             pointerDownTime = Time.unscaledTime;
 
-            if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera)
+            if (pointerDownAllowed && cameraMode == OverworldCameraMode.FreeCamera && !Mode7Active)
             {
                 isPanning = true;
                 panStartScreen = pos;
@@ -307,7 +329,7 @@ public class OverworldManager : MonoBehaviour
         }
         if (Input.GetMouseButton(0))
         {
-            if (isPanning && cameraMode == OverworldCameraMode.FreeCamera)
+            if (isPanning && cameraMode == OverworldCameraMode.FreeCamera && !Mode7Active)
             {
                 Vector2 pos = (Vector2)Input.mousePosition;
                 UpdatePanTarget(pos);
@@ -337,7 +359,7 @@ public class OverworldManager : MonoBehaviour
         }
 
         // Also allow right mouse to pan in FreeCamera (editor convenience)
-        if (cameraMode == OverworldCameraMode.FreeCamera)
+        if (cameraMode == OverworldCameraMode.FreeCamera && !Mode7Active)
         {
             if (Input.GetMouseButtonDown(1))
             {
@@ -381,7 +403,7 @@ public class OverworldManager : MonoBehaviour
 
         if (hero != null)
         {
-            if (cameraMode == OverworldCameraMode.FreeCamera)
+            if (cameraMode == OverworldCameraMode.FreeCamera && !Mode7Active)
             {
                 hero.SetAnalogInput(Vector2.zero);
             }
@@ -392,8 +414,8 @@ public class OverworldManager : MonoBehaviour
             }
         }
 
-        // Update camera position
-        if (cam != null)
+        // Update camera position unless Mode7 is driving it
+        if (cam != null && !Mode7Active)
         {
             if (cameraMode == OverworldCameraMode.FollowHero && hero != null)
             {
@@ -429,7 +451,7 @@ public class OverworldManager : MonoBehaviour
         if (offscreenArrow != null)
         {
             offscreenArrow.WorldCamera = cam;
-            offscreenArrow.Target = (cameraMode == OverworldCameraMode.FreeCamera && hero != null) ? hero.transform : null; // null when not in FreeCamera -> fade out
+            offscreenArrow.Target = (cameraMode == OverworldCameraMode.FreeCamera && hero != null && !Mode7Active) ? hero.transform : null; // null when not in FreeCamera -> fade out
         }
     }
 

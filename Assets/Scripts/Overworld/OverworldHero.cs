@@ -23,12 +23,13 @@ public class OverworldHero : MonoBehaviour
     private Camera worldCamera;               // Camera for screen->world and visibility tests
 
     // Movement tuning (set in code)
-    private float moveSpeed = 2.5f;           // Units per second
-    private float snapThreshold = 0.05f;      // Stop distance to consider goal reached
-    private bool requireVisibleToMove = true; // Only move when visible in camera viewport
-    private bool ignoreClicksWhenOffscreen = false;
-    private bool allowVirtualJoystick = true; // Enable joystick/analog movement
-    private bool idleWhileOffscreen = true;   // Idle when offscreen and movement gated
+    [Header("Movement")]
+    [SerializeField] private float moveSpeed = 2.5f;           // Units per second
+    [SerializeField] private float snapThreshold = 0.05f;      // Stop distance to consider goal reached
+    [SerializeField] private bool requireVisibleToMove = true; // Only move when visible in camera viewport
+    [SerializeField] private bool ignoreClicksWhenOffscreen = false;
+    [SerializeField] private bool allowVirtualJoystick = true; // Enable joystick/analog movement
+    [SerializeField] private bool idleWhileOffscreen = true;   // Idle when offscreen and movement gated
 
     // Sampling
     private float speedSampleAheadFactor = 0.7f; // Future-proof: speed zones, currently constant 1x
@@ -36,10 +37,7 @@ public class OverworldHero : MonoBehaviour
 
     private float probeRadiusMultiplier = 0.2f; // fraction of hero bounds to use for collision probe radius (used only if fixed radius disabled)
 
-    // Wall-slide tuning (reduce stickiness)
-    private float wallSlideUnstick = 0.02f;      // small push away from wall along normal
-    private int wallSlideAttempts = 3;           // try partial tangent steps if full slide is blocked
-    private float wallSlideMinFraction = 0.25f;  // smallest tangent fraction to try
+
 
     // FollowCursor speed ramp: distance at which input magnitude reaches 1
     private float followSpeedRampDistance = 6.0f;
@@ -115,8 +113,8 @@ public class OverworldHero : MonoBehaviour
     // Collision center and radius
     // Always sample collisions at the Animator/Sprite pivot (transform.position) plus an optional feet offset.
     private Vector2 collisionFeetOffsetLocal = Vector2.zero; // local-space offset from pivot to feet (e.g., Vector2.down * 0.05f)
-    private bool useFixedCollisionRadius = true;             // stabilize radius across animation frames
-    private float collisionRadiusWorld = 0.2f;               // world units radius when fixed
+    [SerializeField] private bool useFixedCollisionRadius = true;             // stabilize radius across animation frames
+    [SerializeField, Min(0f)] private float collisionRadiusWorld = 0.1f;      // world units radius when fixed (adjust in inspector)
 
     // Destination marker prefab to spawn on click
     private GameObject destinationMarkerPrefab;
@@ -184,6 +182,9 @@ public class OverworldHero : MonoBehaviour
             float mult = GetSpeedMultiplier(current + dir * (baseStepLen * speedSampleAheadFactor));
             Vector2 step = dir * (baseStepLen * mult);
 
+            // Look-ahead: stop before intersecting a wall
+            if (WillHitWall(current, step)) { SetIdle(); return; }
+
             SetAnimationFromInput(dir, step.magnitude); // always drive animator
 
             Vector2 desired = ClampToMap(current + step);
@@ -191,7 +192,8 @@ public class OverworldHero : MonoBehaviour
             Vector2 frameDelta = next - current;
 
             SetPosition(next);
-            if (frameDelta.sqrMagnitude > 1e-6f) OnHeroMoved?.Invoke(next);
+            bool moved = frameDelta.sqrMagnitude > 1e-6f;
+            if (moved) OnHeroMoved?.Invoke(next);
 
             isMoving = false; _path = null; // ensure click path cancelled
         }
@@ -240,11 +242,17 @@ public class OverworldHero : MonoBehaviour
             Vector2 dir = distWp > 1e-6f ? (toWp / distWp) : Vector2.zero;
             float moveMult = GetSpeedMultiplier(cur + dir * (maxStep * speedSampleAheadFactor));
             float stepLen = Mathf.Min(maxStep * moveMult, distWp);
-            Vector2 desiredNext = ClampToMap(cur + dir * stepLen);
+            Vector2 step = dir * stepLen;
+
+            // Look-ahead: stop before intersecting a wall
+            if (WillHitWall(cur, step)) { SetIdle(); isMoving = false; return; }
+
+            Vector2 desiredNext = ClampToMap(cur + step);
             Vector2 nextPos = ResolveCollision(cur, desiredNext);
             Vector2 delta = nextPos - cur;
 
-            if (delta.sqrMagnitude > 1e-6f)
+            bool moved = delta.sqrMagnitude > 1e-6f;
+            if (moved)
             {
                 SetAnimation(delta);
                 SetPosition(nextPos);
@@ -266,10 +274,16 @@ public class OverworldHero : MonoBehaviour
         float maxStep2 = moveSpeed * Time.deltaTime; Vector2 stepDir = dist > 1e-6f ? (toTarget / dist) : Vector2.zero;
         float moveMult2 = GetSpeedMultiplier(cur + stepDir * (maxStep2 * speedSampleAheadFactor));
         float stepLen2 = Mathf.Min(maxStep2 * moveMult2, dist);
-        Vector2 desiredNext2 = ClampToMap(cur + stepDir * stepLen2);
+        Vector2 step2 = stepDir * stepLen2;
+
+        // Look-ahead: stop before intersecting a wall
+        if (WillHitWall(cur, step2)) { SetIdle(); isMoving = false; return; }
+
+        Vector2 desiredNext2 = ClampToMap(cur + step2);
         Vector2 nextPos2 = ResolveCollision(cur, desiredNext2); Vector2 delta2 = nextPos2 - cur;
 
-        if (delta2.sqrMagnitude > 1e-6f)
+        bool moved2 = delta2.sqrMagnitude > 1e-6f;
+        if (moved2)
         {
             SetAnimation(delta2);
             SetPosition(nextPos2);
@@ -299,6 +313,9 @@ public class OverworldHero : MonoBehaviour
             float mult = GetSpeedMultiplier(current + dir * (baseStepLen * speedSampleAheadFactor));
             Vector2 step = dir * (baseStepLen * mult);
 
+            // Look-ahead: stop before intersecting a wall
+            if (WillHitWall(current, step)) { SetIdle(); return; }
+
             SetAnimationFromInput(dir, step.magnitude);
 
             Vector2 desired = ClampToMap(current + step);
@@ -306,7 +323,8 @@ public class OverworldHero : MonoBehaviour
             Vector2 frameDelta = next - current;
 
             SetPosition(next);
-            if (frameDelta.sqrMagnitude > 1e-6f) OnHeroMoved?.Invoke(next);
+            bool moved = frameDelta.sqrMagnitude > 1e-6f;
+            if (moved) OnHeroMoved?.Invoke(next);
         }
         else
         {
@@ -316,6 +334,14 @@ public class OverworldHero : MonoBehaviour
         // While in directional mode we never follow click paths
         isMoving = false; _path = null;
     }
+
+    private bool WillHitWall(Vector2 current, Vector2 step)
+    {
+        if (step.sqrMagnitude <= 1e-10f) return false;
+        Vector2 desired = ClampToMap(current + step);
+        return !IsWalkableWorld(desired);
+    }
+
 
     // ---------------- External input API ----------------
 
@@ -335,8 +361,7 @@ public class OverworldHero : MonoBehaviour
     public void HandleClickScreen(Vector2 screenPos, UnityEngine.RectTransform _)
     {
         var cam = worldCamera != null ? worldCamera : Camera.main;
-        float zDist = Mathf.Abs(cam.transform.position.z - transform.position.z);
-        Vector3 wp = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, zDist));
+        Vector3 wp = Mode7CameraController.ScreenToWorldOnZPlane(cam, screenPos, transform.position.z);
         HandleClickLocal(new Vector2(wp.x, wp.y));
     }
 
@@ -398,8 +423,7 @@ public class OverworldHero : MonoBehaviour
     {
         if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         var cam = worldCamera != null ? worldCamera : Camera.main;
-        float zDist = Mathf.Abs(cam.transform.position.z - transform.position.z);
-        Vector3 wp = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, zDist));
+        Vector3 wp = Mode7CameraController.ScreenToWorldOnZPlane(cam, screenPos, transform.position.z);
         SetDirectionalOverride(new Vector2(wp.x, wp.y));
     }
 
@@ -408,8 +432,7 @@ public class OverworldHero : MonoBehaviour
         if (inputMode != OverworldHeroInputMode.FollowCursor) return;
         if (!directionalActive) return;
         var cam = worldCamera != null ? worldCamera : Camera.main;
-        float zDist = Mathf.Abs(cam.transform.position.z - transform.position.z);
-        Vector3 wp = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, zDist));
+        Vector3 wp = Mode7CameraController.ScreenToWorldOnZPlane(cam, screenPos, transform.position.z);
         SetDirectionalOverride(new Vector2(wp.x, wp.y));
     }
 
@@ -433,9 +456,8 @@ public class OverworldHero : MonoBehaviour
             return;
         }
 
-        // Map distance -> analog magnitude [0..1] so we reuse joystick movement
-        float ramp = followSpeedRampDistance > 0f ? (dist / followSpeedRampDistance) : 1f;
-        float mag = Mathf.Clamp01(ramp) * Mathf.Clamp01(directionalClickMagnitude);
+        // Constant magnitude so FollowCursor speed is static (no distance ramp)
+        float mag = Mathf.Clamp01(directionalClickMagnitude);
         Vector2 dir = (delta / dist) * mag;
 
         directionalOverride = dir;
@@ -585,52 +607,11 @@ public class OverworldHero : MonoBehaviour
         return 1f; // constant speed (slow zones can be added later)
     }
 
-    // Simple normal-based slide + axis fallback
+    // Simple collision: accept if walkable, else don't move
     private Vector2 ResolveCollision(Vector2 current, Vector2 desired)
     {
         if (IsWalkableWorld(desired))
             return desired;
-
-        Vector2 step = desired - current;
-        if (step.sqrMagnitude <= 1e-10f)
-            return current;
-
-        // Try sliding along the obstacle using a contact normal (at the collision-probe center)
-        Vector2 desiredCenter = GetVisualCenter(desired);
-        float pr = GetProbeRadius();
-        float nRadius = Mathf.Max(2f, pr > 0f ? pr * 0.5f : 6f);
-        int nRays = Mathf.Max(8, 8);
-
-        Vector2 n = collisionProvider.EstimateObstacleNormal(desiredCenter, nRadius, nRays);
-        if (n.sqrMagnitude > 1e-6f)
-        {
-            // Remove normal component -> tangent slide
-            Vector2 tangent = step - Vector2.Dot(step, n) * n;
-            // Try full slide first, then smaller fractions with a small push away from the wall
-            if (tangent.sqrMagnitude > 1e-6f)
-            {
-                float frac = 1f;
-                for (int i = 0; i < Mathf.Max(1, wallSlideAttempts); i++)
-                {
-                    Vector2 candidate = ClampToMap(current + tangent * frac + n * wallSlideUnstick);
-                    if (IsWalkableWorld(candidate))
-                        return candidate;
-                    frac *= 0.5f;
-                    if (frac < wallSlideMinFraction) break;
-                }
-            }
-        }
-
-        // Fallback: axis-aligned slides (robust on corners) with slight unstick when available
-        Vector2 tryX = new Vector2(desired.x, current.y);
-        tryX = ClampToMap(tryX);
-        if (IsWalkableWorld(tryX))
-            return tryX;
-
-        Vector2 tryY = new Vector2(current.x, desired.y);
-        tryY = ClampToMap(tryY);
-        if (IsWalkableWorld(tryY))
-            return tryY;
 
         // Blocked; stay put
         return current;
@@ -938,7 +919,7 @@ public class OverworldHero : MonoBehaviour
     // Exposed setters for tuning friction and clearance
     public void SetProbeRadiusMultiplier(float value) => probeRadiusMultiplier = Mathf.Max(0f, value);
     public void SetNavClearance(float value) => navObstacleBuffer = Mathf.Max(0f, value);
-    public void SetWallSlideUnstick(float epsilon) => wallSlideUnstick = Mathf.Max(0f, epsilon);
+  
     public void SetFollowSpeedRampDistance(float dist) => followSpeedRampDistance = Mathf.Max(0.01f, dist);
 
     // New: control collision sampling relative to animator pivot

@@ -348,6 +348,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 163499844}
+  moveSpeed: 2.5
+  snapThreshold: 0.05
+  requireVisibleToMove: 1
+  ignoreClicksWhenOffscreen: 0
+  allowVirtualJoystick: 1
+  idleWhileOffscreen: 1
+  wallSlideUnstick: 0.02
+  wallSlideAttempts: 3
+  wallSlideMinFraction: 0.25
+  useCollisionBraking: 1
+  blockedFriction: 1.01
+  blockedRecovery: 6
+  minBlockedSpeedFactor: 0.05
+  useFixedCollisionRadius: 1
+  collisionRadiusWorld: 0.05
 --- !u!95 &163499844
 Animator:
   serializedVersion: 7
@@ -665,6 +680,7 @@ GameObject:
   - component: {fileID: 362152976}
   - component: {fileID: 362152975}
   - component: {fileID: 362152978}
+  - component: {fileID: 362152979}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -713,8 +729,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 1
+  field of view: 45
+  orthographic: 0
   orthographic size: 5
   m_Depth: -1
   m_CullingMask:
@@ -739,8 +755,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 362152974}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalRotation: {x: -0.38268346, y: 0, z: 0, w: 0.9238795}
+  m_LocalPosition: {x: 0, y: -7.985282, z: -8.485281}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -790,6 +806,29 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &362152979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362152974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 415da27a3c026314daab7af31b26f874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Mode7CameraController
+  target: {fileID: 163499840}
+  lookAtYOffset: 0
+  enableMode7: 1
+  fieldOfView: 45
+  pitch: 45
+  yaw: 0
+  distance: 12
+  heightOffset: 0.5
+  followLerp: 10
+  terrain: {fileID: 1370846927}
+  clampLookAtToTerrain: 1
 --- !u!1 &417901354
 GameObject:
   m_ObjectHideFlags: 0

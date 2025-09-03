@@ -91,6 +91,7 @@
     <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyStrand.cs" />
+    <Compile Include="Assets\Scripts\Overworld\Mode7CameraController.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldEncounterManager.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
