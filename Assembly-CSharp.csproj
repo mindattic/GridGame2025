@@ -240,7 +240,6 @@
     <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />
     <Compile Include="Assets\Scripts\Instances\VFXInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
-    <Compile Include="Assets\Scripts\Overworld\MapTerrain.cs" />
     <Compile Include="Assets\Scripts\Canvas\Clock.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
