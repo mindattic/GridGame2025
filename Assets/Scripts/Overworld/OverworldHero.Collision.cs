@@ -78,14 +78,37 @@ public partial class OverworldHero
 
         Vector2 desired = ClampToMap(current + step);
 
-        // Estimate obstacle normal near the desired position first, then fallback to current
-        float sampleRadius = Mathf.Max(0.05f, GetProbeRadius() + navObstacleBuffer);
-        Vector2 centerDesired = GetVisualCenter(desired);
-        Vector2 n = collisionProvider.EstimateObstacleNormal(centerDesired, sampleRadius, 12);
+        // Prefer physics cast normal if a Rigidbody2D exists and a hit occurs along the step
+        Vector2 n = Vector2.zero;
+        if (UsingPhysicsCast())
+        {
+            Vector2 dirCast = step.normalized;
+            float distCast = step.magnitude + Mathf.Max(0f, skin);
+            int hitCount = rb.Cast(dirCast, contactFilter, hitBuffer, distCast);
+            if (hitCount > 0)
+            {
+                float closest = Mathf.Infinity; int idx = -1;
+                for (int h = 0; h < hitCount; h++)
+                {
+                    float d = hitBuffer[h].distance;
+                    if (d >= 0f && d < closest) { closest = d; idx = h; }
+                }
+                if (idx >= 0)
+                    n = hitBuffer[idx].normal;
+            }
+        }
+
+        // If physics gave no normal, estimate obstacle normal from MapTerrain near desired/current
         if (n == Vector2.zero)
         {
-            Vector2 centerCurrent = GetVisualCenter(current);
-            n = collisionProvider.EstimateObstacleNormal(centerCurrent, sampleRadius, 12);
+            float sampleRadius = Mathf.Max(0.05f, GetProbeRadius() + navObstacleBuffer);
+            Vector2 centerDesired = GetVisualCenter(desired);
+            n = collisionProvider.EstimateObstacleNormal(centerDesired, sampleRadius, 12);
+            if (n == Vector2.zero)
+            {
+                Vector2 centerCurrent = GetVisualCenter(current);
+                n = collisionProvider.EstimateObstacleNormal(centerCurrent, sampleRadius, 12);
+            }
         }
         if (n == Vector2.zero) return false;
 
@@ -209,4 +232,93 @@ public partial class OverworldHero
         return (float)blocked / total;
     }
 
+    // Should we use physics cast this frame for this step? Only if a collider blocks the path.
+    private bool ShouldUseCast(Vector2 displacement)
+    {
+        if (!UsingPhysicsCast()) return false;
+        if (displacement.sqrMagnitude <= 1e-10f) return false;
+        Vector2 dir = displacement.normalized;
+        float dist = displacement.magnitude + Mathf.Max(0f, skin);
+        int hitCount = rb.Cast(dir, contactFilter, hitBuffer, dist);
+        return hitCount > 0;
+    }
+
+    // Plans the move by casting along the path, clamping to just before any hit.
+    // If we hit, we project the remaining movement along the surface to slide.
+    private void MoveWithCast(Vector2 displacement)
+    {
+        // We use rb.Cast for normals and distances, but still move transform to keep existing smoothness
+        if (!UsingPhysicsCast())
+        {
+            // Fallback: simple resolver using MapTerrain sampling
+            Vector2 current = GetPosition();
+            Vector2 desired = ClampToMap(current + displacement);
+            Vector2 next = ResolveCollision(current, desired);
+            SetPosition(next);
+            if ((next - current).sqrMagnitude > 1e-6f) OnHeroMoved?.Invoke(next);
+            return;
+        }
+
+        Vector2 remainingMove = displacement;
+        Vector2 currentPos = GetPosition();
+
+        // Limit slide loops to avoid edge jitter
+        for (int i = 0; i < maxSlideIterations; i++)
+        {
+            // No more movement needed
+            if (remainingMove.sqrMagnitude <= 0.000001f)
+                break;
+
+            Vector2 dir = remainingMove.normalized;
+            float dist = remainingMove.magnitude;
+
+            // Cast from the current body along dir
+            int hitCount = rb.Cast(dir, contactFilter, hitBuffer, dist + skin);
+
+            if (hitCount == 0)
+            {
+                // Free path, take the whole step
+                currentPos += dir * dist;
+                remainingMove = Vector2.zero;
+                break;
+            }
+
+            // Find the closest valid hit
+            float closest = Mathf.Infinity;
+            int closestIndex = -1;
+
+            for (int h = 0; h < hitCount; h++)
+            {
+                float d = hitBuffer[h].distance;
+                if (d >= 0f && d < closest)
+                {
+                    closest = d;
+                    closestIndex = h;
+                }
+            }
+
+            if (closestIndex < 0)
+            {
+                // No usable hit, abort movement this frame
+                break;
+            }
+
+            // Move up to just before contact
+            float allowed = Mathf.Max(0f, closest - skin);
+            currentPos += dir * allowed;
+
+            // Compute slide direction by removing normal component
+            Vector2 hitNormal = hitBuffer[closestIndex].normal;
+            Vector2 remainingAfterStep = dir * Mathf.Max(0f, dist - allowed);
+
+            // Slide along the surface
+            Vector2 slide = remainingAfterStep - Vector2.Dot(remainingAfterStep, hitNormal) * hitNormal;
+
+            remainingMove = slide;
+        }
+
+        // Apply the planned position (transform-based to keep prior smoothing)
+        SetPosition(currentPos);
+        OnHeroMoved?.Invoke(currentPos);
+    }
 }

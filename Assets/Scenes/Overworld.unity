@@ -359,6 +359,8 @@ MonoBehaviour:
   collisionRadiusWorld: 0.1
   forwardCoverageBlockThreshold: 0.5
   forwardCoverageSamples: 16
+  skin: 0.01
+  maxSlideIterations: 3
 --- !u!95 &163499844
 Animator:
   serializedVersion: 7
@@ -473,8 +475,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.088399954}
-  m_Radius: 0.26
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.1
 --- !u!50 &163499847
 Rigidbody2D:
   serializedVersion: 5
@@ -483,7 +485,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163499839}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
@@ -501,7 +503,7 @@ Rigidbody2D:
   m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &213694432
 GameObject:
   m_ObjectHideFlags: 0
@@ -2756,33 +2758,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &4470385376115026142
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8350801233138834870}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!4 &5635863852608587849
 Transform:
   m_ObjectHideFlags: 0
@@ -2792,7 +2767,7 @@ Transform:
   m_GameObject: {fileID: 8350801233138834870}
   serializedVersion: 2
   m_LocalRotation: {x: -0.38268343, y: -0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 10.79678, y: 3, z: 66.61176}
+  m_LocalPosition: {x: 10.79678, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2833,7 +2808,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.2
+  m_Radius: 0.1
 --- !u!1 &8350801233138834870
 GameObject:
   m_ObjectHideFlags: 0
@@ -2844,7 +2819,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5635863852608587849}
   - component: {fileID: 404607756167116722}
-  - component: {fileID: 4470385376115026142}
   - component: {fileID: 7001439921782443573}
   m_Layer: 0
   m_Name: Tree

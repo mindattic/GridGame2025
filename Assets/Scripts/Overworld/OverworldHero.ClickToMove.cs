@@ -46,20 +46,27 @@ public partial class OverworldHero
             // Look-ahead: stop before intersecting a wall
             if (WillHitWall(cur, step)) { SetIdle(); isMoving = false; return; }
 
-            Vector2 desiredNext = ClampToMap(cur + step);
-            Vector2 nextPos = ResolveCollision(cur, desiredNext);
-            Vector2 delta = nextPos - cur;
-
-            bool moved = delta.sqrMagnitude > 1e-6f;
-            if (moved)
+            if (ShouldUseCast(step))
             {
-                SetAnimation(delta);
-                SetPosition(nextPos);
-                OnHeroMoved?.Invoke(nextPos);
+                MoveWithCast(step);
             }
             else
             {
-                _path = null; isMoving = false; SetIdle();
+                Vector2 desiredNext = ClampToMap(cur + step);
+                Vector2 nextPos = ResolveCollision(cur, desiredNext);
+                Vector2 delta = nextPos - cur;
+
+                bool moved = delta.sqrMagnitude > 1e-6f;
+                if (moved)
+                {
+                    SetAnimation(delta);
+                    SetPosition(nextPos);
+                    OnHeroMoved?.Invoke(nextPos);
+                }
+                else
+                {
+                    _path = null; isMoving = false; SetIdle();
+                }
             }
             return;
         }
@@ -78,19 +85,26 @@ public partial class OverworldHero
         // Look-ahead: stop before intersecting a wall
         if (WillHitWall(cur, step2)) { SetIdle(); isMoving = false; return; }
 
-        Vector2 desiredNext2 = ClampToMap(cur + step2);
-        Vector2 nextPos2 = ResolveCollision(cur, desiredNext2); Vector2 delta2 = nextPos2 - cur;
-
-        bool moved2 = delta2.sqrMagnitude > 1e-6f;
-        if (moved2)
+        if (ShouldUseCast(step2))
         {
-            SetAnimation(delta2);
-            SetPosition(nextPos2);
-            OnHeroMoved?.Invoke(nextPos2);
+            MoveWithCast(step2);
         }
         else
         {
-            isMoving = false; SetIdle();
+            Vector2 desiredNext2 = ClampToMap(cur + step2);
+            Vector2 nextPos2 = ResolveCollision(cur, desiredNext2); Vector2 delta2 = nextPos2 - cur;
+
+            bool moved2 = delta2.sqrMagnitude > 1e-6f;
+            if (moved2)
+            {
+                SetAnimation(delta2);
+                SetPosition(nextPos2);
+                OnHeroMoved?.Invoke(nextPos2);
+            }
+            else
+            {
+                isMoving = false; SetIdle();
+            }
         }
     }
 

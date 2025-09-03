@@ -33,7 +33,7 @@ public partial class OverworldHero : MonoBehaviour
     // Sampling
     private float speedSampleAheadFactor = 0.7f; // Future-proof: speed zones, currently constant 1x
 
-  
+
     // FollowCursor speed ramp: distance at which input magnitude reaches 1
     private float followSpeedRampDistance = 6.0f;
 
@@ -108,6 +108,14 @@ public partial class OverworldHero : MonoBehaviour
     // Destination marker prefab to spawn on click
     private GameObject destinationMarkerPrefab;
 
+    // 2D physics-based cast-and-slide (optional)
+    [Header("Physics Collision (optional)")]
+    [SerializeField] private float skin = 0.01f;
+    [SerializeField] private int maxSlideIterations = 3;
+    private Rigidbody2D rb;                      // Optional: if present, use shape cast to plan slides
+    private ContactFilter2D contactFilter;       // Configured from object layer
+    private RaycastHit2D[] hitBuffer;            // Reused hits buffer
+
     private void Awake()
     {
         // Auto-bind core components using exact hierarchy paths
@@ -124,6 +132,16 @@ public partial class OverworldHero : MonoBehaviour
         // Hero sprite and animator
         heroSprite = GetComponent<SpriteRenderer>();
         if (animator == null) animator = GetComponent<Animator>();
+
+        // Optional Rigidbody2D for physics-based casting
+        rb = GetComponent<Rigidbody2D>();
+        if (rb != null)
+        {
+            hitBuffer = new RaycastHit2D[16];
+            contactFilter.useTriggers = false;
+            contactFilter.useLayerMask = true;
+            contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+        }
 
         // Initialize animator with default idle facing
         ApplyAnimatorParameters(lastLook, 0f);
@@ -219,6 +237,8 @@ public partial class OverworldHero : MonoBehaviour
     {
         transform.position = new Vector3(v.x, v.y, transform.position.z);
     }
+
+    private bool UsingPhysicsCast() => rb != null;
 
     // Inspector toggles via code (optional helpers)
     public void SetMoveSpeed(int unitsPerSecond) => moveSpeed = Mathf.Max(0f, unitsPerSecond);

@@ -25,13 +25,20 @@ public partial class OverworldHero
 
             SetAnimationFromInput(dir, step.magnitude);
 
-            Vector2 desired = ClampToMap(current + step);
-            Vector2 next = ResolveCollision(current, desired);
-            Vector2 frameDelta = next - current;
+            if (ShouldUseCast(step))
+            {
+                MoveWithCast(step);
+            }
+            else
+            {
+                Vector2 desired = ClampToMap(current + step);
+                Vector2 next = ResolveCollision(current, desired);
+                Vector2 frameDelta = next - current;
 
-            SetPosition(next);
-            bool moved = frameDelta.sqrMagnitude > 1e-6f;
-            if (moved) OnHeroMoved?.Invoke(next);
+                SetPosition(next);
+                bool moved = frameDelta.sqrMagnitude > 1e-6f;
+                if (moved) OnHeroMoved?.Invoke(next);
+            }
         }
         else
         {

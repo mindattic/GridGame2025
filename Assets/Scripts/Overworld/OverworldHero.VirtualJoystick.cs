@@ -29,13 +29,21 @@ public partial class OverworldHero
 
             SetAnimationFromInput(dir, step.magnitude); // always drive animator
 
-            Vector2 desired = ClampToMap(current + step);
-            Vector2 next = ResolveCollision(current, desired);
-            Vector2 frameDelta = next - current;
+            // Use physics cast only if there is an actual collider hit to process; otherwise keep terrain logic
+            if (ShouldUseCast(step))
+            {
+                MoveWithCast(step);
+            }
+            else
+            {
+                Vector2 desired = ClampToMap(current + step);
+                Vector2 next = ResolveCollision(current, desired);
+                Vector2 frameDelta = next - current;
 
-            SetPosition(next);
-            bool moved = frameDelta.sqrMagnitude > 1e-6f;
-            if (moved) OnHeroMoved?.Invoke(next);
+                SetPosition(next);
+                bool moved = frameDelta.sqrMagnitude > 1e-6f;
+                if (moved) OnHeroMoved?.Invoke(next);
+            }
 
             isMoving = false; _path = null; // ensure click path cancelled
         }
