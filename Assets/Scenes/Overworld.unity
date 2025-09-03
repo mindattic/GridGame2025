@@ -348,21 +348,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 163499844}
-  moveSpeed: 2.5
+  moveSpeed: 1
   snapThreshold: 0.05
   requireVisibleToMove: 1
   ignoreClicksWhenOffscreen: 0
   allowVirtualJoystick: 1
   idleWhileOffscreen: 1
-  wallSlideUnstick: 0.02
-  wallSlideAttempts: 3
-  wallSlideMinFraction: 0.25
-  useCollisionBraking: 1
-  blockedFriction: 1.01
-  blockedRecovery: 6
-  minBlockedSpeedFactor: 0.05
   useFixedCollisionRadius: 1
-  collisionRadiusWorld: 0.05
+  collisionRadiusWorld: 0.1
+  forwardCoverageBlockThreshold: 0.5
+  forwardCoverageSamples: 16
 --- !u!95 &163499844
 Animator:
   serializedVersion: 7

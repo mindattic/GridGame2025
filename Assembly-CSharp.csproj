@@ -146,6 +146,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\Slime02.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldHero.VirtualJoystick.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime01.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
@@ -216,6 +217,7 @@
     <Compile Include="Assets\Scripts\Managers\Portrait2DManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\PrefabLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldHero.ClickToMove.cs" />
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Libraries\SpriteLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
@@ -247,6 +249,7 @@
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DebugButtonPanel.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldHero.Animation.cs" />
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
@@ -266,6 +269,7 @@
     <Compile Include="Assets\Scripts\Models\ProjectileNode.cs" />
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldHero.Collision.cs" />
     <Compile Include="Assets\Scripts\Canvas\DestinationMarker.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />
@@ -274,6 +278,7 @@
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldHero.FollowCursor.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Pugilist.cs" />
