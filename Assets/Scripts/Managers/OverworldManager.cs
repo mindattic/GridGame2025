@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
 using scene = Assets.Helpers.SceneHelper;
+using System.Reflection;
 
 // OverworldManager orchestrates input and scene transitions for the world-space overworld.
 // World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
@@ -119,6 +120,49 @@ public class OverworldManager : MonoBehaviour
         // Wire offscreen indicator target now that we have hero
         offscreenArrow = GameObject.Find(GameObjectHelper.Overworld.Canvas.OffscreenArrow).GetComponent<OffscreenArrowIndicator>();
         offscreenArrow.WorldCamera = Camera.main;
+
+        // Prewarm all clouds so they start distributed across the map
+        try
+        {
+            var behaviours = GameObject.FindObjectsOfType<MonoBehaviour>();
+            if (behaviours != null && behaviours.Length > 0 && terrainSR != null)
+            {
+                // Collect CloudInstance-like behaviours by type name to avoid hard dependency
+                System.Collections.Generic.List<MonoBehaviour> clouds = new System.Collections.Generic.List<MonoBehaviour>();
+                foreach (var mb in behaviours)
+                {
+                    if (mb == null) continue;
+                    var t = mb.GetType();
+                    if (t != null && t.Name == "CloudInstance")
+                        clouds.Add(mb);
+                }
+                int total = clouds.Count;
+                if (total > 0)
+                {
+                    Bounds mapBounds = terrainSR.bounds;
+                    for (int i = 0; i < total; i++)
+                    {
+                        var c = clouds[i];
+                        if (c == null) continue;
+                        var t = c.GetType();
+                        // Wire fields if present
+                        var terrainField = t.GetField("terrain", BindingFlags.Public | BindingFlags.Instance);
+                        if (terrainField != null && terrainField.FieldType == typeof(SpriteRenderer))
+                            terrainField.SetValue(c, terrainSR);
+                        var cameraField = t.GetField("worldCamera", BindingFlags.Public | BindingFlags.Instance);
+                        if (cameraField != null && cameraField.FieldType == typeof(Camera))
+                            cameraField.SetValue(c, cam);
+                        // Call PrewarmDistribute(index,total,mapBounds,cam) if present
+                        var method = t.GetMethod("PrewarmDistribute", BindingFlags.Public | BindingFlags.Instance);
+                        if (method != null)
+                        {
+                            method.Invoke(c, new object[] { i, total, mapBounds, cam });
+                        }
+                    }
+                }
+            }
+        }
+        catch { }
 
         // Initialize UI state
         UpdateCameraModeUI();

@@ -151,6 +151,7 @@
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Utilities\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
+    <Compile Include="Assets\Scripts\Overworld\CloudInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\CombatLogHelper.cs" />
     <Compile Include="Assets\Scripts\Libraries\MapLibrary.cs" />
