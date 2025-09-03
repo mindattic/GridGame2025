@@ -81,6 +81,7 @@
     <Compile Include="Assets\Scripts\Canvas\TimerBar2D.cs" />
     <Compile Include="Assets\Scripts\Models\ShakeIntensity.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldFollower.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
