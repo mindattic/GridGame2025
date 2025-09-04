@@ -24,9 +24,13 @@ public class CloudInstance : MonoBehaviour
 
     [Header("Appearance")]
     [Tooltip("Uniform scale range for the cloud.")]
-    public Vector2 uniformScaleRange = new Vector2(0.8f, 1.25f);
+    public Vector2 scaleRange = new Vector2(1.0f, 1.25f);
     [Tooltip("Randomize scale on each respawn.")]
-    public bool randomizeScaleEachRespawn = false;
+    public bool randomizeScale = false;
+    [Tooltip("Randomize SpriteRenderer Flip X when the cloud starts and each time it teleports to the other side.")]
+    public bool randomizeFlipX = false;
+    [Tooltip("Randomize SpriteRenderer Flip Y when the cloud starts and each time it teleports to the other side.")]
+    public bool randomizeFlipY = false;
 
     [Header("Buffers")]
     [Tooltip("Extra world units beyond terrain bounds that trigger exit and are used for spawn on the opposite side.")]
@@ -38,10 +42,12 @@ public class CloudInstance : MonoBehaviour
 
     private float _speed;
     private Transform _t;
+    private SpriteRenderer _sprite;
 
     private void Awake()
     {
         _t = transform;
+        _sprite = GetComponent<SpriteRenderer>();
         if (worldCamera == null) worldCamera = Camera.main;
         if (terrain == null)
         {
@@ -71,7 +77,7 @@ public class CloudInstance : MonoBehaviour
     {
         NormalizeRanges();
         _speed = Random.Range(speedRange.x, speedRange.y);
-        float s = Random.Range(uniformScaleRange.x, uniformScaleRange.y);
+        float s = Random.Range(scaleRange.x, scaleRange.y);
         _t.localScale = new Vector3(s, s, _t.localScale.z);
 
         // If starting inside the view, move it to the starting side off-screen so it drifts in
@@ -92,6 +98,9 @@ public class CloudInstance : MonoBehaviour
                 _t.position = new Vector3(spawnX, spawnY, planeZ);
             }
         }
+
+        // Randomize flip at start if enabled
+        MaybeRandomizeFlip();
     }
 
     private void Update()
@@ -146,11 +155,14 @@ public class CloudInstance : MonoBehaviour
 
         if (randomizeSpeedEachRespawn)
             _speed = Random.Range(speedRange.x, speedRange.y);
-        if (randomizeScaleEachRespawn)
+        if (randomizeScale)
         {
-            float s = Random.Range(uniformScaleRange.x, uniformScaleRange.y);
+            float s = Random.Range(scaleRange.x, scaleRange.y);
             _t.localScale = new Vector3(s, s, _t.localScale.z);
         }
+
+        // Randomize flip on teleport if enabled
+        MaybeRandomizeFlip();
     }
 
     private void RespawnToLeft()
@@ -172,11 +184,14 @@ public class CloudInstance : MonoBehaviour
 
         if (randomizeSpeedEachRespawn)
             _speed = Random.Range(speedRange.x, speedRange.y);
-        if (randomizeScaleEachRespawn)
+        if (randomizeScale)
         {
-            float s = Random.Range(uniformScaleRange.x, uniformScaleRange.y);
+            float s = Random.Range(scaleRange.x, scaleRange.y);
             _t.localScale = new Vector3(s, s, _t.localScale.z);
         }
+
+        // Randomize flip on teleport if enabled
+        MaybeRandomizeFlip();
     }
 
     // Allow OverworldManager to prewarm clouds so they start distributed across the map
@@ -186,9 +201,9 @@ public class CloudInstance : MonoBehaviour
         NormalizeRanges();
         if (randomizeSpeedEachRespawn || _speed <= 0f)
             _speed = Random.Range(speedRange.x, speedRange.y);
-        if (randomizeScaleEachRespawn)
+        if (randomizeScale)
         {
-            float s = Random.Range(uniformScaleRange.x, uniformScaleRange.y);
+            float s = Random.Range(scaleRange.x, scaleRange.y);
             _t.localScale = new Vector3(s, s, _t.localScale.z);
         }
 
@@ -223,10 +238,17 @@ public class CloudInstance : MonoBehaviour
     private void NormalizeRanges()
     {
         if (speedRange.x > speedRange.y) { float t = speedRange.x; speedRange.x = speedRange.y; speedRange.y = t; }
-        if (uniformScaleRange.x > uniformScaleRange.y) { float t = uniformScaleRange.x; uniformScaleRange.x = uniformScaleRange.y; uniformScaleRange.y = t; }
+        if (scaleRange.x > scaleRange.y) { float t = scaleRange.x; scaleRange.x = scaleRange.y; scaleRange.y = t; }
         speedRange.x = Mathf.Max(0f, speedRange.x);
         speedRange.y = Mathf.Max(speedRange.x, speedRange.y);
-        uniformScaleRange.x = Mathf.Max(0.01f, uniformScaleRange.x);
-        uniformScaleRange.y = Mathf.Max(uniformScaleRange.x, uniformScaleRange.y);
+        scaleRange.x = Mathf.Max(0.01f, scaleRange.x);
+        scaleRange.y = Mathf.Max(scaleRange.x, scaleRange.y);
+    }
+
+    private void MaybeRandomizeFlip()
+    {
+        if (_sprite == null) return;
+        if (randomizeFlipX) _sprite.flipX = Random.value > 0.5f;
+        if (randomizeFlipY) _sprite.flipY = Random.value > 0.5f;
     }
 }
