@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldFollower.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
+    <Compile Include="Assets\Scripts\Effects\ScreenGrabPreview.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
     <Compile Include="Assets\Scripts\Canvas\PauseButton.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
     <Compile Include="Assets\Scripts\Helpers\CombatTextHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\DateTimeHelper.cs" />
+    <Compile Include="Assets\Scripts\Effects\ScreenGrabber.cs" />
     <Compile Include="Assets\Scripts\Helpers\TouchHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
@@ -200,6 +202,7 @@
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Barbarian.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\BoardOverlay.cs" />
+    <Compile Include="Assets\Scripts\Effects\ScreenShatter.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\RectVector3.cs" />
     <Compile Include="Assets\Scripts\Instances\KeyboardDialogInstance.cs" />
@@ -287,6 +290,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\Wolf02.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
+    <Compile Include="Assets\Scripts\Effects\ShardMeshBuilder.cs" />
     <Compile Include="Assets\Scripts\Sequences\PincerAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
     <Compile Include="Assets\Scripts\Canvas\TargetModeOverlay.cs" />
@@ -362,12 +366,14 @@
     <None Include="Assets\Shader\ThirdParty\Standard.shader" />
     <None Include="Assets\Shader\ThirdParty\FX_Diffuse.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\Shader\ScreenShatter.shader" />
     <None Include="Assets\Shader\ThirdParty\Alpha Blended.shader" />
     <None Include="Assets\Shader\ThirdParty\FireDartsOriginalFinal.shader" />
     <None Include="Assets\Shader\ThirdParty\Add_CenterGlow.shader" />
     <None Include="Assets\Shader\ThirdParty\water_add.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\Shader\ThirdParty\pmxg.shader" />
+    <None Include="Assets\Shader\ScreenShatterURP.shader" />
     <None Include="Assets\Shader\ThirdParty\Particle Add.shader" />
     <None Include="Assets\Shader\ThirdParty\Add_CenterGlow 3.shader" />
     <None Include="Assets\Shader\ThirdParty\Additive.shader" />

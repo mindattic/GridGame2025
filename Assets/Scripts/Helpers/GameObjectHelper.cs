@@ -145,6 +145,8 @@ namespace Assets.Helper
                 public const string Hero = "Map/Hero";
             }
 
+            public const string ScreenShatter = "ScreenShatter";
+
         }
 
         public static class ProfileCreate

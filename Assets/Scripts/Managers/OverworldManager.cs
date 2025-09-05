@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
 using scene = Assets.Helpers.SceneHelper;
 using System.Reflection;
+using System;
 
 // OverworldManager orchestrates input and scene transitions for the world-space overworld.
 // World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
@@ -57,11 +58,14 @@ public class OverworldManager : MonoBehaviour
     private bool mode7WasEnabled; // restore when leaving FreeCamera
     private bool Mode7Active { get { return mode7 != null && mode7.enabled && mode7.enableMode7; } }
 
+    ScreenShatter screenShatter;
+
+
     private void Awake()
     {
         cam = Camera.main;
         if (cam != null) mode7 = cam.GetComponent<Mode7CameraController>();
-     
+
         if (!ProfileHelper.HasProfiles())
             return;
 
@@ -84,6 +88,10 @@ public class OverworldManager : MonoBehaviour
         cameraModeButton = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeButton)?.GetComponent<Button>();
         cameraModeImage = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeImage)?.GetComponent<Image>();
         cameraModeLabel = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeLabel)?.GetComponent<Label>();
+
+
+
+        screenShatter = GameObject.Find(GameObjectHelper.Overworld.ScreenShatter)?.GetComponent<ScreenShatter>();
 
         //// Only add a runtime listener if no persistent (inspector) listeners are set
         //if (cameraModeButton != null && cameraModeButton.onClick.GetPersistentEventCount() == 0)
@@ -212,7 +220,9 @@ public class OverworldManager : MonoBehaviour
 
     private void UpdateCameraModeUI()
     {
-        if (cameraModeImage == null && cameraModeLabel == null) return;
+        if (cameraModeImage == null || cameraModeLabel == null || cameraModeLabel == null)
+            return;
+
         // Map camera mode to sprite+label (reusing existing sprites)
         var mapping = cameraMode switch
         {
@@ -220,9 +230,9 @@ public class OverworldManager : MonoBehaviour
             OverworldCameraMode.FreeCamera => ("Camera01", "Free"),
             _ => ("Camera00", "Follow"),
         };
-        if (cameraModeImage != null && SpriteLibrary.GUI.ContainsKey(mapping.Item1))
-            cameraModeImage.sprite = SpriteLibrary.GUI[mapping.Item1];
-        if (cameraModeLabel != null) cameraModeLabel.text = mapping.Item2;
+        cameraModeImage.sprite = SpriteLibrary.GUI[mapping.Item1];
+        cameraModeLabel.text = mapping.Item2;
+
     }
 
     private void Update()
@@ -274,8 +284,6 @@ public class OverworldManager : MonoBehaviour
             }
             return;
         }
-
-        // Note: All mouse input removed; input is touch-only by design.
     }
 
     private void LateUpdate()
@@ -321,11 +329,6 @@ public class OverworldManager : MonoBehaviour
         }
     }
 
-    private bool IsTap(Vector2 releasePos)
-    {
-        if (Time.unscaledTime - pointerDownTime > tapMaxTime) return false;
-        return (releasePos - pointerDownPos).sqrMagnitude <= tapMaxSqrDistance;
-    }
 
     private bool IsOverUI(Vector2 screenPos)
     {
@@ -338,7 +341,7 @@ public class OverworldManager : MonoBehaviour
 
         foreach (var r in results)
         {
-            return true; 
+            return true;
         }
         return false;
     }
@@ -369,12 +372,23 @@ public class OverworldManager : MonoBehaviour
             ProfileHelper.SaveOverworldPosition(new Vector2(hero.transform.position.x, hero.transform.position.y), mapName, hero.CurrentFacingName ?? "Idle");
         }
 
-        // Get a random stage for this map from RNG
-        string stageName = RNG.Stage(mapName);
-        ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
 
-        isLoadingEncounter = true;
-        scene.Change.ToGame();
+
+        StartCoroutine(screenShatter.Play(() =>
+        {
+
+            Debug.Log("Screen shatter!");
+
+
+        }));
+
+
+
+        // Get a random stage for this map from RNG
+        //string stageName = RNG.Stage(mapName);
+        //ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
+        //isLoadingEncounter = true;
+        //scene.Change.ToGame();
     }
 
     // --- Camera helpers ---

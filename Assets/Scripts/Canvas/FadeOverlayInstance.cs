@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class FadeOverlayInstance : MonoBehaviour
 {
     private Image image;
-    private float fadeDuration = 0.5f;
+    private float fadeDuration = 0.25f;
 
     private void Awake()
     {
