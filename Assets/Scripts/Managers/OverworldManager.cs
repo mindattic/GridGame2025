@@ -59,6 +59,7 @@ public class OverworldManager : MonoBehaviour
     private bool Mode7Active { get { return mode7 != null && mode7.enabled && mode7.enableMode7; } }
 
     ScreenShatter screenShatter;
+    ZoomEffect zoomEffect;
 
 
     private void Awake()
@@ -91,7 +92,8 @@ public class OverworldManager : MonoBehaviour
 
 
 
-        screenShatter = GameObject.Find(GameObjectHelper.Overworld.ScreenShatter)?.GetComponent<ScreenShatter>();
+        screenShatter = GameObject.Find(GameObjectHelper.Overworld.BattleTransition)?.GetComponent<ScreenShatter>();
+        zoomEffect = GameObject.Find(GameObjectHelper.Overworld.BattleTransition)?.GetComponent<ZoomEffect>();
 
         //// Only add a runtime listener if no persistent (inspector) listeners are set
         //if (cameraModeButton != null && cameraModeButton.onClick.GetPersistentEventCount() == 0)
@@ -374,13 +376,21 @@ public class OverworldManager : MonoBehaviour
 
 
 
-        StartCoroutine(screenShatter.Play(() =>
+        //StartCoroutine(screenShatter.Play(() =>
+        //{
+
+        //    Debug.Log("Screen shatter!");
+        //}));
+
+
+
+
+        StartCoroutine(zoomEffect.Play(() =>
         {
 
-            Debug.Log("Screen shatter!");
-
-
+            Debug.Log("Zoom Effect shatter!");
         }));
+
 
 
 

@@ -83,7 +83,6 @@
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldFollower.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
-    <Compile Include="Assets\Scripts\Effects\ScreenGrabPreview.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
     <Compile Include="Assets\Scripts\Canvas\PauseButton.cs" />
@@ -144,6 +143,7 @@
     <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
     <Compile Include="Assets\Scripts\Managers\SequenceManager.cs" />
+    <Compile Include="Assets\Scripts\Effects\ZoomEffect.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime02.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
@@ -366,7 +366,6 @@
     <None Include="Assets\Shader\ThirdParty\Standard.shader" />
     <None Include="Assets\Shader\ThirdParty\FX_Diffuse.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
-    <None Include="Assets\Shader\ScreenShatter.shader" />
     <None Include="Assets\Shader\ThirdParty\Alpha Blended.shader" />
     <None Include="Assets\Shader\ThirdParty\FireDartsOriginalFinal.shader" />
     <None Include="Assets\Shader\ThirdParty\Add_CenterGlow.shader" />
@@ -385,6 +384,7 @@
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\Shader\ThirdParty\Alpha Blended 1.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
+    <None Include="Assets\Shader\ZoomShaderURP.shader" />
     <None Include="Assets\Shader\ThirdParty\ModelDouble.shader" />
     <None Include="Assets\Shader\ThirdParty\StencilMask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />

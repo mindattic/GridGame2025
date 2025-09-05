@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// Note: If you use a Screen Space - Overlay Canvas, it will render on top of this effect. This script can temporarily disable such canvases.
 /// </summary>
 [RequireComponent(typeof(ScreenGrabber))]
-public class ScreenShatter : MonoBehaviour
+public class ZoomEffect : MonoBehaviour
 {
     [Header("Grid")]
     public int cols = 40;
@@ -37,17 +37,6 @@ public class ScreenShatter : MonoBehaviour
     public float spin = 9.0f;
     public float jitter = 0.8f;
     public Vector2 centerUV = new Vector2(0.5f, 0.5f);
-
-    [Header("Debug / Inspector")]
-    public bool pauseOnScreenshot = false;
-    public bool pauseOnShatterStart = false;
-    public bool pauseOnShatterEnd = false;
-    [Tooltip("If pausing at end, keep shards GameObject and captured texture alive so you can inspect them in the Inspector.")]
-    public bool keepShardsOnPause = true;
-    [Tooltip("Expose the captured frame in the inspector for debugging while paused.")]
-    public bool exposeCaptureInInspector = true;
-    [SerializeField] private Texture2D debugCapturedFrame;
-    [SerializeField] private GameObject debugShardsGO;
 
     private const string URPShaderPath = "Universal Render Pipeline/Unlit/ScreenShatter";
     private const string BuiltinShaderPath = "Unlit/ScreenShatter";
@@ -88,12 +77,9 @@ public class ScreenShatter : MonoBehaviour
         // 1) Grab frame
         Texture2D frame = null;
         yield return StartCoroutine(GetComponent<ScreenGrabber>().CaptureToTexture(t => frame = t));
-        if (exposeCaptureInInspector) debugCapturedFrame = frame;
-        if (pauseOnScreenshot) PauseHere("After Screenshot Capture");
 
         // 2) Build mesh object
         var go = new GameObject("ScreenShards");
-        debugShardsGO = go;
 
         // Place on a camera-visible layer (default to "Default"). Avoid inheriting UI layer accidentally.
         int targetLayer = LayerMask.NameToLayer(string.IsNullOrEmpty(renderLayerName) ? "Default" : renderLayerName);
@@ -116,12 +102,20 @@ public class ScreenShatter : MonoBehaviour
 
         // 3) Setup material instance (prefer URP shader, fallback to Built-in)
         Material matInst = null;
-        if (shatterMat != null) matInst = new Material(shatterMat);
+        if (shatterMat != null)
+        {
+            matInst = new Material(shatterMat);
+        }
         else
         {
             var shader = Shader.Find(URPShaderPath);
-            if (shader == null) shader = Shader.Find(BuiltinShaderPath);
-            if (shader != null) matInst = new Material(shader);
+            if (shader == null)
+                shader = Shader.Find(BuiltinShaderPath);
+
+            if (shader != null)
+            {
+                matInst = new Material(shader);
+            }
         }
 
         if (matInst == null)
@@ -129,6 +123,8 @@ public class ScreenShatter : MonoBehaviour
             Debug.LogError("ScreenShatter: Could not create material. Assign shatterMat or add the ScreenShatter shader (URP or Built-in).");
             Destroy(go);
             if (frame != null) Destroy(frame);
+
+            // Restore UI state before exiting
             for (int i = 0; i < disabledCanvases.Count; i++) disabledCanvases[i].enabled = true;
             for (int i = 0; i < fadedImages.Count; i++) fadedImages[i].img.enabled = fadedImages[i].wasEnabled;
             yield break;
@@ -140,14 +136,14 @@ public class ScreenShatter : MonoBehaviour
         matInst.SetFloat("_Spin", spin);
         matInst.SetFloat("_Jitter", jitter);
         matInst.SetVector("_CenterUV", new Vector4(centerUV.x, centerUV.y, 0, 0));
+        // Ensure it renders after most transparents
         matInst.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent + 10;
         mr.sharedMaterial = matInst;
 
+        // Make sure it renders on top of world (optional: set sorting order)
         mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         mr.receiveShadows = false;
-        mr.sortingOrder = short.MaxValue;
-
-        if (pauseOnShatterStart) PauseHere("On Shatter Start (progress=0)");
+        mr.sortingOrder = short.MaxValue; // best effort within the same sorting layer
 
         // 4) Animate
         float t = 0f;
@@ -159,31 +155,11 @@ public class ScreenShatter : MonoBehaviour
             yield return null;
         }
 
-        mr.sharedMaterial.SetFloat("_Progress", 1f);
-
-        if (pauseOnShatterEnd)
-        {
-            PauseHere("On Shatter End (progress=1)");
-            if (keepShardsOnPause) yield break;
-        }
-
         // 5) Cleanup and restore UI
         Object.Destroy(go);
-        debugShardsGO = null;
-        if (frame != null) Object.Destroy(frame);
-        debugCapturedFrame = null;
+        Object.Destroy(frame);
         for (int i = 0; i < disabledCanvases.Count; i++) disabledCanvases[i].enabled = true;
         for (int i = 0; i < fadedImages.Count; i++) fadedImages[i].img.enabled = fadedImages[i].wasEnabled;
         onFinished?.Invoke();
-    }
-
-    private void PauseHere(string reason)
-    {
-        Debug.Log($"ScreenShatter: Pause - {reason}");
-        #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPaused = true;
-        #else
-        Debug.Break();
-        #endif
     }
 }
