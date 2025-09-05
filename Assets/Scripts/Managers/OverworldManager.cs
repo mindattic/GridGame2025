@@ -372,23 +372,15 @@ public class OverworldManager : MonoBehaviour
             ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroY = hero.transform.position.y;
             ProfileHelper.CurrentProfile.LatestSave.Overworld.HeroDirection = hero.CurrentFacingName ?? "Idle";
             ProfileHelper.SaveOverworldPosition(new Vector2(hero.transform.position.x, hero.transform.position.y), mapName, hero.CurrentFacingName ?? "Idle");
+            ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = RNG.Stage(mapName);
         }
-
-
-
-        //StartCoroutine(screenShatter.Play(() =>
-        //{
-
-        //    Debug.Log("Screen shatter!");
-        //}));
-
+        isLoadingEncounter = true;
 
 
 
         StartCoroutine(zoomEffect.Play(() =>
         {
-
-            Debug.Log("Zoom Effect shatter!");
+            //scene.Change.ToGame();
         }));
 
 

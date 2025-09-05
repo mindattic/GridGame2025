@@ -2,44 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using f = Assets.Helpers.FadeOverlayHelper;
+
 
 /// <summary>
-/// Drives a full-screen shatter transition by capturing the frame, rendering a shard grid, and animating a shader.
-/// Works with URP (uses "Universal Render Pipeline/Unlit/ScreenShatter") and falls back to Built-in ("Unlit/ScreenShatter").
-/// Note: If you use a Screen Space - Overlay Canvas, it will render on top of this effect. This script can temporarily disable such canvases.
+/// Captures the screen, shows it full screen, and drives a zoom/spin/smudge shader over time.
+/// Works with URP (uses "Ryan/ZoomShaderURP"). Optionally disables overlay canvases so the effect is visible.
 /// </summary>
 [RequireComponent(typeof(ScreenGrabber))]
 public class ZoomEffect : MonoBehaviour
 {
-    [Header("Grid")]
-    public int cols = 40;
-    public int rows = 22;
-
     [Header("Material")]
-    public Material shatterMat; // Optional. If null, a material is created from the URP shader (or Built-in fallback).
+    public Material zoomMaterial; // Optional. If null, a material is created from the URP shader.
 
-    [Header("Rendering")] 
-    [Tooltip("Layer to place the ScreenShards renderer on. Use a layer visible to the main camera.")]
+    [Header("Rendering")]
+    [Tooltip("Layer to place the renderer on. Use a layer visible to the main camera.")]
     public string renderLayerName = "Default";
 
-    [Tooltip("Temporarily disable all Screen Space - Overlay Canvases during the shatter so the effect is visible.")]
+    [Tooltip("Temporarily disable all Screen Space - Overlay Canvases during the effect so it is visible.")]
     public bool disableOverlayCanvases = true;
 
-    [Tooltip("Temporarily hide FadeOverlayInstance Images during the shatter and capture to avoid a full-black capture.")]
+    [Tooltip("Temporarily hide FadeOverlayInstance Images during the capture to avoid a black capture.")]
     public bool hideFadeOverlayImages = true;
 
-    [Tooltip("Parent the shards to the main camera so their transform never culls them.")]
+    [Tooltip("Parent the quad to the main camera so its transform never culls it.")]
     public bool parentToCamera = true;
 
     [Header("Motion")]
-    public float duration = 0.6f;
-    public float explode = 1.2f;
-    public float spin = 9.0f;
-    public float jitter = 0.8f;
+    public float duration = 0.75f;
+    public float zoomStrength = 2.0f; // final zoom amount contribution
+    public float spinRadians = 6.0f;  // spin over the duration (radians)
+    public float smudgeStrength = 1.0f;
     public Vector2 centerUV = new Vector2(0.5f, 0.5f);
 
-    private const string URPShaderPath = "Universal Render Pipeline/Unlit/ScreenShatter";
-    private const string BuiltinShaderPath = "Unlit/ScreenShatter";
+    [Header("Capture")]
+    [Tooltip("Flip the captured image vertically to correct upside-down orientation.")]
+    public bool flipY = true;
+
+    private const string URPShaderPath = "Ryan/ZoomShaderURP";
 
     public IEnumerator Play(System.Action onFinished = null)
     {
@@ -78,8 +78,8 @@ public class ZoomEffect : MonoBehaviour
         Texture2D frame = null;
         yield return StartCoroutine(GetComponent<ScreenGrabber>().CaptureToTexture(t => frame = t));
 
-        // 2) Build mesh object
-        var go = new GameObject("ScreenShards");
+        // 2) Build mesh object (simple full-screen grid)
+        var go = new GameObject("ZoomFullScreen");
 
         // Place on a camera-visible layer (default to "Default"). Avoid inheriting UI layer accidentally.
         int targetLayer = LayerMask.NameToLayer(string.IsNullOrEmpty(renderLayerName) ? "Default" : renderLayerName);
@@ -89,7 +89,8 @@ public class ZoomEffect : MonoBehaviour
         var mf = go.AddComponent<MeshFilter>();
         var mr = go.AddComponent<MeshRenderer>();
 
-        mf.sharedMesh = ShardMeshBuilder.BuildGrid(cols, rows);
+        // Small grid to allow good interpolation if needed
+        mf.sharedMesh = ShardMeshBuilder.BuildGrid(2, 2);
 
         // Parent to main camera so culling and transform are trivial
         if (parentToCamera && Camera.main != null)
@@ -100,18 +101,15 @@ public class ZoomEffect : MonoBehaviour
             go.transform.localScale = Vector3.one;
         }
 
-        // 3) Setup material instance (prefer URP shader, fallback to Built-in)
+        // 3) Setup material instance
         Material matInst = null;
-        if (shatterMat != null)
+        if (zoomMaterial != null)
         {
-            matInst = new Material(shatterMat);
+            matInst = new Material(zoomMaterial);
         }
         else
         {
             var shader = Shader.Find(URPShaderPath);
-            if (shader == null)
-                shader = Shader.Find(BuiltinShaderPath);
-
             if (shader != null)
             {
                 matInst = new Material(shader);
@@ -120,7 +118,7 @@ public class ZoomEffect : MonoBehaviour
 
         if (matInst == null)
         {
-            Debug.LogError("ScreenShatter: Could not create material. Assign shatterMat or add the ScreenShatter shader (URP or Built-in).");
+            Debug.LogError("ZoomEffect: Could not create material. Assign zoomMaterial or add the Ryan/ZoomShaderURP shader.");
             Destroy(go);
             if (frame != null) Destroy(frame);
 
@@ -132,10 +130,11 @@ public class ZoomEffect : MonoBehaviour
 
         matInst.mainTexture = frame;
         matInst.SetFloat("_Progress", 0f);
-        matInst.SetFloat("_Explode", explode);
-        matInst.SetFloat("_Spin", spin);
-        matInst.SetFloat("_Jitter", jitter);
+        matInst.SetFloat("_Zoom", zoomStrength);
+        matInst.SetFloat("_Spin", spinRadians);
+        matInst.SetFloat("_Smudge", smudgeStrength);
         matInst.SetVector("_CenterUV", new Vector4(centerUV.x, centerUV.y, 0, 0));
+        matInst.SetFloat("_FlipY", flipY ? 1f : 0f);
         // Ensure it renders after most transparents
         matInst.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent + 10;
         mr.sharedMaterial = matInst;
