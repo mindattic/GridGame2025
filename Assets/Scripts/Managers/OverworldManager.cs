@@ -73,14 +73,14 @@ public class OverworldManager : MonoBehaviour
         if (!ProfileHelper.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            scene.Change.ToProfileCreate();
+            scene.Fade.ToProfileCreate();
             return;
         }
 
         if (!ProfileHelper.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
-            scene.Change.ToSaveFileSelect();
+            scene.Fade.ToSaveFileSelect();
             return;
         }
 
@@ -374,23 +374,18 @@ public class OverworldManager : MonoBehaviour
             ProfileHelper.SaveOverworldPosition(new Vector2(hero.transform.position.x, hero.transform.position.y), mapName, hero.CurrentFacingName ?? "Idle");
             ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = RNG.Stage(mapName);
         }
+
         isLoadingEncounter = true;
-
-
 
         StartCoroutine(zoomEffect.Play(() =>
         {
-            //scene.Change.ToGame();
+            // Effect finished: allow encounters again
+            isLoadingEncounter = false;
+
+            // If you want to transition after the effect, uncomment:
+             scene.Switch.ToGame();
         }));
 
-
-
-
-        // Get a random stage for this map from RNG
-        //string stageName = RNG.Stage(mapName);
-        //ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        //isLoadingEncounter = true;
-        //scene.Change.ToGame();
     }
 
     // --- Camera helpers ---

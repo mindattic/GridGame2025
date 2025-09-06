@@ -51,7 +51,7 @@ public class SettingsManager : MonoBehaviour
         //    yield return Wait.None();
         //}
 
-        scene.Change.ToPreviousScene();
+        scene.Fade.ToPreviousScene();
     }
 
 

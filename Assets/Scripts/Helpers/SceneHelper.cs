@@ -73,10 +73,19 @@ namespace Assets.Helpers
             }
         }
 
+        public static void SetAlpha(float alpha)
+        {
+            var overlay = FadeOverlayHelper.Overlay;
+            var image = overlay.GetComponent<UnityEngine.UI.Image>();
+            var color = image.color;
+            color.a = Mathf.Clamp01(alpha);
+            image.color = color;
+        }
+
         /// <summary>
         /// Fluent scene change API that encapsulates fade and loading flow.
         /// </summary>
-        public static class Change
+        public static class Fade
         {
             public static void To(string sceneName)
             {
@@ -91,9 +100,8 @@ namespace Assets.Helpers
                     //Always save before changing scenes
                     ProfileHelper.Save(overwrite: false);
                     ProfileHelper.Save(overwrite: true);
-
                     SceneLoader.Load(sceneName);
-                    yield return Wait.None();
+                    yield break;
                 }
 
                 FadeOut(afterFade());
@@ -103,8 +111,11 @@ namespace Assets.Helpers
             {
                 IEnumerator afterFade()
                 {
+                    //Always save before changing scenes
+                    ProfileHelper.Save(overwrite: false);
+                    ProfileHelper.Save(overwrite: true);
                     SceneLoader.LoadPreviousScene(defaultScene);
-                    yield return Wait.None();
+                    yield break;
                 }
 
                 FadeOut(afterFade());
@@ -123,5 +134,49 @@ namespace Assets.Helpers
             public static void ToStageSelect() => To(StageSelect);
             public static void ToTitleScreen() => To(TitleScreen);
         }
+
+        /// <summary>
+        /// Fluent scene change API that encapsulates fade and loading flow.
+        /// </summary>
+        public static class Switch
+        {
+            public static void To(string sceneName)
+            {
+                if (string.IsNullOrWhiteSpace(sceneName))
+                {
+                    Debug.LogError("SceneHelper.Change.To received an empty scene name.");
+                    return;
+                }
+
+                SetAlpha(0f);
+
+                //Always save before changing scenes
+                ProfileHelper.Save(overwrite: false);
+                ProfileHelper.Save(overwrite: true);
+                SceneLoader.Load(sceneName);
+            }
+
+            public static void ToPreviousScene(string defaultScene = Game)
+            {
+                SetAlpha(0f);
+                ProfileHelper.Save(overwrite: false);
+                ProfileHelper.Save(overwrite: true);
+                SceneLoader.LoadPreviousScene(defaultScene);
+            }
+
+            // Strongly typed helpers
+            public static void ToCredits() => To(Credits);
+            public static void ToGame() => To(Game);
+            public static void ToOverworld() => To(Overworld);
+            public static void ToPartyManager() => To(PartyManager);
+            public static void ToProfileCreate() => To(ProfileCreate);
+            public static void ToProfileSelect() => To(ProfileSelect);
+            public static void ToSaveFileSelect() => To(SaveFileSelect);
+            public static void ToSplashScreen() => To(SplashScreen);
+            public static void ToSettings() => To(Settings);
+            public static void ToStageSelect() => To(StageSelect);
+            public static void ToTitleScreen() => To(TitleScreen);
+        }
+
     }
 }

@@ -20,13 +20,13 @@ public class SplashScreenManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
-            scene.Change.ToTitleScreen();
+            scene.Fade.ToTitleScreen();
     }
 
     private IEnumerator FadeInRoutine()
     {
         scene.FadeIn();
         yield return new WaitForSeconds(waitDuration);
-        scene.Change.ToTitleScreen();
+        scene.Fade.ToTitleScreen();
     }
 }

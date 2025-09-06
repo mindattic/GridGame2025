@@ -74,7 +74,7 @@ public class CreditsManager : MonoBehaviour
     public void OnBackButtonClicked()
     {
 
-        scene.Change.ToPreviousScene();
+        scene.Fade.ToPreviousScene();
     }
 
 

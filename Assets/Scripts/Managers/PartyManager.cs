@@ -67,7 +67,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileHelper.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            scene.Change.ToProfileCreate();
+            scene.Fade.ToProfileCreate();
             return;
         }
 
@@ -75,7 +75,7 @@ public class PartyManager : MonoBehaviour
         if (!ProfileHelper.HasCurrentSave)
         {
             Debug.LogError("No current save selected.");
-            scene.Change.ToSaveFileSelect();
+            scene.Fade.ToSaveFileSelect();
             return;
         }
 
@@ -436,7 +436,7 @@ public class PartyManager : MonoBehaviour
 
     public void OnBackButtonClicked()
     {
-        scene.Change.ToGame();
+        scene.Fade.ToGame();
     }
 
 

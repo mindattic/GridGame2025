@@ -56,7 +56,7 @@ public class SaveFileSelectManager : MonoBehaviour
         if (!ProfileHelper.HasCurrentProfile)
         {
             Debug.LogError("No current profile selected.");
-            scene.Change.ToProfileCreate();
+            scene.Fade.ToProfileCreate();
             return;
         }
 
@@ -263,7 +263,7 @@ public class SaveFileSelectManager : MonoBehaviour
                 }
 
                 ProfileHelper.CurrentProfile.CurrentSave = selectedSave;
-                scene.Change.ToGame();
+                scene.Fade.ToGame();
             }
             else
             {
@@ -279,6 +279,6 @@ public class SaveFileSelectManager : MonoBehaviour
     public void OnBackButtonClicked()
     {
         // Navigate back to the previous scene as defined by your scene helper.
-        scene.Change.ToPreviousScene();
+        scene.Fade.ToPreviousScene();
     }
 }

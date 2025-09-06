@@ -17,38 +17,38 @@ public partial class DebugWindow
         GUILayout.BeginHorizontal();
         isClicked = GUILayout.Button("SplashScreen Screen", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            scene.Change.ToSplashScreen();
+            scene.Fade.ToSplashScreen();
 
         isClicked = GUILayout.Button("TitleScreen Screen", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            scene.Change.ToTitleScreen();
+            scene.Fade.ToTitleScreen();
 
         isClicked = GUILayout.Button("Settings", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            scene.Change.ToSettings();
+            scene.Fade.ToSettings();
 
         isClicked = GUILayout.Button("Stage Select", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            scene.Change.ToStageSelect();
+            scene.Fade.ToStageSelect();
 
         GUILayout.EndHorizontal();
         GUILayout.BeginHorizontal();
 
         isClicked = GUILayout.Button("Load Profile", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            scene.Change.ToProfileSelect();
+            scene.Fade.ToProfileSelect();
 
         isClicked = GUILayout.Button("Load Save", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            scene.Change.ToSaveFileSelect();
+            scene.Fade.ToSaveFileSelect();
 
         isClicked = GUILayout.Button("Overworld", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            scene.Change.ToOverworld();
+            scene.Fade.ToOverworld();
 
         isClicked = GUILayout.Button("Game", GUILayout.Width(Screen.width * Increment.Percent25));
         if (isClicked)
-            scene.Change.ToGame();
+            scene.Fade.ToGame();
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);

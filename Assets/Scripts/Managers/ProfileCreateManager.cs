@@ -55,7 +55,7 @@ public class ProfileCreateManager : MonoBehaviour
                         ProfileHelper.CreateProfile(value);
 
                         // Navigate back to the title screen once created.
-                        scene.Change.ToTitleScreen();
+                        scene.Fade.ToTitleScreen();
                     }
                     catch (System.SystemException ex)
                     {

@@ -197,7 +197,7 @@ public class StageManager : MonoBehaviour
         //}
 
        
-        scene.Change.ToOverworld();
+        scene.Fade.ToOverworld();
 
         //scene.FadeOut(scene.Change.ToOverworld());
     }

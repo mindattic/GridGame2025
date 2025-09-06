@@ -277,18 +277,18 @@ public class ProfileSelectManager : MonoBehaviour
         }
 
         ProfileHelper.SelectProfile(key);
-        scene.Change.ToTitleScreen();
+        scene.Fade.ToTitleScreen();
     }
 
     private void OnCreateNewProfileButtonClicked()
     {
         // Navigate to the profile creation screen.
-        scene.Change.ToProfileCreate();
+        scene.Fade.ToProfileCreate();
     }
 
     public void OnBackButtonClicked()
     {
         // Return to the previous scene in your navigation stack.
-        scene.Change.ToPreviousScene();
+        scene.Fade.ToPreviousScene();
     }
 }

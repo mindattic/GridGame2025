@@ -34,31 +34,31 @@ public class TitleScreenManager : MonoBehaviour
     public void OnContinueButtonClicked()
     {
         ProfileHelper.CurrentProfile.CurrentSave = ProfileHelper.CurrentProfile.LatestSave;
-        scene.Change.ToGame();
+        scene.Fade.ToGame();
     }
 
     public void OnLoadGameButtonClicked()
     {
-        scene.Change.ToSaveFileSelect();
+        scene.Fade.ToSaveFileSelect();
     }
 
     public void OnNewGameButtonClicked()
     {
-        scene.Change.ToProfileCreate();
+        scene.Fade.ToProfileCreate();
     }
 
     public void OnSettingsButtonClicked()
     {
-        scene.Change.ToSettings();
+        scene.Fade.ToSettings();
     }
 
     public void OnCreditsButtonClicked()
     {
-        scene.Change.ToCredits();
+        scene.Fade.ToCredits();
     }
 
     public void OnChangeProfileButtonClicked()
     {
-        scene.Change.ToProfileSelect();
+        scene.Fade.ToProfileSelect();
     }
 }

@@ -72,12 +72,12 @@ public class StageSelectManager : MonoBehaviour
     private void OnStageSelectButtonClicked(string stageName)
     {
         ProfileHelper.CurrentProfile.LatestSave.Stage.CurrentStage = stageName;
-        scene.Change.ToGame();
+        scene.Fade.ToGame();
     }
 
     public void OnBackButtonClicked()
     {
-        scene.Change.ToPreviousScene();
+        scene.Fade.ToPreviousScene();
     }
 
 }

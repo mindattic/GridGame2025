@@ -162,7 +162,7 @@ public class PauseManager : MonoBehaviour
 
         // Navigate.
         //TODO: Cause party to drop coins like FF IV...
-        scene.Change.ToOverworld();
+        scene.Fade.ToOverworld();
     }
 
 
@@ -231,7 +231,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
 
         // Navigate.
-        scene.Change.ToPartyManager();
+        scene.Fade.ToPartyManager();
     }
 
     /// <summary>
@@ -243,7 +243,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
 
         // Navigate.
-        scene.Change.ToStageSelect();
+        scene.Fade.ToStageSelect();
     }
 
     /// <summary>
@@ -255,7 +255,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
 
         // Navigate.
-        scene.Change.ToSettings();
+        scene.Fade.ToSettings();
     }
 
     /// <summary>
@@ -267,6 +267,6 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
 
         // Navigate.
-        scene.Change.ToTitleScreen();
+        scene.Fade.ToTitleScreen();
     }
 }

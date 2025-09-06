@@ -1589,7 +1589,6 @@ GameObject:
   m_Component:
   - component: {fileID: 340686632}
   - component: {fileID: 340686631}
-  - component: {fileID: 340686633}
   - component: {fileID: 340686634}
   m_Layer: 0
   m_Name: BattleTransition
@@ -1626,37 +1625,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &340686633
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 340686629}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61a984a1856f40e46924a5db0e969a19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ScreenShatter
-  cols: 10
-  rows: 10
-  shatterMat: {fileID: 2100000, guid: 546edad120e64e0408326f047dc1fb89, type: 2}
-  renderLayerName: Default
-  disableOverlayCanvases: 1
-  hideFadeOverlayImages: 1
-  parentToCamera: 1
-  duration: 1
-  explode: 10
-  spin: 0
-  jitter: 0
-  centerUV: {x: 0.5, y: 0.5}
-  pauseOnScreenshot: 0
-  pauseOnShatterStart: 0
-  pauseOnShatterEnd: 0
-  keepShardsOnPause: 1
-  exposeCaptureInInspector: 1
-  debugCapturedFrame: {fileID: 0}
-  debugShardsGO: {fileID: 0}
 --- !u!114 &340686634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1669,18 +1637,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb27154edb3f22a4291c06ce11657591, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZoomEffect
-  cols: 10
-  rows: 10
-  shatterMat: {fileID: 2100000, guid: 99882d0b5078a7c4f896c89002326a51, type: 2}
+  zoomMaterial: {fileID: 2100000, guid: 99882d0b5078a7c4f896c89002326a51, type: 2}
   renderLayerName: Default
   disableOverlayCanvases: 1
   hideFadeOverlayImages: 1
   parentToCamera: 1
   duration: 1
-  explode: 10
-  spin: 0
-  jitter: 0
+  zoomStrength: 1.5
+  spinRadians: 1
+  smudgeStrength: 2
   centerUV: {x: 0.5, y: 0.5}
+  flipY: 1
 --- !u!1 &355859806
 GameObject:
   m_ObjectHideFlags: 0
