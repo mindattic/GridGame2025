@@ -17,7 +17,7 @@ public partial class OverworldHero : MonoBehaviour
 {
     // Bindings (resolved at runtime from hierarchy paths)
     private SpriteRenderer terrainSprite;         // Map SpriteRenderer used for world bounds
-    private SpriteRenderer heroSprite;        // Hero's SpriteRenderer (for probe radius inference)
+    public SpriteRenderer spriteRenderer;        // Hero's SpriteRenderer (for probe radius inference)
     //private MapTerrain collisionProvider;     // Central collision provider on Terrain
     private Camera worldCamera;               // Camera for screen->world and visibility tests
 
@@ -108,7 +108,7 @@ public partial class OverworldHero : MonoBehaviour
         }
 
         // Hero sprite and animator
-        heroSprite = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         if (animator == null) animator = GetComponent<Animator>();
 
         // Optional Rigidbody2D for physics-based casting

@@ -76,6 +76,7 @@
     <Compile Include="Assets\Editor\DebugWindow.VfxOptions.cs" />
     <Compile Include="Assets\Editor\DebugWindow.Bootstrapper.cs" />
     <Compile Include="Assets\Editor\DebugWindow.DebugOptions.cs" />
+    <Compile Include="Assets\Editor\SceneLoader.cs" />
     <Compile Include="Assets\Editor\CustomPlayBehaviour.cs" />
     <Compile Include="Assets\Editor\DebugWindow.Thumbnail.cs" />
   </ItemGroup>
