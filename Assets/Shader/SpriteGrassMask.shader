@@ -183,7 +183,6 @@ Shader "Ryan/SpriteGrassMask"
                 return pixels * perPixel;
             }
 
-            // Blade test using pixel-stable UV height/width
             float bladeAt(
                 float2 uv,
                 float2 uvHeightDir,
@@ -199,14 +198,19 @@ Shader "Ryan/SpriteGrassMask"
             {
                 float4 baseSamp = SAMPLE_TEXTURE2D_GRAD(_MainTex, sampler_MainTex, baseUV, gradX, gradY);
                 float3 baseCol = baseSamp.rgb;
-                if (luminance(baseCol) > _MaskBlackThresh)
+                float baseLum = luminance(baseCol);
+
+                // Height factor from luminance: black=1, gray=0.5, white=0
+                float maskHeight01 = saturate((1.0 - baseLum) / max(1e-5, (1.0 - _MaskBlackThresh)));
+                if (maskHeight01 <= 1e-4)
                 {
                     shade = 0.0;
                     return 0.0;
                 }
 
                 float2 rnd = hash21(float2(cell) + _Seed);
-                float height = heightUVBase * lerp(0.85, 1.15, rnd.x);
+                float var = lerp(0.85, 1.15, rnd.x);
+                float height = heightUVBase * maskHeight01 * var;
                 float halfWidth = halfWidthUVBase * lerp(0.9, 1.1, rnd.y);
 
                 float2 d = uv - baseUV;
@@ -243,36 +247,28 @@ Shader "Ryan/SpriteGrassMask"
                 float4 baseCol = baseSample * i.color;
                 float time = _Time.y;
 
-                // Derivatives for pixel to UV conversion
                 float2 dUVdx = ddx(i.uv);
                 float2 dUVdy = ddy(i.uv);
 
-                // Growth directions
                 float2 dirViewUV = ComputeUVDirFromWorldNormal(i);
                 float2 dirVerticalUV = float2(0, 1);
                 float2 dirScreenUpUV = ComputeUVDirFromScreen(float2(0,1), dUVdx, dUVdy);
                 float2 dirScreenRightUV = ComputeUVDirFromScreen(float2(1,0), dUVdx, dUVdy);
 
-                // Base growth (blend vertical UV and view-projected)
                 float2 uvHeightBase = normalize(lerp(dirVerticalUV, dirViewUV, saturate(_NormalGrowBlend)));
                 float2 uvPerpBase = float2(-uvHeightBase.y, uvHeightBase.x);
 
-                // Billboard blend to screen-up/right
                 float2 uvHeightDir = normalize(lerp(uvHeightBase, dirScreenUpUV, saturate(_BillboardGrow)));
-                // Orthonormalize right relative to height to keep width truly lateral
                 float2 rightOrtho = normalize(dirScreenRightUV - uvHeightDir * dot(dirScreenRightUV, uvHeightDir));
                 float2 uvPerpDir = normalize(lerp(uvPerpBase, rightOrtho, saturate(_BillboardGrow)));
 
-                // Pixel-stable sizes
                 float heightUV    = PixelsToUV(_BladeHeightPx, uvHeightDir, dUVdx, dUVdy);
                 float halfWidthUV = PixelsToUV(_BladeWidthPx * 0.5, uvPerpDir, dUVdx, dUVdy);
 
-                // Work in local sprite UV space (0..1 inside the sprite's atlas rect)
                 float2 stScale  = _MainTex_ST.xy;
                 float2 stOffset = _MainTex_ST.zw;
                 float2 uvLocal = (i.uv - stOffset) / max(1e-6, stScale);
 
-                // Grid in local space
                 float2 grid = float2(_CellsX, _CellsY);
                 float2 cellSizeLocal = 1.0 / grid;
                 int2 cell = int2(floor(uvLocal * grid));
