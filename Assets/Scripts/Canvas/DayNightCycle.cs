@@ -3,8 +3,8 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 // Add this to a full-screen Screen Space - Overlay Image to tint the scene over time.
-// Drives a 4-phase day/night cycle (Morning, Day, Evening, Night) over a configurable duration.
-// Each new "day" randomizes phase colors slightly (0-15% by default) to keep it feeling organic.
+// Drives a 4-phase day/night cycle aligned to real clock time:
+// Night (12am-6am) -> Morning (6am-12pm) -> Day/Afternoon (12pm-6pm) -> Evening/Dusk (6pm-12am)
 namespace Assets.Scripts.Canvas
 {
     public class DayNightCycle : MonoBehaviour
@@ -19,7 +19,7 @@ namespace Assets.Scripts.Canvas
         public ApplyMode applyMode = ApplyMode.PerSpriteMultiply;
 
         [Header("Cycle")]
-        [Tooltip("Total seconds for a full cycle through Morning -> Day -> Evening -> Night.")]
+        [Tooltip("Total seconds for a full cycle through Night -> Morning -> Day -> Evening.")]
         [Range(1f, 300f)] public float cycleSeconds = 24f;
         [Tooltip("Automatically start playing on enable.")]
         public bool playOnEnable = true;
@@ -31,21 +31,21 @@ namespace Assets.Scripts.Canvas
         [Range(0f, 300f)] public float startOffsetSeconds = 0f;
 
         [Header("Phase Fractions (normalized at runtime)")]
-        [Tooltip("Portion of the cycle spent in Morning before transitioning to Day.")]
+        [Tooltip("Portion of the cycle spent in Morning before transitioning to Day. Note: The visual order is Night->Morning->Day->Evening.")]
         [Range(0f, 1f)] public float morningFraction = 0.25f;
-        [Tooltip("Portion of the cycle spent in Day before transitioning to Evening.")]
+        [Tooltip("Portion of the cycle spent in Day (Afternoon) before transitioning to Evening.")]
         [Range(0f, 1f)] public float dayFraction = 0.25f;
-        [Tooltip("Portion of the cycle spent in Evening before transitioning to Night.")]
+        [Tooltip("Portion of the cycle spent in Evening (Dusk) before transitioning to Night.")]
         [Range(0f, 1f)] public float eveningFraction = 0.25f;
         [Tooltip("Portion of the cycle spent in Night before transitioning back to Morning.")]
         [Range(0f, 1f)] public float nightFraction = 0.25f;
 
         [Header("Base Phase Colors")]
-        [Tooltip("Base tint for Morning (reddish)")]
+        [Tooltip("Base tint for Morning (warm dawn light)")]
         public Color morningColor = new Color(1.0f, 0.62f, 0.45f, 0.20f);
-        [Tooltip("Base tint for Day (mostly white light)")]
+        [Tooltip("Base tint for Day/Afternoon (mostly white light)")]
         public Color dayColor = new Color(1.0f, 1.0f, 1.0f, 0.06f);
-        [Tooltip("Base tint for Evening (reddish)")]
+        [Tooltip("Base tint for Evening/Dusk (reddish)")]
         public Color eveningColor = new Color(1.0f, 0.55f, 0.38f, 0.22f);
         [Tooltip("Base tint for Night (deep blue)")]
         public Color nightColor = new Color(0.25f, 0.35f, 0.70f, 0.40f);
@@ -88,6 +88,12 @@ namespace Assets.Scripts.Canvas
         private Color[] _phaseBase = new Color[4];
         private Color[] _phaseKeys = new Color[4]; // randomized per day
         private float _lastT01 = -1f; // detect wrap to new "day"
+
+        // Rotate phase segmentation by -6 hours so that 00:00 falls into Night.
+        // Internally we still store phases in the order Morning, Day, Evening, Night,
+        // but visually they are aligned to real clock windows:
+        // Night(0-6), Morning(6-12), Day/Afternoon(12-18), Evening/Dusk(18-24).
+        private const float PhaseShift01 = 0.75f; // +0.75 == -6 hours in a 24h cycle
 
         private struct SpriteEntry { public SpriteRenderer sr; public Color baseColor; }
         private readonly List<SpriteEntry> _sprites = new List<SpriteEntry>(256);
@@ -174,8 +180,13 @@ namespace Assets.Scripts.Canvas
             int idx = (int)phase;
             float segStart = (idx == 0) ? 0f : _accumTimes[idx - 1];
             float segDur = _durations[idx];
-            float tSec = segStart + segDur * position01WithinPhase;
-            _pausedT01 = Mathf.Clamp01(tSec / total);
+
+            // We want to land in the chosen phase after the visual alignment (PhaseShift01).
+            // Compute the desired t on the aligned timeline, then convert back to base t01.
+            float desiredAlignedT01 = (segStart + segDur * position01WithinPhase) / total;
+            float baseT01 = Mathf.Repeat(desiredAlignedT01 - PhaseShift01, 1f);
+
+            _pausedT01 = baseT01;
             _isPlaying = false;
 
             // apply immediately
@@ -231,10 +242,12 @@ namespace Assets.Scripts.Canvas
         public DayPhase GetCurrentPhase()
         {
             float total = Mathf.Max(0.01f, cycleSeconds);
-            float tSec = CurrentTime01() * total;
-            if (tSec <= _accumTimes[0]) return DayPhase.Morning;
-            if (tSec <= _accumTimes[1]) return DayPhase.Day;
-            if (tSec <= _accumTimes[2]) return DayPhase.Evening;
+            // Align segmentation with real-world windows (Night starts at 00:00).
+            float tAlignedSec = Mathf.Repeat(CurrentTime01() + PhaseShift01, 1f) * total;
+
+            if (tAlignedSec <= _accumTimes[0]) return DayPhase.Morning;
+            if (tAlignedSec <= _accumTimes[1]) return DayPhase.Day;
+            if (tAlignedSec <= _accumTimes[2]) return DayPhase.Evening;
             return DayPhase.Night;
         }
 
@@ -298,11 +311,12 @@ namespace Assets.Scripts.Canvas
 
         private Color EvaluateColor(float t01)
         {
-            // Map t01 (0..1) to a phase segment and interpolation alpha
+            // Align t01 to a phase timeline where Night begins at 00:00.
             float total = Mathf.Max(0.01f, cycleSeconds);
-            float tSec = t01 * total;
+            float tAligned01 = Mathf.Repeat(t01 + PhaseShift01, 1f);
+            float tSec = tAligned01 * total;
 
-            // Determine which segment we are in
+            // Determine which segment we are in (Morning, Day/Afternoon, Evening/Dusk, Night)
             int seg = 0; float segStart = 0f; float segEnd = _accumTimes[0];
             if (tSec <= _accumTimes[0]) { seg = 0; segStart = 0f; segEnd = _accumTimes[0]; }
             else if (tSec <= _accumTimes[1]) { seg = 1; segStart = _accumTimes[0]; segEnd = _accumTimes[1]; }
@@ -320,6 +334,7 @@ namespace Assets.Scripts.Canvas
                 u = Mathf.SmoothStep(0f, 1f, Mathf.Lerp(u, Mathf.SmoothStep(0f, 1f, u), blendSmoothness));
             }
 
+            // Phases stored as [Morning, Day, Evening, Night] but aligned to clock windows via tAligned01.
             return Color.LerpUnclamped(_phaseKeys[seg], _phaseKeys[next], u);
         }
 

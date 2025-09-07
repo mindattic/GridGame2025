@@ -1,10 +1,10 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 // Drifts a cloud across the map and respawns it off-screen on the starting side when it exits the opposite side.
 // - Adjustable speed, scale, and buffers
 // - Randomizes Y within terrain bounds on each respawn
 // - Teleports always occur outside the camera frustum
-public class CloudInstance : MonoBehaviour
+public class CloudShadowInstance : MonoBehaviour
 {
     public enum CloudDirection { LeftToRight, RightToLeft }
 
@@ -16,7 +16,7 @@ public class CloudInstance : MonoBehaviour
 
     [Header("Movement")]
     [Tooltip("Drift direction across the map.")]
-    public CloudDirection direction = CloudDirection.LeftToRight;
+    public CloudDirection direction = CloudDirection.RightToLeft;
     [Tooltip("Cloud speed range (world units per second).")]
     public Vector2 speedRange = new Vector2(0.1f, 0.4f);
     [Tooltip("Randomize speed on each respawn.")]

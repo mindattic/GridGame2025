@@ -58,6 +58,8 @@ public class BushInstance : MonoBehaviour
         SetLocalEulerX(foldAngleX);
         swayPhase = randomizeSwayPhase ? Random.Range(0f, Mathf.PI * 2f) : 0f;
         transform.position.SetZ(0f); // ensure on Z=0 plane
+
+        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
     }
 
     private void OnEnable()
@@ -70,6 +72,8 @@ public class BushInstance : MonoBehaviour
         // Keep rest orientation consistent on enable
         SetLocalEulerX(foldAngleX);
         StartIdleSwayIfAllowed();
+
+        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
     }
 
     private void OnDisable()
@@ -85,33 +89,27 @@ public class BushInstance : MonoBehaviour
 
     private void Update()
     {
-        if (hero == null || heroSR == null) { TryCacheHero(); if (hero == null || heroSR == null) return; }
+        // Robust party-aware sorting for this bush instance
+        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
 
-        var heroPos = hero.transform.position;
+        // Use nearest party member by Y to detect pass-through for rustle
+        var anchor = PartySortHelper.GetClosestToY(transform.position.y);
+        if (anchor == null) return;
+
+        var anchorPos = anchor.transform.position;
         var bushPos = transform.position;
 
-        bool isHeroBelow = heroPos.y < bushPos.y;
-
-        // Keep same sorting layer/order relative to hero if enabled
-        if (followHeroSorting)
-        {
-            if (spriteRenderer.sortingLayerID != heroSR.sortingLayerID)
-                spriteRenderer.sortingLayerID = heroSR.sortingLayerID;
-
-            int desiredOrder = isHeroBelow ? (heroSR.sortingOrder - 1) : (heroSR.sortingOrder + 1);
-            if (spriteRenderer.sortingOrder != desiredOrder)
-                spriteRenderer.sortingOrder = desiredOrder;
-        }
+        bool isAnchorBelow = anchorPos.y < bushPos.y;
 
         // Detect passing through the bush: side flip + horizontal overlap + near pivot Y
-        if (heroWasBelow.HasValue && heroWasBelow.Value != isHeroBelow && IsOverlappingHorizontally(heroPos) && IsNearPivotY(heroPos))
+        if (heroWasBelow.HasValue && heroWasBelow.Value != isAnchorBelow && IsOverlappingHorizontally(anchorPos) && IsNearPivotY(anchorPos))
         {
             // Trigger scale/shake rustle
             if (rustleRoutineRef != null) StopCoroutine(rustleRoutineRef);
             rustleRoutineRef = StartCoroutine(RustleRoutine());
         }
 
-        heroWasBelow = isHeroBelow;
+        heroWasBelow = isAnchorBelow;
     }
 
     private static void TryCacheHero()
@@ -162,8 +160,6 @@ public class BushInstance : MonoBehaviour
             float u = Mathf.Clamp01(t / totalDur);
 
             // Squash envelope: quick impact then recover
-            // Map u to a 0..1..0 bell curve for squash influence
-            float squashCurve = Mathf.Sin(u * Mathf.PI); // 0->1->0
             float squashBlend;
             if (t <= durIn)
             {

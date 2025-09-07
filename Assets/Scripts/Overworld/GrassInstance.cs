@@ -54,6 +54,8 @@ public class GrassInstance : MonoBehaviour
         swayPhase = randomizeSwayPhase ? Random.Range(0f, Mathf.PI * 2f) : 0f;
 
         transform.position.SetZ(0f); // ensure on Z=0 plane
+
+        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
     }
 
     private void OnEnable()
@@ -63,6 +65,8 @@ public class GrassInstance : MonoBehaviour
         SetLocalEulerX(foldAngleX);
         heroInsideCount = 0;
         StartIdleSwayIfAllowed();
+
+        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
     }
 
     private void OnDisable()
@@ -84,20 +88,8 @@ public class GrassInstance : MonoBehaviour
     private void Update()
     {
         if (!followHeroSorting) return;
-        if (hero == null || heroSR == null) return;
 
-        var heroPos = hero.transform.position;
-        var selfPos = transform.position;
-
-        // Keep same sorting layer as hero for predictable +/-1 ordering
-        if (spriteRenderer.sortingLayerID != heroSR.sortingLayerID)
-            spriteRenderer.sortingLayerID = heroSR.sortingLayerID;
-
-        // Behind hero if hero is below, in front if hero is above
-        bool isHeroBelow = heroPos.y < selfPos.y;
-        int desiredOrder = isHeroBelow ? (heroSR.sortingOrder - 1) : (heroSR.sortingOrder + 1);
-        if (spriteRenderer.sortingOrder != desiredOrder)
-            spriteRenderer.sortingOrder = desiredOrder;
+        YSortUtility.Apply(spriteRenderer);
     }
 
     private static void TryCacheHero()

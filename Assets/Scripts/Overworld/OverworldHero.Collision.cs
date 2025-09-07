@@ -26,6 +26,13 @@ public partial class OverworldHero
         return cur;
     }
 
+    private static bool IsFollowerOfThisHero(Collider2D c, Transform heroTransform)
+    {
+        if (c == null || heroTransform == null) return false;
+        var follower = c.GetComponentInParent<OverworldFollower>();
+        return follower != null && follower.Leader == heroTransform;
+    }
+
     // Performs a cast and updates nextPos with the planned position (with slide)
     private void PlanCastMove(ref Vector2 nextPos, Vector2 dir, float distance)
     {
@@ -48,7 +55,12 @@ public partial class OverworldHero
         Vector2 overlapNormalSum = Vector2.zero;
         for (int h = 0; h < hitCount; h++)
         {
-            float d = hitBuffer[h].distance;
+            var hit = hitBuffer[h];
+            // Ignore party followers (those whose Leader == this hero)
+            if (IsFollowerOfThisHero(hit.collider, this.transform))
+                continue;
+
+            float d = hit.distance;
             if (d >= 0f)
             {
                 if (d < closest) { closest = d; closestIndex = h; }
@@ -56,20 +68,30 @@ public partial class OverworldHero
             else
             {
                 anyOverlap = true;
-                overlapNormalSum += hitBuffer[h].normal;
+                overlapNormalSum += hit.normal;
             }
         }
 
         if (closestIndex < 0)
         {
+            // If there were no blocking hits after filtering followers, move freely or depenetrate
+            if (!anyOverlap)
+            {
+                origin += dir * distance;
+                nextPos = origin;
+                nextPos = ClampToMap(nextPos);
+                return;
+            }
+
             // Fully overlapping at origin: nudge outward to depenetrate
             Vector2 push;
-            if (anyOverlap && overlapNormalSum.sqrMagnitude > 1e-6f)
+            if (overlapNormalSum.sqrMagnitude > 1e-6f)
                 push = overlapNormalSum.normalized * Mathf.Max(skin, 0.02f);
             else
                 push = dir * Mathf.Max(skin, 0.02f); // no reliable normal; escape along intent
             origin += push;
             nextPos = origin;
+            nextPos = ClampToMap(nextPos);
             return;
         }
 
@@ -78,7 +100,7 @@ public partial class OverworldHero
 
         // Slide remaining along surface with a few iterations to avoid sticking
         float remain = Mathf.Max(0f, distance - allowed);
-        if (remain <= 1e-6f) { nextPos = origin; return; }
+        if (remain <= 1e-6f) { nextPos = origin; nextPos = ClampToMap(nextPos); return; }
 
         Vector2 moveDir = dir;
         int iterations = Mathf.Max(1, maxSlideIterations);
@@ -106,8 +128,20 @@ public partial class OverworldHero
                 int slideHitIndex = -1;
                 for (int h = 0; h < hitsSlide; h++)
                 {
-                    float d = hitBuffer[h].distance;
+                    var hit = hitBuffer[h];
+                    // Ignore followers during slide too
+                    if (IsFollowerOfThisHero(hit.collider, this.transform))
+                        continue;
+
+                    float d = hit.distance;
                     if (d >= 0f && d < closestSlide) { closestSlide = d; slideHitIndex = h; }
+                }
+
+                if (slideHitIndex < 0)
+                {
+                    origin += sDir * sLen;
+                    remain = 0f;
+                    break;
                 }
 
                 float allowSlide = Mathf.Max(0f, closestSlide - skin);
@@ -117,7 +151,7 @@ public partial class OverworldHero
                     remain = Mathf.Max(0f, remain - allowSlide);
                     // update moveDir to keep sliding along last direction
                     moveDir = sDir;
-                    if (slideHitIndex >= 0) closestIndex = slideHitIndex;
+                    closestIndex = slideHitIndex;
                 }
                 else
                 {
@@ -129,7 +163,6 @@ public partial class OverworldHero
         }
 
         nextPos = origin;
-
 
         // Clamp inside map bounds after planning
         nextPos = ClampToMap(nextPos);
@@ -149,14 +182,41 @@ public partial class OverworldHero
             return;
         }
 
-        // Read from Rigidbody2D when present for authoritative pose
-        Vector2 currentPos = GetPosition();
-        Vector2 nextPos = currentPos;
-        PlanCastMove(ref nextPos, displacement.normalized, displacement.magnitude);
-        if ((nextPos - currentPos).sqrMagnitude > 1e-8f)
+        // Subdivide long moves to prevent tunneling through thin walls
+        float remaining = displacement.magnitude;
+        if (remaining <= 1e-6f) return;
+        Vector2 dirNorm = displacement / remaining;
+
+        Vector2 startPos = GetPosition();
+        Vector2 curPos = startPos;
+
+        int safetyIters = 0;
+        const int maxIters = 16; // protect against infinite loops
+        while (remaining > 1e-6f && safetyIters++ < maxIters)
         {
-            SetPosition(nextPos);
-            OnHeroMoved?.Invoke(nextPos);
+            float stepLen = Mathf.Min(remaining, Mathf.Max(0.05f, maxCastStepDistance));
+            Vector2 nextPos = curPos;
+            PlanCastMove(ref nextPos, dirNorm, stepLen);
+
+            float moved = (nextPos - curPos).magnitude;
+            if (moved <= 1e-6f)
+            {
+                // Blocked – stop here
+                break;
+            }
+
+            // Advance to the step end so subsequent casts originate from the new position
+            curPos = nextPos;
+            SetPosition(curPos);
+
+            // Reduce remaining by the distance actually moved to respect blocking/sliding
+            remaining = Mathf.Max(0f, remaining - moved);
+        }
+
+        if ((curPos - startPos).sqrMagnitude > 1e-8f)
+        {
+            // Already set transform during stepping; just raise the event once
+            OnHeroMoved?.Invoke(curPos);
         }
     }
 }

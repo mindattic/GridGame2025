@@ -31,6 +31,11 @@ public partial class OverworldHero
             SetIdle();
         }
 
+        // Always update Y-sort so the hero's order follows their Y
+        var sr = spriteRenderer != null ? spriteRenderer : GetComponent<SpriteRenderer>();
+        if (sr != null)
+            PartySortHelper.ApplyActorYSort(sr, PartySortHelper.GlobalScale);
+
         // While in directional mode we never follow click paths
         isMoving = false; _path = null;
     }

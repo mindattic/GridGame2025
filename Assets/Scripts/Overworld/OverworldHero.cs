@@ -90,6 +90,8 @@ public partial class OverworldHero : MonoBehaviour
     [Header("Physics Collision (optional)")]
     [SerializeField] private float skin = 0.01f;
     [SerializeField] private int maxSlideIterations = 3;
+    [Tooltip("Max distance per cast step. Displacements larger than this are subdivided to prevent tunneling through thin walls.")]
+    [SerializeField] private float maxCastStepDistance = 0.25f;
     private Rigidbody2D rb;                      // Optional: if present, use shape cast to plan slides
     private ContactFilter2D contactFilter;       // Configured from object layer
     private RaycastHit2D[] hitBuffer;            // Reused hits buffer
@@ -118,13 +120,21 @@ public partial class OverworldHero : MonoBehaviour
             hitBuffer = new RaycastHit2D[16];
             contactFilter.useTriggers = false;
             contactFilter.useLayerMask = true;
-            contactFilter.SetLayerMask(Physics2D.GetLayerCollisionMask(gameObject.layer));
+            // Include layers that collide with the hero layer, plus terrain layer explicitly (strong walls)
+            int mask = Physics2D.GetLayerCollisionMask(gameObject.layer);
+            if (terrainSprite != null)
+                mask |= (1 << terrainSprite.gameObject.layer);
+            contactFilter.SetLayerMask(mask);
 
             // Movement is driven manually via casts; lock rotation and smooth visuals
             rb.freezeRotation = true;
             rb.interpolation = RigidbodyInterpolation2D.Interpolate;
             if (rb.bodyType == RigidbodyType2D.Dynamic)
                 rb.bodyType = RigidbodyType2D.Kinematic;
+
+            // Enforce a minimal skin to reduce clipping through thin edges
+            skin = Mathf.Max(skin, 0.02f);
+            maxCastStepDistance = Mathf.Max(0.05f, maxCastStepDistance);
         }
 
         // Initialize animator with default idle facing
@@ -170,6 +180,14 @@ public partial class OverworldHero : MonoBehaviour
     {
         terrainSprite = map;
         worldCamera = cam;
+        // Update collision mask to ensure terrain layer is included
+        if (rb != null)
+        {
+            int mask = Physics2D.GetLayerCollisionMask(gameObject.layer);
+            if (terrainSprite != null)
+                mask |= (1 << terrainSprite.gameObject.layer);
+            contactFilter.SetLayerMask(mask);
+        }
     }
 
 

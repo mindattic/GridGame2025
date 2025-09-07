@@ -8,6 +8,7 @@ public class OverworldFollower : MonoBehaviour
 {
     [Header("Leader")]
     [SerializeField] private Transform leader;                // Target to follow (OverworldHero or any Transform)
+    public Transform Leader => leader;                        // Read-only access for party queries
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 2.3f;          // Base move speed in units/sec
@@ -24,6 +25,10 @@ public class OverworldFollower : MonoBehaviour
     [Header("World Bounds (optional)")]
     [SerializeField] private bool clampToMap = true;
 
+    [Header("Party Collision")]
+    [Tooltip("If enabled, ignore collisions between this follower and its leader (e.g., OverworldHero) while still colliding with world objects.")]
+    [SerializeField] private bool ignoreLeaderCollision = true;
+
     // Animator driving 8-way blend tree (same params as hero: MoveX, MoveY, Speed)
     public Animator animator;
 
@@ -35,6 +40,10 @@ public class OverworldFollower : MonoBehaviour
     private Rigidbody2D rb;
     private ContactFilter2D contactFilter;
     private RaycastHit2D[] hitBuffer;
+
+    // Cache colliders for ignore rules
+    private Collider2D[] selfColliders;
+    private Transform lastLeaderForIgnore;
 
     // Animation state (mirrors OverworldHero)
     private Vector2 lastLook = Vector2.down;                 // 8-way facing memory
@@ -70,8 +79,53 @@ public class OverworldFollower : MonoBehaviour
                 rb.bodyType = RigidbodyType2D.Kinematic;
         }
 
+        // Cache colliders for party ignore rules
+        CacheSelfColliders();
+        ApplyIgnoreWithLeader();
+
         // Initialize animator to idle facing
         ApplyAnimatorParameters(lastLook, 0f);
+    }
+
+    private void OnEnable()
+    {
+        // Ensure ignore rules get applied when enabled (e.g., after scene load)
+        CacheSelfColliders();
+        ApplyIgnoreWithLeader();
+    }
+
+    private void OnDisable()
+    {
+        // Restore any ignore rules to avoid leaking state if re-enabled with a different leader
+        if (Application.isPlaying)
+        {
+            if (lastLeaderForIgnore != null)
+            {
+                ToggleIgnoreWith(lastLeaderForIgnore, false);
+                lastLeaderForIgnore = null;
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // Also restore on destroy (play mode)
+        if (Application.isPlaying)
+        {
+            if (lastLeaderForIgnore != null)
+            {
+                ToggleIgnoreWith(lastLeaderForIgnore, false);
+                lastLeaderForIgnore = null;
+            }
+        }
+    }
+
+    private void OnValidate()
+    {
+        // Keep ignore rules updated in editor when settings change during play
+        if (!Application.isPlaying) return;
+        CacheSelfColliders();
+        ApplyIgnoreWithLeader();
     }
 
     private void Update()
@@ -79,8 +133,24 @@ public class OverworldFollower : MonoBehaviour
         TickFollowLeader();
     }
 
-    public void SetLeader(Transform t) => leader = t;
-    public void SetLeader(OverworldHero h) => leader = h != null ? h.transform : null;
+    public void SetLeader(Transform t)
+    {
+        if (t == leader) return;
+        // Remove rules for previous leader
+        if (Application.isPlaying && lastLeaderForIgnore != null)
+        {
+            ToggleIgnoreWith(lastLeaderForIgnore, false);
+            lastLeaderForIgnore = null;
+        }
+        leader = t;
+        ApplyIgnoreWithLeader();
+    }
+
+    public void SetLeader(OverworldHero h)
+    {
+        SetLeader(h != null ? h.transform : null);
+    }
+
     public void SetMoveSpeed(float s) => moveSpeed = Mathf.Max(0f, s);
     public void SetFollowDistance(float d) => followDistance = Mathf.Max(0f, d);
 
@@ -187,6 +257,13 @@ public class OverworldFollower : MonoBehaviour
         }
     }
 
+    private bool IsLeaderCollider(Collider2D c)
+    {
+        if (c == null || leader == null) return false;
+        var t = c.transform;
+        return t != null && (t == leader || t.IsChildOf(leader));
+    }
+
     private void PlanCastMove(ref Vector2 nextPos, Vector2 dir, float distance)
     {
         if (rb == null || distance <= 1e-6f || dir.sqrMagnitude <= 1e-12f) return;
@@ -207,7 +284,11 @@ public class OverworldFollower : MonoBehaviour
         Vector2 overlapNormalSum = Vector2.zero;
         for (int h = 0; h < hitCount; h++)
         {
-            float d = hitBuffer[h].distance;
+            var hit = hitBuffer[h];
+            if (IsLeaderCollider(hit.collider))
+                continue; // ignore leader entirely
+
+            float d = hit.distance;
             if (d >= 0f)
             {
                 if (d < closest) { closest = d; closestIndex = h; }
@@ -215,14 +296,21 @@ public class OverworldFollower : MonoBehaviour
             else
             {
                 anyOverlap = true;
-                overlapNormalSum += hitBuffer[h].normal;
+                overlapNormalSum += hit.normal;
             }
         }
 
         if (closestIndex < 0)
         {
+            if (!anyOverlap)
+            {
+                origin += dir * distance;
+                nextPos = ClampToMapIfNeeded(origin);
+                return;
+            }
+            // Fully overlapping at origin: nudge outward to depenetrate
             Vector2 push;
-            if (anyOverlap && overlapNormalSum.sqrMagnitude > 1e-6f)
+            if (overlapNormalSum.sqrMagnitude > 1e-6f)
                 push = overlapNormalSum.normalized * Mathf.Max(skin, 0.02f);
             else
                 push = dir * Mathf.Max(skin, 0.02f);
@@ -262,8 +350,19 @@ public class OverworldFollower : MonoBehaviour
                 int slideHitIndex = -1;
                 for (int h = 0; h < hitsSlide; h++)
                 {
-                    float d = hitBuffer[h].distance;
+                    var hit = hitBuffer[h];
+                    if (IsLeaderCollider(hit.collider))
+                        continue; // ignore leader during slide too
+
+                    float d = hit.distance;
                     if (d >= 0f && d < closestSlide) { closestSlide = d; slideHitIndex = h; }
+                }
+
+                if (slideHitIndex < 0)
+                {
+                    origin += sDir * sLen;
+                    remain = 0f;
+                    break;
                 }
 
                 float allowSlide = Mathf.Max(0f, closestSlide - skin);
@@ -272,7 +371,7 @@ public class OverworldFollower : MonoBehaviour
                     origin += sDir * allowSlide;
                     remain = Mathf.Max(0f, remain - allowSlide);
                     moveDir = sDir;
-                    if (slideHitIndex >= 0) closestIndex = slideHitIndex;
+                    closestIndex = slideHitIndex;
                 }
                 else
                 {
@@ -283,6 +382,53 @@ public class OverworldFollower : MonoBehaviour
         }
 
         nextPos = ClampToMapIfNeeded(origin);
+    }
+
+    // ---------------- Party self-collision rules ----------------
+    private void CacheSelfColliders()
+    {
+        selfColliders = GetComponentsInChildren<Collider2D>(true);
+    }
+
+    private void ApplyIgnoreWithLeader()
+    {
+        if (!Application.isPlaying) return;
+
+        // Remove previous ignore rules if leader changed or feature disabled
+        if (lastLeaderForIgnore != null && (lastLeaderForIgnore != leader || !ignoreLeaderCollision))
+        {
+            ToggleIgnoreWith(lastLeaderForIgnore, false);
+            lastLeaderForIgnore = null;
+        }
+
+        if (!ignoreLeaderCollision) return;
+        if (leader == null) return;
+
+        if (selfColliders == null || selfColliders.Length == 0)
+            CacheSelfColliders();
+
+        ToggleIgnoreWith(leader, true);
+        lastLeaderForIgnore = leader;
+    }
+
+    private void ToggleIgnoreWith(Transform other, bool ignore)
+    {
+        if (other == null) return;
+        if (selfColliders == null || selfColliders.Length == 0) return;
+        var otherColliders = other.GetComponentsInChildren<Collider2D>(true);
+        if (otherColliders == null || otherColliders.Length == 0) return;
+
+        for (int i = 0; i < selfColliders.Length; i++)
+        {
+            var a = selfColliders[i];
+            if (a == null) continue;
+            for (int j = 0; j < otherColliders.Length; j++)
+            {
+                var b = otherColliders[j];
+                if (b == null) continue;
+                Physics2D.IgnoreCollision(a, b, ignore);
+            }
+        }
     }
 
     // ---------------- Animation (mirrors hero) ----------------

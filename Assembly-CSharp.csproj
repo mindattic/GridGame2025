@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Cleric.cs" />
+    <Compile Include="Assets\Scripts\Overworld\CanopyInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\MapIcon.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\RedNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
+    <Compile Include="Assets\Scripts\Overworld\RockInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\PauseButton.cs" />
     <Compile Include="Assets\Scripts\Helpers\FolderHelper.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
@@ -93,6 +95,7 @@
     <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyStrand.cs" />
+    <Compile Include="Assets\Scripts\Helpers\PartySortHelper.cs" />
     <Compile Include="Assets\Scripts\Overworld\Mode7CameraController.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
@@ -235,6 +238,7 @@
     <Compile Include="Assets\Scripts\Helpers\AttackHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\OverworldManager.cs" />
     <Compile Include="Assets\Scripts\Models\CanvasLineRenderer.cs" />
+    <Compile Include="Assets\Scripts\Helpers\YSortUtility.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\SortingManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\CharacterHelper.cs" />
@@ -283,6 +287,7 @@
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
+    <Compile Include="Assets\Scripts\Overworld\CloudShadowInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.FollowCursor.cs" />

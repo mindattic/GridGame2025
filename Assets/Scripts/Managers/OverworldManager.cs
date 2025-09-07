@@ -115,17 +115,31 @@ public class OverworldManager : MonoBehaviour
         surfaceSR = GameObject.Find(GameObjectHelper.Overworld.Map.Surface).GetComponent<SpriteRenderer>();
         canopySR = GameObject.Find(GameObjectHelper.Overworld.Map.Canopy).GetComponent<SpriteRenderer>();
 
-        // Ensure the terrain has a collision provider component
-        //var collisionProvider = terrainSR.GetComponent<MapTerrain>();
-        //collisionProvider.ForceRefresh();
-
         // Find hero under Map/Hero or by helper as fallback
         hero = GameObject.Find(GameObjectHelper.Overworld.Map.Hero).GetComponent<OverworldHero>();
         hero.OnHeroMoved += HandleHeroMoved;
         hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
         hero.SetFacing(overworld.HeroDirection);
         hero.BindWorld(terrainSR, cam);
-        //hero.BindCollisionProvider(collisionProvider);
+
+        // Assign leader for all followers so party self-collision rules and sorting apply
+        var followers = GameObject.FindObjectsOfType<OverworldFollower>(true);
+        for (int i = 0; i < followers.Length; i++)
+        {
+            var f = followers[i];
+            if (f == null) continue;
+            f.SetLeader(hero);
+        }
+
+        // Apply initial Y-sort to hero and followers
+        var heroSR = hero.GetComponent<SpriteRenderer>();
+        if (heroSR != null) PartySortHelper.ApplyActorYSort(heroSR, PartySortHelper.GlobalScale);
+        for (int i = 0; i < followers.Length; i++)
+        {
+            var f = followers[i]; if (f == null) continue;
+            var sr = f.GetComponent<SpriteRenderer>();
+            if (sr != null) PartySortHelper.ApplyActorYSort(sr, PartySortHelper.GlobalScale);
+        }
 
         // Wire offscreen indicator target now that we have hero
         offscreenArrow = GameObject.Find(GameObjectHelper.Overworld.Canvas.OffscreenArrow).GetComponent<OffscreenArrowIndicator>();

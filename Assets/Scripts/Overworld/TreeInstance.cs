@@ -37,6 +37,9 @@ public class TreeInstance : MonoBehaviour
         SetLocalEulerX(foldAngleX);
         swayPhase = randomizeSwayPhase ? Random.Range(0f, Mathf.PI * 2f) : 0f;
         transform.position.SetZ(0f); // ensure on Z=0 plane
+
+        // Apply initial sort from the bottom of the sprite so trunk base controls the order
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private void OnEnable()
@@ -44,6 +47,8 @@ public class TreeInstance : MonoBehaviour
         TryCacheHero();
         SetLocalEulerX(foldAngleX);
         StartIdleSwayIfAllowed();
+
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private void OnDisable()
@@ -55,20 +60,9 @@ public class TreeInstance : MonoBehaviour
     private void Update()
     {
         if (!followHeroSorting) return;
-        if (hero == null || heroSR == null) { TryCacheHero(); if (hero == null || heroSR == null) return; }
 
-        var heroPos = hero.transform.position;
-        var selfPos = transform.position;
-
-        // Keep same sorting layer as hero for predictable +/-1 ordering
-        if (spriteRenderer.sortingLayerID != heroSR.sortingLayerID)
-            spriteRenderer.sortingLayerID = heroSR.sortingLayerID;
-
-        // Behind hero if hero is below, in front if hero is above
-        bool isHeroBelow = heroPos.y < selfPos.y;
-        int desiredOrder = isHeroBelow ? (heroSR.sortingOrder - 1) : (heroSR.sortingOrder + 1);
-        if (spriteRenderer.sortingOrder != desiredOrder)
-            spriteRenderer.sortingOrder = desiredOrder;
+        // Sort using the visual base (bounds.min.y)
+        YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private static void TryCacheHero()
