@@ -139,6 +139,7 @@
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\Timeline.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
+    <Compile Include="Assets\Scripts\Canvas\DayNightCycle.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />

@@ -18,6 +18,26 @@ public class BushInstance : MonoBehaviour
     [Tooltip("How much vertical distance around the bush pivot still counts as a pass-through.")]
     [Range(0.0f, 1.0f)] public float crossYProximity = 0.25f; // fraction of bush height
 
+
+
+    [Header("Idle Sway (Grass-style)")]
+    [Tooltip("Enable gentle sway when there is no collision with the hero.")]
+    public bool enableIdleSway = true;
+    [Tooltip("Rest X-rotation when plant is normal (degrees, negative tilts toward camera).")]
+    [Range(-80f, -5f)] public float foldAngleX = -45f; // normal state
+    [Tooltip("Sway amplitude in degrees around the rest angle.")]
+    [Range(0f, 45f)] public float swayAmplitude = 10f;
+    [Tooltip("Seconds per full sway cycle (higher = slower sway).")]
+    [Range(0.2f, 10f)] public float swayPeriod = 3.5f;
+    [Tooltip("Randomize starting sway phase per instance.")]
+    public bool randomizeSwayPhase = true;
+
+
+
+    [Header("Sorting")]
+    [Tooltip("Match hero's sorting layer and go behind when hero is below, in front when above.")]
+    public bool followHeroSorting = true;
+
     private SpriteRenderer spriteRenderer;
 
     // Cache hero and its SpriteRenderer once for all bushes
@@ -27,9 +47,16 @@ public class BushInstance : MonoBehaviour
     private bool? heroWasBelow; // null until first sample
     private Coroutine rustleRoutineRef;
 
+    // Idle sway state
+    private Coroutine idleSwayRoutineRef;
+    private float swayPhase;
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        // Ensure we start at rest angle
+        SetLocalEulerX(foldAngleX);
+        swayPhase = randomizeSwayPhase ? Random.Range(0f, Mathf.PI * 2f) : 0f;
         transform.position.SetZ(0f); // ensure on Z=0 plane
     }
 
@@ -39,28 +66,47 @@ public class BushInstance : MonoBehaviour
         // Initialize side to avoid false-positive first-frame rustle
         if (hero != null)
             heroWasBelow = hero.transform.position.y < transform.position.y;
+
+        // Keep rest orientation consistent on enable
+        SetLocalEulerX(foldAngleX);
+        StartIdleSwayIfAllowed();
+    }
+
+    private void OnDisable()
+    {
+        if (rustleRoutineRef != null)
+        {
+            StopCoroutine(rustleRoutineRef);
+            rustleRoutineRef = null;
+        }
+        StopIdleSway();
+        SetLocalEulerX(foldAngleX);
     }
 
     private void Update()
     {
+        if (hero == null || heroSR == null) { TryCacheHero(); if (hero == null || heroSR == null) return; }
+
         var heroPos = hero.transform.position;
         var bushPos = transform.position;
 
         bool isHeroBelow = heroPos.y < bushPos.y;
 
-        // Ensure we’re on the same sorting layer as the hero so +/-1 behaves predictably.
-        if (spriteRenderer.sortingLayerID != heroSR.sortingLayerID)
-            spriteRenderer.sortingLayerID = heroSR.sortingLayerID;
+        // Keep same sorting layer/order relative to hero if enabled
+        if (followHeroSorting)
+        {
+            if (spriteRenderer.sortingLayerID != heroSR.sortingLayerID)
+                spriteRenderer.sortingLayerID = heroSR.sortingLayerID;
 
-        // Compute desired order relative to hero
-        int desiredOrder = isHeroBelow ? (heroSR.sortingOrder - 1) : (heroSR.sortingOrder + 1);
-        if (spriteRenderer.sortingOrder != desiredOrder)
-            spriteRenderer.sortingOrder = desiredOrder;
+            int desiredOrder = isHeroBelow ? (heroSR.sortingOrder - 1) : (heroSR.sortingOrder + 1);
+            if (spriteRenderer.sortingOrder != desiredOrder)
+                spriteRenderer.sortingOrder = desiredOrder;
+        }
 
         // Detect passing through the bush: side flip + horizontal overlap + near pivot Y
         if (heroWasBelow.HasValue && heroWasBelow.Value != isHeroBelow && IsOverlappingHorizontally(heroPos) && IsNearPivotY(heroPos))
         {
-            // Trigger rustle
+            // Trigger scale/shake rustle
             if (rustleRoutineRef != null) StopCoroutine(rustleRoutineRef);
             rustleRoutineRef = StartCoroutine(RustleRoutine());
         }
@@ -134,7 +180,6 @@ public class BushInstance : MonoBehaviour
             transform.localScale = Vector3.LerpUnclamped(startScale, squashed, squashBlend);
 
             // Shake: decaying horizontal sine, centered on startPos
-            // Amplitude decays with (1-u) so it settles by the end.
             float amp = shakeAmplitude * (1f - u);
             float cycles = Mathf.Max(1, shakeCycles);
             float xOffset = Mathf.Sin((u * cycles * Mathf.PI * 2f) + randomPhase) * amp;
@@ -147,5 +192,41 @@ public class BushInstance : MonoBehaviour
         transform.localScale = startScale;
         transform.localPosition = startPos;
         rustleRoutineRef = null;
+    }
+
+    // === Idle sway (no trigger required) ===
+    private IEnumerator IdleSwayRoutine()
+    {
+        float w = (swayPeriod <= 0f) ? 0f : (Mathf.PI * 2f) / Mathf.Max(0.01f, swayPeriod);
+        while (enableIdleSway && isActiveAndEnabled)
+        {
+            float angle = foldAngleX + Mathf.Sin((Time.time * w) + swayPhase) * swayAmplitude;
+            SetLocalEulerX(angle);
+            yield return null;
+        }
+        idleSwayRoutineRef = null;
+    }
+
+    private void StartIdleSwayIfAllowed()
+    {
+        if (!enableIdleSway) return;
+        if (idleSwayRoutineRef != null) return;
+        idleSwayRoutineRef = StartCoroutine(IdleSwayRoutine());
+    }
+
+    private void StopIdleSway()
+    {
+        if (idleSwayRoutineRef != null)
+        {
+            StopCoroutine(idleSwayRoutineRef);
+            idleSwayRoutineRef = null;
+        }
+    }
+
+    private void SetLocalEulerX(float x)
+    {
+        Vector3 e = transform.localEulerAngles;
+        e.x = x;
+        transform.localEulerAngles = e;
     }
 }

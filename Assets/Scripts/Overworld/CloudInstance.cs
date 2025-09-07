@@ -31,6 +31,8 @@ public class CloudInstance : MonoBehaviour
     public bool randomizeFlipX = false;
     [Tooltip("Randomize SpriteRenderer Flip Y when the cloud starts and each time it teleports to the other side.")]
     public bool randomizeFlipY = false;
+    [Tooltip("Randomized opacity range in 8-bit (0-255). Alpha is picked uniformly in [min,max] at start, and on respawn.")]
+    public Vector2 alpha8bitRange = new Vector2(16f, 32f);
 
     [Header("Buffers")]
     [Tooltip("Extra world units beyond terrain bounds that trigger exit and are used for spawn on the opposite side.")]
@@ -101,6 +103,8 @@ public class CloudInstance : MonoBehaviour
 
         // Randomize flip at start if enabled
         MaybeRandomizeFlip();
+        // Randomize alpha at start
+        ApplyRandomAlpha();
     }
 
     private void Update()
@@ -163,6 +167,8 @@ public class CloudInstance : MonoBehaviour
 
         // Randomize flip on teleport if enabled
         MaybeRandomizeFlip();
+        // Always randomize alpha on teleport
+        ApplyRandomAlpha();
     }
 
     private void RespawnToLeft()
@@ -192,6 +198,8 @@ public class CloudInstance : MonoBehaviour
 
         // Randomize flip on teleport if enabled
         MaybeRandomizeFlip();
+        // Always randomize alpha on teleport
+        ApplyRandomAlpha();
     }
 
     // Allow OverworldManager to prewarm clouds so they start distributed across the map
@@ -243,6 +251,10 @@ public class CloudInstance : MonoBehaviour
         speedRange.y = Mathf.Max(speedRange.x, speedRange.y);
         scaleRange.x = Mathf.Max(0.01f, scaleRange.x);
         scaleRange.y = Mathf.Max(scaleRange.x, scaleRange.y);
+        // Alpha range (8-bit 0..255)
+        if (alpha8bitRange.x > alpha8bitRange.y) { float t2 = alpha8bitRange.x; alpha8bitRange.x = alpha8bitRange.y; alpha8bitRange.y = t2; }
+        alpha8bitRange.x = Mathf.Clamp(alpha8bitRange.x, 0f, 255f);
+        alpha8bitRange.y = Mathf.Clamp(alpha8bitRange.y, alpha8bitRange.x, 255f);
     }
 
     private void MaybeRandomizeFlip()
@@ -250,5 +262,15 @@ public class CloudInstance : MonoBehaviour
         if (_sprite == null) return;
         if (randomizeFlipX) _sprite.flipX = Random.value > 0.5f;
         if (randomizeFlipY) _sprite.flipY = Random.value > 0.5f;
+    }
+
+    private void ApplyRandomAlpha()
+    {
+        if (_sprite == null) return;
+        float a8 = Random.Range(alpha8bitRange.x, alpha8bitRange.y);
+        float a = Mathf.Clamp01(a8 / 255f);
+        var c = _sprite.color;
+        c.a = a;
+        _sprite.color = c;
     }
 }
