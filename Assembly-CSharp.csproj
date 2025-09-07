@@ -83,7 +83,6 @@
     <Compile Include="Assets\Scripts\Canvas\TimerBar2D.cs" />
     <Compile Include="Assets\Scripts\Models\ShakeIntensity.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
-    <Compile Include="Assets\Scripts\Overworld\OverworldFollower.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
@@ -203,6 +202,7 @@
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergySpark.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
+    <Compile Include="Assets\Scripts\Overworld\SoilInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\PositionHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\AnimationCurveHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
@@ -394,6 +394,7 @@
     <None Include="Assets\Shader\ThirdParty\Add_CenterGlow 1.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\Shader\ThirdParty\Alpha Blended 1.shader" />
+    <None Include="Assets\Shader\SpriteGrassMask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Shader\ZoomShaderURP.shader" />
     <None Include="Assets\Shader\ThirdParty\ModelDouble.shader" />

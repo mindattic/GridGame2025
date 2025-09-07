@@ -1,36 +1,24 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(SpriteRenderer))]
-[RequireComponent(typeof(Collider2D))]
 public class GrassInstance : MonoBehaviour
 {
-    [Header("Flap Effect")]
-    [Tooltip("Rest X-rotation when grass is normal (degrees, negative tilts toward camera).")]
-    [Range(-80f, -5f)] public float foldAngleX = -45f; // normal state
-    [Tooltip("Time to flatten from rest to 0 (seconds). Fast snap.")]
-    [Range(0.01f, 0.3f)] public float foldInTime = 0.06f;
-    [Tooltip("Time to return from 0 back to rest (seconds). Slow settle.")]
-    [Range(0.01f, 0.6f)] public float foldReturnTime = 0.2f;
-
-    [Header("Idle Sway")]
-    [Tooltip("Enable gentle sway when there is no collision with the hero.")]
-    public bool enableIdleSway = true;
-    [Tooltip("Sway amplitude in degrees around the rest angle (e.g., 10 swings from -45 to -35 and -55).")]
-    [Range(0f, 45f)] public float swayAmplitude = 10f;
-    [Tooltip("Seconds per full sway cycle (higher = slower sway).")]
-    [Range(0.2f, 10f)] public float swayPeriod = 3.5f;
-    [Tooltip("Randomize starting sway phase per instance.")]
-    public bool randomizeSwayPhase = true;
-
     [Header("Sorting")]
     [Tooltip("Match hero's sorting layer and go behind when hero is below, in front when above.")]
     public bool followHeroSorting = true;
 
+    [Header("Idle Sway")]
+    public bool enableIdleSway = true;
+    [Range(-80f, -5f)] public float foldAngleX = -60f;
+    [Range(0f, 45f)] public float swayAmplitude = 6f;
+    [Range(0.2f, 10f)] public float swayPeriod = 2.5f;
+    public bool randomizeSwayPhase = true;
+
     private SpriteRenderer spriteRenderer;
     private Collider2D trigger;
 
-    // Cache hero and its SpriteRenderer once for all grass instances
+    // Cache hero and its SpriteRenderer once for all grass
     private static OverworldHero hero;
     private static SpriteRenderer heroSR;
 
@@ -38,6 +26,7 @@ public class GrassInstance : MonoBehaviour
     private Coroutine idleSwayRoutineRef;
     private int heroInsideCount; // track nested overlaps
     private float swayPhase;
+    private bool isVisible;
 
     private void Awake()
     {
@@ -55,7 +44,9 @@ public class GrassInstance : MonoBehaviour
 
         transform.position.SetZ(0f); // ensure on Z=0 plane
 
-        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
+        isVisible = spriteRenderer != null && spriteRenderer.isVisible;
+
+        if (followHeroSorting && isVisible) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private void OnEnable()
@@ -64,9 +55,9 @@ public class GrassInstance : MonoBehaviour
         // Keep rest orientation consistent on enable
         SetLocalEulerX(foldAngleX);
         heroInsideCount = 0;
-        StartIdleSwayIfAllowed();
+        if (isVisible) StartIdleSwayIfAllowed();
 
-        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
+        if (followHeroSorting && isVisible) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private void OnDisable()
@@ -85,11 +76,25 @@ public class GrassInstance : MonoBehaviour
         SetLocalEulerX(foldAngleX);
     }
 
+    private void OnBecameVisible()
+    {
+        isVisible = true;
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
+        StartIdleSwayIfAllowed();
+    }
+
+    private void OnBecameInvisible()
+    {
+        isVisible = false;
+        StopIdleSway();
+    }
+
     private void Update()
     {
+        if (!isVisible) return;
         if (!followHeroSorting) return;
 
-        YSortUtility.Apply(spriteRenderer);
+        YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private static void TryCacheHero()
@@ -131,66 +136,54 @@ public class GrassInstance : MonoBehaviour
     private bool IsHeroCollider(Component other)
     {
         if (other == null) return false;
-        // Accept hero on this collider or on a parent
         var h = other.GetComponentInParent<OverworldHero>();
-        if (h == null) return false;
-        // Cache hero ref if not already
-        if (hero == null) hero = h;
-        if (heroSR == null && hero != null) heroSR = hero.GetComponent<SpriteRenderer>();
-        return true;
+        return h != null;
     }
 
     private IEnumerator FlattenToZeroRoutine()
     {
-        // Always start from rest (-45), flatten to 0 and hold
-        SetLocalEulerX(foldAngleX);
-
-        float durIn = Mathf.Max(0.01f, foldInTime);
+        float start = transform.localEulerAngles.x;
+        float end = 0f;
         float t = 0f;
-        while (t < durIn)
+        float dur = 0.05f;
+        while (t < dur && isVisible)
         {
             t += Time.deltaTime;
-            float u = Mathf.Clamp01(t / durIn);
-            // Ease-out for quick snap
-            float eased = 1f - Mathf.Pow(1f - u, 2f);
-            float angle = Mathf.LerpUnclamped(foldAngleX, 0f, eased);
+            float u = Mathf.Clamp01(t / dur);
+            float angle = Mathf.LerpAngle(start, end, u);
             SetLocalEulerX(angle);
             yield return null;
         }
-        SetLocalEulerX(0f); // ensure exact 0 and hold while inside
-        flapRoutineRef = null;
+        // Hold flat while inside
+        while (heroInsideCount > 0 && isVisible)
+        {
+            SetLocalEulerX(0f);
+            yield return null;
+        }
     }
 
     private IEnumerator ReturnToRestRoutine()
     {
-        // Return from current angle (typically 0) to rest (-45)
-        float startX = GetLocalEulerXSigned();
-        float endX = foldAngleX;
-        float durOut = Mathf.Max(0.01f, foldReturnTime);
-
+        float start = transform.localEulerAngles.x;
+        float end = foldAngleX;
         float t = 0f;
-        while (t < durOut)
+        float dur = 0.15f;
+        while (t < dur && isVisible)
         {
             t += Time.deltaTime;
-            float u = Mathf.Clamp01(t / durOut);
-            // Ease-in for gentle settle
-            float eased = u * u;
-            float angle = Mathf.LerpUnclamped(startX, endX, eased);
+            float u = Mathf.Clamp01(t / dur);
+            float angle = Mathf.LerpAngle(start, end, u);
             SetLocalEulerX(angle);
             yield return null;
         }
-        SetLocalEulerX(endX);
-        flapRoutineRef = null;
-
-        // Resume idle sway if still clear
         StartIdleSwayIfAllowed();
     }
 
+    // === Idle sway (no trigger required) ===
     private IEnumerator IdleSwayRoutine()
     {
-        // Gentle sway around the rest angle while not intersecting
         float w = (swayPeriod <= 0f) ? 0f : (Mathf.PI * 2f) / Mathf.Max(0.01f, swayPeriod);
-        while (enableIdleSway && heroInsideCount == 0)
+        while (enableIdleSway && isActiveAndEnabled && isVisible)
         {
             float angle = foldAngleX + Mathf.Sin((Time.time * w) + swayPhase) * swayAmplitude;
             SetLocalEulerX(angle);
@@ -202,7 +195,7 @@ public class GrassInstance : MonoBehaviour
     private void StartIdleSwayIfAllowed()
     {
         if (!enableIdleSway) return;
-        if (heroInsideCount != 0) return;
+        if (!isVisible) return;
         if (idleSwayRoutineRef != null) return;
         idleSwayRoutineRef = StartCoroutine(IdleSwayRoutine());
     }
@@ -214,12 +207,6 @@ public class GrassInstance : MonoBehaviour
             StopCoroutine(idleSwayRoutineRef);
             idleSwayRoutineRef = null;
         }
-    }
-
-    private float GetLocalEulerXSigned()
-    {
-        float x = transform.localEulerAngles.x;
-        return (x > 180f) ? x - 360f : x;
     }
 
     private void SetLocalEulerX(float x)

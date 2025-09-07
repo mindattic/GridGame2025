@@ -5,7 +5,7 @@ public static class PartySortHelper
 {
     private static OverworldHero hero;
     private static SpriteRenderer heroSR;
-    private static readonly List<SpriteRenderer> party = new List<SpriteRenderer>(8);
+    private static readonly List<SpriteRenderer> party = new List<SpriteRenderer>(16);
     private static float nextRefresh;
     private const float refreshInterval = 0.5f;
 
@@ -38,6 +38,7 @@ public static class PartySortHelper
         if (layerId != 0 && sr.sortingLayerID != layerId)
             sr.sortingLayerID = layerId;
     }
+
     private static void RefreshIfNeeded()
     {
         if (Time.unscaledTime < nextRefresh && party.Count > 0) return;
@@ -45,15 +46,17 @@ public static class PartySortHelper
 
         if (hero == null) hero = Object.FindFirstObjectByType<OverworldHero>();
         heroSR = hero != null ? hero.GetComponent<SpriteRenderer>() : null;
-        if (heroSR != null) party.Add(heroSR);
 
-        var followers = Object.FindObjectsOfType<OverworldFollower>();
-        for (int i = 0; i < followers.Length; i++)
+        var heroes = Object.FindObjectsOfType<OverworldHero>();
+        for (int i = 0; i < heroes.Length; i++)
         {
-            var f = followers[i];
-            if (f == null) continue;
-            var sr = f.GetComponent<SpriteRenderer>();
-            if (sr != null) party.Add(sr);
+            var h = heroes[i]; if (h == null) continue;
+            var sr = h.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                party.Add(sr);
+                if (heroSR == null && h == hero) heroSR = sr;
+            }
         }
 
         nextRefresh = Time.unscaledTime + refreshInterval;

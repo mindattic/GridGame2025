@@ -14,26 +14,52 @@ public class RockInstance : MonoBehaviour
     private static OverworldHero hero;
     private static SpriteRenderer heroSR;
 
+    private bool isVisible;
+
     public void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         transform.position.SetZ(0f); // ensure on Z=0 plane
 
-        // Apply initial sort
-        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
+        isVisible = spriteRenderer != null && spriteRenderer.isVisible;
+
+        // Apply initial sort from the bottom of the sprite so base controls the order
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private void OnEnable()
     {
         TryCacheHero();
-        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
+    }
+
+    private void OnBecameVisible()
+    {
+        isVisible = true;
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
+    }
+
+    private void OnBecameInvisible()
+    {
+        isVisible = false;
     }
 
     private void Update()
     {
-        if (!followHeroSorting) return;
-        YSortUtility.Apply(spriteRenderer);
+        // Always apply Y-sort so rocks don't get stuck with a static order (e.g., 30)
+        if (followHeroSorting)
+            YSortUtility.ApplyFromBottom(spriteRenderer);
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        // Keep order correct in editor when moving objects
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        if (followHeroSorting && spriteRenderer != null)
+            YSortUtility.ApplyFromBottom(spriteRenderer);
+    }
+#endif
 
     private static void TryCacheHero()
     {

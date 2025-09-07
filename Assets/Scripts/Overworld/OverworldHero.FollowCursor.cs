@@ -40,6 +40,63 @@ public partial class OverworldHero
         isMoving = false; _path = null;
     }
 
+    private void TickFollowLeader()
+    {
+        if (leader == null)
+        {
+            SetIdle();
+            return;
+        }
+
+        Vector2 current = GetPosition();
+        Vector3 lp3 = leader.position;
+        Vector2 leaderPos = new Vector2(lp3.x, lp3.y);
+        Vector2 toLeader = leaderPos - current;
+        float dist = toLeader.magnitude;
+
+        // Teleport if extremely far to keep party coherent
+        if (teleportIfBeyond > 0f && dist > teleportIfBeyond)
+        {
+            Vector2 snap = leaderPos;
+            if (followDistance > 1e-4f && dist > 1e-6f)
+                snap = leaderPos - toLeader / dist * followDistance;
+            SetPosition(ClampToMap(snap));
+            ApplyAnimatorParameters(lastLook, 0f);
+            OnHeroMoved?.Invoke(GetPosition());
+            return;
+        }
+
+        // If outside the comfort ring, move toward leader; else idle
+        float outer = Mathf.Max(0f, followDistance + arriveBuffer);
+        if (dist > outer)
+        {
+            Vector2 dir = toLeader / Mathf.Max(dist, 1e-6f);
+
+            // Distance-based catchup (speeds up when far, clamped by catchupMultiplier)
+            float catchup = 1f;
+            if (followDistance > 1e-4f)
+            {
+                float t = Mathf.InverseLerp(followDistance, followDistance * 4f, dist);
+                catchup = Mathf.Lerp(1f, Mathf.Max(1f, catchupMultiplier), t);
+            }
+
+            float stepLen = followSpeed * catchup * Time.deltaTime;
+            Vector2 step = dir * stepLen;
+
+            // Attempt not to overshoot near the target ring edge
+            float overshoot = dist - outer;
+            if (step.magnitude > overshoot)
+                step = dir * overshoot;
+
+            MoveWithCast(step);
+            SetAnimationFromInput(dir, step.magnitude);
+        }
+        else
+        {
+            SetIdle();
+        }
+    }
+
     // Hold-to-move directional clicks (screen param kept for compatibility)
     public void BeginDirectionalFromScreen(Vector2 screenPos, RectTransform _)
     {

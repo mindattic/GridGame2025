@@ -223,14 +223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &4440778
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -383,6 +381,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &13918440
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,10 +413,10 @@ Transform:
   m_Children:
   - {fileID: 1370846922}
   - {fileID: 417901355}
-  - {fileID: 163499840}
-  - {fileID: 1931103578}
+  - {fileID: 1370801261}
   - {fileID: 213694433}
   - {fileID: 1660590287}
+  - {fileID: 1931103578}
   - {fileID: 560174502}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -664,6 +663,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &29460756
 GameObject:
   m_ObjectHideFlags: 0
@@ -768,14 +768,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &29460761
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1356,6 +1354,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &61953052
 GameObject:
   m_ObjectHideFlags: 0
@@ -1972,6 +1971,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &91693891
 GameObject:
   m_ObjectHideFlags: 0
@@ -2234,6 +2234,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &103346643
 GameObject:
   m_ObjectHideFlags: 0
@@ -2280,14 +2281,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &103346646
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2782,6 +2781,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &145627389
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2966,13 +2966,12 @@ GameObject:
   - component: {fileID: 163499840}
   - component: {fileID: 163499842}
   - component: {fileID: 163499845}
-  - component: {fileID: 163499843}
   - component: {fileID: 163499844}
   - component: {fileID: 163499846}
   - component: {fileID: 163499847}
-  - component: {fileID: 163499848}
+  - component: {fileID: 163499843}
   m_Layer: 0
-  m_Name: Hero
+  m_Name: Hero_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2986,12 +2985,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 163499839}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 13918441}
+  m_Father: {fileID: 1660590287}
   m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
 --- !u!222 &163499842
 CanvasRenderer:
@@ -3022,11 +3021,20 @@ MonoBehaviour:
   allowVirtualJoystick: 1
   idleWhileOffscreen: 1
   enableCollision: 1
+  IsLeader: 1
+  leader: {fileID: 0}
+  followSpeed: 2.3
+  followDistance: 0.25
+  arriveBuffer: 0.05
+  catchupMultiplier: 2
+  teleportIfBeyond: 25
+  ignorePartyCollisions: 1
   collisionRadiusWorld: 0.1
   forwardCoverageBlockThreshold: 0.5
   forwardCoverageSamples: 16
-  skin: 0.01
+  skin: 0.02
   maxSlideIterations: 3
+  maxCastStepDistance: 0.25
 --- !u!95 &163499844
 Animator:
   serializedVersion: 7
@@ -3106,7 +3114,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!58 &163499846
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -3170,21 +3178,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &163499848
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 163499839}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7015383a6e3d4714c8bc52fd04d45852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActorYSorter
-  ySortScale: 1000
-  lockToHeroLayer: 1
-  sr: {fileID: 163499845}
 --- !u!1 &178117559
 GameObject:
   m_ObjectHideFlags: 0
@@ -3301,6 +3294,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &188728774
 GameObject:
   m_ObjectHideFlags: 0
@@ -3735,6 +3729,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &203947978
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3839,14 +3834,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &204027066
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4057,234 +4050,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
---- !u!1 &208205220
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 208205221}
-  - component: {fileID: 208205226}
-  - component: {fileID: 208205225}
-  - component: {fileID: 208205224}
-  - component: {fileID: 208205223}
-  - component: {fileID: 208205222}
-  - component: {fileID: 208205227}
-  - component: {fileID: 208205228}
-  m_Layer: 0
-  m_Name: Follower_00
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &208205221
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208205220}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1660590287}
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
---- !u!50 &208205222
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208205220}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 1
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
---- !u!58 &208205223
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208205220}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
---- !u!95 &208205224
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208205220}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e816ff77d65d4144f8086c3d51414cf3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!212 &208205225
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208205220}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 4262177298367310080, guid: 404586e72fb03c34b8b9cac75072740a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.52, y: 0.52}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!222 &208205226
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208205220}
-  m_CullTransparentMesh: 1
---- !u!114 &208205227
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208205220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72799d7afc7685b4f8538d67651d5d2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OverworldFollower
-  leader: {fileID: 163499840}
-  moveSpeed: 2
-  followDistance: 0.2
-  arriveBuffer: 0.05
-  catchupMultiplier: 2
-  teleportIfBeyond: 25
-  enableCollision: 0
-  skin: 0.01
-  maxSlideIterations: 3
-  clampToMap: 1
-  ignoreLeaderCollision: 1
-  animator: {fileID: 208205224}
---- !u!114 &208205228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 208205220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7015383a6e3d4714c8bc52fd04d45852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActorYSorter
-  ySortScale: 1000
-  lockToHeroLayer: 1
-  sr: {fileID: 208205225}
+  UpdateWhileOffscreen: 1
 --- !u!1 &208475395
 GameObject:
   m_ObjectHideFlags: 0
@@ -4389,14 +4155,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &208475400
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4549,6 +4313,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &211391864
 GameObject:
   m_ObjectHideFlags: 0
@@ -4665,6 +4430,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &213694432
 GameObject:
   m_ObjectHideFlags: 0
@@ -5134,6 +4900,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &254438464
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5238,14 +5005,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &257280802
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5456,6 +5221,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &258907915
 GameObject:
   m_ObjectHideFlags: 0
@@ -5602,6 +5368,229 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &259653477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 259653478}
+  - component: {fileID: 259653484}
+  - component: {fileID: 259653483}
+  - component: {fileID: 259653482}
+  - component: {fileID: 259653481}
+  - component: {fileID: 259653480}
+  - component: {fileID: 259653479}
+  m_Layer: 0
+  m_Name: Hero_03
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &259653478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259653477}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1660590287}
+  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+--- !u!114 &259653479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259653477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 643596e4fce9d3b40a1e7651e1c3e4d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 259653482}
+  spriteRenderer: {fileID: 259653483}
+  moveSpeed: 1
+  snapThreshold: 0.05
+  requireVisibleToMove: 1
+  ignoreClicksWhenOffscreen: 0
+  allowVirtualJoystick: 1
+  idleWhileOffscreen: 1
+  enableCollision: 1
+  IsLeader: 0
+  leader: {fileID: 1862603885}
+  followSpeed: 2.3
+  followDistance: 0.25
+  arriveBuffer: 0.05
+  catchupMultiplier: 2
+  teleportIfBeyond: 25
+  ignorePartyCollisions: 1
+  collisionRadiusWorld: 0.1
+  forwardCoverageBlockThreshold: 0.5
+  forwardCoverageSamples: 16
+  skin: 0.02
+  maxSlideIterations: 3
+  maxCastStepDistance: 0.25
+--- !u!50 &259653480
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259653477}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!58 &259653481
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259653477}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.1
+--- !u!95 &259653482
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259653477}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 286fe62abbfeac443955c452aec7cec2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!212 &259653483
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259653477}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -511110017, guid: c2e940774fe925c44b806f53f79147ae, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.52, y: 0.52}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 1
+--- !u!222 &259653484
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259653477}
+  m_CullTransparentMesh: 1
 --- !u!1 &270156317
 GameObject:
   m_ObjectHideFlags: 0
@@ -5852,14 +5841,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &281250884
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6080,6 +6067,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &292465146
 GameObject:
   m_ObjectHideFlags: 0
@@ -6184,14 +6172,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &292465151
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6344,6 +6330,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &332494705
 GameObject:
   m_ObjectHideFlags: 0
@@ -6448,14 +6435,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &332494710
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -6933,6 +6918,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &362152974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7140,14 +7126,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &369561340
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -7358,6 +7342,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &376069361
 GameObject:
   m_ObjectHideFlags: 0
@@ -7819,6 +7804,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &393760200
 GameObject:
   m_ObjectHideFlags: 0
@@ -8119,14 +8105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &416149260
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8267,14 +8251,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &417430288
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -8460,7 +8442,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -9998
+  m_SortingOrder: -20008
   m_Sprite: {fileID: 21300000, guid: db4613c1f2cc2e14d8fe1a7374499750, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -8588,6 +8570,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &455705238
 GameObject:
   m_ObjectHideFlags: 0
@@ -8704,6 +8687,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &455973796
 GameObject:
   m_ObjectHideFlags: 0
@@ -9227,14 +9211,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &476736771
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -9463,14 +9445,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &490933600
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10100,6 +10080,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &506604315
 GameObject:
   m_ObjectHideFlags: 0
@@ -10204,14 +10185,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &506604320
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -10394,6 +10373,229 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &511655537
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 511655538}
+  - component: {fileID: 511655544}
+  - component: {fileID: 511655543}
+  - component: {fileID: 511655542}
+  - component: {fileID: 511655541}
+  - component: {fileID: 511655540}
+  - component: {fileID: 511655539}
+  m_Layer: 0
+  m_Name: Hero_01
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &511655538
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511655537}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1660590287}
+  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+--- !u!114 &511655539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511655537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 643596e4fce9d3b40a1e7651e1c3e4d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 511655542}
+  spriteRenderer: {fileID: 511655543}
+  moveSpeed: 1
+  snapThreshold: 0.05
+  requireVisibleToMove: 1
+  ignoreClicksWhenOffscreen: 0
+  allowVirtualJoystick: 1
+  idleWhileOffscreen: 1
+  enableCollision: 1
+  IsLeader: 0
+  leader: {fileID: 163499840}
+  followSpeed: 2.3
+  followDistance: 0.25
+  arriveBuffer: 0.05
+  catchupMultiplier: 2
+  teleportIfBeyond: 25
+  ignorePartyCollisions: 1
+  collisionRadiusWorld: 0.1
+  forwardCoverageBlockThreshold: 0.5
+  forwardCoverageSamples: 16
+  skin: 0.02
+  maxSlideIterations: 3
+  maxCastStepDistance: 0.25
+--- !u!50 &511655540
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511655537}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!58 &511655541
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511655537}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.1
+--- !u!95 &511655542
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511655537}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 286fe62abbfeac443955c452aec7cec2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!212 &511655543
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511655537}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -511110017, guid: c2e940774fe925c44b806f53f79147ae, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.52, y: 0.52}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 1
+--- !u!222 &511655544
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511655537}
+  m_CullTransparentMesh: 1
 --- !u!1 &514098281
 GameObject:
   m_ObjectHideFlags: 0
@@ -11056,6 +11258,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &546046027
 GameObject:
   m_ObjectHideFlags: 0
@@ -11114,6 +11317,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &546046030
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11345,14 +11549,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &548648050
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -11530,14 +11732,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &565760337
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -12390,6 +12590,82 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
+--- !u!1 &675593496
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 675593497}
+  - component: {fileID: 675593499}
+  - component: {fileID: 675593498}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &675593497
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675593496}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1271756335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 48, y: 48}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &675593498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675593496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 0cd7696cbee86d6458747275dd4f09c0, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &675593499
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675593496}
+  m_CullTransparentMesh: 1
 --- !u!1 &700891367
 GameObject:
   m_ObjectHideFlags: 0
@@ -12506,6 +12782,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &713159400
 GameObject:
   m_ObjectHideFlags: 0
@@ -13123,6 +13400,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &735947731
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -13239,6 +13517,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &739539205
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -13573,14 +13852,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &755306302
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -14021,234 +14298,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
---- !u!1 &761841044
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 761841045}
-  - component: {fileID: 761841051}
-  - component: {fileID: 761841050}
-  - component: {fileID: 761841049}
-  - component: {fileID: 761841048}
-  - component: {fileID: 761841047}
-  - component: {fileID: 761841046}
-  - component: {fileID: 761841052}
-  m_Layer: 0
-  m_Name: Follower_01
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &761841045
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761841044}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1660590287}
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
---- !u!114 &761841046
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761841044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72799d7afc7685b4f8538d67651d5d2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OverworldFollower
-  leader: {fileID: 208205221}
-  moveSpeed: 2
-  followDistance: 0.2
-  arriveBuffer: 0.05
-  catchupMultiplier: 2
-  teleportIfBeyond: 25
-  enableCollision: 0
-  skin: 0.01
-  maxSlideIterations: 3
-  clampToMap: 1
-  ignoreLeaderCollision: 1
-  animator: {fileID: 761841049}
---- !u!50 &761841047
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761841044}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 1
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
---- !u!58 &761841048
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761841044}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
---- !u!95 &761841049
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761841044}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e816ff77d65d4144f8086c3d51414cf3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!212 &761841050
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761841044}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 4262177298367310080, guid: 404586e72fb03c34b8b9cac75072740a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.52, y: 0.52}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!222 &761841051
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761841044}
-  m_CullTransparentMesh: 1
---- !u!114 &761841052
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761841044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7015383a6e3d4714c8bc52fd04d45852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActorYSorter
-  ySortScale: 1000
-  lockToHeroLayer: 1
-  sr: {fileID: 761841050}
+  UpdateWhileOffscreen: 1
 --- !u!1 &762341696
 GameObject:
   m_ObjectHideFlags: 0
@@ -14353,14 +14403,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &762341701
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -14628,14 +14676,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &773271776
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15106,14 +15152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &789038965
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15769,6 +15813,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &818640436
 GameObject:
   m_ObjectHideFlags: 0
@@ -16184,6 +16229,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &824112254
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -16358,6 +16404,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &826606711
 GameObject:
   m_ObjectHideFlags: 0
@@ -16589,6 +16636,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &831589930
 GameObject:
   m_ObjectHideFlags: 0
@@ -16635,14 +16683,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &831589933
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -16853,6 +16899,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &846726742
 GameObject:
   m_ObjectHideFlags: 0
@@ -16899,14 +16946,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &846726745
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -17483,6 +17528,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &893145705
 GameObject:
   m_ObjectHideFlags: 0
@@ -17874,6 +17920,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &914783597
 GameObject:
   m_ObjectHideFlags: 0
@@ -17990,6 +18037,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &920259644
 GameObject:
   m_ObjectHideFlags: 0
@@ -18233,6 +18281,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &926636702
 GameObject:
   m_ObjectHideFlags: 0
@@ -18279,14 +18328,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &926636705
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -18885,6 +18932,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &947265020
 GameObject:
   m_ObjectHideFlags: 0
@@ -19262,6 +19310,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &953166391
 GameObject:
   m_ObjectHideFlags: 0
@@ -19378,6 +19427,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &964711855
 GameObject:
   m_ObjectHideFlags: 0
@@ -19494,6 +19544,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &967152954
 GameObject:
   m_ObjectHideFlags: 0
@@ -19610,6 +19661,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &967767117
 GameObject:
   m_ObjectHideFlags: 0
@@ -19726,6 +19778,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &972732623
 GameObject:
   m_ObjectHideFlags: 0
@@ -19945,14 +19998,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &989206322
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -20493,6 +20544,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1051464716
 GameObject:
   m_ObjectHideFlags: 0
@@ -20678,6 +20730,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1053511793
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -20794,6 +20847,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1053640396
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -21114,6 +21168,143 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
+--- !u!1 &1084833061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1084833062}
+  - component: {fileID: 1084833064}
+  - component: {fileID: 1084833063}
+  m_Layer: 5
+  m_Name: Label
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1084833062
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084833061}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1271756335}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -43.43}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1084833063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084833061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: d7990ddf116fb5748bba571a76162c10, type: 2}
+  m_sharedMaterial: {fileID: -2816280318493864645, guid: d7990ddf116fb5748bba571a76162c10, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 20
+  m_fontSizeBase: 20
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1084833064
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084833061}
+  m_CullTransparentMesh: 1
 --- !u!1 &1087820946
 GameObject:
   m_ObjectHideFlags: 0
@@ -21345,6 +21536,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1100869640
 GameObject:
   m_ObjectHideFlags: 0
@@ -21461,6 +21653,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1120197100
 GameObject:
   m_ObjectHideFlags: 0
@@ -21577,6 +21770,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1130227714
 GameObject:
   m_ObjectHideFlags: 0
@@ -21681,14 +21875,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1130227719
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -21956,6 +22148,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1132754469
 GameObject:
   m_ObjectHideFlags: 0
@@ -22256,6 +22449,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1142979607
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -22430,6 +22624,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1161730355
 GameObject:
   m_ObjectHideFlags: 0
@@ -22546,6 +22741,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1166555932
 GameObject:
   m_ObjectHideFlags: 0
@@ -22662,6 +22858,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1170170605
 GameObject:
   m_ObjectHideFlags: 0
@@ -22766,14 +22963,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1170170610
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -22926,6 +23121,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1193727885
 GameObject:
   m_ObjectHideFlags: 0
@@ -23042,6 +23238,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1196499688
 GameObject:
   m_ObjectHideFlags: 0
@@ -23431,6 +23628,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1219216971
 GameObject:
   m_ObjectHideFlags: 0
@@ -23547,6 +23745,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1232906025
 GameObject:
   m_ObjectHideFlags: 0
@@ -23663,6 +23862,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1234129770
 GameObject:
   m_ObjectHideFlags: 0
@@ -23721,6 +23921,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1234129773
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -23895,6 +24096,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1264890463
 GameObject:
   m_ObjectHideFlags: 0
@@ -24102,6 +24304,140 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1271756334
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1271756335}
+  - component: {fileID: 1271756338}
+  - component: {fileID: 1271756337}
+  - component: {fileID: 1271756336}
+  m_Layer: 5
+  m_Name: ChangeLeaderButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1271756335
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271756334}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 675593497}
+  - {fileID: 1084833062}
+  m_Father: {fileID: 1825619937}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -136.3, y: -126.43}
+  m_SizeDelta: {x: 64, y: 64}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1271756336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271756334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1271756337}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 893145708}
+        m_TargetAssemblyTypeName: OverworldManager, Assembly-CSharp
+        m_MethodName: ChangeLeader
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1271756337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271756334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1271756338
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271756334}
+  m_CullTransparentMesh: 1
 --- !u!1 &1277475398
 GameObject:
   m_ObjectHideFlags: 0
@@ -24536,6 +24872,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1324065047
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -24698,14 +25035,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1330362878
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -24800,6 +25135,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1332317413
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -24962,14 +25298,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1333418509
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -25122,6 +25456,127 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
+--- !u!1 &1370801260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1370801261}
+  - component: {fileID: 1370801264}
+  - component: {fileID: 1370801263}
+  - component: {fileID: 1370801262}
+  m_Layer: 0
+  m_Name: Soil
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1370801261
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370801260}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 13918441}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 4096, y: 4096}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1370801262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370801260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e83e9185bb425d42913f6b75efabc8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  autoSeed: 1
+  seedOffset: 0
+  windJitter: 0
+  timeScale: 1
+--- !u!212 &1370801263
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370801260}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9d7d4548c19b40746b482e0dafe66eb7, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -20007
+  m_Sprite: {fileID: 21300000, guid: 6d3b3966a4b784045aacec9d86d61355, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 40.96, y: 40.96}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!222 &1370801264
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370801260}
+  m_CullTransparentMesh: 1
 --- !u!1 &1370846921
 GameObject:
   m_ObjectHideFlags: 0
@@ -25214,7 +25669,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -9999
+  m_SortingOrder: -20010
   m_Sprite: {fileID: 21300000, guid: c08e755b69b1f294b934071e05336ef0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -27126,6 +27581,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1392247732
 GameObject:
   m_ObjectHideFlags: 0
@@ -27230,14 +27686,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1392247737
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -27390,6 +27844,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1405943672
 GameObject:
   m_ObjectHideFlags: 0
@@ -27887,6 +28342,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1443100017
 GameObject:
   m_ObjectHideFlags: 0
@@ -28118,6 +28574,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1493239213
 GameObject:
   m_ObjectHideFlags: 0
@@ -28603,6 +29060,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1508826359
 GameObject:
   m_ObjectHideFlags: 0
@@ -28661,6 +29119,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1508826362
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -28777,6 +29236,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1518315601
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -28951,6 +29411,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1536769728
 GameObject:
   m_ObjectHideFlags: 0
@@ -29194,6 +29655,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1548435735
 GameObject:
   m_ObjectHideFlags: 0
@@ -29437,6 +29899,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1552851367
 GameObject:
   m_ObjectHideFlags: 0
@@ -30035,6 +30498,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1598309447
 GameObject:
   m_ObjectHideFlags: 0
@@ -30151,6 +30615,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1604198896
 GameObject:
   m_ObjectHideFlags: 0
@@ -30518,6 +30983,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1616040268
 GameObject:
   m_ObjectHideFlags: 0
@@ -30852,14 +31318,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1642991827
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -31158,6 +31622,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1649902177
 GameObject:
   m_ObjectHideFlags: 0
@@ -31204,14 +31669,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1649902180
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -31316,7 +31779,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1660590287}
   m_Layer: 0
-  m_Name: Followers
+  m_Name: Heroes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31335,9 +31798,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 208205221}
-  - {fileID: 761841045}
-  - {fileID: 1950586514}
+  - {fileID: 163499840}
+  - {fileID: 511655538}
+  - {fileID: 1862603885}
+  - {fileID: 259653478}
   m_Father: {fileID: 13918441}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1666842782
@@ -31444,14 +31908,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1666842787
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -32253,6 +32715,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1715845033
 GameObject:
   m_ObjectHideFlags: 0
@@ -32896,6 +33359,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1737495709
 GameObject:
   m_ObjectHideFlags: 0
@@ -33012,6 +33476,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1756260984
 GameObject:
   m_ObjectHideFlags: 0
@@ -33573,14 +34038,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1786839718
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -33791,6 +34254,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1794304748
 GameObject:
   m_ObjectHideFlags: 0
@@ -33964,6 +34428,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &1804826811
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -34241,14 +34706,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1816102178
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -34512,6 +34975,7 @@ RectTransform:
   - {fileID: 780870253}
   - {fileID: 2066561939}
   - {fileID: 729210059}
+  - {fileID: 1271756335}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -34623,14 +35087,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1827323091
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -34783,6 +35245,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1831891644
 GameObject:
   m_ObjectHideFlags: 0
@@ -35026,6 +35489,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1844390469
 GameObject:
   m_ObjectHideFlags: 0
@@ -35172,6 +35636,229 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1862603884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1862603885}
+  - component: {fileID: 1862603891}
+  - component: {fileID: 1862603890}
+  - component: {fileID: 1862603889}
+  - component: {fileID: 1862603888}
+  - component: {fileID: 1862603887}
+  - component: {fileID: 1862603886}
+  m_Layer: 0
+  m_Name: Hero_02
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1862603885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862603884}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1660590287}
+  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
+--- !u!114 &1862603886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862603884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 643596e4fce9d3b40a1e7651e1c3e4d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1862603889}
+  spriteRenderer: {fileID: 1862603890}
+  moveSpeed: 1
+  snapThreshold: 0.05
+  requireVisibleToMove: 1
+  ignoreClicksWhenOffscreen: 0
+  allowVirtualJoystick: 1
+  idleWhileOffscreen: 1
+  enableCollision: 1
+  IsLeader: 0
+  leader: {fileID: 511655538}
+  followSpeed: 2.3
+  followDistance: 0.25
+  arriveBuffer: 0.05
+  catchupMultiplier: 2
+  teleportIfBeyond: 25
+  ignorePartyCollisions: 1
+  collisionRadiusWorld: 0.1
+  forwardCoverageBlockThreshold: 0.5
+  forwardCoverageSamples: 16
+  skin: 0.02
+  maxSlideIterations: 3
+  maxCastStepDistance: 0.25
+--- !u!50 &1862603887
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862603884}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 1
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 1
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!58 &1862603888
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862603884}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.1
+--- !u!95 &1862603889
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862603884}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 286fe62abbfeac443955c452aec7cec2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!212 &1862603890
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862603884}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -511110017, guid: c2e940774fe925c44b806f53f79147ae, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.52, y: 0.52}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 1
+--- !u!222 &1862603891
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862603884}
+  m_CullTransparentMesh: 1
 --- !u!1 &1880199416
 GameObject:
   m_ObjectHideFlags: 0
@@ -36101,6 +36788,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1931027418
 GameObject:
   m_ObjectHideFlags: 0
@@ -36524,14 +37212,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1934637149
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -36672,14 +37358,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1937662839
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -36820,14 +37504,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1939857318
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -36922,234 +37604,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!1 &1950586513
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1950586514}
-  - component: {fileID: 1950586520}
-  - component: {fileID: 1950586519}
-  - component: {fileID: 1950586518}
-  - component: {fileID: 1950586517}
-  - component: {fileID: 1950586516}
-  - component: {fileID: 1950586515}
-  - component: {fileID: 1950586521}
-  m_Layer: 0
-  m_Name: Follower_02
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1950586514
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950586513}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1660590287}
-  m_LocalEulerAnglesHint: {x: -45, y: 0, z: 0}
---- !u!114 &1950586515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950586513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72799d7afc7685b4f8538d67651d5d2b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::OverworldFollower
-  leader: {fileID: 761841045}
-  moveSpeed: 2
-  followDistance: 0.2
-  arriveBuffer: 0.05
-  catchupMultiplier: 2
-  teleportIfBeyond: 25
-  enableCollision: 0
-  skin: 0.01
-  maxSlideIterations: 3
-  clampToMap: 1
-  ignoreLeaderCollision: 1
-  animator: {fileID: 1950586518}
---- !u!50 &1950586516
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950586513}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 1
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 1
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 4
---- !u!58 &1950586517
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950586513}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 0.1
---- !u!95 &1950586518
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950586513}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e816ff77d65d4144f8086c3d51414cf3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!212 &1950586519
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950586513}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 4262177298367310080, guid: 404586e72fb03c34b8b9cac75072740a, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.52, y: 0.52}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
---- !u!222 &1950586520
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950586513}
-  m_CullTransparentMesh: 1
---- !u!114 &1950586521
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1950586513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7015383a6e3d4714c8bc52fd04d45852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ActorYSorter
-  ySortScale: 1000
-  lockToHeroLayer: 1
-  sr: {fileID: 1950586519}
 --- !u!1 &1951874407
 GameObject:
   m_ObjectHideFlags: 0
@@ -37369,14 +37823,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1952521270
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -37644,6 +38096,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &1980221175
 GameObject:
   m_ObjectHideFlags: 0
@@ -37690,14 +38143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1980221178
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -37971,14 +38422,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &1991655813
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -38131,6 +38580,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &2009754256
 GameObject:
   m_ObjectHideFlags: 0
@@ -38189,6 +38639,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &2009754259
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -38363,6 +38814,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &2048298266
 GameObject:
   m_ObjectHideFlags: 0
@@ -38594,6 +39046,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &2064439351
 GameObject:
   m_ObjectHideFlags: 0
@@ -38710,6 +39163,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &2066254453
 GameObject:
   m_ObjectHideFlags: 0
@@ -38814,14 +39268,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &2066254458
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -39206,6 +39658,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &2088030964
 GameObject:
   m_ObjectHideFlags: 0
@@ -39437,6 +39890,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &2105402118
 GameObject:
   m_ObjectHideFlags: 0
@@ -39553,6 +40007,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &2106629699
 GameObject:
   m_ObjectHideFlags: 0
@@ -39980,14 +40435,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 470172236fb813647807656629f6c149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GrassInstance
-  foldAngleX: -45
-  foldInTime: 0.25
-  foldReturnTime: 0.5
+  followHeroSorting: 1
   enableIdleSway: 1
+  foldAngleX: -45
   swayAmplitude: 32
   swayPeriod: 3.5
   randomizeSwayPhase: 1
-  followHeroSorting: 1
 --- !u!58 &2115094997
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -40198,6 +40651,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!1 &2137025649
 GameObject:
   m_ObjectHideFlags: 0
@@ -40429,6 +40883,7 @@ MonoBehaviour:
   mapEdgeBuffer: 1
   cameraFrustumBuffer: 2
   yPadding: 0.5
+  UpdateWhileOffscreen: 1
 --- !u!212 &404607756167116722
 SpriteRenderer:
   m_ObjectHideFlags: 0

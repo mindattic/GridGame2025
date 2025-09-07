@@ -34,6 +34,21 @@ public partial class OverworldHero : MonoBehaviour
     [Header("Collision")]
     [SerializeField] private bool enableCollision = false;     // When false, hero moves freely without casts
 
+    // Leader/follower
+    [Header("Leader/Follow")]
+    [Tooltip("If true, this hero is controlled by input. If false, it follows its assigned Leader.")]
+    public bool IsLeader = true;
+    [SerializeField, HideInInspector] private Transform leader;
+    [SerializeField] private float followSpeed = 2.3f;
+    [SerializeField] private float followDistance = 0.75f;
+    [SerializeField] private float arriveBuffer = 0.05f;
+    [SerializeField] private float catchupMultiplier = 2.0f;
+    [SerializeField] private float teleportIfBeyond = 25f;
+
+    [Header("Party Collision")]
+    [Tooltip("Ignore collisions between all OverworldHero instances (party members).")]
+    [SerializeField] private bool ignorePartyCollisions = true;
+
     // Sampling
     private float speedSampleAheadFactor = 0.7f; // Future-proof: speed zones, currently constant 1x
 
@@ -96,9 +111,12 @@ public partial class OverworldHero : MonoBehaviour
     private ContactFilter2D contactFilter;       // Configured from object layer
     private RaycastHit2D[] hitBuffer;            // Reused hits buffer
 
+    // Party collision cache
+    private Collider2D[] selfColliders;
+
     private void Awake()
     {
-        // Auto-bind core components using exact hierarchy paths
+        // Auto-binding core components using exact hierarchy paths
         worldCamera = Camera.main;
 
         // Map terrain (SpriteRenderer + MapTerrain provider)
@@ -143,11 +161,38 @@ public partial class OverworldHero : MonoBehaviour
         // Cache destination marker prefab
         if (PrefabLibrary.Prefabs.TryGetValue("DestinationMarkerPrefab", out var prefab))
             destinationMarkerPrefab = prefab;
+
+        CacheSelfColliders();
+    }
+
+    private void OnEnable()
+    {
+        CacheSelfColliders();
+        ApplyPartyIgnoreCollisions();
+    }
+
+    private void OnValidate()
+    {
+        if (!Application.isPlaying) return;
+        CacheSelfColliders();
+        ApplyPartyIgnoreCollisions();
     }
 
     private void Update()
     {
-        TickFollowCursor();
+        if (IsLeader)
+        {
+            TickFollowCursor();
+        }
+        else
+        {
+            TickFollowLeader();
+        }
+
+        // Always keep Y-sort current for actors
+        var sr = spriteRenderer != null ? spriteRenderer : GetComponent<SpriteRenderer>();
+        if (sr != null)
+            PartySortHelper.ApplyActorYSort(sr, PartySortHelper.GlobalScale);
     }
 
  
@@ -232,4 +277,48 @@ public partial class OverworldHero : MonoBehaviour
 
     // New: control collision sampling relative to animator pivot
     public void SetFeetOffsetLocal(Vector2 offset) => feetOffset = offset;
+
+    // --- Leader/follower API ---
+    public void SetLeader(Transform t)
+    {
+        leader = t;
+        if (leader != null) IsLeader = false;
+        ApplyPartyIgnoreCollisions();
+    }
+    public void SetLeader(OverworldHero h) => SetLeader(h != null ? h.transform : null);
+    public Transform GetLeader() => leader;
+    public void SetAsLeader(bool value)
+    {
+        IsLeader = value;
+        if (value) leader = null;
+    }
+
+    private void CacheSelfColliders()
+    {
+        selfColliders = GetComponentsInChildren<Collider2D>(true);
+    }
+
+    private void ApplyPartyIgnoreCollisions()
+    {
+        if (!Application.isPlaying) return;
+        if (!ignorePartyCollisions) return;
+        if (selfColliders == null || selfColliders.Length == 0) CacheSelfColliders();
+
+        var all = FindObjectsOfType<OverworldHero>(true);
+        for (int i = 0; i < all.Length; i++)
+        {
+            var other = all[i];
+            if (other == null || other == this) continue;
+            var otherCols = other.GetComponentsInChildren<Collider2D>(true);
+            for (int a = 0; a < selfColliders.Length; a++)
+            {
+                var ca = selfColliders[a]; if (ca == null) continue;
+                for (int b = 0; b < otherCols.Length; b++)
+                {
+                    var cb = otherCols[b]; if (cb == null) continue;
+                    Physics2D.IgnoreCollision(ca, cb, true);
+                }
+            }
+        }
+    }
 }

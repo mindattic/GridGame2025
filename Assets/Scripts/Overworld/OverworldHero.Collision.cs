@@ -26,11 +26,10 @@ public partial class OverworldHero
         return cur;
     }
 
-    private static bool IsFollowerOfThisHero(Collider2D c, Transform heroTransform)
+    private static bool IsPartyMember(Collider2D c)
     {
-        if (c == null || heroTransform == null) return false;
-        var follower = c.GetComponentInParent<OverworldFollower>();
-        return follower != null && follower.Leader == heroTransform;
+        if (c == null) return false;
+        return c.GetComponentInParent<OverworldHero>() != null;
     }
 
     // Performs a cast and updates nextPos with the planned position (with slide)
@@ -56,8 +55,8 @@ public partial class OverworldHero
         for (int h = 0; h < hitCount; h++)
         {
             var hit = hitBuffer[h];
-            // Ignore party followers (those whose Leader == this hero)
-            if (IsFollowerOfThisHero(hit.collider, this.transform))
+            // Ignore all party members (any OverworldHero)
+            if (IsPartyMember(hit.collider))
                 continue;
 
             float d = hit.distance;
@@ -74,7 +73,7 @@ public partial class OverworldHero
 
         if (closestIndex < 0)
         {
-            // If there were no blocking hits after filtering followers, move freely or depenetrate
+            // If there were no blocking hits after filtering party, move freely or depenetrate
             if (!anyOverlap)
             {
                 origin += dir * distance;
@@ -129,8 +128,8 @@ public partial class OverworldHero
                 for (int h = 0; h < hitsSlide; h++)
                 {
                     var hit = hitBuffer[h];
-                    // Ignore followers during slide too
-                    if (IsFollowerOfThisHero(hit.collider, this.transform))
+                    // Ignore party members during slide too
+                    if (IsPartyMember(hit.collider))
                         continue;
 
                     float d = hit.distance;

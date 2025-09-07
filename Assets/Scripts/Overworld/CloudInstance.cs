@@ -42,9 +42,15 @@ public class CloudInstance : MonoBehaviour
     [Tooltip("Padding inside terrain bounds for randomized Y placement.")]
     public float yPadding = 0.5f;
 
+    [Header("Performance")]
+    [Tooltip("If true, clouds continue to move and wrap while offscreen. If false, Update is skipped while invisible to save CPU.")]
+    public bool UpdateWhileOffscreen = true;
+
     private float _speed;
     private Transform _t;
     private SpriteRenderer _sprite;
+    // Visibility gate to save CPU when offscreen
+    private bool _isVisible;
 
     private void Awake()
     {
@@ -82,6 +88,9 @@ public class CloudInstance : MonoBehaviour
         float s = Random.Range(scaleRange.x, scaleRange.y);
         _t.localScale = new Vector3(s, s, _t.localScale.z);
 
+        // Initialize visibility gate from renderer state
+        _isVisible = _sprite != null && _sprite.isVisible;
+
         // If starting inside the view, move it to the starting side off-screen so it drifts in
         if (terrain != null)
         {
@@ -109,6 +118,12 @@ public class CloudInstance : MonoBehaviour
 
     private void Update()
     {
+        // Early out when not visible by any camera unless we want to update offscreen
+        if (!UpdateWhileOffscreen)
+        {
+            if (!_isVisible && (_sprite == null || !_sprite.isVisible)) return;
+        }
+
         if (terrain == null) return;
 
         // Move steadily along X based on direction
@@ -138,6 +153,16 @@ public class CloudInstance : MonoBehaviour
                 RespawnToLeft();
             }
         }
+    }
+
+    private void OnBecameVisible()
+    {
+        _isVisible = true;
+    }
+
+    private void OnBecameInvisible()
+    {
+        _isVisible = false;
     }
 
     private void RespawnToRight()

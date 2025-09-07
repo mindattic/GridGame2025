@@ -29,6 +29,7 @@ public class TreeInstance : MonoBehaviour
     // Idle sway state
     private Coroutine idleSwayRoutineRef;
     private float swayPhase;
+    private bool isVisible;
 
     public void Awake()
     {
@@ -38,6 +39,8 @@ public class TreeInstance : MonoBehaviour
         swayPhase = randomizeSwayPhase ? Random.Range(0f, Mathf.PI * 2f) : 0f;
         transform.position.SetZ(0f); // ensure on Z=0 plane
 
+        isVisible = spriteRenderer != null && spriteRenderer.isVisible;
+
         // Apply initial sort from the bottom of the sprite so trunk base controls the order
         if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
@@ -46,7 +49,7 @@ public class TreeInstance : MonoBehaviour
     {
         TryCacheHero();
         SetLocalEulerX(foldAngleX);
-        StartIdleSwayIfAllowed();
+        if (isVisible) StartIdleSwayIfAllowed();
 
         if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
@@ -57,8 +60,22 @@ public class TreeInstance : MonoBehaviour
         SetLocalEulerX(foldAngleX);
     }
 
+    private void OnBecameVisible()
+    {
+        isVisible = true;
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
+        StartIdleSwayIfAllowed();
+    }
+
+    private void OnBecameInvisible()
+    {
+        isVisible = false;
+        StopIdleSway();
+    }
+
     private void Update()
     {
+        if (!isVisible) return;
         if (!followHeroSorting) return;
 
         // Sort using the visual base (bounds.min.y)
@@ -76,7 +93,7 @@ public class TreeInstance : MonoBehaviour
     private IEnumerator IdleSwayRoutine()
     {
         float w = (swayPeriod <= 0f) ? 0f : (Mathf.PI * 2f) / Mathf.Max(0.01f, swayPeriod);
-        while (enableIdleSway && isActiveAndEnabled)
+        while (enableIdleSway && isActiveAndEnabled && isVisible)
         {
             float angle = foldAngleX + Mathf.Sin((Time.time * w) + swayPhase) * swayAmplitude;
             SetLocalEulerX(angle);
@@ -88,6 +105,7 @@ public class TreeInstance : MonoBehaviour
     private void StartIdleSwayIfAllowed()
     {
         if (!enableIdleSway) return;
+        if (!isVisible) return;
         if (idleSwayRoutineRef != null) return;
         idleSwayRoutineRef = StartCoroutine(IdleSwayRoutine());
     }

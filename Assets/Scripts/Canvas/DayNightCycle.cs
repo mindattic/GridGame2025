@@ -95,7 +95,12 @@ namespace Assets.Scripts.Canvas
         // Night(0-6), Morning(6-12), Day/Afternoon(12-18), Evening/Dusk(18-24).
         private const float PhaseShift01 = 0.75f; // +0.75 == -6 hours in a 24h cycle
 
-        private struct SpriteEntry { public SpriteRenderer sr; public Color baseColor; }
+        private struct SpriteEntry
+        {
+            public SpriteRenderer sr;
+            public Color baseColor; // original SpriteRenderer.color
+        }
+
         private readonly List<SpriteEntry> _sprites = new List<SpriteEntry>(256);
         private readonly Dictionary<SpriteRenderer, int> _spriteIndex = new Dictionary<SpriteRenderer, int>();
         private float _nextDiscoverTime;
@@ -134,7 +139,6 @@ namespace Assets.Scripts.Canvas
                     if (e.sr != null)
                     {
                         var c = e.baseColor;
-                        // ensure alpha preserved as original
                         e.sr.color = c;
                     }
                 }
@@ -360,8 +364,9 @@ namespace Assets.Scripts.Canvas
                 var e = _sprites[i];
                 var sr = e.sr;
                 if (sr == null) continue;
-                var baseC = e.baseColor;
+
                 // multiply RGB, keep original alpha
+                var baseC = e.baseColor;
                 Color outC = new Color(baseC.r * mul.r, baseC.g * mul.g, baseC.b * mul.b, baseC.a);
                 sr.color = outC;
             }
@@ -398,6 +403,7 @@ namespace Assets.Scripts.Canvas
                 if (_spriteIndex.ContainsKey(sr)) continue;
 
                 var entry = new SpriteEntry { sr = sr, baseColor = sr.color };
+
                 _spriteIndex[sr] = _sprites.Count;
                 _sprites.Add(entry);
             }
@@ -431,6 +437,11 @@ namespace Assets.Scripts.Canvas
             ApplyColor(c);
             if (applyMode != ApplyMode.OverlayImage)
             {
+                // Make sure we have a list when previewing changes in editor
+                if (_sprites.Count == 0 && autoDiscoverSprites)
+                {
+                    DiscoverSprites(true);
+                }
                 ApplyToSprites(c);
             }
             UpdateVirtualTimeString(CurrentTime01());

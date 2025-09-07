@@ -7,6 +7,8 @@ using Label = TMPro.TextMeshProUGUI;
 using scene = Assets.Helpers.SceneHelper;
 using System.Reflection;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 // OverworldManager orchestrates input and scene transitions for the world-space overworld.
 // World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
@@ -17,7 +19,7 @@ public class OverworldManager : MonoBehaviour
     private SpriteRenderer surfaceSR;
     private SpriteRenderer canopySR;
 
-    private OverworldHero hero;
+    private OverworldHero hero; // current leader
 
     // Camera mode UI
     private Button cameraModeButton;
@@ -95,14 +97,6 @@ public class OverworldManager : MonoBehaviour
         screenShatter = GameObject.Find(GameObjectHelper.Overworld.BattleTransition)?.GetComponent<ScreenShatter>();
         zoomEffect = GameObject.Find(GameObjectHelper.Overworld.BattleTransition)?.GetComponent<ZoomEffect>();
 
-        //// Only add a runtime listener if no persistent (inspector) listeners are set
-        //if (cameraModeButton != null && cameraModeButton.onClick.GetPersistentEventCount() == 0)
-        //    cameraModeButton.onClick.AddListener(CycleCameraMode);
-
-        // Offscreen arrow indicator
-
-
-
         // Find Map root
         mapRoot = GameObject.Find("Map").transform;
 
@@ -115,78 +109,39 @@ public class OverworldManager : MonoBehaviour
         surfaceSR = GameObject.Find(GameObjectHelper.Overworld.Map.Surface).GetComponent<SpriteRenderer>();
         canopySR = GameObject.Find(GameObjectHelper.Overworld.Map.Canopy).GetComponent<SpriteRenderer>();
 
-        // Find hero under Map/Hero or by helper as fallback
-        hero = GameObject.Find(GameObjectHelper.Overworld.Map.Hero).GetComponent<OverworldHero>();
-        hero.OnHeroMoved += HandleHeroMoved;
-        hero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, hero.transform.position.z);
-        hero.SetFacing(overworld.HeroDirection);
-        hero.BindWorld(terrainSR, cam);
+        // Resolve a default hero reference (by name/path), but leader will be chosen from inspector or fallback
+        var defaultHero = GameObject.Find(GameObjectHelper.Overworld.Map.Hero).GetComponent<OverworldHero>();
+        defaultHero.transform.position = new Vector3(overworld.HeroX, overworld.HeroY, defaultHero.transform.position.z);
+        defaultHero.SetFacing(overworld.HeroDirection);
 
-        // Assign leader for all followers so party self-collision rules and sorting apply
-        var followers = GameObject.FindObjectsOfType<OverworldFollower>(true);
-        for (int i = 0; i < followers.Length; i++)
+        // Gather all heroes in a stable order and bind world
+        var allHeroes = GetOrderedHeroes();
+        foreach (var h in allHeroes)
         {
-            var f = followers[i];
-            if (f == null) continue;
-            f.SetLeader(hero);
+            if (h == null) continue;
+            h.BindWorld(terrainSR, cam);
         }
 
-        // Apply initial Y-sort to hero and followers
-        var heroSR = hero.GetComponent<SpriteRenderer>();
-        if (heroSR != null) PartySortHelper.ApplyActorYSort(heroSR, PartySortHelper.GlobalScale);
-        for (int i = 0; i < followers.Length; i++)
+        // Choose leader: prefer one marked IsLeader in inspector; otherwise fallback to defaultHero
+        var initialLeader = allHeroes.FirstOrDefault(h => h != null && h.IsLeader) ?? defaultHero;
+
+        // Assign chain: leader follows cursor, next follows previous, wrapping around
+        AssignPartyChain(initialLeader, allHeroes);
+
+        // Track current leader and subscribe for movement
+        hero = initialLeader;
+        if (hero != null) hero.OnHeroMoved += HandleHeroMoved;
+
+        // Apply initial Y-sort to all heroes
+        foreach (var h in allHeroes)
         {
-            var f = followers[i]; if (f == null) continue;
-            var sr = f.GetComponent<SpriteRenderer>();
+            var sr = h.GetComponent<SpriteRenderer>();
             if (sr != null) PartySortHelper.ApplyActorYSort(sr, PartySortHelper.GlobalScale);
         }
 
         // Wire offscreen indicator target now that we have hero
         offscreenArrow = GameObject.Find(GameObjectHelper.Overworld.Canvas.OffscreenArrow).GetComponent<OffscreenArrowIndicator>();
         offscreenArrow.WorldCamera = Camera.main;
-
-        // Prewarm all clouds so they start distributed across the map
-        try
-        {
-            var behaviours = GameObject.FindObjectsOfType<MonoBehaviour>();
-            if (behaviours != null && behaviours.Length > 0 && terrainSR != null)
-            {
-                // Collect CloudInstance-like behaviours by type name to avoid hard dependency
-                System.Collections.Generic.List<MonoBehaviour> clouds = new System.Collections.Generic.List<MonoBehaviour>();
-                foreach (var mb in behaviours)
-                {
-                    if (mb == null) continue;
-                    var t = mb.GetType();
-                    if (t != null && t.Name == "CloudInstance")
-                        clouds.Add(mb);
-                }
-                int total = clouds.Count;
-                if (total > 0)
-                {
-                    Bounds mapBounds = terrainSR.bounds;
-                    for (int i = 0; i < total; i++)
-                    {
-                        var c = clouds[i];
-                        if (c == null) continue;
-                        var t = c.GetType();
-                        // Wire fields if present
-                        var terrainField = t.GetField("terrain", BindingFlags.Public | BindingFlags.Instance);
-                        if (terrainField != null && terrainField.FieldType == typeof(SpriteRenderer))
-                            terrainField.SetValue(c, terrainSR);
-                        var cameraField = t.GetField("worldCamera", BindingFlags.Public | BindingFlags.Instance);
-                        if (cameraField != null && cameraField.FieldType == typeof(Camera))
-                            cameraField.SetValue(c, cam);
-                        // Call PrewarmDistribute(index,total,mapBounds,cam) if present
-                        var method = t.GetMethod("PrewarmDistribute", BindingFlags.Public | BindingFlags.Instance);
-                        if (method != null)
-                        {
-                            method.Invoke(c, new object[] { i, total, mapBounds, cam });
-                        }
-                    }
-                }
-            }
-        }
-        catch { }
 
         // Initialize UI state
         UpdateCameraModeUI();
@@ -198,6 +153,32 @@ public class OverworldManager : MonoBehaviour
     {
         if (hero != null) hero.OnHeroMoved -= HandleHeroMoved;
         if (cameraModeButton != null) cameraModeButton.onClick.RemoveListener(CycleCameraMode);
+    }
+
+    // Called by UI button to cycle the active leader to the next party member
+    public void ChangeLeader()
+    {
+        var all = GetOrderedHeroes();
+        if (all.Count == 0) return;
+
+        int currentIndex = Mathf.Max(0, all.IndexOf(hero));
+        int nextIndex = (currentIndex + 1) % all.Count;
+        var nextLeader = all[nextIndex];
+        if (nextLeader == null || nextLeader == hero) return;
+
+        // Rebuild the party chain around the new leader
+        AssignPartyChain(nextLeader, all);
+        hero = nextLeader;
+
+        // Update camera target immediately
+        cameraTarget = hero.transform.position;
+
+        // Ensure Y-sort layer is consistent
+        foreach (var h in all)
+        {
+            var sr = h.GetComponent<SpriteRenderer>();
+            if (sr != null) PartySortHelper.ApplyActorYSort(sr, PartySortHelper.GlobalScale);
+        }
     }
 
     public void CycleCameraMode()
@@ -231,8 +212,6 @@ public class OverworldManager : MonoBehaviour
         }
         UpdateCameraModeUI();
     }
-
-
 
     private void UpdateCameraModeUI()
     {
@@ -400,6 +379,45 @@ public class OverworldManager : MonoBehaviour
              scene.Switch.ToGame();
         }));
 
+    }
+
+    // --- Party helpers ---
+    private List<OverworldHero> GetOrderedHeroes()
+    {
+        return GameObject.FindObjectsOfType<OverworldHero>(true)
+            .Where(h => h != null)
+            .OrderBy(h => h.transform.GetSiblingIndex()) // stable order as shown in hierarchy
+            .ToList();
+    }
+
+    private void AssignPartyChain(OverworldHero leaderHero, List<OverworldHero> all)
+    {
+        if (leaderHero == null || all == null || all.Count == 0) return;
+
+        int n = all.Count;
+        int li = Mathf.Max(0, all.IndexOf(leaderHero));
+
+        // Set leader state
+        for (int i = 0; i < n; i++)
+        {
+            var h = all[i];
+            if (h == null) continue;
+            bool isLeader = (i == li);
+            h.SetAsLeader(isLeader);
+        }
+
+        // Assign chain followers: each non-leader follows the previous hero, wrapping around
+        for (int offset = 1; offset < n; offset++)
+        {
+            int idx = (li + offset) % n;              // current follower
+            int prevIdx = (li + offset - 1 + n) % n;  // their leader is previous in ring
+            var follower = all[idx];
+            var prev = all[prevIdx];
+            if (follower != null)
+            {
+                follower.SetLeader(prev);
+            }
+        }
     }
 
     // --- Camera helpers ---

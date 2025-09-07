@@ -142,7 +142,7 @@ namespace Assets.Helper
                 public const string Terrain = "Map/Terrain";
                 public const string Surface = "Map/Surface";
                 public const string Canopy = "Map/Canopy";
-                public const string Hero = "Map/Hero";
+                public const string Hero = "Map/Heroes/Hero_00";
             }
 
             public const string BattleTransition = "BattleTransition";

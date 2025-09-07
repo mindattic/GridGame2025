@@ -44,6 +44,8 @@ public class BushInstance : MonoBehaviour
     private static OverworldHero hero;
     private static SpriteRenderer heroSR;
 
+    private bool isVisible;
+
     private bool? heroWasBelow; // null until first sample
     private Coroutine rustleRoutineRef;
 
@@ -59,7 +61,9 @@ public class BushInstance : MonoBehaviour
         swayPhase = randomizeSwayPhase ? Random.Range(0f, Mathf.PI * 2f) : 0f;
         transform.position.SetZ(0f); // ensure on Z=0 plane
 
-        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
+        isVisible = spriteRenderer != null && spriteRenderer.isVisible;
+
+        if (followHeroSorting && isVisible) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private void OnEnable()
@@ -71,9 +75,9 @@ public class BushInstance : MonoBehaviour
 
         // Keep rest orientation consistent on enable
         SetLocalEulerX(foldAngleX);
-        StartIdleSwayIfAllowed();
+        if (isVisible) StartIdleSwayIfAllowed();
 
-        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
+        if (followHeroSorting && isVisible) YSortUtility.ApplyFromBottom(spriteRenderer);
     }
 
     private void OnDisable()
@@ -87,10 +91,24 @@ public class BushInstance : MonoBehaviour
         SetLocalEulerX(foldAngleX);
     }
 
+    private void OnBecameVisible()
+    {
+        isVisible = true;
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
+        StartIdleSwayIfAllowed();
+    }
+
+    private void OnBecameInvisible()
+    {
+        isVisible = false;
+        StopIdleSway();
+    }
+
     private void Update()
     {
-        // Robust party-aware sorting for this bush instance
-        if (followHeroSorting) YSortUtility.Apply(spriteRenderer);
+        if (!isVisible) return;
+        // Y-sort for this bush instance using bottom-of-bounds
+        if (followHeroSorting) YSortUtility.ApplyFromBottom(spriteRenderer);
 
         // Use nearest party member by Y to detect pass-through for rustle
         var anchor = PartySortHelper.GetClosestToY(transform.position.y);
@@ -154,7 +172,7 @@ public class BushInstance : MonoBehaviour
         float randomPhase = Random.Range(0f, Mathf.PI * 2f);
 
         float t = 0f;
-        while (t < totalDur)
+        while (t < totalDur && isVisible)
         {
             t += Time.deltaTime;
             float u = Mathf.Clamp01(t / totalDur);
@@ -194,7 +212,7 @@ public class BushInstance : MonoBehaviour
     private IEnumerator IdleSwayRoutine()
     {
         float w = (swayPeriod <= 0f) ? 0f : (Mathf.PI * 2f) / Mathf.Max(0.01f, swayPeriod);
-        while (enableIdleSway && isActiveAndEnabled)
+        while (enableIdleSway && isActiveAndEnabled && isVisible)
         {
             float angle = foldAngleX + Mathf.Sin((Time.time * w) + swayPhase) * swayAmplitude;
             SetLocalEulerX(angle);
@@ -206,6 +224,7 @@ public class BushInstance : MonoBehaviour
     private void StartIdleSwayIfAllowed()
     {
         if (!enableIdleSway) return;
+        if (!isVisible) return;
         if (idleSwayRoutineRef != null) return;
         idleSwayRoutineRef = StartCoroutine(IdleSwayRoutine());
     }
