@@ -30,6 +30,7 @@ public class BushInstance : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        transform.position.SetZ(0f); // ensure on Z=0 plane
     }
 
     private void OnEnable()
