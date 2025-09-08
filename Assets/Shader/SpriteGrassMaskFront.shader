@@ -1,4 +1,4 @@
-Shader "Ryan/SpriteGrassMask"
+Shader "Ryan/SpriteGrassMaskFront"
 {
     Properties
     {
@@ -24,7 +24,7 @@ Shader "Ryan/SpriteGrassMask"
 
         // Mask control
         _MaskBlackThresh ("Mask Alpha Threshold", Range(0.0, 0.2)) = 0.06
-        _BaseBlend ("Show Base Sprite 0..1", Range(0.0, 1.0)) = 0.0
+        _BaseBlend ("Show Base Sprite 0..1", Range(0.0, 1.0)) = 1.0
         _RowJitter ("Row Jitter (0..1 of cell)", Range(0.0, 1.0)) = 0.5
 
         // Wind
@@ -32,10 +32,13 @@ Shader "Ryan/SpriteGrassMask"
         _WindFreq     ("Wind Frequency", Range(0.1, 10.0)) = 2.0
         _WindDetail   ("Wind Detail", Range(0.0, 5.0)) = 1.2
 
-        // Orientation
-        _NormalGrowBlend   ("Grow Toward Camera 0..1", Range(0.0, 1.0)) = 0.35
-        _BillboardGrow     ("Billboard Growth 0..1", Range(0.0, 1.0)) = 1.0
-        _NormalProjectDist ("Project Dist (wu)", Range(0.05, 2.0)) = 0.6
+        // Orientation (fixed screen angle)
+        _AngleDegrees ("Screen Angle (deg)", Float) = -45.0
+
+        // Front mask controls (half-plane based on angle)
+        _FrontOnly    ("Front Only (0/1)", Range(0.0, 1.0)) = 1.0
+        _FrontBiasUV  ("Front Bias along dir (UV)", Range(-0.5, 0.5)) = 0.0
+        _PivotUV      ("Pivot in UV (xy)", Vector) = (0.5, 0.5, 0, 0)
     }
 
     SubShader
@@ -95,9 +98,10 @@ Shader "Ryan/SpriteGrassMask"
                 float  _WindFreq;
                 float  _WindDetail;
 
-                float  _NormalGrowBlend;
-                float  _BillboardGrow;
-                float  _NormalProjectDist;
+                float  _AngleDegrees;
+                float  _FrontOnly;
+                float  _FrontBiasUV;
+                float4 _PivotUV; // xy used
             CBUFFER_END
 
             struct appdata
@@ -112,9 +116,6 @@ Shader "Ryan/SpriteGrassMask"
                 float4 pos : SV_POSITION;
                 float2 uv  : TEXCOORD0;
                 float4 color : COLOR;
-
-                float3 worldPos : TEXCOORD1;
-                float3 worldNormal : TEXCOORD2;
             };
 
             // Hash helpers
@@ -133,44 +134,13 @@ Shader "Ryan/SpriteGrassMask"
                 return frac((p3.xx + p3.yz) * p3.zy);
             }
 
-            float luminance(float3 c) { return dot(c, float3(0.2126, 0.7152, 0.0722)); }
-
             v2f vert(appdata v)
             {
                 v2f o;
                 o.pos = TransformObjectToHClip(v.vertex.xyz);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.color = v.color * _Color;
-
-                o.worldPos = TransformObjectToWorld(v.vertex.xyz);
-                o.worldNormal = normalize(TransformObjectToWorldNormal(float3(0,0,1)));
                 return o;
-            }
-
-            // Use view direction so grass grows toward the camera in screen space
-            float2 ComputeUVDirFromWorldNormal(v2f i)
-            {
-                float3 wP = i.worldPos;
-                float3 wDir = normalize(_WorldSpaceCameraPos.xyz - wP);
-
-                float4 clipP  = TransformWorldToHClip(wP);
-                float4 clipPn = TransformWorldToHClip(wP + wDir * _NormalProjectDist);
-
-                float2 ndcP  = clipP.xy  / max(1e-6, clipP.w);
-                float2 ndcPn = clipPn.xy / max(1e-6, clipPn.w);
-
-                float2 screenP  = (ndcP  * 0.5 + 0.5) * _ScreenParams.xy;
-                float2 screenPn = (ndcPn * 0.5 + 0.5) * _ScreenParams.xy;
-
-                float2 gScreen = screenPn - screenP;
-                if (dot(gScreen, gScreen) < 1e-6) return float2(0,1);
-
-                float2 dUVdx = ddx(i.uv);
-                float2 dUVdy = ddy(i.uv);
-
-                float2 uvDir = dUVdx * gScreen.x + dUVdy * gScreen.y;
-                float len = length(uvDir);
-                return len > 1e-6 ? uvDir / len : float2(0,1);
             }
 
             // Map a screen-space direction (in pixels) to a UV direction using local derivatives
@@ -266,9 +236,9 @@ Shader "Ryan/SpriteGrassMask"
                 float2 dUVdx = ddx(i.uv);
                 float2 dUVdy = ddy(i.uv);
 
-                // Fixed -45 degree screen-space growth direction
+                // Fixed -45 degree in screen space (ignore _AngleDegrees at runtime)
                 float ang = radians(-45.0);
-                float2 screenDir = float2(cos(ang), sin(ang));
+                float2 screenDir = float2(cos(ang), sin(ang)); // pixels
                 float2 uvHeightDir = ComputeUVDirFromScreen(screenDir, dUVdx, dUVdy);
                 float2 uvPerpDir = normalize(float2(-uvHeightDir.y, uvHeightDir.x));
 
@@ -296,6 +266,8 @@ Shader "Ryan/SpriteGrassMask"
                 float shade = 0.0;
                 float3 bladeAlbedo = 0.0.xxx;
 
+                float2 pivotLocal = _PivotUV.xy; // in 0..1 local space
+
                 [unroll]
                 for (int dy = -1; dy <= 1; ++dy)
                 {
@@ -311,6 +283,13 @@ Shader "Ryan/SpriteGrassMask"
 
                         float jitterY = (rnd.y - 0.5) * _RowJitter;
                         float2 baseLocal = (float2(c) + float2(rnd.x, jitterY)) * cellSizeLocal;
+
+                        // Front-half mask relative to the fixed angle
+                        if (_FrontOnly > 0.5)
+                        {
+                            float frontVal = -dot(baseLocal - pivotLocal, uvHeightDir) + _FrontBiasUV;
+                            if (frontVal < 0.0) continue; // discard cells not in front
+                        }
 
                         // Build mask and surface UVs at the blade root
                         float2 baseMaskUV = baseLocal * stScaleMain + stOffsetMain;
@@ -328,7 +307,7 @@ Shader "Ryan/SpriteGrassMask"
                     }
                 }
 
-                // Compose: optionally draw original sprite behind the grass
+                // Compose: draw original sprite then overlay grass in front
                 if (_BaseBlend > 0.001)
                 {
                     float baseVisible = step(_MaskBlackThresh, baseSample.a);
@@ -341,7 +320,6 @@ Shader "Ryan/SpriteGrassMask"
 
                 if (alpha > 0.0)
                 {
-                    // Grass color is taken from the Surface texture at the blade's root, then tinted
                     float3 grassRGB = bladeAlbedo * _GrassColor.rgb * i.color.rgb;
                     grassRGB *= shade;
                     float outA = saturate(baseCol.a + alpha * (1.0 - baseCol.a));
