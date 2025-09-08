@@ -20,7 +20,7 @@ Shader "Ryan/SpriteGrassMask"
         _Seed ("Seed", Float) = 1337.0
 
         // Mask control
-        _MaskBlackThresh ("Mask Black Threshold", Range(0.0, 0.2)) = 0.06
+        _MaskBlackThresh ("Mask Alpha Threshold", Range(0.0, 0.2)) = 0.06
         _BaseBlend ("Show Base Sprite 0..1", Range(0.0, 1.0)) = 0.0
         _RowJitter ("Row Jitter (0..1 of cell)", Range(0.0, 1.0)) = 0.5
 
@@ -197,12 +197,10 @@ Shader "Ryan/SpriteGrassMask"
                 out float shade)
             {
                 float4 baseSamp = SAMPLE_TEXTURE2D_GRAD(_MainTex, sampler_MainTex, baseUV, gradX, gradY);
-                float3 baseCol = baseSamp.rgb;
-                float baseLum = luminance(baseCol);
 
-                // Height factor from luminance: black=1, gray=0.5, white=0
-                float maskHeight01 = saturate((1.0 - baseLum) / max(1e-5, (1.0 - _MaskBlackThresh)));
-                if (maskHeight01 <= 1e-4)
+                // Height factor from alpha: 1.0 = full height, 0.5 = half height, 0.0 = none
+                float maskHeight01 = baseSamp.a;
+                if (maskHeight01 <= _MaskBlackThresh)
                 {
                     shade = 0.0;
                     return 0.0;
@@ -307,8 +305,7 @@ Shader "Ryan/SpriteGrassMask"
                 // Compose: optionally draw original sprite behind the grass
                 if (_BaseBlend > 0.001)
                 {
-                    float lumBase = luminance(baseSample.rgb);
-                    float baseVisible = step(_MaskBlackThresh, lumBase);
+                    float baseVisible = step(_MaskBlackThresh, baseSample.a);
                     baseCol.a *= baseVisible * _BaseBlend;
                 }
                 else
