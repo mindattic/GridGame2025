@@ -1,22 +1,19 @@
 // --- File: Assets/Scripts/Canvas/Timeline.cs ---
 using Assets.Helper;
-using Assets.Scripts.Canvas.Timeline;
+using Assets.Scripts.Canvas.Timeline; // for TimelineBlockInstance
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using static Assets.Helper.GameObjectHelper.Game;
-using static Intermission.Before;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Timeline is the single source of truth for turn order.
-/// Heroes use average agility for cadence.
-/// Enemies use their own agility for cadence.
+/// All actors (heroes and enemies) use the same cadence formula based on their own speed.
 /// Exactly one-block advance per completed turn.
 /// Forward-only forecast that is always extended so you never see the end.
-/// The first block is always a Hero block.
 /// </summary>
 public sealed class Timeline : MonoBehaviour
 {
@@ -38,12 +35,14 @@ public sealed class Timeline : MonoBehaviour
     [SerializeField] private int forecastVisibleAhead = 32;
     [SerializeField] private int trimLeftKeep = 24;
 
-    [Header("Agility Tuning")]
-    [SerializeField] private float heroBaseStep = 6f;
-    [SerializeField] private float heroAgilityDivisor = 8f;
-    [SerializeField] private int enemyBaseMinStep = 4;
-    [SerializeField] private int enemyBaseMaxStep = 8;
-    [SerializeField] private float enemySpeedDivisor = 6f;
+    [Header("Step Tuning")] // applied to both heroes and enemies
+    [SerializeField] private int baseMinStep = 4;
+    [SerializeField] private int baseMaxStep = 8;
+    [SerializeField] private float speedDivisor = 6f;
+
+    [Header("Indicator")] 
+    [Tooltip("Horizontal offset of the indicator inside the viewport (in pixels). 0 = flush with left edge.")]
+    [SerializeField] private float indicatorOffsetX = 16f;
 
     private void Awake()
     {
@@ -59,30 +58,27 @@ public sealed class Timeline : MonoBehaviour
     private class Block
     {
         public bool isHero;
-        public ActorInstance enemy;       // null for hero blocks
+        public ActorInstance actor;      // actor for this block
         public string label;
         public Color color;
         public Sprite portrait;
         public TimelineBlockInstance instance;
     }
 
-    private class EnemySim
+    private class SimEntry
     {
-        public ActorInstance enemy;
-        public int delay;                 // ticks down on hero turns
+        public ActorInstance actor;
+        public int delay;                 // ticks until ready
         public int speed;
     }
 
     private readonly List<Block> blocks = new List<Block>();
-    private readonly List<EnemySim> sim = new List<EnemySim>();
+    private readonly List<SimEntry> sim = new List<SimEntry>();
     
     private int nextBlockId;
     private int currentIndex;
     private float contentX;
     private float targetContentX;
-
-    // Countdown to next hero in real sim. Recomputed when a hero turn completes.
-    private int heroDelaySim;
 
     private float UnitWidth => blockSize + blockGutter;
 
@@ -106,9 +102,7 @@ public sealed class Timeline : MonoBehaviour
     {
         Clear();
 
-        BuildEnemySim();
-        heroDelaySim = ComputeHeroStepFromAverageAgility();
-        if (heroDelaySim < 1) heroDelaySim = 1;
+        BuildSim();
 
         ExtendForecastUntil(forecastVisibleAhead);
         SetupLayout();
@@ -127,26 +121,12 @@ public sealed class Timeline : MonoBehaviour
 
         var current = blocks[currentIndex];
 
-        if (current.isHero)
+        // The acting unit just finished. Give it a fresh step based on its agility.
+        var a = current.actor;
+        if (a != null && a.IsPlaying)
         {
-            // One hero turn elapsed: every enemy counts down by one in the SIM.
-            for (int i = 0; i < sim.Count; i++)
-                sim[i].delay = Mathf.Max(0, sim[i].delay - 1);
-
-            // Reset hero cadence to a fresh step based on current average agility.
-            heroDelaySim = ComputeHeroStepFromAverageAgility();
-
-            // Do not mirror SIM ticks to UI here. UI shows forecast distance instead.
-        }
-        else
-        {
-            // The acting enemy just finished. Give it a fresh step based on its agility.
-            var e = current.enemy;
-            if (e != null && e.IsPlaying)
-            {
-                var s = sim.FirstOrDefault(z => z.enemy == e);
-                if (s != null) s.delay = EnemyStepFromAgility(s.enemy, s.speed);
-            }
+            var s = sim.FirstOrDefault(z => z.actor == a);
+            if (s != null) s.delay = StepFromSpeed(s.actor, s.speed);
         }
 
         // Move to next block and slide there.
@@ -154,14 +134,14 @@ public sealed class Timeline : MonoBehaviour
         targetContentX = GetTargetXForIndex(currentIndex);
 
         // Clean and extend the future.
-        RemoveDeadEnemyBlocks();
+        RemoveDeadBlocks();
         ExtendForecastUntil(currentIndex + forecastVisibleAhead);
 
         // Trim old history and relayout.
         TrimPastBlocks(trimLeftKeep);
         SetupLayout();
 
-        // After forecast and layout are ready, update labels using forecast distance.
+        // After forecast and layout are ready, update labels using forecast distance (enemies only).
         UpdateAllEnemyDelayLabels();
     }
 
@@ -181,7 +161,7 @@ public sealed class Timeline : MonoBehaviour
     public void FocusOnEnemy(ActorInstance enemy)
     {
         if (enemy == null) return;
-        int idx = FindNextIndex(b => !b.isHero && b.enemy == enemy, currentIndex);
+        int idx = FindNextIndex(b => !b.isHero && b.actor == enemy, currentIndex);
         if (idx >= 0) currentIndex = idx;
         targetContentX = GetTargetXForIndex(currentIndex);
     }
@@ -193,7 +173,7 @@ public sealed class Timeline : MonoBehaviour
     {
         if (blocks.Count == 0) return null;
         var b = blocks[Mathf.Clamp(currentIndex, 0, blocks.Count - 1)];
-        return b != null && !b.isHero ? b.enemy : null;
+        return b != null && !b.isHero ? b.actor : null;
     }
 
     private void Update()
@@ -207,102 +187,85 @@ public sealed class Timeline : MonoBehaviour
 
     // -------------- Forecast build --------------
 
-    private void BuildEnemySim()
+    private void BuildSim()
     {
         sim.Clear();
+
+        foreach (var h in g.Actors.Heroes.Where(x => x != null && x.IsPlaying))
+        {
+            int spd = h.Stats.Speed.ToInt();
+            int seed = StepFromSpeed(h, spd);
+            sim.Add(new SimEntry { actor = h, delay = seed, speed = spd });
+        }
 
         foreach (var e in g.Actors.Enemies.Where(x => x != null && x.IsPlaying))
         {
             int spd = e.Stats.Speed.ToInt();
-            int seed = EnemyStepFromAgility(e, spd);
-            sim.Add(new EnemySim { enemy = e, delay = seed, speed = spd });
-
-            // UI label will be set after forecast is extended (see UpdateAllEnemyDelayLabels).
+            int seed = StepFromSpeed(e, spd);
+            sim.Add(new SimEntry { actor = e, delay = seed, speed = spd });
         }
+
+        // Labels are updated after forecast is extended (see UpdateAllEnemyDelayLabels).
     }
 
     /// <summary>
     /// Extend the forecast to at least requiredCount blocks.
-    /// Always seeds an initial Hero block if the list is empty.
     /// </summary>
     private void ExtendForecastUntil(int requiredCount)
     {
-        if (blocks.Count == 0)
-        {
-            // Force first block to be a Hero block, no matter what.
-            AddHeroBlock();
-        }
-
         if (blocks.Count >= requiredCount) return;
 
         // Local lookahead copy so we do not mutate the real sim while forecasting.
-        int lookHero = heroDelaySim;
-        var look = sim.Select(s => new EnemySim
+        var look = sim.Select(s => new SimEntry
         {
-            enemy = s.enemy,
+            actor = s.actor,
             delay = s.delay,
             speed = s.speed
         }).ToList();
 
+        // Ensure at least one block is added even if values are degenerate.
+        if (blocks.Count == 0 && look.Count == 0) return;
+
         while (blocks.Count < requiredCount)
         {
-            int minEnemyDelay = look.Count > 0 ? look.Min(s => s.delay) : int.MaxValue;
-            int minDelay = Math.Min(lookHero, minEnemyDelay);
+            int minDelay = look.Count > 0 ? look.Min(s => s.delay) : int.MaxValue;
 
             if (minDelay > 0 && minDelay < int.MaxValue)
             {
                 // Advance virtual time by the smallest pending delay.
-                lookHero = Math.Max(0, lookHero - minDelay);
                 for (int i = 0; i < look.Count; i++)
-                    look[i].delay = Math.Max(0, look[i].delay - minDelay);
+                    look[i].delay = Mathf.Max(0, look[i].delay - minDelay);
             }
 
-            // Ready enemies take priority. Break ties by agility.
-            var readyEnemies = look.Where(s => s.delay <= 0 && s.enemy != null && s.enemy.IsPlaying)
-                                   .OrderByDescending(s => s.speed)
-                                   .ToList();
+            // Ready actors take priority. Break ties by agility.
+            var ready = look.Where(s => s.delay <= 0 && s.actor != null && s.actor.IsPlaying)
+                            .OrderByDescending(s => s.speed)
+                            .ToList();
 
-            if (readyEnemies.Count > 0)
+            if (ready.Count > 0)
             {
-                var pick = readyEnemies[0];
-                AddEnemyBlock(pick.enemy);
-                // Reseed the picked enemy in the lookahead.
-                pick.delay = EnemyStepFromAgility(pick.enemy, pick.speed);
+                var pick = ready[0];
+                AddActorBlock(pick.actor);
+                // Reseed the picked actor in the lookahead.
+                pick.delay = StepFromSpeed(pick.actor, pick.speed);
                 continue;
             }
 
-            // Otherwise, if hero is ready, schedule a hero block.
-            if (lookHero <= 0)
-            {
-                AddHeroBlock();
-                lookHero = ComputeHeroStepFromAverageAgility();
-                continue;
-            }
-
-            // Safety: if both sides are "infinite", add a hero to make progress.
+            // Safety: if everyone has infinite delay, reseed a random one to make progress.
             if (minDelay == int.MaxValue)
             {
-                AddHeroBlock();
-                lookHero = ComputeHeroStepFromAverageAgility();
+                var any = look.FirstOrDefault(s => s.actor != null && s.actor.IsPlaying);
+                if (any == null) break;
+                AddActorBlock(any.actor);
+                any.delay = StepFromSpeed(any.actor, any.speed);
             }
         }
     }
 
-    private int ComputeHeroStepFromAverageAgility()
+    private int StepFromSpeed(ActorInstance actor, int speed)
     {
-        var heroes = g.Actors.Heroes.Where(h => h != null && h.IsPlaying).ToList();
-        if (heroes.Count == 0) return Mathf.Max(1, Mathf.RoundToInt(heroBaseStep));
-
-        float avgSpeed = heroes.Average(h => h.Stats.Speed);
-        float raw = heroBaseStep - (avgSpeed / Mathf.Max(1f, heroAgilityDivisor));
-        int step = Mathf.Clamp(Mathf.RoundToInt(raw), 1, 12);
-        return step;
-    }
-
-    private int EnemyStepFromAgility(ActorInstance enemy, int speed)
-    {
-        int baseStep = RNG.Int(enemyBaseMinStep, enemyBaseMaxStep);
-        float raw = baseStep - (speed / Mathf.Max(1f, enemySpeedDivisor));
+        int baseStep = RNG.Int(baseMinStep, baseMaxStep);
+        float raw = baseStep - (speed / Mathf.Max(1f, speedDivisor));
         int step = Mathf.Clamp(Mathf.RoundToInt(raw), 1, 16);
         return step;
     }
@@ -327,40 +290,23 @@ public sealed class Timeline : MonoBehaviour
         content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, width);
     }
 
-    private void AddHeroBlock()
+    private void AddActorBlock(ActorInstance actor)
     {
+        if (actor == null) return;
+
+        bool isHero = actor.IsHero;
         var b = new Block
         {
-            isHero = true,
-            enemy = null,
-            label = "Heroes",
-            color = ColorHelper.Transparent.White,
-            portrait = SpriteLibrary.GUI["TeamIcon"]
+            isHero = isHero,
+            actor = actor,
+            label = string.IsNullOrEmpty(actor.characterName) ? (isHero ? "Hero" : "Enemy") : actor.characterName,
+            color = isHero ? ColorHelper.Transparent.White : ColorHelper.Solid.GunMetal,
+            portrait = actor.Render.thumbnail.sprite
         };
 
         var go = Instantiate(blockPrefab, content);
-        go.SetPortraitYOffset(0f);              // Center portrait for hero blocks
-        go.SetSquareMask(blockSize);
-        go.Set(b.label, b.color, b.portrait);
-        b.instance = go;
-        b.instance.name = $"TimelineBlock_{nextBlockId++}";
-        blocks.Add(b);
-    }
-
-    private void AddEnemyBlock(ActorInstance enemy)
-    {
-        if (enemy == null) return;
-
-        var b = new Block
-        {
-            isHero = false,
-            enemy = enemy,
-            label = string.IsNullOrEmpty(enemy.characterName) ? "Enemy" : enemy.characterName,
-            color = ColorHelper.Solid.GunMetal, //new Color(0.10f, 0.60f, 1f, 1f),
-            portrait = enemy.Render.thumbnail.sprite
-        };
-
-        var go = Instantiate(blockPrefab, content);
+        if (isHero)
+            go.SetPortraitYOffset(0f);        // Center portrait for hero blocks
         go.SetSquareMask(blockSize);
         go.Set(b.label, b.color, b.portrait);
         b.instance = go;
@@ -369,19 +315,19 @@ public sealed class Timeline : MonoBehaviour
         blocks.Add(b);
     }
 
-    private void RemoveDeadEnemyBlocks()
+    private void RemoveDeadBlocks()
     {
         for (int i = blocks.Count - 1; i >= currentIndex; i--)
         {
             var b = blocks[i];
-            if (!b.isHero && (b.enemy == null || !b.enemy.IsPlaying))
+            if (b.actor == null || !b.actor.IsPlaying)
             {
                 if (b.instance != null) Destroy(b.instance.gameObject);
                 blocks.RemoveAt(i);
             }
         }
 
-        sim.RemoveAll(s => s.enemy == null || !s.enemy.IsPlaying);
+        sim.RemoveAll(s => s.actor == null || !s.actor.IsPlaying);
     }
 
     private void TrimPastBlocks(int keepLeft)
@@ -410,9 +356,16 @@ public sealed class Timeline : MonoBehaviour
 
     private float GetTargetXForIndex(int index)
     {
-        float blockCenter = index * UnitWidth + (blockSize * 0.5f);
-        float viewCenter = viewport.rect.width * 0.5f;
-        float offset = viewCenter - blockCenter;
+        // Align the LEFT edge of the current block to the indicator's X (in viewport local space).
+        // Block i left edge is at i * UnitWidth in content space.
+        float blockLeft = index * UnitWidth;
+        float indicatorLocalX = 0f;
+        if (indicator != null)
+        {
+            var r = indicator.rectTransform;
+            indicatorLocalX = r.anchoredPosition.x; // since anchor/pivot are left/center, this is from viewport's left
+        }
+        float offset = indicatorLocalX - blockLeft; // move content so block's left aligns to indicator X
         return offset;
     }
 
@@ -422,11 +375,11 @@ public sealed class Timeline : MonoBehaviour
 
         var r = indicator.rectTransform;
 
-        // Center anchors and pivot.
-        r.anchorMin = new Vector2(0.5f, 0.5f);
-        r.anchorMax = new Vector2(0.5f, 0.5f);
-        r.pivot = new Vector2(0.5f, 0.5f);
-        r.anchoredPosition = Vector2.zero;
+        // Anchor the indicator to the far LEFT, vertically centered, with a left-edge pivot.
+        r.anchorMin = new Vector2(0f, 0.5f);
+        r.anchorMax = new Vector2(0f, 0.5f);
+        r.pivot = new Vector2(0f, 0.5f);
+        r.anchoredPosition = new Vector2(indicatorOffsetX, 0f);
 
         // Ensure indicator height matches block height. Keep at least a thin width.
         float width = Mathf.Max(r.sizeDelta.x, 4f);
@@ -461,7 +414,7 @@ public sealed class Timeline : MonoBehaviour
         for (int i = currentIndex + 1; i < blocks.Count; i++)
         {
             var b = blocks[i];
-            if (!b.isHero && b.enemy == enemy)
+            if (!b.isHero && b.actor == enemy)
                 return i - currentIndex; // 1-based distance in blocks
         }
         return -1;
@@ -479,8 +432,8 @@ public sealed class Timeline : MonoBehaviour
     {
         foreach (var s in sim)
         {
-            if (s.enemy != null && s.enemy.IsPlaying)
-                UpdateEnemyDelayLabel(s.enemy);
+            if (s.actor != null && s.actor.IsPlaying && s.actor.IsEnemy)
+                UpdateEnemyDelayLabel(s.actor);
         }
     }
 }
