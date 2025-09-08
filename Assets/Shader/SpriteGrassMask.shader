@@ -5,8 +5,11 @@ Shader "Ryan/SpriteGrassMask"
         _MainTex ("Sprite", 2D) = "white" {}
         _Color ("Tint", Color) = (1,1,1,1)
 
+        // Surface color source for blades
+        _SurfaceTex ("Surface", 2D) = "white" {}
+
         // Grass look
-        _GrassColor ("Grass Color", Color) = (0.25, 0.8, 0.35, 1)
+        _GrassColor ("Grass Color (tint)", Color) = (1,1,1,1)
         _Taper ("Blade Taper 0..1", Range(0.0, 1.0)) = 1.0
 
         // Pixel-sized blades
@@ -64,10 +67,14 @@ Shader "Ryan/SpriteGrassMask"
 
             TEXTURE2D(_MainTex);
             SAMPLER(sampler_MainTex);
+            TEXTURE2D(_SurfaceTex);
+            SAMPLER(sampler_SurfaceTex);
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _MainTex_ST;
                 float4 _Color;
+
+                float4 _SurfaceTex_ST;
 
                 float4 _GrassColor;
                 float  _Taper;
@@ -188,34 +195,43 @@ Shader "Ryan/SpriteGrassMask"
                 float2 uvHeightDir,
                 float2 uvPerpDir,
                 int2 cell,
-                float2 baseUV,
+                float2 baseUVMask,
+                float2 baseUVSurf,
                 float time,
                 float heightUVBase,
                 float halfWidthUVBase,
-                float2 gradX,
-                float2 gradY,
-                out float shade)
+                float2 gradXMask,
+                float2 gradYMask,
+                float2 gradXSurf,
+                float2 gradYSurf,
+                out float shade,
+                out float3 albedo)
             {
-                float4 baseSamp = SAMPLE_TEXTURE2D_GRAD(_MainTex, sampler_MainTex, baseUV, gradX, gradY);
+                float4 baseSamp = SAMPLE_TEXTURE2D_GRAD(_MainTex, sampler_MainTex, baseUVMask, gradXMask, gradYMask);
 
                 // Height factor from alpha: 1.0 = full height, 0.5 = half height, 0.0 = none
                 float maskHeight01 = baseSamp.a;
                 if (maskHeight01 <= _MaskBlackThresh)
                 {
                     shade = 0.0;
+                    albedo = 0.0.xxx;
                     return 0.0;
                 }
+
+                // Base color comes from Surface texture at the blade's root
+                float3 surfCol = SAMPLE_TEXTURE2D_GRAD(_SurfaceTex, sampler_SurfaceTex, baseUVSurf, gradXSurf, gradYSurf).rgb;
 
                 float2 rnd = hash21(float2(cell) + _Seed);
                 float var = lerp(0.85, 1.15, rnd.x);
                 float height = heightUVBase * maskHeight01 * var;
                 float halfWidth = halfWidthUVBase * lerp(0.9, 1.1, rnd.y);
 
-                float2 d = uv - baseUV;
+                float2 d = uv - baseUVMask;
                 float s = dot(d, uvHeightDir);
                 if (s < 0.0 || s > height)
                 {
                     shade = 0.0;
+                    albedo = 0.0.xxx;
                     return 0.0;
                 }
 
@@ -232,10 +248,12 @@ Shader "Ryan/SpriteGrassMask"
                 if (edge <= 0.0)
                 {
                     shade = 0.0;
+                    albedo = 0.0.xxx;
                     return 0.0;
                 }
 
                 shade = lerp(0.85, 1.0, saturate(s / max(height, 1e-4)));
+                albedo = surfCol;
                 return edge;
             }
 
@@ -263,9 +281,18 @@ Shader "Ryan/SpriteGrassMask"
                 float heightUV    = PixelsToUV(_BladeHeightPx, uvHeightDir, dUVdx, dUVdy);
                 float halfWidthUV = PixelsToUV(_BladeWidthPx * 0.5, uvPerpDir, dUVdx, dUVdy);
 
-                float2 stScale  = _MainTex_ST.xy;
-                float2 stOffset = _MainTex_ST.zw;
-                float2 uvLocal = (i.uv - stOffset) / max(1e-6, stScale);
+                // Recover local (pre-_MainTex_ST) UVs and also compute Surface uv transform
+                float2 stScaleMain  = _MainTex_ST.xy;
+                float2 stOffsetMain = _MainTex_ST.zw;
+                float2 uvLocal = (i.uv - stOffsetMain) / max(1e-6, stScaleMain);
+
+                float2 stScaleSurf  = _SurfaceTex_ST.xy;
+                float2 stOffsetSurf = _SurfaceTex_ST.zw;
+
+                // Gradient mapping for Surface sampling
+                float2 gradScale = stScaleSurf / max(1e-6, stScaleMain);
+                float2 dUVdxSurf = dUVdx * gradScale;
+                float2 dUVdySurf = dUVdy * gradScale;
 
                 float2 grid = float2(_CellsX, _CellsY);
                 float2 cellSizeLocal = 1.0 / grid;
@@ -273,6 +300,7 @@ Shader "Ryan/SpriteGrassMask"
 
                 float alpha = 0.0;
                 float shade = 0.0;
+                float3 bladeAlbedo = 0.0.xxx;
 
                 [unroll]
                 for (int dy = -1; dy <= 1; ++dy)
@@ -289,15 +317,19 @@ Shader "Ryan/SpriteGrassMask"
 
                         float jitterY = (rnd.y - 0.5) * _RowJitter;
                         float2 baseLocal = (float2(c) + float2(rnd.x, jitterY)) * cellSizeLocal;
-                        float2 base2 = baseLocal * stScale + stOffset;
 
-                        float localShade;
-                        float cov = bladeAt(i.uv, uvHeightDir, uvPerpDir, c, base2, time, heightUV, halfWidthUV, dUVdx, dUVdy, localShade);
+                        // Build mask and surface UVs at the blade root
+                        float2 baseMaskUV = baseLocal * stScaleMain + stOffsetMain;
+                        float2 baseSurfUV = baseLocal * stScaleSurf + stOffsetSurf;
+
+                        float localShade; float3 localAlbedo;
+                        float cov = bladeAt(i.uv, uvHeightDir, uvPerpDir, c, baseMaskUV, baseSurfUV, time, heightUV, halfWidthUV, dUVdx, dUVdy, dUVdxSurf, dUVdySurf, localShade, localAlbedo);
 
                         if (cov > alpha)
                         {
                             alpha = cov;
                             shade = localShade;
+                            bladeAlbedo = localAlbedo;
                         }
                     }
                 }
@@ -313,10 +345,10 @@ Shader "Ryan/SpriteGrassMask"
                     baseCol = float4(0,0,0,0);
                 }
 
-                // Modulate grass color by sprite tint only
                 if (alpha > 0.0)
                 {
-                    float3 grassRGB = _GrassColor.rgb * i.color.rgb; // no surface modulation
+                    // Grass color is taken from the Surface texture at the blade's root, then tinted
+                    float3 grassRGB = bladeAlbedo * _GrassColor.rgb * i.color.rgb;
                     grassRGB *= shade;
                     float outA = saturate(baseCol.a + alpha * (1.0 - baseCol.a));
                     float3 outRGB = lerp(baseCol.rgb, grassRGB, alpha);
