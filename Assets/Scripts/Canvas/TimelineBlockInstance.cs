@@ -1,4 +1,5 @@
-// --- File: Assets/Scripts/Canvas/Timeline/TimelineBlockInstance.cs ---
+using Assets.Scripts.Models;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -24,6 +25,10 @@ namespace Assets.Scripts.Canvas.Timeline
 
         // Optional override for portrait anchoredPosition.y (pixels). If null, use default (-s * 0.5f).
         private float? portraitYOffsetOverride;
+
+        // If true, FitPortraitRect uses ThumbnailSettings to crop/zoom instead of the default top-half rule.
+        private bool useThumbnailSettings;
+        private ThumbnailSettings appliedThumbnail;
 
         private void Awake()
         {
@@ -51,6 +56,28 @@ namespace Assets.Scripts.Canvas.Timeline
         public void SetPortraitYOffset(float y)
         {
             portraitYOffsetOverride = y;
+            FitPortraitRect();
+        }
+
+        /// <summary>
+        /// Apply an actor's ThumbnailSettings to crop/zoom the portrait in the mask.
+        /// </summary>
+        public void ApplyThumbnailSettings(ThumbnailSettings settings)
+        {
+            if (settings == null)
+            {
+                useThumbnailSettings = false;
+                appliedThumbnail = null;
+            }
+            else
+            {
+                // Store a copy so later mutations on the source do not affect our layout unexpectedly.
+                appliedThumbnail = new ThumbnailSettings(settings);
+                useThumbnailSettings = true;
+            }
+
+            // Clear legacy Y-offset override so it doesn't conflict.
+            portraitYOffsetOverride = null;
             FitPortraitRect();
         }
 
@@ -123,12 +150,26 @@ namespace Assets.Scripts.Canvas.Timeline
             pr.anchorMax = new Vector2(0.5f, 0.5f);
             pr.pivot = new Vector2(0.5f, 0.5f);
 
-            // Double height so top-half can be shown by default.
-            pr.sizeDelta = new Vector2(s, s * 2f);
+            if (useThumbnailSettings && appliedThumbnail != null)
+            {
+                // Zoom by scale; pan by position. Interpreting Position as a multiple of block size in pixels.
+                float w = Mathf.Max(1f, s * appliedThumbnail.Scale.x);
+                float h = Mathf.Max(1f, s * appliedThumbnail.Scale.y);
+                pr.sizeDelta = new Vector2(w, h);
 
-            // Use override if provided, else default to showing the top half (-s * 0.5f).
-            float y = portraitYOffsetOverride.HasValue ? portraitYOffsetOverride.Value : -s * 0.5f;
-            pr.anchoredPosition = new Vector2(0f, y);
+                float px = appliedThumbnail.Position.x * s;
+                float py = appliedThumbnail.Position.y * s;
+                pr.anchoredPosition = new Vector2(px, py);
+            }
+            else
+            {
+                // Default: double height so top-half can be shown by default.
+                pr.sizeDelta = new Vector2(s, s * 2f);
+
+                // Use override if provided, else default to showing the top half (-s * 0.5f).
+                float y = portraitYOffsetOverride.HasValue ? portraitYOffsetOverride.Value : -s * 0.5f;
+                pr.anchoredPosition = new Vector2(0f, y);
+            }
 
             pr.localRotation = Quaternion.identity;
             pr.localScale = Vector3.one;

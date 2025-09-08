@@ -44,6 +44,13 @@ public sealed class Timeline : MonoBehaviour
     [Tooltip("Horizontal offset of the indicator inside the viewport (in pixels). 0 = flush with left edge.")]
     [SerializeField] private float indicatorOffsetX = 16f;
 
+    // Round-based scheduling state
+    private List<ActorInstance> currentRoundOrder = new List<ActorInstance>();
+    private int currentRoundPos = 0;
+    private int roundNumber = 0;
+    private readonly List<ActorInstance> nextRoundFirst = new List<ActorInstance>();
+    private readonly HashSet<ActorInstance> deferredToNextRound = new HashSet<ActorInstance>();
+
     private void Awake()
     {
         // Find core objects
@@ -209,57 +216,106 @@ public sealed class Timeline : MonoBehaviour
     }
 
     /// <summary>
-    /// Extend the forecast to at least requiredCount blocks.
+    /// Extend the forecast to at least requiredCount blocks using round-based ordering.
+    /// Each actor appears once per round; order inside a round is by speed (desc).
+    /// The very first block is forced to be the fastest hero if available.
     /// </summary>
     private void ExtendForecastUntil(int requiredCount)
     {
         if (blocks.Count >= requiredCount) return;
 
-        // Local lookahead copy so we do not mutate the real sim while forecasting.
-        var look = sim.Select(s => new SimEntry
-        {
-            actor = s.actor,
-            delay = s.delay,
-            speed = s.speed
-        }).ToList();
-
-        // Ensure at least one block is added even if values are degenerate.
-        if (blocks.Count == 0 && look.Count == 0) return;
+        // Ensure at least one actor exists.
+        bool anyActive = g.Actors.All.Any(a => a != null && a.IsPlaying);
+        if (!anyActive) return;
 
         while (blocks.Count < requiredCount)
         {
-            int minDelay = look.Count > 0 ? look.Min(s => s.delay) : int.MaxValue;
-
-            if (minDelay > 0 && minDelay < int.MaxValue)
+            // Build a new round if needed.
+            if (currentRoundOrder == null || currentRoundPos >= currentRoundOrder.Count)
             {
-                // Advance virtual time by the smallest pending delay.
-                for (int i = 0; i < look.Count; i++)
-                    look[i].delay = Mathf.Max(0, look[i].delay - minDelay);
+                bool isFirstRoundAndEmpty = roundNumber == 0 && blocks.Count == 0;
+                currentRoundOrder = BuildRoundOrder(isFirstRoundAndEmpty);
+                currentRoundPos = 0;
+                roundNumber++;
+
+                // Safety: if for some reason no actors are in the round, abort.
+                if (currentRoundOrder == null || currentRoundOrder.Count == 0)
+                    break;
             }
 
-            // Ready actors take priority. Break ties by agility.
-            var ready = look.Where(s => s.delay <= 0 && s.actor != null && s.actor.IsPlaying)
-                            .OrderByDescending(s => s.speed)
-                            .ToList();
+            // Add the next actor from the current round.
+            var actor = currentRoundOrder[currentRoundPos++];
+            if (actor == null || !actor.IsPlaying)
+                continue; // skip and continue filling
 
-            if (ready.Count > 0)
+            AddActorBlock(actor);
+        }
+    }
+
+    private List<ActorInstance> BuildRoundOrder(bool forceFirstHero)
+    {
+        // Start from active actors ordered by speed descending
+        var active = g.Actors.All.Where(a => a != null && a.IsPlaying).ToList();
+        var ordered = active.OrderByDescending(a => a.Stats.Speed.ToInt()).ToList();
+
+        // Apply next-round promotions (actors explicitly placed at the start)
+        var head = new List<ActorInstance>();
+        if (!forceFirstHero)
+        {
+            foreach (var a in nextRoundFirst)
             {
-                var pick = ready[0];
-                AddActorBlock(pick.actor);
-                // Reseed the picked actor in the lookahead.
-                pick.delay = StepFromSpeed(pick.actor, pick.speed);
-                continue;
+                if (a != null && a.IsPlaying && !head.Contains(a)) head.Add(a);
             }
-
-            // Safety: if everyone has infinite delay, reseed a random one to make progress.
-            if (minDelay == int.MaxValue)
+            foreach (var a in deferredToNextRound)
             {
-                var any = look.FirstOrDefault(s => s.actor != null && s.actor.IsPlaying);
-                if (any == null) break;
-                AddActorBlock(any.actor);
-                any.delay = StepFromSpeed(any.actor, any.speed);
+                if (a != null && a.IsPlaying && !head.Contains(a)) head.Add(a);
             }
         }
+
+        // Remove promoted/deferred actors from the remainder
+        if (head.Count > 0)
+            ordered.RemoveAll(a => head.Contains(a));
+
+        // Force fastest hero as first block of the very first round
+        if (forceFirstHero)
+        {
+            var fastestHero = ordered.Where(a => a.IsHero).OrderByDescending(a => a.Stats.Speed.ToInt()).FirstOrDefault();
+            if (fastestHero != null)
+            {
+                ordered.Remove(fastestHero);
+                head.Insert(0, fastestHero);
+            }
+        }
+
+        // Compose final round order
+        var round = new List<ActorInstance>(head.Count + ordered.Count);
+        round.AddRange(head);
+        round.AddRange(ordered);
+
+        // Clear one-time directives after building the round
+        nextRoundFirst.Clear();
+        deferredToNextRound.Clear();
+
+        return round;
+    }
+
+    /// <summary>
+    /// Request that an actor takes the first turn in the next round.
+    /// </summary>
+    public void SetNextRoundFirst(ActorInstance actor)
+    {
+        if (actor == null) return;
+        if (!nextRoundFirst.Contains(actor)) nextRoundFirst.Add(actor);
+    }
+
+    /// <summary>
+    /// Defer an actor's current turn to the beginning of the next round.
+    /// Note: Ability systems should also cancel their current turn when calling this.
+    /// </summary>
+    public void DeferTurnToNextRoundFront(ActorInstance actor)
+    {
+        if (actor == null) return;
+        deferredToNextRound.Add(actor);
     }
 
     private int StepFromSpeed(ActorInstance actor, int speed)
@@ -309,6 +365,11 @@ public sealed class Timeline : MonoBehaviour
             go.SetPortraitYOffset(0f);        // Center portrait for hero blocks
         go.SetSquareMask(blockSize);
         go.Set(b.label, b.color, b.portrait);
+
+        // Apply per-actor ThumbnailSettings for portrait crop/zoom in the block
+        if (actor.Thumbnail != null && actor.Thumbnail.settings != null)
+            go.ApplyThumbnailSettings(actor.Thumbnail.settings);
+
         b.instance = go;
         b.instance.name = $"TimelineBlock_{nextBlockId++}";
 
@@ -403,6 +464,13 @@ public sealed class Timeline : MonoBehaviour
         contentX = 0f;
         targetContentX = 0f;
         nextBlockId = 0; // restart numbering on full rebuild
+
+        // Reset round state
+        currentRoundOrder.Clear();
+        currentRoundPos = 0;
+        roundNumber = 0;
+        nextRoundFirst.Clear();
+        deferredToNextRound.Clear();
     }
 
     // -------------- Turn delay label helpers --------------
@@ -424,16 +492,15 @@ public sealed class Timeline : MonoBehaviour
     {
         if (enemy == null || !enemy.IsPlaying) return;
         int dist = BlocksUntilNextTurn(enemy);
-        // Pass -1 to clear if not in forecast yet (shouldn’t happen as we extend ahead).
         enemy.Render.SetTurnDelayText(dist);
     }
 
     private void UpdateAllEnemyDelayLabels()
     {
-        foreach (var s in sim)
+        foreach (var e in g.Actors.Enemies)
         {
-            if (s.actor != null && s.actor.IsPlaying && s.actor.IsEnemy)
-                UpdateEnemyDelayLabel(s.actor);
+            if (e != null && e.IsPlaying)
+                UpdateEnemyDelayLabel(e);
         }
     }
 }
