@@ -51,6 +51,7 @@ namespace Assets.Data.Actor
                     Position = new Vector3(0.5f, -0.55f, 0.0f),
                     Scale = new Vector3(3.0f, 3.0f, 0f)
                 },
+                CanvasThumbnailSettings = CanvasThumbnailSettings.Generate(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Soldier02}"),
                 Details = new ActorDetails
                 {

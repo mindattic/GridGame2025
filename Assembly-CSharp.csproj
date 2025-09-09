@@ -272,6 +272,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorStats.cs" />
+    <Compile Include="Assets\Scripts\Models\CanvasThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\FadeOverlayInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />

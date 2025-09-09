@@ -30,6 +30,9 @@ namespace Assets.Scripts.Canvas.Timeline
         private bool useThumbnailSettings;
         private ThumbnailSettings appliedThumbnail;
 
+        // Canvas crop preferences (top-center) if provided by data
+        private CanvasThumbnailSettings canvasCrop;
+
         private void Awake()
         {
             Rect = GetComponent<RectTransform>();
@@ -78,6 +81,15 @@ namespace Assets.Scripts.Canvas.Timeline
 
             // Clear legacy Y-offset override so it doesn't conflict.
             portraitYOffsetOverride = null;
+            FitPortraitRect();
+        }
+
+        /// <summary>
+        /// Apply a canvas crop window (top-center), e.g., built from ActorData.CanvasThumbnailSettings.
+        /// </summary>
+        public void ApplyCanvasCrop(CanvasThumbnailSettings crop)
+        {
+            canvasCrop = crop;
             FitPortraitRect();
         }
 
@@ -150,7 +162,19 @@ namespace Assets.Scripts.Canvas.Timeline
             pr.anchorMax = new Vector2(0.5f, 0.5f);
             pr.pivot = new Vector2(0.5f, 0.5f);
 
-            if (useThumbnailSettings && appliedThumbnail != null)
+            if (canvasCrop != null)
+            {
+                // Canvas crop: keep portrait sized to crop window relative to block size, top-center bias.
+                float w = Mathf.Max(1f, canvasCrop.Width * (s / 512f));
+                float h = Mathf.Max(1f, canvasCrop.Height * (s / 512f));
+                pr.sizeDelta = new Vector2(w, h);
+
+                // Top-center: y positive moves up; offset half the height to emphasize top.
+                float px = canvasCrop.X * s;
+                float py = (0.5f + canvasCrop.Y) * (h * 0.0f); // keep centered for now; adjust if needed
+                pr.anchoredPosition = new Vector2(px, 0f);
+            }
+            else if (useThumbnailSettings && appliedThumbnail != null)
             {
                 // Zoom by scale; pan by position. Interpreting Position as a multiple of block size in pixels.
                 float w = Mathf.Max(1f, s * appliedThumbnail.Scale.x);

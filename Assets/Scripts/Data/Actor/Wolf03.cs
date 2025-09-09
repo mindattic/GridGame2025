@@ -40,6 +40,7 @@ namespace Assets.Data.Actor
                     Position = new Vector3(0.27f, 0.1f, 0f),
                     Scale = new Vector3(2f, 2f, 0f),
                 },
+                CanvasThumbnailSettings = CanvasThumbnailSettings.Generate(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Wolf03}"),
                 Details = new ActorDetails { Description = "Lunges first, asks later.", Card = "High damage, low staying power." }
             };

@@ -18,6 +18,9 @@ public class TimerBar2D : MonoBehaviour
     [Tooltip("Total time in seconds for a full fill to drain to zero.")]
     [SerializeField] private float maxDuration = 6f;
 
+    [Tooltip("If true, the bar shrinks symmetrically into the center. If false, it drains from right to left.")]
+    [SerializeField] private bool isCentered = false;
+
     // Use 97% of canvas width.
     private const float CanvasPercent = 0.97f;
 
@@ -38,11 +41,21 @@ public class TimerBar2D : MonoBehaviour
         // Cache fill rect
         barRect = fill.GetComponent<RectTransform>();
 
-        // Drain left to right by shrinking width from the right side
-        barRect.anchorMin = new Vector2(0f, 0.5f);
-        barRect.anchorMax = new Vector2(0f, 0.5f);
-        barRect.pivot = new Vector2(0f, 0.5f);
-        barRect.anchoredPosition = new Vector2(0f, 0f);
+        if (isCentered)
+        {
+            // Drain toward the center by keeping the fill centered
+            barRect.anchorMin = new Vector2(0.5f, 0.5f);
+            barRect.anchorMax = new Vector2(0.5f, 0.5f);
+            barRect.pivot = new Vector2(0.5f, 0.5f);
+        }
+        else
+        {
+            // Drain from right to left by anchoring the left edge
+            barRect.anchorMin = new Vector2(0f, 0.5f);
+            barRect.anchorMax = new Vector2(0f, 0.5f);
+            barRect.pivot = new Vector2(0f, 0.5f);
+        }
+        barRect.anchoredPosition = Vector2.zero;
 
         // Initialize timer value
         timeRemaining = maxDuration;
@@ -50,7 +63,6 @@ public class TimerBar2D : MonoBehaviour
 
     //private void OnDestroy()
     //{
-    //    // Unsubscribe if needed to avoid leaks
     //    if (g.InputManager != null)
     //        g.InputManager.OnInputModeChanged -= HandleModeChanged;
     //}
@@ -228,7 +240,6 @@ public class TimerBar2D : MonoBehaviour
     private void SetLayout()
     {
         float targetWidth = Mathf.Max(0f, c.CanvasRect.rect.width * CanvasPercent);
-
         float targetHeight = rootRect.rect.height;
 
         if (rootRect != null)
@@ -241,14 +252,18 @@ public class TimerBar2D : MonoBehaviour
 
         SetSize(back.GetComponent<RectTransform>(), targetWidth, targetHeight);
         SetSize(front.GetComponent<RectTransform>(), targetWidth, targetHeight);
+        SetSize(barRect, -1f, targetHeight);
+
+        // Keep the fill aligned after resizing regardless of mode
+        barRect.anchoredPosition = Vector2.zero;
 
         maxWidth = targetWidth;
-
         UpdateFill();
     }
 
     /// <summary>
     /// Sets width and height on a RectTransform using sizeDelta.
+    /// Pass a negative width to keep the current width unchanged.
     /// </summary>
     private static void SetSize(RectTransform rt, float width, float height)
     {

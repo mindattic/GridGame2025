@@ -58,6 +58,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(4.0f, 4.0f, 0f)
                 },
 
+                CanvasThumbnailSettings = CanvasThumbnailSettings.Generate(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
 
                 Details = new ActorDetails

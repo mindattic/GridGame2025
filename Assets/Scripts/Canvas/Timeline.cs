@@ -65,7 +65,8 @@ public sealed class Timeline : MonoBehaviour
     private class Block
     {
         public bool isHero;
-        public ActorInstance actor;      // actor for this block
+        public bool isDivider;
+        public ActorInstance actor;      // actor for this block (null for divider)
         public string label;
         public Color color;
         public Sprite portrait;
@@ -238,6 +239,10 @@ public sealed class Timeline : MonoBehaviour
                 currentRoundPos = 0;
                 roundNumber++;
 
+                // Insert a divider between rounds (not for the very first round)
+                if (roundNumber > 1)
+                    AddRoundDivider(roundNumber);
+
                 // Safety: if for some reason no actors are in the round, abort.
                 if (currentRoundOrder == null || currentRoundOrder.Count == 0)
                     break;
@@ -354,9 +359,10 @@ public sealed class Timeline : MonoBehaviour
         var b = new Block
         {
             isHero = isHero,
+            isDivider = false,
             actor = actor,
             label = string.IsNullOrEmpty(actor.characterName) ? (isHero ? "Hero" : "Enemy") : actor.characterName,
-            color = isHero ? ColorHelper.Transparent.White : ColorHelper.Solid.GunMetal,
+            color = isHero ? ColorHelper.Solid.White : ColorHelper.Solid.GunMetal,
             portrait = actor.Render.thumbnail.sprite
         };
 
@@ -366,12 +372,42 @@ public sealed class Timeline : MonoBehaviour
         go.SetSquareMask(blockSize);
         go.Set(b.label, b.color, b.portrait);
 
-        // Apply per-actor ThumbnailSettings for portrait crop/zoom in the block
-        if (actor.Thumbnail != null && actor.Thumbnail.settings != null)
+        // Apply per-actor canvas crop and thumbnail settings for portrait crop/zoom in the block
+        var data = ActorLibrary.Get(actor.characterName);
+        if (data != null && data.CanvasThumbnailSettings != null)
+            go.ApplyCanvasCrop(data.CanvasThumbnailSettings);
+        else if (actor.Thumbnail != null && actor.Thumbnail.settings != null)
             go.ApplyThumbnailSettings(actor.Thumbnail.settings);
 
         b.instance = go;
         b.instance.name = $"TimelineBlock_{nextBlockId++}";
+
+        blocks.Add(b);
+    }
+
+    private void AddRoundDivider(int currentRound)
+    {
+        // Create a simple divider block using a white sprite placeholder
+        var b = new Block
+        {
+            isHero = false,
+            isDivider = true,
+            actor = null,
+            label = $"Round {currentRound}",
+            color = ColorHelper.Solid.GunMetal, // subtle contrast
+            portrait = null
+        };
+
+        var go = Instantiate(blockPrefab, content);
+        go.SetSquareMask(blockSize);
+
+        // Build a 1x1 white sprite expanded by the mask
+        var tex = Texture2D.whiteTexture;
+        var sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
+        go.Set(b.label, b.color, sprite);
+
+        b.instance = go;
+        b.instance.name = $"TimelineDivider_{nextBlockId++}";
 
         blocks.Add(b);
     }
@@ -381,6 +417,7 @@ public sealed class Timeline : MonoBehaviour
         for (int i = blocks.Count - 1; i >= currentIndex; i--)
         {
             var b = blocks[i];
+            if (b.isDivider) continue; // keep dividers
             if (b.actor == null || !b.actor.IsPlaying)
             {
                 if (b.instance != null) Destroy(b.instance.gameObject);

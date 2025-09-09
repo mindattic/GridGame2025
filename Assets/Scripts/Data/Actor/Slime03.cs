@@ -38,6 +38,7 @@ namespace Assets.Data.Actor
                     Position = new Vector2(0.5f, 0.5f),
                     Scale = new Vector2(2f, 2f)
                 },
+                CanvasThumbnailSettings = CanvasThumbnailSettings.Generate(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Slime03}"),
                 Details = new ActorDetails { Description = "Tries to get lucky.", Card = "Occasional crits, still fragile." }
             };

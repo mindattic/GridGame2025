@@ -25,6 +25,7 @@ public class ActorData
     public Dictionary<int, StatGrowth> MilestoneStatGrowth = new Dictionary<int, StatGrowth>();
 
     public ThumbnailSettings ThumbnailSettings;
+    public CanvasThumbnailSettings CanvasThumbnailSettings; // New: Canvas-specific cropping for timeline blocks
     public ActorDetails Details;
     public Sprite Portrait;
 
@@ -39,6 +40,8 @@ public class ActorData
         Level = other.Level;
         Character = other.Character;
         Description = other.Description;
+        Expectations = other.Expectations;
+        Lore = other.Lore;
 
         BonusXP = other.BonusXP;
 
@@ -53,9 +56,15 @@ public class ActorData
             ? new ThumbnailSettings(other.ThumbnailSettings)
             : new ThumbnailSettings();
 
+        CanvasThumbnailSettings = other.CanvasThumbnailSettings != null
+            ? new CanvasThumbnailSettings(other.CanvasThumbnailSettings)
+            : new CanvasThumbnailSettings();
+
         Details = other.Details != null
             ? new ActorDetails(other.Details)
             : new ActorDetails();
+
+        Portrait = other.Portrait;
 
         Stats = GetStats(Level);
     }
