@@ -6,10 +6,11 @@ using g = Assets.Helpers.GameHelper;
 
 public class HeroManager : MonoBehaviour
 {
-
     public void Glow()
     {
-        g.Actors.Heroes.Where(x => x.IsPlaying).ToList().ForEach(x => x.Glow.Glow());
+        foreach (var x in g.Actors.Heroes.Where(x => x != null && x.IsPlaying))
+        {
+            if (x.Glow != null) x.Glow.Play();
+        }
     }
-
 }

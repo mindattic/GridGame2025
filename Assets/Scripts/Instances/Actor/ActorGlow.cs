@@ -7,11 +7,9 @@ namespace Assets.Scripts.Instances.Actor
 {
     public class ActorGlow
     {
-        protected ActorRenderers render => instance.Render;
-        private bool isActive => instance.IsActive;
-        private bool isAlive => instance.IsAlive;
-        private bool isPlayer => instance.IsHero;
-        private bool isEnemy => instance.IsEnemy;
+        protected ActorRenderers Render => instance.Render;
+        private bool IsPlayer => instance.IsHero;
+        private bool IsEnemy => instance.IsEnemy;
         protected AnimationCurve glowCurve => instance.glowCurve;
 
         private ActorInstance instance;
@@ -23,25 +21,32 @@ namespace Assets.Scripts.Instances.Actor
         public void Initialize(ActorInstance parentInstance)
         {
             this.instance = parentInstance;
-            baseScale = Vector3.one; // scale of Glow renderer is independent; treat 1 as normal
+            baseScale = g.TileScale;
             maxScale = 1.25f;
             speed = 2.0f;
         }
 
-        private bool IsGlowing =>
-            instance.IsPlaying && ((g.TurnManager.IsHeroTurn && isPlayer) || (g.TurnManager.IsEnemyTurn && isEnemy));
+        public bool IsGlowing = false;
+        //private bool IsGlowing =>
+        //    instance.IsPlaying && ((g.TurnManager.IsHeroTurn && IsPlayer) || (g.TurnManager.IsEnemyTurn && IsEnemy));
 
-        public void Glow()
+        public void Play()
         {
             if (!instance.IsActive) return;
             if (glowRoutineRef != null) instance.StopCoroutine(glowRoutineRef);
+            IsGlowing = true;
             glowRoutineRef = instance.StartCoroutine(GlowRoutine());
+        }
+
+        public void Stop()
+        {
+            IsGlowing = false;
         }
 
         public IEnumerator GlowRoutine()
         {
             // Ensure starting scale at 1
-            render.SetGlowScale(baseScale);
+            Render.SetGlowScale(baseScale);
 
             // Warm up to 1.1
             float warm = 0.15f;
@@ -51,7 +56,7 @@ namespace Assets.Scripts.Instances.Actor
                 t += Time.deltaTime;
                 float k = Mathf.Clamp01(t / warm);
                 float s = Mathf.Lerp(1f, maxScale, k);
-                render.SetGlowScale(new Vector3(s, s, 1f));
+                Render.SetGlowScale(new Vector3(s, s, 1f));
                 yield return Wait.OneTick();
             }
 
@@ -60,8 +65,8 @@ namespace Assets.Scripts.Instances.Actor
             {
                 float curve = glowCurve != null && glowCurve.length > 0 ? glowCurve.Evaluate(Time.time * speed % glowCurve.length) : Mathf.Sin(Time.time * speed) * 0.05f;
                 float s = maxScale + curve * 0.05f; // subtle +/- around 1.1
-                s = Mathf.Clamp(s, 1f, 1.15f);
-                render.SetGlowScale(new Vector3(s, s, 1f));
+                s = Mathf.Clamp(s, 1f, maxScale);
+                Render.SetGlowScale(new Vector3(s, s, 1f));
                 yield return Wait.OneTick();
             }
 
@@ -72,11 +77,11 @@ namespace Assets.Scripts.Instances.Actor
                 t += Time.deltaTime;
                 float k = Mathf.Clamp01(t / cool);
                 float s = Mathf.Lerp(maxScale, 1f, k);
-                render.SetGlowScale(new Vector3(s, s, 1f));
+                Render.SetGlowScale(new Vector3(s, s, 1f));
                 yield return Wait.OneTick();
             }
 
-            render.SetGlowScale(baseScale);
+            Render.SetGlowScale(baseScale);
             glowRoutineRef = null;
         }
     }

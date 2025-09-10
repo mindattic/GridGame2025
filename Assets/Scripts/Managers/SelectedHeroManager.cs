@@ -23,12 +23,16 @@ public class SelectedHeroManager : MonoBehaviour
         dragThreshold = g.TileMap.tileSize / 2f;
     }
 
-    public void Focus()
+
+
+
+
+    public void Focus(ActorInstance actor = null)
     {
         if (!g.TurnManager.IsHeroTurn)
             return;
 
-        var target = TouchHelper.GetActorAtTouchPosition();
+        var target = actor ?? TouchHelper.GetActorAtTouchPosition();
 
         if (target == null || !target.IsPlaying)
         {
@@ -53,7 +57,6 @@ public class SelectedHeroManager : MonoBehaviour
             return;
 
         g.AbilityButtonManager.Hide();
-
         g.Actors.FocusedActor = target;
         g.SortingManager.OnActorFocus();
 
@@ -61,7 +64,7 @@ public class SelectedHeroManager : MonoBehaviour
             g.AbilityButtonManager.Show(g.Actors.FocusedActor);
 
         // Optional: bonus hook for PreferActiveWithBonus mode
-        if (g.TurnSelectionMode == Assets.Scripts.Models.TurnSelectionMode.PreferActiveWithBonus)
+        if (g.TurnSelectionMode == Assets.Scripts.Models.TurnSelectionMode.PreferActive)
         {
             var activeHero = g.Timeline != null ? g.Timeline.GetCurrentHero() : null;
             if (activeHero != null && activeHero == g.Actors.FocusedActor)

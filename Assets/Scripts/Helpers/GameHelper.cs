@@ -206,5 +206,7 @@ namespace Assets.Helpers
                 //ProfileHelper.Save(true);
             }
         }
+
+        public static HeroManager HeroManager => gm != null ? gm.heroManager : null;
     }
 }

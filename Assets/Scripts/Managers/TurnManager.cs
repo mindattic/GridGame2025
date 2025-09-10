@@ -4,6 +4,7 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using Assets.Scripts.Models;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Managers
 {
@@ -44,7 +45,7 @@ namespace Assets.Scripts.Managers
                     g.Timeline.FocusOnEnemy(enemyAtCursor);
             }
 
-            TryGlowActiveHero();
+            HandleHeroTurnFocus();
 
             // Saturation temporarily disabled pending visual fixes
             // if (IsHeroTurn) ApplyHeroTurnDesaturation(); else RestoreFullSaturation();
@@ -72,7 +73,7 @@ namespace Assets.Scripts.Managers
                     g.Timeline.FocusOnEnemy(enemyAtCursor);
             }
 
-            TryGlowActiveHero();
+            HandleHeroTurnFocus();
 
             // Saturation temporarily disabled pending visual fixes
             // if (IsHeroTurn) ApplyHeroTurnDesaturation(); else RestoreFullSaturation();
@@ -83,24 +84,55 @@ namespace Assets.Scripts.Managers
             }
             else
             {
-                var enemyAtCursor = g.Timeline?.GetCurrentEnemy();
+                var enemyAtCursor = g.Timeline.GetCurrentEnemy();
                 g.SequenceManager.Add(new EnemyTakeTurnSequence(enemyAtCursor));
             }
         }
 
-        private void TryGlowActiveHero()
+        private void HandleHeroTurnFocus()
         {
             if (!IsHeroTurn) return;
 
-            var hero = g.Timeline != null ? g.Timeline.GetCurrentHero() : null;
-            if (hero != null && hero.IsPlaying && hero.IsHero && hero.Glow != null)
+            var active = g.Timeline.GetCurrentHero();
+
+            if (g.TurnSelectionMode == TurnSelectionMode.PreferActive || g.TurnSelectionMode == TurnSelectionMode.ActiveOnly)
             {
-                hero.Glow.Glow();
+                g.SelectedHeroManager.Focus(active);
+                active.Glow.Play();
+            }
+            else // FreeSelect
+            {
+                g.HeroManager.Glow();
             }
         }
 
-        // Keep these as no-ops for now to avoid breaking callers
-        public void ApplyHeroTurnDesaturation() { }
-        public void RestoreFullSaturation() { }
+        // Apply grayscale to all playing actors except those in ignoreList. Defaults to no ignores.
+        public void ApplyDesaturation(List<ActorInstance> ignoreList = null)
+        {
+            var ignore = ignoreList != null ? new HashSet<ActorInstance>(ignoreList) : null;
+            foreach (var a in g.Actors.All)
+            {
+                if (a == null || !a.IsPlaying) continue;
+                if (ignore != null && ignore.Contains(a))
+                {
+                    a.Render.SetSaturation(1f);
+                    continue;
+                }
+                a.Render.SetSaturation(0f);
+            }
+        }
+
+        // Restore full saturation to all playing actors except those in ignoreList (which are left unchanged).
+        public void RestoreSaturation(List<ActorInstance> ignoreList = null)
+        {
+            var ignore = ignoreList != null ? new HashSet<ActorInstance>(ignoreList) : null;
+            foreach (var a in g.Actors.All)
+            {
+                if (a == null || !a.IsPlaying) continue;
+                if (ignore != null && ignore.Contains(a))
+                    continue; // skip restoring on ignored actors
+                a.Render.SetSaturation(1f);
+            }
+        }
     }
 }
