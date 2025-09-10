@@ -5420,7 +5420,7 @@ GameObject:
   - component: {fileID: 1530474651}
   - component: {fileID: 1530474652}
   m_Layer: 0
-  m_Name: TimelineRoot
+  m_Name: Timeline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6693,7 +6693,7 @@ MonoBehaviour:
   targetActor: {fileID: 0}
   timerBar2D: {fileID: 0}
   portraitsContainer: {fileID: 0}
-  timelineRoot: {fileID: 0}
+  timelineContainer: {fileID: 0}
   timelineViewport: {fileID: 0}
   timelineContent: {fileID: 0}
   board: {fileID: 0}

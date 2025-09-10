@@ -49,8 +49,8 @@ namespace Assets.Data.Actor
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.5f, -1.1f, 0.0f),
-                    Scale = new Vector3(5.0f, 5.0f, 0.0f)
+                    Position = new Vector3(0.8f, -1.25f, 0f),
+                    Scale = new Vector3(5f, 5f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.Generate(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Barbarian}"),

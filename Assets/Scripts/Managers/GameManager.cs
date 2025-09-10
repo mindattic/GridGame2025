@@ -119,7 +119,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TimerBar2D timerBar2D;
     [HideInInspector] public RectTransform portraitsContainer;
-    [HideInInspector] public RectTransform timelineRoot;
+    [HideInInspector] public RectTransform timelineContainer;
     [HideInInspector] public RectTransform timelineViewport;
     [HideInInspector] public RectTransform timelineContent;
     [HideInInspector] public BoardInstance board;
@@ -166,12 +166,13 @@ public class GameManager : Singleton<GameManager>
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
         timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D.Root).GetComponent<TimerBar2D>();
         portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();
-        timelineRoot = GameObject.Find(GameObjectHelper.Game.TimelineRoot).GetComponent<RectTransform>();
+
 
         // Timeline children
-        timelineViewport = timelineRoot.Find("Viewport").GetComponent<RectTransform>();
+        timelineContainer = GameObject.Find(GameObjectHelper.Game.TimelineContainer).GetComponent<RectTransform>();
+        timelineViewport = timelineContainer.Find("Viewport").GetComponent<RectTransform>();
         timelineContent = timelineViewport.Find("Content").GetComponent<RectTransform>();
-        timeline = timelineRoot.GetComponent<Timeline>();
+        timeline = timelineContainer.GetComponent<Timeline>();
 
         coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
         waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();

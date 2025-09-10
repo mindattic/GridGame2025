@@ -78,16 +78,19 @@ public class SelectedHeroManager : MonoBehaviour
 
         var actor = g.Actors.FocusedActor;
         if (actor == null || actor.IsEnemy) return;
-        if (actor != g.TurnManager.ActiveActor) return; // restrict movement to active hero only
+
+        // In ActiveOnly mode, restrict dragging to the current ActiveActor. In other modes allow any hero.
+        var mode = g.TurnSelectionMode;
+        bool restrictToActive = mode == Assets.Scripts.Models.TurnSelectionMode.ActiveOnly;
+        if (restrictToActive && actor != g.TurnManager.ActiveActor)
+            return;
 
         // Require a press/hold
         bool pressing = Input.GetMouseButton(0) || Input.touchCount > 0;
         if (!pressing) return;
 
-        // Require the pointer to be over the focused actor to start/continue dragging
-        var hovered = TouchHelper.GetActorAtTouchPosition();
-        if (hovered == null || hovered != actor)
-            return;
+        // Do not require the pointer to remain over the actor after initial focus.
+        // Focus() was set when the press began on the actor; allow drag to proceed smoothly.
 
         if (!hasPendingDrag || pendingActor != actor)
         {
@@ -157,6 +160,9 @@ public class SelectedHeroManager : MonoBehaviour
         hero.Move.ToLocation();
         hero.Flags.IsMoving = false;
         g.SortingManager.OnSelectedHeroDrop();
+
+        // Suspend all touch input until the turn system restores it
+        g.InputManager.InputMode = InputMode.None;
 
         g.Actors.SelectedHero = null;
         hasPendingDrag = false;

@@ -41,6 +41,9 @@ namespace Assets.Scripts.Managers
                 else g.Timeline.FocusOnEnemy(ActiveActor);
             }
 
+            // Restore input mode based on the current side
+            g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
+
             UpdateActiveIndicators();
             HandleHeroTurnFocus();
 
@@ -65,6 +68,9 @@ namespace Assets.Scripts.Managers
                 if (IsHeroTurn) g.Timeline.FocusOnHero();
                 else g.Timeline.FocusOnEnemy(enemyAtCursor);
             }
+
+            // Ensure input mode matches the side at the start
+            g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
 
             UpdateActiveIndicators();
             HandleHeroTurnFocus();
@@ -96,8 +102,7 @@ namespace Assets.Scripts.Managers
         {
             if (!IsHeroTurn) return;
 
-            var mode = g.TurnSelectionMode;
-            if (mode == TurnSelectionMode.PreferActive || mode == TurnSelectionMode.ActiveOnly)
+            if (g.TurnSelectionMode == TurnSelectionMode.ActiveOnly)
             {
                 if (ActiveActor != null)
                 {

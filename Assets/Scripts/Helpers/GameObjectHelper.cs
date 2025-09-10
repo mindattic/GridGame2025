@@ -57,7 +57,7 @@ namespace Assets.Helper
             public const string PauseButtonIcon = "PauseButton";
             public const string PauseMenu = "Canvas/PauseMenu";
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
-            public const string TimelineRoot = "Canvas/TimelineRoot";
+            public const string TimelineContainer = "Canvas/Timeline";
 
             public static class TimerBar2D
             {
@@ -98,10 +98,10 @@ namespace Assets.Helper
 
             public static class Timeline
             {
-                public const string Root = "Canvas/TimelineRoot";
-                public const string Viewport = "Canvas/TimelineRoot/Viewport";
-                public const string Content = "Canvas/TimelineRoot/Viewport/Content";
-                public const string Indicator = "Canvas/TimelineRoot/Viewport/Indicator";
+                public const string Root = "Canvas/Timeline";
+                public const string Viewport = "Canvas/Timeline/Viewport";
+                public const string Content = "Canvas/Timeline/Viewport/Content";
+                public const string Indicator = "Canvas/Timeline/Viewport/Indicator";
             }
 
 
