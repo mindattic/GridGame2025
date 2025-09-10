@@ -57,6 +57,11 @@ namespace Game.Instances.Actor
                 public const string ArmorSouth = "ArmorSouth";
                 public const string ArmorWest = "ArmorWest";
             }
+
+            public const string ActiveIndicator = "ActiveIndicator";
+            public const string FocusIndicator = "FocusIndicator";
+            public const string TargetIndicator = "TargetIndicator";
+
         }
 
         public static class Value
@@ -101,6 +106,12 @@ namespace Game.Instances.Actor
                 public const int ArmorSouth = 25;
                 public const int ArmorWest = 26;
             }
+
+
+            public const int ActiveIndicator = 27;
+            public const int FocusIndicator = 28;
+            public const int TargetIndicator = 29;
+
 
         }
 

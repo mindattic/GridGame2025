@@ -289,9 +289,9 @@
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
+    <Compile Include="Assets\Scripts\Models\TurnSelectionMode.cs" />
     <Compile Include="Assets\Scripts\Overworld\CloudShadowInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
-    <Compile Include="Assets\Scripts\Models\TurnSelectionMode.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.FollowCursor.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />

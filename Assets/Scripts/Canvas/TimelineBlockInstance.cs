@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Assets.Helper;
+using UnityEngine.EventSystems;
 
 namespace Assets.Scripts.Canvas.Timeline
 {
@@ -15,7 +16,7 @@ namespace Assets.Scripts.Canvas.Timeline
     /// New prefab: Mask (with Image+Mask) -> Portrait (Image), Label (TMP_Text)
     /// </summary>
     [DisallowMultipleComponent]
-    public sealed class TimelineBlockInstance : MonoBehaviour
+    public sealed class TimelineBlockInstance : MonoBehaviour, IPointerClickHandler
     {
         [Header("Parts")]
         private GameObject maskRoot;    // Root GO for Mask and Portrait (optional; fallback to portraitMask.gameObject)
@@ -24,6 +25,11 @@ namespace Assets.Scripts.Canvas.Timeline
         private Image portrait;         // Child of 'Mask'
         private TMP_Text label;         // Sibling of 'Mask'
         private Image backImage;        // Optional separate Back Image (preferred for divider art)
+        private GameObject activeIndicatorGO; // current-turn indicator
+        private GameObject focusIndicatorGO;  // selection/focus highlight
+
+        [Header("Data")]
+        public ActorInstance Owner; // actor this block belongs to (null for dividers)
 
         public RectTransform Rect { get; private set; }
 
@@ -57,7 +63,14 @@ namespace Assets.Scripts.Canvas.Timeline
             var labelTr = transform.Find(GameObjectHelper.TimelineBlock.Label);
             if (labelTr != null) label = labelTr.GetComponent<TMP_Text>();
 
+            // Indicators
+            var actTr = transform.Find(GameObjectHelper.TimelineBlock.ActiveIndicator);
+            if (actTr != null) activeIndicatorGO = actTr.gameObject;
+            if (activeIndicatorGO != null) activeIndicatorGO.SetActive(false);
 
+            var focTr = transform.Find(GameObjectHelper.TimelineBlock.FocusIndicator);
+            if (focTr != null) focusIndicatorGO = focTr.gameObject;
+            if (focusIndicatorGO != null) focusIndicatorGO.SetActive(false);
 
             if (maskRoot == null && portraitMask != null)
                 maskRoot = portraitMask.gameObject;
@@ -66,6 +79,23 @@ namespace Assets.Scripts.Canvas.Timeline
             EnforceSquare();
             ConfigureMask();
         }
+
+        public void SetOwner(ActorInstance actor)
+        {
+            Owner = actor;
+        }
+
+        // Active indicator (current turn)
+        public void ShowActiveIndicator(bool on = true)
+        { if (activeIndicatorGO != null) activeIndicatorGO.SetActive(on); }
+        public void HideActiveIndicator() => ShowActiveIndicator(false);
+        public void SetCurrent(bool on) => ShowActiveIndicator(on);
+
+        // Focus indicator (selected for inspection)
+        public void ShowFocusIndicator(bool on = true)
+        { if (focusIndicatorGO != null) focusIndicatorGO.SetActive(on); }
+        public void HideFocusIndicator() => ShowFocusIndicator(false);
+        public void SetSelected(bool selected) => ShowFocusIndicator(selected);
 
         private void AutoWireFromHierarchyUsingHelper()
         {
@@ -347,6 +377,14 @@ namespace Assets.Scripts.Canvas.Timeline
                 portrait.sprite = null;
                 portrait.enabled = false;
             }
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (Owner == null) return;
+            // Focus this actor via SelectedHeroManager, which also refreshes timeline selections
+            var mgr = Assets.Helpers.GameHelper.SelectedHeroManager;
+            if (mgr != null) mgr.Focus(Owner);
         }
     }
 }

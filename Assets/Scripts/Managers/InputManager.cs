@@ -85,7 +85,7 @@ public class InputManager : MonoBehaviour
                 }
 
                 g.Actors.TargetActor = target;
-                g.TargetIndicator.Show();
+                g.Actors.TargetActor.Render.SetTargetIndicatorEnabled(true);
                 break;
 
             case TouchPhase.Moved:
@@ -93,6 +93,7 @@ public class InputManager : MonoBehaviour
 
             case TouchPhase.Ended:
             case TouchPhase.Canceled:
+
                 break;
         }
     }

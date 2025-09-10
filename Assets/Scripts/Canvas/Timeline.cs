@@ -1,4 +1,4 @@
-// --- File: Assets\Scripts\Canvas\Timeline.cs ---
+// --- File: Assets/Scripts/Canvas/Timeline.cs ---
 using Assets.Helper;
 using Assets.Scripts.Canvas.Timeline; // for TimelineBlockInstance
 using System;
@@ -35,14 +35,9 @@ public sealed class Timeline : MonoBehaviour
     [SerializeField] private int baseMaxStep = 8;
     [SerializeField] private float speedDivisor = 6f;
 
-    [Header("Indicator")] 
-    [Tooltip("Horizontal offset of the indicator inside the viewport (in pixels). 0 = flush with left edge.")]
-    [SerializeField] private float indicatorOffsetX = 16f;
 
-    // Add field
     [SerializeField] private bool alignIndicatorToBlockCenter = true;
 
-    // Round-based scheduling state
     private List<ActorInstance> currentRoundOrder = new List<ActorInstance>();
     private int currentRoundPos = 0;
     private int roundNumber = 0;
@@ -55,8 +50,7 @@ public sealed class Timeline : MonoBehaviour
         var root = GameObject.Find(GameObjectHelper.Game.Timeline.Root).GetComponent<RectTransform>();
         viewport = GameObject.Find(GameObjectHelper.Game.Timeline.Viewport).GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.Game.Timeline.Content).GetComponent<RectTransform>();
-        indicator = GameObject.Find(GameObjectHelper.Game.Timeline.Indicator).GetComponent<Image>();
-
+     
         blockPrefab = PrefabLibrary.Prefabs["TimelineBlockPrefab"].GetComponent<TimelineBlockInstance>();
     }
 
@@ -70,12 +64,7 @@ public sealed class Timeline : MonoBehaviour
         public TimelineBlockInstance instance;
     }
 
-    private class SimEntry
-    {
-        public ActorInstance actor;
-        public int delay;                 // ticks until ready
-        public int speed;
-    }
+    private class SimEntry { public ActorInstance actor; public int delay; public int speed; }
 
     private readonly List<Block> blocks = new List<Block>();
     private readonly List<SimEntry> sim = new List<SimEntry>();
@@ -95,8 +84,8 @@ public sealed class Timeline : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        SetupIndicator();
         RebuildFromScene();
+        UpdateSelectionHighlight();
     }
 
     /// <summary>
@@ -114,6 +103,7 @@ public sealed class Timeline : MonoBehaviour
 
         // Only snap at init or rebuild. Normal advances slide.
         SnapToCurrent();
+        UpdateSelectionHighlight();
     }
 
     /// <summary>
@@ -155,6 +145,7 @@ public sealed class Timeline : MonoBehaviour
         // Trim old history and relayout.
         TrimPastBlocks(trimLeftKeep);
         SetupLayout();
+        UpdateSelectionHighlight();
 
         // After forecast and layout are ready, update labels using forecast distance (enemies only).
         UpdateAllEnemyDelayLabels();
@@ -168,6 +159,7 @@ public sealed class Timeline : MonoBehaviour
         int idx = FindNextIndex(b => b.isHero, currentIndex);
         if (idx >= 0) currentIndex = idx;
         targetContentX = GetTargetXForIndex(currentIndex);
+        UpdateSelectionHighlight();
     }
 
     /// <summary>
@@ -179,6 +171,7 @@ public sealed class Timeline : MonoBehaviour
         int idx = FindNextIndex(b => !b.isHero && b.actor == enemy, currentIndex);
         if (idx >= 0) currentIndex = idx;
         targetContentX = GetTargetXForIndex(currentIndex);
+        UpdateSelectionHighlight();
     }
 
     /// <summary>
@@ -219,8 +212,6 @@ public sealed class Timeline : MonoBehaviour
             int seed = StepFromSpeed(e, spd);
             sim.Add(new SimEntry { actor = e, delay = seed, speed = spd });
         }
-
-        // Labels are updated after forecast is extended (see UpdateAllEnemyDelayLabels).
     }
 
     /// <summary>
@@ -370,18 +361,18 @@ public sealed class Timeline : MonoBehaviour
         };
 
         var go = Instantiate(blockPrefab, content);
+        go.SetOwner(actor);
         go.SetSquareMask(blockSize);
         go.Set(b.label, b.portrait);
-
-        // Set a consistent back sprite for all blocks
         go.SetBackSprite(SpriteLibrary.GUI["TimelineBlock"]);
 
         var data = ActorLibrary.Get(actor.characterName);
         var crop = data != null && data.CanvasThumbnailSettings != null ? data.CanvasThumbnailSettings : CanvasThumbnailSettings.Default;
         go.ApplyCanvasCrop(crop);
 
-        // Tint based on team
         if (actor.IsEnemy) go.TintBackForEnemy(); else go.TintBackForHero();
+        go.SetSelected(false);
+        go.SetCurrent(false);
 
         b.instance = go; b.instance.name = $"TimelineBlock_{nextBlockId++}";
         blocks.Add(b);
@@ -389,23 +380,14 @@ public sealed class Timeline : MonoBehaviour
 
     private void AddRoundDivider(int currentRound)
     {
-        // Create a divider block using the same prefab: portrait hidden, mask image shows Divider sprite
-        var b = new Block
-        {
-            isHero = false,
-            isDivider = true,
-            actor = null,
-            label = $"Round {currentRound}",
-            portrait = null
-        };
-
+        var b = new Block { isHero = false, isDivider = true, actor = null, label = $"Round {currentRound}", portrait = null };
         var go = Instantiate(blockPrefab, content);
+        go.SetOwner(null);
         go.SetSquareMask(blockSize);
         go.SetDivider(SpriteLibrary.GUI["TimelineDivider"], b.label);
-
-        b.instance = go;
-        b.instance.name = $"TimelineDivider_{nextBlockId++}";
-
+        go.SetSelected(false);
+        go.SetCurrent(false);
+        b.instance = go; b.instance.name = $"TimelineDivider_{nextBlockId++}";
         blocks.Add(b);
     }
 
@@ -414,7 +396,7 @@ public sealed class Timeline : MonoBehaviour
         for (int i = blocks.Count - 1; i >= currentIndex; i--)
         {
             var b = blocks[i];
-            if (b.isDivider) continue; // keep dividers
+            if (b.isDivider) continue;
             if (b.actor == null || !b.actor.IsPlaying)
             {
                 if (b.instance != null) Destroy(b.instance.gameObject);
@@ -464,28 +446,6 @@ public sealed class Timeline : MonoBehaviour
         // Move content so targetBlockX aligns to indicator X
         float offset = indicatorLocalX - targetBlockX;
         return offset;
-    }
-
-    private void SetupIndicator()
-    {
-        if (indicator == null || viewport == null) return;
-
-        var r = indicator.rectTransform;
-
-        // Anchor the indicator to the far LEFT, vertically centered, with a left-edge pivot.
-        r.anchorMin = new Vector2(0f, 0.5f);
-        r.anchorMax = new Vector2(0f, 0.5f);
-        r.pivot = new Vector2(0f, 0.5f);
-
-        // Offset to align with a 97% width board centered on the canvas.
-        // Use 3% of viewport width from the left edge to land at the board's left edge.
-        float dynamicMargin = viewport.rect.width * 0.03f;
-        float x = Mathf.Max(indicatorOffsetX, dynamicMargin);
-        r.anchoredPosition = new Vector2(x, 0f);
-
-        // Ensure indicator height matches block height. Keep at least a thin width.
-        float width = Mathf.Max(r.sizeDelta.x, 4f);
-        r.sizeDelta = new Vector2(width, blockSize);
     }
 
     private void SnapToCurrent()
@@ -543,6 +503,25 @@ public sealed class Timeline : MonoBehaviour
         {
             if (e != null && e.IsPlaying)
                 UpdateEnemyDelayLabel(e);
+        }
+    }
+
+    public void RefreshSelectionHighlight()
+    {
+        UpdateSelectionHighlight();
+    }
+
+    private void UpdateSelectionHighlight()
+    {
+        var focused = g.Actors.FocusedActor;
+        for (int i = 0; i < blocks.Count; i++)
+        {
+            var b = blocks[i];
+            if (b.instance == null) continue;
+            bool isCurrent = (i == currentIndex) && !b.isDivider;
+            b.instance.SetCurrent(isCurrent); // ActiveIndicator
+            bool isFocused = !b.isDivider && focused != null && b.instance.Owner == focused;
+            b.instance.SetSelected(isFocused); // FocusIndicator
         }
     }
 }

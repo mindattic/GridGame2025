@@ -105,8 +105,6 @@ namespace Assets.Helpers
   
         public static BackgroundInstance Background => gm != null ? gm.background : null;
         public static BoardOverlay BoardOverlay => gm != null ? gm.boardOverlay : null;
-        public static FocusIndicator FocusIndicator => gm != null ? gm.focusIndicator : null;
-        public static TargetIndicator TargetIndicator => gm != null ? gm.targetIndicator : null;
 
       
         public static Vector2 Viewport => GameManager.instance.viewport;      

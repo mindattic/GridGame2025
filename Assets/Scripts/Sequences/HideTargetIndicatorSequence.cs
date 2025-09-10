@@ -7,8 +7,8 @@ namespace Assets.Scripts.Sequences
     {
         public override IEnumerator ProcessRoutine()
         {
+            g.Actors.TargetActor.Render.SetTargetIndicatorEnabled(false);
             g.Actors.TargetActor = null;
-            g.TargetIndicator.Hide();
             g.InputManager.InputMode = InputMode.PlayerTurn;
             yield return Wait.None();
         }

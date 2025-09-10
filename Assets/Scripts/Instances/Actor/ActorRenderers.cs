@@ -56,6 +56,9 @@ public class ActorRenderers
     public SpriteRenderer armorEast;
     public SpriteRenderer armorSouth;
     public SpriteRenderer armorWest;
+    public SpriteRenderer activeIndicator;
+    public SpriteRenderer focusIndicator;
+    public SpriteRenderer targetIndicator;
 
     private ActorInstance instance;
     public void Initialize(ActorInstance parentInstance)
@@ -89,9 +92,12 @@ public class ActorRenderers
         armorEast = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorEast).GetComponent<SpriteRenderer>();
         armorSouth = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorSouth).GetComponent<SpriteRenderer>();
         armorWest = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorWest).GetComponent<SpriteRenderer>();
+        activeIndicator = front.GetChild(ActorLayer.Name.ActiveIndicator).GetComponent<SpriteRenderer>();
+        focusIndicator = front.GetChild(ActorLayer.Name.FocusIndicator).GetComponent<SpriteRenderer>();
+        targetIndicator = front.GetChild(ActorLayer.Name.TargetIndicator).GetComponent<SpriteRenderer>();
+
         back = instance.transform.GetChild(ActorLayer.Name.Back);
     }
-
 
     public void SetAlpha(float alpha)
     {
@@ -353,8 +359,7 @@ public class ActorRenderers
 
     public void SetActionBarEnabled(bool isEnabled)
     {
-        if (actionBarBack != null) actionBarBack.enabled = isEnabled;
-        if (actionBarFill != null) actionBarFill.enabled = isEnabled;
+        if (actionBarBack != null) actionBarBack.enabled = isEnabled; if (actionBarFill != null) actionBarFill.enabled = isEnabled;
     }
 
     public void SetArmorAlpha(float alpha)
@@ -365,6 +370,13 @@ public class ActorRenderers
         if (armorSouth != null) armorSouth.color = armorColor;
         if (armorWest != null) armorWest.color = armorColor;
     }
+
+    public void SetActiveIndicatorEnabled(bool isEnabled)
+    { if (activeIndicator != null) activeIndicator.enabled = isEnabled; }
+    public void SetFocusIndicatorEnabled(bool isEnabled)
+    { if (focusIndicator != null) focusIndicator.enabled = isEnabled; }
+    public void SetTargetIndicatorEnabled(bool isEnabled)
+    { if (targetIndicator != null) targetIndicator.enabled = isEnabled; }
 
     // ---------------- Saturation helpers ----------------
 
@@ -395,11 +407,7 @@ public class ActorRenderers
             {
                 SetOpaqueColor(oOpaque);
                 SetQualityColor(oQuality);
-                if (parallax != null)
-                {
-                    parallaxColor = oParallax;
-                    parallax.color = parallaxColor;
-                }
+                if (parallax != null) { parallaxColor = oParallax; parallax.color = parallaxColor; }
                 SetThumbnailColor(oThumbnail);
                 SetFrameColor(oFrame);
                 if (armorNorth != null) armorNorth.color = oArmor;
@@ -426,11 +434,7 @@ public class ActorRenderers
         // Apply desaturation from cached originals
         SetOpaqueColor(Desaturate(oOpaque, k));
         SetQualityColor(Desaturate(oQuality, k));
-        if (parallax != null)
-        {
-            parallaxColor = Desaturate(oParallax, k);
-            parallax.color = parallaxColor;
-        }
+        if (parallax != null) { parallaxColor = Desaturate(oParallax, k); parallax.color = parallaxColor; }
         SetThumbnailColor(Desaturate(oThumbnail, k));
         SetFrameColor(Desaturate(oFrame, k));
         var armorDesat = Desaturate(oArmor, k);

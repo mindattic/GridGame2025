@@ -84,8 +84,7 @@ namespace Assets.Helper
             {
                 public const string Root = "Board";
                 public const string BoardOverlay = "Board/BoardOverlay";
-                public const string FocusIndicator = "Board/FocusIndicator";
-                public const string TargetIndicator = "Board/TargetIndicator";
+    
             }
 
             public static class Card
@@ -115,6 +114,8 @@ namespace Assets.Helper
             public const string Mask = "Mask";
             public const string Portrait = "Mask/Portrait";
             public const string Label = "Label";
+            public const string ActiveIndicator = "ActiveIndicator"; // renamed from Indicator
+            public const string FocusIndicator = "FocusIndicator";   // renamed from Selection
         }
 
 

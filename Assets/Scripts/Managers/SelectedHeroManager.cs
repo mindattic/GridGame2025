@@ -7,10 +7,7 @@ using g = Assets.Helpers.GameHelper;
 /// <summary>
 /// Handles focus, drag, and drop for heroes during the hero turn.
 /// Promotes to SelectedHero once the drag moved at least half a tile.
-/// On drop:
-///  - If a pincer exists, it enqueues the pincer chain which ends the turn.
-///  - If no pincer exists, it enqueues DeathSequence and EndTurnSequence and executes.
-/// Either way, the timeline advances exactly one block.
+/// Focus is independent from the active actor; you can inspect any actor.
 /// </summary>
 public class SelectedHeroManager : MonoBehaviour
 {
@@ -23,15 +20,9 @@ public class SelectedHeroManager : MonoBehaviour
         dragThreshold = g.TileMap.tileSize / 2f;
     }
 
-
-
-
-
     public void Focus(ActorInstance actor = null)
     {
-        if (!g.TurnManager.IsHeroTurn)
-            return;
-
+        // Allow focusing at any time to inspect stats
         var target = actor ?? TouchHelper.GetActorAtTouchPosition();
 
         if (target == null || !target.IsPlaying)
@@ -40,45 +31,38 @@ public class SelectedHeroManager : MonoBehaviour
             {
                 g.Actors.FocusedActor = null;
                 g.AbilityButtonManager.Hide();
-                g.FocusIndicator.Hide();
+                g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(false));
                 g.Card.Clear();
+                g.Timeline?.RefreshSelectionHighlight();
             }
             return;
         }
 
-        // New: enforce selection rules depending on mode
-        if (!SelectionRules.CanControlHero(target))
+        // If unchanged, just refresh visuals
+        if (g.Actors.FocusedActor == target)
         {
-            // Feedback hook could go here (sound/UI)
+            g.Timeline?.RefreshSelectionHighlight();
             return;
         }
-
-        if (g.Actors.FocusedActor == target)
-            return;
 
         g.AbilityButtonManager.Hide();
         g.Actors.FocusedActor = target;
         g.SortingManager.OnActorFocus();
 
+        // Show abilities only when a hero is focused
         if (g.Actors.FocusedActor.IsHero)
             g.AbilityButtonManager.Show(g.Actors.FocusedActor);
-
-        // Optional: bonus hook for PreferActiveWithBonus mode
-        if (g.TurnSelectionMode == Assets.Scripts.Models.TurnSelectionMode.PreferActive)
-        {
-            var activeHero = g.Timeline != null ? g.Timeline.GetCurrentHero() : null;
-            if (activeHero != null && activeHero == g.Actors.FocusedActor)
-            {
-                // TODO: apply a bonus buff/effect here if desired.
-            }
-        }
 
         g.TouchOffset = g.Actors.FocusedActor.Position - g.TouchPosition3D;
 
         hasPendingDrag = false;
         pendingActor = null;
 
-        g.FocusIndicator.Show();
+        // Board: toggle focus indicators
+        g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(x == g.Actors.FocusedActor));
+        // Timeline: toggle focus highlight across all blocks
+        g.Timeline?.RefreshSelectionHighlight();
+
         g.Card.Assign();
 
 #if UNITY_EDITOR
@@ -88,10 +72,22 @@ public class SelectedHeroManager : MonoBehaviour
 
     public void Drag()
     {
-        if (!g.TurnManager.IsHeroTurn || !g.Actors.HasFocusedActor || g.Actors.FocusedActor.IsEnemy)
+        // Only allow dragging during hero turn and when focused actor is the active actor and is a hero
+        if (!g.TurnManager.IsHeroTurn || !g.Actors.HasFocusedActor)
             return;
 
         var actor = g.Actors.FocusedActor;
+        if (actor == null || actor.IsEnemy) return;
+        if (actor != g.TurnManager.ActiveActor) return; // restrict movement to active hero only
+
+        // Require a press/hold
+        bool pressing = Input.GetMouseButton(0) || Input.touchCount > 0;
+        if (!pressing) return;
+
+        // Require the pointer to be over the focused actor to start/continue dragging
+        var hovered = TouchHelper.GetActorAtTouchPosition();
+        if (hovered == null || hovered != actor)
+            return;
 
         if (!hasPendingDrag || pendingActor != actor)
         {
@@ -102,8 +98,6 @@ public class SelectedHeroManager : MonoBehaviour
 
             if (!pendingActor.Flags.IsMoving)
                 pendingActor.Move.MoveTowardCursor();
-
-            // g.TurnManager.RestoreFullSaturation(); // disabled per request
 
             return;
         }
@@ -117,7 +111,7 @@ public class SelectedHeroManager : MonoBehaviour
         float moved = Vector3.Distance(pendingActor.Position, pendingActor.currentTile.position);
         if (moved >= dragThreshold)
         {
-            g.Actors.SelectedHero = pendingActor;
+            g.Actors.SelectedHero = pendingActor; // promote the active hero to selected player
             g.SortingManager.OnSelectedHeroDrag();
 
             g.TimerBar2D.SetDuration(6f);
@@ -125,7 +119,6 @@ public class SelectedHeroManager : MonoBehaviour
             g.TimerBar2D.Play();
 
             g.Card.Clear();
-            g.FocusIndicator.Hide();
             g.AudioManager.Play("Click");
             g.ActorManager.CheckEnemyAP();
         }
@@ -158,31 +151,24 @@ public class SelectedHeroManager : MonoBehaviour
             return;
         }
 
-        // Stop the hero timer.
         g.TimerBar2D.Pause();
 
-        // Complete movement for promoted hero.
         var hero = g.Actors.SelectedHero;
         hero.Move.ToLocation();
         hero.Flags.IsMoving = false;
         g.SortingManager.OnSelectedHeroDrop();
 
-        // Clear selection and focus.
         g.Actors.SelectedHero = null;
-        g.Actors.FocusedActor = null;
         hasPendingDrag = false;
         pendingActor = null;
 
-        // Try a pincer chain that starts with this hero.
         bool anyPincer = g.PincerAttackManager.Check(Team.Hero, hero);
 
         if (!anyPincer)
         {
-            // No pincer. Resolve deaths, then end the turn once.
             g.SequenceManager.Add(new DeathSequence());
             g.SequenceManager.Add(new EndTurnSequence());
             g.SequenceManager.Execute();
         }
-        // If anyPincer is true, EnqueueRoutine will end the turn after the chain.
     }
 }

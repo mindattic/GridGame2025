@@ -89,8 +89,7 @@ public class GameManager : Singleton<GameManager>
 
     // Board
     [HideInInspector] public BoardOverlay boardOverlay;
-    [HideInInspector] public FocusIndicator focusIndicator;
-    [HideInInspector] public TargetIndicator targetIndicator;
+
 
     // Input
     [HideInInspector] public Vector3 touchPosition2D;
@@ -123,7 +122,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public RectTransform timelineRoot;
     [HideInInspector] public RectTransform timelineViewport;
     [HideInInspector] public RectTransform timelineContent;
-    [HideInInspector] public Image timelineIndicator;
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
     [HideInInspector] public List<SupportLineInstance> supportLines;
@@ -173,7 +171,6 @@ public class GameManager : Singleton<GameManager>
         // Timeline children
         timelineViewport = timelineRoot.Find("Viewport").GetComponent<RectTransform>();
         timelineContent = timelineViewport.Find("Content").GetComponent<RectTransform>();
-        timelineIndicator = timelineViewport.Find("Indicator").GetComponent<Image>();
         timeline = timelineRoot.GetComponent<Timeline>();
 
         coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
@@ -184,9 +181,7 @@ public class GameManager : Singleton<GameManager>
         // Board
         board = GameObject.Find(GameObjectHelper.Game.Board.Root).GetComponent<BoardInstance>();
         boardOverlay = GameObject.Find(GameObjectHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
-        focusIndicator = GameObject.Find(GameObjectHelper.Game.Board.FocusIndicator).GetComponent<FocusIndicator>();
-        targetIndicator = GameObject.Find(GameObjectHelper.Game.Board.TargetIndicator).GetComponent<TargetIndicator>();
-
+    
         var game = GameObject.Find("Game");
 
         // Audio
@@ -253,8 +248,6 @@ public class GameManager : Singleton<GameManager>
         // Show in specific order
         board.Initialize();
         stageManager.Initialize();
-        focusIndicator.Initialize();
-        targetIndicator.Initialize();
         targetModeOverlay.Initialize();
         timeline.Initialize();
         timerBar2D.Initialize();
