@@ -4261,6 +4261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDuration: 6
+  isCentered: 0
 --- !u!1 &1045160686
 GameObject:
   m_ObjectHideFlags: 0
@@ -5571,6 +5572,7 @@ MonoBehaviour:
   baseMaxStep: 8
   speedDivisor: 6
   indicatorOffsetX: 32
+  alignIndicatorToBlockCenter: 1
 --- !u!1 &1535347494
 GameObject:
   m_ObjectHideFlags: 0
@@ -6754,7 +6756,6 @@ GameObject:
   - component: {fileID: 1751276298}
   - component: {fileID: 1751276300}
   - component: {fileID: 1751276303}
-  - component: {fileID: 1751276314}
   - component: {fileID: 1751276304}
   - component: {fileID: 1751276305}
   - component: {fileID: 1751276306}
@@ -6810,6 +6811,7 @@ MonoBehaviour:
   coinCountMultiplier: 0.05
   gameSpeed: 1
   applyMovementTilt: 0
+  turnSelectionMode: 2
   reloadThumbnailSettings: 0
   soundSource: {fileID: 0}
   musicSource: {fileID: 0}
@@ -7388,18 +7390,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dottedLines: []
---- !u!114 &1751276314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751276275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a27822ed945bc84793b0a22acdb588b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1751276315
 MonoBehaviour:
   m_ObjectHideFlags: 0

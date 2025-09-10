@@ -14,103 +14,70 @@ namespace Assets.Scripts.Instances.Actor
         private bool isEnemy => instance.IsEnemy;
         protected AnimationCurve glowCurve => instance.glowCurve;
 
-        //Fields
-
         private ActorInstance instance;
-        private Vector3 initialScale;
-        private float maxIntensity;
+        private Vector3 baseScale;
+        private float maxScale;   // 1.1f target
         private float speed;
+        private Coroutine glowRoutineRef;
 
         public void Initialize(ActorInstance parentInstance)
         {
             this.instance = parentInstance;
-
-            initialScale = g.TileScale;
-            maxIntensity = 1.5f;
-            speed = 1.5f;
+            baseScale = Vector3.one; // scale of Glow renderer is independent; treat 1 as normal
+            maxScale = 1.25f;
+            speed = 2.0f;
         }
 
-
         private bool IsGlowing =>
-            instance.IsPlaying
-            && (g.TurnManager.IsHeroTurn && isPlayer) || (g.TurnManager.IsEnemyTurn && isEnemy);
-
+            instance.IsPlaying && ((g.TurnManager.IsHeroTurn && isPlayer) || (g.TurnManager.IsEnemyTurn && isEnemy));
 
         public void Glow()
         {
-            if (instance.IsActive)
-                instance.StartCoroutine(GlowRoutine());
+            if (!instance.IsActive) return;
+            if (glowRoutineRef != null) instance.StopCoroutine(glowRoutineRef);
+            glowRoutineRef = instance.StartCoroutine(GlowRoutine());
         }
 
         public IEnumerator GlowRoutine()
         {
-            //Before:
-            Vector3 scale = initialScale;
-            render.SetGlowScale(scale);
+            // Ensure starting scale at 1
+            render.SetGlowScale(baseScale);
 
-            //During (Phase 1) - Warm Up:
-            float warmupDuration = 1.0f; //Duration in seconds
-            float elapsedWarmup = 0f;
-            while (elapsedWarmup < warmupDuration)
+            // Warm up to 1.1
+            float warm = 0.15f;
+            float t = 0f;
+            while (t < warm)
             {
-                elapsedWarmup += Time.deltaTime;
-                float progress = Mathf.Clamp01(elapsedWarmup / warmupDuration);
-                float intensity = Mathf.Lerp(1.0f, maxIntensity, progress);
-                float curveValue = glowCurve.Evaluate(Time.time * speed % glowCurve.length);
-                scale = new Vector3(
-                    intensity + curveValue,
-                    intensity + curveValue,
-                    1.0f);
-                render.SetGlowScale(scale);
-
+                t += Time.deltaTime;
+                float k = Mathf.Clamp01(t / warm);
+                float s = Mathf.Lerp(1f, maxScale, k);
+                render.SetGlowScale(new Vector3(s, s, 1f));
                 yield return Wait.OneTick();
             }
 
-            //Ensure the scale ends exactly at maxIntensity:
-            scale = new Vector3(
-                maxIntensity,
-                maxIntensity,
-                1.0f);
-            render.SetGlowScale(scale);
-
-            //During (Phase 2) - Glowing:
+            // Pulse while glowing
             while (IsGlowing)
             {
-                float curveValue = glowCurve.Evaluate(Time.time * speed % glowCurve.length);
-                scale = new Vector3(
-                    maxIntensity + curveValue,
-                    maxIntensity + curveValue,
-                    1.0f);
-                render.SetGlowScale(scale);
-
+                float curve = glowCurve != null && glowCurve.length > 0 ? glowCurve.Evaluate(Time.time * speed % glowCurve.length) : Mathf.Sin(Time.time * speed) * 0.05f;
+                float s = maxScale + curve * 0.05f; // subtle +/- around 1.1
+                s = Mathf.Clamp(s, 1f, 1.15f);
+                render.SetGlowScale(new Vector3(s, s, 1f));
                 yield return Wait.OneTick();
             }
 
-            //During (Phase 3) - Cooldown:
-            float cooldownDuration = 1.0f; //Duration in seconds
-            float elapsedCooldown = 0f;
-            while (elapsedCooldown < cooldownDuration)
+            // Cooldown back to 1.0
+            float cool = 0.15f; t = 0f;
+            while (t < cool)
             {
-                elapsedCooldown += Time.deltaTime;
-                float progress = Mathf.Clamp01(elapsedCooldown / cooldownDuration);
-                float intensity = Mathf.Lerp(maxIntensity, 1.0f, progress);
-                float curveValue = glowCurve.Evaluate(Time.time * speed % glowCurve.length);
-                scale = new Vector3(
-                    intensity + curveValue,
-                    intensity + curveValue,
-                    1.0f);
-                render.SetGlowScale(scale);
-
+                t += Time.deltaTime;
+                float k = Mathf.Clamp01(t / cool);
+                float s = Mathf.Lerp(maxScale, 1f, k);
+                render.SetGlowScale(new Vector3(s, s, 1f));
                 yield return Wait.OneTick();
             }
 
-            //After:
-            scale = initialScale;
-            render.SetGlowScale(scale);
+            render.SetGlowScale(baseScale);
+            glowRoutineRef = null;
         }
-
-
-
-
     }
 }

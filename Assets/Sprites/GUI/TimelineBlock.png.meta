@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: ed2b08ca6a80b4142932274e210a8293
+guid: df4655efe1d38e540a82ca488e15895d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8117563024596838974
-    second: block_back_0
+      213: 2530231308860172193
+    second: BlockMask_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -72,7 +72,7 @@ TextureImporter:
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 2048
+    maxTextureSize: 128
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -178,13 +178,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: block_back_0
+      name: BlockMask_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c55f05107f985f80800000000000000
-      internalID: -8117563024596838974
+      spriteID: 1a7ae2c38ff2d1320800000000000000
+      internalID: 2530231308860172193
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      block_back_0: -8117563024596838974
+      BlockMask_0: 2530231308860172193
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

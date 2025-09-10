@@ -199,6 +199,7 @@
     <Compile Include="Assets\Scripts\Managers\SynergyLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Portrait2DInstance.cs" />
     <Compile Include="Assets\Scripts\Overworld\BushInstance.cs" />
+    <Compile Include="Assets\Scripts\Helpers\SelectionRules.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergySpark.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
@@ -290,6 +291,7 @@
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Overworld\CloudShadowInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
+    <Compile Include="Assets\Scripts\Models\TurnSelectionMode.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.FollowCursor.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />

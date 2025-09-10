@@ -23,8 +23,6 @@ public class ActorRenderers
     public Color actionBarColor = ColorHelper.ActionBar.Blue;
     public Color actionBarDrainColor = ColorHelper.HealthBar.Yellow;
     public Color turnDelayColor = ColorHelper.Solid.Red;
-    //public Color weaponIconColor = ColorHelper.Solid.White;
-    //public Color weaponIconColor = ColorHelper.Solid.White;
 
     public Color armorColor = ColorHelper.Solid.White;
 
@@ -54,7 +52,6 @@ public class ActorRenderers
     public TextMeshPro radialText;
     public TextMeshPro turnDelayText;
     public TextMeshPro nameTagText;
-    //public SpriteRenderer weaponIcon;
     public SpriteRenderer armorNorth;
     public SpriteRenderer armorEast;
     public SpriteRenderer armorSouth;
@@ -88,7 +85,6 @@ public class ActorRenderers
         radialText = front.GetChild(ActorLayer.Name.RadialText).GetComponent<TextMeshPro>();
         turnDelayText = front.GetChild(ActorLayer.Name.TurnDelayText).GetComponent<TextMeshPro>();
         nameTagText = front.GetChild(ActorLayer.Name.NameTagText).GetComponent<TextMeshPro>();
-        //weaponIcon = front.GetChild(ActorLayer.Name.WeaponIcon).GetComponent<SpriteRenderer>();
         armorNorth = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorNorth).GetComponent<SpriteRenderer>();
         armorEast = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorEast).GetComponent<SpriteRenderer>();
         armorSouth = front.GetChild(ActorLayer.Name.Armor.Root).GetChild(ActorLayer.Name.Armor.ArmorSouth).GetComponent<SpriteRenderer>();
@@ -105,65 +101,69 @@ public class ActorRenderers
         SetParallaxAlpha(alpha);
         SetThumbnailAlpha(alpha);
         SetFrameAlpha(alpha);
-        //statusIcon.color = new color(1, 1, 1, alpha);
         SetHealthBarAlpha(alpha);
         SetActionBarAlpha(alpha);
         SetRadialAlpha(alpha);
         SetTurnDelayTextAlpha(alpha);
         SetNameTagTextAlpha(alpha);
-        //SetWeaponIconAlpha(alpha);
         SetArmorAlpha(alpha);
     }
 
     public void SetOpaqueColor(Color color)
     {
         opaqueColor = new Color(color.r, color.g, color.b, color.a);
-        opaque.color = opaqueColor;
+        if (opaque != null) opaque.color = opaqueColor;
     }
 
     public void SetOpaqueAlpha(float alpha)
     {
         opaqueColor.a = Mathf.Clamp(alpha, 0, 1);
-        opaque.color = opaqueColor;
+        if (opaque != null) opaque.color = opaqueColor;
     }
 
     public void SetQualityColor(Color color)
     {
         qualityColor = new Color(color.r, color.g, color.b, Mathf.Clamp(color.a, Opacity.Transparent, qualityAlphaMax));
-        quality.color = qualityColor;
+        if (quality != null) quality.color = qualityColor;
     }
 
 
     public void SetQualityAlpha(float alpha)
     {
         qualityColor.a = Mathf.Clamp(alpha, Opacity.Transparent, qualityAlphaMax);
-        this.quality.color = qualityColor;
+        if (quality != null) this.quality.color = qualityColor;
     }
 
     public void SetGlowColor(Color color)
     {
         glowColor = new Color(color.r, color.g, color.b, color.a);
-        this.glow.color = glowColor;
+        if (glow != null) this.glow.color = glowColor;
     }
 
     public void SetGlowAlpha(float alpha)
     {
         glowColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Percent50);
-        this.glow.color = qualityColor;
+        if (glow != null) this.glow.color = glowColor;
     }
 
     public void SetGlowScale(Vector3 scale)
     {
-        this.glow.transform.localScale = scale;
+        if (glow != null) this.glow.transform.localScale = scale;
     }
 
     public void SetParallaxSprite(Sprite sprite)
     {
-        parallax.sprite = sprite;
+        if (parallax != null) parallax.sprite = sprite;
+    }
+
+    public void SetParallaxMaterial(Material material)
+    {
+        if (parallax != null) parallax.material = material;
     }
 
     public void SetParallaxMaterial(Material material, Texture texture = null)
     {
+        if (parallax == null) return;
         parallax.material = material;
         if (texture != null)
             parallax.material.mainTexture = texture;
@@ -172,11 +172,12 @@ public class ActorRenderers
     public void SetParallaxAlpha(float alpha)
     {
         parallaxColor.a = Mathf.Clamp(alpha, Opacity.Transparent, parallaxAlphaMax);
-        this.parallax.color = parallaxColor;
+        if (parallax != null) this.parallax.color = parallaxColor;
     }
 
     public void SetParallaxFocus(float xScroll, float yScroll)
     {
+        if (instance == null || parallax == null) return;
         instance.StartCoroutine(UpdateParallaxFocusRoutine("_XScroll", xScroll));
         instance.StartCoroutine(UpdateParallaxFocusRoutine("_YScroll", yScroll));
     }
@@ -204,69 +205,81 @@ public class ActorRenderers
     public void SetThumbnailAlpha(float alpha)
     {
         thumbnailColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
-        thumbnail.color = thumbnailColor;
+        if (thumbnail != null) thumbnail.color = thumbnailColor;
     }
 
     public void SetThumbnailMaterial(Material material)
     {
-        thumbnail.material = material;
+        if (thumbnail != null) thumbnail.material = material;
     }
 
     public void SetThumbnailSprite(Sprite sprite)
     {
-        thumbnail.sprite = sprite;
+        if (thumbnail != null) thumbnail.sprite = sprite;
     }
 
     public void SetFrameAlpha(float alpha)
     {
         frameColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
-        frame.color = frameColor;
+        if (frame != null) frame.color = frameColor;
     }
 
     public void SetFrameEnabled(bool isEnabled)
     {
-        frame.enabled = isEnabled;
+        if (frame != null) frame.enabled = isEnabled;
     }
 
     public void SetHealthBarAlpha(float alpha)
     {
-        healthBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
+        if (healthBarBack != null)
+            healthBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
         var drain = healthBarDrainColor;
-        healthBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);
+        if (healthBarDrain != null)
+            healthBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);
         var fill = healthBarColor;
-        healthBarFill.color = new Color(fill.r, fill.g, fill.b, alpha);
-        healthBarText.color = new Color(1, 1, 1, alpha);
+        if (healthBarFill != null)
+            healthBarFill.color = new Color(fill.r, fill.g, fill.b, alpha);
+        if (healthBarText != null)
+            healthBarText.color = new Color(1, 1, 1, alpha);
     }
 
     public void SetActionBarAlpha(float alpha)
     {
-        actionBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
-        actionBarDrain.color = new Color(1, 0, 0, alpha);
+        if (actionBarBack != null)
+            actionBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
+        if (actionBarDrain != null)
+            actionBarDrain.color = new Color(1, 0, 0, alpha);
         var drain = actionBarDrainColor;
-        actionBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);
+        if (actionBarDrain != null)
+            actionBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);
         var fill = actionBarColor;
-        actionBarFill.color = new Color(fill.r, fill.g, fill.b, alpha);
-        actionBarText.color = new Color(1, 1, 1, alpha);
+        if (actionBarFill != null)
+            actionBarFill.color = new Color(fill.r, fill.g, fill.b, alpha);
+        if (actionBarText != null)
+            actionBarText.color = new Color(1, 1, 1, alpha);
     }
 
     public void SetRadialEnabled(bool isEnabled)
     {
-        radialBack.enabled = isEnabled;
-        radial.enabled = isEnabled;
-        radialText.enabled = isEnabled;
+        if (radialBack != null) radialBack.enabled = isEnabled;
+        if (radial != null) radial.enabled = isEnabled;
+        if (radialText != null) radialText.enabled = isEnabled;
     }
 
     public void SetRadialAlpha(float alpha)
     {
-        radialBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
-        radial.color = new Color(1, 1, 1, alpha);
-        radialText.color = new Color(1, 1, 1, alpha);
+        if (radialBack != null)
+            radialBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
+        if (radial != null)
+            radial.color = new Color(1, 1, 1, alpha);
+        if (radialText != null)
+            radialText.color = new Color(1, 1, 1, alpha);
     }
 
     public void SetFrameColor(Color color)
     {
         frameColor = color;
-        this.frame.color = frameColor;
+        if (frame != null) this.frame.color = frameColor;
     }
 
 
@@ -284,7 +297,8 @@ public class ActorRenderers
             { 1, 4.0000f },
         };
 
-        turnDelayText.fontSize = key > 9 ? 1f : fontSizeKeyValueMap[key];
+        if (turnDelayText != null)
+            turnDelayText.fontSize = key > 9 ? 1f : fontSizeKeyValueMap[key];
     }
 
     /// <summary>
@@ -295,72 +309,141 @@ public class ActorRenderers
     /// </summary>
     public void SetTurnDelayText(int value)
     {
-        turnDelayText.text = string.Empty;
-        //if (value < 0)
-        //{
-        //    turnDelayText.text = string.Empty;
-        //}
-        //else
-        //{
-        //    // Convert 0-based delay to 1-based display (next = 1)
-        //    int turnsRemaining = value + 1;
-        //    turnDelayText.text = turnsRemaining.ToString();
-        //}
-
+        if (turnDelayText != null)
+            turnDelayText.text = string.Empty;
     }
 
     public void SetTurnDelayTextEnabled(bool isEnabled)
     {
-        turnDelayText.enabled = isEnabled;
+        if (turnDelayText != null)
+            turnDelayText.enabled = isEnabled;
     }
 
     public void SetTurnDelayTextAlpha(float alpha)
     {
         turnDelayColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
-        turnDelayText.color = turnDelayColor;
+        if (turnDelayText != null)
+            turnDelayText.color = turnDelayColor;
     }
 
     public void SetTurnDelayTextColor(Color color)
     {
         turnDelayColor = color;
-        turnDelayText.color = turnDelayColor;
+        if (turnDelayText != null)
+            turnDelayText.color = turnDelayColor;
     }
 
     public void SetNameTagText(string text)
     {
-        nameTagText.text = text;
+        if (nameTagText != null)
+            nameTagText.text = text;
     }
 
     public void SetNameTagTextAlpha(float alpha)
     {
-        nameTagText.color = new Color(1, 1, 1, alpha);
+        if (nameTagText != null)
+            nameTagText.color = new Color(1, 1, 1, alpha);
     }
 
     public void SetNameTagEnabled(bool isEnabled)
     {
-        nameTagText.enabled = isEnabled;
+        if (nameTagText != null)
+            nameTagText.enabled = isEnabled;
     }
 
     public void SetActionBarEnabled(bool isEnabled)
     {
-        actionBarBack.enabled = isEnabled;
-        actionBarFill.enabled = isEnabled;
+        if (actionBarBack != null) actionBarBack.enabled = isEnabled;
+        if (actionBarFill != null) actionBarFill.enabled = isEnabled;
     }
-
-    //public void SetWeaponIconAlpha(float alpha)
-    //{
-    //    weaponIconColor = new Color(1, 1, 1, alpha);
-    //    weaponIcon.color = weaponIconColor;
-    //}
 
     public void SetArmorAlpha(float alpha)
     {
         armorColor = new Color(1, 1, 1, alpha);
-        armorNorth.color = armorColor;
-        armorEast.color = armorColor;
-        armorSouth.color = armorColor;
-        armorWest.color = armorColor;
+        if (armorNorth != null) armorNorth.color = armorColor;
+        if (armorEast != null) armorEast.color = armorColor;
+        if (armorSouth != null) armorSouth.color = armorColor;
+        if (armorWest != null) armorWest.color = armorColor;
     }
 
+    // ---------------- Saturation helpers ----------------
 
+    private bool saturationCached;
+    private Color oOpaque, oQuality, oParallax, oThumbnail, oFrame, oArmor;
+
+    private static Color Desaturate(Color c, float k)
+    {
+        Color.RGBToHSV(c, out float h, out float s, out float v);
+        s = Mathf.Clamp01(s * Mathf.Clamp01(k));
+        var outC = Color.HSVToRGB(h, s, v);
+        outC.a = c.a;
+        return outC;
+    }
+
+    /// <summary>
+    /// Sets saturation for key sprite layers. k=1 keeps original tint; k=0 makes grayscale.
+    /// Safe to call repeatedly. Restores original colors when k>=1.
+    /// </summary>
+    public void SetSaturation(float k)
+    {
+        k = Mathf.Clamp01(k);
+
+        // Restore
+        if (k >= 0.999f)
+        {
+            if (saturationCached)
+            {
+                SetOpaqueColor(oOpaque);
+                SetQualityColor(oQuality);
+                if (parallax != null)
+                {
+                    parallaxColor = oParallax;
+                    parallax.color = parallaxColor;
+                }
+                SetThumbnailColor(oThumbnail);
+                SetFrameColor(oFrame);
+                if (armorNorth != null) armorNorth.color = oArmor;
+                if (armorEast != null) armorEast.color = oArmor;
+                if (armorSouth != null) armorSouth.color = oArmor;
+                if (armorWest != null) armorWest.color = oArmor;
+            }
+            saturationCached = false;
+            return;
+        }
+
+        // Cache originals once
+        if (!saturationCached)
+        {
+            oOpaque = opaqueColor;
+            oQuality = qualityColor;
+            oParallax = parallaxColor;
+            oThumbnail = thumbnailColor;
+            oFrame = frameColor;
+            oArmor = armorColor;
+            saturationCached = true;
+        }
+
+        // Apply desaturation from cached originals
+        SetOpaqueColor(Desaturate(oOpaque, k));
+        SetQualityColor(Desaturate(oQuality, k));
+        if (parallax != null)
+        {
+            parallaxColor = Desaturate(oParallax, k);
+            parallax.color = parallaxColor;
+        }
+        SetThumbnailColor(Desaturate(oThumbnail, k));
+        SetFrameColor(Desaturate(oFrame, k));
+        var armorDesat = Desaturate(oArmor, k);
+        if (armorNorth != null) armorNorth.color = armorDesat;
+        if (armorEast != null) armorEast.color = armorDesat;
+        if (armorSouth != null) armorSouth.color = armorDesat;
+        if (armorWest != null) armorWest.color = armorDesat;
+    }
+
+    // helpers used above
+    public void SetThumbnailColor(Color color)
+    {
+        thumbnailColor = new Color(color.r, color.g, color.b, color.a);
+        if (thumbnail != null) thumbnail.color = thumbnailColor;
+    }
 }

@@ -108,6 +108,15 @@ namespace Assets.Helper
 
         }
 
+        // Add TimelineBlock prefab internal paths
+        public static class TimelineBlock
+        {
+            public const string Back = "Back";
+            public const string Mask = "Mask";
+            public const string Portrait = "Mask/Portrait";
+            public const string Label = "Label";
+        }
+
 
         public static class PartyManager
         {

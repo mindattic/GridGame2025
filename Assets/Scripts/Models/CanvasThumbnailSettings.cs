@@ -1,46 +1,54 @@
-    using UnityEngine;
+using UnityEngine;
 
-    namespace Assets.Scripts.Models
+namespace Assets.Scripts.Models
+{
+    [System.Serializable]
+    public class CanvasThumbnailSettings
     {
-        [System.Serializable]
-        public class CanvasThumbnailSettings
+        public float X;
+        public float Y;
+        public int Width;
+        public int Height;
+        public Vector2 Scale; // new: UI scale for portrait in the mask
+
+        public CanvasThumbnailSettings() { }
+
+        public CanvasThumbnailSettings(float x, float y, int width, int height)
         {
-            public float X;
-            public float Y;
-            public int Width;
-            public int Height;
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            Scale = new Vector2(1f, 1f);
+        }
 
-            public CanvasThumbnailSettings() { }
+        public CanvasThumbnailSettings(float x, float y, int width, int height, Vector2 scale)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            Scale = scale;
+        }
 
-            public CanvasThumbnailSettings(float x, float y, int width, int height)
-            {
-                X = x;
-                Y = y;
-                Width = width;
-                Height = height;
-            }
+        // Copy constructor
+        public CanvasThumbnailSettings(CanvasThumbnailSettings other)
+        {
+            if (other == null) return;
+            X = other.X;
+            Y = other.Y;
+            Width = other.Width;
+            Height = other.Height;
+            Scale = other.Scale;
+        }
 
-            // Copy constructor
-            public CanvasThumbnailSettings(CanvasThumbnailSettings other)
-            {
-                if (other == null) return;
-                X = other.X;
-                Y = other.Y;
-                Width = other.Width;
-                Height = other.Height;
-            }
+        // Defaults for timeline portrait crop
+        public static CanvasThumbnailSettings Default => Generate();
 
-            /// <summary>
-            /// Returns a square crop of size blockPixels taken from the top-center.
-            /// Ignores the provided ThumbnailSettings.
-            /// </summary>
-            public static CanvasThumbnailSettings Generate(float blockPixels = 255f)
-            {
-                int edge = Mathf.RoundToInt(blockPixels);
-
-                // X/Y are offsets used by the canvas code; 0,0 keeps the crop centered horizontally.
-                // Height/Width define the crop size. Top-center presentation is handled by the canvas.
-                return new CanvasThumbnailSettings(0f, 0f, edge, edge);
-            }
+        public static CanvasThumbnailSettings Generate()
+        {
+            // Pos X = 0, Pos Y = -150, Width = 96, Height = 96, Scale = (4,4)
+            return new CanvasThumbnailSettings(0f, -150f, 96, 96, new Vector2(4f, 4f));
         }
     }
+}

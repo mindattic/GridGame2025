@@ -2,24 +2,17 @@
 using Assets.Scripts.Sequences;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using Assets.Scripts.Models;
+using System.Linq;
 
 namespace Assets.Scripts.Managers
 {
-    /// <summary>
-    /// Central turn flow controller. The timeline is the source of truth.
-    /// After each turn completes we advance the belt one block, read the new
-    /// current block, and enqueue the correct side's start sequence.
-    /// </summary>
     public class TurnManager : MonoBehaviour
     {
         public bool IsHeroTurn { get; private set; }
         public bool IsEnemyTurn => !IsHeroTurn;
         public int CurrentTurn = 0;
 
-        /// <summary>
-        /// Initialize the first turn from the timeline's current block.
-        /// Defaults to hero if the timeline is not yet available.
-        /// </summary>
         public void Initialize()
         {
             var enemyAtCursor = (g.Timeline != null)
@@ -30,26 +23,19 @@ namespace Assets.Scripts.Managers
             StartTurn();
         }
 
-        /// <summary>
-        /// Finish the current turn, advance the belt one block, then start
-        /// whatever block lands under the indicator. No blind toggling.
-        /// </summary>
         public void NextTurn()
         {
             CurrentTurn++;
 
-            // 1) Advance the belt exactly once.
             if (g.Timeline != null)
                 g.Timeline.NextBlock();
 
-            // 2) Decide who acts based on the new current block.
             var enemyAtCursor = (g.Timeline != null)
                 ? g.Timeline.GetCurrentEnemy()
                 : null;
 
             IsHeroTurn = enemyAtCursor == null;
 
-            // 3) Focus the belt on the block that will act.
             if (g.Timeline != null)
             {
                 if (IsHeroTurn)
@@ -58,24 +44,21 @@ namespace Assets.Scripts.Managers
                     g.Timeline.FocusOnEnemy(enemyAtCursor);
             }
 
-            // 4) Enqueue the correct start sequence.
+            TryGlowActiveHero();
+
+            // Saturation temporarily disabled pending visual fixes
+            // if (IsHeroTurn) ApplyHeroTurnDesaturation(); else RestoreFullSaturation();
+
             if (IsHeroTurn)
             {
-
                 g.SequenceManager.Add(new HeroStartSequence());
             }
             else
             {
-                // Drive the exact enemy predicted by the timeline.
-                // EnemyStartSequence picks by readiness; EnemyTakeTurnSequence acts this one.
                 g.SequenceManager.Add(new EnemyTakeTurnSequence(enemyAtCursor));
             }
         }
 
-        /// <summary>
-        /// Start the very first block without advancing the belt.
-        /// Uses the timeline's current block to pick hero or enemy.
-        /// </summary>
         private void StartTurn()
         {
             if (g.Timeline != null)
@@ -89,10 +72,13 @@ namespace Assets.Scripts.Managers
                     g.Timeline.FocusOnEnemy(enemyAtCursor);
             }
 
+            TryGlowActiveHero();
+
+            // Saturation temporarily disabled pending visual fixes
+            // if (IsHeroTurn) ApplyHeroTurnDesaturation(); else RestoreFullSaturation();
+
             if (IsHeroTurn)
             {
-                // Do not increment CurrentTurn here. We count when a hero block begins
-                // because Initialize can be called multiple times during setup.
                 g.SequenceManager.Add(new HeroStartSequence());
             }
             else
@@ -101,5 +87,20 @@ namespace Assets.Scripts.Managers
                 g.SequenceManager.Add(new EnemyTakeTurnSequence(enemyAtCursor));
             }
         }
+
+        private void TryGlowActiveHero()
+        {
+            if (!IsHeroTurn) return;
+
+            var hero = g.Timeline != null ? g.Timeline.GetCurrentHero() : null;
+            if (hero != null && hero.IsPlaying && hero.IsHero && hero.Glow != null)
+            {
+                hero.Glow.Glow();
+            }
+        }
+
+        // Keep these as no-ops for now to avoid breaking callers
+        public void ApplyHeroTurnDesaturation() { }
+        public void RestoreFullSaturation() { }
     }
 }

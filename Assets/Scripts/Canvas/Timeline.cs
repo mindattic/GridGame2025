@@ -1,4 +1,4 @@
-// --- File: Assets/Scripts/Canvas/Timeline.cs ---
+// --- File: Assets\Scripts\Canvas\Timeline.cs ---
 using Assets.Helper;
 using Assets.Scripts.Canvas.Timeline; // for TimelineBlockInstance
 using System;
@@ -8,13 +8,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Assets.Helper.GameObjectHelper.Game;
 using g = Assets.Helpers.GameHelper;
+using Assets.Scripts.Models;
 
-/// <summary>
-/// Timeline is the single source of truth for turn order.
-/// All actors (heroes and enemies) use the same cadence formula based on their own speed.
-/// Exactly one-block advance per completed turn.
-/// Forward-only forecast that is always extended so you never see the end.
-/// </summary>
 public sealed class Timeline : MonoBehaviour
 {
     private RectTransform viewport;
@@ -44,6 +39,9 @@ public sealed class Timeline : MonoBehaviour
     [Tooltip("Horizontal offset of the indicator inside the viewport (in pixels). 0 = flush with left edge.")]
     [SerializeField] private float indicatorOffsetX = 16f;
 
+    // Add field
+    [SerializeField] private bool alignIndicatorToBlockCenter = true;
+
     // Round-based scheduling state
     private List<ActorInstance> currentRoundOrder = new List<ActorInstance>();
     private int currentRoundPos = 0;
@@ -68,7 +66,6 @@ public sealed class Timeline : MonoBehaviour
         public bool isDivider;
         public ActorInstance actor;      // actor for this block (null for divider)
         public string label;
-        public Color color;
         public Sprite portrait;
         public TimelineBlockInstance instance;
     }
@@ -117,6 +114,16 @@ public sealed class Timeline : MonoBehaviour
 
         // Only snap at init or rebuild. Normal advances slide.
         SnapToCurrent();
+    }
+
+    /// <summary>
+    /// Return the hero assigned to the current block, or null for enemy blocks.
+    /// </summary>
+    public ActorInstance GetCurrentHero()
+    {
+        if (blocks.Count == 0) return null;
+        var b = blocks[Mathf.Clamp(currentIndex, 0, blocks.Count - 1)];
+        return b != null && b.isHero ? b.actor : null;
     }
 
     /// <summary>
@@ -353,58 +360,48 @@ public sealed class Timeline : MonoBehaviour
 
     private void AddActorBlock(ActorInstance actor)
     {
-        if (actor == null) return;
-
-        bool isHero = actor.IsHero;
         var b = new Block
         {
-            isHero = isHero,
+            isHero = actor.IsHero,
             isDivider = false,
             actor = actor,
-            label = string.IsNullOrEmpty(actor.characterName) ? (isHero ? "Hero" : "Enemy") : actor.characterName,
-            color = isHero ? ColorHelper.Solid.White : ColorHelper.Solid.GunMetal,
+            label = string.IsNullOrEmpty(actor.characterName) ? (actor.IsHero ? "Hero" : "Enemy") : actor.characterName,
             portrait = actor.Render.thumbnail.sprite
         };
 
         var go = Instantiate(blockPrefab, content);
-        if (isHero)
-            go.SetPortraitYOffset(0f);        // Center portrait for hero blocks
         go.SetSquareMask(blockSize);
-        go.Set(b.label, b.color, b.portrait);
+        go.Set(b.label, b.portrait);
 
-        // Apply per-actor canvas crop and thumbnail settings for portrait crop/zoom in the block
+        // Set a consistent back sprite for all blocks
+        go.SetBackSprite(SpriteLibrary.GUI["TimelineBlock"]);
+
         var data = ActorLibrary.Get(actor.characterName);
-        if (data != null && data.CanvasThumbnailSettings != null)
-            go.ApplyCanvasCrop(data.CanvasThumbnailSettings);
-        else if (actor.Thumbnail != null && actor.Thumbnail.settings != null)
-            go.ApplyThumbnailSettings(actor.Thumbnail.settings);
+        var crop = data != null && data.CanvasThumbnailSettings != null ? data.CanvasThumbnailSettings : CanvasThumbnailSettings.Default;
+        go.ApplyCanvasCrop(crop);
 
-        b.instance = go;
-        b.instance.name = $"TimelineBlock_{nextBlockId++}";
+        // Tint based on team
+        if (actor.IsEnemy) go.TintBackForEnemy(); else go.TintBackForHero();
 
+        b.instance = go; b.instance.name = $"TimelineBlock_{nextBlockId++}";
         blocks.Add(b);
     }
 
     private void AddRoundDivider(int currentRound)
     {
-        // Create a simple divider block using a white sprite placeholder
+        // Create a divider block using the same prefab: portrait hidden, mask image shows Divider sprite
         var b = new Block
         {
             isHero = false,
             isDivider = true,
             actor = null,
             label = $"Round {currentRound}",
-            color = ColorHelper.Solid.GunMetal, // subtle contrast
             portrait = null
         };
 
         var go = Instantiate(blockPrefab, content);
         go.SetSquareMask(blockSize);
-
-        // Build a 1x1 white sprite expanded by the mask
-        var tex = Texture2D.whiteTexture;
-        var sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0.5f, 0.5f));
-        go.Set(b.label, b.color, sprite);
+        go.SetDivider(SpriteLibrary.GUI["TimelineDivider"], b.label);
 
         b.instance = go;
         b.instance.name = $"TimelineDivider_{nextBlockId++}";
@@ -454,16 +451,18 @@ public sealed class Timeline : MonoBehaviour
 
     private float GetTargetXForIndex(int index)
     {
-        // Align the LEFT edge of the current block to the indicator's X (in viewport local space).
-        // Block i left edge is at i * UnitWidth in content space.
-        float blockLeft = index * UnitWidth;
+        // Block i left edge is at i * UnitWidth. Optionally align to block center.
+        float targetBlockX = index * UnitWidth + (alignIndicatorToBlockCenter ? blockSize * 0.5f : 0f);
+
         float indicatorLocalX = 0f;
         if (indicator != null)
         {
             var r = indicator.rectTransform;
-            indicatorLocalX = r.anchoredPosition.x; // since anchor/pivot are left/center, this is from viewport's left
+            indicatorLocalX = r.anchoredPosition.x; // from viewport's left
         }
-        float offset = indicatorLocalX - blockLeft; // move content so block's left aligns to indicator X
+
+        // Move content so targetBlockX aligns to indicator X
+        float offset = indicatorLocalX - targetBlockX;
         return offset;
     }
 
@@ -477,7 +476,12 @@ public sealed class Timeline : MonoBehaviour
         r.anchorMin = new Vector2(0f, 0.5f);
         r.anchorMax = new Vector2(0f, 0.5f);
         r.pivot = new Vector2(0f, 0.5f);
-        r.anchoredPosition = new Vector2(indicatorOffsetX, 0f);
+
+        // Offset to align with a 97% width board centered on the canvas.
+        // Use 3% of viewport width from the left edge to land at the board's left edge.
+        float dynamicMargin = viewport.rect.width * 0.03f;
+        float x = Mathf.Max(indicatorOffsetX, dynamicMargin);
+        r.anchoredPosition = new Vector2(x, 0f);
 
         // Ensure indicator height matches block height. Keep at least a thin width.
         float width = Mathf.Max(r.sizeDelta.x, 4f);
@@ -486,7 +490,8 @@ public sealed class Timeline : MonoBehaviour
 
     private void SnapToCurrent()
     {
-        contentX = targetContentX = GetTargetXForIndex(currentIndex);
+        var snap = GetTargetXForIndex(currentIndex);
+        contentX = targetContentX = snap;
         content.anchoredPosition = new Vector2(contentX, 0f);
     }
 

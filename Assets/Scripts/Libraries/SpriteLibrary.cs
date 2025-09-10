@@ -137,17 +137,17 @@ public static class SpriteLibrary
         gui = new Dictionary<string, Sprite>
         {
             { "BackButton", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/BackButton") },
-            { "BlockBack", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/BlockBack") },
             { "Indicator", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Indicator") },
             { "PortraitMask", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/PortraitMask") },
             { "TeamIcon", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/TeamIcon") },
-            { "BlockMask", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/BlockMask") },
             { "Joystick00", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick00") },
             { "Joystick01", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick01") },
             { "Joystick02", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Joystick02") },
             { "Camera00", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Camera00") },
             { "Camera01", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/Camera01") },
-            { "DestinationMarker", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/DestinationMarker") },
+            { "DestinationMarker", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/DestinationMarker") },        
+            { "TimelineBlock", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/TimelineBlock") },
+            { "TimelineDivider", AssetHelper.LoadAsset<Sprite>("Sprites/GUI/TimelineDivider") },
         };
 
         leaves = new Dictionary<string, Sprite>

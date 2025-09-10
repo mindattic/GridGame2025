@@ -42,6 +42,13 @@ public class SelectedHeroManager : MonoBehaviour
             return;
         }
 
+        // New: enforce selection rules depending on mode
+        if (!SelectionRules.CanControlHero(target))
+        {
+            // Feedback hook could go here (sound/UI)
+            return;
+        }
+
         if (g.Actors.FocusedActor == target)
             return;
 
@@ -52,6 +59,16 @@ public class SelectedHeroManager : MonoBehaviour
 
         if (g.Actors.FocusedActor.IsHero)
             g.AbilityButtonManager.Show(g.Actors.FocusedActor);
+
+        // Optional: bonus hook for PreferActiveWithBonus mode
+        if (g.TurnSelectionMode == Assets.Scripts.Models.TurnSelectionMode.PreferActiveWithBonus)
+        {
+            var activeHero = g.Timeline != null ? g.Timeline.GetCurrentHero() : null;
+            if (activeHero != null && activeHero == g.Actors.FocusedActor)
+            {
+                // TODO: apply a bonus buff/effect here if desired.
+            }
+        }
 
         g.TouchOffset = g.Actors.FocusedActor.Position - g.TouchPosition3D;
 
@@ -82,6 +99,8 @@ public class SelectedHeroManager : MonoBehaviour
 
             if (!pendingActor.Flags.IsMoving)
                 pendingActor.Move.MoveTowardCursor();
+
+            // g.TurnManager.RestoreFullSaturation(); // disabled per request
 
             return;
         }

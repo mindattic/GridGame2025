@@ -3,6 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Assets.Helper;
 
 namespace Assets.Scripts.Canvas.Timeline
 {
@@ -11,45 +12,165 @@ namespace Assets.Scripts.Canvas.Timeline
     /// - Square block footprint.
     /// - Mask crops the portrait.
     /// - Portrait is offset so only the top half is visible.
+    /// New prefab: Mask (with Image+Mask) -> Portrait (Image), Label (TMP_Text)
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class TimelineBlockInstance : MonoBehaviour
     {
         [Header("Parts")]
-        [SerializeField] private Image back;
-        [SerializeField] private Image portrait;
-        [SerializeField] private Mask portraitMask;
-        [SerializeField] private TMP_Text label;
+        private GameObject maskRoot;    // Root GO for Mask and Portrait (optional; fallback to portraitMask.gameObject)
+        private Mask portraitMask;      // On child 'Mask'
+        private Image maskImage;        // Image on 'Mask' (used for backs when needed)
+        private Image portrait;         // Child of 'Mask'
+        private TMP_Text label;         // Sibling of 'Mask'
+        private Image backImage;        // Optional separate Back Image (preferred for divider art)
 
         public RectTransform Rect { get; private set; }
 
-        // Optional override for portrait anchoredPosition.y (pixels). If null, use default (-s * 0.5f).
         private float? portraitYOffsetOverride;
-
-        // If true, FitPortraitRect uses ThumbnailSettings to crop/zoom instead of the default top-half rule.
-        private bool useThumbnailSettings;
+        private bool useThumbnailSettings;  // whether to apply thumbnail settings
         private ThumbnailSettings appliedThumbnail;
-
-        // Canvas crop preferences (top-center) if provided by data
         private CanvasThumbnailSettings canvasCrop;
 
         private void Awake()
         {
             Rect = GetComponent<RectTransform>();
+
+            // Back
+            var backTr = transform.Find(GameObjectHelper.TimelineBlock.Back);
+            if (backTr != null) backImage = backTr.GetComponent<Image>();
+
+            // Mask
+            var maskTr = transform.Find(GameObjectHelper.TimelineBlock.Mask);
+            if (maskTr != null)
+            {
+                maskRoot = maskTr.gameObject;
+                portraitMask = maskTr.GetComponent<Mask>();
+                maskImage = maskTr.GetComponent<Image>();
+            }
+
+            // Portrait under Mask
+            var portraitTr = transform.Find(GameObjectHelper.TimelineBlock.Portrait);
+            if (portraitTr != null) portrait = portraitTr.GetComponent<Image>();
+
+            // Label
+            var labelTr = transform.Find(GameObjectHelper.TimelineBlock.Label);
+            if (labelTr != null) label = labelTr.GetComponent<TMP_Text>();
+
+
+
+            if (maskRoot == null && portraitMask != null)
+                maskRoot = portraitMask.gameObject;
+            if (portrait != null) portrait.preserveAspect = false; // ensure rect size drives the visual
+
+            EnforceSquare();
+            ConfigureMask();
+        }
+
+        private void AutoWireFromHierarchyUsingHelper()
+        {
+          
+        }
+
+        /// <summary>
+        /// Set label and portrait in one call (no background tint in new layout).
+        /// </summary>
+        public void Set(string text, Sprite portraitSprite)
+        {
+            // Ensure mask visuals are enabled for normal blocks
+            if (maskRoot != null) maskRoot.SetActive(true);
+            if (backImage != null)
+            {
+                backImage.enabled = true;
+                // keep existing sprite assigned by prefab unless explicitly changed
+            }
+
+            SetLabel("");
+            SetPortraitTopHalf(portraitSprite);
             EnforceSquare();
             ConfigureMask();
         }
 
         /// <summary>
-        /// Set label, tint, and portrait in one call.
+        /// Configure as a divider: hide portrait, set the mask image sprite for the divider art, and set label.
         /// </summary>
-        public void Set(string text, Color tint, Sprite portraitSprite)
+        public void SetDivider(Sprite dividerSprite, string text)
         {
+            ClearPortrait();
+
+            // Disable mask root so divider is not clipped
+            if (maskRoot != null) maskRoot.SetActive(false);
+            else DisableMask();
+
+            // Prefer Back Image for divider; fallback to mask image
+            if (backImage != null)
+            {
+                backImage.sprite = dividerSprite;
+                backImage.enabled = dividerSprite != null;
+                var c = backImage.color; c.a = 1f; backImage.color = c;
+            }
+            else if (maskImage != null)
+            {
+                maskImage.sprite = dividerSprite;
+                maskImage.enabled = dividerSprite != null;
+                var c = maskImage.color; c.a = 1f; maskImage.color = c;
+            }
+
             SetLabel(text);
-            SetStyle(tint);
-            SetPortraitTopHalf(portraitSprite);
             EnforceSquare();
-            ConfigureMask();
+        }
+
+        /// <summary>
+        /// Assign the back sprite and show the back image.
+        /// </summary>
+        public void SetBackSprite(Sprite sprite)
+        {
+            if (backImage != null)
+            {
+                backImage.sprite = sprite;
+                backImage.enabled = sprite != null;
+            }
+            else if (maskImage != null)
+            {
+                maskImage.sprite = sprite;
+                maskImage.enabled = sprite != null;
+            }
+        }
+
+        /// <summary>
+        /// Tint the background for enemy blocks (via mask image color).
+        /// </summary>
+        public void TintBackForEnemy()
+        {
+            // Tint the back image if present; else tint mask image
+            if (backImage != null)
+            {
+                backImage.color = ColorHelper.Solid.GunMetal;
+                backImage.enabled = true;
+            }
+            else if (maskImage != null)
+            {
+                maskImage.color = ColorHelper.Solid.GunMetal;
+                maskImage.enabled = true;
+            }
+        }
+
+        /// <summary>
+        /// Tint the background for hero blocks (via mask image color).
+        /// </summary>
+        public void TintBackForHero()
+        {
+            // Tint the back image if present; else tint mask image
+            if (backImage != null)
+            {
+                backImage.color = ColorHelper.Solid.White;
+                backImage.enabled = true;
+            }
+            else if (maskImage != null)
+            {
+                maskImage.color = ColorHelper.Solid.White;
+                maskImage.enabled = true;
+            }
         }
 
         /// <summary>
@@ -89,7 +210,7 @@ namespace Assets.Scripts.Canvas.Timeline
         /// </summary>
         public void ApplyCanvasCrop(CanvasThumbnailSettings crop)
         {
-            canvasCrop = crop;
+            canvasCrop = crop != null ? new CanvasThumbnailSettings(crop) : CanvasThumbnailSettings.Default;
             FitPortraitRect();
         }
 
@@ -113,13 +234,7 @@ namespace Assets.Scripts.Canvas.Timeline
             FitPortraitRect();
         }
 
-        private void SetStyle(Color tint)
-        {
-            if (back != null) back.color = tint;
-            if (label != null) label.color = Color.white;
-        }
-
-        private void SetLabel(string text)
+        public void SetLabel(string text)
         {
             if (label != null) label.text = text;
         }
@@ -151,6 +266,12 @@ namespace Assets.Scripts.Canvas.Timeline
             portraitMask.enabled = true;
         }
 
+        private void DisableMask()
+        {
+            if (portraitMask != null) portraitMask.enabled = false;
+            if (portrait != null) portrait.enabled = false;
+        }
+
         private void FitPortraitRect()
         {
             if (portrait == null || Rect == null) return;
@@ -164,19 +285,20 @@ namespace Assets.Scripts.Canvas.Timeline
 
             if (canvasCrop != null)
             {
-                // Canvas crop: keep portrait sized to crop window relative to block size, top-center bias.
-                float w = Mathf.Max(1f, canvasCrop.Width * (s / 512f));
-                float h = Mathf.Max(1f, canvasCrop.Height * (s / 512f));
+                // Use canvas crop settings directly
+                float w = Mathf.Max(1f, canvasCrop.Width);
+                float h = Mathf.Max(1f, canvasCrop.Height);
                 pr.sizeDelta = new Vector2(w, h);
 
-                // Top-center: y positive moves up; offset half the height to emphasize top.
-                float px = canvasCrop.X * s;
-                float py = (0.5f + canvasCrop.Y) * (h * 0.0f); // keep centered for now; adjust if needed
-                pr.anchoredPosition = new Vector2(px, 0f);
+                float px = canvasCrop.X;
+                float py = canvasCrop.Y;
+                pr.anchoredPosition = new Vector2(px, py);
+
+                // Apply UI scale from settings (default 4,4)
+                pr.localScale = new Vector3(canvasCrop.Scale.x, canvasCrop.Scale.y, 1f);
             }
             else if (useThumbnailSettings && appliedThumbnail != null)
             {
-                // Zoom by scale; pan by position. Interpreting Position as a multiple of block size in pixels.
                 float w = Mathf.Max(1f, s * appliedThumbnail.Scale.x);
                 float h = Mathf.Max(1f, s * appliedThumbnail.Scale.y);
                 pr.sizeDelta = new Vector2(w, h);
@@ -184,19 +306,20 @@ namespace Assets.Scripts.Canvas.Timeline
                 float px = appliedThumbnail.Position.x * s;
                 float py = appliedThumbnail.Position.y * s;
                 pr.anchoredPosition = new Vector2(px, py);
+
+                pr.localScale = Vector3.one;
             }
             else
             {
-                // Default: double height so top-half can be shown by default.
-                pr.sizeDelta = new Vector2(s, s * 2f);
-
-                // Use override if provided, else default to showing the top half (-s * 0.5f).
-                float y = portraitYOffsetOverride.HasValue ? portraitYOffsetOverride.Value : -s * 0.5f;
-                pr.anchoredPosition = new Vector2(0f, y);
+                // Default to CanvasThumbnailSettings defaults
+                var def = CanvasThumbnailSettings.Default;
+                pr.sizeDelta = new Vector2(def.Width, def.Height);
+                float y = portraitYOffsetOverride.HasValue ? portraitYOffsetOverride.Value : def.Y;
+                pr.anchoredPosition = new Vector2(def.X, y);
+                pr.localScale = new Vector3(def.Scale.x, def.Scale.y, 1f);
             }
 
             pr.localRotation = Quaternion.identity;
-            pr.localScale = Vector3.one;
         }
 
         /// <summary>
@@ -215,6 +338,15 @@ namespace Assets.Scripts.Canvas.Timeline
             if (portraitMask != null) portraitMask.enabled = enabled;
 
             FitPortraitRect();
+        }
+
+        public void ClearPortrait()
+        {
+            if (portrait != null)
+            {
+                portrait.sprite = null;
+                portrait.enabled = false;
+            }
         }
     }
 }

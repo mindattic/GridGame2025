@@ -55,6 +55,13 @@ namespace Assets.Helpers
             set => GameManager.instance.dragSensitivity = value;
         }
 
+        // New: selection mode toggle
+        public static TurnSelectionMode TurnSelectionMode
+        {
+            get => gm != null ? gm.turnSelectionMode : TurnSelectionMode.FreeSelect;
+            set { if (gm != null) gm.turnSelectionMode = value; }
+        }
+
         public static AudioSource SoundSource => gm != null ? gm.soundSource : null;
         public static AudioSource MusicSource => gm != null ? gm.musicSource : null;
 
