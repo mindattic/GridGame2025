@@ -38,6 +38,10 @@ public sealed class Timeline : MonoBehaviour
 
     [SerializeField] private bool alignIndicatorToBlockCenter = true;
 
+    [Header("Alignment")]
+    [Tooltip("Horizontal nudge to the right as a fraction of the canvas width (viewport width). Useful to align with the board and timer bar.")]
+    [SerializeField] private float rightNudgePercentOfCanvas = 0.03f;
+
     private List<ActorInstance> currentRoundOrder = new List<ActorInstance>();
     private int currentRoundPos = 0;
     private int roundNumber = 0;
@@ -443,9 +447,12 @@ public sealed class Timeline : MonoBehaviour
             indicatorLocalX = r.anchoredPosition.x; // from viewport's left
         }
 
-        // Move content so targetBlockX aligns to indicator X
+        // Move content so targetBlockX aligns to indicator X, with a small right nudge
         float offset = indicatorLocalX - targetBlockX;
-        return offset;
+
+        // Nudge right by a fraction of the canvas (viewport) width
+        float nudge = (viewport != null ? viewport.rect.width : 0f) * Mathf.Clamp01(rightNudgePercentOfCanvas);
+        return offset + nudge;
     }
 
     private void SnapToCurrent()

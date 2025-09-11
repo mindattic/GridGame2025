@@ -244,8 +244,9 @@ public class PincerAttackManager : MonoBehaviour
                 var asc = p.opponents.OrderBy(o => o.location.x).ToList();
                 var desc = asc.AsEnumerable().Reverse().ToList();
 
-                var attacker1Order = attacker1Left ? desc : asc;
-                var attacker2Order = attacker1Left ? asc : desc;
+                // Fix: order from closest to furthest relative to each attacker
+                var attacker1Order = attacker1Left ? asc : desc;
+                var attacker2Order = attacker1Left ? desc : asc;
 
                 p.attackResults1.AddRange(attacker1Order.Select(opp => CreateAttackResult(p.attacker1, opp)));
                 p.attackResults2.AddRange(attacker2Order.Select(opp => CreateAttackResult(p.attacker2, opp)));
