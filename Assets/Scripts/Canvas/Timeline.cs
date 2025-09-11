@@ -1,19 +1,18 @@
 // --- File: Assets/Scripts/Canvas/Timeline.cs ---
 using Assets.Helper;
 using Assets.Scripts.Canvas.Timeline; // for TimelineBlockInstance
+using Assets.Scripts.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using static Assets.Helper.GameObjectHelper.Game;
 using g = Assets.Helpers.GameHelper;
-using Assets.Scripts.Models;
 
 public sealed class Timeline : MonoBehaviour
 {
     private RectTransform viewport;
-    private RectTransform content;  
+    private RectTransform content;
     private Image indicator;
     private TimelineBlockInstance blockPrefab;
 
@@ -54,7 +53,7 @@ public sealed class Timeline : MonoBehaviour
         var root = GameObject.Find(GameObjectHelper.Game.Timeline.Root).GetComponent<RectTransform>();
         viewport = GameObject.Find(GameObjectHelper.Game.Timeline.Viewport).GetComponent<RectTransform>();
         content = GameObject.Find(GameObjectHelper.Game.Timeline.Content).GetComponent<RectTransform>();
-     
+
         blockPrefab = PrefabLibrary.Prefabs["TimelineBlockPrefab"].GetComponent<TimelineBlockInstance>();
     }
 
@@ -63,16 +62,18 @@ public sealed class Timeline : MonoBehaviour
         public bool isHero;
         public bool isDivider;
         public ActorInstance actor;      // actor for this block (null for divider)
+        public Color color;
         public string label;
         public Sprite portrait;
         public TimelineBlockInstance instance;
+
     }
 
     private class SimEntry { public ActorInstance actor; public int delay; public int speed; }
 
     private readonly List<Block> blocks = new List<Block>();
     private readonly List<SimEntry> sim = new List<SimEntry>();
-    
+
     private int nextBlockId;
     private int currentIndex;
     private float contentX;
@@ -151,8 +152,6 @@ public sealed class Timeline : MonoBehaviour
         SetupLayout();
         UpdateSelectionHighlight();
 
-        // After forecast and layout are ready, update labels using forecast distance (enemies only).
-        UpdateAllEnemyDelayLabels();
     }
 
     /// <summary>
@@ -360,6 +359,7 @@ public sealed class Timeline : MonoBehaviour
             isHero = actor.IsHero,
             isDivider = false,
             actor = actor,
+            color = (actor.IsHero ? ColorHelper.Solid.White : ColorHelper.Solid.GunMetal),
             label = string.IsNullOrEmpty(actor.characterName) ? (actor.IsHero ? "Hero" : "Enemy") : actor.characterName,
             portrait = actor.Render.thumbnail.sprite
         };
@@ -368,7 +368,8 @@ public sealed class Timeline : MonoBehaviour
         go.SetOwner(actor);
         go.SetSquareMask(blockSize);
         go.Set(b.label, b.portrait);
-        go.SetBackSprite(SpriteLibrary.GUI["TimelineBlock"]);
+
+        go.SetBackSprite(SpriteLibrary.GUI["TimelineBlock"], b.color);
 
         var data = ActorLibrary.Get(actor.characterName);
         var crop = data != null && data.CanvasThumbnailSettings != null ? data.CanvasThumbnailSettings : CanvasThumbnailSettings.Default;

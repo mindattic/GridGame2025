@@ -43,9 +43,9 @@ namespace Assets.Scripts.Models
         }
 
         // Defaults for timeline portrait crop
-        public static CanvasThumbnailSettings Default => Generate();
+        public static CanvasThumbnailSettings Default => SetDefault();
 
-        public static CanvasThumbnailSettings Generate()
+        public static CanvasThumbnailSettings SetDefault()
         {
             // Pos X = 0, Pos Y = -150, Width = 96, Height = 96, Scale = (4,4)
             return new CanvasThumbnailSettings(0f, -150f, 96, 96, new Vector2(4f, 4f));

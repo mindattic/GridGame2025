@@ -40,7 +40,7 @@ namespace Assets.Data.Actor
                     Position = new Vector3(0.05f, 0.1f, 0f),
                     Scale = new Vector3(2f, 2f, 0f),
                 },
-                CanvasThumbnailSettings = CanvasThumbnailSettings.Generate(),
+                CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Wolf02}"),
                 Details = new ActorDetails { Description = "Balanced for a wolf.", Card = "Still goes down fast." }
             };

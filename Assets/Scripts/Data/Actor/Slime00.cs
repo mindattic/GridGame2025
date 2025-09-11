@@ -40,7 +40,7 @@ namespace Assets.Data.Actor
                     Position = new Vector2(0.5f, 0.5f),
                     Scale = new Vector2(2f, 2f)
                 },
-                CanvasThumbnailSettings = CanvasThumbnailSettings.Generate(),
+                CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Slime00}"),
                 Details = new ActorDetails { Description = "Barely a monster.", Card = "Dies in one hit most of the time." }
             };

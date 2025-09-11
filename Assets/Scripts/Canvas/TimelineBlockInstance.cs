@@ -153,18 +153,15 @@ namespace Assets.Scripts.Canvas.Timeline
         /// <summary>
         /// Assign the back sprite and show the back image.
         /// </summary>
-        public void SetBackSprite(Sprite sprite)
+        public void SetBackSprite(Sprite sprite, Color color)
         {
-            if (backImage != null)
-            {
-                backImage.sprite = sprite;
-                backImage.enabled = sprite != null;
-            }
-            else if (maskImage != null)
-            {
-                maskImage.sprite = sprite;
-                maskImage.enabled = sprite != null;
-            }
+            backImage.sprite = sprite;
+            backImage.enabled = sprite != null;
+            backImage.color = color;
+
+            maskImage.sprite = sprite;
+            maskImage.enabled = sprite != null;
+            maskImage.color = color;
         }
 
         /// <summary>

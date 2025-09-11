@@ -52,7 +52,7 @@ namespace Assets.Data.Actor
                     Position = new Vector3(0.61f, -1.56f, 0.0f),
                     Scale = new Vector3(5.3f, 5.3f, 0f)
                 },
-                CanvasThumbnailSettings = CanvasThumbnailSettings.Generate(),
+                CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Thief}"),
                 Details = new ActorDetails
                 {
