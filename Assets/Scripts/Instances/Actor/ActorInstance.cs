@@ -460,7 +460,8 @@ public class ActorInstance : MonoBehaviour
 
         var style = CombatTextHelper.GetStyle(attackResult);
         g.CombatTextManager.Spawn(attackResult.Damage.ToString(), Position, style);
-        g.AudioManager.Play($"Slash{RNG.Int(1, 7)}");
+        //g.AudioManager.Play($"Slash{RNG.Int(1, 7)}");
+        g.AudioManager.Play("Click");
         yield break;
     }
 
