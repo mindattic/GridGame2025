@@ -118,6 +118,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\AssetHelper.cs" />
+    <Compile Include="Assets\Scripts\Managers\VictoryManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Helpers\AlignmentHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopInSequence.cs" />
