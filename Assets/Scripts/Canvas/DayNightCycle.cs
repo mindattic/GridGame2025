@@ -20,7 +20,7 @@ namespace Assets.Scripts.Canvas
 
         [Header("Cycle")]
         [Tooltip("Total seconds for a full cycle through Night -> Morning -> Day -> Evening.")]
-        [Range(1f, 300f)] public float cycleSeconds = 24f;
+        [Range(1f, 300f)] public float cycleSeconds = 1024f;
         [Tooltip("Automatically start playing on enable.")]
         public bool playOnEnable = true;
         [Tooltip("Loop the cycle.")]

@@ -32,10 +32,11 @@ Shader "Ryan/SpriteGrassMask"
         _WindFreq     ("Wind Frequency", Range(0.1, 10.0)) = 2.0
         _WindDetail   ("Wind Detail", Range(0.0, 5.0)) = 1.2
 
-        // Orientation
+        // Orientation (UV-space, not screen-space)
         _NormalGrowBlend   ("Grow Toward Camera 0..1", Range(0.0, 1.0)) = 0.35
         _BillboardGrow     ("Billboard Growth 0..1", Range(0.0, 1.0)) = 1.0
         _NormalProjectDist ("Project Dist (wu)", Range(0.05, 2.0)) = 0.6
+        _GrowthAngle       ("UV Growth Angle (deg)", Range(-180, 180)) = 90
     }
 
     SubShader
@@ -98,7 +99,10 @@ Shader "Ryan/SpriteGrassMask"
                 float  _NormalGrowBlend;
                 float  _BillboardGrow;
                 float  _NormalProjectDist;
+                float  _GrowthAngle; // UV-space angle
             CBUFFER_END
+
+            float4 _MainTex_TexelSize; // x=1/width, y=1/height
 
             struct appdata
             {
@@ -117,7 +121,6 @@ Shader "Ryan/SpriteGrassMask"
                 float3 worldNormal : TEXCOORD2;
             };
 
-            // Hash helpers
             float hash11(float n)
             {
                 n = frac(n * 0.1031);
@@ -133,61 +136,26 @@ Shader "Ryan/SpriteGrassMask"
                 return frac((p3.xx + p3.yz) * p3.zy);
             }
 
-            float luminance(float3 c) { return dot(c, float3(0.2126, 0.7152, 0.0722)); }
-
             v2f vert(appdata v)
             {
                 v2f o;
                 o.pos = TransformObjectToHClip(v.vertex.xyz);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.color = v.color * _Color;
-
                 o.worldPos = TransformObjectToWorld(v.vertex.xyz);
                 o.worldNormal = normalize(TransformObjectToWorldNormal(float3(0,0,1)));
                 return o;
             }
 
-            // Use view direction so grass grows toward the camera in screen space
-            float2 ComputeUVDirFromWorldNormal(v2f i)
+            float PixelsToUV_UVSpace(float pixels, float2 unitDir)
             {
-                float3 wP = i.worldPos;
-                float3 wDir = normalize(_WorldSpaceCameraPos.xyz - wP);
-
-                float4 clipP  = TransformWorldToHClip(wP);
-                float4 clipPn = TransformWorldToHClip(wP + wDir * _NormalProjectDist);
-
-                float2 ndcP  = clipP.xy  / max(1e-6, clipP.w);
-                float2 ndcPn = clipPn.xy / max(1e-6, clipPn.w);
-
-                float2 screenP  = (ndcP  * 0.5 + 0.5) * _ScreenParams.xy;
-                float2 screenPn = (ndcPn * 0.5 + 0.5) * _ScreenParams.xy;
-
-                float2 gScreen = screenPn - screenP;
-                if (dot(gScreen, gScreen) < 1e-6) return float2(0,1);
-
-                float2 dUVdx = ddx(i.uv);
-                float2 dUVdy = ddy(i.uv);
-
-                float2 uvDir = dUVdx * gScreen.x + dUVdy * gScreen.y;
-                float len = length(uvDir);
-                return len > 1e-6 ? uvDir / len : float2(0,1);
-            }
-
-            // Map a screen-space direction (in pixels) to a UV direction using local derivatives
-            float2 ComputeUVDirFromScreen(float2 screenDir, float2 dUVdx, float2 dUVdy)
-            {
-                float2 uvDir = dUVdx * screenDir.x + dUVdy * screenDir.y;
-                float len = length(uvDir);
-                return (len > 1e-6) ? (uvDir / len) : float2(0,1);
-            }
-
-            // Convert N screen pixels to UV units along a given UV direction
-            float PixelsToUV(float pixels, float2 dir, float2 dUVdx, float2 dUVdy)
-            {
-                float a = dot(dUVdx, dir);
-                float b = dot(dUVdy, dir);
-                float perPixel = sqrt(a*a + b*b);
-                return pixels * perPixel;
+                // unitDir is a normalized direction in UV space.
+                // One pixel in UV space along U is _MainTex_TexelSize.x; along V is _MainTex_TexelSize.y.
+                // The UV length that corresponds to 1 pixel along this direction is:
+                //    1 / length(unitDir / texelSize)
+                float2 texel = _MainTex_TexelSize.xy;
+                float perPixelUV = 1.0 / max(1e-6, length(unitDir / texel));
+                return pixels * perPixelUV;
             }
 
             float bladeAt(
@@ -209,7 +177,6 @@ Shader "Ryan/SpriteGrassMask"
             {
                 float4 baseSamp = SAMPLE_TEXTURE2D_GRAD(_MainTex, sampler_MainTex, baseUVMask, gradXMask, gradYMask);
 
-                // Height factor from alpha: 1.0 = full height, 0.5 = half height, 0.0 = none
                 float maskHeight01 = baseSamp.a;
                 if (maskHeight01 <= _MaskBlackThresh)
                 {
@@ -218,7 +185,6 @@ Shader "Ryan/SpriteGrassMask"
                     return 0.0;
                 }
 
-                // Base color comes from Surface texture at the blade's root
                 float3 surfCol = SAMPLE_TEXTURE2D_GRAD(_SurfaceTex, sampler_SurfaceTex, baseUVSurf, gradXSurf, gradYSurf).rgb;
 
                 float2 rnd = hash21(float2(cell) + _Seed);
@@ -266,16 +232,14 @@ Shader "Ryan/SpriteGrassMask"
                 float2 dUVdx = ddx(i.uv);
                 float2 dUVdy = ddy(i.uv);
 
-                // Fixed -45 degree screen-space growth direction
-                float ang = radians(-45.0);
-                float2 screenDir = float2(cos(ang), sin(ang));
-                float2 uvHeightDir = ComputeUVDirFromScreen(screenDir, dUVdx, dUVdy);
-                float2 uvPerpDir = normalize(float2(-uvHeightDir.y, uvHeightDir.x));
+                // UV-space growth direction (stable relative to the sprite UVs)
+                float ang = radians(_GrowthAngle);
+                float2 uvHeightDir = normalize(float2(cos(ang), sin(ang)));
+                float2 uvPerpDir   = normalize(float2(-uvHeightDir.y, uvHeightDir.x));
 
-                float heightUV    = PixelsToUV(_BladeHeightPx, uvHeightDir, dUVdx, dUVdy);
-                float halfWidthUV = PixelsToUV(_BladeWidthPx * 0.5, uvPerpDir, dUVdx, dUVdy);
+                float heightUV    = PixelsToUV_UVSpace(_BladeHeightPx, uvHeightDir);
+                float halfWidthUV = PixelsToUV_UVSpace(_BladeWidthPx * 0.5, uvPerpDir);
 
-                // Recover local (pre-_MainTex_ST) UVs and also compute Surface uv transform
                 float2 stScaleMain  = _MainTex_ST.xy;
                 float2 stOffsetMain = _MainTex_ST.zw;
                 float2 uvLocal = (i.uv - stOffsetMain) / max(1e-6, stScaleMain);
@@ -283,7 +247,6 @@ Shader "Ryan/SpriteGrassMask"
                 float2 stScaleSurf  = _SurfaceTex_ST.xy;
                 float2 stOffsetSurf = _SurfaceTex_ST.zw;
 
-                // Gradient mapping for Surface sampling
                 float2 gradScale = stScaleSurf / max(1e-6, stScaleMain);
                 float2 dUVdxSurf = dUVdx * gradScale;
                 float2 dUVdySurf = dUVdy * gradScale;
@@ -312,7 +275,6 @@ Shader "Ryan/SpriteGrassMask"
                         float jitterY = (rnd.y - 0.5) * _RowJitter;
                         float2 baseLocal = (float2(c) + float2(rnd.x, jitterY)) * cellSizeLocal;
 
-                        // Build mask and surface UVs at the blade root
                         float2 baseMaskUV = baseLocal * stScaleMain + stOffsetMain;
                         float2 baseSurfUV = baseLocal * stScaleSurf + stOffsetSurf;
 
@@ -328,7 +290,6 @@ Shader "Ryan/SpriteGrassMask"
                     }
                 }
 
-                // Compose: optionally draw original sprite behind the grass
                 if (_BaseBlend > 0.001)
                 {
                     float baseVisible = step(_MaskBlackThresh, baseSample.a);
@@ -341,7 +302,6 @@ Shader "Ryan/SpriteGrassMask"
 
                 if (alpha > 0.0)
                 {
-                    // Grass color is taken from the Surface texture at the blade's root, then tinted
                     float3 grassRGB = bladeAlbedo * _GrassColor.rgb * i.color.rgb;
                     grassRGB *= shade;
                     float outA = saturate(baseCol.a + alpha * (1.0 - baseCol.a));
