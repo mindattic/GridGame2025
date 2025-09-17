@@ -37,6 +37,11 @@ Shader "Ryan/SpriteGrassMask"
         _BillboardGrow     ("Billboard Growth 0..1", Range(0.0, 1.0)) = 1.0
         _NormalProjectDist ("Project Dist (wu)", Range(0.05, 2.0)) = 0.6
         _GrowthAngle       ("UV Growth Angle (deg)", Range(-180, 180)) = 90
+
+        // Outline
+        _OutlineEnabled ("Outline Enabled (0/1)", Float) = 0
+        _OutlineWidthPx ("Outline Width (pixels)", Range(0.1, 8.0)) = 1.0
+        _OutlineColor   ("Outline Color", Color) = (0,0,0,1)
     }
 
     SubShader
@@ -100,6 +105,10 @@ Shader "Ryan/SpriteGrassMask"
                 float  _BillboardGrow;
                 float  _NormalProjectDist;
                 float  _GrowthAngle; // UV-space angle
+
+                float  _OutlineEnabled;
+                float  _OutlineWidthPx;
+                float4 _OutlineColor;
             CBUFFER_END
 
             float4 _MainTex_TexelSize; // x=1/width, y=1/height
@@ -168,12 +177,14 @@ Shader "Ryan/SpriteGrassMask"
                 float time,
                 float heightUVBase,
                 float halfWidthUVBase,
+                float outlineWidthUV,
                 float2 gradXMask,
                 float2 gradYMask,
                 float2 gradXSurf,
                 float2 gradYSurf,
                 out float shade,
-                out float3 albedo)
+                out float3 albedo,
+                out float outline)
             {
                 float4 baseSamp = SAMPLE_TEXTURE2D_GRAD(_MainTex, sampler_MainTex, baseUVMask, gradXMask, gradYMask);
 
@@ -182,6 +193,7 @@ Shader "Ryan/SpriteGrassMask"
                 {
                     shade = 0.0;
                     albedo = 0.0.xxx;
+                    outline = 0.0;
                     return 0.0;
                 }
 
@@ -198,6 +210,7 @@ Shader "Ryan/SpriteGrassMask"
                 {
                     shade = 0.0;
                     albedo = 0.0.xxx;
+                    outline = 0.0;
                     return 0.0;
                 }
 
@@ -215,8 +228,13 @@ Shader "Ryan/SpriteGrassMask"
                 {
                     shade = 0.0;
                     albedo = 0.0.xxx;
+                    outline = 0.0;
                     return 0.0;
                 }
+
+                // Outline mask near the blade edge (inside the blade)
+                float innerStart = max(halfW - outlineWidthUV, 0.0);
+                outline = smoothstep(innerStart, halfW, abs(lateral)); // 0 center -> 1 at edge
 
                 shade = lerp(0.85, 1.0, saturate(s / max(height, 1e-4)));
                 albedo = surfCol;
@@ -239,6 +257,7 @@ Shader "Ryan/SpriteGrassMask"
 
                 float heightUV    = PixelsToUV_UVSpace(_BladeHeightPx, uvHeightDir);
                 float halfWidthUV = PixelsToUV_UVSpace(_BladeWidthPx * 0.5, uvPerpDir);
+                float outlineWidthUV = (_OutlineEnabled > 0.5) ? PixelsToUV_UVSpace(_OutlineWidthPx, uvPerpDir) : 0.0;
 
                 float2 stScaleMain  = _MainTex_ST.xy;
                 float2 stOffsetMain = _MainTex_ST.zw;
@@ -258,6 +277,7 @@ Shader "Ryan/SpriteGrassMask"
                 float alpha = 0.0;
                 float shade = 0.0;
                 float3 bladeAlbedo = 0.0.xxx;
+                float outlineMask = 0.0;
 
                 [unroll]
                 for (int dy = -1; dy <= 1; ++dy)
@@ -278,14 +298,15 @@ Shader "Ryan/SpriteGrassMask"
                         float2 baseMaskUV = baseLocal * stScaleMain + stOffsetMain;
                         float2 baseSurfUV = baseLocal * stScaleSurf + stOffsetSurf;
 
-                        float localShade; float3 localAlbedo;
-                        float cov = bladeAt(i.uv, uvHeightDir, uvPerpDir, c, baseMaskUV, baseSurfUV, time, heightUV, halfWidthUV, dUVdx, dUVdy, dUVdxSurf, dUVdySurf, localShade, localAlbedo);
+                        float localShade; float3 localAlbedo; float localOutline;
+                        float cov = bladeAt(i.uv, uvHeightDir, uvPerpDir, c, baseMaskUV, baseSurfUV, time, heightUV, halfWidthUV, outlineWidthUV, dUVdx, dUVdy, dUVdxSurf, dUVdySurf, localShade, localAlbedo, localOutline);
 
                         if (cov > alpha)
                         {
                             alpha = cov;
                             shade = localShade;
                             bladeAlbedo = localAlbedo;
+                            outlineMask = localOutline;
                         }
                     }
                 }
@@ -304,6 +325,14 @@ Shader "Ryan/SpriteGrassMask"
                 {
                     float3 grassRGB = bladeAlbedo * _GrassColor.rgb * i.color.rgb;
                     grassRGB *= shade;
+
+                    // Apply outline as a color mix near edges
+                    if (_OutlineEnabled > 0.5 && outlineMask > 0.0)
+                    {
+                        float outlineIntensity = saturate(outlineMask * _OutlineColor.a);
+                        grassRGB = lerp(grassRGB, _OutlineColor.rgb, outlineIntensity);
+                    }
+
                     float outA = saturate(baseCol.a + alpha * (1.0 - baseCol.a));
                     float3 outRGB = lerp(baseCol.rgb, grassRGB, alpha);
                     return float4(outRGB, outA);

@@ -563,25 +563,7 @@ public class ActorInstance : MonoBehaviour
 
     #endregion
 
-    #region Coins and teleport
-
-    private void SpawnCoins(int amount)
-    {
-        if (IsPlaying)
-            StartCoroutine(SpawnCoinsRoutine(amount));
-    }
-
-    private IEnumerator SpawnCoinsRoutine(int amount)
-    {
-        var i = 0;
-        do
-        {
-            g.CoinManager.Spawn(Position);
-            i++;
-        } while (i < amount);
-
-        yield return true;
-    }
+    #region Teleport
 
     /// <summary>
     /// Teleport to a board location if in bounds. Kicks existing occupant elsewhere.

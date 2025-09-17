@@ -19814,8 +19814,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 9.790161, y: 0}
-  m_SizeDelta: {x: -19.579733, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &972732625
 MonoBehaviour:
@@ -19869,7 +19869,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Canvas.DayNightCycle
   overlayImage: {fileID: 972732625}
   applyMode: 1
-  cycleSeconds: 24
+  cycleSeconds: 300
   playOnEnable: 1
   loop: 1
   useUnscaledTime: 1
@@ -25511,6 +25511,8 @@ MonoBehaviour:
   seedOffset: 0
   windJitter: 0
   timeScale: 1
+  lockToGroundPlane: 1
+  groundZ: 0
 --- !u!212 &1370801263
 SpriteRenderer:
   m_ObjectHideFlags: 0
