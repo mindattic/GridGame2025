@@ -125,6 +125,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d0bffd10e2238ef4bbca721054e19451
+    m_Address: Prefabs/HeroExperiencePane
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: dcd92126d8247e749a49508f9e424e1c
     m_Address: Prefabs/DottedLinePrefab
     m_ReadOnly: 0

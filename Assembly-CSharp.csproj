@@ -113,6 +113,7 @@
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
+    <Compile Include="Assets\Scripts\GUI\HeroExperiencePane.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier03.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameOverManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Managers\HeroManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
@@ -247,6 +249,7 @@
     <Compile Include="Assets\Scripts\Sequences\EndTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Overworld\OffscreenArrowIndicator.cs" />
     <Compile Include="Assets\Scripts\Managers\Portrait3DManager.cs" />
+    <Compile Include="Assets\Scripts\Sequences\BattleWonSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\ParallaxBackgroundInstance.cs" />
@@ -275,6 +278,7 @@
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Models\CanvasThumbnailSettings.cs" />
+    <Compile Include="Assets\Scripts\Sequences\BattleLostSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\FadeOverlayInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\InputManager.cs" />
@@ -294,6 +298,7 @@
     <Compile Include="Assets\Scripts\Overworld\CloudShadowInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
+    <Compile Include="Assets\Scripts\Managers\ExperienceTracker.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.FollowCursor.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
@@ -402,6 +407,7 @@
     <None Include="Assets\Shader\SpriteGrassMask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Shader\ZoomShaderURP.shader" />
+    <None Include="Assets\Shader\SpriteCellShading.shader" />
     <None Include="Assets\Shader\ThirdParty\ModelDouble.shader" />
     <None Include="Assets\Shader\ThirdParty\StencilMask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />

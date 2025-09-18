@@ -9,6 +9,8 @@ using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using scene = Assets.Helpers.SceneHelper;
+using Assets.Scripts.Managers; // added
+using Assets.Scripts.Sequences; // NEW
 
 public class StageManager : MonoBehaviour
 {
@@ -38,13 +40,13 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-
-
+        // Begin a new XP session for this battle with current party participants
+        var participants = ProfileHelper.CurrentProfile.CurrentSave?.Party?.Members?.Select(m => m.Character);
+        ExperienceTracker.StartSession(participants);
 
         currentStage = StageLibrary.Get(latestSave.Stage.CurrentStage);
         RestartStage();
     }
-
 
     /// <summary>
     /// Loads the selected stage and initializes the first wave.
@@ -68,9 +70,6 @@ public class StageManager : MonoBehaviour
             SpawnActor(stageActor);
         }
 
-        //HACK: For some reason enemies might spawn on top of g.Actors.Heroes because they aren't loaded at same time...
-        //g.Actors.All.ForEach(s => s.Flags.HasSpawned = true);
-
         // Load the wave based on currentWave.
         if (currentStage.Waves.Count > 0)
         {
@@ -80,7 +79,6 @@ public class StageManager : MonoBehaviour
         {
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
-
 
         scene.FadeIn();
     }
@@ -156,14 +154,14 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void OnActorDeath()
     {
-        CheckGameOver();
-        CheckWaveCompletion();
+        CheckBattleLost();
+        CheckWaveComplete();
     }
 
     /// <summary>
     /// Checks if the current wave is complete and moves to the next wave or completes the stage.
     /// </summary>
-    private void CheckWaveCompletion()
+    private void CheckWaveComplete()
     {
         bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.IsDead);
         if (!allEnemiesDead)
@@ -178,48 +176,38 @@ public class StageManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("All waves completed. Stage is complete.");
-            OnStageComplete();
+            CheckBattleWon();
         }
     }
 
     /// <summary>
     /// Handles what happens when all waves of a stage are completed.
     /// </summary>
-    private void OnStageComplete()
+    private void CheckBattleWon()
     {
-        //IEnumerator loadNextStageRoutine()
-        //{
-        //    var stageName = currentStage.NextStage;
-        //    currentStage = StageLibrary.Get(stageName);
-        //    RestartStage();
-        //    yield return Wait.None();
-        //}
+        if (currentWave < currentStage.Waves.Count)
+            return;
 
-       
-        scene.Fade.ToOverworld();
+        bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.IsDead);
+        if (!allEnemiesDead)
+            return;
 
-        //scene.FadeOut(scene.Change.ToOverworld());
+        g.SequenceManager.Add(new BattleWonSequence());
+        g.SequenceManager.Execute();
     }
 
     /// <summary>
     /// Checks whether the game is over.
     /// </summary>
-    private void CheckGameOver()
+    private void CheckBattleLost()
     {
-        bool allPlayersDead = g.Actors.Heroes.All(x => x.Flags.HasSpawned && x.IsDead);
-        if (!allPlayersDead)
+        bool allHeroesDead = g.Actors.Heroes.All(x => x.Flags.HasSpawned && x.IsDead);
+        if (!allHeroesDead)
             return;
 
-        IEnumerator reloadStageRoutine()
-        {
-            RestartStage();
-            yield return Wait.None();
-        }
-
-        scene.FadeOut(reloadStageRoutine());
+        g.SequenceManager.Add(new BattleLostSequence());
+        g.SequenceManager.Execute();
     }
-
 
     /// <summary>
     /// Convenience method for adding a new attacker actor.

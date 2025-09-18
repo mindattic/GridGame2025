@@ -50,6 +50,7 @@ public static class PrefabLibrary
             { "TilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TilePrefab") },
             { "TooltipPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TooltipPrefab") },
             { "TimelineBlockPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TimelineBlockPrefab") },
+            { "HeroExperiencePane", AssetHelper.LoadAsset<GameObject>("Prefabs/HeroExperiencePane") },           
         };
     }
 

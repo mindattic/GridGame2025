@@ -19,8 +19,11 @@ using g = Assets.Helpers.GameHelper;
 /// All turn order is controlled by Timeline. This class does not track TurnDelay or readiness.
 /// Timeline may call SetTurnDelayText to display a countdown, but no gameplay logic depends on it.
 /// </summary>
-public class ActorInstance : MonoBehaviour
+public partial class ActorInstance : MonoBehaviour
 {
+    // Track the last attacker that reduced this actor to 0 HP
+    private ActorInstance _lastAttacker;
+
     #region Instance Properties
 
     public TileInstance currentTile => g.TileMap.GetTile(location);
@@ -456,11 +459,15 @@ public class ActorInstance : MonoBehaviour
             Stats.PreviousHP = Stats.HP;
             Stats.HP = Mathf.Clamp(Stats.HP - attackResult.Damage, 0, Stats.MaxHP);
             HealthBar.Update();
+
+            if (Stats.HP <= 0 && attackResult != null && attackResult.Attacker != null)
+            {
+                _lastAttacker = attackResult.Attacker;
+            }
         }
 
         var style = CombatTextHelper.GetStyle(attackResult);
         g.CombatTextManager.Spawn(attackResult.Damage.ToString(), Position, style);
-        //g.AudioManager.Play($"Slash{RNG.Int(1, 7)}");
         g.AudioManager.Play("Click");
         yield break;
     }
@@ -493,29 +500,40 @@ public class ActorInstance : MonoBehaviour
         if (HealthBar.isDraining)
             yield return new WaitUntil(() => HealthBar.isEmpty);
 
-        // Compute XP once and distribute to the entire opposing team
-        int xp = ExperienceHelper.Calculate(this);
-        if (xp > 0)
+        // Award XP only when an enemy dies; do not apply to stats now (accumulate for VictoryScreen)
+        if (this.IsEnemy)
         {
-            var pool = team switch
+            int baseXp = ExperienceHelper.Calculate(this);
+            if (baseXp > 0)
             {
-                Team.Enemy => g.Actors.Heroes,
-                Team.Hero => g.Actors.Enemies,
-                _ => Enumerable.Empty<ActorInstance>()
-            };
+                var save = ProfileHelper.CurrentProfile?.CurrentSave;
+                var party = save?.Party?.Members?.Select(m => m.Character).ToHashSet() ?? new HashSet<string>();
+                var roster = save?.Roster?.Members?.Select(m => m.Character).ToList() ?? new System.Collections.Generic.List<string>();
 
-            // If an enemy dies, all playing heroes receive XP; if a hero dies, all playing enemies receive XP.
-            foreach (var actor in pool.Where(a => a != null && a.IsPlaying))
-            {
-                ExperienceHelper.Gain(actor, xp);
-                g.AudioManager.Play("Click");
-                g.CombatTextManager.Spawn($"+{xp}xp", actor.Position, "GainExperience");
+                foreach (var character in roster)
+                {
+                    if (string.IsNullOrEmpty(character)) continue;
+                    int amount = baseXp;
+                    bool inParty = party.Contains(character);
+
+                    if (!inParty)
+                    {
+                        amount = Mathf.FloorToInt(baseXp * 0.5f); // half for non-party roster
+                    }
+                    else if (_lastAttacker != null && _lastAttacker.characterName == character)
+                    {
+                        amount = Mathf.RoundToInt(baseXp * 1.1f); // +10% killer bonus
+                    }
+
+                    Assets.Scripts.Managers.ExperienceTracker.AddParticipant(character);
+                    Assets.Scripts.Managers.ExperienceTracker.AddXP(character, amount);
+                }
             }
         }
 
         g.Portrait3DManager.Dissolve(this);
         g.AudioManager.Play("Death");
-        g.CoinManager.SpawnBurst(Position, Mathf.RoundToInt(xp * g.CoinCountMulitiplier));
+        g.CoinManager.SpawnBurst(Position, Mathf.RoundToInt((ExperienceHelper.Calculate(this)) * g.CoinCountMulitiplier));
 
         location = LocationHelper.Nowhere;
         Position = PositionHelper.Nowhere;

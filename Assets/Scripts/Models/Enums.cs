@@ -90,6 +90,8 @@ public enum DebugOptions
     Fireball,
     Heal,
     KillEnemies,
+    KillHeroes,
+    GotoVictoryScreen,
     PortraitPopIn,
     Portrait2DSlideIn,
     Portrait3DSlideIn,

@@ -1,4 +1,5 @@
 using Assets.Helpers;
+using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
 using Assets.Scripts.Sequences;
 using System;
@@ -8,6 +9,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using scene = Assets.Helpers.SceneHelper;
 
 public class DebugManager : MonoBehaviour
 {
@@ -280,14 +282,75 @@ public class DebugManager : MonoBehaviour
 
     public void KillEnemies()
     {
-        var playingEnemies = g.Actors.Enemies.Where(x => x.IsPlaying).ToList();
-        foreach (var enemy in playingEnemies)
+        var actors = g.Actors.Enemies.Where(x => x != null && x.IsPlaying).ToList();
+        StartCoroutine(KillRoutine(actors));
+    }
+
+    public void KillHeroes()
+    {
+        var actors = g.Actors.Heroes.Where(x => x != null && x.IsPlaying).ToList();
+        StartCoroutine(KillRoutine(actors));
+    }
+
+    private IEnumerator KillRoutine(List<ActorInstance> playingActors)
+    {
+        // Capture the currently playing actors so we only wait on these
+        if (playingActors.Count < 1)
+            yield break;
+
+        // Apply lethal damage
+        foreach (var actor in playingActors)
         {
-            var attackResult = new AttackResult(RNG.Hero, enemy, 9999, HitOutcome.Critical);
-            enemy.Damage(attackResult);
+            var attacker = actor.IsHero ? RNG.Enemy : RNG.Hero;
+            var attackResult = new AttackResult(attacker, actor, 9999, HitOutcome.Critical);
+            actor.Damage(attackResult);
         }
-        StartCoroutine(DeathHelper.ProcessRoutine());
-        //DeathHelper.Process(GameManager.instance);
+
+        // Let the centralized death processor finish deaths (spawns coins, notifies stage, etc.)
+        yield return DeathHelper.ProcessRoutine();
+
+        // Ensure they have transitioned to dead/inactive
+        yield return new WaitUntil(() => playingActors.All(e => e == null || e.IsDead));
+
+        //DEBUG IS this the best way to trigger the steps leading to death?
+        // Nudge stage flow in case some deaths happened outside normal flow
+        g.StageManager.OnActorDeath();
+    }
+
+    public void GotoVictoryScreen()
+    {
+        // Seed XP for participating heroes and route to Victory screen for accumulation
+        var save = ProfileHelper.CurrentProfile?.CurrentSave;
+
+        // Prefer the party list from the save; fall back to active heroes in scene
+        var participants = (save?.Party?.Members?.Select(m => m.Character)
+                                .Where(ch => !string.IsNullOrEmpty(ch))
+                                .ToList())
+                           ?? new List<string>();
+
+        if (participants.Count == 0)
+        {
+            participants = g.Actors.Heroes
+                .Where(h => h != null && !string.IsNullOrEmpty(h.characterName))
+                .Select(h => h.characterName)
+                .Distinct()
+                .ToList();
+        }
+
+        // Start a new XP session (optional if already started by StageManager)
+        ExperienceTracker.StartSession(participants);
+
+        // Grant a small amount of XP to each participant
+        foreach (var ch in participants)
+        {
+            // Example debug amount: 100 +/- 25
+            int amount = RNG.Int(75, 125);
+            ExperienceTracker.AddParticipant(ch);
+            ExperienceTracker.AddXP(ch, amount);
+        }
+
+        // Jump to Victory screen so the UI can display and then apply gains
+        scene.Fade.ToVictoryScreen();
     }
 
     public void Portrait2DSlideIn()

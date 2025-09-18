@@ -1,5 +1,6 @@
-using UnityEngine;
+using Assets.Scripts.Managers;
 using System.Linq;
+using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Helpers
@@ -101,5 +102,33 @@ namespace Assets.Helpers
 
             //ProfileHelper.Save(true);
         }
+
+
+        //public static void GainAndAccumulate(ActorInstance actor, int amount)
+        //{
+        //    if (actor == null || amount <= 0) return;
+
+        //    // Keep the current in-battle leveling for enemies if needed, but for heroes, accumulate only.
+        //    if (actor.IsHero)
+        //    {
+        //        ExperienceTracker.AddParticipant(actor.characterName);
+        //        ExperienceTracker.AddXP(actor.characterName, amount);
+        //    }
+        //    else
+        //    {
+        //        Gain(actor, amount);
+        //    }
+        //}
+
+
+        //public static void AccumulateBattleXP(int amount)
+        //{
+        //    if (amount <= 0) return;
+        //    if (IsHero)
+        //    {
+        //        VictoryXPTracker.AddParticipant(characterName);
+        //        VictoryXPTracker.AddXP(characterName, amount);
+        //    }
+        //}
     }
 }
