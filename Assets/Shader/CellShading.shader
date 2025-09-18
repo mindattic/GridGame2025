@@ -1,4 +1,4 @@
-Shader "Ryan/SpriteCellShading"
+Shader "Ryan/CellShading"
 {
     Properties
     {
@@ -28,14 +28,17 @@ Shader "Ryan/SpriteCellShading"
 
         Pass
         {
-            Name "SpriteCellShading"
+            Name "CellShading"
             Tags {"LightMode"="UniversalForward"}
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            #pragma target 2.0
+            #pragma target 3.0
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+            // Limit for outline sampling loops to keep shader compilable on lower targets
+            #define MAX_OUTLINE_RADIUS_PX 16
 
             TEXTURE2D(_MainTex); SAMPLER(sampler_MainTex); float4 _MainTex_TexelSize; // x=1/w, y=1/h
 
@@ -103,29 +106,33 @@ Shader "Ryan/SpriteCellShading"
                 return SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, uv).a;
             }
 
+            // Bounded search to avoid compiler unroll failure
             float edgeDistance(float2 uv, float maxRadiusPx)
             {
-                // Approximate distance in pixels to nearest opaque pixel using concentric rings
-                // Early-out at first hit. Falls back to maxRadius if none.
                 float baseA = sampleAlpha(uv);
-                if (baseA > _AlphaClip) return 0; // inside already
+                if (baseA > _AlphaClip) return 0; // inside
 
                 float2 texel = _MainTex_TexelSize.xy; // uv units per pixel
                 int maxR = (int)ceil(maxRadiusPx);
+                maxR = min(maxR, MAX_OUTLINE_RADIUS_PX); // clamp
+
+                [loop]
                 for (int r = 1; r <= maxR; r++)
                 {
-                    int steps = (int)(6.28318 * r); // circumference samples
+                    // Limit angular samples to keep cost bounded: approx 2*pi*r but clamped
+                    int steps = min((int)(6.28318 * r), 32); // cap per ring
                     float invSteps = 1.0 / max(1, steps);
+                    [loop]
                     for (int s = 0; s < steps; s++)
                     {
                         float a = (s + 0.5) * invSteps * 6.28318;
                         float2 offsetPx = float2(cos(a), sin(a)) * r;
                         float2 offsetUV = offsetPx * texel;
                         if (sampleAlpha(uv + offsetUV) > _AlphaClip)
-                            return r; // found nearest opaque
+                            return r;
                     }
                 }
-                return maxRadiusPx + 1; // none inside radius
+                return maxRadiusPx + 1; // none found
             }
 
             float4 frag(v2f i) : SV_Target
@@ -133,43 +140,31 @@ Shader "Ryan/SpriteCellShading"
                 float4 baseCol = SAMPLE_TEXTURE2D(_MainTex, sampler_MainTex, i.uv) * i.color;
                 float alpha = baseCol.a;
 
-                float outlineWidthPx = _OutlineWidthPx;
+                float outlineWidthPx = min(_OutlineWidthPx, (float)MAX_OUTLINE_RADIUS_PX);
 
-                // Determine if this pixel should show outline
                 float distPx = edgeDistance(i.uv, outlineWidthPx);
                 bool inside = (alpha > _AlphaClip);
                 bool drawOutline = (!inside) && distPx <= outlineWidthPx;
 
                 if (!inside && !drawOutline)
                 {
-                    // Fully transparent otherwise
                     return float4(0,0,0,0);
                 }
 
                 if (inside)
                 {
-                    // Base sprite modulated by intensity
                     baseCol.rgb *= _BaseIntensity;
                 }
 
                 if (drawOutline)
                 {
-                    // Normalize distance so 0 = edge, 1 = outer border
                     float t = saturate(distPx / max(outlineWidthPx, 0.001));
-
-                    // Feather inward using _EdgeFeather
                     float feather = (_EdgeFeather > 0) ? smoothstep(0, _EdgeFeather, outlineWidthPx - distPx) : 1.0;
-
-                    // Noise modulation for grassy irregular edge
                     float n = noise2d(i.uv * _NoiseScale);
                     float irregular = lerp(1.0, n, _NoiseStrength);
-
                     float3 oCol = _OutlineColor.rgb * _GrassTint.rgb * irregular;
-
-                    // Slight darken toward outer edge (like blade taper) and brighten near inner contact
                     float shade = lerp(0.65, 1.1, 1.0 - t);
                     oCol *= shade;
-
                     float outA = feather * _OutlineColor.a * _OutlineIntensity;
                     return float4(oCol, outA);
                 }

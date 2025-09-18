@@ -407,7 +407,7 @@
     <None Include="Assets\Shader\SpriteGrassMask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\Shader\ZoomShaderURP.shader" />
-    <None Include="Assets\Shader\SpriteCellShading.shader" />
+    <None Include="Assets\Shader\CellShading.shader" />
     <None Include="Assets\Shader\ThirdParty\ModelDouble.shader" />
     <None Include="Assets\Shader\ThirdParty\StencilMask.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
