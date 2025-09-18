@@ -64,7 +64,6 @@
     <Compile Include="Assets\Editor\DebugWindow.ProjectileOptions.cs" />
     <Compile Include="Assets\Editor\DebugWindow.ActorStats.cs" />
     <Compile Include="Assets\Editor\DebugWindow.SpawnOptions.cs" />
-    <Compile Include="Assets\Editor\MapPropLoader.cs" />
     <Compile Include="Assets\Editor\DebugWindow.Keyboard.cs" />
     <Compile Include="Assets\Editor\EightWayAnimatorGenerator.cs" />
     <Compile Include="Assets\Editor\DebugWindow.StageOptions.cs" />

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using Assets.Helper;
 using c = Assets.Helpers.CanvasHelper;
 using Label = TMPro.TextMeshProUGUI;
+using Assets.Scripts.Libraries;
 
 /// <summary>
 /// Runtime instance of the MessageBox prefab.

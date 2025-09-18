@@ -3,45 +3,48 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public static class FontLibrary
+namespace Assets.Scripts.Libraries
 {
-    private static Dictionary<string, TMP_FontAsset> fonts;
-    private static bool isLoaded = false;
-
-    public static Dictionary<string, TMP_FontAsset> Fonts
+    public static class FontLibrary
     {
-        get
+        private static Dictionary<string, TMP_FontAsset> fonts;
+        private static bool isLoaded = false;
+
+        public static Dictionary<string, TMP_FontAsset> Fonts
         {
-            if (!isLoaded)
-                Load();
-            return fonts;
+            get
+            {
+                if (!isLoaded)
+                    Load();
+                return fonts;
+            }
         }
-    }
 
-    private static void Load()
-    {
-        if (isLoaded) return;
-
-        fonts = new Dictionary<string, TMP_FontAsset>
+        private static void Load()
         {
-            { "Damage", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
-            { "Heal", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
-            { "GainExperience", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Arial") },
+            if (isLoaded) return;
 
-        };
+            fonts = new Dictionary<string, TMP_FontAsset>
+            {
+                { "Damage", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
+                { "Heal", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Attic") },
+                { "GainExperience", AssetHelper.LoadAsset<TMP_FontAsset>("Fonts/Arial") },
+            };
 
-        isLoaded = true;
-    }
+            isLoaded = true;
+        }
 
-    /// <summary>
-    /// Retrieves a font asset by key.
-    /// </summary>
-    public static TMP_FontAsset Get(string key)
-    {
-        if (Fonts.TryGetValue(key, out var font))
-            return font;
+        /// <summary>
+        /// Retrieves a font asset by key.
+        /// </summary>
+        public static TMP_FontAsset Get(string key)
+        {
+            if (!isLoaded) Load();
+            if (fonts.TryGetValue(key, out var font))
+                return font;
 
-        Debug.LogError($"Font '{key}' not found in FontRepo.");
-        return null;
+            Debug.LogError($"Font '{key}' not found in FontRepo.");
+            return null;
+        }
     }
 }

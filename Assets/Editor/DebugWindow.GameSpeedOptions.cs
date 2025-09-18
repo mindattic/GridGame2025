@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 public partial class DebugWindow
 {
@@ -23,22 +24,22 @@ public partial class DebugWindow
         switch (selectedGameFocus)
         {
             case GameSpeedOption.Paused:
-                g.GameSpeed = 0f;
+                s.GameSpeed = 0f;
                 break;
             case GameSpeedOption.Percent25:
-                g.GameSpeed = 0.25f;
+                s.GameSpeed = 0.25f;
                 break;
             case GameSpeedOption.Percent50:
-                g.GameSpeed = 0.5f;
+                s.GameSpeed = 0.5f;
                 break;
             case GameSpeedOption.Normal:
-                g.GameSpeed = 1f;
+                s.GameSpeed = 1f;
                 break;
             case GameSpeedOption.Percent125:
-                g.GameSpeed = 1.25f;
+                s.GameSpeed = 1.25f;
                 break;
             case GameSpeedOption.Percent150:
-                g.GameSpeed = 1.5f;
+                s.GameSpeed = 1.5f;
                 break;
         }
     }

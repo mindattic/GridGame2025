@@ -3,6 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 namespace Assets.Data.Actor
 {
@@ -41,7 +42,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Slime00}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime00}"),
                 Details = new ActorDetails { Description = "Barely a monster.", Card = "Dies in one hit most of the time." }
             };
         }

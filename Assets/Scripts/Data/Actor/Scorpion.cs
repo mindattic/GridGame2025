@@ -3,6 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 namespace Assets.Data.Actor
 {
@@ -59,7 +60,7 @@ namespace Assets.Data.Actor
                 },
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
 
                 Details = new ActorDetails
                 {

@@ -1,6 +1,8 @@
-﻿using Assets.Scripts.Models;
+﻿using Assets.Scripts.Libraries;
+using Assets.Scripts.Models;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class ActorThumbnail : MonoBehaviour
@@ -151,7 +153,7 @@ public class ActorThumbnail : MonoBehaviour
         }
 
         float textureSize = Mathf.Max(tex.width, tex.height);
-        rangeMultiplier = 0.05f * (textureSize / g.TextureResolution.ToFloat());
+        rangeMultiplier = 0.05f * (textureSize / s.TextureResolution.ToFloat());
     }
 
     private void ResetCycle()

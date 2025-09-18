@@ -1,6 +1,7 @@
 ﻿// Handles spark particles that travel along a Synergy line path.
 // The strand supplies path samplers so sparks line up exactly.
 
+using Assets.Scripts.Libraries;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

@@ -50,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 36250911930644d45ba553b6fc6cdd88
+    m_Address: Prefabs/SettingSlider
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3bcf5e30aaea635489fb6601b264b191
     m_Address: Prefabs/ConfirmationDialogPrefab
     m_ReadOnly: 0
@@ -110,6 +115,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9dc5e49375431a24395a0c1426490e38
+    m_Address: Prefabs/SettingDropdown
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b4205160c1515cf44961d1e65bee47aa
     m_Address: Prefabs/StatRow
     m_ReadOnly: 0
@@ -122,6 +132,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c20c54f089a20c94ea7d832de372f35f
     m_Address: Prefabs/GhostPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c46efbd8e021e92459f214cc35888577
+    m_Address: Prefabs/SettingToggle
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

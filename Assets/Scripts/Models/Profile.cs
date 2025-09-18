@@ -1,20 +1,64 @@
-﻿using System;
+﻿using Assets.Scripts.Libraries;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+
+// Attribute definitions inlined to ensure availability during build
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
+public sealed class SettingDisplayNameAttribute : Attribute
+{
+    public string Name { get; }
+    public SettingDisplayNameAttribute(string name) { Name = name; }
+}
+
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
+public sealed class SettingRangeAttribute : Attribute
+{
+    public float Min { get; }
+    public float Max { get; }
+    public float Increment { get; }
+    public SettingRangeAttribute(float min, float max, float increment = 0f) { Min = min; Max = max; Increment = increment; }
+}
 
 // Add this definition if ProfileSettings does not exist elsewhere
 [Serializable]
 public class ProfileSettings
 {
+    [SettingDisplayName("Actor Pan Multiplier"), SettingRange(0f, 1f, 0.01f)]
     public float ActorPanMultiplier;
+
+    [SettingDisplayName("Game Speed"), SettingRange(0.25f, 3f, 0.05f)]
     public float GameSpeed;
+
+    [SettingDisplayName("Drag Sensitivity"), SettingRange(0.01f, 0.10f, 0.01f)]
+    public float DragSensitivity;
+
+    [SettingDisplayName("Coin Count Multiplier"), SettingRange(0f, 5f, 0.05f)]
+    public float CoinCountMultiplier;
+
+    // Bool settings
+    [SettingDisplayName("Apply Movement Tilt")]
+    public bool ApplyMovementTilt;
+
+    [SettingDisplayName("Reload Thumbnail Settings")]
+    public bool ReloadThumbnailSettings;
+
+
+    // Enum settings
+    [SettingDisplayName("Texture Resolution")]
+    public TextureResolution TextureResolution;
 
     public ProfileSettings() { }
 
     public ProfileSettings(ProfileSettings other)
     {
-        this.ActorPanMultiplier = other.ActorPanMultiplier;
-        this.GameSpeed = other.GameSpeed;
+        ActorPanMultiplier = other.ActorPanMultiplier;
+        GameSpeed = other.GameSpeed;
+        DragSensitivity = other.DragSensitivity;
+        CoinCountMultiplier = other.CoinCountMultiplier;
+        ApplyMovementTilt = other.ApplyMovementTilt;
+        ReloadThumbnailSettings = other.ReloadThumbnailSettings;
+        TextureResolution = other.TextureResolution;
     }
 }
 
@@ -42,7 +86,6 @@ namespace Game.Models.Profile
         public StageSaveData Stage;
         public RosterSaveData Roster;
         public PartySaveData Party;
-        // New: Overworld persistence
         public OverworldSaveData Overworld;
 
         public SaveState() { }
@@ -77,7 +120,7 @@ namespace Game.Models.Profile
             Stage = stage;
             Roster = roster;
             Party = party;
-            Overworld = overworld ?? new OverworldSaveData();
+            Overworld = overworld;
         }
     }
 

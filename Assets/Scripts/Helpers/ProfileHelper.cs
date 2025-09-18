@@ -1,4 +1,5 @@
-﻿using Game.Models.Profile;
+﻿using Assets.Scripts.Libraries;
+using Game.Models.Profile;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,11 @@ namespace Assets.Helpers
         {
             ActorPanMultiplier = 0.05f,
             GameSpeed = 1.0f,
+            DragSensitivity = 0.05f,
+            CoinCountMultiplier = 0.05f,
+            ApplyMovementTilt = false,
+            ReloadThumbnailSettings = false,
+            TextureResolution = TextureResolution.NormalResolution,
         };
 
         public static GlobalSaveData DefaultGlobal = new GlobalSaveData()
@@ -260,7 +266,7 @@ namespace Assets.Helpers
                 File.WriteAllText(Path.Combine(savesPath, newSave.FileName), JsonConvert.SerializeObject(newSave, Formatting.Indented));
 
                 // Load or create settings for the profile.
-                newProfile.Settings = LoadSettings(newProfile);
+                newProfile.Settings = LoadOrCreateSettings(newProfile);
 
                 return key;
             }
@@ -371,7 +377,7 @@ namespace Assets.Helpers
                 }
 
                 // Load settings or fall back to defaults.
-                profile.Settings = LoadSettings(profile);
+                profile.Settings = LoadOrCreateSettings(profile);
 
                 // Ensure a current save exists/selected
                 EnsureCurrentSave(profile);
@@ -488,10 +494,8 @@ namespace Assets.Helpers
         // Settings
         // ---------------------------------------------------------------------
 
-        /// <summary>
-        /// Loads settings for a profile. If none exist or load fails, writes defaults and returns them.
-        /// </summary>
-        private static ProfileSettings LoadSettings(Profile profile)
+        // Renamed from LoadSettings to avoid overload conflict with the public void LoadSettings method.
+        private static ProfileSettings LoadOrCreateSettings(Profile profile)
         {
             if (profile == null || string.IsNullOrWhiteSpace(profile.Folder))
                 return ProfileHelper.DefaultSettings;
@@ -516,9 +520,6 @@ namespace Assets.Helpers
             return ProfileHelper.DefaultSettings;
         }
 
-        /// <summary>
-        /// Persists settings for a profile to disk.
-        /// </summary>
         private static void SaveSettings(Profile profile, ProfileSettings settings)
         {
             if (profile == null || string.IsNullOrWhiteSpace(profile.Folder) || settings == null)
@@ -532,6 +533,66 @@ namespace Assets.Helpers
             catch (Exception ex)
             {
                 Debug.LogError($"Failed to save settings for '{profile?.Key}': {ex.Message}");
+            }
+        }
+
+        public static void EnsureSettings(Profile profile)
+        {
+            if (profile == null) return;
+            if (profile.Settings == null)
+            {
+                profile.Settings = new ProfileSettings(ProfileHelper.DefaultSettings);
+                SaveSettings(profile);
+            }
+        }
+
+        public static string GetSettingsPath(Profile profile)
+        {
+            if (profile == null || string.IsNullOrWhiteSpace(profile.Folder)) return null;
+            return Path.Combine(profile.Folder, SettingsFileName);
+        }
+
+        public static void LoadSettings(Profile profile = null)
+        {
+            profile ??= CurrentProfile;
+            if (profile == null) return;
+            var path = GetSettingsPath(profile);
+            if (string.IsNullOrWhiteSpace(path)) return;
+            try
+            {
+                if (File.Exists(path))
+                {
+                    var json = File.ReadAllText(path);
+                    if (!string.IsNullOrWhiteSpace(json))
+                    {
+                        var loaded = JsonConvert.DeserializeObject<ProfileSettings>(json);
+                        if (loaded != null)
+                            profile.Settings = loaded;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Failed to load settings: {ex.Message}");
+            }
+            EnsureSettings(profile);
+        }
+
+        public static void SaveSettings(Profile profile = null)
+        {
+            profile ??= CurrentProfile;
+            if (profile == null) return;
+            EnsureSettings(profile);
+            var path = GetSettingsPath(profile);
+            if (string.IsNullOrWhiteSpace(path)) return;
+            try
+            {
+                var json = JsonConvert.SerializeObject(profile.Settings, Formatting.Indented);
+                File.WriteAllText(path, json);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"Failed to save settings: {ex.Message}");
             }
         }
 

@@ -3,28 +3,34 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class MaterialLibrary
+namespace Assets.Scripts.Libraries
 {
-    private static Dictionary<string, Material> materials;
-
-    public static Dictionary<string, Material> Materials
+    public static class MaterialLibrary
     {
-        get
+        private static Dictionary<string, Material> materials;
+        private static bool isLoaded = false;
+
+        public static Dictionary<string, Material> Materials
         {
-            if (materials == null)
-                Load();
-            return materials;
+            get
+            {
+                if (!isLoaded)
+                    Load();
+                return materials;
+            }
         }
-    }
 
-    private static void Load()
-    {
-        materials = new Dictionary<string, Material>
+        private static void Load()
         {
-            { "EnemyParallax", AssetHelper.LoadAsset<Material>("Materials/EnemyParallax") },
-            { "PlayerParallax", AssetHelper.LoadAsset<Material>("Materials/PlayerParallax") },
-            { "SpriteOutline", AssetHelper.LoadAsset<Material>("Materials/SpriteOutline") },
-            { "SpritePan",     AssetHelper.LoadAsset<Material>("Materials/SpritePan") }
-        };
+            if (isLoaded) return;
+            materials = new Dictionary<string, Material>
+            {
+                { "EnemyParallax", AssetHelper.LoadAsset<Material>("Materials/EnemyParallax") },
+                { "PlayerParallax", AssetHelper.LoadAsset<Material>("Materials/PlayerParallax") },
+                { "SpriteOutline", AssetHelper.LoadAsset<Material>("Materials/SpriteOutline") },
+                { "SpritePan",     AssetHelper.LoadAsset<Material>("Materials/SpritePan") }
+            };
+            isLoaded = true;
+        }
     }
 }

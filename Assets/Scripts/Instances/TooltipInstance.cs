@@ -8,6 +8,7 @@ using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Libraries;
 
 public class TooltipInstance : MonoBehaviour
 {

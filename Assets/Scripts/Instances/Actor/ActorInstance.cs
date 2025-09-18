@@ -3,6 +3,7 @@ using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.Behaviors.Actor;
 using Assets.Scripts.Instances.Actor;
+using Assets.Scripts.Libraries;
 using Assets.Scripts.Models;
 using System;
 using System.Collections;
@@ -13,6 +14,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using static Assets.Helper.GameObjectHelper;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 /// <summary>
 /// Runtime actor instance for both heroes and enemies.
@@ -533,7 +535,7 @@ public partial class ActorInstance : MonoBehaviour
 
         g.Portrait3DManager.Dissolve(this);
         g.AudioManager.Play("Death");
-        g.CoinManager.SpawnBurst(Position, Mathf.RoundToInt((ExperienceHelper.Calculate(this)) * g.CoinCountMulitiplier));
+        g.CoinManager.SpawnBurst(Position, Mathf.RoundToInt((ExperienceHelper.Calculate(this)) * s.CoinCountMulitiplier));
 
         location = LocationHelper.Nowhere;
         Position = PositionHelper.Nowhere;

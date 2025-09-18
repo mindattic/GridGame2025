@@ -3,6 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 namespace Assets.Data.Actor
 {
@@ -39,7 +40,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Slime03}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime03}"),
                 Details = new ActorDetails { Description = "Tries to get lucky.", Card = "Occasional crits, still fragile." }
             };
         }

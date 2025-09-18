@@ -6,6 +6,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 namespace Assets.Scripts.Instances.Actor
 {
@@ -259,7 +260,7 @@ namespace Assets.Scripts.Instances.Actor
         /// </summary>
         public void ApplyTilt(Vector3 velocity)
         {
-            if (!g.ApplyMovementTilt)
+            if (!s.ApplyMovementTilt)
                 return;
 
             Vector3 tiltFactor = new Vector3(5f, 0f, 5f);

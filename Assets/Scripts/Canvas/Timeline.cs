@@ -1,6 +1,7 @@
 // --- File: Assets/Scripts/Canvas/Timeline.cs ---
 using Assets.Helper;
 using Assets.Scripts.Canvas.Timeline; // for TimelineBlockInstance
+using Assets.Scripts.Libraries;
 using Assets.Scripts.Models;
 using System;
 using System.Collections.Generic;

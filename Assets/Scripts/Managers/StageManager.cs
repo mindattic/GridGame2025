@@ -10,7 +10,8 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using scene = Assets.Helpers.SceneHelper;
 using Assets.Scripts.Managers; // added
-using Assets.Scripts.Sequences; // NEW
+using Assets.Scripts.Sequences;
+using Assets.Scripts.Libraries; // NEW
 
 public class StageManager : MonoBehaviour
 {

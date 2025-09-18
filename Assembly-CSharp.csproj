@@ -108,6 +108,7 @@
     <Compile Include="Assets\Scripts\Helpers\CanvasHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\StageSelectManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\VfxLibrary.cs" />
+    <Compile Include="Assets\Scripts\Settings\SettingDisplayNameAttribute.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProjectileHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Barbarian.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\BoardOverlay.cs" />
+    <Compile Include="Assets\Scripts\Settings\SettingRangeAttribute.cs" />
     <Compile Include="Assets\Scripts\Effects\ScreenShatter.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Models\RectVector3.cs" />
@@ -285,6 +287,7 @@
     <Compile Include="Assets\Scripts\Managers\DottedLineManager.cs" />
     <Compile Include="Assets\Scripts\Models\ProjectileNode.cs" />
     <Compile Include="Assets\Scripts\Serialization\MapPropEditorBootstrapper.cs" />
+    <Compile Include="Assets\Scripts\Helpers\SettingsHelper.cs" />
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.Collision.cs" />

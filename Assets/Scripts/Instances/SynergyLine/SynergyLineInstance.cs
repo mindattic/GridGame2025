@@ -1,6 +1,7 @@
 ﻿// Wispy multi-strand line between two actors.
 // Each instance keeps its own tunables. Per-strand behavior lives in SynergyLineStrand.
 
+using Assets.Scripts.Libraries;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

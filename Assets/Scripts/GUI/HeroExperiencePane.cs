@@ -3,10 +3,12 @@ using UnityEngine.UI;
 using Label = TMPro.TextMeshProUGUI;
 using TMPro;
 using Assets.Helpers;
+using System.Collections;
+using Assets.Scripts.Libraries;
 
 public class HeroExperiencePane : MonoBehaviour
 {
-    [Header("Wiring")] public Image Panel;
+    public Image Panel;
     public Image Portrait;
     public Label NameLabel;
     public Label LevelLabel;
@@ -14,42 +16,50 @@ public class HeroExperiencePane : MonoBehaviour
     public Label XPText;
     public Label LevelUpLabel;
 
-    [Header("State")] public bool IsFillComplete; // exposed for VictoryManager
+    // Runtime
+    public bool IsFillComplete;
 
-    private int _targetGain;
+    // Layout constants (tweak in prefab if desired)
+    private const float PAD = 8f;
+    private const float PORTRAIT_WIDTH = 64f; // assumed sprite scale roughly square
+    private const float PORTRAIT_HEIGHT = 96f;
+    private const float BAR_HEIGHT = 18f;
+
+    private void Reset()
+    {
+        // Auto-wire on add (editor convenience)
+        if (!Panel) Panel = GetComponent<Image>();
+        if (!Portrait) Portrait = transform.Find("Portrait")?.GetComponent<Image>();
+        if (!NameLabel) NameLabel = transform.Find("Name")?.GetComponent<Label>();
+        if (!LevelLabel) LevelLabel = transform.Find("Level")?.GetComponent<Label>();
+        if (!XPBar) XPBar = transform.Find("XPBar")?.GetComponent<Slider>();
+        if (!XPText) XPText = transform.Find("XPText")?.GetComponent<Label>();
+        if (!LevelUpLabel) LevelUpLabel = transform.Find("LevelUp")?.GetComponent<Label>();
+    }
 
     private void Awake()
     {
-        // Fallback auto-wiring if prefab fields not assigned
-        if (Panel == null) Panel = GetComponent<Image>();
-        if (Portrait == null) Portrait = transform.Find("Portrait")?.GetComponent<Image>();
-        if (NameLabel == null) NameLabel = transform.Find("Name")?.GetComponent<Label>();
-        if (LevelLabel == null) LevelLabel = transform.Find("Level")?.GetComponent<Label>();
-        if (XPBar == null) XPBar = transform.Find("XPBar")?.GetComponent<Slider>();
-        if (XPText == null) XPText = transform.Find("XPText")?.GetComponent<Label>();
-        if (LevelUpLabel == null) LevelUpLabel = transform.Find("LevelUp")?.GetComponent<Label>();
+        Reset();
     }
 
-    /// <summary>
-    /// Configure existing prefab UI (no dynamic hierarchy creation).
-    /// </summary>
     public void Build(string character, int xpGained, bool highlight)
     {
         IsFillComplete = false;
-        _targetGain = xpGained;
-        if (Panel != null)
-            Panel.color = highlight ? new Color(0.12f, 0.25f, 0.45f, 0.55f) : new Color(0.1f, 0.1f, 0.1f, 0.4f);
+        if (Panel)
+            Panel.color = highlight ? new Color(0.12f, 0.25f, 0.45f, 0.55f) : new Color(0.08f, 0.09f, 0.12f, 0.40f);
 
-        // Portrait sprite
-        if (Portrait != null)
+        // Portrait
+        if (Portrait)
         {
-            var sprite = ActorLibrary.Get(character).Portrait;
-            //var sprite = AssetHelper.LoadAsset<Sprite>($"{GameHelper.TextureResolution.ToInt()}/{character}");
-            Portrait.sprite = sprite;
-            Portrait.preserveAspect = true;
+            var actor = ActorLibrary.Get(character);
+            if (actor != null && actor.Portrait != null)
+            {
+                Portrait.sprite = actor.Portrait;
+                Portrait.preserveAspect = true;
+            }
         }
 
-        // Fetch save data
+        // Save lookup
         int level = 1, currentXP = 0;
         var save = ProfileHelper.CurrentProfile?.CurrentSave;
         var entry = save?.Party?.Members?.Find(m => m.Character == character) ?? save?.Roster?.Members?.Find(m => m.Character == character);
@@ -58,71 +68,130 @@ public class HeroExperiencePane : MonoBehaviour
             level = Mathf.Max(1, entry.Level);
             currentXP = Mathf.Max(0, entry.CurrentXP);
         }
+        int needed = ExperienceHelper.NextLevel(level);
 
-        int needed = Assets.Helpers.ExperienceHelper.NextLevel(level);
-
-        if (NameLabel != null) NameLabel.text = character;
-        if (LevelLabel != null) LevelLabel.text = $"Lvl. {level}";
-        if (XPBar != null)
+        if (NameLabel) NameLabel.text = character;
+        if (LevelLabel) LevelLabel.text = $"Lvl. {level}";
+        if (XPBar)
         {
-            XPBar.minValue = 0;
-            XPBar.maxValue = needed;
-            XPBar.wholeNumbers = true;
-            XPBar.value = Mathf.Clamp(currentXP, 0, needed);
+            XPBar.minValue = 0; XPBar.maxValue = needed; XPBar.wholeNumbers = true; XPBar.value = Mathf.Clamp(currentXP, 0, needed);
         }
-        if (XPText != null) XPText.text = $"EXP: {currentXP} / {needed} (+{xpGained})";
-        if (LevelUpLabel != null) LevelUpLabel.color = new Color(1, 0.95f, 0.3f, 0f);
+        if (XPText) XPText.text = $"EXP: {currentXP} / {needed} (+{xpGained})";
+        if (LevelUpLabel) LevelUpLabel.color = new Color(1f, 0.95f, 0.3f, 0f);
 
-        // Start fill animation (or mark complete immediately if no gain)
-        if (xpGained > 0)
-            StartCoroutine(FillRoutine(level, currentXP, xpGained));
-        else
-            IsFillComplete = true;
+        // Start animation if needed
+        if (xpGained > 0) StartCoroutine(FillRoutine(level, currentXP, xpGained)); else IsFillComplete = true;
+
+        // Defer layout one frame so parent layout (width) established
+       // StartCoroutine(DeferredLayout());
     }
 
-    private System.Collections.IEnumerator FillRoutine(int level, int currentXP, int gained)
+    private IEnumerator DeferredLayout()
     {
-        if (XPBar == null)
+        yield return null; // wait 1 frame for layout sizing
+        //ApplyLayout();
+    }
+
+    private void ApplyLayout()
+    {
+        var rt = (RectTransform)transform;
+        float width = rt.rect.width;
+        // Portrait anchored FAR RIGHT
+        if (Portrait)
         {
-            IsFillComplete = true;
-            yield break;
+            var pr = (RectTransform)Portrait.transform;
+            pr.anchorMin = pr.anchorMax = new Vector2(1f, 1f);
+            pr.pivot = new Vector2(1f, 1f);
+            pr.sizeDelta = new Vector2(PORTRAIT_WIDTH, PORTRAIT_HEIGHT);
+            pr.anchoredPosition = new Vector2(-PAD, -PAD);
         }
-        int needed = Assets.Helpers.ExperienceHelper.NextLevel(level);
+
+        // Name top-right, immediately LEFT of portrait
+        float textRightInset = PORTRAIT_WIDTH + PAD * 2f;
+        if (NameLabel)
+        {
+            var nr = (RectTransform)NameLabel.transform;
+            nr.anchorMin = nr.anchorMax = new Vector2(1f, 1f);
+            nr.pivot = new Vector2(1f, 1f);
+            nr.anchoredPosition = new Vector2(-textRightInset, -PAD);
+            NameLabel.alignment = TextAlignmentOptions.Right;
+        }
+        if (LevelLabel)
+        {
+            var lr = (RectTransform)LevelLabel.transform;
+            lr.anchorMin = lr.anchorMax = new Vector2(1f, 1f);
+            lr.pivot = new Vector2(1f, 1f);
+            lr.anchoredPosition = new Vector2(-textRightInset, -(PAD + 20f));
+            LevelLabel.alignment = TextAlignmentOptions.Right;
+        }
+
+        // XP Text far left (still right-aligned) or far right? Requirement: far right right-aligned.
+        if (XPText)
+        {
+            var xr = (RectTransform)XPText.transform;
+            xr.anchorMin = xr.anchorMax = new Vector2(0f, 1f);
+            xr.pivot = new Vector2(0f, 1f);
+            xr.anchoredPosition = new Vector2(PAD, -PAD);
+            XPText.alignment = TextAlignmentOptions.Left;
+        }
+
+        // XP Bar along bottom full width minus padding
+        if (XPBar)
+        {
+            var br = (RectTransform)XPBar.transform;
+            br.anchorMin = new Vector2(0f, 0f);
+            br.anchorMax = new Vector2(1f, 0f);
+            br.pivot = new Vector2(0.5f, 0f);
+            br.sizeDelta = new Vector2(-PAD * 2f, BAR_HEIGHT);
+            br.anchoredPosition = new Vector2(0f, PAD);
+        }
+
+        if (LevelUpLabel)
+        {
+            var ur = (RectTransform)LevelUpLabel.transform;
+            ur.anchorMin = ur.anchorMax = new Vector2(0.5f, 0f);
+            ur.pivot = new Vector2(0.5f, 0f);
+            ur.anchoredPosition = new Vector2(0f, BAR_HEIGHT + PAD * 1.5f);
+            LevelUpLabel.alignment = TextAlignmentOptions.Center;
+        }
+    }
+
+    private IEnumerator FillRoutine(int level, int currentXP, int gained)
+    {
+        if (!XPBar)
+        {
+            IsFillComplete = true; yield break;
+        }
+        int needed = ExperienceHelper.NextLevel(level);
         int cur = currentXP;
         int remaining = gained;
-
         while (remaining > 0)
         {
             int step = Mathf.Min(remaining, Mathf.Max(1, needed / 30));
-            cur += step;
-            remaining -= step;
-
+            cur += step; remaining -= step;
             if (cur >= needed)
             {
-                cur -= needed; level += 1; needed = Assets.Helpers.ExperienceHelper.NextLevel(level);
-                XPBar.maxValue = needed;
-                if (LevelLabel != null) LevelLabel.text = $"Lvl. {level}";
-                if (LevelUpLabel != null) StartCoroutine(FlashLevelUp());
+                cur -= needed; level++; needed = ExperienceHelper.NextLevel(level); XPBar.maxValue = needed;
+                if (LevelLabel) LevelLabel.text = $"Lvl. {level}";
+                if (LevelUpLabel) StartCoroutine(FlashLevelUp());
             }
-
             XPBar.value = cur;
-            if (XPText != null) XPText.text = $"EXP: {cur} / {needed} (+{gained})";
+            if (XPText) XPText.text = $"EXP: {cur} / {needed} (+{gained})";
             yield return null;
         }
-
         IsFillComplete = true;
     }
 
-    private System.Collections.IEnumerator FlashLevelUp()
+    private IEnumerator FlashLevelUp()
     {
-        if (LevelUpLabel == null) yield break;
+        if (!LevelUpLabel) yield break;
         float t = 0f;
         while (t < 1f)
         {
             t += Time.deltaTime * 3f;
-            LevelUpLabel.color = new Color(1, 0.95f, 0.3f, Mathf.PingPong(t, 0.7f));
+            LevelUpLabel.color = new Color(1f, 0.95f, 0.3f, Mathf.PingPong(t, 0.7f));
             yield return null;
         }
-        LevelUpLabel.color = new Color(1, 0.95f, 0.3f, 0);
+        LevelUpLabel.color = new Color(1f, 0.95f, 0.3f, 0f);
     }
 }

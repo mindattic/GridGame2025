@@ -3,6 +3,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 public partial class DebugWindow
 {
@@ -21,14 +22,14 @@ public partial class DebugWindow
 
 #if UNITY_EDITOR
 
-        if (g.ReloadThumbnailSettings && g.Actors.HasFocusedActor)
+        if (s.ReloadThumbnailSettings && g.Actors.HasFocusedActor)
         {
             var t = g.Actors.FocusedActor.Thumbnail;
             thumbnailPositionX = t.settings.Position.x.ToString("F2");
             thumbnailPositionY = t.settings.Position.y.ToString("F2");
             thumbnailScaleX = t.settings.Scale.x.ToString("F2");
             thumbnailScaleY = t.settings.Scale.y.ToString("F2");
-            g.ReloadThumbnailSettings = false;
+            s.ReloadThumbnailSettings = false;
         }
 
         float containerWidth = EditorGUIUtility.currentViewWidth * Increment.Percent33;

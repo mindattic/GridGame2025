@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
+using Assets.Scripts.Libraries;
 
 
 /// <summary>
@@ -18,7 +19,7 @@ public class SynergyLineManager : MonoBehaviour
 
     private void Awake()
     {
-        synergyLinePrefab = PrefabLibrary.Get("SynergyLinePrefab");
+        synergyLinePrefab = PrefabLibrary.Prefabs["SynergyLinePrefab"];
     }
 
     /// <summary>

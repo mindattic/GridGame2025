@@ -3,6 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using s = Assets.Helpers.SettingsHelper;
 
 namespace Assets.Data.Actor
 {
@@ -53,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5f, 5f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{g.TextureResolution.ToInt()}/{CharacterHelper.Barbarian}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Barbarian}"),
                 Details = new ActorDetails
                 {
                     Description = "A warrior driven by rage.",

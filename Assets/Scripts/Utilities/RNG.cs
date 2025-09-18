@@ -1,5 +1,6 @@
 ﻿using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Libraries;
 using Game.Behaviors.Actor;
 using System;
 using System.Collections.Generic;
@@ -283,8 +284,6 @@ static class RNG
     {
         return EnumValue<HitOutcome>();
     }
-
-
 
     public static string Stage(Map map)
     {

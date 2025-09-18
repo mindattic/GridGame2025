@@ -290,5 +290,13 @@ namespace Assets.Helper
             public const string ButtonYes = ConfirmationContainer + "/ButtonYes";
             public const string ButtonNo = ConfirmationContainer + "/ButtonNo";
         }
+
+        // NEW: VictoryScreen standardized paths
+        public static class VictoryScreen
+        {
+            public const string ScrollView = "Canvas/ScrollView";
+            public const string Content = "Canvas/ScrollView/Viewport/Content";
+            public const string NextButton = "Canvas/BottomBar/NextButton";
+        }
     }
 }
