@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace Assets.Helper
 {
     public static class GameObjectHelper
     {
-       
+
         public static class Actor
         {
             public static class Front
@@ -70,7 +73,7 @@ namespace Assets.Helper
             public const string Portraits = "Canvas/Portraits";
 
 
-   
+
             public const string CoinCounter = "Canvas/CoinCounter";
             public const string TutorialPopup = "Canvas/TutorialPopup";
             public const string TargetModeOverlay = "Canvas/TargetModeOverlay";
@@ -84,7 +87,7 @@ namespace Assets.Helper
             {
                 public const string Root = "Board";
                 public const string BoardOverlay = "Board/BoardOverlay";
-    
+
             }
 
             public static class Card
@@ -183,6 +186,11 @@ namespace Assets.Helper
             public const string ScrollView = "Canvas/ScrollView";
             public const string Content = "Canvas/ScrollView/Viewport/Content";
             public const string ActorPanMultiplier = "Canvas/ScrollView/Viewport/Content/ActorPanMultiplier";
+
+
+            public static RectTransform ContentRect => GameObject.Find("Canvas/ScrollView/Viewport/Content").GetComponent<RectTransform>();
+
+
         }
 
         public static class StageSelect
@@ -298,5 +306,6 @@ namespace Assets.Helper
             public const string Content = "Canvas/ScrollView/Viewport/Content";
             public const string NextButton = "Canvas/BottomBar/NextButton";
         }
+
     }
 }

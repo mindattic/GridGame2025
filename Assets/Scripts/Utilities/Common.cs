@@ -1,6 +1,7 @@
 using Assets.Helper;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -208,5 +209,3 @@ public static class Wait
         public object Current => null;
     }
 }
-
-

@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyStrand.cs" />
+    <Compile Include="Assets\Scripts\Models\DropdownSetting.cs" />
     <Compile Include="Assets\Scripts\Helpers\PartySortHelper.cs" />
     <Compile Include="Assets\Scripts\Overworld\Mode7CameraController.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
+    <Compile Include="Assets\Scripts\Models\ToggleSetting.cs" />
     <Compile Include="Assets\Scripts\Managers\GameOverManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Managers\HeroManager.cs" />
@@ -275,6 +277,7 @@
     <Compile Include="Assets\Scripts\Helpers\DeathHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />
+    <Compile Include="Assets\Scripts\Models\SliderSetting.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Models\CanvasThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Sequences\BattleLostSequence.cs" />

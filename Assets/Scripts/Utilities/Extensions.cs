@@ -7,43 +7,81 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
+using Component = UnityEngine.Component;
 using g = Assets.Helpers.GameHelper;
-
 
 
 public static class GameObjectExtensions
 {
-    // Gets a direct child by name (not recursive)
-    public static GameObject GetChildByName(this GameObject parent, string childName)
+    /// <summary>
+    /// Finds the first component of type T under this GameObject whose GameObject.name equals targetName.
+    /// Returns null if not found.
+    /// </summary>
+    public static T Find<T>(this GameObject root, string targetName, bool includeInactive = true) where T : Component
     {
-        if (parent == null || string.IsNullOrEmpty(childName))
+        if (root == null || string.IsNullOrEmpty(targetName))
             return null;
 
-        var childTransform = parent.transform.Find(childName);
-        return childTransform != null ? childTransform.gameObject : null;
+        return FindByName<T>(root.transform, targetName, includeInactive);
     }
 
-    // Finds a descendant GameObject by slash-delimited path, starting from any GameObject in the scene
-    public static GameObject FindByPath(this GameObject root, string path)
+    /// <summary>
+    /// Finds all components of type T under this GameObject whose GameObject.name equals targetName.
+    /// Returns an empty list if none are found.
+    /// </summary>
+    public static List<T> FindAll<T>(this GameObject root, string targetName, bool includeInactive = true) where T : Component
     {
-        if (string.IsNullOrWhiteSpace(path) || root == null)
+        var results = new List<T>();
+
+        if (root == null || string.IsNullOrEmpty(targetName))
+            return results;
+
+        FindByNameRecursive(root.transform, targetName, includeInactive, results);
+        return results;
+    }
+
+    /// <summary>
+    /// Recursive search for the first component of type T by GameObject.name.
+    /// </summary>
+    private static T FindByName<T>(Transform current, string targetName, bool includeInactive) where T : Component
+    {
+        if (!includeInactive && !current.gameObject.activeInHierarchy)
             return null;
 
-        string[] names = path.Split('/');
-        GameObject current = root.name == names[0] ? root : GameObject.Find(names[0]);
-        if (current == null)
-            return null;
-
-        for (int i = (current == root ? 1 : 1); i < names.Length; i++)
+        if (current.name == targetName)
         {
-            Transform child = current.transform.Find(names[i]);
-            if (child == null)
-                return null;
-
-            current = child.gameObject;
+            var hit = current.GetComponent<T>();
+            if (hit != null)
+                return hit;
         }
 
-        return current;
+        for (int i = 0, c = current.childCount; i < c; i++)
+        {
+            var found = FindByName<T>(current.GetChild(i), targetName, includeInactive);
+            if (found != null)
+                return found;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Recursive collection of all components of type T by GameObject.name.
+    /// </summary>
+    private static void FindByNameRecursive<T>(Transform current, string targetName, bool includeInactive, List<T> results) where T : Component
+    {
+        if (!includeInactive && !current.gameObject.activeInHierarchy)
+            return;
+
+        if (current.name == targetName)
+        {
+            var hit = current.GetComponent<T>();
+            if (hit != null)
+                results.Add(hit);
+        }
+
+        for (int i = 0, c = current.childCount; i < c; i++)
+            FindByNameRecursive(current.GetChild(i), targetName, includeInactive, results);
     }
 }
 
