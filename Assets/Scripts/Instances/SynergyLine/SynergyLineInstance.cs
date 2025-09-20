@@ -1,4 +1,5 @@
-﻿// Wispy multi-strand line between two actors.
+﻿// --- File: Assets/Scripts/Instances/SynergyLine/SynergyLineInstance.cs ---
+// Wispy multi-strand line between two actors.
 // Each instance keeps its own tunables. Per-strand behavior lives in SynergyLineStrand.
 
 using Assets.Scripts.Libraries;
@@ -38,6 +39,10 @@ public class SynergyLineInstance : MonoBehaviour
     private SortingGroup aGroup;
     private SortingGroup bGroup;
 
+    // Anchors that follow tiles, not actor transforms
+    private Transform aAnchor;
+    private Transform bAnchor;
+
     private bool playing;
     private bool despawnRequested;
     private Coroutine runningCoroutine;
@@ -45,9 +50,19 @@ public class SynergyLineInstance : MonoBehaviour
     // Cached per-strand weights for reconfigure
     private float[] wNormPerStrand;
 
+    /// <summary>
+    /// Create strand anchors and cache the strand prefab.
+    /// </summary>
     private void Awake()
     {
         synergyStrandPrefab = PrefabLibrary.Get("SynergyStrandPrefab");
+
+        var aGo = new GameObject("SynergyAnchor_A");
+        var bGo = new GameObject("SynergyAnchor_B");
+        aGo.transform.SetParent(transform, false);
+        bGo.transform.SetParent(transform, false);
+        aAnchor = aGo.transform;
+        bAnchor = bGo.transform;
     }
 
     /// <summary>
@@ -64,6 +79,13 @@ public class SynergyLineInstance : MonoBehaviour
             return;
         }
 
+        // Cache renderers and sorting groups to derive where to place the line
+        aGroup = this.supporter.GetComponent<SortingGroup>();
+        bGroup = this.attacker.GetComponent<SortingGroup>();
+        aRenderer = this.supporter.GetComponentInChildren<Renderer>();
+        bRenderer = this.attacker.GetComponentInChildren<Renderer>();
+
+        // Build weights from both actors. Order: Strength, Vitality, Agility, Stamina, Intelligence, Wisdom, Luck.
         VectorStats weights = new VectorStats(
             this.supporter.Stats.Strength + this.attacker.Stats.Strength,
             this.supporter.Stats.Vitality + this.attacker.Stats.Vitality,
@@ -98,32 +120,27 @@ public class SynergyLineInstance : MonoBehaviour
             return;
         }
 
-        aGroup = supporter != null ? supporter.GetComponentInParent<SortingGroup>() : null;
-        bGroup = attacker != null ? attacker.GetComponentInParent<SortingGroup>() : null;
+        // Normalize 7 weights to [0..1] and mirror to waveformCount slots
+        float[] w = new float[7]
+        {
+            Mathf.Max(0.0001f, weights.Strength),
+            Mathf.Max(0.0001f, weights.Vitality),
+            Mathf.Max(0.0001f, weights.Agility),
+            Mathf.Max(0.0001f, weights.Stamina),
+            Mathf.Max(0.0001f, weights.Intelligence),
+            Mathf.Max(0.0001f, weights.Wisdom),
+            Mathf.Max(0.0001f, weights.Luck),
+        };
 
-        if (aGroup == null) aRenderer = supporter != null ? supporter.GetComponentInParent<SpriteRenderer>() : null;
-        if (bGroup == null) bRenderer = attacker != null ? attacker.GetComponentInParent<SpriteRenderer>() : null;
-
-        EnsureStrands(waveformCount);
-
-        // STR, VIT, AGI, STA, INT, WIS, LCK
-        float[] w = new float[7];
-        w[0] = Mathf.Max(0f, weights.str);
-        w[1] = Mathf.Max(0f, weights.vit);
-        w[2] = Mathf.Max(0f, weights.spd);
-        w[3] = Mathf.Max(0f, weights.sta);
-        w[4] = Mathf.Max(0f, weights.intel);
-        w[5] = Mathf.Max(0f, weights.wis);
-        w[6] = Mathf.Max(0f, weights.lck);
-
-        float max = 0.0001f;
-        for (int i = 0; i < w.Length; i++) max = Mathf.Max(max, w[i]);
+        float max = 0f;
+        for (int i = 0; i < 7; i++) if (w[i] > max) max = w[i];
+        if (max <= 0f) max = 1f;
 
         if (wNormPerStrand == null || wNormPerStrand.Length != waveformCount)
             wNormPerStrand = new float[waveformCount];
 
         for (int i = 0; i < waveformCount; i++)
-            wNormPerStrand[i] = (w[i % 7] / max);
+            wNormPerStrand[i] = w[i % 7] / max;
 
         ApplySettingsToStrands();
     }
@@ -186,6 +203,9 @@ public class SynergyLineInstance : MonoBehaviour
             return;
         }
 
+        // Set anchors to current tiles before configuring, so positions are correct from frame 0
+        UpdateAnchorsToTiles();
+
         float phaseStep = (Mathf.PI * 2f) / Mathf.Max(1, waveformCount);
 
         string layerName;
@@ -203,9 +223,10 @@ public class SynergyLineInstance : MonoBehaviour
             float phase = phaseStep * i;
 
             var strand = strands[i];
+            // Important: pass anchors, not actor transforms
             strand.Configure(
-                supporter.transform,
-                attacker.transform,
+                aAnchor,
+                bAnchor,
                 widthForStrand,
                 radiusForStrand,
                 phase,
@@ -224,27 +245,73 @@ public class SynergyLineInstance : MonoBehaviour
             strands[i].gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Update both anchors to the world positions of each actor's currentTile.
+    /// Never touches the actors' own transforms.
+    /// </summary>
+    private void UpdateAnchorsToTiles()
+    {
+        if (supporter != null && supporter.currentTile != null)
+        {
+            Vector3 pa = supporter.currentTile.position;
+            pa.z = 0f;
+            aAnchor.position = pa;
+        }
+
+        if (attacker != null && attacker.currentTile != null)
+        {
+            Vector3 pb = attacker.currentTile.position;
+            pb.z = 0f;
+            bAnchor.position = pb;
+        }
+    }
+
+    /// <summary>
+    /// Fade helper across all strands.
+    /// </summary>
     private void SetFadeAll(float k)
     {
         int n = Mathf.Min(waveformCount, strands.Count);
         for (int i = 0; i < n; i++) strands[i].SetFade(k);
     }
 
+    /// <summary>
+    /// Per frame update:
+    /// 1) Move anchors to current tiles, so bumps and moves snap endpoints to tiles.
+    /// 2) Reaffirm sorting to remain below both actors.
+    /// 3) Tick every active strand.
+    /// </summary>
     private void TickAll()
     {
-        if (supporter != null) { var pa = supporter.Position; pa.z = 0f; supporter.Position = pa; }
-        if (attacker != null) { var pb = attacker.Position; pb.z = 0f; attacker.Position = pb; }
+        // Keep endpoint anchors pinned to tiles
+        UpdateAnchorsToTiles();
 
+        // Make sure we never float above actors: if actor sort changes during play, keep up
+        string layerName;
+        int baseOrder;
+        ResolveSortingBelowActors(out layerName, out baseOrder);
+
+        // Only need to update sorting layer during play. Strand keeps relative order already.
         int n = Mathf.Min(waveformCount, strands.Count);
-        for (int i = 0; i < n; i++) strands[i].Tick();
+        for (int i = 0; i < n; i++)
+        {
+            strands[i].SetSortingLayer(layerName);
+            strands[i].Tick();
+        }
     }
 
+    /// <summary>
+    /// Clear all strand geometry and visuals.
+    /// </summary>
     private void ClearAll()
     {
         int n = Mathf.Min(waveformCount, strands.Count);
         for (int i = 0; i < n; i++) strands[i].Clear();
     }
 
+    /// <summary>
+    /// Ensure we have enough strand instances.
+    /// </summary>
     private void EnsureStrands(int count)
     {
         if (synergyStrandPrefab == null)
@@ -269,6 +336,9 @@ public class SynergyLineInstance : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Resolve a sorting layer and order that is guaranteed below both actors.
+    /// </summary>
     private void ResolveSortingBelowActors(out string layerName, out int order)
     {
         int orderA = 0;
@@ -280,7 +350,10 @@ public class SynergyLineInstance : MonoBehaviour
         if (bGroup != null) orderB = bGroup.sortingOrder;
         else if (bRenderer != null) orderB = bRenderer.sortingOrder;
 
+        // Always use the "below actors" layer
         layerName = Assets.Helpers.SortingHelper.Layer.SupportLineBelow;
+
+        // Order strictly under both. Subtract one to avoid ever covering the actors.
         int underBoth = Mathf.Min(orderA, orderB) - 1;
         order = underBoth;
     }

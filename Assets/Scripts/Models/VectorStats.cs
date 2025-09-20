@@ -6,52 +6,52 @@
 [System.Serializable]
 public struct VectorStats
 {
-    public float str;
-    public float vit;
-    public float agi;
-    public float spd;
-    public float sta;
-    public float intel;
-    public float wis;
-    public float lck;
+    public float Strength;
+    public float Vitality;
+    public float Agility;
+    public float Speed;
+    public float Stamina;
+    public float Intelligence;
+    public float Wisdom;
+    public float Luck;
 
     public VectorStats(float str, float vit, float agi, float spd, float sta, float intel, float wis, float lck)
     {
-        this.str = str;
-        this.vit = vit;
-        this.agi = agi;
-        this.spd = spd;
-        this.sta = sta;
-        this.intel = intel;
-        this.wis = wis;
-        this.lck = lck;
+        this.Strength = str;
+        this.Vitality = vit;
+        this.Agility = agi;
+        this.Speed = spd;
+        this.Stamina = sta;
+        this.Intelligence = intel;
+        this.Wisdom = wis;
+        this.Luck = lck;
     }
 
     public static VectorStats operator +(VectorStats a, VectorStats b)
     {
         return new VectorStats(
-            a.str + b.str,
-            a.vit + b.vit,
-            a.agi + b.agi,
-            a.spd + b.spd,
-            a.sta + b.sta,
-            a.intel + b.intel,
-            a.wis + b.wis,
-            a.lck + b.lck
+            a.Strength + b.Strength,
+            a.Vitality + b.Vitality,
+            a.Agility + b.Agility,
+            a.Speed + b.Speed,
+            a.Stamina + b.Stamina,
+            a.Intelligence + b.Intelligence,
+            a.Wisdom + b.Wisdom,
+            a.Luck + b.Luck
         );
     }
 
     public static VectorStats operator *(VectorStats a, float m)
     {
         return new VectorStats(
-            a.str * m,
-            a.vit * m,
-            a.agi * m,
-            a.spd * m,
-            a.sta * m,
-            a.intel * m,
-            a.wis * m,
-            a.lck * m
+            a.Strength * m,
+            a.Vitality * m,
+            a.Agility * m,
+            a.Speed * m,
+            a.Stamina * m,
+            a.Intelligence * m,
+            a.Wisdom * m,
+            a.Luck * m
         );
     }
 }
