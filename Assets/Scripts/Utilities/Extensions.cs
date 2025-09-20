@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
@@ -57,6 +58,23 @@ public static class StringExtensions
         System.IO.Path.GetInvalidFileNameChars().ToList().ForEach(c => value = value.Replace(c.ToString(), ""));
 
         return value;
+    }
+
+    public static string ToPascalCase(this string input)
+    {
+        if (string.IsNullOrWhiteSpace(input)) return string.Empty;
+
+        var separators = new[] { ' ', '\t', '\n', '\r', '_', '-', '.', '/', ':' };
+        var parts = input.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+
+        var sb = new StringBuilder(parts.Length * 4);
+        foreach (var part in parts)
+        {
+            sb.Append(char.ToUpperInvariant(part[0]));
+            if (part.Length > 1) sb.Append(part.Substring(1));
+        }
+
+        return sb.ToString();
     }
 
 }
@@ -424,6 +442,11 @@ public static class ColorExtensions
         return new Color(c.r, c.g, c.b, c.a + a);
     }
 }
+
+
+
+
+
 
 public static class IntExtensions
 {

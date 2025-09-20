@@ -17,7 +17,6 @@ namespace Assets.Helpers
                 if (Settings != null)
                 {
                     Settings.DragSensitivity = value;
-                    ProfileHelper.SaveSettings();
                 }
             }
         }
@@ -31,7 +30,6 @@ namespace Assets.Helpers
                 if (Settings != null)
                 {
                     Settings.CoinCountMultiplier = value;
-                    ProfileHelper.SaveSettings();
                 }
             }
         }
@@ -44,7 +42,6 @@ namespace Assets.Helpers
                 if (Settings != null)
                 {
                     Settings.ReloadThumbnailSettings = value;
-                    ProfileHelper.SaveSettings();
                 }
             }
         }
@@ -57,7 +54,6 @@ namespace Assets.Helpers
                 if (Settings != null)
                 {
                     Settings.GameSpeed = value;
-                    ProfileHelper.SaveSettings();
                 }
             }
         }
@@ -70,7 +66,6 @@ namespace Assets.Helpers
                 if (Settings != null)
                 {
                     Settings.ApplyMovementTilt = value;
-                    ProfileHelper.SaveSettings();
                 }
             }
         }
@@ -83,7 +78,6 @@ namespace Assets.Helpers
                 if (Settings != null)
                 {
                     Settings.TextureResolution = value;
-                    ProfileHelper.SaveSettings();
                 }
             }
         }
