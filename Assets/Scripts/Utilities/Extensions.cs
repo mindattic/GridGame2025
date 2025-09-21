@@ -1,87 +1,66 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using UnityEngine;
-using Component = UnityEngine.Component;
 using g = Assets.Helpers.GameHelper;
+
 
 
 public static class GameObjectExtensions
 {
-    /// <summary>
-    /// Finds the first component of type T under this GameObject whose GameObject.name equals targetName.
-    /// Returns null if not found.
-    /// </summary>
-    public static T Find<T>(this GameObject root, string targetName, bool includeInactive = true) where T : Component
+    // Gets a direct child by name (not recursive)
+    public static GameObject GetChildByName(this GameObject parent, string childName)
     {
-        if (root == null || string.IsNullOrEmpty(targetName))
+        if (parent == null || string.IsNullOrEmpty(childName))
             return null;
 
-        return FindByName<T>(root.transform, targetName, includeInactive);
+        var childTransform = parent.transform.Find(childName);
+        return childTransform != null ? childTransform.gameObject : null;
     }
 
-    /// <summary>
-    /// Finds all components of type T under this GameObject whose GameObject.name equals targetName.
-    /// Returns an empty list if none are found.
-    /// </summary>
-    public static List<T> FindAll<T>(this GameObject root, string targetName, bool includeInactive = true) where T : Component
+    // Finds a descendant GameObject by slash-delimited path, starting from any GameObject in the scene
+    public static GameObject FindByPath(this GameObject root, string path)
     {
-        var results = new List<T>();
-
-        if (root == null || string.IsNullOrEmpty(targetName))
-            return results;
-
-        FindByNameRecursive(root.transform, targetName, includeInactive, results);
-        return results;
-    }
-
-    /// <summary>
-    /// Recursive search for the first component of type T by GameObject.name.
-    /// </summary>
-    private static T FindByName<T>(Transform current, string targetName, bool includeInactive) where T : Component
-    {
-        if (!includeInactive && !current.gameObject.activeInHierarchy)
+        if (string.IsNullOrWhiteSpace(path) || root == null)
             return null;
 
-        if (current.name == targetName)
+        string[] names = path.Split('/');
+        GameObject current = root.name == names[0] ? root : GameObject.Find(names[0]);
+        if (current == null)
+            return null;
+
+        for (int i = (current == root ? 1 : 1); i < names.Length; i++)
         {
-            var hit = current.GetComponent<T>();
-            if (hit != null)
-                return hit;
+            Transform child = current.transform.Find(names[i]);
+            if (child == null)
+                return null;
+
+            current = child.gameObject;
         }
 
-        for (int i = 0, c = current.childCount; i < c; i++)
-        {
-            var found = FindByName<T>(current.GetChild(i), targetName, includeInactive);
-            if (found != null)
-                return found;
-        }
-
-        return null;
+        return current;
     }
 
     /// <summary>
-    /// Recursive collection of all components of type T by GameObject.name.
+    /// Recursively collects components of type T where the owning GameObject's name matches exactly.
     /// </summary>
-    private static void FindByNameRecursive<T>(Transform current, string targetName, bool includeInactive, List<T> results) where T : Component
+    public static IEnumerable<T> GetComponentsInChildrenByName<T>(this GameObject root, string name, bool includeInactive = true) where T : UnityEngine.Component
     {
-        if (!includeInactive && !current.gameObject.activeInHierarchy)
-            return;
+        if (root == null || string.IsNullOrEmpty(name)) yield break;
+        foreach (var comp in root.transform.GetComponentsInChildrenByName<T>(name, includeInactive))
+            yield return comp;
+    }
 
-        if (current.name == targetName)
-        {
-            var hit = current.GetComponent<T>();
-            if (hit != null)
-                results.Add(hit);
-        }
-
-        for (int i = 0, c = current.childCount; i < c; i++)
-            FindByNameRecursive(current.GetChild(i), targetName, includeInactive, results);
+    /// <summary>
+    /// Returns the first component of type T whose GameObject name matches, or null if not found.
+    /// </summary>
+    public static T GetComponentInChildrenByName<T>(this GameObject root, string name, bool includeInactive = true) where T : UnityEngine.Component
+    {
+        return root == null ? null : root.transform.GetComponentsInChildrenByName<T>(name, includeInactive).FirstOrDefault();
     }
 }
 
@@ -133,6 +112,41 @@ public static class TransformExtensions
         }
         return null; //Return null if no matching child is found
     }
+
+    /// <summary>
+    /// Recursively collects components of type T where the owning GameObject's name matches exactly.
+    /// </summary>
+    public static IEnumerable<T> GetComponentsInChildrenByName<T>(this Transform root, string name, bool includeInactive = true) where T : UnityEngine.Component
+    {
+        if (root == null || string.IsNullOrEmpty(name)) yield break;
+
+        void Collect(Transform t, List<T> list)
+        {
+            if (t == null) return;
+            if (includeInactive || (t.gameObject.activeInHierarchy && t.gameObject.activeSelf))
+            {
+                var comp = t.GetComponent<T>();
+                if (comp != null && t.gameObject.name == name)
+                    list.Add(comp);
+            }
+
+            foreach (Transform child in t)
+                Collect(child, list);
+        }
+
+        var results = new List<T>();
+        Collect(root, results);
+        foreach (var r in results)
+            yield return r;
+    }
+
+    /// <summary>
+    /// Returns the first component of type T whose GameObject name matches, or null if not found.
+    /// </summary>
+    public static T GetComponentInChildrenByName<T>(this Transform root, string name, bool includeInactive = true) where T : UnityEngine.Component
+    {
+        return root == null ? null : root.GetComponentsInChildrenByName<T>(name, includeInactive).FirstOrDefault();
+    }
 }
 
 public static class EnumExtensions
@@ -147,7 +161,7 @@ public static class EnumExtensions
     public static string GetDescription(this Enum value)
     {
         FieldInfo field = value.GetType().GetField(value.ToString());
-        DescriptionAttribute attribute = field.GetCustomAttribute<DescriptionAttribute>();
+        var attribute = field.GetCustomAttribute<System.ComponentModel.DescriptionAttribute>();
         return attribute == null ? value.ToString() : attribute.Description;
     }
 

@@ -176,13 +176,14 @@ public class GameManager : Singleton<GameManager>
 
         coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
         waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
-        targetModeOverlay = GameObject.Find(GameObjectHelper.Game.TargetModeOverlay).GetComponent<TargetModeOverlay>();
+        
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
         // Board
         board = GameObject.Find(GameObjectHelper.Game.Board.Root).GetComponent<BoardInstance>();
         boardOverlay = GameObject.Find(GameObjectHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
-    
+        targetModeOverlay = GameObject.Find(GameObjectHelper.Game.Board.TargetModeOverlay).GetComponent<TargetModeOverlay>();
+
         var game = GameObject.Find("Game");
 
         // Audio

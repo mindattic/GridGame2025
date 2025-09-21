@@ -178,6 +178,7 @@ public enum InputMode
     PlayerTurn,
     EnemyTurn,
     AbilityTarget,
+    LinearTarget,
 }
 
 public enum LogLevel

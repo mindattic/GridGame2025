@@ -180,6 +180,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 545afea768629e241988d7b2ead023f5
+    m_Address: Sprites/AbilityButtons/Heal
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 556091e6bd2e8d7499cc3f80e8479d37
     m_Address: Sprites/WeaponTypes/Bow
     m_ReadOnly: 0
@@ -232,11 +237,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7188e9a019e6bdb40aadb43e75fb62f2
     m_Address: Sprites/GUI/Button.256x64
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 741e63364dd586648bfae7ed2f001e7c
-    m_Address: Sprites/AbilityButtons/Heal
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -402,6 +402,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c873a695795e7ce4598717431aef3ef7
     m_Address: Sprites/Backgrounds/Moors/02
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: caf5b8d17a41b8848b1dc7374fda429e
+    m_Address: Sprites/AbilityButtons/ShieldBash
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

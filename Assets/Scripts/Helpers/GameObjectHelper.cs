@@ -71,12 +71,9 @@ namespace Assets.Helper
             }
 
             public const string Portraits = "Canvas/Portraits";
-
-
-
             public const string CoinCounter = "Canvas/CoinCounter";
             public const string TutorialPopup = "Canvas/TutorialPopup";
-            public const string TargetModeOverlay = "Canvas/TargetModeOverlay";
+           
 
             public static class Background
             {
@@ -87,7 +84,7 @@ namespace Assets.Helper
             {
                 public const string Root = "Board";
                 public const string BoardOverlay = "Board/BoardOverlay";
-
+                public const string TargetModeOverlay = "Board/TargetModeOverlay";
             }
 
             public static class Card

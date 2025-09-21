@@ -1,29 +1,35 @@
 using Assets.Helper;
+using Assets.Scripts.Utilities;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using Assets.Scripts.Utilities; // added
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Full-screen overlay for targeting modes.
-/// Always stays active; visibility is controlled by Image + Label alpha only.
+/// Full-board overlay for targeting modes using a SpriteRenderer under the Board.
+/// Always stays active; visibility is controlled by SpriteRenderer color alpha only.
 /// </summary>
+[RequireComponent(typeof(SpriteRenderer))]
 public class TargetModeOverlay : MonoBehaviour
 {
     // ---------------------------------------------------------------------
     // Components and state
     // ---------------------------------------------------------------------
 
-    private Image image;                 // Background image that we fade
-    private TextMeshProUGUI label;       // Child label we also fade
-    private Coroutine runningCoroutine;  // Active fade routine if any
+    private SpriteRenderer spriteRenderer;   // Overlay sprite we fade
+    private Coroutine runningCoroutine;      // Active fade routine if any
 
     // Fade parameters
     [SerializeField] private float minAlpha = 0f;          // Fully transparent
     [SerializeField] private float maxAlpha = 0.3333f;     // Visible overlay alpha
-    [SerializeField] private float duration = 0.15f;       // Fade time (unscaled)
+    [SerializeField] private float duration = 0.1f;        // Fade time (unscaled)
+
+    // Overlay color (RGB); alpha is driven by fade
+    [SerializeField] private Color overlayColor = new Color(0f, 0f, 0f, 1f);
+
+    // Rendering order (to ensure it draws above the board tiles)
+    [Header("Rendering")]
+    [SerializeField] private string sortingLayerName = "Default";
+    [SerializeField] private int orderInLayer = 50;
 
     // If a mode arrives while this component is disabled, store and apply on enable
     private bool hasPendingMode;         // Tracks if we queued a mode
@@ -35,38 +41,56 @@ public class TargetModeOverlay : MonoBehaviour
 
     private void Awake()
     {
-        // Cache the Image component
-        image = GetComponent<Image>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
-        // Cache child "Label" TextMeshProUGUI (safe lookup)
-        var labelTransform = transform.Find("Label");
-        if (labelTransform != null)
-            label = labelTransform.GetComponent<TextMeshProUGUI>();
-
-        // Ensure deterministic starting visuals
-        if (image != null)
+        // Deterministic starting visuals
+        if (spriteRenderer != null)
         {
-            var c = image.color;
-            c.a = 0f;                    // Start fully transparent
-            image.color = c;
-            image.enabled = true;        // Keep Image enabled
+            // Apply sorting so we render on top of board tiles
+            ApplySorting();
+
+            var c = overlayColor; // use configured RGB, zero alpha
+            c.a = 0f;
+            spriteRenderer.color = c;
+            spriteRenderer.enabled = true;
         }
 
-        if (label != null)
-        {
-            var lc = label.color;
-            lc.a = 0f;
-            label.color = lc;
-        }
+        // Size and place over the board if possible
+        TryFitToBoard();
 
         GameReady.Begin(this);
     }
 
+    private void OnEnable()
+    {
+        // If we were enabled after a pending mode, apply immediately
+        if (hasPendingMode)
+        {
+            ApplyInstant(pendingMode);
+            hasPendingMode = false;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (g.InputManager != null)
+            g.InputManager.OnInputModeChanged -= HandleModeChanged;
+    }
+
     public void Initialize()
     {
-        // Subscribe if not already
+        // Subscribe to mode changes
         if (g.InputManager != null)
+        {
+            g.InputManager.OnInputModeChanged -= HandleModeChanged; // prevent double-subscribe
             g.InputManager.OnInputModeChanged += HandleModeChanged;
+        }
+
+        // Ensure we cover the board (sprite might have been assigned later)
+        TryFitToBoard();
+
+        // Apply desired sorting
+        ApplySorting();
 
         // Snap to current state immediately
         if (hasPendingMode)
@@ -79,6 +103,16 @@ public class TargetModeOverlay : MonoBehaviour
             ApplyInstant(g.InputManager.InputMode);
         }
     }
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        // Keep sorting and sizing up-to-date while editing
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
+        ApplySorting();
+        TryFitToBoard();
+    }
+#endif
 
     // ---------------------------------------------------------------------
     // Event handling
@@ -107,12 +141,12 @@ public class TargetModeOverlay : MonoBehaviour
 
     private static bool ShouldBeVisible(InputMode mode)
     {
-        return mode == InputMode.AbilityTarget;
+        return mode == InputMode.AbilityTarget || mode == InputMode.LinearTarget;
     }
 
     private float GetAlpha()
     {
-        return image != null ? image.color.a : 0f;
+        return spriteRenderer != null ? spriteRenderer.color.a : 0f;
     }
 
     private void StopFade()
@@ -129,20 +163,49 @@ public class TargetModeOverlay : MonoBehaviour
         bool visible = ShouldBeVisible(mode);
         float targetAlpha = visible ? maxAlpha : minAlpha;
 
-        if (image != null)
+        if (spriteRenderer != null)
         {
-            var c = image.color;
+            var c = overlayColor;
             c.a = targetAlpha;
-            image.color = c;
-            image.enabled = true;
+            spriteRenderer.color = c;
+            spriteRenderer.enabled = true;
         }
+    }
 
-        if (label != null)
-        {
-            var lc = label.color;
-            lc.a = targetAlpha;
-            label.color = lc;
-        }
+    private void ApplySorting()
+    {
+        if (spriteRenderer == null) return;
+        if (!string.IsNullOrEmpty(sortingLayerName))
+            spriteRenderer.sortingLayerName = sortingLayerName;
+        spriteRenderer.sortingOrder = orderInLayer;
+    }
+
+    /// <summary>
+    /// Fit, position, and scale this sprite to exactly cover the board area.
+    /// Uses the current sprite's bounds to compute the required transform scale.
+    /// </summary>
+    public void TryFitToBoard()
+    {
+        if (spriteRenderer == null || spriteRenderer.sprite == null || g.Board == null)
+            return;
+
+        // Compute desired world-space width/height
+        float width = g.Board.columnCount * g.TileSize;
+        float height = g.Board.rowCount * g.TileSize;
+
+        // Center the overlay over the board
+        transform.position = new Vector3(g.Board.center.x, g.Board.center.y, transform.position.z);
+
+        // Compute scale relative to sprite's local size
+        Vector2 spriteSize = spriteRenderer.sprite.bounds.size; // in world units at scale=1
+        if (spriteSize.x <= 0f || spriteSize.y <= 0f)
+            return;
+
+        Vector3 scale = transform.localScale;
+        scale.x = width / spriteSize.x;
+        scale.y = height / spriteSize.y;
+        scale.z = 1f;
+        transform.localScale = scale;
     }
 
     // ---------------------------------------------------------------------
@@ -151,12 +214,10 @@ public class TargetModeOverlay : MonoBehaviour
 
     private IEnumerator FadeRoutine(float from, float to, float seconds)
     {
-        if (image == null && label == null)
+        if (spriteRenderer == null)
             yield break;
 
-        if (image != null)
-            image.enabled = true;
-
+        spriteRenderer.enabled = true;
         float elapsed = 0f;
 
         if (seconds <= 0f)
@@ -179,21 +240,26 @@ public class TargetModeOverlay : MonoBehaviour
         runningCoroutine = null;
     }
 
-    // Apply alpha to both background and label
+    // Apply alpha to sprite color (preserving configured RGB)
     private void SetAlpha(float a)
     {
-        if (image != null)
-        {
-            var c = image.color;
-            c.a = a;
-            image.color = c;
-        }
-
-        if (label != null)
-        {
-            var lc = label.color;
-            lc.a = a;
-            label.color = lc;
-        }
+        if (spriteRenderer == null) return;
+        var c = overlayColor;
+        c.a = a;
+        spriteRenderer.color = c;
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("Preview Show")]
+    private void EditorPreviewShow()
+    {
+        SetAlpha(maxAlpha);
+    }
+
+    [ContextMenu("Preview Hide")]
+    private void EditorPreviewHide()
+    {
+        SetAlpha(minAlpha);
+    }
+#endif
 }

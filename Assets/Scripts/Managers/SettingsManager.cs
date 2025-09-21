@@ -169,14 +169,18 @@ public class SettingsManager : MonoBehaviour
         go.name = $"{sliderPrefab.name}_{label.ToPascalCase()}";
 
         // Label
-        var labelText = go.Find<TextMeshProUGUI>("Label");
-        labelText.text = label;
+        var labelText = go.GetComponentInChildrenByName<TextMeshProUGUI>("Label");
+        if (labelText != null) labelText.text = label;
 
         // Value text
-        var value = go.Find<TextMeshProUGUI>("Value");
+        var value = go.GetComponentInChildrenByName<TextMeshProUGUI>("Value");
 
         // Slider
-        var slider = go.Find<Slider>("Slider");
+        var slider = go.GetComponentInChildrenByName<Slider>("Slider");
+        if (slider == null)
+        {
+            slider = go.GetComponentInChildren<Slider>();
+        }
         slider.SetDirection(Slider.Direction.LeftToRight, true);
         slider.navigation = new Navigation { mode = Navigation.Mode.None };
         slider.transition = Selectable.Transition.None;
@@ -209,7 +213,7 @@ public class SettingsManager : MonoBehaviour
         // Initialize without firing onChanged
         var initial = Snap(current);
         slider.SetValueWithoutNotify(initial);
-        value.text = Format(initial);
+        if (value != null) value.text = Format(initial);
 
         // Pointer-driven positioning along the slider track
         void SetFromPointer(PointerEventData e)
@@ -235,7 +239,7 @@ public class SettingsManager : MonoBehaviour
             if (Mathf.Abs(slider.value - snapped) > 0.0001f)
                 slider.value = snapped;
 
-            value.text = Format(snapped);
+            if (value != null) value.text = Format(snapped);
             e.Use();
         }
 
@@ -262,7 +266,7 @@ public class SettingsManager : MonoBehaviour
             if (Mathf.Abs(snapped - v) > 0.0001f)
                 slider.SetValueWithoutNotify(snapped);
 
-            value.text = Format(snapped);
+            if (value != null) value.text = Format(snapped);
             onChanged(snapped);
         });
     }
@@ -279,8 +283,8 @@ public class SettingsManager : MonoBehaviour
         var go = Instantiate(togglePrefab, contentRoot);
         go.name = $"{togglePrefab.name}_{label.ToPascalCase()}";
 
-        var labelText = go.Find<TextMeshProUGUI>("Label");
-        labelText.text = label;
+        var labelText = go.GetComponentInChildrenByName<TextMeshProUGUI>("Label");
+        if (labelText != null) labelText.text = label;
 
         var toggle = go.GetComponentInChildren<Toggle>();
         toggle.isOn = current;
@@ -300,8 +304,8 @@ public class SettingsManager : MonoBehaviour
         var go = Instantiate(dropdownPrefab, contentRoot);
         go.name = $"{dropdownPrefab.name}_{label.ToPascalCase()}";
 
-        var labelText = go.Find<TextMeshProUGUI>("Label");
-        labelText.text = label;
+        var labelText = go.GetComponentInChildrenByName<TextMeshProUGUI>("Label");
+        if (labelText != null) labelText.text = label;
 
         var dropdown = go.GetComponentInChildren<TMP_Dropdown>();
         dropdown.ClearOptions();

@@ -37,6 +37,7 @@ namespace Assets.Scripts.Libraries
             abilityButtons = new Dictionary<string, Sprite>
             {
                 { "Heal", AssetHelper.LoadAsset<Sprite>("Sprites/AbilityButtons/Heal") },
+                { "ShieldBash", AssetHelper.LoadAsset<Sprite>("Sprites/AbilityButtons/ShieldBash") },
             };
 
             backgrounds = new Dictionary<string, Sprite>();

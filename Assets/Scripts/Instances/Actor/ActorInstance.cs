@@ -1,4 +1,3 @@
-// --- File: Assets/Scripts/Instances/Actor/ActorInstance.cs ---
 using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.Behaviors.Actor;
@@ -361,6 +360,18 @@ public partial class ActorInstance : MonoBehaviour
     #endregion
 
     #region Combat API
+
+    /// <summary>
+    /// Placeholder damage at the end of ShieldRush bump.
+    /// </summary>
+    public IEnumerator ShieldRushDamageRoutine(ActorInstance target)
+    {
+        if (target != null && target.IsPlaying)
+        {
+            g.CombatTextManager.Spawn("ShieldRush", target.Position, "Damage");
+        }
+        yield return null;
+    }
 
     /// <summary>
     /// Pick a target policy and record a target location for the next action.

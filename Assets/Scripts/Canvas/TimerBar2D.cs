@@ -212,8 +212,9 @@ public class TimerBar2D : MonoBehaviour
             yield return Wait.None();
         }
 
-        // Time expired, perform drop
+        // Time expired, perform drop and block input until release
         g.SelectedHeroManager.Drop();
+        g.InputManager.RequireTouchRelease();
 
         // Clear handle
         runningCoroutine = null;

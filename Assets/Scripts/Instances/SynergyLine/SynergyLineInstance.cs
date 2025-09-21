@@ -18,7 +18,7 @@ public class SynergyLineInstance : MonoBehaviour
 
     // Fade
     [SerializeField] private float fadeInTime = 0.20f;
-    [SerializeField] private float fadeOutTime = 0.30f;
+    [SerializeField] private float fadeOutTime = 0.20f; // Shorter than BoardOverlay (0.25) so this finishes first
 
     // Sorting bias for multi-wave ordering
     [SerializeField] private int orderOffsetPerWave = 1;
@@ -210,7 +210,7 @@ public class SynergyLineInstance : MonoBehaviour
 
         string layerName;
         int baseOrder;
-        ResolveSortingBelowActors(out layerName, out baseOrder);
+        ResolveSortingForSynergyLayer(out layerName, out baseOrder);
 
         EnsureStrands(waveformCount);
 
@@ -278,7 +278,7 @@ public class SynergyLineInstance : MonoBehaviour
     /// <summary>
     /// Per frame update:
     /// 1) Move anchors to current tiles, so bumps and moves snap endpoints to tiles.
-    /// 2) Reaffirm sorting to remain below both actors.
+    /// 2) Reaffirm sorting to remain between BoardOverlay and ActorAbove.
     /// 3) Tick every active strand.
     /// </summary>
     private void TickAll()
@@ -286,12 +286,11 @@ public class SynergyLineInstance : MonoBehaviour
         // Keep endpoint anchors pinned to tiles
         UpdateAnchorsToTiles();
 
-        // Make sure we never float above actors: if actor sort changes during play, keep up
+        // Ensure the layer remains correct while playing
         string layerName;
         int baseOrder;
-        ResolveSortingBelowActors(out layerName, out baseOrder);
+        ResolveSortingForSynergyLayer(out layerName, out baseOrder);
 
-        // Only need to update sorting layer during play. Strand keeps relative order already.
         int n = Mathf.Min(waveformCount, strands.Count);
         for (int i = 0; i < n; i++)
         {
@@ -337,25 +336,15 @@ public class SynergyLineInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Resolve a sorting layer and order that is guaranteed below both actors.
+    /// Resolve a sorting layer between BoardOverlay and ActorAbove.
     /// </summary>
-    private void ResolveSortingBelowActors(out string layerName, out int order)
+    private void ResolveSortingForSynergyLayer(out string layerName, out int order)
     {
-        int orderA = 0;
-        int orderB = 0;
+        // Always use the in-between layer
+        layerName = Assets.Helpers.SortingHelper.Layer.SupportLineAbove;
 
-        if (aGroup != null) orderA = aGroup.sortingOrder;
-        else if (aRenderer != null) orderA = aRenderer.sortingOrder;
-
-        if (bGroup != null) orderB = bGroup.sortingOrder;
-        else if (bRenderer != null) orderB = bRenderer.sortingOrder;
-
-        // Always use the "below actors" layer
-        layerName = Assets.Helpers.SortingHelper.Layer.SupportLineBelow;
-
-        // Order strictly under both. Subtract one to avoid ever covering the actors.
-        int underBoth = Mathf.Min(orderA, orderB) - 1;
-        order = underBoth;
+        // Keep a small base order so per-wave offsets work but we remain inside this layer
+        order = 0;
     }
 
     /// <summary>

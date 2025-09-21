@@ -150,6 +150,7 @@
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
     <Compile Include="Assets\Scripts\Managers\SequenceManager.cs" />
     <Compile Include="Assets\Scripts\Effects\ZoomEffect.cs" />
+    <Compile Include="Assets\Scripts\Sequences\ShieldBashSequence.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime02.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\MusicTrackLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
+    <Compile Include="Assets\Scripts\Sequences\SequenceCallback.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier01.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Utilities\RNG.cs" />
