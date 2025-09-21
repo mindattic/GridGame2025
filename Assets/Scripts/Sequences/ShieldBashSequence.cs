@@ -6,8 +6,9 @@ using g = Assets.Helpers.GameHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Paladin Shield Bash sequence: move to tile adjacent to target (toward Paladin),
-    /// then perform a Bump with a supplied impact routine.
+    /// Paladin Shield Bash sequence: slide to the tile adjacent to the target (toward Paladin)
+    /// and perform a bump with impact feedback. Preconditions (alignment, clear path, play states)
+    /// are validated by the caller before this sequence is queued.
     /// </summary>
     public class ShieldBashSequence : SequenceEvent
     {
@@ -22,36 +23,36 @@ namespace Assets.Scripts.Sequences
 
         public override IEnumerator ProcessRoutine()
         {
+            // Safety checks in case state changed after queuing
             if (paladin == null || target == null || !paladin.IsPlaying || !target.IsPlaying)
                 yield break;
 
-            // Destination: adjacent to target along the axis toward paladin
+            // Determine direction from target to paladin (axis-aligned is guaranteed by caller)
             Direction dirFromTargetToPaladin;
             if (paladin.location.x == target.location.x)
                 dirFromTargetToPaladin = (paladin.location.y > target.location.y) ? Direction.North : Direction.South;
             else
                 dirFromTargetToPaladin = (paladin.location.x > target.location.x) ? Direction.East : Direction.West;
 
+            // Destination: adjacent to target along the axis toward paladin
             var destLoc = Geometry.GetAdjacentLocationInDirection(target.location, dirFromTargetToPaladin);
             var destTile = g.TileMap.GetTile(destLoc);
             if (destTile == null || destTile.IsOccupied)
-                yield break; // safety
+                yield break; // cannot move; abort cleanly
 
             // Slide via actor movement routine
             paladin.location = destLoc;
-            yield return paladin.StartCoroutine(paladin.Move.MoveTowardDestinationRoutine());
+            yield return paladin.Move.TowardDestinationRoutine();
 
-            // Bump -> damage placeholder
-            yield return paladin.StartCoroutine(paladin.Animation.BumpRoutine(target, ShieldBashDamageRoutine()));
+            // Bump -> damage/feedback
+            yield return paladin.Animation.BumpRoutine(target, ShieldBashDamageRoutine());
         }
 
         private IEnumerator ShieldBashDamageRoutine()
         {
             if (target != null && target.IsPlaying)
             {
-                // Impact feedback at the bump apex: shake the target, then show damage feedback
-                target.Animation.Shake(intensity: 0.6f, duration: 0.15f);
-                g.CombatTextManager.Spawn("ShieldBash", target.Position, "Damage");
+                g.CombatTextManager.Spawn("Shield Bash", target.Position, "Damage");
             }
             yield return null;
         }

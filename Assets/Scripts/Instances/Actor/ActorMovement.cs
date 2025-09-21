@@ -88,7 +88,7 @@ namespace Assets.Scripts.Instances.Actor
         /// Moves the actor toward its grid destination using right-angle Move.
         /// Includes a watchdog to prevent infinite loops if misconfigured.
         /// </summary>
-        public IEnumerator MoveTowardDestinationRoutine()
+        public IEnumerator TowardDestinationRoutine()
         {
             flags.IsMoving = true;
             g.AudioManager.Play("Slide");
@@ -251,7 +251,7 @@ namespace Assets.Scripts.Instances.Actor
             {
                 flags.IsSwapping = true;
                 location = currentTile.location;
-                instance.StartCoroutine(MoveTowardDestinationRoutine());
+                instance.StartCoroutine(TowardDestinationRoutine());
             }
         }
 

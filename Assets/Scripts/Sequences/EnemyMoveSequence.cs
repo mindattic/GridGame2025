@@ -27,7 +27,7 @@ namespace Assets.Scripts.Sequences
 
             // Decide path and Move toward destination.
             enemy.CalculateAttackStrategy();
-            yield return enemy.Move.MoveTowardDestinationRoutine();
+            yield return enemy.Move.TowardDestinationRoutine();
 
             // No chaining here. EnemyStartSequence enqueued the follow-up attack explicitly.
         }

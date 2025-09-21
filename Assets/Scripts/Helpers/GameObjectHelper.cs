@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using label = TMPro.TextMeshProUGUI;
 
 namespace Assets.Helper
 {
@@ -53,6 +55,8 @@ namespace Assets.Helper
             public const string Content = "Canvas/ScrollView/Viewport/Content";
             public const string Textarea = "Canvas/ScrollView/Viewport/Content/Textarea";
         }
+
+
         public static class Game
         {
             public const string Canvas3D = "Canvas3D";
@@ -118,6 +122,12 @@ namespace Assets.Helper
             public const string FocusIndicator = "FocusIndicator";   // renamed from Selection
         }
 
+        public static class LoadingScreen
+        {
+            public const string LoreText = "Canvas/LoreText";
+            public static label LoreTextX => GameObject.Find("Canvas/LoreText").GetComponent<TextMeshProUGUI>();
+
+        }
 
         public static class PartyManager
         {

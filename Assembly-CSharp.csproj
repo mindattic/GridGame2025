@@ -113,10 +113,10 @@
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
-    <Compile Include="Assets\Scripts\GUI\HeroExperiencePane.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier03.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
+    <Compile Include="Assets\Scripts\Canvas\LoadingScreenLore.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\AssetHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\VictoryManager.cs" />
@@ -200,6 +200,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorGlow.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealAbilitySequence.cs" />
     <Compile Include="Assets\Scripts\Managers\ProjectileManager.cs" />
+    <Compile Include="Assets\Scripts\Canvas\HeroExperiencePane.cs" />
     <Compile Include="Assets\Scripts\Managers\SynergyLineManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Portrait2DInstance.cs" />
     <Compile Include="Assets\Scripts\Overworld\BushInstance.cs" />

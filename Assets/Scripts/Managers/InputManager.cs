@@ -205,6 +205,34 @@ public class InputManager : MonoBehaviour
         }
     }
 
+    // Centralized execution for Paladin Shield Bash once a valid hero/target pair is chosen.
+    private void TryExecuteShieldBash(ActorInstance hero, ActorInstance target)
+    {
+        if (hero == null || target == null) return;
+        if (!hero.IsHero || !target.IsEnemy) return;
+        if (!target.IsPlaying) return;
+
+        // Must be aligned strictly in row or column
+        bool aligned = hero.location.x == target.location.x || hero.location.y == target.location.y;
+        if (!aligned) return;
+
+        // Ensure clear path: no intervening actors
+        var between = g.TileMap.EnumerateBetween(hero.location, target.location);
+        if (between.Any(t => t != null && t.IsOccupied)) return;
+
+        // Build and run sequence atomically
+        HideCancelButton();
+        g.TileManager.Reset();
+        InputMode = InputMode.None; // lock input for duration
+        g.SequenceManager.Add(new ShieldBashSequence(hero, target));
+        g.SequenceManager.Add(new SequenceCallback(() =>
+        {
+            ClearPendingUser();
+            InputMode = InputMode.PlayerTurn;
+        }));
+        g.SequenceManager.Execute();
+    }
+
     // Linear target: select an enemy in same row/column with clear line; move hero and bump
     private void UpdateLinearTarget(Touch touch)
     {
@@ -213,42 +241,10 @@ public class InputManager : MonoBehaviour
             case TouchPhase.Began:
                 var hero = pendingAbilityUser; // acting paladin for Shield Bash
                 var target = TouchHelper.GetActorAtTouchPosition();
-                if (hero == null || target == null) return;
-                if (!hero.IsHero || !target.IsEnemy) return;
-                if (!target.IsPlaying) return;
-
-                // Must be aligned strictly in row or column
-                bool aligned = hero.location.x == target.location.x || hero.location.y == target.location.y;
-                if (!aligned) return;
-
-                // Ensure clear path: no intervening actors
-                var between = g.TileMap.EnumerateBetween(hero.location, target.location);
-                if (between.Any(t => t != null && t.IsOccupied)) return;
-
-                // Build and run sequence atomically
-                HideCancelButton();
-                g.TileManager.Reset();
-                InputMode = InputMode.None; // lock input for duration
-                g.SequenceManager.Add(new ShieldBashSequence(hero, target));
-                g.SequenceManager.Add(new SequenceCallback(() =>
-                {
-                    ClearPendingUser();
-                    InputMode = InputMode.PlayerTurn;
-                }));
-                g.SequenceManager.Execute();
+                TryExecuteShieldBash(hero, target);
                 break;
         }
     }
-
-    private IEnumerator ShieldBashDamageRoutine(ActorInstance target)
-    {
-        if (target != null && target.IsPlaying)
-        {
-            g.CombatTextManager.Spawn("ShieldBash", target.Position, "Damage");
-        }
-        yield return null;
-    }
-
 
     /// <summary>
     /// Player turn flow. Focus on touch, drag past threshold, drop on release.
@@ -411,26 +407,7 @@ public class InputManager : MonoBehaviour
                     {
                         var hero = pendingAbilityUser;
                         var target = TouchHelper.GetActorAtTouchPosition();
-                        if (hero == null || target == null) break;
-                        if (!hero.IsHero || !target.IsEnemy) break;
-                        if (!target.IsPlaying) break;
-
-                        bool aligned = hero.location.x == target.location.x || hero.location.y == target.location.y;
-                        if (!aligned) break;
-
-                        var between = g.TileMap.EnumerateBetween(hero.location, target.location);
-                        if (between.Any(t => t != null && t.IsOccupied)) break;
-
-                        HideCancelButton();
-                        g.TileManager.Reset();
-                        InputMode = InputMode.None;
-                        g.SequenceManager.Add(new ShieldBashSequence(hero, target));
-                        g.SequenceManager.Add(new SequenceCallback(() =>
-                        {
-                            ClearPendingUser();
-                            InputMode = InputMode.PlayerTurn;
-                        }));
-                        g.SequenceManager.Execute();
+                        TryExecuteShieldBash(hero, target);
                     }
                     break;
 

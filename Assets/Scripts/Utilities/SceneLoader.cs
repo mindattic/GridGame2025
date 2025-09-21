@@ -58,7 +58,7 @@ namespace Assets.Scripts
         /// </summary>
         public static void Load(string sceneName, LoadSceneMode mode = LoadSceneMode.Single, Action onLoaded = null)
         {
-            if (string.IsNullOrWhiteSpace(sceneName))
+            if (string.IsNullOrWhiteSpace(sceneName)) 
             {
                 Debug.LogError("SceneLoader.Load was given an empty scene name.");
                 return;
