@@ -4,6 +4,7 @@ using Assets.Scripts.Libraries;
 using Assets.Scripts.Utilities;
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using c = Assets.Helpers.CanvasHelper;
@@ -373,5 +374,56 @@ public class Card : MonoBehaviour
     private static bool ApproximatelyVector2(Vector2 a, Vector2 b, float tol = 0.5f)
     {
         return Mathf.Abs(a.x - b.x) <= tol && Mathf.Abs(a.y - b.y) <= tol;
+    }
+
+    // --------------------------------------------------------------------------------------------
+    // UI: Arrow buttons to cycle focused hero
+    // --------------------------------------------------------------------------------------------
+
+    private void CycleHero(int direction)
+    {
+        // Block during ability targeting flows to avoid conflicting UI states
+        if (g.InputManager != null)
+        {
+            var mode = g.InputManager.InputMode;
+            if (mode == InputMode.AnyActorTarget || mode == InputMode.LinearTarget)
+                return;
+            // Ignore while dragging a selected hero
+            if (g.InputManager.isDragging)
+                return;
+        }
+
+        var heroes = g.Actors.Heroes.Where(h => h != null && h.IsPlaying).ToList();
+        if (heroes.Count == 0) return;
+
+        // Choose a baseline current hero
+        var current = g.Actors.FocusedActor != null && g.Actors.FocusedActor.IsHero
+            ? g.Actors.FocusedActor
+            : (g.TurnManager != null && g.TurnManager.ActiveActor != null && g.TurnManager.ActiveActor.IsHero
+                ? g.TurnManager.ActiveActor
+                : heroes.First());
+
+        int idx = heroes.IndexOf(current);
+        if (idx < 0) idx = 0;
+
+        int next = (idx + direction) % heroes.Count;
+        if (next < 0) next += heroes.Count;
+
+        var target = heroes[next];
+        if (target == null) return;
+
+        g.SelectedHeroManager?.Focus(target);
+        g.AudioManager?.Play("Click");
+    }
+
+    // Bind these in the Inspector to Card/ArrowLeft and Card/ArrowRight buttons
+    public void OnPreviousHeroArrowClick()
+    {
+        CycleHero(-1);
+    }
+
+    public void OnNextHeroArrowClick()
+    {
+        CycleHero(1);
     }
 }
