@@ -174,7 +174,7 @@ public class GameManager : Singleton<GameManager>
         // Canvas
         card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<Card>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
-        timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D.Root).GetComponent<TimerBar2D>();
+        timerBar2D = GameObjectHelper.Game.TimerBar.Root;
         portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();
 
         // Timeline children

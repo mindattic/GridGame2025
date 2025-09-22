@@ -68,9 +68,11 @@ namespace Assets.Helper
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
             public const string TimelineContainer = "Canvas/Timeline";
 
-            public static class TimerBar2D
+            public static class TimerBar
             {
-                public const string Root = "Canvas/TimerBar2D";
+                public static TimerBar2D Root => GameObject.Find("Canvas/TimerBar2D").GetComponent<TimerBar2D>();
+
+
                 public const string Back = "Canvas/TimerBar2D/Back";
                 public const string Fill = "Canvas/TimerBar2D/Fill";
                 public const string Front = "Canvas/TimerBar2D/Front";

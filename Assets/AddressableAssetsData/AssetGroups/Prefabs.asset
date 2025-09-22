@@ -26,7 +26,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1b2a90b6d99a569488879ad4a0ac551f
-    m_Address: Prefabs/AbilityButtonPrefab
+    m_Address: Prefabs/AbilityButton
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
