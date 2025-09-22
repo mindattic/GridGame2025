@@ -179,7 +179,7 @@ public class TimerBar2D : MonoBehaviour
             case InputMode.PlayerTurn:
                 gameObject.SetActive(true);
                 break;
-            case InputMode.AbilityTarget:
+            case InputMode.AnyActorTarget:
                 gameObject.SetActive(false);
                 break;
             default:

@@ -90,7 +90,7 @@ public class AbilityButtonManager : MonoBehaviour
         if (ability.requiresTarget)
         {
             // switch into target mode
-            g.InputManager.InputMode = InputMode.AbilityTarget;
+            g.InputManager.InputMode = InputMode.AnyActorTarget;
             g.InputManager.ShowCancelButton();
             // Same gating for touch so the first tap on target registers as Began
             g.InputManager.RequireTouchRelease();

@@ -34,7 +34,7 @@ public class TargetLineManager : MonoBehaviour
     public void BeginTargeting(Vector3 fromWorldPosition, Action<ActorInstance> onConfirmed)
     {
         // 1) switch global input mode
-        g.InputManager.InputMode = InputMode.AbilityTarget;
+        g.InputManager.InputMode = InputMode.AnyActorTarget;
 
         // 2) store callback & origin
         buttonOrigin = fromWorldPosition;
@@ -62,7 +62,7 @@ public class TargetLineManager : MonoBehaviour
     /// </summary>
     public void OnTargetTouch(ActorInstance hero)
     {
-        if (g.InputManager.InputMode != InputMode.AbilityTarget)
+        if (g.InputManager.InputMode != InputMode.AnyActorTarget)
             return;
 
         if (hero == lastClicked)

@@ -20,6 +20,11 @@ public class Portrait2DInstance : MonoBehaviour
     public ActorInstance actor;
     private bool isBeingDestroyed = false;
 
+    // Optional fixed lane positions (canvas-local, relative to parent rect center)
+    // If set, vertical slides will use fixedX and horizontal slides will use fixedY.
+    public float? fixedX = null;
+    public float? fixedY = null;
+
     public Transform parent
     {
         get => rectTransform.parent;
@@ -58,28 +63,32 @@ public class Portrait2DInstance : MonoBehaviour
     /// </summary>
     public IEnumerator SlideInRoutine()
     {
-        //Generate random offset
+        //Generate random offset (used only if a fixed lane is not provided)
         float offsetAmount = RNG.Float(0f, distance * Increment.Percent10);
         float offset = RNG.Int(1, 2) == 1 ? offsetAmount : -offsetAmount;
         bool isVertical = direction == Direction.North || direction == Direction.South;
 
-        // Determine origin
-        rectTransform.anchoredPosition = new Vector2(isVertical ? offset : 0, !isVertical ? offset : 0);
+        // Determine lane base using fixedX/fixedY if provided
+        float laneX = isVertical ? (fixedX ?? offset) : 0f;
+        float laneY = !isVertical ? (fixedY ?? offset) : 0f;
+
+        // Determine origin (start near center along main axis 0, with lane on cross axis)
+        rectTransform.anchoredPosition = new Vector2(laneX, laneY);
 
         // Determine destination
         switch (direction)
         {
             case Direction.East:
-                destination = new Vector2(distance, offset);
+                destination = new Vector2(distance, laneY);
                 break;
             case Direction.West:
-                destination = new Vector2(-distance, offset);
+                destination = new Vector2(-distance, laneY);
                 break;
             case Direction.North:
-                destination = new Vector2(offset, distance);
+                destination = new Vector2(laneX, distance);
                 break;
             case Direction.South:
-                destination = new Vector2(offset, -distance);
+                destination = new Vector2(laneX, -distance);
                 break;
         }
 
@@ -95,11 +104,13 @@ public class Portrait2DInstance : MonoBehaviour
             Vector2 pos;
             if (direction == Direction.East || direction == Direction.West)
             {
-                pos = new Vector2(destination.x * v, destination.y); // X changes, Y stays offset
+                // X changes, Y stays on its fixed/random lane
+                pos = new Vector2(destination.x * v, destination.y);
             }
             else
             {
-                pos = new Vector2(destination.x, destination.y * v); // Y changes, X stays offset
+                // Y changes, X stays on its fixed/random lane
+                pos = new Vector2(destination.x, destination.y * v);
             }
 
             rectTransform.anchoredPosition = pos;

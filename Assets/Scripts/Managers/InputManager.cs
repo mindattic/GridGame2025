@@ -355,7 +355,7 @@ public class InputManager : MonoBehaviour
                 case InputMode.None:
                     break;
 
-                case InputMode.AbilityTarget:
+                case InputMode.AnyActorTarget:
                     UpdateAbilityTarget(touch);
                     break;
 
@@ -380,7 +380,7 @@ public class InputManager : MonoBehaviour
                 case InputMode.None:
                     break;
 
-                case InputMode.AbilityTarget:
+                case InputMode.AnyActorTarget:
                     if (Input.GetMouseButtonDown(0))
                     {
                         var target = TouchHelper.GetActorAtTouchPosition();
