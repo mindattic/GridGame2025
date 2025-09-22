@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using label = TMPro.TextMeshProUGUI;
+using UnityEngine.UI;
+using Label = TMPro.TextMeshProUGUI;
 
 namespace Assets.Helper
 {
@@ -60,9 +61,10 @@ namespace Assets.Helper
         public static class Game
         {
             public const string Canvas3D = "Canvas3D";
-            public const string PauseButton = "PauseButton";
-            public const string PauseButtonIcon = "PauseButton";
-            public const string PauseMenu = "Canvas/PauseMenu";
+
+           
+
+
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
             public const string TimelineContainer = "Canvas/Timeline";
 
@@ -76,8 +78,58 @@ namespace Assets.Helper
 
             public const string Portraits = "Canvas/Portraits";
             public const string CoinCounter = "Canvas/CoinCounter";
-            public const string TutorialPopup = "Canvas/TutorialPopup";
-           
+
+            public static class TutorialPopup
+            {
+                public const string Root = "Canvas/TutorialPopup";
+                public static GameObject Panel => GameObject.Find("Canvas/TutorialPopup/Panel");
+                public static Image Image => GameObject.Find("Canvas/TutorialPopup/Panel/Image").GetComponent<Image>();
+                public static Label TitleTextX => GameObject.Find("Canvas/TutorialPopup/Panel/Title").GetComponent<TextMeshProUGUI>();
+                public static Label ContentTextX => GameObject.Find("Canvas/TutorialPopup/Panel/Content").GetComponent<TextMeshProUGUI>();
+                public static Button PreviousButton => GameObject.Find("Canvas/TutorialPopup/Panel/PreviousButton").GetComponent<Button>();
+                public static Button NextButton => GameObject.Find("Canvas/TutorialPopup/Panel/NextButton").GetComponent<Button>();
+                public static Button CloseButton => GameObject.Find("Canvas/TutorialPopup/Panel/CloseButton").GetComponent<Button>();
+            }
+
+
+            public static class PauseButton
+            {
+                public static Button Root => GameObject.Find("Canvas/PauseButton").GetComponent<Button>();
+                public static Image Image => GameObject.Find("Canvas/PauseButton").GetComponent<Image>();
+
+            }
+
+            public static class PauseMenu
+            {
+                public static GameObject Root => GameObject.Find("Canvas/PauseMenu");
+                public static Button ResumeButton => GameObject.Find("Canvas/PauseMenu/Inner/ResumeButton").GetComponent<Button>();
+                public static Label ResumeButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/ResumeButton/Label").GetComponent<TextMeshProUGUI>();
+
+                public static Button RunAwayButton => GameObject.Find("Canvas/PauseMenu/Inner/RunAwayButton").GetComponent<Button>();
+                public static Label RunAwayButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/RunAwayButton/Label").GetComponent<TextMeshProUGUI>();
+
+                public static Button QuickSaveGameButton => GameObject.Find("Canvas/PauseMenu/Inner/QuickSaveGameButton").GetComponent<Button>();
+                public static Label QuickSaveGameButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/QuickSaveGameButton/Label").GetComponent<TextMeshProUGUI>();
+
+                public static Button CreateSaveGameButton => GameObject.Find("Canvas/PauseMenu/Inner/CreateSaveGameButton").GetComponent<Button>();
+                public static Label CreateSaveGameButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/CreateSaveGameButton/Label").GetComponent<TextMeshProUGUI>();
+
+                public static Button RestartStageButton => GameObject.Find("Canvas/PauseMenu/Inner/RestartStageButton").GetComponent<Button>();
+                public static Label RestartStageButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/RestartStageButton/Label").GetComponent<TextMeshProUGUI>();
+
+                public static Button PartyManagerButton => GameObject.Find("Canvas/PauseMenu/Inner/PartyManagerButton").GetComponent<Button>();
+                public static Label PartyManagerButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/PartyManagerButton/Label").GetComponent<TextMeshProUGUI>();
+
+                public static Button StageSelectButton => GameObject.Find("Canvas/PauseMenu/Inner/StageSelectButton").GetComponent<Button>();
+                public static Label StageSelectButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/StageSelectButton/Label").GetComponent<TextMeshProUGUI>();
+
+                public static Button SettingsButton => GameObject.Find("Canvas/PauseMenu/Inner/SettingsButton").GetComponent<Button>();
+                public static Label SettingsButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/SettingsButton/Label").GetComponent<TextMeshProUGUI>();
+
+                public static Button TitleScreenButton => GameObject.Find("Canvas/PauseMenu/Inner/TitleScreenButton").GetComponent<Button>();
+                public static Label TitleScreenButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/TitleScreenButton/Label").GetComponent<TextMeshProUGUI>();
+            }
+
 
             public static class Background
             {
@@ -125,7 +177,7 @@ namespace Assets.Helper
         public static class LoadingScreen
         {
             public const string LoreText = "Canvas/LoreText";
-            public static label LoreTextX => GameObject.Find("Canvas/LoreText").GetComponent<TextMeshProUGUI>();
+            public static Label LoreTextX => GameObject.Find("Canvas/LoreText").GetComponent<TextMeshProUGUI>();
 
         }
 

@@ -45,6 +45,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 28b0f612de861a8449d2fb291eade4f3
+    m_Address: Prefabs/PauseMenu
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 2e72c33cf0bfdfd4996f76ddc0140c31
     m_Address: Prefabs/SupportLinePrefab
     m_ReadOnly: 0
@@ -102,6 +107,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8590107f29920384a9837d41ef7a6890
     m_Address: Prefabs/KeyboardDialog
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8a496838dbe07914b965e0a320acc723
+    m_Address: Prefabs/TutorialPopup
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

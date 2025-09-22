@@ -58,7 +58,7 @@ public class ParallaxBackgroundInstance : MonoBehaviour
         if (rawImage == null || !gameObject.activeInHierarchy)
             return;
 
-        if (g.PauseManager == null || !g.PauseManager.IsPaused)
+        if (g.PauseMenu == null || !g.PauseMenu.IsPaused)
             return;
 
         if (Time.unscaledTime >= nextChangeAt)

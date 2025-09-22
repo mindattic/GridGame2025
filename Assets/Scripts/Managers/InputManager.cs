@@ -332,7 +332,7 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         if (GameManager.instance.inputManager == null) return;
-        if (g.PauseManager.IsPaused) return;
+        if (g.PauseMenu.IsPaused) return;
 
         // If we require a touch/mouse release (e.g., timer-forced Drop just happened),
         // block all input until nothing is pressed.

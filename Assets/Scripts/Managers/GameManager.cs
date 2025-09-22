@@ -1,6 +1,7 @@
 using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.GUI;
+using Assets.Scripts.Libraries;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Models;
 using Assets.Scripts.Utilities;
@@ -71,7 +72,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AudioManager audioManager;
     [HideInInspector] public VfxManager vfxManager;
     [HideInInspector] public CoinManager coinManager;
-    [HideInInspector] public PauseManager pauseManager;
+    [HideInInspector] public PauseMenu pauseMenu;
     [HideInInspector] public DebugManager debugManager;
     [HideInInspector] public ConsoleManager consoleManager;
     [HideInInspector] public LogManager logManager;
@@ -143,7 +144,17 @@ public class GameManager : Singleton<GameManager>
         if (!ProfileHelper.HasProfiles())
             return;
 
-        //Apply settings
+        var canvasRoot = GameObject.Find("Canvas");
+
+        var go = Instantiate(PrefabLibrary.Get("PauseMenu"), canvasRoot.transform);
+        go.name = "PauseMenu";
+        pauseMenu = go.GetComponent<PauseMenu>();
+
+        go = Instantiate(PrefabLibrary.Get("TutorialPopup"), canvasRoot.transform);
+        go.name = "TutorialPopup";
+        tutorialPopup = go.GetComponent<TutorialPopup>();
+
+        // Apply settings
         Application.targetFrameRate = targetFramerate.ToInt();
         QualitySettings.vSyncCount = VSyncCount.VSync1.ToInt();
 
@@ -161,12 +172,10 @@ public class GameManager : Singleton<GameManager>
         ShakeIntensity.Initialize(tileSize);
 
         // Canvas
-        tutorialPopup = GameObject.Find(GameObjectHelper.Game.TutorialPopup).GetComponent<TutorialPopup>();
         card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<Card>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
         timerBar2D = GameObject.Find(GameObjectHelper.Game.TimerBar2D.Root).GetComponent<TimerBar2D>();
         portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();
-
 
         // Timeline children
         timelineContainer = GameObject.Find(GameObjectHelper.Game.TimelineContainer).GetComponent<RectTransform>();
@@ -176,7 +185,6 @@ public class GameManager : Singleton<GameManager>
 
         coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
         waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
-        
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
         // Board
@@ -184,45 +192,44 @@ public class GameManager : Singleton<GameManager>
         boardOverlay = GameObject.Find(GameObjectHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
         targetModeOverlay = GameObject.Find(GameObjectHelper.Game.Board.TargetModeOverlay).GetComponent<TargetModeOverlay>();
 
-        var game = GameObject.Find("Game");
+        var gameRoot = GameObject.Find("Game");
 
         // Audio
-        soundSource = game.GetComponents<AudioSource>()[SoundSourceIndex];
-        musicSource = game.GetComponents<AudioSource>()[MusicSourceIndex];
+        soundSource = gameRoot.GetComponents<AudioSource>()[SoundSourceIndex];
+        musicSource = gameRoot.GetComponents<AudioSource>()[MusicSourceIndex];
 
         // Managers
-        cameraManager = game.GetComponent<CameraManager>();
-        stageManager = game.GetComponent<StageManager>();
-        boardManager = game.GetComponent<BoardManager>();
-        turnManager = game.GetComponent<TurnManager>();
-        inputManager = game.GetComponent<InputManager>();
-        actorManager = game.GetComponent<ActorManager>();
-        supportLineManager = game.GetComponent<SupportLineManager>();
-        attackLineManager = game.GetComponent<AttackLineManager>();
-        combatTextManager = game.GetComponent<CombatTextManager>();
-        ghostManager = game.GetComponent<GhostManager>();
-        portrait2DManager = game.GetComponent<Portrait2DManager>();
-        portrait3DManager = game.GetComponent<Portrait3DManager>();
-        selectedHeroManager = game.GetComponent<SelectedHeroManager>();
-        heroManager = game.GetComponent<HeroManager>();
-        enemyManager = game.GetComponent<EnemyManager>();
-        tileManager = game.GetComponent<TileManager>();
-        footstepManager = game.GetComponent<FootstepManager>();
-        audioManager = game.GetComponent<AudioManager>();
-        debugManager = game.GetComponent<DebugManager>();
-        consoleManager = game.GetComponent<ConsoleManager>();
-        logManager = game.GetComponent<LogManager>();
-        vfxManager = game.GetComponent<VfxManager>();
-        coinManager = game.GetComponent<CoinManager>();
-        pauseManager = game.GetComponent<PauseManager>();
-        dottedLineManager = game.GetComponent<DottedLineManager>();
-        projectileManager = game.GetComponent<ProjectileManager>();
-        sequenceManager = game.GetComponent<SequenceManager>();
-        pincerAttackManager = game.GetComponent<PincerAttackManager>();
-        sortingManager = game.GetComponent<SortingManager>();
-        targetLineManager = game.GetComponent<TargetLineManager>();
-        abilityButtonManager = game.GetComponent<AbilityButtonManager>();
-        synergyLineManager = game.GetComponent<SynergyLineManager>();
+        cameraManager = gameRoot.GetComponent<CameraManager>();
+        stageManager = gameRoot.GetComponent<StageManager>();
+        boardManager = gameRoot.GetComponent<BoardManager>();
+        turnManager = gameRoot.GetComponent<TurnManager>();
+        inputManager = gameRoot.GetComponent<InputManager>();
+        actorManager = gameRoot.GetComponent<ActorManager>();
+        supportLineManager = gameRoot.GetComponent<SupportLineManager>();
+        attackLineManager = gameRoot.GetComponent<AttackLineManager>();
+        combatTextManager = gameRoot.GetComponent<CombatTextManager>();
+        ghostManager = gameRoot.GetComponent<GhostManager>();
+        portrait2DManager = gameRoot.GetComponent<Portrait2DManager>();
+        portrait3DManager = gameRoot.GetComponent<Portrait3DManager>();
+        selectedHeroManager = gameRoot.GetComponent<SelectedHeroManager>();
+        heroManager = gameRoot.GetComponent<HeroManager>();
+        enemyManager = gameRoot.GetComponent<EnemyManager>();
+        tileManager = gameRoot.GetComponent<TileManager>();
+        footstepManager = gameRoot.GetComponent<FootstepManager>();
+        audioManager = gameRoot.GetComponent<AudioManager>();
+        debugManager = gameRoot.GetComponent<DebugManager>();
+        consoleManager = gameRoot.GetComponent<ConsoleManager>();
+        logManager = gameRoot.GetComponent<LogManager>();
+        vfxManager = gameRoot.GetComponent<VfxManager>();
+        coinManager = gameRoot.GetComponent<CoinManager>();
+        dottedLineManager = gameRoot.GetComponent<DottedLineManager>();
+        projectileManager = gameRoot.GetComponent<ProjectileManager>();
+        sequenceManager = gameRoot.GetComponent<SequenceManager>();
+        pincerAttackManager = gameRoot.GetComponent<PincerAttackManager>();
+        sortingManager = gameRoot.GetComponent<SortingManager>();
+        targetLineManager = gameRoot.GetComponent<TargetLineManager>();
+        abilityButtonManager = gameRoot.GetComponent<AbilityButtonManager>();
+        synergyLineManager = gameRoot.GetComponent<SynergyLineManager>();
 
         // Platform-dependent compilation
 #if UNITY_STANDALONE_WIN
@@ -246,6 +253,10 @@ public class GameManager : Singleton<GameManager>
     {
         if (!ProfileHelper.HasProfiles())
             return;
+
+        // Initialize UI/Managers that require instantiated prefabs
+        if (pauseMenu != null) pauseMenu.Initialize();
+        if (tutorialPopup != null) tutorialPopup.Initialize();
 
         // Show in specific order
         board.Initialize();

@@ -86,7 +86,6 @@
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
     <Compile Include="Assets\Scripts\Overworld\RockInstance.cs" />
-    <Compile Include="Assets\Scripts\Canvas\PauseButton.cs" />
     <Compile Include="Assets\Scripts\Helpers\FolderHelper.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Vampire.cs" />
@@ -118,6 +117,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Canvas\LoadingScreenLore.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Helpers\AssetHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\VictoryManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
@@ -190,7 +190,6 @@
     <Compile Include="Assets\Scripts\Models\StageDottedLine.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyLineInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\MusicTrackLibrary.cs" />
-    <Compile Include="Assets\Scripts\Managers\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceCallback.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier01.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyAttackSequence.cs" />

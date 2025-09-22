@@ -58,6 +58,8 @@ namespace Assets.Scripts.Libraries
                 { "SettingSlider", AssetHelper.LoadAsset<GameObject>("Prefabs/SettingSlider") },
                 { "SettingToggle", AssetHelper.LoadAsset<GameObject>("Prefabs/SettingToggle") },
                 { "SettingDropdown", AssetHelper.LoadAsset<GameObject>("Prefabs/SettingDropdown") },
+                { "PauseMenu", AssetHelper.LoadAsset<GameObject>("Prefabs/PauseMenu") },
+                { "TutorialPopup", AssetHelper.LoadAsset<GameObject>("Prefabs/TutorialPopup") },
             };
             isLoaded = true;
         }

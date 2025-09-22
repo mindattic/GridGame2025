@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Libraries;
+﻿using Assets.Helper;
+using Assets.Scripts.Libraries;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using TMPro;
@@ -11,13 +12,13 @@ namespace Assets.Scripts.GUI
     public class TutorialPopup : MonoBehaviour
     {
         //Components
-        [SerializeField] public GameObject panel;
-        [SerializeField] public Image image;
-        [SerializeField] public TextMeshProUGUI title;
-        [SerializeField] public TextMeshProUGUI content;
-        [SerializeField] public Button previousButton;
-        [SerializeField] public Button nextButton;
-        [SerializeField] public Button closeButton;
+        private GameObject panel;
+        private Image image;
+        private TextMeshProUGUI title;
+        private TextMeshProUGUI content;
+        private Button previousButton;
+        private Button nextButton;
+        private Button closeButton;
 
         //Fields
         private List<TutorialPage> pages = new List<TutorialPage>();
@@ -27,17 +28,29 @@ namespace Assets.Scripts.GUI
         bool hasPages => pages != null && pages.Count > 0;
         int lastPage => pages?.Count - 1 ?? 0;
 
+        private bool initialized;
+
+        // Awake intentionally empty; initialization driven by GameManager.Start via Initialize().
+        private void Awake() { }
+
+        public void Initialize()
+        {
+            if (initialized) return;
+
+            panel = GameObjectHelper.Game.TutorialPopup.Panel;
+            image = GameObjectHelper.Game.TutorialPopup.Image;
+            title = GameObjectHelper.Game.TutorialPopup.TitleTextX;
+            content = GameObjectHelper.Game.TutorialPopup.ContentTextX;
+            previousButton = GameObjectHelper.Game.TutorialPopup.PreviousButton;
+            nextButton = GameObjectHelper.Game.TutorialPopup.NextButton;
+            closeButton = GameObjectHelper.Game.TutorialPopup.CloseButton;
+
+            initialized = true;
+        }
 
         private void Start()
         {
-            //RectTransform rect;
-
-            //rect = panel.GetComponent<RectTransform>();
-            //rect.sizeDelta = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-
-            //rect = image.GetComponent<RectTransform>();
-            //rect.sizeDelta = new Vector2(Screen.width * 0.5f, Screen.height * 0.5f);
-
+            if (!initialized) Initialize();
             panel.SetActive(GameManager.instance.debugManager.showTutorials);
         }
 

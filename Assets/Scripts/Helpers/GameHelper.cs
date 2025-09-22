@@ -42,7 +42,6 @@ namespace Assets.Helpers
         public static AudioManager AudioManager => gm != null ? gm.audioManager : null;
         public static VfxManager VfxManager => gm != null ? gm.vfxManager : null;
         public static CoinManager CoinManager => gm != null ? gm.coinManager : null;
-        public static PauseManager PauseManager => gm != null ? gm.pauseManager : null;
         public static DebugManager DebugManager => gm != null ? gm.debugManager : null;
         public static ConsoleManager ConsoleManager => gm != null ? gm.consoleManager : null;
         public static LogManager LogManager => gm != null ? gm.logManager : null;
@@ -55,6 +54,9 @@ namespace Assets.Helpers
         public static SortingManager SortingManager => gm != null ? gm.sortingManager : null;
         public static TargetLineManager TargetLineManager => gm != null ? gm.targetLineManager : null;
         public static AbilityButtonManager AbilityButtonManager => gm != null ? gm.abilityButtonManager : null;
+
+
+        public static PauseMenu PauseMenu => gm != null ? gm.pauseMenu : null;
 
         public static BackgroundInstance Background => gm != null ? gm.background : null;
         public static BoardOverlay BoardOverlay => gm != null ? gm.boardOverlay : null;
