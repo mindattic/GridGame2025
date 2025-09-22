@@ -33,6 +33,9 @@ public class PauseMenu : MonoBehaviour
     {
         if (isInitalized) return;
 
+        pauseIcon = SpriteLibrary.Sprites["Pause"];
+        resumeIcon = SpriteLibrary.Sprites["Paused"];
+
         pauseButtonRoot = GameObjectHelper.Game.PauseButton.Root;
         pauseButtonRoot.onClick.RemoveAllListeners();
         pauseButtonRoot.onClick.AddListener(OnPauseButtonClicked);
@@ -57,8 +60,7 @@ public class PauseMenu : MonoBehaviour
         titleScreenButton.onClick.RemoveAllListeners();
         titleScreenButton.onClick.AddListener(OnTitleScreenButtonClicked);
 
-        pauseIcon = SpriteLibrary.Sprites["Pause"];
-        resumeIcon = SpriteLibrary.Sprites["Paused"];
+       
 
         pauseMenuRoot = GameObjectHelper.Game.PauseMenu.Root;
         pauseMenuRoot.SetActive(false);
