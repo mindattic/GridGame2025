@@ -37,11 +37,11 @@ public class Card : MonoBehaviour
 
     private void Awake()
     {
-        card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<RectTransform>();
-        backdrop = GameObject.Find(GameObjectHelper.Game.Card.Backdrop).GetComponent<RectTransform>();
-        portrait = GameObject.Find(GameObjectHelper.Game.Card.Portrait).GetComponent<RectTransform>();
-        title = GameObject.Find(GameObjectHelper.Game.Card.Title).GetComponent<RectTransform>();
-        details = GameObject.Find(GameObjectHelper.Game.Card.Details).GetComponent<RectTransform>();
+        card = GameObjectHelper.Game.Card.Root;
+        backdrop = GameObjectHelper.Game.Card.Backdrop;
+        portrait = GameObjectHelper.Game.Card.Portrait;
+        title = GameObjectHelper.Game.Card.Title;
+        details = GameObjectHelper.Game.Card.Details;
 
         backdropCG = EnsureCanvasGroup(backdrop);
         titleCG = EnsureCanvasGroup(title);

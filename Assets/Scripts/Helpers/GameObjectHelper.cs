@@ -140,28 +140,26 @@ namespace Assets.Helper
 
             public static class Board
             {
-                public const string Root = "Board";
-                public const string BoardOverlay = "Board/BoardOverlay";
-                public const string TargetModeOverlay = "Board/TargetModeOverlay";
+                public static BoardInstance Root = GameObject.Find("Board").GetComponent<BoardInstance>();
+                public static BoardOverlay BoardOverlay = GameObject.Find("Board/BoardOverlay").GetComponent<BoardOverlay>();
+                public static TargetModeOverlay TargetModeOverlay = GameObject.Find("Board/TargetModeOverlay").GetComponent<TargetModeOverlay>();
             }
 
             public static class Card
             {
-                public const string Root = "Canvas/Card";
-                public const string Backdrop = "Canvas/Card/Backdrop";
-                public const string Portrait = "Canvas/Card/Portrait";
-                public const string Title = "Canvas/Card/Title";
-                public const string Details = "Canvas/Card/Details";
+                public static RectTransform Root => GameObject.Find("Canvas/Card").GetComponent<RectTransform>();
+                public static RectTransform Backdrop => GameObject.Find("Canvas/Card/Backdrop").GetComponent<RectTransform>();
+                public static RectTransform Portrait => GameObject.Find("Canvas/Card/Portrait").GetComponent<RectTransform>();
+                public static RectTransform Title => GameObject.Find("Canvas/Card/Title").GetComponent<RectTransform>();
+                public static RectTransform Details => GameObject.Find("Canvas/Card/Details").GetComponent<RectTransform>();
             }
 
             public static class Timeline
             {
-                public const string Root = "Canvas/Timeline";
-                public const string Viewport = "Canvas/Timeline/Viewport";
-                public const string Content = "Canvas/Timeline/Viewport/Content";
-                public const string Indicator = "Canvas/Timeline/Viewport/Indicator";
+                public static RectTransform Root => GameObject.Find("Canvas/Timeline").GetComponent<RectTransform>();
+                public static RectTransform Viewport => GameObject.Find("Canvas/Timeline/Viewport").GetComponent<RectTransform>();
+                public static RectTransform Content => GameObject.Find("Canvas/Timeline/Viewport/Content").GetComponent<RectTransform>();
             }
-
 
         }
 
@@ -178,8 +176,7 @@ namespace Assets.Helper
 
         public static class LoadingScreen
         {
-            public const string LoreText = "Canvas/LoreText";
-            public static Label LoreTextX => GameObject.Find("Canvas/LoreText").GetComponent<TextMeshProUGUI>();
+            public static Label LoreText => GameObject.Find("Canvas/LoreText").GetComponent<TextMeshProUGUI>();
 
         }
 

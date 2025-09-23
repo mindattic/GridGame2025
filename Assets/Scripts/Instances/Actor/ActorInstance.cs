@@ -325,9 +325,9 @@ public partial class ActorInstance : MonoBehaviour
         }
         else if (IsEnemy)
         {
-            Render.SetOpaqueColor(ColorHelper.Solid.Black);
-            Render.SetQualityColor(ColorHelper.Solid.GunMetal);
-            Render.SetGlowColor(ColorHelper.Solid.GunMetal);
+            Render.SetOpaqueColor(ColorHelper.Solid.GunMetal);
+            Render.SetQualityColor(ColorHelper.Solid.White);
+            Render.SetGlowColor(ColorHelper.Solid.White);
             Render.SetParallaxSprite(SpriteLibrary.Seamless["RedFire1"]);
             Render.SetParallaxMaterial(MaterialLibrary.Materials["EnemyParallax"], Thumbnail.texture);
             Render.SetParallaxAlpha(Opacity.Percent50);

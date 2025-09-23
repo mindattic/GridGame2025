@@ -15,7 +15,7 @@ public class LoadingScreenLore : MonoBehaviour
     private void Awake()
     {
 
-        loreText = GameObjectHelper.LoadingScreen.LoreTextX;
+        loreText = GameObjectHelper.LoadingScreen.LoreText;
 
         // Core
         lore.Add("The Core burns without ceasing, a light eternal yet unseen. — Pilgrim’s Verse");

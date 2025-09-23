@@ -172,7 +172,7 @@ public class GameManager : Singleton<GameManager>
         ShakeIntensity.Initialize(tileSize);
 
         // Canvas
-        card = GameObject.Find(GameObjectHelper.Game.Card.Root).GetComponent<Card>();
+        card = GameObjectHelper.Game.Card.Root.GetComponent<Card>();
         canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
         timerBar2D = GameObjectHelper.Game.TimerBar.Root;
         portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();
@@ -188,9 +188,9 @@ public class GameManager : Singleton<GameManager>
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
         // Board
-        board = GameObject.Find(GameObjectHelper.Game.Board.Root).GetComponent<BoardInstance>();
-        boardOverlay = GameObject.Find(GameObjectHelper.Game.Board.BoardOverlay).GetComponent<BoardOverlay>();
-        targetModeOverlay = GameObject.Find(GameObjectHelper.Game.Board.TargetModeOverlay).GetComponent<TargetModeOverlay>();
+        board = GameObjectHelper.Game.Board.Root;
+        boardOverlay = GameObjectHelper.Game.Board.BoardOverlay;
+        targetModeOverlay = GameObjectHelper.Game.Board.TargetModeOverlay;
 
         var gameRoot = GameObject.Find("Game");
 

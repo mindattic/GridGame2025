@@ -18,7 +18,7 @@ public class ActorRenderers
     public float parallaxAlphaMax = Opacity.Percent50;
     public Color thumbnailColor = ColorHelper.Solid.White;
     public Color frameColor = ColorHelper.Solid.White;
-    public Color healthBarColor = ColorHelper.HealthBar.Red;
+    public Color healthBarColor = ColorHelper.Solid.White;
     public Color healthBarDrainColor = ColorHelper.HealthBar.Yellow;
     public Color actionBarColor = ColorHelper.ActionBar.Blue;
     public Color actionBarDrainColor = ColorHelper.HealthBar.Yellow;

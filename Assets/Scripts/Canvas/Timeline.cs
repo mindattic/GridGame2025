@@ -51,9 +51,9 @@ public sealed class Timeline : MonoBehaviour
     private void Awake()
     {
         // Find core objects
-        var root = GameObject.Find(GameObjectHelper.Game.Timeline.Root).GetComponent<RectTransform>();
-        viewport = GameObject.Find(GameObjectHelper.Game.Timeline.Viewport).GetComponent<RectTransform>();
-        content = GameObject.Find(GameObjectHelper.Game.Timeline.Content).GetComponent<RectTransform>();
+        var root = GameObjectHelper.Game.Timeline.Root;
+        viewport = GameObjectHelper.Game.Timeline.Viewport;
+        content = GameObjectHelper.Game.Timeline.Content;
 
         blockPrefab = PrefabLibrary.Prefabs["TimelineBlockPrefab"].GetComponent<TimelineBlockInstance>();
     }
