@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Intermission.Before;
-using Label = TMPro.TextMeshProUGUI;
 
 public class AbilityButton : MonoBehaviour
 {

@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Label = TMPro.TextMeshProUGUI;
 using System.Linq;
 using System;
 using c = Assets.Helpers.CanvasHelper;
@@ -98,8 +97,8 @@ public class KeyboardDialogInstance : MonoBehaviour
     //Properties
     public string InputText
     {
-        get => inputLabel.GetComponent<Label>().text;
-        set => inputLabel.GetComponent<Label>().text = Sanitize(value);
+        get => inputLabel.GetComponent<TextMeshProUGUI>().text;
+        set => inputLabel.GetComponent<TextMeshProUGUI>().text = Sanitize(value);
     }
 
     public void Assign(
@@ -115,8 +114,8 @@ public class KeyboardDialogInstance : MonoBehaviour
         ResizeUI();
         BindEvents();
 
-        prompt.GetComponent<Label>().text = promptText;
-        confirmation.GetComponent<Label>().text = confirmText;
+        prompt.GetComponent<TextMeshProUGUI>().text = promptText;
+        confirmation.GetComponent<TextMeshProUGUI>().text = confirmText;
         InputText = initialText;
         this.minLength = minLength;
         this.maxLength = maxLength;
@@ -354,7 +353,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         var row2Buttons = new RectTransform[] { keyQ, keyW, keyE, keyR, keyT, keyY, keyU, keyI, keyO, keyP };
         for (int i = 0; i < row2Buttons.Length; i++)
         {
-            var label = row2Buttons[i].GetComponentInChildren<Label>();
+            var label = row2Buttons[i].GetComponentInChildren<TextMeshProUGUI>();
             label.text = isCapsLockOn ? row2Letters[i].ToString() : row2Letters[i].ToString().ToLower();
         }
 
@@ -363,7 +362,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         var row3Buttons = new RectTransform[] { keyA, keyS, keyD, keyF, keyG, keyH, keyJ, keyK, keyL };
         for (int i = 0; i < row3Buttons.Length; i++)
         {
-            var label = row3Buttons[i].GetComponentInChildren<Label>();
+            var label = row3Buttons[i].GetComponentInChildren<TextMeshProUGUI>();
             label.text = isCapsLockOn ? row3Letters[i].ToString() : row3Letters[i].ToString().ToLower();
         }
 
@@ -372,7 +371,7 @@ public class KeyboardDialogInstance : MonoBehaviour
         var row4Buttons = new RectTransform[] { keyZ, keyX, keyC, keyV, keyB, keyN, keyM };
         for (int i = 0; i < row4Buttons.Length; i++)
         {
-            var label = row4Buttons[i].GetComponentInChildren<Label>();
+            var label = row4Buttons[i].GetComponentInChildren<TextMeshProUGUI>();
             label.text = isCapsLockOn ? row4Letters[i].ToString() : row4Letters[i].ToString().ToLower();
         }
     }

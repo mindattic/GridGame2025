@@ -3,16 +3,18 @@ using Assets.Helpers;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
 public class TimerBar2D : MonoBehaviour
 {
+    private RectTransform rootRect;
     private Image back;
     private Image fill;
-    private Image front;
-    private RectTransform rootRect;
-    private RectTransform barRect;
+    private Image front; 
+    private RectTransform fillRect;
+    private TextMeshProUGUI countdownLabel; // new
 
     [Header("Duration")]
     [Tooltip("Total time in seconds for a full fill to drain to zero.")]
@@ -34,31 +36,33 @@ public class TimerBar2D : MonoBehaviour
         rootRect = GetComponent<RectTransform>();
 
         // Resolve child images
-        back = transform.Find("Back").GetComponent<Image>();
-        fill = transform.Find("Fill").GetComponent<Image>();
-        front = transform.Find("Front").GetComponent<Image>();
+        back = GameObjectHelper.Game.TimerBar.Back;
+        fill = GameObjectHelper.Game.TimerBar.Fill;
+        countdownLabel = GameObjectHelper.Game.TimerBar.CountdownLabel;
+        front = GameObjectHelper.Game.TimerBar.Front;
 
         // Cache fill rect
-        barRect = fill.GetComponent<RectTransform>();
+        fillRect = fill.GetComponent<RectTransform>();
 
         if (isCentered)
         {
             // Drain toward the center by keeping the fill centered
-            barRect.anchorMin = new Vector2(0.5f, 0.5f);
-            barRect.anchorMax = new Vector2(0.5f, 0.5f);
-            barRect.pivot = new Vector2(0.5f, 0.5f);
+            fillRect.anchorMin = new Vector2(0.5f, 0.5f);
+            fillRect.anchorMax = new Vector2(0.5f, 0.5f);
+            fillRect.pivot = new Vector2(0.5f, 0.5f);
         }
         else
         {
             // Drain from right to left by anchoring the left edge
-            barRect.anchorMin = new Vector2(0f, 0.5f);
-            barRect.anchorMax = new Vector2(0f, 0.5f);
-            barRect.pivot = new Vector2(0f, 0.5f);
+            fillRect.anchorMin = new Vector2(0f, 0.5f);
+            fillRect.anchorMax = new Vector2(0f, 0.5f);
+            fillRect.pivot = new Vector2(0f, 0.5f);
         }
-        barRect.anchoredPosition = Vector2.zero;
+        fillRect.anchoredPosition = Vector2.zero;
 
         // Initialize timer value
         timeRemaining = maxDuration;
+        UpdateCountdownLabel();
     }
 
     //private void OnDestroy()
@@ -74,6 +78,7 @@ public class TimerBar2D : MonoBehaviour
     {
         SetLayout();
         UpdateFill();
+        UpdateCountdownLabel();
 
         // Subscribe to mode changes
         g.InputManager.OnInputModeChanged += HandleModeChanged;
@@ -121,11 +126,12 @@ public class TimerBar2D : MonoBehaviour
     public void Refill()
     {
         back.color = ColorHelper.Solid.White;
-        fill.color = ColorHelper.Solid.White;
-        front.color = ColorHelper.Solid.White;
+        if (fill != null) fill.color = ColorHelper.Solid.White;
+        if (front != null) front.color = ColorHelper.Solid.White;
 
         timeRemaining = maxDuration;
         UpdateFill();
+        UpdateCountdownLabel();
     }
 
     /// <summary>
@@ -134,13 +140,9 @@ public class TimerBar2D : MonoBehaviour
     public void Lock()
     {
         back.color = ColorHelper.Translucent.Red;
-        fill.color = ColorHelper.Translucent.Red;
-        front.color = ColorHelper.Translucent.Red;
+        if (fill != null) fill.color = ColorHelper.Translucent.Red;
+        if (front != null) front.color = ColorHelper.Translucent.Red;
     }
-
-    // =================================================================================================
-    // New API used by Timeline
-    // =================================================================================================
 
     /// <summary>
     /// Sets the countdown duration in seconds. Does not start playback.
@@ -153,6 +155,7 @@ public class TimerBar2D : MonoBehaviour
             timeRemaining = maxDuration;
 
         UpdateFill();
+        UpdateCountdownLabel();
     }
 
     /// <summary>
@@ -163,6 +166,7 @@ public class TimerBar2D : MonoBehaviour
     {
         timeRemaining = maxDuration;
         UpdateFill();
+        UpdateCountdownLabel();
     }
 
     // =================================================================================================
@@ -205,8 +209,9 @@ public class TimerBar2D : MonoBehaviour
             timeRemaining -= Time.deltaTime;
             if (timeRemaining < 0f) timeRemaining = 0f;
 
-            // Update UI width
+            // Update UI width and label
             UpdateFill();
+            UpdateCountdownLabel();
 
             // Wait one frame
             yield return Wait.None();
@@ -225,14 +230,26 @@ public class TimerBar2D : MonoBehaviour
     /// </summary>
     private void UpdateFill()
     {
-        if (barRect == null) return;
+        if (fillRect == null) return;
 
         float t = Mathf.Approximately(maxDuration, 0f) ? 0f : Mathf.Clamp01(timeRemaining / maxDuration);
         float width = maxWidth * t;
 
-        Vector2 size = barRect.sizeDelta;
+        Vector2 size = fillRect.sizeDelta;
         size.x = width;
-        barRect.sizeDelta = size;
+        fillRect.sizeDelta = size;
+    }
+
+    /// <summary>
+    /// Updates the countdown label text, if present.
+    /// </summary>
+    private void UpdateCountdownLabel()
+    {
+        if (countdownLabel == null) return;
+
+        // Show whole seconds with one decimal place, minimum 0.0
+        float display = Mathf.Max(0f, timeRemaining);
+        countdownLabel.text = display.ToString("0.0");
     }
 
     /// <summary>
@@ -252,11 +269,12 @@ public class TimerBar2D : MonoBehaviour
         }
 
         SetSize(back.GetComponent<RectTransform>(), targetWidth, targetHeight);
-        SetSize(front.GetComponent<RectTransform>(), targetWidth, targetHeight);
-        SetSize(barRect, -1f, targetHeight);
+        var frontRect = front != null ? front.GetComponent<RectTransform>() : null;
+        if (frontRect != null) SetSize(frontRect, targetWidth, targetHeight);
+        SetSize(fillRect, -1f, targetHeight);
 
         // Keep the fill aligned after resizing regardless of mode
-        barRect.anchoredPosition = Vector2.zero;
+        fillRect.anchoredPosition = Vector2.zero;
 
         maxWidth = targetWidth;
         UpdateFill();

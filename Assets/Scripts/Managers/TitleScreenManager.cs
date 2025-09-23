@@ -1,8 +1,8 @@
 using Assets.Helper;
+using Assets.Helpers;
+using TMPro;
 using UnityEngine;
 using scene = Assets.Helpers.SceneHelper;
-using Label = TMPro.TextMeshProUGUI;
-using Assets.Helpers;
 
 public class TitleScreenManager : MonoBehaviour
 {
@@ -23,7 +23,7 @@ public class TitleScreenManager : MonoBehaviour
             return;
 
         profileButtonLabel = GameObject.Find(GameObjectHelper.TitleScreen.ProfileButtonLabel).GetComponent<RectTransform>();
-        profileButtonLabel.GetComponent<Label>().text = ProfileHelper.CurrentProfile.Key;
+        profileButtonLabel.GetComponent<TextMeshProUGUI>().text = ProfileHelper.CurrentProfile.Key;
     }
 
     private void Start()

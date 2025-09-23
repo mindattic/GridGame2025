@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Assets.Helpers;
-using Label = TMPro.TextMeshProUGUI;
 
 [DisallowMultipleComponent]
 [DefaultExecutionOrder(1000)]
@@ -35,7 +34,7 @@ public sealed class Clock : MonoBehaviour
     private void OnEnable()
     {
         rect = GetComponent<RectTransform>();
-        clockText = GetComponent<Label>();
+        clockText = GetComponent<TextMeshProUGUI>();
   
 
         rootCanvas = GetComponentInParent<Canvas>();

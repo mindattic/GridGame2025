@@ -1,15 +1,15 @@
 using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Libraries;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Label = TMPro.TextMeshProUGUI;
 using scene = Assets.Helpers.SceneHelper;
-using System.Reflection;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using Assets.Scripts.Libraries;
 
 // OverworldManager orchestrates input and scene transitions for the world-space overworld.
 // World rendering uses SpriteRenderers (scaled to 1,1,1) and the camera centers on the hero.
@@ -25,7 +25,7 @@ public class OverworldManager : MonoBehaviour
     // Camera mode UI
     private Button cameraModeButton;
     private Image cameraModeImage;
-    private Label cameraModeLabel;
+    private TextMeshProUGUI cameraModeLabel;
 
     // Offscreen arrow (now handled by its own component)
     private OffscreenArrowIndicator offscreenArrow;
@@ -91,7 +91,7 @@ public class OverworldManager : MonoBehaviour
         // Camera mode button + icon (optional wiring from scene)
         cameraModeButton = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeButton)?.GetComponent<Button>();
         cameraModeImage = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeImage)?.GetComponent<Image>();
-        cameraModeLabel = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeLabel)?.GetComponent<Label>();
+        cameraModeLabel = GameObject.Find(GameObjectHelper.Overworld.Canvas.CameraModeLabel)?.GetComponent<TextMeshProUGUI>();
 
 
 

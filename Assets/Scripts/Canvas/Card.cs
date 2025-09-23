@@ -5,11 +5,11 @@ using Assets.Scripts.Utilities;
 using System;
 using System.Collections;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
-using Label = TMPro.TextMeshProUGUI;
 
 public class Card : MonoBehaviour
 {
@@ -96,8 +96,8 @@ public class Card : MonoBehaviour
         {
             // First-time show or portrait off-screen: set content up front, then slide in
             portrait.GetComponent<Image>().sprite = actorData.Portrait;
-            title.GetComponent<Label>().text = actorName;
-            details.GetComponent<Label>().text = actorData.Details.Card;
+            title.GetComponent<TextMeshProUGUI>().text = actorName;
+            details.GetComponent<TextMeshProUGUI>().text = actorData.Details.Card;
 
             StartCoroutine(SlideInRoutine(fadeText: !backdropVisible));
         }
@@ -217,8 +217,8 @@ public class Card : MonoBehaviour
         backdrop.gameObject.SetActive(false);
         portrait.gameObject.SetActive(false);
 
-        title.GetComponent<Label>().text = "";
-        details.GetComponent<Label>().text = "";
+        title.GetComponent<TextMeshProUGUI>().text = "";
+        details.GetComponent<TextMeshProUGUI>().text = "";
 
         portrait.anchoredPosition = offscreenPosition;
 
@@ -304,8 +304,8 @@ public class Card : MonoBehaviour
         }
 
         portrait.GetComponent<Image>().sprite = newSprite;
-        title.GetComponent<Label>().text = newTitle;
-        details.GetComponent<Label>().text = newDetails;
+        title.GetComponent<TextMeshProUGUI>().text = newTitle;
+        details.GetComponent<TextMeshProUGUI>().text = newDetails;
 
         // Slide back in; optionally fade title/details in
         float elapsedIn = 0f;

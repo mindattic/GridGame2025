@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
-using Label = TMPro.TextMeshProUGUI;
 
 namespace Assets.Scripts
 {
@@ -18,7 +18,7 @@ namespace Assets.Scripts
     {
         [Header("UI Elements")]
         [SerializeField] private Slider progressBar;
-        [SerializeField] private Label progressLabel;
+        [SerializeField] private TextMeshProUGUI progressLabel;
 
         [Header("Overlay Groups")]
         [Tooltip("Fullscreen black overlay CanvasGroup that fades from 1 to 0.")]

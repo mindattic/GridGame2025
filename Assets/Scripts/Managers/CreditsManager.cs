@@ -1,9 +1,8 @@
 using Assets.Helper;
+using TMPro;
 using UnityEngine;
 using c = Assets.Helpers.CanvasHelper;
 using scene = Assets.Helpers.SceneHelper;
-
-using Label = TMPro.TextMeshProUGUI;
 
 public class CreditsManager : MonoBehaviour
 {
@@ -55,7 +54,7 @@ public class CreditsManager : MonoBehaviour
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"
             + $"{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}{NL}"
             + $"Thanks for playing!";
-        var label = textarea.GetComponent<Label>();
+        var label = textarea.GetComponent<TextMeshProUGUI>();
         label.text = text;
         label.ForceMeshUpdate();
 

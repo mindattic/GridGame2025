@@ -1,17 +1,17 @@
 using Assets.Helper;
-using UnityEngine;
-using UnityEngine.UI;
-using scene = Assets.Helpers.SceneHelper;
-using Button = UnityEngine.UI.Button;
-using Label = TMPro.TextMeshProUGUI;
 using Assets.Helpers;
 using Assets.Scripts.Libraries;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
+using scene = Assets.Helpers.SceneHelper;
 
 public class StageSelectManager : MonoBehaviour
 {
     //Fields
     private GameObject buttonPrefab;
-    private Label header;
+    private TextMeshProUGUI header;
     private RectTransform scrollView;
     private Transform content;
     private VerticalLayoutGroup verticalLayoutGroup;
@@ -66,7 +66,7 @@ public class StageSelectManager : MonoBehaviour
         button.onClick.AddListener(() => OnStageSelectButtonClicked(stageName));
 
         //Show the button textarea
-        Label label = instance.GetComponentInChildren<Label>();
+        TextMeshProUGUI label = instance.GetComponentInChildren<TextMeshProUGUI>();
         label.text = stageName;
     }
 

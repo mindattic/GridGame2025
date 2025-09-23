@@ -2,12 +2,11 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using Assets.Helper;
-using label = TMPro.TextMeshProUGUI;
 
 public class LoadingScreenLore : MonoBehaviour
 {
     // Reference to your TMP text element
-    [SerializeField] private label loreText;
+    [SerializeField] private TextMeshProUGUI loreText;
 
     private List<string> lore = new List<string>();
 

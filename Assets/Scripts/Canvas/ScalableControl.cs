@@ -2,7 +2,6 @@ using Assets.Helper;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Label = TMPro.TextMeshProUGUI;
 
 [ExecuteAlways]
 public class ScalableControl : MonoBehaviour
@@ -173,7 +172,7 @@ public class ScalableControl : MonoBehaviour
             label.sizeDelta = Vector2.zero;
 
             // Auto-adjust font size based on height (48 at 128 height)
-            if (label.TryGetComponent(out Label text))
+            if (label.TryGetComponent(out TextMeshProUGUI text))
             {
                 float fontSize = (root.rect.height / 128f) * 48f;
                 text.fontSize = Mathf.Clamp(Mathf.RoundToInt(fontSize), 12, 96);

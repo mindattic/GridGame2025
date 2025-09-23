@@ -1,14 +1,14 @@
 using Assets.Helper;
+using Assets.Helpers;
+using Assets.Scripts.Libraries;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
-using Label = TMPro.TextMeshProUGUI;
-using Assets.Helpers;
-using Assets.Scripts.Libraries;
+using scene = Assets.Helpers.SceneHelper;
 
 public class PartyManager : MonoBehaviour
 {
@@ -33,8 +33,8 @@ public class PartyManager : MonoBehaviour
 
 
     private RectTransform addRemovePartyMemberButton;
-    private Label addRemovePartyMemberLabel;
-    private Label partyMemberCountLabel;
+    private TextMeshProUGUI addRemovePartyMemberLabel;
+    private TextMeshProUGUI partyMemberCountLabel;
 
     //private StatsDisplay statsDisplay;
     private Dictionary<RectTransform, Coroutine> barAnimations = new();
@@ -85,8 +85,8 @@ public class PartyManager : MonoBehaviour
         title = GameObject.Find(GameObjectHelper.PartyManager.Title).GetComponent<RectTransform>();
         rosterPanel = GameObject.Find(GameObjectHelper.PartyManager.RosterPanel).GetComponent<RectTransform>();
         addRemovePartyMemberButton = GameObject.Find(GameObjectHelper.PartyManager.AddRemovePartyMemberButton).GetComponent<RectTransform>();
-        addRemovePartyMemberLabel = GameObject.Find(GameObjectHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<Label>();
-        partyMemberCountLabel = GameObject.Find(GameObjectHelper.PartyManager.PartyMemberCountLabel).GetComponent<Label>();
+        addRemovePartyMemberLabel = GameObject.Find(GameObjectHelper.PartyManager.AddRemovePartyMemberButtonLabel).GetComponent<TextMeshProUGUI>();
+        partyMemberCountLabel = GameObject.Find(GameObjectHelper.PartyManager.PartyMemberCountLabel).GetComponent<TextMeshProUGUI>();
         //statsDisplay = GameObject.Find(GameObjectHelper.PartyManager.StatsDisplay).GetComponent<StatsDisplay>();
 
 
@@ -287,7 +287,7 @@ public class PartyManager : MonoBehaviour
         scrollingToCenter = true;
 
         // Update the title
-        title.GetComponent<Label>().text = slide.Key;
+        title.GetComponent<TextMeshProUGUI>().text = slide.Key;
 
         // Update the button text and functionality
         UpdateAddRemoveButton(slide.Key);
@@ -392,12 +392,12 @@ public class PartyManager : MonoBehaviour
 
     private void UpdateStatRow(RectTransform row, string label, float value, float maxValue = 99)
     {
-        var labelComponent = row.Find("Label").GetComponent<Label>();
+        var labelComponent = row.Find("Label").GetComponent<TextMeshProUGUI>();
         labelComponent.text = label;
 
         var backImage = row.Find("Bar/Back").GetComponent<Image>();
         var fillImage = row.Find("Bar/Fill").GetComponent<Image>();
-        var valueComponent = row.Find("Value").GetComponent<Label>();
+        var valueComponent = row.Find("Value").GetComponent<TextMeshProUGUI>();
         valueComponent.text = $"{value}";
 
         float targetWidth = backImage.rectTransform.rect.width * (value / maxValue);

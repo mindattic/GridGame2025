@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Label = TMPro.TextMeshProUGUI;
 using TMPro;
 using Assets.Helpers;
 using System.Collections;
@@ -10,11 +9,11 @@ public class HeroExperiencePane : MonoBehaviour
 {
     public Image Panel;
     public Image Portrait;
-    public Label NameLabel;
-    public Label LevelLabel;
+    public TextMeshProUGUI NameLabel;
+    public TextMeshProUGUI LevelLabel;
     public Slider XPBar;
-    public Label XPText;
-    public Label LevelUpLabel;
+    public TextMeshProUGUI XPText;
+    public TextMeshProUGUI LevelUpLabel;
 
     // Runtime
     public bool IsFillComplete;
@@ -30,11 +29,11 @@ public class HeroExperiencePane : MonoBehaviour
         // Auto-wire on add (editor convenience)
         if (!Panel) Panel = GetComponent<Image>();
         if (!Portrait) Portrait = transform.Find("Portrait")?.GetComponent<Image>();
-        if (!NameLabel) NameLabel = transform.Find("Name")?.GetComponent<Label>();
-        if (!LevelLabel) LevelLabel = transform.Find("Level")?.GetComponent<Label>();
+        if (!NameLabel) NameLabel = transform.Find("Name")?.GetComponent<TextMeshProUGUI>();
+        if (!LevelLabel) LevelLabel = transform.Find("Level")?.GetComponent<TextMeshProUGUI>();
         if (!XPBar) XPBar = transform.Find("XPBar")?.GetComponent<Slider>();
-        if (!XPText) XPText = transform.Find("XPText")?.GetComponent<Label>();
-        if (!LevelUpLabel) LevelUpLabel = transform.Find("LevelUp")?.GetComponent<Label>();
+        if (!XPText) XPText = transform.Find("XPText")?.GetComponent<TextMeshProUGUI>();
+        if (!LevelUpLabel) LevelUpLabel = transform.Find("LevelUp")?.GetComponent<TextMeshProUGUI>();
     }
 
     private void Awake()

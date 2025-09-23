@@ -3,8 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Assets.Helper;
 using c = Assets.Helpers.CanvasHelper;
-using Label = TMPro.TextMeshProUGUI;
 using Assets.Scripts.Libraries;
+using TMPro;
 
 /// <summary>
 /// Runtime instance of the MessageBox prefab.
@@ -30,7 +30,7 @@ public class MessageBoxInstance : MonoBehaviour
         ResizeUI();
         BindEvents();
 
-        prompt.GetComponent<Label>().text = text;
+        prompt.GetComponent<TextMeshProUGUI>().text = text;
         onOkClicked = onOk;
     }
 

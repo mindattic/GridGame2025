@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Text;
-using Label = TMPro.TextMeshProUGUI;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
@@ -14,7 +13,7 @@ public class TooltipInstance : MonoBehaviour
 {
 
     private RectTransform background;
-    private Label label;
+    private TextMeshProUGUI label;
     private CanvasGroup canvasGroup;
 
     private Vector2 screenOffset;
@@ -38,7 +37,7 @@ public class TooltipInstance : MonoBehaviour
     {
         canvasGroup = GetComponent<CanvasGroup>();
         background = transform.Find("Background").GetComponent<RectTransform>();
-        label = background.transform.Find("Label").GetComponent<Label>();
+        label = background.transform.Find("Label").GetComponent<TextMeshProUGUI>();
 
         if (!background || !label)
         {

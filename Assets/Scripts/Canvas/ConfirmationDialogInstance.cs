@@ -1,10 +1,10 @@
+using Assets.Helper;
+using Assets.Scripts.Libraries;
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Assets.Helper;
 using c = Assets.Helpers.CanvasHelper;
-using Label = TMPro.TextMeshProUGUI;
-using Assets.Scripts.Libraries;
 
 /// <summary>
 /// Runtime instance of the ConfirmationDialog prefab.
@@ -31,7 +31,7 @@ public class ConfirmationDialogInstance : MonoBehaviour
         ResizeUI();
         BindEvents();
 
-        prompt.GetComponent<Label>().text = text;
+        prompt.GetComponent<TextMeshProUGUI>().text = text;
         onSubmitClicked = onSubmit;
     }
 

@@ -5,7 +5,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using g = Assets.Helpers.GameHelper;
-using Label = TMPro.TextMeshProUGUI;
 
 public class AbilityButtonManager : MonoBehaviour
 {
@@ -42,7 +41,7 @@ public class AbilityButtonManager : MonoBehaviour
                 var instance = go.GetComponent<AbilityButton>();
                 instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
                 instance.GetComponent<Image>().sprite = ability.button;
-                instance.GetComponentInChildren<Label>().text = "";
+                instance.GetComponentInChildren<TextMeshProUGUI>().text = "";
                 buttons.Add(instance);
                 instance.Initialize(ability, () => OnClick(actor, ability));
             }
@@ -64,7 +63,7 @@ public class AbilityButtonManager : MonoBehaviour
                 var instance = go.GetComponent<AbilityButton>();
                 instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
                 instance.GetComponent<Image>().sprite = ability.button;
-                instance.GetComponentInChildren<Label>().text = "";
+                instance.GetComponentInChildren<TextMeshProUGUI>().text = "";
                 buttons.Add(instance);
                 instance.Initialize(ability, () => OnClick(actor, ability));
             }

@@ -1,16 +1,16 @@
 ﻿using Assets.Helper;
 using Assets.Helpers;
+using Assets.Scripts.Libraries;
 using Game.Models.Profile;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using scene = Assets.Helpers.SceneHelper;
 using Button = UnityEngine.UI.Button;
-using Label = TMPro.TextMeshProUGUI;
-using Assets.Scripts.Libraries;
+using scene = Assets.Helpers.SceneHelper;
 
 public class SaveFileSelectManager : MonoBehaviour
 {
@@ -209,8 +209,8 @@ public class SaveFileSelectManager : MonoBehaviour
             return;
         }
 
-        Label saveNumber = saveNumberT.GetComponent<Label>();
-        Label timestamp = timestampT.GetComponent<Label>();
+        TextMeshProUGUI saveNumber = saveNumberT.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI timestamp = timestampT.GetComponent<TextMeshProUGUI>();
 
         if (saveNumber == null || timestamp == null)
         {

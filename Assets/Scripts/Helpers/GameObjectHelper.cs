@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Label = TMPro.TextMeshProUGUI;
 
 namespace Assets.Helper
 {
@@ -62,7 +61,7 @@ namespace Assets.Helper
         {
             public const string Canvas3D = "Canvas3D";
 
-           
+
 
 
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
@@ -71,11 +70,10 @@ namespace Assets.Helper
             public static class TimerBar
             {
                 public static TimerBar2D Root => GameObject.Find("Canvas/TimerBar2D").GetComponent<TimerBar2D>();
-
-
-                public const string Back = "Canvas/TimerBar2D/Back";
-                public const string Fill = "Canvas/TimerBar2D/Fill";
-                public const string Front = "Canvas/TimerBar2D/Front";
+                public static Image Back => GameObject.Find("Canvas/TimerBar2D/Back").GetComponent<Image>();
+                public static Image Fill => GameObject.Find("Canvas/TimerBar2D/Fill").GetComponent<Image>();
+                public static TextMeshProUGUI CountdownLabel => GameObject.Find("Canvas/TimerBar2D/Fill/Countdown").GetComponent<TextMeshProUGUI>();
+                public static Image Front => GameObject.Find("Canvas/TimerBar2D/Front").GetComponent<Image>();              
             }
 
             public const string Portraits = "Canvas/Portraits";
@@ -86,8 +84,8 @@ namespace Assets.Helper
                 public const string Root = "Canvas/TutorialPopup";
                 public static GameObject Panel => GameObject.Find("Canvas/TutorialPopup/Panel");
                 public static Image Image => GameObject.Find("Canvas/TutorialPopup/Panel/Image").GetComponent<Image>();
-                public static Label TitleTextX => GameObject.Find("Canvas/TutorialPopup/Panel/Title").GetComponent<TextMeshProUGUI>();
-                public static Label ContentTextX => GameObject.Find("Canvas/TutorialPopup/Panel/Content").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI TitleTextX => GameObject.Find("Canvas/TutorialPopup/Panel/Title").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI ContentTextX => GameObject.Find("Canvas/TutorialPopup/Panel/Content").GetComponent<TextMeshProUGUI>();
                 public static Button PreviousButton => GameObject.Find("Canvas/TutorialPopup/Panel/PreviousButton").GetComponent<Button>();
                 public static Button NextButton => GameObject.Find("Canvas/TutorialPopup/Panel/NextButton").GetComponent<Button>();
                 public static Button CloseButton => GameObject.Find("Canvas/TutorialPopup/Panel/CloseButton").GetComponent<Button>();
@@ -105,31 +103,31 @@ namespace Assets.Helper
             {
                 public static GameObject Root => GameObject.Find("Canvas/PauseMenu");
                 public static Button ResumeButton => GameObject.Find("Canvas/PauseMenu/Inner/ResumeButton").GetComponent<Button>();
-                public static Label ResumeButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/ResumeButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI ResumeButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/ResumeButton/Label").GetComponent<TextMeshProUGUI>();
 
                 public static Button RunAwayButton => GameObject.Find("Canvas/PauseMenu/Inner/RunAwayButton").GetComponent<Button>();
-                public static Label RunAwayButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/RunAwayButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI RunAwayButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/RunAwayButton/Label").GetComponent<TextMeshProUGUI>();
 
                 public static Button QuickSaveGameButton => GameObject.Find("Canvas/PauseMenu/Inner/QuickSaveGameButton").GetComponent<Button>();
-                public static Label QuickSaveGameButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/QuickSaveGameButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI QuickSaveGameButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/QuickSaveGameButton/Label").GetComponent<TextMeshProUGUI>();
 
                 public static Button CreateSaveGameButton => GameObject.Find("Canvas/PauseMenu/Inner/CreateSaveGameButton").GetComponent<Button>();
-                public static Label CreateSaveGameButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/CreateSaveGameButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI CreateSaveGameButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/CreateSaveGameButton/Label").GetComponent<TextMeshProUGUI>();
 
                 public static Button RestartStageButton => GameObject.Find("Canvas/PauseMenu/Inner/RestartStageButton").GetComponent<Button>();
-                public static Label RestartStageButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/RestartStageButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI RestartStageButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/RestartStageButton/Label").GetComponent<TextMeshProUGUI>();
 
                 public static Button PartyManagerButton => GameObject.Find("Canvas/PauseMenu/Inner/PartyManagerButton").GetComponent<Button>();
-                public static Label PartyManagerButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/PartyManagerButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI PartyManagerButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/PartyManagerButton/Label").GetComponent<TextMeshProUGUI>();
 
                 public static Button StageSelectButton => GameObject.Find("Canvas/PauseMenu/Inner/StageSelectButton").GetComponent<Button>();
-                public static Label StageSelectButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/StageSelectButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI StageSelectButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/StageSelectButton/Label").GetComponent<TextMeshProUGUI>();
 
                 public static Button SettingsButton => GameObject.Find("Canvas/PauseMenu/Inner/SettingsButton").GetComponent<Button>();
-                public static Label SettingsButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/SettingsButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI SettingsButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/SettingsButton/Label").GetComponent<TextMeshProUGUI>();
 
                 public static Button TitleScreenButton => GameObject.Find("Canvas/PauseMenu/Inner/TitleScreenButton").GetComponent<Button>();
-                public static Label TitleScreenButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/TitleScreenButton/Label").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI TitleScreenButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/TitleScreenButton/Label").GetComponent<TextMeshProUGUI>();
             }
 
 
@@ -176,7 +174,7 @@ namespace Assets.Helper
 
         public static class LoadingScreen
         {
-            public static Label LoreText => GameObject.Find("Canvas/LoreText").GetComponent<TextMeshProUGUI>();
+            public static TextMeshProUGUI LoreText => GameObject.Find("Canvas/LoreText").GetComponent<TextMeshProUGUI>();
 
         }
 
@@ -309,7 +307,7 @@ namespace Assets.Helper
             public const string Key9 = Row1 + "/Key9";
             public const string Key0 = Row1 + "/Key0";
 
-            // Row 2: Q–P
+            // Row 2: QP
             public const string Row2 = KeysContainer + "/Row2";
             public const string KeyQ = Row2 + "/KeyQ";
             public const string KeyW = Row2 + "/KeyW";
@@ -322,7 +320,7 @@ namespace Assets.Helper
             public const string KeyO = Row2 + "/KeyO";
             public const string KeyP = Row2 + "/KeyP";
 
-            // Row 3: A–L
+            // Row 3: AL
             public const string Row3 = KeysContainer + "/Row3";
             public const string KeyA = Row3 + "/KeyA";
             public const string KeyS = Row3 + "/KeyS";
@@ -334,7 +332,7 @@ namespace Assets.Helper
             public const string KeyK = Row3 + "/KeyK";
             public const string KeyL = Row3 + "/KeyL";
 
-            // Row 4: Z–M
+            // Row 4: ZM
             public const string Row4 = KeysContainer + "/Row4";
             public const string KeyZ = Row4 + "/KeyZ";
             public const string KeyX = Row4 + "/KeyX";

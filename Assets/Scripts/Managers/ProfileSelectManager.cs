@@ -1,13 +1,13 @@
 using Assets.Helper;
-using Game.Models.Profile;
-using UnityEngine;
-using UnityEngine.UI;
-using c = Assets.Helpers.CanvasHelper;
-using scene = Assets.Helpers.SceneHelper;
-using Button = UnityEngine.UI.Button;
-using Label = TMPro.TextMeshProUGUI;
 using Assets.Helpers;
 using Assets.Scripts.Libraries;
+using Game.Models.Profile;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
+using c = Assets.Helpers.CanvasHelper;
+using scene = Assets.Helpers.SceneHelper;
 
 public class ProfileSelectManager : MonoBehaviour
 {
@@ -15,7 +15,7 @@ public class ProfileSelectManager : MonoBehaviour
     private GameObject buttonPrefab;
 
     // Header label at the top of the screen.
-    private Label header;
+    private TextMeshProUGUI header;
 
     // ScrollView and Content containers for the list.
     private RectTransform scrollView;
@@ -44,7 +44,7 @@ public class ProfileSelectManager : MonoBehaviour
             return;
         }
 
-        header = headerGO.GetComponent<Label>();
+        header = headerGO.GetComponent<TextMeshProUGUI>();
         if (header == null)
         {
             Debug.LogError("Header object is missing a TextMeshProUGUI component.");
@@ -202,7 +202,7 @@ public class ProfileSelectManager : MonoBehaviour
         }
 
         // Set the visible label text.
-        Label label = instance.GetComponentInChildren<Label>();
+        TextMeshProUGUI label = instance.GetComponentInChildren<TextMeshProUGUI>();
         if (label == null)
         {
             Debug.LogError("CreateNewProfile instance is missing a TextMeshProUGUI label.");
@@ -257,7 +257,7 @@ public class ProfileSelectManager : MonoBehaviour
         }
 
         // Set the visible label text to the profile key.
-        Label label = instance.GetComponentInChildren<Label>();
+        TextMeshProUGUI label = instance.GetComponentInChildren<TextMeshProUGUI>();
         if (label == null)
         {
             Debug.LogError("Profile button instance is missing a TextMeshProUGUI label.");
