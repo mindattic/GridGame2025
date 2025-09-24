@@ -10,13 +10,12 @@ namespace Game.Instances.Actor
             public const string Front = "Front";
             public const string Back = "Back";
 
-
-
             public const string Opaque = "Opaque";
             public const string Quality = "Quality";
             public const string Glow = "Glow";
             public const string Parallax = "Parallax";
             public const string Thumbnail = "Thumbnail";
+            public const string Gradient = "Gradient";
             public const string Frame = "Frame";
             public const string StatusIcon = "StatusIcon";
 
@@ -71,46 +70,47 @@ namespace Game.Instances.Actor
             public const int Glow = 3;
             public const int Parallax = 4;
             public const int Thumbnail = 5;
-            public const int Frame = 6;
-            public const int StatusIcon = 7;
+            public const int Gradient = 6;
+
+            public const int Frame = 7;
+            public const int StatusIcon = 8;
 
             public static class HealthBar
             {
-                public const int Back = 8;  
-                public const int Drain = 9;
-                public const int Fill = 10;
-                public const int Text = 11;
+                public const int Back = 9;  
+                public const int Drain = 10;
+                public const int Fill = 11;
+                public const int Text = 12;
             }
 
             public static class ActionBar
             {
-                public const int Back = 12;
-                public const int Drain = 13;
-                public const int Fill = 14;
-                public const int Text = 15;
+                public const int Back = 13;
+                public const int Drain = 14;
+                public const int Fill = 15;
+                public const int Text = 16;
             }
 
-            public const int Mask = 16;
-            public const int RadialBack = 17;
-            public const int RadialFill = 18;
-            public const int RadialText = 19;
-            public const int TurnDelayText = 20;
-            public const int NameTagText = 21;
-            //public const int WeaponIcon = 22;
+            public const int Mask = 17;
+            public const int RadialBack = 18;
+            public const int RadialFill = 19;
+            public const int RadialText = 20;
+            public const int TurnDelayText = 21;
+            public const int NameTagText = 22;
+            //public const int WeaponIcon = 23;
            
 
             public static class Armor
             {
-                public const int ArmorNorth = 23;
-                public const int ArmorEast = 24;
-                public const int ArmorSouth = 25;
-                public const int ArmorWest = 26;
+                public const int ArmorNorth = 24;
+                public const int ArmorEast = 25;
+                public const int ArmorSouth = 26;
+                public const int ArmorWest = 27;
             }
 
-
-            public const int ActiveIndicator = 27;
-            public const int FocusIndicator = 28;
-            public const int TargetIndicator = 29;
+            public const int ActiveIndicator = 28;
+            public const int FocusIndicator = 29;
+            public const int TargetIndicator = 30   ;
 
 
         }

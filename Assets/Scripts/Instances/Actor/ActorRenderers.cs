@@ -17,6 +17,7 @@ public class ActorRenderers
     public Color parallaxColor = ColorHelper.Solid.White;
     public float parallaxAlphaMax = Opacity.Percent50;
     public Color thumbnailColor = ColorHelper.Solid.White;
+    public Color gradientColor = ColorHelper.Solid.White;
     public Color frameColor = ColorHelper.Solid.White;
     public Color healthBarColor = ColorHelper.Solid.White;
     public Color healthBarDrainColor = ColorHelper.HealthBar.Yellow;
@@ -36,6 +37,7 @@ public class ActorRenderers
     public SpriteRenderer thumbnail;
     public SpriteRenderer frame;
     public SpriteRenderer statusIcon;
+    public SpriteRenderer gradient;
     public GameObject healthBar;
     public SpriteRenderer healthBarBack;
     public SpriteRenderer healthBarDrain;
@@ -72,6 +74,7 @@ public class ActorRenderers
         glow = front.GetChild(ActorLayer.Name.Glow).GetComponent<SpriteRenderer>();
         parallax = front.GetChild(ActorLayer.Name.Parallax).GetComponent<SpriteRenderer>();
         thumbnail = front.GetChild(ActorLayer.Name.Thumbnail).GetComponent<SpriteRenderer>();
+        gradient = front.GetChild(ActorLayer.Name.Gradient).GetComponent<SpriteRenderer>();
         frame = front.GetChild(ActorLayer.Name.Frame).GetComponent<SpriteRenderer>();
         statusIcon = front.GetChild(ActorLayer.Name.StatusIcon).GetComponent<SpriteRenderer>();
         healthBarBack = front.GetChild(ActorLayer.Name.HealthBar.Root).GetChild(ActorLayer.Name.HealthBar.Back).GetComponent<SpriteRenderer>();
@@ -106,6 +109,7 @@ public class ActorRenderers
         SetGlowAlpha(alpha);
         SetParallaxAlpha(alpha);
         SetThumbnailAlpha(alpha);
+        SetGradientAlpha(alpha);
         SetFrameAlpha(alpha);
         SetHealthBarAlpha(alpha);
         SetActionBarAlpha(alpha);
@@ -212,6 +216,11 @@ public class ActorRenderers
     {
         thumbnailColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
         if (thumbnail != null) thumbnail.color = thumbnailColor;
+    }
+    public void SetGradientAlpha(float alpha)
+    {
+        gradientColor.a = Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Opaque);
+        if (gradient != null) gradient.color = gradientColor;
     }
 
     public void SetThumbnailMaterial(Material material)
