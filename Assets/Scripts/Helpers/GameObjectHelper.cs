@@ -220,7 +220,7 @@ namespace Assets.Helper
 
         public static class ProfileCreate
         {
-            public const string Background = "Canvas/Background";
+           
         }
 
 
