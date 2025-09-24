@@ -126,8 +126,8 @@ namespace Assets.Helper
                 public static Button SettingsButton => GameObject.Find("Canvas/PauseMenu/Inner/SettingsButton").GetComponent<Button>();
                 public static TextMeshProUGUI SettingsButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/SettingsButton/Label").GetComponent<TextMeshProUGUI>();
 
-                public static Button TitleScreenButton => GameObject.Find("Canvas/PauseMenu/Inner/TitleScreenButton").GetComponent<Button>();
-                public static TextMeshProUGUI TitleScreenButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/TitleScreenButton/Label").GetComponent<TextMeshProUGUI>();
+                public static Button QuitButton => GameObject.Find("Canvas/PauseMenu/Inner/QuitButton").GetComponent<Button>();
+                public static TextMeshProUGUI QuitButtonLabel => GameObject.Find("Canvas/PauseMenu/Inner/QuitButton/Label").GetComponent<TextMeshProUGUI>();
             }
 
 

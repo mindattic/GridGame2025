@@ -22,8 +22,8 @@ public class PauseMenu : MonoBehaviour
     private TextMeshProUGUI resumeButtonLabel;
     private Button settingsButton;
     private TextMeshProUGUI settingsButtonLabel;
-    private Button titleScreenButton;
-    private TextMeshProUGUI titleScreenButtonLabel;
+    private Button quitButton;
+    private TextMeshProUGUI quitButtonLabel;
 
     private bool isInitalized;
 
@@ -55,12 +55,10 @@ public class PauseMenu : MonoBehaviour
         settingsButton.onClick.RemoveAllListeners();
         settingsButton.onClick.AddListener(OnSettingsButtonClicked);
 
-        titleScreenButton = GameObjectHelper.Game.PauseMenu.TitleScreenButton;
-        titleScreenButtonLabel = GameObjectHelper.Game.PauseMenu.TitleScreenButtonLabel;
-        titleScreenButton.onClick.RemoveAllListeners();
-        titleScreenButton.onClick.AddListener(OnTitleScreenButtonClicked);
-
-       
+        quitButton = GameObjectHelper.Game.PauseMenu.QuitButton;
+        quitButtonLabel = GameObjectHelper.Game.PauseMenu.QuitButtonLabel;
+        quitButton.onClick.RemoveAllListeners();
+        quitButton.onClick.AddListener(OnQuitButtonClicked);
 
         pauseMenuRoot = GameObjectHelper.Game.PauseMenu.Root;
         pauseMenuRoot.SetActive(false);
@@ -71,8 +69,10 @@ public class PauseMenu : MonoBehaviour
   
     public void Toggle()
     {
-        if (IsPaused) OnResumeButtonClicked();
-        else OnPauseButtonClicked();
+        if (IsPaused) 
+            OnResumeButtonClicked();
+        else 
+            OnPauseButtonClicked();
     }
 
     private void Pause()
@@ -137,7 +137,7 @@ public class PauseMenu : MonoBehaviour
         scene.Fade.ToSettings();
     }
 
-    public void OnTitleScreenButtonClicked()
+    public void OnQuitButtonClicked()
     {
         Time.timeScale = 1f;
         scene.Fade.ToTitleScreen();
