@@ -42,7 +42,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AudioSource musicSource;
 
     // Canvas
-    [HideInInspector] public Card card;
+    [HideInInspector] public CardInstance card;
     [HideInInspector] public TutorialPopup tutorialPopup;
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;
@@ -50,6 +50,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Canvas canvas3D;
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
     [HideInInspector] public TargetModeOverlay targetModeOverlay;
+    [HideInInspector] public TitleBarInstance titleBar;
 
     // Managers
     [HideInInspector] public InputManager inputManager;
@@ -119,7 +120,7 @@ public class GameManager : Singleton<GameManager>
     // Instances
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TimerBar2D timerBar2D;
-    [HideInInspector] public RectTransform portraitsContainer;
+    [HideInInspector] public RectTransform portraitsRect;
     [HideInInspector] public RectTransform timelineContainer;
     [HideInInspector] public RectTransform timelineViewport;
     [HideInInspector] public RectTransform timelineContent;
@@ -172,10 +173,11 @@ public class GameManager : Singleton<GameManager>
         ShakeIntensity.Initialize(tileSize);
 
         // Canvas
-        card = GameObjectHelper.Game.Card.Root.GetComponent<Card>();
-        canvas3D = GameObject.Find(GameObjectHelper.Game.Canvas3D).GetComponent<Canvas>();
-        timerBar2D = GameObjectHelper.Game.TimerBar.Root;
-        portraitsContainer = GameObject.Find(GameObjectHelper.Game.Portraits).GetComponent<RectTransform>();
+        card = GameObjectHelper.Game.Card.Instance;
+        canvas3D = GameObjectHelper.Game.Canvas3D;
+        timerBar2D = GameObjectHelper.Game.TimerBar.Instance;
+        portraitsRect = GameObjectHelper.Game.Portraits;
+        titleBar = GameObjectHelper.Game.TitleBar.Instance;
 
         // Timeline children
         timelineContainer = GameObject.Find(GameObjectHelper.Game.TimelineContainer).GetComponent<RectTransform>();
@@ -188,7 +190,7 @@ public class GameManager : Singleton<GameManager>
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
         // Board
-        board = GameObjectHelper.Game.Board.Root;
+        board = GameObjectHelper.Game.Board.Instance;
         boardOverlay = GameObjectHelper.Game.Board.BoardOverlay;
         targetModeOverlay = GameObjectHelper.Game.Board.TargetModeOverlay;
 

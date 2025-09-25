@@ -110,6 +110,7 @@
     <Compile Include="Assets\Scripts\Helpers\ProjectileHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
+    <Compile Include="Assets\Scripts\Canvas\CardInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
@@ -179,7 +180,6 @@
     <Compile Include="Assets\Scripts\Helpers\FadeOverlayHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\LocationHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
-    <Compile Include="Assets\Scripts\Canvas\Card.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime03.cs" />
     <Compile Include="Assets\Scripts\Utilities\GameReady.cs" />
@@ -210,6 +210,7 @@
     <Compile Include="Assets\Scripts\Overworld\SoilInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\PositionHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\AnimationCurveHelper.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TitleBarInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Barbarian.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\BoardOverlay.cs" />

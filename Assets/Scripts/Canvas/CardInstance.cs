@@ -11,7 +11,7 @@ using UnityEngine.UI;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
-public class Card : MonoBehaviour
+public class CardInstance : MonoBehaviour
 {
     // ----- Cached RectTransforms -----
     private RectTransform card;
@@ -37,7 +37,7 @@ public class Card : MonoBehaviour
 
     private void Awake()
     {
-        card = GameObjectHelper.Game.Card.Root;
+        card = GameObjectHelper.Game.Card.Rect;
         backdrop = GameObjectHelper.Game.Card.Backdrop;
         portrait = GameObjectHelper.Game.Card.Portrait;
         title = GameObjectHelper.Game.Card.Title;

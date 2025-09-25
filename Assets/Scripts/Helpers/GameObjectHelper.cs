@@ -59,9 +59,7 @@ namespace Assets.Helper
 
         public static class Game
         {
-            public const string Canvas3D = "Canvas3D";
-
-
+            public static Canvas Canvas3D => GameObject.Find("Canvas3D").GetComponent<Canvas>();
 
 
             public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
@@ -69,14 +67,25 @@ namespace Assets.Helper
 
             public static class TimerBar
             {
-                public static TimerBar2D Root => GameObject.Find("Canvas/TimerBar2D").GetComponent<TimerBar2D>();
+                public static TimerBar2D Instance => GameObject.Find("Canvas/TimerBar2D").GetComponent<TimerBar2D>();
                 public static Image Back => GameObject.Find("Canvas/TimerBar2D/Back").GetComponent<Image>();
                 public static Image Fill => GameObject.Find("Canvas/TimerBar2D/Fill").GetComponent<Image>();
                 public static TextMeshProUGUI CountdownLabel => GameObject.Find("Canvas/TimerBar2D/Fill/Countdown").GetComponent<TextMeshProUGUI>();
                 public static Image Front => GameObject.Find("Canvas/TimerBar2D/Front").GetComponent<Image>();              
             }
 
-            public const string Portraits = "Canvas/Portraits";
+
+
+
+            public static RectTransform Portraits => GameObject.Find("Canvas/Portraits").GetComponent<RectTransform>();
+
+
+
+
+
+
+
+
             public const string CoinCounter = "Canvas/CoinCounter";
 
             public static class TutorialPopup
@@ -138,18 +147,27 @@ namespace Assets.Helper
 
             public static class Board
             {
-                public static BoardInstance Root = GameObject.Find("Board").GetComponent<BoardInstance>();
+                public static BoardInstance Instance = GameObject.Find("Board").GetComponent<BoardInstance>();
                 public static BoardOverlay BoardOverlay = GameObject.Find("Board/BoardOverlay").GetComponent<BoardOverlay>();
                 public static TargetModeOverlay TargetModeOverlay = GameObject.Find("Board/TargetModeOverlay").GetComponent<TargetModeOverlay>();
             }
 
             public static class Card
             {
-                public static RectTransform Root => GameObject.Find("Canvas/Card").GetComponent<RectTransform>();
+                public static RectTransform Rect => GameObject.Find("Canvas/Card").GetComponent<RectTransform>();
+                public static CardInstance Instance => GameObject.Find("Canvas/Card").GetComponent<CardInstance>();
                 public static RectTransform Backdrop => GameObject.Find("Canvas/Card/Backdrop").GetComponent<RectTransform>();
                 public static RectTransform Portrait => GameObject.Find("Canvas/Card/Portrait").GetComponent<RectTransform>();
                 public static RectTransform Title => GameObject.Find("Canvas/Card/Title").GetComponent<RectTransform>();
                 public static RectTransform Details => GameObject.Find("Canvas/Card/Details").GetComponent<RectTransform>();
+            }
+
+
+            public static class TitleBar
+            {
+                public static RectTransform Rect => GameObject.Find("Canvas/TitleBar").GetComponent<RectTransform>();
+                public static TitleBarInstance Instance => GameObject.Find("Canvas/TitleBar").GetComponent<TitleBarInstance>();
+                public static TextMeshProUGUI Label => GameObject.Find("Canvas/TitleBar/Label").GetComponent<TextMeshProUGUI>();
             }
 
             public static class Timeline

@@ -73,6 +73,9 @@ public class AbilityButtonManager : MonoBehaviour
 
     private void OnClick(ActorInstance actor, Ability ability)
     {
+        g.TitleBar.Show(ability.name);
+
+
         // Paladin's Shield Bash uses LinearTarget mode, not the generic AbilityTarget flow
         var normalizedName = (ability?.name ?? string.Empty).Replace(" ", string.Empty).ToLowerInvariant();
         if (actor != null && actor.characterName == CharacterHelper.Paladin && normalizedName == "shieldbash")

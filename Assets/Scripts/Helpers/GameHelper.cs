@@ -13,7 +13,7 @@ namespace Assets.Helpers
     public static class GameHelper
     {
         private static GameManager gm => GameManager.instance;
-      
+
         // New: selection mode toggle (still lives on GameManager while in-game)
         public static TurnSelectionMode TurnSelectionMode
         {
@@ -64,12 +64,18 @@ namespace Assets.Helpers
         public static float TileSize => gm != null ? gm.tileSize : 1f;
         public static Vector3 TileScale => gm != null ? gm.tileScale : Vector3.one;
         public static Canvas Canvas3D => gm != null ? gm.canvas3D : null;
+
+
+        //Cancas
         public static WaveAnnouncement WaveAnnouncement => gm != null ? gm.waveAnnouncement : null;
         public static TargetModeOverlay TargetModeOverlay => gm != null ? gm.targetModeOverlay : null;
-        public static Card Card => gm != null ? gm.card : null;
+        public static CardInstance Card => gm != null ? gm.card : null;
         public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;
         public static Timeline Timeline => gm != null ? gm.timeline : null;
+        public static TitleBarInstance TitleBar => gm != null ? gm.titleBar : null;
 
+
+        //Touch
         public static Vector3 TouchPosition2D => gm != null ? gm.touchPosition2D : Vector3.zero;
         public static Vector3 TouchPosition3D => gm != null ? gm.touchPosition3D : Vector3.zero;
         public static Vector3 TouchOffset
@@ -119,7 +125,7 @@ namespace Assets.Helpers
         public static TimerBar2D TimerBar2D => gm != null ? gm.timerBar2D : null;
         public static BoardInstance Board => gm != null ? gm.board : null;
         public static List<TileInstance> Tiles => gm != null ? gm.tiles : null;
-        public static RectTransform PortraitsContainer => gm != null ? gm.portraitsContainer : null;
+        public static RectTransform PortraitsContainer => gm != null ? gm.portraitsRect : null;
         public static CoinCounter CoinCounter => gm != null ? gm.coinCounter : null;
 
         public static int TotalCoins
