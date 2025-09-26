@@ -15,7 +15,6 @@ namespace Assets.Scripts.Managers
         public int CurrentTurn = 0;
         public ActorInstance ActiveActor { get; private set; }
 
-        // Add passive MP gain at the start of each side's turn.
         private ManaPoolManager GetMana()
         {
             var go = GameObject.Find("Game");
@@ -51,6 +50,7 @@ namespace Assets.Scripts.Managers
             var mana = GetMana();
             if (mana != null) mana.OnTurnStarted(IsHeroTurn ? Team.Hero : Team.Enemy);
 
+            // Always set input mode for the side taking the new turn
             g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
 
             UpdateActiveIndicators();
@@ -81,6 +81,7 @@ namespace Assets.Scripts.Managers
             var mana = GetMana();
             if (mana != null) mana.OnTurnStarted(IsHeroTurn ? Team.Hero : Team.Enemy);
 
+            // Ensure input mode matches the side at the start
             g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
 
             UpdateActiveIndicators();

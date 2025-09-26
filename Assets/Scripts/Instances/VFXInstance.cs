@@ -40,6 +40,23 @@ public class VFXInstance : MonoBehaviour
     }
 
     /// <summary>
+    /// Yield until this VFX reaches its TriggerAt moment (including Delay). Useful for timing chained spawns.
+    /// </summary>
+    public IEnumerator WaitUntilTrigger(VFXAsset vfx)
+    {
+        float wait = Mathf.Max(0f, (vfx?.Delay ?? 0f) + (vfx?.TriggerAt ?? 1f));
+        if (wait <= 0f)
+            yield break;
+
+        float t = 0f;
+        while (t < wait)
+        {
+            t += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    /// <summary>
     /// Yieldable spawn of a VFX at a world position. Plays optional routine routine, then despawns.
     /// </summary>
     public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
@@ -65,16 +82,49 @@ public class VFXInstance : MonoBehaviour
         if (routine != null)
             yield return StartCoroutine(routine);
 
-        // Optional lifetime
-        if (vfx.Duration != 0f)
+        bool shouldDespawn = false;
+
+        // Optional lifetime or auto-wait for non-looping particle completion
+        if (vfx.Duration > 0f)
+        {
             yield return new WaitForSeconds(vfx.Duration);
+            shouldDespawn = true; // finite lifetime -> auto-despawn
+        }
+        else if (!vfx.IsLoop)
+        {
+            // If no explicit duration and not looping, wait until particles finish (with a safety timeout)
+            var particleSystems = new List<ParticleSystem>();
+            GetRecursively(ref particleSystems, transform);
+
+            float timeout = 5f; // safety cap
+            bool anyAlive()
+            {
+                foreach (var ps in particleSystems)
+                {
+                    if (ps != null && ps.IsAlive(true))
+                        return true;
+                }
+                return false;
+            }
+
+            // Wait one frame to allow Play On Awake systems to start
+            yield return null;
+
+            while (timeout > 0f && anyAlive())
+            {
+                timeout -= Time.deltaTime;
+                yield return null;
+            }
+
+            // Non-looping with no explicit duration -> auto-despawn when finished
+            shouldDespawn = true;
+        }
 
         // If this was already destroyed by a parent, stop quietly
         if (this == null || gameObject == null)
             yield break;
 
-        // Only self-despawn when there is a finite lifetime
-        if (vfx.Duration > 0f)
+        if (shouldDespawn)
             Despawn(instanceName);
     }
 

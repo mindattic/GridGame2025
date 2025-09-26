@@ -50,6 +50,30 @@ public class VfxManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Spawns a VFX and yields until its lifecycle finishes (including optional routine and duration).
+    /// Use this when subsequent gameplay should wait for the impact to complete.
+    /// </summary>
+    public IEnumerator PlayRoutine(VFXAsset asset, Vector3 position, IEnumerator routine = null)
+    {
+        var instance = CreateInstance(asset, position, null);
+        if (instance == null)
+            yield break;
+
+        yield return instance.SpawnRoutine(asset, position, routine);
+    }
+
+    /// <summary>
+    /// Spawn an instance and return it, while also providing a yieldable routine to wait for completion.
+    /// </summary>
+    public (VFXInstance instance, IEnumerator routine) SpawnAndWait(VFXAsset asset, Vector3 position, Transform parentOverride = null, IEnumerator routine = null)
+    {
+        var inst = CreateInstance(asset, position, parentOverride);
+        if (inst == null)
+            return (null, null);
+        return (inst, inst.SpawnRoutine(asset, position, routine));
+    }
+
+    /// <summary>
     /// Spawns a VFX, parents it to the provided transform so it follows movement,
     /// starts its lifecycle, and returns the VFXInstance.
     /// </summary>

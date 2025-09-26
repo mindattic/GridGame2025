@@ -17,6 +17,7 @@ public class VFXAsset
         Delay = other.Delay;
         Duration = other.Duration;
         IsLoop = other.IsLoop;
+        TriggerAt = other.TriggerAt;
        
     }
 
@@ -28,5 +29,7 @@ public class VFXAsset
     public float Delay;
     public float Duration;
     public bool IsLoop;
-   
+    
+    // Time in seconds since spawn at which the apex occurs (used to trigger projectiles)
+    public float TriggerAt = 1f;
 }

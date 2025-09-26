@@ -131,7 +131,7 @@ namespace Assets.Scripts.Managers
         }
 
         /// <summary>
-        /// Tap handler for AnyActorTarget: tap toggles selection; Cast button confirms.
+        /// Tap handler for AnyTarget: tap toggles selection; Cast button confirms.
         /// </summary>
         public void UpdateAbilityTarget(Touch touch)
         {
@@ -177,7 +177,7 @@ namespace Assets.Scripts.Managers
             }
 
             HideCastButton(); HideCancelButton();
-            g.InputManager.InputMode = InputMode.None;
+            g.InputManager.InputMode = InputMode.None; // lock input during sequence batch
 
             var startPosition = g.Card != null ? g.Card.PortraitWorldPosition() : currentUser.transform.position;
 
@@ -202,15 +202,34 @@ namespace Assets.Scripts.Managers
                     break;
             }
 
-            QueueEndOfPlayerAction();
+            // End player action -> clear focus and UI, then advance turn; TurnManager.NextTurn will restore InputMode
+            g.SequenceManager.Add(new SequenceCallback(() => { CancelTargetingInternal(); ClearFocusAndUI(); }));
+            g.SequenceManager.Add(new EndTurnSequence());
             g.SequenceManager.Execute();
         }
 
-        private void QueueEndOfPlayerAction()
+        private void ClearFocusAndUI()
         {
-            // After queued ability sequences, end the player's turn
-            g.SequenceManager.Add(new SequenceCallback(() => { CancelTargeting(); }));
-            g.SequenceManager.Add(new EndTurnSequence());
+            // Unfocus the hero; TurnManager will set focus for next side
+            g.Actors.FocusedActor = null;
+            if (g.Actors.All != null)
+            {
+                foreach (var a in g.Actors.All)
+                {
+                    if (a != null) a.Render.SetFocusIndicatorEnabled(false);
+                }
+            }
+            g.AbilityButtonManager?.Hide();
+            g.Card?.Clear();
+        }
+
+        private void CancelTargetingInternal()
+        {
+            ClearAllIndicators(); targetList.Clear(); currentAbility = null; currentUser = null;
+            HideCastButton(); HideCancelButton();
+            ClearPendingUser();
+            // Explicitly hide the TitleBar when leaving targeting/casting
+            g.TitleBar?.Hide();
         }
 
         /// <summary>
@@ -218,10 +237,10 @@ namespace Assets.Scripts.Managers
         /// </summary>
         public void CancelTargeting()
         {
-            ClearAllIndicators(); targetList.Clear(); currentAbility = null; currentUser = null;
-            HideCastButton(); HideCancelButton();
-            g.InputManager.InputMode = InputMode.PlayerTurn; g.InputManager.RequireTouchRelease();
-            ClearPendingUser();
+            // User-initiated cancel: restore PlayerTurn immediately
+            CancelTargetingInternal();
+            g.InputManager.InputMode = InputMode.PlayerTurn; // this also hides TargetModeOverlay via mode change
+            g.InputManager.RequireTouchRelease();
         }
 
         /// <summary>
@@ -252,7 +271,7 @@ namespace Assets.Scripts.Managers
             switch (ability.type)
             {
                 case AbilityType.TargetAny: return target.IsPlaying;
-                case AbilityType.TargetAlly: return target.IsPlaying; // heal can target anyone
+                case AbilityType.TargetAlly: return target.IsPlaying;
                 case AbilityType.TargetOpponent: return target.IsEnemy && target.IsPlaying;
                 default: return target.IsPlaying;
             }

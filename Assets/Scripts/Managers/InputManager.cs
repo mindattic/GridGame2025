@@ -31,7 +31,7 @@ public class InputManager : MonoBehaviour
         get => inputMode;
         set
         {
-            if (g.SequenceManager != null && g.SequenceManager.IsExecuting) return; // don't change modes mid-sequence
+            // Allow mode changes even during sequences; Update() already blocks input while executing
             if (inputMode == value) return;
             inputMode = value;
             OnInputModeChanged?.Invoke(inputMode);
@@ -94,7 +94,12 @@ public class InputManager : MonoBehaviour
     /// <summary>
     /// Bind this to the Canvas/CancelButton OnClick. Cancels targeting and returns to PlayerTurn.
     /// </summary>
-    public void OnCancelButtonClickedEvent() => g.AbilityManager?.OnCancelButtonClickedEvent();
+    public void OnCancelButtonClickedEvent()
+    {
+        // Also hide the TitleBar explicitly
+        g.TitleBar?.Hide();
+        g.AbilityManager?.OnCancelButtonClickedEvent();
+    }
 
     /// <summary>
     /// Ability targeting flow. Tap toggles selection; CastButton confirms.
@@ -198,10 +203,10 @@ public class InputManager : MonoBehaviour
 
             switch (InputMode)
             {
-                case InputMode.AnyTarget:       UpdateAbilityTarget(touch); break;
-                case InputMode.LinearTarget:    UpdateLinearTarget(touch);  break;
-                case InputMode.PlayerTurn:      UpdatePlayerTurn(touch);    break;
-                case InputMode.EnemyTurn:       UpdateEnemyTurn(touch);     break;
+                case InputMode.AnyTarget:   UpdateAbilityTarget(touch); break;
+                case InputMode.LinearTarget: UpdateLinearTarget(touch);  break;
+                case InputMode.PlayerTurn:   UpdatePlayerTurn(touch);    break;
+                case InputMode.EnemyTurn:    UpdateEnemyTurn(touch);     break;
             }
         }
         else
@@ -222,7 +227,7 @@ public class InputManager : MonoBehaviour
                         var hero = pendingAbilityUser;
                         var target = TouchHelper.GetActorAtTouchPosition();
                         if (hero != null && target != null)
-                            g.AbilityManager?.ToggleTarget(target); // selection then CastButton confirms
+                            g.AbilityManager?.ToggleTarget(target);
                     }
                     break;
                 case InputMode.PlayerTurn:

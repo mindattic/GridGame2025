@@ -7,6 +7,7 @@ namespace Assets.Scripts.Sequences
 {
     /// <summary>
     /// Instantly plays a holy explosion VFX on the target (no projectile), then applies damage or feedback.
+    /// Waits for the VFX impact duration before completing.
     /// </summary>
     public class SmiteSequence : SequenceEvent
     {
@@ -25,7 +26,10 @@ namespace Assets.Scripts.Sequences
             // Choose a bright explosion-like effect from VfxLibrary. "LightningExplosion" is suitable.
             var vfx = VfxLibrary.Get("LightningExplosion");
             if (vfx != null)
-                g.VfxManager.Spawn(vfx, target.Position);
+            {
+                // Play and wait for completion before continuing
+                yield return g.VfxManager.PlayRoutine(vfx, target.Position);
+            }
 
             // Optional: show holy themed combat text
             g.CombatTextManager.Spawn("Smite", target.Position, "Damage");

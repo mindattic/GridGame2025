@@ -31,8 +31,8 @@ namespace Assets.Scripts.Sequences
                 friendlyName = "Trap",
                 startPosition = startPosition,
                 target = target,
-                trailKey = "Fireball", // choose a visible looping trail
-                vfxKey = "PuffyExplosion", // impact
+                projectileVfxKey = "Fireball", // choose a visible looping trail
+                impactVfxKey = "PuffyExplosion", // impact
                 motionStyle = MotionStyle.Straight,
                 travelSeconds = 0.5f,
                 arriveRadiusTiles = 0.1f

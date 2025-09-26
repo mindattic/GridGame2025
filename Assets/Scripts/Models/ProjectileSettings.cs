@@ -18,8 +18,9 @@ public class ProjectileSettings
     public Vector3 staticTargetPosition;  // Last fallback if both are null
 
     // Visuals
-    public string trailKey;               // TrailEffectLibrary key
-    public string vfxKey;                 // VfxLibrary key for impact
+    public string spawnVfxKey;               
+    public string projectileVfxKey;              
+    public string impactVfxKey;               
 
     // Travel behavior
     public MotionStyle motionStyle = MotionStyle.Straight;

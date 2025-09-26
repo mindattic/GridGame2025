@@ -15,8 +15,8 @@ public static class ProjectileHelper
         {
             startPosition = start,
             followTarget = target,
-            trailKey = trailEffectKey,
-            vfxKey = impactVfxKey,
+            projectileVfxKey = trailEffectKey,
+            impactVfxKey = impactVfxKey,
             motionStyle = MotionStyle.Straight,
             travelSeconds = travelSeconds,
             routine = onImpact
@@ -29,8 +29,8 @@ public static class ProjectileHelper
         {
             startPosition = start,
             followTarget = target,
-            trailKey = trailEffectKey,
-            vfxKey = impactVfxKey,
+            projectileVfxKey = trailEffectKey,
+            impactVfxKey = impactVfxKey,
             motionStyle = MotionStyle.Wiggle,
             wiggleAmplitudeTiles = wiggleAmplitudeTiles,
             wiggleHz = wiggleHz,
@@ -45,8 +45,8 @@ public static class ProjectileHelper
         {
             startPosition = start,
             followTarget = target,
-            trailKey = trailEffectKey,
-            vfxKey = impactVfxKey,
+            projectileVfxKey = trailEffectKey,
+            impactVfxKey = impactVfxKey,
             motionStyle = MotionStyle.LobbedArc,
             lobbedHeightTiles = Mathf.Max(0f, heightTiles),
             travelSeconds = travelSeconds,
@@ -60,8 +60,8 @@ public static class ProjectileHelper
         {
             startPosition = start,
             followTarget = target,
-            trailKey = trailEffectKey,
-            vfxKey = impactVfxKey,
+            projectileVfxKey = trailEffectKey,
+            impactVfxKey = impactVfxKey,
             motionStyle = MotionStyle.HomingSpiral,
             spiralTurns = Mathf.Max(1, turns),
             spiralStartRadiusTiles = Mathf.Max(0.05f, startRadiusTiles),

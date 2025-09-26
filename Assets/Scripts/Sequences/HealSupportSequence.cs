@@ -35,8 +35,8 @@ namespace Assets.Scripts.Sequences
                 target = target,
 
                 // Visuals
-                trailKey = "GreenSparkle",
-                vfxKey = "BuffLife",
+                projectileVfxKey = "GreenSparkle",
+                impactVfxKey = "BuffLife",
 
                 // Motion
                 motionStyle = MotionStyle.Wiggle,

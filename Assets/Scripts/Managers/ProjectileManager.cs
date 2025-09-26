@@ -7,8 +7,9 @@ using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Spawns and controls projectiles in a grid friendly way using coroutines.
-/// A single looping TrailEffect travels from start to target using a MotionStyle,
-/// then a single VFX plays on impact, then an optional routine is yielded.
+/// A spawn VFX may play first and gate the projectile launch at its TriggerAt apex.
+/// Then a single looping TrailEffect travels from start to target using a MotionStyle,
+/// then a single impact VFX plays, then an optional routine is yielded.
 /// </summary>
 public class ProjectileManager : MonoBehaviour
 {
@@ -25,8 +26,10 @@ public class ProjectileManager : MonoBehaviour
             startPosition = startPosition,
             target = target,
 
-            trailKey = "GreenSparkle",
-            vfxKey = "BuffLife",
+            // default visual keys if caller hasn't set them elsewhere
+            spawnVfxKey = null,
+            projectileVfxKey = "GreenSparkle",
+            impactVfxKey = "BuffLife",
             routine = target.HealRoutine(10),
 
             motionStyle = MotionStyle.Wiggle,
@@ -52,8 +55,9 @@ public class ProjectileManager : MonoBehaviour
             startPosition = startPosition,
             target = target,
 
-            trailKey = "Fireball",
-            vfxKey = "PuffyExplosion",
+            spawnVfxKey = null,
+            projectileVfxKey = "Fireball",
+            impactVfxKey = "PuffyExplosion",
             routine = target.FireDamageRoutine(10),
 
             motionStyle = MotionStyle.LobbedArc,
@@ -80,8 +84,9 @@ public class ProjectileManager : MonoBehaviour
             target = target,
 
             // Visuals
-            trailKey = "GoldSparkle",
-            vfxKey = "BuffLife",
+            spawnVfxKey = null,
+            projectileVfxKey = "GoldSparkle",
+            impactVfxKey = "BuffLife",
             routine = target.HealRoutine(10),
 
             // Motion
@@ -121,7 +126,8 @@ public class ProjectileManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Creates the node, parents to board, attaches one trail, travels, plays impact, yields routine, cleans up.
+    /// Creates the node, optionally plays a spawn VFX and waits for its TriggerAt apex,
+    /// attaches one projectile trail, travels, plays impact, yields routine, cleans up.
     /// </summary>
     public IEnumerator SpawnRoutine(ProjectileSettings s)
     {
@@ -133,10 +139,25 @@ public class ProjectileManager : MonoBehaviour
 
         Vector3 start = s.startPosition;
 
-        // Short circuit if already there
+        // Optional spawn VFX gate at start
+        if (!string.IsNullOrEmpty(s.spawnVfxKey) && g.VfxManager != null)
+        {
+            var spawnAsset = VfxLibrary.Get(s.spawnVfxKey);
+            if (spawnAsset != null)
+            {
+                var (spawnInst, spawnRoutine) = g.VfxManager.SpawnAndWait(spawnAsset, start);
+                // Wait until the spawn reaches its apex
+                if (spawnInst != null)
+                    yield return spawnInst.WaitUntilTrigger(spawnAsset);
+                // Do not block full lifecycle here; let it continue while projectile travels
+                if (spawnRoutine != null) StartCoroutine(spawnRoutine);
+            }
+        }
+
+        // Short circuit if already there (still honor impact)
         if ((end - start).sqrMagnitude < 1e-8f)
         {
-            SpawnImpact(s.vfxKey, start);
+            yield return SpawnImpactRoutine(s.impactVfxKey, start);
             if (s.routine != null)
                 yield return s.routine;
             yield break;
@@ -151,15 +172,15 @@ public class ProjectileManager : MonoBehaviour
 
         var node = new ProjectileNode(nodeGo.transform, s);
 
-        // One trail
-        AttachTrail(node, s.trailKey);
+        // One trail (projectile visual)
+        AttachTrail(node, string.IsNullOrEmpty(s.projectileVfxKey) ? null : s.projectileVfxKey);
 
         // Travel
         yield return StartCoroutine(node.TravelRoutine());
 
         // Impact
         Vector3 finalPos = node.position;
-        SpawnImpact(s.vfxKey, finalPos);
+        yield return SpawnImpactRoutine(string.IsNullOrEmpty(s.impactVfxKey) ? null : s.impactVfxKey, finalPos);
 
         // Post impact
         if (s.routine != null)
@@ -176,25 +197,25 @@ public class ProjectileManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(trailKey)) return;
 
-
         var trailAsset = VfxLibrary.Get(trailKey);
         node.AttachTrail(trailAsset);
     }
 
     /// <summary>
-    /// Spawns an impact VFX via VfxManager and VfxLibrary at a world position.
+    /// Spawns an impact VFX via VfxManager and VfxLibrary at a world position and waits until it completes.
     /// </summary>
-    private void SpawnImpact(string vfxKey, Vector3 position)
+    private IEnumerator SpawnImpactRoutine(string vfxKey, Vector3 position)
     {
-        if (string.IsNullOrEmpty(vfxKey) || g.VfxManager == null) return;
+        if (string.IsNullOrEmpty(vfxKey) || g.VfxManager == null) yield break;
 
         var vfx = VfxLibrary.Get(vfxKey);
         if (vfx == null || vfx.Prefab == null)
         {
             Debug.LogError($"ProjectileManager: VFX `{vfxKey}` not found or prefab is null.");
-            return;
+            yield break;
         }
 
-        g.VfxManager.Spawn(vfx, position);
+        // Wait for the full impact effect (and its configured duration) before continuing
+        yield return g.VfxManager.PlayRoutine(vfx, position);
     }
 }
