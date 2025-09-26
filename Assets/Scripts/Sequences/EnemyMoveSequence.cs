@@ -1,5 +1,6 @@
 ﻿// --- File: Assets/Scripts/Events/Sequences/EnemyMoveSequence.cs ---
 using System.Collections;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Sequences
 {
@@ -21,6 +22,22 @@ namespace Assets.Scripts.Sequences
             // Safety: null or not in play should quietly skip.
             if (enemy == null || !enemy.IsPlaying)
                 yield break;
+
+            // Root gating: on enemy turn, consume one root turn and skip movement if rooted
+            if (enemy.Flags.RootedTurnsRemaining > 0)
+            {
+                enemy.Flags.RootedTurnsRemaining = System.Math.Max(0, enemy.Flags.RootedTurnsRemaining - 1);
+
+                // If root just ended, despawn the looping VFX if present
+                if (enemy.Flags.RootedTurnsRemaining == 0 && !string.IsNullOrEmpty(enemy.Flags.RootedVfxInstanceName))
+                {
+                    g.VfxManager?.Despawn(enemy.Flags.RootedVfxInstanceName);
+                    enemy.Flags.RootedVfxInstanceName = null;
+                }
+
+                // Skip movement this turn while rooted
+                yield break;
+            }
 
             // Optional pacing before movement.
             yield return Wait.For(Intermission.Before.Enemy.Move);

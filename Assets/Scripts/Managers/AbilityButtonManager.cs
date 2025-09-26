@@ -1,6 +1,8 @@
+using Assets.Helper;
 using Assets.Helpers;
 using Assets.Scripts.Libraries;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,104 +13,150 @@ public class AbilityButtonManager : MonoBehaviour
     private GameObject abilityButtonPrefab;
     private Transform abilityButtonContainer;
 
+    private readonly Dictionary<string, List<AbilityButton>> buttonsByHero = new();
+    private readonly List<AbilityButton> allButtons = new();
+
     public void Awake()
     {
-        abilityButtonContainer = GameObject.Find("AbilityButtonContainer").transform;
-        abilityButtonPrefab = PrefabLibrary.Prefabs["AbilityButtonPrefab"];
+        abilityButtonContainer = GameObjectHelper.Game.Card.AbilityButtonContainer;
+        if (!PrefabLibrary.Prefabs.TryGetValue("AbilityButtonPrefab", out abilityButtonPrefab) || abilityButtonPrefab == null)
+        {
+            Debug.LogError("AbilityButtonManager: AbilityButtonPrefab not found in PrefabLibrary.");
+        }
     }
 
-    public List<AbilityButton> buttons = new();
+    private void Start()
+    {
+        BuildAllHeroButtons();
+        HideAll();
+    }
+
+    private static bool IsInteractionLocked()
+    {
+        return g.InputManager == null || g.SequenceManager == null ||
+               g.InputManager.InputMode == InputMode.EnemyTurn || g.SequenceManager.IsExecuting || g.InputManager.InputMode == InputMode.None;
+    }
+
+    private void BuildAllHeroButtons()
+    {
+        buttonsByHero.Clear();
+        allButtons.Clear();
+
+        var heroes = g.Actors.Heroes.Where(h => h != null).ToList();
+        foreach (var hero in heroes)
+        {
+            var name = hero.characterName;
+            if (string.IsNullOrEmpty(name)) continue;
+            if (buttonsByHero.ContainsKey(name)) continue; // already built (e.g., duplicates)
+
+            var abilities = GetAbilitiesFor(name);
+            CreateButtonsForHero(name, abilities);
+        }
+    }
+
+    private List<Ability> GetAbilitiesFor(string characterName)
+    {
+        var list = new List<Ability>();
+        if (characterName == CharacterHelper.Cleric)
+        {
+            list.Add(AbilityLibrary.Heal());
+            list.Add(AbilityLibrary.Smite());
+        }
+        else if (characterName == CharacterHelper.Paladin)
+        {
+            list.Add(AbilityLibrary.ShieldRush());
+        }
+        else if (characterName == CharacterHelper.Barbarian)
+        {
+            list.Add(AbilityLibrary.Trap());
+        }
+        return list;
+    }
+
+    private void CreateButtonsForHero(string heroName, List<Ability> abilities)
+    {
+        var list = new List<AbilityButton>();
+        foreach (var ability in abilities)
+        {
+            var go = Instantiate(abilityButtonPrefab, abilityButtonContainer);
+            var layout = go.GetComponent<LayoutElement>();
+            if (layout == null) layout = go.AddComponent<LayoutElement>();
+            layout.preferredWidth = 96f;
+            layout.preferredHeight = 96f;
+            layout.flexibleWidth = 0f;
+            layout.flexibleHeight = 0f;
+
+            var instance = go.GetComponent<AbilityButton>();
+            if (instance == null) instance = go.AddComponent<AbilityButton>();
+            instance.name = $"AbilityButton_{heroName}_{ability.name.Replace(" ", "_")}";
+            var image = instance.GetComponent<Image>();
+            if (image != null) image.sprite = ability.button;
+            var label = instance.GetComponentInChildren<TextMeshProUGUI>();
+            if (label != null) label.text = string.Empty;
+            instance.Initialize(ability, () => OnAbilityButtonClicked(g.Actors.FocusedActor, ability));
+            instance.gameObject.SetActive(false);
+            list.Add(instance);
+            allButtons.Add(instance);
+        }
+        buttonsByHero[heroName] = list;
+    }
 
     public void Show(ActorInstance actor)
     {
-        Hide();
+        HideAll();
+        if (actor == null || !actor.IsPlaying || actor.IsEnemy) return;
 
-        if (actor.characterName == CharacterHelper.Cleric)
+        var name = actor.characterName;
+        if (!buttonsByHero.TryGetValue(name, out var list))
         {
-            var abilities = new List<Ability>();
-            var a1 = new Ability()
-            {
-                name = "Spark of Healing",
-                type = AbilityType.TargetAlly,
-                button = SpriteLibrary.AbilityButtons["Heal"]
-            };
-            abilities.Add(a1);
-
-            foreach (var ability in abilities)
-            {
-
-                var go = Instantiate(abilityButtonPrefab, abilityButtonContainer);
-                var instance = go.GetComponent<AbilityButton>();
-                instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
-                instance.GetComponent<Image>().sprite = ability.button;
-                instance.GetComponentInChildren<TextMeshProUGUI>().text = "";
-                buttons.Add(instance);
-                instance.Initialize(ability, () => OnClick(actor, ability));
-            }
-        }
-        else if (actor.characterName == CharacterHelper.Paladin)
-        {
-            var abilities = new List<Ability>();
-            var shieldBash = new Ability()
-            {
-                name = "Shield Bash",
-                type = AbilityType.TargetOpponent,
-                button = SpriteLibrary.AbilityButtons.ContainsKey("ShieldBash") ? SpriteLibrary.AbilityButtons["ShieldBash"] : null
-            };
-            abilities.Add(shieldBash);
-
-            foreach (var ability in abilities)
-            {
-                var go = Instantiate(abilityButtonPrefab, abilityButtonContainer);
-                var instance = go.GetComponent<AbilityButton>();
-                instance.name = $"AbilityButton_{ability.name.Replace(" ", "_")}";
-                instance.GetComponent<Image>().sprite = ability.button;
-                instance.GetComponentInChildren<TextMeshProUGUI>().text = "";
-                buttons.Add(instance);
-                instance.Initialize(ability, () => OnClick(actor, ability));
-            }
+            // If a new hero enters mid-stage, build on demand
+            var abilities = GetAbilitiesFor(name);
+            CreateButtonsForHero(name, abilities);
+            buttonsByHero.TryGetValue(name, out list);
         }
 
+        if (list == null) return;
+        foreach (var btn in list) if (btn != null) btn.gameObject.SetActive(true);
     }
 
-    private void OnClick(ActorInstance actor, Ability ability)
+    public void Hide()
     {
+        HideAll();
+    }
+
+    private void HideAll()
+    {
+        foreach (var btn in allButtons) if (btn != null) btn.gameObject.SetActive(false);
+    }
+
+    private void OnAbilityButtonClicked(ActorInstance actor, Ability ability)
+    {
+        if (IsInteractionLocked()) return;
+        if (actor == null || !actor.IsPlaying || !actor.IsHero) return;
+
+        var title = GameObjectHelper.Game.Card.Title.GetComponent<TextMeshProUGUI>();
+        var desc = GameObjectHelper.Game.Card.Details.GetComponent<TextMeshProUGUI>();
+        if (title != null) title.text = ability.name;
+        if (desc != null) desc.text = ability.Description ?? string.Empty;
+
         g.TitleBar.Show(ability.name);
 
-
-        // Paladin's Shield Bash uses LinearTarget mode, not the generic AbilityTarget flow
-        var normalizedName = (ability?.name ?? string.Empty).Replace(" ", string.Empty).ToLowerInvariant();
-        if (actor != null && actor.characterName == CharacterHelper.Paladin && normalizedName == "shieldbash")
+        if (ability.TargetingMode == AbilityTargetingMode.Linear)
         {
-            g.InputManager.InputMode = InputMode.LinearTarget;
+            g.AbilityManager.BeginTargeting(actor, ability);
             g.TileManager.HighlightLinearPaths(actor.location);
-            g.InputManager.BeginAbilityTargeting(actor); // cache acting hero for input handler
-            g.InputManager.ShowCancelButton();
-            // Important: ensure the current press is released so LinearTarget sees a fresh Began
+            g.InputManager.BeginAbilityTargeting(actor);
             g.InputManager.RequireTouchRelease();
             return;
         }
 
         if (ability.requiresTarget)
         {
-            // switch into target mode
-            g.InputManager.InputMode = InputMode.AnyActorTarget;
-            g.InputManager.ShowCancelButton();
-            // Same gating for touch so the first tap on target registers as Began
-            g.InputManager.RequireTouchRelease();
+            g.AbilityManager.BeginTargeting(actor, ability);
         }
         else
         {
             ability.Activate(actor, null);
         }
-    }
-
-
-    public void Hide()
-    {
-        foreach (var btn in buttons)
-            Destroy(btn.gameObject);
-
-        buttons.Clear();
     }
 }

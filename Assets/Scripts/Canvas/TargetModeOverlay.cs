@@ -141,7 +141,7 @@ public class TargetModeOverlay : MonoBehaviour
 
     private static bool ShouldBeVisible(InputMode mode)
     {
-        return mode == InputMode.AnyActorTarget || mode == InputMode.LinearTarget;
+        return mode == InputMode.AnyTarget || mode == InputMode.LinearTarget;
     }
 
     private float GetAlpha()

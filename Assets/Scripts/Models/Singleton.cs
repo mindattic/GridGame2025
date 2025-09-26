@@ -15,7 +15,7 @@ public abstract class Singleton<T> : Singleton where T : MonoBehaviour
     private static readonly object objLock = new object();
 
     // Flag to determine if this singleton should persist between scene loads.
-    private bool isPersistent = true;
+    private bool isPersistent = false;
 
     /// <summary>
     /// Public property to access the singleton actors.

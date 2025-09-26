@@ -43,18 +43,41 @@ public class AbilityButton : MonoBehaviour
     {
         return UnitConversionHelper.Canvas.ToWorld(button.transform, button.transform.position.z);
     }
-
-
-
-
 }
 
+public enum AbilityEffect
+{
+    None,
+    Heal,
+    ShieldRush,
+    Trap,
+    Smite
+}
+
+public enum AbilityTargetingMode
+{
+    AnyActor,
+    Linear
+}
 
 public class Ability
 {
     public string name;
     public AbilityType type;
     public Sprite button;
+
+    // New: how many distinct targets this ability can select (default 1)
+    public int TotalNumberOfTargets = 1;
+
+    // New: semantic effect and targeting mode
+    public AbilityEffect Effect = AbilityEffect.None;
+    public AbilityTargetingMode TargetingMode = AbilityTargetingMode.AnyActor;
+
+    // New: mana cost to cast this ability once
+    public int ManaCost = 0;
+
+    // New: description to display on the card when selected
+    public string Description;
 
     public bool requiresTarget =>
         type == AbilityType.TargetAlly || type == AbilityType.TargetOpponent || type == AbilityType.TargetAny;

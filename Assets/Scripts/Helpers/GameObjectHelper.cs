@@ -74,17 +74,13 @@ namespace Assets.Helper
                 public static Image Front => GameObject.Find("Canvas/TimerBar2D/Front").GetComponent<Image>();              
             }
 
-
-
-
             public static RectTransform Portraits => GameObject.Find("Canvas/Portraits").GetComponent<RectTransform>();
 
-
-
-
-
-
-
+            public static class ManaPool
+            {
+                public static TextMeshProUGUI HeroMana => GameObject.Find("Canvas/Card/HeroMana").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI EnemyMana => GameObject.Find("Canvas/Card/EnemyMana").GetComponent<TextMeshProUGUI>();
+            }
 
             public const string CoinCounter = "Canvas/CoinCounter";
 
@@ -99,7 +95,6 @@ namespace Assets.Helper
                 public static Button NextButton => GameObject.Find("Canvas/TutorialPopup/Panel/NextButton").GetComponent<Button>();
                 public static Button CloseButton => GameObject.Find("Canvas/TutorialPopup/Panel/CloseButton").GetComponent<Button>();
             }
-
 
             public static class PauseButton
             {
@@ -160,14 +155,16 @@ namespace Assets.Helper
                 public static RectTransform Portrait => GameObject.Find("Canvas/Card/Portrait").GetComponent<RectTransform>();
                 public static RectTransform Title => GameObject.Find("Canvas/Card/Title").GetComponent<RectTransform>();
                 public static RectTransform Details => GameObject.Find("Canvas/Card/Details").GetComponent<RectTransform>();
+                // Added: Ability button container under Card
+                public static RectTransform AbilityButtonContainer => GameObject.Find("Canvas/Card/AbilityButtonContainer").GetComponent<RectTransform>();
             }
 
 
             public static class TitleBar
             {
-                public static RectTransform Rect => GameObject.Find("Canvas/TitleBar").GetComponent<RectTransform>();
-                public static TitleBarInstance Instance => GameObject.Find("Canvas/TitleBar").GetComponent<TitleBarInstance>();
-                public static TextMeshProUGUI Label => GameObject.Find("Canvas/TitleBar/Label").GetComponent<TextMeshProUGUI>();
+                public static RectTransform Rect => GameObject.Find("Canvas/Card/TitleBar").GetComponent<RectTransform>();
+                public static TitleBarInstance Instance => GameObject.Find("Canvas/Card/TitleBar").GetComponent<TitleBarInstance>();
+                public static TextMeshProUGUI Label => GameObject.Find("Canvas/Card/TitleBar/Label").GetComponent<TextMeshProUGUI>();
             }
 
             public static class Timeline
@@ -260,7 +257,6 @@ namespace Assets.Helper
             public const string ScrollView = "Canvas/ScrollView";
             public const string Content = "Canvas/ScrollView/Viewport/Content";
             public const string ActorPanMultiplier = "Canvas/ScrollView/Viewport/Content/ActorPanMultiplier";
-
 
             public static RectTransform ContentRect => GameObject.Find("Canvas/ScrollView/Viewport/Content").GetComponent<RectTransform>();
 

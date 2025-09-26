@@ -54,6 +54,8 @@ namespace Assets.Helpers
         public static SortingManager SortingManager => gm != null ? gm.sortingManager : null;
         public static TargetLineManager TargetLineManager => gm != null ? gm.targetLineManager : null;
         public static AbilityButtonManager AbilityButtonManager => gm != null ? gm.abilityButtonManager : null;
+        public static AbilityManager AbilityManager => gm != null ? gm.abilityManager : null;
+        public static ManaPoolManager ManaPoolManager => gm != null ? gm.manaPoolManager : null;
 
 
         public static PauseMenu PauseMenu => gm != null ? gm.pauseMenu : null;

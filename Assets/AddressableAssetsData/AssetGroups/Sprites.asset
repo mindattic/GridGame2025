@@ -195,6 +195,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5af4e1269789491489bf38714723ba46
+    m_Address: Sprites/AbilityButtons/Trap
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5d12baf801de08e48b1c7305ad8655c8
     m_Address: Sprites/WeaponTypes/Katana
     m_ReadOnly: 0
@@ -262,6 +267,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 80dce75ed53c6a34382d60a8bc72f9b2
     m_Address: Sprites/Backgrounds/CyberNecropolis/04
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8260f792c71131a4cae9180dee5cf69c
+    m_Address: Sprites/AbilityButtons/Smite
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

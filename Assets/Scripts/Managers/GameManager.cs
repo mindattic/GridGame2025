@@ -84,9 +84,13 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public SortingManager sortingManager;
     [HideInInspector] public TargetLineManager targetLineManager;
     [HideInInspector] public AbilityButtonManager abilityButtonManager;
+    [HideInInspector] public AbilityManager abilityManager;
     [HideInInspector] public SynergyLineManager synergyLineManager;
-    [HideInInspector] public Timeline timeline;
+    [HideInInspector] public ManaPoolManager manaPoolManager;
+    
 
+
+    [HideInInspector] public Timeline timeline;
     [HideInInspector] public BackgroundInstance background;
 
     // Board
@@ -231,7 +235,10 @@ public class GameManager : Singleton<GameManager>
         sortingManager = gameRoot.GetComponent<SortingManager>();
         targetLineManager = gameRoot.GetComponent<TargetLineManager>();
         abilityButtonManager = gameRoot.GetComponent<AbilityButtonManager>();
+        abilityManager = gameRoot.GetComponent<AbilityManager>();
         synergyLineManager = gameRoot.GetComponent<SynergyLineManager>();
+        manaPoolManager = gameRoot.GetComponent<ManaPoolManager>();
+
 
         // Platform-dependent compilation
 #if UNITY_STANDALONE_WIN

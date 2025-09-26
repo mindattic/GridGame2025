@@ -16,5 +16,11 @@ namespace Assets.Scripts.Behaviors.Actor
         public bool isGainingAP;
         public bool IsRedirecting;
         public bool HasSpawned;
+
+        // Number of turns the actor is rooted (cannot move). Decrement after their turn starts.
+        public int RootedTurnsRemaining;
+
+        // Name of the looping VFX instance (if any) applied while rooted, so we can despawn when root ends.
+        public string RootedVfxInstanceName;
     }
 }

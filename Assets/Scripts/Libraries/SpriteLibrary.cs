@@ -38,6 +38,8 @@ namespace Assets.Scripts.Libraries
             {
                 { "Heal", AssetHelper.LoadAsset<Sprite>("Sprites/AbilityButtons/Heal") },
                 { "ShieldBash", AssetHelper.LoadAsset<Sprite>("Sprites/AbilityButtons/ShieldBash") },
+                { "Trap", AssetHelper.LoadAsset<Sprite>("Sprites/AbilityButtons/Trap") },
+                { "Smite", AssetHelper.LoadAsset<Sprite>("Sprites/AbilityButtons/Smite") },
             };
 
             backgrounds = new Dictionary<string, Sprite>();

@@ -1,4 +1,5 @@
 using Assets.Helpers;
+using Assets.Scripts.Libraries;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
@@ -55,6 +56,10 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Cleric}"),
+                Abilities = new List<Ability>() {
+                    AbilityLibrary.Heal(), 
+                    AbilityLibrary.Smite() 
+                },
                 Details = new ActorDetails
                 {
                     Description = "A strict adherent to the church.",

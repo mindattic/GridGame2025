@@ -177,7 +177,7 @@ public enum InputMode
     None,
     PlayerTurn,
     EnemyTurn,
-    AnyActorTarget,
+    AnyTarget,
     LinearTarget,
 }
 

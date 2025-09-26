@@ -31,9 +31,8 @@ public class CardInstance : MonoBehaviour
     private Vector3 destination;
     private AnimationCurve slideInCurve;
     private float slideDuration;
-    private float portraitSize;
 
-    private const float PortraitWidthRatio = 1f;
+    private const float FixedPortraitSize = 512f; // pixels
 
     private void Awake()
     {
@@ -49,7 +48,7 @@ public class CardInstance : MonoBehaviour
         portraitCG = EnsureCanvasGroup(portrait);
 
         slideInCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-        slideDuration = 0.5f;
+        slideDuration = 0.25f; // was 0.5f, 2x faster
 
         RecomputeLayout();
         Clear();
@@ -116,8 +115,6 @@ public class CardInstance : MonoBehaviour
         // Start state
         portrait.anchoredPosition = offscreenPosition;
         SetAlpha(portraitCG, 0f);
-
-        // Backdrop always fades in from current to 1
         SetAlpha(backdropCG, 0f);
 
         // Conditionally fade title/details
@@ -342,13 +339,13 @@ public class CardInstance : MonoBehaviour
     {
         if (card == null || portrait == null) return;
 
-        float basisWidth = card.rect.width > 0f ? card.rect.width : c.CanvasRect.rect.width;
-        portraitSize = basisWidth * PortraitWidthRatio;
+        // Set fixed portrait size
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
 
-        portrait.sizeDelta = new Vector2(portraitSize, portraitSize);
-
-        offscreenPosition = new Vector3(portraitSize, 0f, 0f);
-        destination = new Vector3(-portraitSize * 0.25f, 0f, 0f);
+        // Slide fully from right to destination using real width
+        float width = FixedPortraitSize;
+        offscreenPosition = new Vector3(width, 0f, 0f);
+        destination = new Vector3(-width * 0.25f, 0f, 0f);
     }
 
     private static CanvasGroup EnsureCanvasGroup(RectTransform target)
@@ -386,7 +383,7 @@ public class CardInstance : MonoBehaviour
         if (g.InputManager != null)
         {
             var mode = g.InputManager.InputMode;
-            if (mode == InputMode.AnyActorTarget || mode == InputMode.LinearTarget)
+            if (mode == InputMode.AnyTarget || mode == InputMode.LinearTarget)
                 return;
             // Ignore while dragging a selected hero
             if (g.InputManager.isDragging)

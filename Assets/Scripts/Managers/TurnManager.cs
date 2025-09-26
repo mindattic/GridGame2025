@@ -15,6 +15,13 @@ namespace Assets.Scripts.Managers
         public int CurrentTurn = 0;
         public ActorInstance ActiveActor { get; private set; }
 
+        // Add passive MP gain at the start of each side's turn.
+        private ManaPoolManager GetMana()
+        {
+            var go = GameObject.Find("Game");
+            return go != null ? go.GetComponent<ManaPoolManager>() : null;
+        }
+
         public void Initialize()
         {
             ResolveActiveFromTimeline();
@@ -41,7 +48,9 @@ namespace Assets.Scripts.Managers
                 else g.Timeline.FocusOnEnemy(ActiveActor);
             }
 
-            // Restore input mode based on the current side
+            var mana = GetMana();
+            if (mana != null) mana.OnTurnStarted(IsHeroTurn ? Team.Hero : Team.Enemy);
+
             g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
 
             UpdateActiveIndicators();
@@ -69,7 +78,9 @@ namespace Assets.Scripts.Managers
                 else g.Timeline.FocusOnEnemy(enemyAtCursor);
             }
 
-            // Ensure input mode matches the side at the start
+            var mana = GetMana();
+            if (mana != null) mana.OnTurnStarted(IsHeroTurn ? Team.Hero : Team.Enemy);
+
             g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
 
             UpdateActiveIndicators();
@@ -87,14 +98,12 @@ namespace Assets.Scripts.Managers
 
         private void UpdateActiveIndicators()
         {
-            // Board: enable on active only; disable on others
             foreach (var a in g.Actors.All)
             {
                 if (a == null || !a.IsPlaying) continue;
                 a.Render.SetActiveIndicatorEnabled(a == ActiveActor);
             }
 
-            // Timeline: Refresh (current block toggled by Timeline.UpdateSelectionHighlight)
             g.Timeline?.RefreshSelectionHighlight();
         }
 
@@ -106,18 +115,17 @@ namespace Assets.Scripts.Managers
             {
                 if (ActiveActor != null)
                 {
-                    g.SelectedHeroManager.Focus(ActiveActor); // focus can later change freely
+                    g.SelectedHeroManager.Focus(ActiveActor);
                     ActiveActor.Glow?.Play();
                 }
             }
-            else // FreeSelect
+            else
             {
                 g.HeroManager?.Glow();
             }
         }
 
-        // Saturation helpers remain as implemented earlier
-        public void ApplyHeroTurnDesaturation(List<ActorInstance> ignoreList = null) { /* existing implementation kept */ }
-        public void RestoreFullSaturation(List<ActorInstance> ignoreList = null) { /* existing implementation kept */ }
+        public void ApplyHeroTurnDesaturation(List<ActorInstance> ignoreList = null) { }
+        public void RestoreFullSaturation(List<ActorInstance> ignoreList = null) { }
     }
 }

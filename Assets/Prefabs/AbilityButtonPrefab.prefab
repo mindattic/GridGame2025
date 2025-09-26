@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 235436736146389535}
   - component: {fileID: 324276192436437230}
+  - component: {fileID: 4235644636675936966}
   - component: {fileID: 4264156992753390729}
   - component: {fileID: 5147465246627794285}
   - component: {fileID: -8136386779374251624}
@@ -48,6 +49,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2033708558532864542}
   m_CullTransparentMesh: 1
+--- !u!114 &4235644636675936966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033708558532864542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!114 &4264156992753390729
 MonoBehaviour:
   m_ObjectHideFlags: 0

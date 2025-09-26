@@ -101,6 +101,7 @@
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\MessageBox.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Bat.cs" />
+    <Compile Include="Assets\Scripts\Sequences\SmiteSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemySpawnSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
     <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier03.cs" />
+    <Compile Include="Assets\Scripts\Managers\AbilityManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
     <Compile Include="Assets\Scripts\Canvas\LoadingScreenLore.cs" />
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
     <Compile Include="Assets\Scripts\Canvas\Clock.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
+    <Compile Include="Assets\Scripts\Sequences\TrapSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DebugButtonPanel.cs" />
@@ -293,6 +296,7 @@
     <Compile Include="Assets\Scripts\Helpers\SettingsHelper.cs" />
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
+    <Compile Include="Assets\Scripts\Libraries\AbilityLibrary.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.Collision.cs" />
     <Compile Include="Assets\Scripts\Canvas\DestinationMarker.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
@@ -338,6 +342,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\Yeti.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyTakeTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\ConfirmationDialogInstance.cs" />
+    <Compile Include="Assets\Scripts\Managers\ManaPoolManager.cs" />
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TileManager.cs" />

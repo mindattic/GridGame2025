@@ -29,6 +29,9 @@ public class ActorData
     public ActorDetails Details;
     public Sprite Portrait;
 
+
+    public List<Ability> Abilities = new List<Ability>();
+
     private const int DefaultMilestoneWindow = 5;
 
     public ActorData() { }
