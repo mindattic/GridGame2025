@@ -62,19 +62,23 @@ public class VFXInstance : MonoBehaviour
     /// Respects:
     /// - Delay: waits before playing
     /// - Duration: finite -> waits then auto-despawns
-    /// - Non-looping (Duration <= 0): waits for particle completion (with timeout) then auto-despawns
-    /// Looping with Duration <= 0: persists until manually despawned.
+    /// - Non-looping with no Duration: waits for particle completion (with timeout)
+    /// - Looping with Duration <= 0: persists until manually despawned.
     /// </summary>
     public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
     {
+        if (vfx == null) yield break;
+
         // 1) Place
         transform.position = position + vfx.RelativeOffset;
 
-        // 2) Apply
+        // 2) Apply rotation
         transform.eulerAngles = vfx.AngularRotation;
-        transform.localScale = g.TileScale.MultiplyBy(vfx.RelativeScale);
 
-        // Configure looping
+        // 3) Apply scale in world space relative to tile size, independent of parent scale
+        ApplyWorldScale(g.TileScale, vfx.RelativeScale);
+
+        // Configure looping and scaling behavior for particle systems
         SetLooping(vfx.IsLoop);
 
         // Cache the name now, before any possible destroy by parent
@@ -84,53 +88,94 @@ public class VFXInstance : MonoBehaviour
         if (routine != null)
             yield return StartCoroutine(routine);
 
-        bool shouldDespawn = false;
+        bool shouldAutoDespawn = false;
 
-        // Duration in seconds: finite lifetime -> wait and despawn
-        if (vfx.Duration > 0f)
+        // Lifetime handling
+        if (vfx.IsLoop)
         {
-            yield return new WaitForSeconds(vfx.Duration);
-            shouldDespawn = true;
+            // Looping: if a finite duration is provided, respect it, else persist
+            if (vfx.Duration > 0f)
+            {
+                yield return new WaitForSeconds(vfx.Duration);
+                shouldAutoDespawn = true;
+            }
+            else
+            {
+                // Infinite loop: do not auto-despawn
+                shouldAutoDespawn = false;
+            }
         }
-        else if (!vfx.IsLoop)
+        else
         {
-            // Non-looping with no explicit duration: wait until particles finish (with a safety timeout)
-            var particleSystems = new List<ParticleSystem>();
-            GetRecursively(ref particleSystems, transform);
-
-            float timeout = 5f; // safety cap
-            bool anyAlive()
+            // Non-looping: if a finite duration is provided, respect it; otherwise wait for particles to finish
+            if (vfx.Duration > 0f)
             {
-                foreach (var ps in particleSystems)
-                {
-                    if (ps != null && ps.IsAlive(true))
-                        return true;
-                }
-                return false;
+                yield return new WaitForSeconds(vfx.Duration);
+                shouldAutoDespawn = true;
             }
-
-            // Wait a frame to let PlayOnAwake systems start
-            yield return null;
-
-            while (timeout > 0f && anyAlive())
+            else
             {
-                timeout -= Time.deltaTime;
+                var particleSystems = new List<ParticleSystem>();
+                GetRecursively(ref particleSystems, transform);
+
+                // Wait a frame to let PlayOnAwake systems start
                 yield return null;
-            }
 
-            shouldDespawn = true;
+                float timeout = 5f; // safety cap
+                bool anyAlive()
+                {
+                    foreach (var ps in particleSystems)
+                    {
+                        if (ps != null && ps.IsAlive(true))
+                            return true;
+                    }
+                    return false;
+                }
+
+                while (timeout > 0f && anyAlive())
+                {
+                    timeout -= Time.deltaTime;
+                    yield return null;
+                }
+
+                shouldAutoDespawn = true;
+            }
         }
 
         // If this was already destroyed by a parent, stop quietly
         if (this == null || gameObject == null)
             yield break;
 
-        if (shouldDespawn)
+        if (shouldAutoDespawn)
             Despawn(instanceName);
     }
 
     /// <summary>
-    /// Sets the loop flag on all ParticleSystem components in the transform hierarchy.
+    /// Compute a world-space scale from tile and relative scales and apply as localScale compensating for parent lossyScale.
+    /// </summary>
+    private void ApplyWorldScale(Vector3 tileScale, Vector3 relativeScale)
+    {
+        Vector3 desiredWorld = new Vector3(
+            Mathf.Max(1e-4f, tileScale.x * relativeScale.x),
+            Mathf.Max(1e-4f, tileScale.y * relativeScale.y),
+            Mathf.Max(1e-4f, (relativeScale.z == 0f ? 1f : tileScale.z * relativeScale.z))
+        );
+
+        Vector3 parentLossy = Vector3.one;
+        if (transform.parent != null)
+            parentLossy = transform.parent.lossyScale;
+
+        // Avoid division by zero
+        float ix = parentLossy.x != 0f ? 1f / parentLossy.x : 1f;
+        float iy = parentLossy.y != 0f ? 1f / parentLossy.y : 1f;
+        float iz = parentLossy.z != 0f ? 1f / parentLossy.z : 1f;
+
+        transform.localScale = new Vector3(desiredWorld.x * ix, desiredWorld.y * iy, desiredWorld.z * iz);
+    }
+
+    /// <summary>
+    /// Sets the loop flag on all ParticleSystem components in the transform hierarchy
+    /// and enforces Hierarchy scaling so transform scale affects particle size.
     /// </summary>
     private void SetLooping(bool isLoop)
     {
@@ -144,6 +189,7 @@ public class VFXInstance : MonoBehaviour
 
             var main = system.main;
             main.loop = isLoop;
+            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
         }
     }
 

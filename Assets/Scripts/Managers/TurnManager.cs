@@ -34,6 +34,21 @@ namespace Assets.Scripts.Managers
             ActiveActor = IsHeroTurn ? g.Timeline?.GetCurrentHero() : enemy;
         }
 
+        private void SelectActiveOrFallback()
+        {
+            if (ActiveActor != null)
+            {
+                g.SelectedHeroManager.Select(ActiveActor);
+                return;
+            }
+
+            // Fallback: pick any playing hero first, otherwise any playing actor
+            var any = g.Actors.Heroes?.FirstOrDefault(a => a != null && a.IsPlaying)
+                      ?? g.Actors.All?.FirstOrDefault(a => a != null && a.IsPlaying);
+            if (any != null)
+                g.SelectedHeroManager.Select(any);
+        }
+
         public void NextTurn()
         {
             CurrentTurn++;
@@ -52,6 +67,9 @@ namespace Assets.Scripts.Managers
 
             // Always set input mode for the side taking the new turn
             g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
+
+            // Ensure a selection exists and matches the actor whose turn it is
+            SelectActiveOrFallback();
 
             UpdateActiveIndicators();
             HandleHeroTurnFocus();
@@ -83,6 +101,9 @@ namespace Assets.Scripts.Managers
 
             // Ensure input mode matches the side at the start
             g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
+
+            // Ensure a selection exists and matches the actor whose turn it is
+            SelectActiveOrFallback();
 
             UpdateActiveIndicators();
             HandleHeroTurnFocus();
@@ -116,7 +137,7 @@ namespace Assets.Scripts.Managers
             {
                 if (ActiveActor != null)
                 {
-                    g.SelectedHeroManager.Select(ActiveActor);
+                    // Selection already set to ActiveActor; just add hero-specific VFX
                     ActiveActor.Glow?.Play();
                 }
             }

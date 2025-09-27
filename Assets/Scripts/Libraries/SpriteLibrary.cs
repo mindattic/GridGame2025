@@ -48,7 +48,7 @@ namespace Assets.Scripts.Libraries
                 (BackgroundSet.Moors, 5),
                 (BackgroundSet.RedThorns, 5),
                 (BackgroundSet.UnderTheBridge, 4),
-                (BackgroundSet.CyberNecropolis, 17),
+                (BackgroundSet.CyberNecropolis, 16),
                 (BackgroundSet.ElectricWasteland, 5),
             };
 

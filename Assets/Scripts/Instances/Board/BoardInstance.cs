@@ -23,6 +23,9 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        // Guard against being invoked on a destroyed instance (can happen on scene reloads)
+        if (this == null) return;
+
         AssignPosition();
         AssignBounds();
         GenerateTiles();
@@ -33,6 +36,8 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     private void AssignPosition()
     {
+        if (this == null) return;
+
         // Center horizontally: shift left by half the board width.
         var x = -(g.TileSize * 3) - g.TileSize * 0.5f;
 
@@ -50,6 +55,8 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     private void AssignBounds()
     {
+        if (this == null) return;
+
         bounds = new RectFloat();
 
         bounds.Top = offset.y - g.TileSize * 0.5f;
@@ -71,12 +78,16 @@ public class BoardInstance : MonoBehaviour
         );
 
         // Convert world-space worldEdges to screen-space worldEdges
-        screenEdges = new RectVector3(
-            Camera.main.WorldToScreenPoint(worldEdges.Top),
-            Camera.main.WorldToScreenPoint(worldEdges.Right),
-            Camera.main.WorldToScreenPoint(worldEdges.Bottom),
-            Camera.main.WorldToScreenPoint(worldEdges.Left)
-        );
+        var cam = Camera.main;
+        if (cam != null)
+        {
+            screenEdges = new RectVector3(
+                cam.WorldToScreenPoint(worldEdges.Top),
+                cam.WorldToScreenPoint(worldEdges.Right),
+                cam.WorldToScreenPoint(worldEdges.Bottom),
+                cam.WorldToScreenPoint(worldEdges.Left)
+            );
+        }
     }
 
     /// <summary>
@@ -84,6 +95,8 @@ public class BoardInstance : MonoBehaviour
     /// </summary>
     private void GenerateTiles()
     {
+        if (this == null) return;
+
         var tilePrefab = PrefabLibrary.Prefabs["TilePrefab"];
 
         // Create tiles for each grid cell.

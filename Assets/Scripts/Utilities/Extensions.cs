@@ -451,15 +451,14 @@ public static class Vector3Extensions
         return new Vector3(x, y, z);
     }
 
+    public static Vector3 MultiplyBy(this Vector3 v, Vector2 other)
+    {
+        return new Vector3(v.x * other.x, v.y * other.y, v.z);
+    }
+
     public static Vector3 MultiplyBy(this Vector3 v, Vector3 other)
     {
         return new Vector3(v.x * other.x, v.y * other.y, v.z * other.z);
-    }
-
-    public static Vector3 MultiplyBy(this Vector3 v, float x, float y, float z)
-    {
-        var other = new Vector3(x, y, z);
-        return v.MultiplyBy(other);
     }
 
     /// <summary>

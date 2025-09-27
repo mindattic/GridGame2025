@@ -157,9 +157,7 @@ public class ProjectileManager : MonoBehaviour
         // Short circuit if already there (still honor impact)
         if ((end - start).sqrMagnitude < 1e-8f)
         {
-            yield return SpawnImpactRoutine(s.impactVfxKey, start);
-            if (s.routine != null)
-                yield return s.routine;
+            yield return SpawnImpactRoutine(s.impactVfxKey, start, s);
             yield break;
         }
 
@@ -178,15 +176,14 @@ public class ProjectileManager : MonoBehaviour
         // Travel
         yield return StartCoroutine(node.TravelRoutine());
 
+        // On arrival: shrink projectile trail out of existence within ~100 ms
+        yield return node.ShrinkAndDisposeRoutine(0.8f, 0.01f);
+
         // Impact
         Vector3 finalPos = node.position;
-        yield return SpawnImpactRoutine(string.IsNullOrEmpty(s.impactVfxKey) ? null : s.impactVfxKey, finalPos);
+        yield return SpawnImpactRoutine(string.IsNullOrEmpty(s.impactVfxKey) ? null : s.impactVfxKey, finalPos, s);
 
-        // Post impact
-        if (s.routine != null)
-            yield return s.routine;
-
-        // Cleanup
+        // Cleanup (in case shrink path already disposed node safely)
         node.Cleanup();
     }
 
@@ -203,8 +200,9 @@ public class ProjectileManager : MonoBehaviour
 
     /// <summary>
     /// Spawns an impact VFX via VfxManager and VfxLibrary at a world position and waits until it completes.
+    /// Also waits for the impact's Apex to gate gameplay side-effects like heal.
     /// </summary>
-    private IEnumerator SpawnImpactRoutine(string vfxKey, Vector3 position)
+    private IEnumerator SpawnImpactRoutine(string vfxKey, Vector3 position, ProjectileSettings s)
     {
         if (string.IsNullOrEmpty(vfxKey) || g.VfxManager == null) yield break;
 
@@ -215,7 +213,20 @@ public class ProjectileManager : MonoBehaviour
             yield break;
         }
 
-        // Wait for the full impact effect (and its configured duration) before continuing
-        yield return g.VfxManager.PlayRoutine(vfx, position);
+        // Play and wait full lifecycle
+        var (inst, routine) = g.VfxManager.SpawnAndWait(vfx, position);
+        if (inst != null)
+        {
+            // Wait apex to trigger gameplay side effects (e.g. heal)
+            yield return inst.WaitUntilTrigger(vfx);
+        }
+
+        // Trigger any queued routine at apex
+        if (s != null && s.routine != null)
+            yield return s.routine;
+
+        // Then wait for remainder of the effect to finish before exiting
+        if (routine != null)
+            yield return routine;
     }
 }

@@ -65,7 +65,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public Portrait2DManager portrait2DManager;
     [HideInInspector] public Portrait3DManager portrait3DManager;
     [HideInInspector] public ActorManager actorManager;
-    [HideInInspector] public SelectedHeroManager selectedHeroManager;
+    [HideInInspector] public SelectionManager selectedHeroManager;
     [HideInInspector] public HeroManager heroManager;
     [HideInInspector] public EnemyManager enemyManager;
     [HideInInspector] public TileManager tileManager;
@@ -111,6 +111,11 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public List<ActorInstance> actors;
     [HideInInspector] public IEnumerable<ActorInstance> heroes => actors.Where(x => x.team == Team.Hero);
     [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team == Team.Enemy);
+
+
+    [HideInInspector] public ActorInstance preselectHero;
+    [HideInInspector] public bool hasPreselectHero => preselectHero != null;
+
 
     [HideInInspector] public ActorInstance selectedActor;
     [HideInInspector] public bool hasSelectedActor => selectedActor != null;
@@ -217,7 +222,7 @@ public class GameManager : Singleton<GameManager>
         ghostManager = gameRoot.GetComponent<GhostManager>();
         portrait2DManager = gameRoot.GetComponent<Portrait2DManager>();
         portrait3DManager = gameRoot.GetComponent<Portrait3DManager>();
-        selectedHeroManager = gameRoot.GetComponent<SelectedHeroManager>();
+        selectedHeroManager = gameRoot.GetComponent<SelectionManager>();
         heroManager = gameRoot.GetComponent<HeroManager>();
         enemyManager = gameRoot.GetComponent<EnemyManager>();
         tileManager = gameRoot.GetComponent<TileManager>();
@@ -267,13 +272,17 @@ public class GameManager : Singleton<GameManager>
         if (pauseMenu != null) pauseMenu.Initialize();
         if (tutorialPopup != null) tutorialPopup.Initialize();
 
+        // Ensure board reference is valid after scene loads/reloads
+        if (board == null)
+            board = GameObjectHelper.Game.Board.Instance;
+
         // Show in specific order
-        board.Initialize();
-        stageManager.Initialize();
-        targetModeOverlay.Initialize();
-        timeline.Initialize();
-        timerBar2D.Initialize();
-        turnManager.Initialize();
+        if (board != null) board.Initialize();
+        if (stageManager != null) stageManager.Initialize();
+        if (targetModeOverlay != null) targetModeOverlay.Initialize();
+        if (timeline != null) timeline.Initialize();
+        if (timerBar2D != null) timerBar2D.Initialize();
+        if (turnManager != null) turnManager.Initialize();
 
         GameReady.Confirm();
     }

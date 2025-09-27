@@ -46,7 +46,7 @@ namespace Assets.Helpers
         public static ConsoleManager ConsoleManager => gm != null ? gm.consoleManager : null;
         public static LogManager LogManager => gm != null ? gm.logManager : null;
         public static ActorManager ActorManager => gm != null ? gm.actorManager : null;
-        public static SelectedHeroManager SelectedHeroManager => gm != null ? gm.selectedHeroManager : null;
+        public static SelectionManager SelectedHeroManager => gm != null ? gm.selectedHeroManager : null;
         public static DottedLineManager DottedLineManager => gm != null ? gm.dottedLineManager : null;
         public static ProjectileManager ProjectileManager => gm != null ? gm.projectileManager : null;
         public static SequenceManager SequenceManager => gm != null ? gm.sequenceManager : null;

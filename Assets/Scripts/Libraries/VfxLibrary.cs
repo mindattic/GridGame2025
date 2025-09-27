@@ -457,9 +457,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/BlueGlow"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                            Apex = 0f,
-                            Duration = 2f,
+                            RelativeScale = new Vector3(1, 1, 1),
                             IsLoop = true
                         }
                     },
@@ -471,9 +469,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/Bubble"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                            Apex = 0f,
-                            Duration = 2f,
+                            RelativeScale = new Vector3(1, 1, 1),
                             IsLoop = true
                         }
                     },
@@ -485,9 +481,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/Feather"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                            Apex = 0f,
-                            Duration = 2f,
+                            RelativeScale = new Vector3(1, 1, 1),
                             IsLoop = true
                         }
                     },
@@ -499,9 +493,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/Fireball"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(0.25f, 0.25f, 0.25f),
-                            Apex = 0f,
-                            Duration = 2f,
+                            RelativeScale = new Vector3(1, 1, 1),
                             IsLoop = true
                         }
                     },
@@ -513,9 +505,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/Flame"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
-                            Apex = 0f,
-                            Duration = 2f,
+                            RelativeScale = new Vector3(1, 1, 1),
                             IsLoop = true
                         }
                     },
@@ -527,9 +517,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/GoldSparkle"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(2.5f, 2.5f, 2.5f),
-                            Apex = 0f,
-                            Duration = 2f,
+                             RelativeScale = new Vector3(1, 1, 1),
                             IsLoop = true
                         }
                     },
@@ -541,9 +529,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/GreenSparkle"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(4.5f, 4.5f, 4.5f),
-                            Apex = 0f,
-                            Duration = 2f,
+                            RelativeScale = new Vector3(2f, 2f, 0f),
                             IsLoop = true
                         }
                     },
@@ -555,9 +541,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/IceSparkle"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
-                            Apex = 0f,
-                            Duration = 2f,
+                            RelativeScale = new Vector3(1, 1, 1),
                             IsLoop = true
                         }
                     },
@@ -569,7 +553,7 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/Loop/PinkDust"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
-                            RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                            RelativeScale = new Vector3(1, 1, 1),
                             Apex = 0f,
                             Duration = 2f,
                             IsLoop = true

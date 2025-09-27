@@ -20,8 +20,8 @@ public class ManaPoolManager : MonoBehaviour
 
     private void Awake()
     {
-        HeroLabel = GameObjectHelper.Game.ManaPool.HeroMana;
-        EnemyLabel = GameObjectHelper.Game.ManaPool.EnemyMana;
+        HeroLabel = GameObjectHelper.Game.Card.HeroMana;
+        EnemyLabel = GameObjectHelper.Game.Card.EnemyMana;
 
         // Start hero team with 100 MP (clamped to max)
         heroMana = Mathf.Clamp(100, 0, maxMana);
@@ -67,7 +67,7 @@ public class ManaPoolManager : MonoBehaviour
 
     public void RefreshUI()
     {
-        if (HeroLabel != null) HeroLabel.text = $"Hero MP: {heroMana}";
-        if (EnemyLabel != null) EnemyLabel.text = $"Enemy MP: {enemyMana}";
+        if (HeroLabel != null) HeroLabel.text = $"MP: {heroMana}";
+        if (EnemyLabel != null) EnemyLabel.text = $"MP: {enemyMana}";
     }
 }

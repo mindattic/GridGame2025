@@ -79,6 +79,69 @@ namespace Assets.Scripts.Models
             var instance = g.VfxManager.SpawnInstance(asset, transform.position, transform, null);
             trail = instance;
             trailName = instance != null ? instance.name : null;
+
+            // Ensure tile-aware scale for the trail in case parent hierarchy would otherwise shrink it
+            if (trail != null && asset != null)
+            {
+                // Re-apply scale the same way as VFXInstance does (world = TileScale * RelativeScale)
+                // This ensures consistency for projectile visuals regardless of parent scale.
+                ApplyTrailWorldScale(trail.transform, g.TileScale, asset.RelativeScale);
+            }
+        }
+
+        private void ApplyTrailWorldScale(Transform tf, Vector3 tileScale, Vector3 relative)
+        {
+            if (tf == null) return;
+            Vector3 desiredWorld = new Vector3(
+                Mathf.Max(1e-4f, tileScale.x * relative.x),
+                Mathf.Max(1e-4f, tileScale.y * relative.y),
+                Mathf.Max(1e-4f, (relative.z == 0f ? 1f : tileScale.z * relative.z))
+            );
+
+            Vector3 parentLossy = Vector3.one;
+            if (tf.parent != null) parentLossy = tf.parent.lossyScale;
+            float ix = parentLossy.x != 0f ? 1f / parentLossy.x : 1f;
+            float iy = parentLossy.y != 0f ? 1f / parentLossy.y : 1f;
+            float iz = parentLossy.z != 0f ? 1f / parentLossy.z : 1f;
+
+            tf.localScale = new Vector3(desiredWorld.x * ix, desiredWorld.y * iy, desiredWorld.z * iz);
+        }
+
+        /// <summary>
+        /// Gradually shrinks the projectile trail each frame and then disposes of the trail and node.
+        /// </summary>
+        public IEnumerator ShrinkAndDisposeRoutine(float perFrameScaleFactor = 0.97f, float minScale = 0.01f)
+        {
+            if (trail != null && trail.transform != null)
+            {
+                var tf = trail.transform;
+                // Ensure we start from current local scale
+                Vector3 s = tf.localScale;
+                if (s == Vector3.zero)
+                    s = Vector3.one;
+
+                // Target 100ms fade: compute frames based on deltaTime average; keep simple frame loop cap
+                float elapsed = 0f;
+                const float targetSeconds = 0.1f; // 100 ms
+                while (tf != null && tf.gameObject != null && tf.localScale.magnitude > minScale && elapsed < targetSeconds)
+                {
+                    tf.localScale = tf.localScale * perFrameScaleFactor;
+                    elapsed += Time.deltaTime;
+                    yield return null; // next frame
+                }
+
+                // Despawn the trail via VfxManager so it's unregistered
+                if (!string.IsNullOrEmpty(trailName))
+                    g.VfxManager?.Despawn(trailName);
+                else if (trail != null && trail.gameObject != null)
+                    GameObject.Destroy(trail.gameObject);
+
+                trail = null;
+                trailName = null;
+            }
+
+            // Finally, destroy the node GameObject
+            Cleanup();
         }
 
         /// <summary>

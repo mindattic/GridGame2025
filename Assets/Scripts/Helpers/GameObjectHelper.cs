@@ -76,12 +76,6 @@ namespace Assets.Helper
 
             public static RectTransform Portraits => GameObject.Find("Canvas/Portraits").GetComponent<RectTransform>();
 
-            public static class ManaPool
-            {
-                public static TextMeshProUGUI HeroMana => GameObject.Find("Canvas/Card/HeroMana").GetComponent<TextMeshProUGUI>();
-                public static TextMeshProUGUI EnemyMana => GameObject.Find("Canvas/Card/EnemyMana").GetComponent<TextMeshProUGUI>();
-            }
-
             public const string CoinCounter = "Canvas/CoinCounter";
 
             public static class TutorialPopup
@@ -142,9 +136,9 @@ namespace Assets.Helper
 
             public static class Board
             {
-                public static BoardInstance Instance = GameObject.Find("Board").GetComponent<BoardInstance>();
-                public static BoardOverlay BoardOverlay = GameObject.Find("Board/BoardOverlay").GetComponent<BoardOverlay>();
-                public static TargetModeOverlay TargetModeOverlay = GameObject.Find("Board/TargetModeOverlay").GetComponent<TargetModeOverlay>();
+                public static BoardInstance Instance => GameObject.Find("Board").GetComponent<BoardInstance>();
+                public static BoardOverlay BoardOverlay => GameObject.Find("Board/BoardOverlay").GetComponent<BoardOverlay>();
+                public static TargetModeOverlay TargetModeOverlay => GameObject.Find("Board/TargetModeOverlay").GetComponent<TargetModeOverlay>();
             }
 
             public static class Card
@@ -155,8 +149,10 @@ namespace Assets.Helper
                 public static RectTransform Portrait => GameObject.Find("Canvas/Card/Portrait").GetComponent<RectTransform>();
                 public static RectTransform Title => GameObject.Find("Canvas/Card/Title").GetComponent<RectTransform>();
                 public static RectTransform Details => GameObject.Find("Canvas/Card/Details").GetComponent<RectTransform>();
-                // Added: Ability button container under Card
                 public static RectTransform AbilityButtonContainer => GameObject.Find("Canvas/Card/AbilityButtonContainer").GetComponent<RectTransform>();
+
+                public static TextMeshProUGUI HeroMana => GameObject.Find("Canvas/Card/HeroMana").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI EnemyMana => GameObject.Find("Canvas/Card/EnemyMana").GetComponent<TextMeshProUGUI>();
             }
 
 

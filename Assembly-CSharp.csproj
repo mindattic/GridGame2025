@@ -114,7 +114,6 @@
     <Compile Include="Assets\Scripts\Canvas\CardInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
-    <Compile Include="Assets\Scripts\Managers\SelectedHeroManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier03.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
@@ -300,6 +299,7 @@
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.Collision.cs" />
     <Compile Include="Assets\Scripts\Canvas\DestinationMarker.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
+    <Compile Include="Assets\Scripts\Managers\SelectionManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />

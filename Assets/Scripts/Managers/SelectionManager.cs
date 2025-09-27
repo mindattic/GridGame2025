@@ -1,4 +1,4 @@
-// --- File: Assets/Scripts/Managers/SelectedHeroManager.cs ---
+// --- File: Assets/Scripts/Managers/SelectionManager.cs ---
 using Assets.Helpers;
 using Assets.Scripts.Sequences;
 using UnityEngine;
@@ -9,7 +9,7 @@ using g = Assets.Helpers.GameHelper;
 /// Promotes SelectedActor to MovingHero once the drag moved at least half a tile.
 /// Focus is independent from the active actor; you can inspect any actor.
 /// </summary>
-public class SelectedHeroManager : MonoBehaviour
+public class SelectionManager : MonoBehaviour
 {
     private ActorInstance pendingActor;
     private bool hasPendingDrag;
@@ -25,16 +25,9 @@ public class SelectedHeroManager : MonoBehaviour
         // Allow focusing at any time to inspect stats
         var target = actor ?? TouchHelper.GetActorAtTouchPosition();
 
+        // Do not unselect when clicking outside of an actor anymore.
         if (target == null || !target.IsPlaying)
         {
-            if (g.Board.IsInsideBoard(g.TouchPosition3D))
-            {
-                g.Actors.SelectedActor = null;
-                g.AbilityButtonManager.Hide();
-                g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(false));
-                g.Card.Clear();
-                g.Timeline?.RefreshSelectionHighlight();
-            }
             return;
         }
 

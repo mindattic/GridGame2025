@@ -135,11 +135,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3c320f4264670fc40a7430a75f12bec9
-    m_Address: Sprites/Backgrounds/CyberNecropolis/16
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3e16de365aa680b469f9945c3dd96d2c
     m_Address: Sprites/WeaponTypes/Staff
     m_ReadOnly: 0
