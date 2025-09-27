@@ -68,7 +68,8 @@ public class StageManager : MonoBehaviour
         {
             var hero = ActorLibrary.Actors[partyMember.Character];
             var stageActor = new StageActor(partyMember.Character, Team.Hero, hero.Level, location: RNG.UnoccupiedLocation);
-            SpawnActor(stageActor);
+            // Defer timeline rebuild during bulk spawns
+            SpawnActor(stageActor, rebuildTimeline: false);
         }
 
         // Load the wave based on currentWave.
@@ -80,6 +81,9 @@ public class StageManager : MonoBehaviour
         {
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
+
+        // After all actors for the initial setup are spawned, rebuild timeline once
+        g.Timeline?.RebuildFromScene();
 
         scene.FadeIn();
     }
@@ -100,7 +104,8 @@ public class StageManager : MonoBehaviour
         // Show actors for this wave
         foreach (var stageActor in wave.Actors)
         {
-            SpawnActor(stageActor);
+            // Defer timeline rebuild until all spawns are finished
+            SpawnActor(stageActor, rebuildTimeline: false);
         }
 
         // Show dotted supportLines' for this wave
@@ -111,6 +116,9 @@ public class StageManager : MonoBehaviour
             g.DottedLineManager.Spawn(segment, location);
         }
 
+        // Recalculate timeline once per wave start
+        g.Timeline?.RebuildFuturePreservingCurrent();
+
         g.WaveAnnouncement.Show(waveIndex + 1, currentStage.Waves.Count);
     }
 
@@ -119,7 +127,7 @@ public class StageManager : MonoBehaviour
     /// Spawns a new actor on a guaranteed free tile.
     /// Always assigns a fresh unoccupied location to the StageActor.
     /// </summary>
-    public ActorInstance SpawnActor(StageActor stageActor)
+    public ActorInstance SpawnActor(StageActor stageActor, bool rebuildTimeline = true)
     {
         // Instantiate and parent under the board
         var go = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
@@ -146,6 +154,12 @@ public class StageManager : MonoBehaviour
 
         // Register the new actor
         g.Actors.All.Add(instance);
+
+        // If requested, rebuild the timeline after spawning (useful for ad-hoc spawns)
+        if (rebuildTimeline)
+        {
+            g.Timeline?.RebuildFuturePreservingCurrent();
+        }
 
         return instance;
     }

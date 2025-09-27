@@ -19,7 +19,15 @@ namespace Assets.Helpers
             if (opp == null || !opp.IsPlaying)           // guard: opponent might have died/deactivated earlier this frame
                 yield break;
 
-            opp.Damage(attackResult);
+            // New: handle clean Miss with dodge feedback
+            if (attackResult.HitType == HitOutcome.Miss)
+            {
+                yield return opp.AttackMissRoutine();
+            }
+            else
+            {
+                opp.Damage(attackResult);
+            }
 
             // Preserve original yield
             yield return Wait.None();

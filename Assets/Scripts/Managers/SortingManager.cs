@@ -142,8 +142,15 @@ public class SortingManager : MonoBehaviour
     /// </summary>
     public void OnSynergyLineSpawn(SynergyLineInstance synergyLineInstance)
     {
-        var isAbove = synergyLineInstance.supporter.SortingGroup.sortingLayerName == SortingHelper.Layer.ActorAbove;
-        var layer = isAbove ? SortingHelper.Layer.SupportLineAbove : SortingHelper.Layer.SupportLineBelow;
+        var supporterLayer = synergyLineInstance.supporter != null && synergyLineInstance.supporter.SortingGroup != null
+            ? synergyLineInstance.supporter.SortingGroup.sortingLayerName
+            : string.Empty;
+        var attackerLayer = synergyLineInstance.attacker != null && synergyLineInstance.attacker.SortingGroup != null
+            ? synergyLineInstance.attacker.SortingGroup.sortingLayerName
+            : string.Empty;
+
+        bool anyBelow = supporterLayer == SortingHelper.Layer.ActorBelow || attackerLayer == SortingHelper.Layer.ActorBelow;
+        var layer = anyBelow ? SortingHelper.Layer.SupportLineBelow : SortingHelper.Layer.SupportLineAbove;
         synergyLineInstance.SetSorting(layer);
     }
 

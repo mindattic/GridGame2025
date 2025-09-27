@@ -278,7 +278,7 @@ public class SynergyLineInstance : MonoBehaviour
     /// <summary>
     /// Per frame update:
     /// 1) Move anchors to current tiles, so bumps and moves snap endpoints to tiles.
-    /// 2) Reaffirm sorting to remain between BoardOverlay and ActorAbove.
+    /// 2) Reaffirm sorting to remain below the lowest of the two actors.
     /// 3) Tick every active strand.
     /// </summary>
     private void TickAll()
@@ -336,12 +336,31 @@ public class SynergyLineInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Resolve a sorting layer between BoardOverlay and ActorAbove.
+    /// Resolve a sorting layer so the synergy line always renders below the lower of the two actors.
+    /// If either actor is on ActorBelow, use SupportLineBelow; otherwise SupportLineAbove.
     /// </summary>
     private void ResolveSortingForSynergyLayer(out string layerName, out int order)
     {
-        // Always use the in-between layer
-        layerName = Assets.Helpers.SortingHelper.Layer.SupportLineAbove;
+        string aLayer = null;
+        string bLayer = null;
+
+        if (supporter != null && supporter.SortingGroup != null)
+            aLayer = supporter.SortingGroup.sortingLayerName;
+        else if (aGroup != null)
+            aLayer = aGroup.sortingLayerName;
+
+        if (attacker != null && attacker.SortingGroup != null)
+            bLayer = attacker.SortingGroup.sortingLayerName;
+        else if (bGroup != null)
+            bLayer = bGroup.sortingLayerName;
+
+        bool anyBelow = string.Equals(aLayer, Assets.Helpers.SortingHelper.Layer.ActorBelow)
+                        || string.Equals(bLayer, Assets.Helpers.SortingHelper.Layer.ActorBelow);
+
+        // If any endpoint is below, keep the line below; otherwise keep it just under ActorAbove
+        layerName = anyBelow
+            ? Assets.Helpers.SortingHelper.Layer.SupportLineBelow
+            : Assets.Helpers.SortingHelper.Layer.SupportLineAbove;
 
         // Keep a small base order so per-wave offsets work but we remain inside this layer
         order = 0;

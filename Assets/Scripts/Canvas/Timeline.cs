@@ -113,6 +113,63 @@ public sealed class Timeline : MonoBehaviour
     }
 
     /// <summary>
+    /// Recalculate the timeline while preserving the current turn block.
+    /// Clears all other blocks and rebuilds the forecast so newly spawned actors
+    /// are inserted in the correct order without interrupting the current turn.
+    /// </summary>
+    public void RebuildFuturePreservingCurrent()
+    {
+        if (blocks.Count == 0)
+        {
+            // Nothing yet, just do a full rebuild.
+            RebuildFromScene();
+            return;
+        }
+
+        int idx = Mathf.Clamp(currentIndex, 0, blocks.Count - 1);
+        var current = blocks[idx];
+
+        // If the current block is invalid (divider or missing actor), do a full rebuild.
+        if (current == null || current.isDivider || current.actor == null || !current.actor.IsPlaying)
+        {
+            RebuildFromScene();
+            return;
+        }
+
+        // Destroy all other block instances and keep only the current one.
+        for (int i = 0; i < blocks.Count; i++)
+        {
+            if (i == idx) continue;
+            var b = blocks[i];
+            if (b != null && b.instance != null)
+                Destroy(b.instance.gameObject);
+        }
+
+        // Collapse to a single current block at index 0
+        blocks.Clear();
+        blocks.Add(current);
+        currentIndex = 0;
+
+        // Rebuild sim based on current scene actors
+        BuildSim();
+
+        // Build the remainder of the current round excluding the actor already taking its turn
+        currentRoundOrder = BuildRoundOrder(false);
+        if (current.actor != null)
+            currentRoundOrder.RemoveAll(a => a == current.actor);
+        currentRoundPos = 0;
+        roundNumber = 1; // We are in the middle of a round; next new round will be #2 and get a divider.
+
+        // Extend future forecast and relayout
+        ExtendForecastUntil(currentIndex + forecastVisibleAhead);
+        SetupLayout();
+
+        // Keep focus on the current block
+        SnapToCurrent();
+        UpdateSelectionHighlight();
+    }
+
+    /// <summary>
     /// Return the hero assigned to the current block, or null for enemy blocks.
     /// </summary>
     public ActorInstance GetCurrentHero()
