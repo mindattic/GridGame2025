@@ -57,7 +57,7 @@ public class InputManager : MonoBehaviour
     /// <summary>
     /// True if the selected hero is currently being dragged.
     /// </summary>
-    public bool isDragging => g.Actors.HasSelectedHero && g.Actors.SelectedHero.Flags.IsMoving;
+    public bool isDragging => g.Actors.HasMovingHero && g.Actors.MovingHero.Flags.IsMoving;
 
     // --------------------------------------------------------------------------------------------
     // Gate input until current press is released (used when timer forces a Drop)
@@ -117,7 +117,7 @@ public class InputManager : MonoBehaviour
         switch (touch.phase)
         {
             case TouchPhase.Began:
-                g.SelectedHeroManager.Focus();
+                g.SelectedHeroManager.Select();
                 initialTouchPosition = g.TouchPosition3D;
                 break;
 
@@ -125,7 +125,7 @@ public class InputManager : MonoBehaviour
                 if (Vector3.Distance(initialTouchPosition, g.TouchPosition3D) > dragThreshold)
                 {
                     // Prevent drag if selected hero is rooted (futureproof if heroes can be rooted)
-                    if (g.Actors.HasSelectedHero && g.Actors.SelectedHero.Flags.RootedTurnsRemaining > 0)
+                    if (g.Actors.HasMovingHero && g.Actors.MovingHero.Flags.RootedTurnsRemaining > 0)
                         return;
                     g.SelectedHeroManager.Drag();
                 }
@@ -231,7 +231,7 @@ public class InputManager : MonoBehaviour
                     }
                     break;
                 case InputMode.PlayerTurn:
-                    if (Input.GetMouseButtonDown(0)) { g.SelectedHeroManager.Focus(); initialTouchPosition = g.TouchPosition3D; }
+                    if (Input.GetMouseButtonDown(0)) { g.SelectedHeroManager.Select(); initialTouchPosition = g.TouchPosition3D; }
                     else if (Input.GetMouseButton(0)) { if (Vector3.Distance(initialTouchPosition, g.TouchPosition3D) > dragThreshold) g.SelectedHeroManager.Drag(); }
                     else if (Input.GetMouseButtonUp(0)) { g.SelectedHeroManager.Drop(); }
                     break;

@@ -48,25 +48,25 @@ public partial class DebugWindow
     // Keyboard control methods for actor Move.
     private void OnKeyUp()
     {
-        if (!g.Actors.HasFocusedActor) return;
-        g.Actors.FocusedActor.TeleportToward(Vector2Int.down);
+        if (!g.Actors.HasSelectedActor) return;
+        g.Actors.SelectedActor.TeleportToward(Vector2Int.down);
     }
 
     private void OnKeyDown()
     {
-        if (!g.Actors.HasFocusedActor) return;
-        g.Actors.FocusedActor.TeleportToward(Vector2Int.up);
+        if (!g.Actors.HasSelectedActor) return;
+        g.Actors.SelectedActor.TeleportToward(Vector2Int.up);
     }
 
     private void OnKeyLeft()
     {
-        if (!g.Actors.HasFocusedActor) return;
-        g.Actors.FocusedActor.TeleportToward(Vector2Int.left);
+        if (!g.Actors.HasSelectedActor) return;
+        g.Actors.SelectedActor.TeleportToward(Vector2Int.left);
     }
 
     private void OnKeyRight()
     {
-        if (!g.Actors.HasFocusedActor) return;
-        g.Actors.FocusedActor.TeleportToward(Vector2Int.right);
+        if (!g.Actors.HasSelectedActor) return;
+        g.Actors.SelectedActor.TeleportToward(Vector2Int.right);
     }
 }

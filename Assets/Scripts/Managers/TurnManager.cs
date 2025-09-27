@@ -116,7 +116,7 @@ namespace Assets.Scripts.Managers
             {
                 if (ActiveActor != null)
                 {
-                    g.SelectedHeroManager.Focus(ActiveActor);
+                    g.SelectedHeroManager.Select(ActiveActor);
                     ActiveActor.Glow?.Play();
                 }
             }

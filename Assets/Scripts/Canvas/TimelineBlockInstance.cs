@@ -381,7 +381,7 @@ namespace Assets.Scripts.Canvas.Timeline
             if (Owner == null) return;
             // Focus this actor via SelectedHeroManager, which also refreshes timeline selections
             var mgr = Assets.Helpers.GameHelper.SelectedHeroManager;
-            if (mgr != null) mgr.Focus(Owner);
+            if (mgr != null) mgr.Select(Owner);
         }
     }
 }

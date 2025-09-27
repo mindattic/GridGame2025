@@ -10,7 +10,7 @@ public partial class DebugWindow
     {
         GUILayout.BeginHorizontal();
 
-        var focusedActor = g.Actors.FocusedActor != null ? g.Actors.FocusedActor.characterName : null ?? "-";
+        var focusedActor = g.Actors.SelectedActor != null ? g.Actors.SelectedActor.characterName : null ?? "-";
         GUILayout.Label($"Focused Actor: {focusedActor}", GUILayout.Width(Screen.width * 0.25f));
 
         var inputMode = g.InputManager.InputMode;

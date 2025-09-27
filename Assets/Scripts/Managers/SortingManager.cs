@@ -53,42 +53,42 @@ public class SortingManager : MonoBehaviour
 
     public void OnActorFocus()
     {
-        if (!g.Actors.HasFocusedActor) return;
+        if (!g.Actors.HasSelectedActor) return;
         Invoke(new SortEvent
         {
             Type = SortEventType.Focus,
-            Initiator = g.Actors.FocusedActor
+            Initiator = g.Actors.SelectedActor
         });
     }
 
-    public void OnSelectedHeroDrag()
+    public void OnHeroDrag()
     {
-        if (!g.Actors.HasSelectedHero) return;
+        if (!g.Actors.HasMovingHero) return;
         Invoke(new SortEvent
         {
             Type = SortEventType.Drag,
-            Initiator = g.Actors.SelectedHero
+            Initiator = g.Actors.MovingHero
         });
     }
 
     public void OnSelectedHeroLocationChanged(Vector2Int newLocation)
     {
-        if (!g.Actors.HasSelectedHero) return;
+        if (!g.Actors.HasMovingHero) return;
         Invoke(new SortEvent
         {
             Type = SortEventType.LocationChanged,
-            Initiator = g.Actors.SelectedHero,
+            Initiator = g.Actors.MovingHero,
             NewLocation = newLocation
         });
     }
 
     public void OnSelectedHeroDrop()
     {
-        if (!g.Actors.HasSelectedHero) return;
+        if (!g.Actors.HasMovingHero) return;
         Invoke(new SortEvent
         {
             Type = SortEventType.Drop,
-            Initiator = g.Actors.SelectedHero
+            Initiator = g.Actors.MovingHero
         });
     }
 

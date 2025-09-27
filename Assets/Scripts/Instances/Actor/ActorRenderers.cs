@@ -247,7 +247,7 @@ public class ActorRenderers
     public void SetHealthBarAlpha(float alpha)
     {
         if (healthBarBack != null)
-            healthBarBack.color = new Color(1, 1, 1, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
+            healthBarBack.color = new Color(0, 0, 0, Mathf.Clamp(alpha, Opacity.Transparent, Opacity.Translucent.Alpha196));
         var drain = healthBarDrainColor;
         if (healthBarDrain != null)
             healthBarDrain.color = new Color(drain.r, drain.g, drain.b, alpha);

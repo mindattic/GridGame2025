@@ -105,7 +105,7 @@ public class ActorActionBar
         // - The actor is not playing,
         // - The actor already has max AP, or
         // - The actor is currently gaining AP.
-        if (g.DebugManager.isEnemyStunned || !g.Actors.HasSelectedHero|| !instance.IsEnemy || !instance.IsPlaying || instance.HasMaxAP || flags.isGainingAP)
+        if (g.DebugManager.isEnemyStunned || !g.Actors.HasMovingHero|| !instance.IsEnemy || !instance.IsPlaying || instance.HasMaxAP || flags.isGainingAP)
             yield break;
 
         // Before starting, mark that the actor is gaining AP and calculate the increment amount.
@@ -113,7 +113,7 @@ public class ActorActionBar
         float amount = stats.Intelligence * 0.1f;
 
         // During: Gradually increase AP until max AP is reached.
-        while (g.Actors.HasSelectedHero && instance.IsEnemy && instance.IsPlaying && !instance.HasMaxAP)
+        while (g.Actors.HasMovingHero && instance.IsEnemy && instance.IsPlaying && !instance.HasMaxAP)
         {
             stats.AP += amount;
             stats.AP = Mathf.Clamp(stats.AP, 0, stats.MaxAP);

@@ -103,18 +103,18 @@ namespace Assets.Helpers
             }
             public static IEnumerable<ActorInstance> Heroes => gm != null ? gm.heroes : Enumerable.Empty<ActorInstance>();
             public static IEnumerable<ActorInstance> Enemies => gm != null ? gm.enemies : Enumerable.Empty<ActorInstance>();
-            public static ActorInstance FocusedActor
+            public static ActorInstance SelectedActor
             {
-                get => gm != null ? gm.focusedActor : null;
-                set { if (gm != null) gm.focusedActor = value; }
+                get => gm != null ? gm.selectedActor : null;
+                set { if (gm != null) gm.selectedActor = value; }
             }
-            public static bool HasFocusedActor => gm != null && gm.hasFocusedActor;
-            public static ActorInstance SelectedHero
+            public static bool HasSelectedActor => gm != null && gm.hasSelectedActor;
+            public static ActorInstance MovingHero
             {
-                get => gm != null ? gm.selectedHero : null;
-                set { if (gm != null) gm.selectedHero = value; }
+                get => gm != null ? gm.movingHero : null;
+                set { if (gm != null) gm.movingHero = value; }
             }
-            public static bool HasSelectedHero => gm != null && gm.hasSelectedHero;
+            public static bool HasMovingHero => gm != null && gm.hasMovingHeroHero;
             public static ActorInstance TargetActor
             {
                 get => gm != null ? gm.targetActor : null;

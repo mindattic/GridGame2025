@@ -112,11 +112,11 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public IEnumerable<ActorInstance> heroes => actors.Where(x => x.team == Team.Hero);
     [HideInInspector] public IEnumerable<ActorInstance> enemies => actors.Where(x => x.team == Team.Enemy);
 
-    [HideInInspector] public ActorInstance focusedActor;
-    [HideInInspector] public bool hasFocusedActor => focusedActor != null;
+    [HideInInspector] public ActorInstance selectedActor;
+    [HideInInspector] public bool hasSelectedActor => selectedActor != null;
 
-    [HideInInspector] public ActorInstance selectedHero;
-    [HideInInspector] public bool hasSelectedHero => selectedHero != null;
+    [HideInInspector] public ActorInstance movingHero;
+    [HideInInspector] public bool hasMovingHeroHero => movingHero != null;
 
     [HideInInspector] public ActorInstance targetActor;
     [HideInInspector] public bool hasTargetActor => targetActor != null;

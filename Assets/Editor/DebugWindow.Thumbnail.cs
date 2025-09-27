@@ -22,9 +22,9 @@ public partial class DebugWindow
 
 #if UNITY_EDITOR
 
-        if (s.ReloadThumbnailSettings && g.Actors.HasFocusedActor)
+        if (s.ReloadThumbnailSettings && g.Actors.HasSelectedActor)
         {
-            var t = g.Actors.FocusedActor.Thumbnail;
+            var t = g.Actors.SelectedActor.Thumbnail;
             thumbnailPositionX = t.settings.Position.x.ToString("F2");
             thumbnailPositionY = t.settings.Position.y.ToString("F2");
             thumbnailScaleX = t.settings.Scale.x.ToString("F2");
@@ -53,11 +53,11 @@ public partial class DebugWindow
 
         void update()
         {
-            if (GameManager.instance.focusedActor != null)
+            if (GameManager.instance.selectedActor != null)
             {
                 var position = new Vector3(pX, pY, 0f);
                 var scale = new Vector3(sX, sY, 1f);
-                GameManager.instance.focusedActor.Thumbnail.Set(position, scale);
+                GameManager.instance.selectedActor.Thumbnail.Set(position, scale);
             }
         }
 
@@ -86,7 +86,7 @@ public partial class DebugWindow
                 $"    Scale = new Vector3({sX}f, {sY}f, 0f),";
 
             EditorGUIUtility.systemCopyBuffer = exportText;
-            Debug.Log($"Copied `{GameManager.instance.focusedActor.characterName}` ThumbnailSettings to clipboard.");
+            Debug.Log($"Copied `{GameManager.instance.selectedActor.characterName}` ThumbnailSettings to clipboard.");
         }
         GUILayout.EndHorizontal();
 

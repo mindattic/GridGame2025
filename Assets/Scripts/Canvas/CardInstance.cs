@@ -32,7 +32,9 @@ public class CardInstance : MonoBehaviour
     private AnimationCurve slideInCurve;
     private float slideDuration;
 
-    private const float FixedPortraitSize = 512f; // pixels
+    private const float FixedPortraitSize = 1024f; // pixels
+    private const float PortraitPosX = -128f;
+    private const float PortraitPosY = -128f;
 
     private void Awake()
     {
@@ -68,161 +70,100 @@ public class CardInstance : MonoBehaviour
 
     public void Assign()
     {
-        if (!g.Actors.HasFocusedActor) return;
+        if (!g.Actors.HasSelectedActor) return;
 
-        var actorName = g.Actors.FocusedActor.characterName;
+        var actorName = g.Actors.SelectedActor.characterName;
         var actorData = ActorLibrary.Get(actorName);
 
-        // Ensure visuals enabled
+        // Always visible
         backdrop.gameObject.SetActive(true);
         portrait.gameObject.SetActive(true);
 
-        // Detect current visibility states
-        bool backdropVisible = backdrop.gameObject.activeInHierarchy && backdropCG.alpha > 0.9f;
-        bool portraitVisibleAndPlaced =
-            portrait.gameObject.activeInHierarchy &&
-            portraitCG.alpha > 0.9f &&
-            ApproximatelyVector2(portrait.anchoredPosition, destination);
-
         StopAllCoroutines();
 
-        if (portraitVisibleAndPlaced)
-        {
-            // Delay sprite/title/details change until AFTER portrait is fully off-screen
-            StartCoroutine(QuickSwapRoutine(actorData.Portrait, actorName, actorData.Details.Card, fadeText: !backdropVisible));
-        }
-        else
-        {
-            // First-time show or portrait off-screen: set content up front, then slide in
-            portrait.GetComponent<Image>().sprite = actorData.Portrait;
-            title.GetComponent<TextMeshProUGUI>().text = actorName;
-            details.GetComponent<TextMeshProUGUI>().text = actorData.Details.Card;
+        // Set content immediately
+        portrait.GetComponent<Image>().sprite = actorData.Portrait;
+        title.GetComponent<TextMeshProUGUI>().text = actorName;
+        details.GetComponent<TextMeshProUGUI>().text = actorData.Details.Card;
 
-            StartCoroutine(SlideInRoutine(fadeText: !backdropVisible));
-        }
+        // Ensure full visibility and placement
+        portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
+        SetAlpha(backdropCG, 1f);
+        SetAlpha(portraitCG, 1f);
+        SetAlpha(titleCG, 1f);
+        SetAlpha(detailsCG, 1f);
     }
 
     private void SlideIn()
     {
+        // Immediate ensure visible; no fade/slide
         StopAllCoroutines();
-        StartCoroutine(SlideInRoutine(fadeText: true));
+        SetAlpha(backdropCG, 1f);
+        SetAlpha(portraitCG, 1f);
+        SetAlpha(titleCG, 1f);
+        SetAlpha(detailsCG, 1f);
+        portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
     }
 
     private IEnumerator SlideInRoutine(bool fadeText)
     {
-        float elapsed = 0f;
-
-        // Start state
-        portrait.anchoredPosition = offscreenPosition;
-        SetAlpha(portraitCG, 0f);
-        SetAlpha(backdropCG, 0f);
-
-        // Conditionally fade title/details
-        if (fadeText)
-        {
-            SetAlpha(titleCG, 0f);
-            SetAlpha(detailsCG, 0f);
-        }
-        else
-        {
-            SetAlpha(titleCG, 1f);
-            SetAlpha(detailsCG, 1f);
-        }
-
-        // Animate
-        while (elapsed < slideDuration)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / slideDuration);
-            float eased = slideInCurve.Evaluate(t);
-
-            portrait.anchoredPosition = Vector3.Lerp(offscreenPosition, destination, eased);
-
-            // Always bring backdrop/portrait in
-            SetAlpha(backdropCG, eased);
-            SetAlpha(portraitCG, eased);
-
-            if (fadeText)
-            {
-                float a = eased;
-                SetAlpha(titleCG, a);
-                SetAlpha(detailsCG, a);
-            }
-
-            yield return Wait.OneTick();
-        }
-
-        // Final state
-        portrait.anchoredPosition = destination;
+        // No animation anymore; ensure fully visible immediately
+        portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
         SetAlpha(backdropCG, 1f);
         SetAlpha(portraitCG, 1f);
         SetAlpha(titleCG, 1f);
         SetAlpha(detailsCG, 1f);
+        yield break;
     }
 
     public void SlideOut()
     {
+        // No-op: keep visible
         StopAllCoroutines();
-        StartCoroutine(SlideOutRoutine());
+        SetAlpha(backdropCG, 1f);
+        SetAlpha(portraitCG, 1f);
+        SetAlpha(titleCG, 1f);
+        SetAlpha(detailsCG, 1f);
+        portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
+        backdrop.gameObject.SetActive(true);
+        portrait.gameObject.SetActive(true);
     }
 
     private IEnumerator SlideOutRoutine()
     {
-        float elapsed = 0f;
-
-        // Start state
-        portrait.anchoredPosition = destination;
+        // No-op animation; maintain visibility
+        portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
         SetAlpha(backdropCG, 1f);
         SetAlpha(titleCG, 1f);
         SetAlpha(detailsCG, 1f);
         SetAlpha(portraitCG, 1f);
-
-        // Animate
-        while (elapsed < slideDuration)
-        {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / slideDuration);
-            float eased = slideInCurve.Evaluate(t);
-
-            portrait.anchoredPosition = Vector3.Lerp(destination, offscreenPosition, eased);
-
-            float a = 1f - eased;
-            SetAlpha(titleCG, a);
-            SetAlpha(detailsCG, a);
-
-            SetAlpha(backdropCG, a);
-            SetAlpha(portraitCG, a);
-
-            yield return Wait.OneTick();
-        }
-
-        // Final state
-        portrait.anchoredPosition = offscreenPosition;
-        SetAlpha(backdropCG, 0f);
-        SetAlpha(titleCG, 0f);
-        SetAlpha(detailsCG, 0f);
-        SetAlpha(portraitCG, 0f);
-
-        backdrop.gameObject.SetActive(false);
-        portrait.gameObject.SetActive(false);
+        yield break;
     }
 
     public void Clear()
     {
         StopAllCoroutines();
 
-        backdrop.gameObject.SetActive(false);
-        portrait.gameObject.SetActive(false);
+        // Keep everything active and visible
+        backdrop.gameObject.SetActive(true);
+        portrait.gameObject.SetActive(true);
 
         title.GetComponent<TextMeshProUGUI>().text = "";
         details.GetComponent<TextMeshProUGUI>().text = "";
 
-        portrait.anchoredPosition = offscreenPosition;
+        // Enforce portrait position and size
+        portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
 
-        Reset(backdropCG);
-        Reset(titleCG);
-        Reset(detailsCG);
-        Reset(portraitCG);
+        SetAlpha(backdropCG, 1f);
+        SetAlpha(titleCG, 1f);
+        SetAlpha(detailsCG, 1f);
+        SetAlpha(portraitCG, 1f);
     }
 
     public Vector3 PortraitWorldPosition()
@@ -265,87 +206,34 @@ public class CardInstance : MonoBehaviour
 
     private IEnumerator QuickSwapRoutine(Sprite newSprite, string newTitle, string newDetails, bool fadeText)
     {
-        float quickOut = Mathf.Max(0.15f, slideDuration * 0.35f);
-        float elapsedOut = 0f;
-
-        // Start state
-        portrait.anchoredPosition = destination;
-        SetAlpha(backdropCG, 1f);
-        SetAlpha(portraitCG, 1f);
-
-        // Slide out quickly; optionally fade title/details
-        while (elapsedOut < quickOut)
-        {
-            elapsedOut += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedOut / quickOut);
-            float eased = slideInCurve.Evaluate(t);
-
-            portrait.anchoredPosition = Vector3.Lerp(destination, offscreenPosition, eased);
-
-            if (fadeText)
-            {
-                float aOut = 1f - eased;
-                SetAlpha(titleCG, aOut);
-                SetAlpha(detailsCG, aOut);
-            }
-
-            yield return Wait.OneTick();
-        }
-
-        // Hidden: swap content
-        portrait.anchoredPosition = offscreenPosition;
-        if (fadeText)
-        {
-            SetAlpha(titleCG, 0f);
-            SetAlpha(detailsCG, 0f);
-        }
+        // No fade or slide: swap immediately and stay visible
+        portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
+        portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
 
         portrait.GetComponent<Image>().sprite = newSprite;
         title.GetComponent<TextMeshProUGUI>().text = newTitle;
         details.GetComponent<TextMeshProUGUI>().text = newDetails;
 
-        // Slide back in; optionally fade title/details in
-        float elapsedIn = 0f;
-        while (elapsedIn < slideDuration)
-        {
-            elapsedIn += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedIn / slideDuration);
-            float eased = slideInCurve.Evaluate(t);
-
-            portrait.anchoredPosition = Vector3.Lerp(offscreenPosition, destination, eased);
-
-            if (fadeText)
-            {
-                float aIn = eased;
-                SetAlpha(titleCG, aIn);
-                SetAlpha(detailsCG, aIn);
-            }
-
-            SetAlpha(backdropCG, 1f);
-            SetAlpha(portraitCG, 1f);
-
-            yield return Wait.OneTick();
-        }
-
-        // Final state
-        portrait.anchoredPosition = destination;
         SetAlpha(titleCG, 1f);
         SetAlpha(detailsCG, 1f);
         SetAlpha(backdropCG, 1f);
         SetAlpha(portraitCG, 1f);
+        yield break;
     }
 
     private void RecomputeLayout()
     {
         if (card == null || portrait == null) return;
 
-        // Set fixed portrait size
+        // Set fixed portrait size and position
         portrait.sizeDelta = new Vector2(FixedPortraitSize, FixedPortraitSize);
 
-        // Slide fully from right to destination using real width
+        // Maintain fixed destination
+        destination = new Vector3(PortraitPosX, PortraitPosY, 0f);
+
+        // Keep an offscreen position defined (unused for now but harmless)
         float width = FixedPortraitSize;
         offscreenPosition = new Vector3(width, 0f, 0f);
-        destination = new Vector3(-width * 0.25f, 0f, 0f);
     }
 
     private static CanvasGroup EnsureCanvasGroup(RectTransform target)
@@ -394,8 +282,8 @@ public class CardInstance : MonoBehaviour
         if (heroes.Count == 0) return;
 
         // Choose a baseline current hero
-        var current = g.Actors.FocusedActor != null && g.Actors.FocusedActor.IsHero
-            ? g.Actors.FocusedActor
+        var current = g.Actors.SelectedActor != null && g.Actors.SelectedActor.IsHero
+            ? g.Actors.SelectedActor
             : (g.TurnManager != null && g.TurnManager.ActiveActor != null && g.TurnManager.ActiveActor.IsHero
                 ? g.TurnManager.ActiveActor
                 : heroes.First());
@@ -409,7 +297,7 @@ public class CardInstance : MonoBehaviour
         var target = heroes[next];
         if (target == null) return;
 
-        g.SelectedHeroManager?.Focus(target);
+        g.SelectedHeroManager?.Select(target);
         g.AudioManager?.Play("Click");
     }
 

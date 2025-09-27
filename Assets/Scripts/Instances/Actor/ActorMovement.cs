@@ -30,7 +30,7 @@ namespace Assets.Scripts.Instances.Actor
         private Vector3 position { get => instance.Position; set => instance.Position = value; }
         private Vector3 scale { get => instance.Scale; set => instance.Scale = value; }
 
-        protected bool isSelectedHero => g.Actors.HasSelectedHero && g.Actors.SelectedHero == instance;
+        protected bool isSelectedHero => g.Actors.HasMovingHero && g.Actors.MovingHero == instance;
 
         // The owning actor instance reference set during Initialize
         private ActorInstance instance;

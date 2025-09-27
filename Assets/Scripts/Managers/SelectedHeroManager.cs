@@ -6,7 +6,7 @@ using g = Assets.Helpers.GameHelper;
 
 /// <summary>
 /// Handles focus, drag, and drop for heroes during the hero turn.
-/// Promotes to SelectedHero once the drag moved at least half a tile.
+/// Promotes SelectedActor to MovingHero once the drag moved at least half a tile.
 /// Focus is independent from the active actor; you can inspect any actor.
 /// </summary>
 public class SelectedHeroManager : MonoBehaviour
@@ -20,7 +20,7 @@ public class SelectedHeroManager : MonoBehaviour
         dragThreshold = g.TileMap.tileSize / 2f;
     }
 
-    public void Focus(ActorInstance actor = null)
+    public void Select(ActorInstance actor = null)
     {
         // Allow focusing at any time to inspect stats
         var target = actor ?? TouchHelper.GetActorAtTouchPosition();
@@ -29,7 +29,7 @@ public class SelectedHeroManager : MonoBehaviour
         {
             if (g.Board.IsInsideBoard(g.TouchPosition3D))
             {
-                g.Actors.FocusedActor = null;
+                g.Actors.SelectedActor = null;
                 g.AbilityButtonManager.Hide();
                 g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(false));
                 g.Card.Clear();
@@ -39,27 +39,27 @@ public class SelectedHeroManager : MonoBehaviour
         }
 
         // If unchanged, just refresh visuals
-        if (g.Actors.FocusedActor == target)
+        if (g.Actors.SelectedActor == target)
         {
             g.Timeline?.RefreshSelectionHighlight();
             return;
         }
 
         g.AbilityButtonManager.Hide();
-        g.Actors.FocusedActor = target;
+        g.Actors.SelectedActor = target;
         g.SortingManager.OnActorFocus();
 
         // Show abilities only when a hero is focused
-        if (g.Actors.FocusedActor.IsHero)
-            g.AbilityButtonManager.Show(g.Actors.FocusedActor);
+        if (g.Actors.SelectedActor.IsHero)
+            g.AbilityButtonManager.Show(g.Actors.SelectedActor);
 
-        g.TouchOffset = g.Actors.FocusedActor.Position - g.TouchPosition3D;
+        g.TouchOffset = g.Actors.SelectedActor.Position - g.TouchPosition3D;
 
         hasPendingDrag = false;
         pendingActor = null;
 
         // Board: toggle focus indicators
-        g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(x == g.Actors.FocusedActor));
+        g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(x == g.Actors.SelectedActor));
         // Timeline: toggle focus highlight across all blocks
         g.Timeline?.RefreshSelectionHighlight();
 
@@ -73,10 +73,10 @@ public class SelectedHeroManager : MonoBehaviour
     public void Drag()
     {
         // Only allow dragging during hero turn and when focused actor is the active actor and is a hero
-        if (!g.TurnManager.IsHeroTurn || !g.Actors.HasFocusedActor)
+        if (!g.TurnManager.IsHeroTurn || !g.Actors.HasSelectedActor)
             return;
 
-        var actor = g.Actors.FocusedActor;
+        var actor = g.Actors.SelectedActor;
         if (actor == null || actor.IsEnemy) return;
 
         // In ActiveOnly mode, restrict dragging to the current ActiveActor. In other modes allow any hero.
@@ -108,14 +108,14 @@ public class SelectedHeroManager : MonoBehaviour
         if (!pendingActor.Flags.IsMoving)
             pendingActor.Move.MoveTowardCursor();
 
-        if (g.Actors.HasSelectedHero)
+        if (g.Actors.HasMovingHero)
             return;
 
         float moved = Vector3.Distance(pendingActor.Position, pendingActor.currentTile.position);
         if (moved >= dragThreshold)
         {
-            g.Actors.SelectedHero = pendingActor; // promote the active hero to selected player
-            g.SortingManager.OnSelectedHeroDrag();
+            g.Actors.MovingHero = pendingActor; // promote the active hero to selected player
+            g.SortingManager.OnHeroDrag();
 
             g.TimerBar2D.SetDuration(6f);
             g.TimerBar2D.ResetToFull();
@@ -131,8 +131,8 @@ public class SelectedHeroManager : MonoBehaviour
     {
         bool validSelectedMove =
             g.TurnManager.IsHeroTurn &&
-            g.Actors.HasSelectedHero &&
-            g.Actors.SelectedHero.Flags.IsMoving;
+            g.Actors.HasMovingHero &&
+            g.Actors.MovingHero.Flags.IsMoving;
 
         if (!validSelectedMove)
         {
@@ -142,11 +142,11 @@ public class SelectedHeroManager : MonoBehaviour
                 pendingActor.Flags.IsMoving = false;
                 pendingActor.transform.localRotation = Quaternion.Euler(Vector3.zero);
             }
-            else if (g.Actors.HasFocusedActor)
+            else if (g.Actors.HasSelectedActor)
             {
-                g.Actors.FocusedActor.Move.ToLocation();
-                g.Actors.FocusedActor.Flags.IsMoving = false;
-                g.Actors.FocusedActor.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                g.Actors.SelectedActor.Move.ToLocation();
+                g.Actors.SelectedActor.Flags.IsMoving = false;
+                g.Actors.SelectedActor.transform.localRotation = Quaternion.Euler(Vector3.zero);
             }
 
             hasPendingDrag = false;
@@ -156,7 +156,7 @@ public class SelectedHeroManager : MonoBehaviour
 
         g.TimerBar2D.Pause();
 
-        var hero = g.Actors.SelectedHero;
+        var hero = g.Actors.MovingHero;
         hero.Move.ToLocation();
         hero.Flags.IsMoving = false;
         g.SortingManager.OnSelectedHeroDrop();
@@ -164,7 +164,7 @@ public class SelectedHeroManager : MonoBehaviour
         // Suspend all touch input until the turn system restores it
         g.InputManager.InputMode = InputMode.None;
 
-        g.Actors.SelectedHero = null;
+        g.Actors.MovingHero = null;
         hasPendingDrag = false;
         pendingActor = null;
 

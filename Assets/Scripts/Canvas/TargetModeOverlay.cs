@@ -73,8 +73,8 @@ public class TargetModeOverlay : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (g.InputManager != null)
-            g.InputManager.OnInputModeChanged -= HandleModeChanged;
+        //if (g.InputManager != null)
+        //    g.InputManager.OnInputModeChanged -= HandleModeChanged;
     }
 
     public void Initialize()

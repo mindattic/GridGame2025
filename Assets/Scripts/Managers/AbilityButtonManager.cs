@@ -93,7 +93,7 @@ public class AbilityButtonManager : MonoBehaviour
             if (image != null) image.sprite = ability.button;
             var label = instance.GetComponentInChildren<TextMeshProUGUI>();
             if (label != null) label.text = string.Empty;
-            instance.Initialize(ability, () => OnAbilityButtonClicked(g.Actors.FocusedActor, ability));
+            instance.Initialize(ability, () => OnAbilityButtonClicked(g.Actors.SelectedActor, ability));
             instance.gameObject.SetActive(false);
             list.Add(instance);
             allButtons.Add(instance);

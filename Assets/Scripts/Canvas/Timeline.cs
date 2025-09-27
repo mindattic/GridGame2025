@@ -522,7 +522,7 @@ public sealed class Timeline : MonoBehaviour
 
     private void UpdateSelectionHighlight()
     {
-        var focused = g.Actors.FocusedActor;
+        var focused = g.Actors.SelectedActor;
         for (int i = 0; i < blocks.Count; i++)
         {
             var b = blocks[i];

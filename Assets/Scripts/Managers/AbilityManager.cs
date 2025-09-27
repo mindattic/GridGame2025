@@ -211,7 +211,7 @@ namespace Assets.Scripts.Managers
         private void ClearFocusAndUI()
         {
             // Unfocus the hero; TurnManager will set focus for next side
-            g.Actors.FocusedActor = null;
+            g.Actors.SelectedActor = null;
             if (g.Actors.All != null)
             {
                 foreach (var a in g.Actors.All)
@@ -251,8 +251,8 @@ namespace Assets.Scripts.Managers
         {
             if (IsSequenceExecuting) return; // ignore during sequence
             g.TileManager.Reset(); CancelTargeting();
-            if (g.Actors.HasSelectedHero)
-            { g.Actors.SelectedHero.Move.ToLocation(); g.Actors.SelectedHero.Flags.IsMoving = false; g.Actors.SelectedHero.transform.localRotation = Quaternion.Euler(Vector3.zero); }
+            if (g.Actors.HasMovingHero)
+            { g.Actors.MovingHero.Move.ToLocation(); g.Actors.MovingHero.Flags.IsMoving = false; g.Actors.MovingHero.transform.localRotation = Quaternion.Euler(Vector3.zero); }
             if (pendingAbilityUser != null)
             { pendingAbilityUser.Move.ToLocation(); pendingAbilityUser.Flags.IsMoving = false; pendingAbilityUser.transform.localRotation = Quaternion.Euler(Vector3.zero); }
             ClearPendingUser(); g.TouchOffset = Vector3.zero;
