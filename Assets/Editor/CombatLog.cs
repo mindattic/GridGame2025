@@ -1,5 +1,6 @@
 ﻿#if UNITY_EDITOR
 using System.Collections.Generic;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 
@@ -82,11 +83,40 @@ namespace Assets.EditorTools
 					Assets.Helpers.CombatLogHelper.Clear();
 				}
 
+				if (GUILayout.Button("Copy", EditorStyles.toolbarButton))
+				{
+					CopyAllToClipboard();
+				}
+
 				GUILayout.FlexibleSpace();
 
 				_wrap = GUILayout.Toggle(_wrap, "Wrap", EditorStyles.toolbarButton);
 				_autoScroll = GUILayout.Toggle(_autoScroll, "Auto Scroll", EditorStyles.toolbarButton);
 			}
+		}
+
+		/// <summary>
+		/// Copies the entire combat log into the system clipboard as plain text.
+		/// </summary>
+		private void CopyAllToClipboard()
+		{
+			var messages = Assets.Helpers.CombatLogHelper.Messages;
+			if (messages == null || messages.Count == 0)
+			{
+				EditorGUIUtility.systemCopyBuffer = string.Empty;
+				ShowNotification(new GUIContent("Combat Log is empty"));
+				return;
+			}
+
+			var sb = new StringBuilder(4096);
+			for (int i = 0; i < messages.Count; i++)
+			{
+				var msg = messages[i];
+				if (!string.IsNullOrEmpty(msg)) sb.AppendLine(msg);
+			}
+
+			EditorGUIUtility.systemCopyBuffer = sb.ToString();
+			ShowNotification(new GUIContent("Combat Log copied"));
 		}
 
 		/// <summary>

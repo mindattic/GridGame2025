@@ -99,7 +99,44 @@ namespace Assets.Scripts.Libraries
                                     new StageActor { characterName = CharacterHelper.Soldier03, Team = Team.Enemy },
                                     new StageActor { characterName = CharacterHelper.Captain00, Team = Team.Enemy },
                                 }
-                            }
+                            },
+                            new StageWave
+                            {
+                                Actors = new List<StageActor>
+                                {
+                                    new StageActor { characterName = CharacterHelper.Slime00, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterHelper.Slime01, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterHelper.Slime02, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterHelper.Slime03, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterHelper.Slime00, Team = Team.Enemy, SpawnTurn = 4 },
+                                    new StageActor { characterName = CharacterHelper.Slime01, Team = Team.Enemy, SpawnTurn = 4 },
+                                    new StageActor { characterName = CharacterHelper.Slime02, Team = Team.Enemy, SpawnTurn = 4 },
+                                    new StageActor { characterName = CharacterHelper.Slime03, Team = Team.Enemy, SpawnTurn = 4 },
+                                    new StageActor { characterName = CharacterHelper.Slime00, Team = Team.Enemy, SpawnTurn = 8 },
+                                    new StageActor { characterName = CharacterHelper.Slime01, Team = Team.Enemy, SpawnTurn = 8 },
+                                    new StageActor { characterName = CharacterHelper.Slime02, Team = Team.Enemy, SpawnTurn = 10 },
+                                    new StageActor { characterName = CharacterHelper.Slime03, Team = Team.Enemy, SpawnTurn = 10 },
+                                    new StageActor { characterName = CharacterHelper.Slime00, Team = Team.Enemy, SpawnTurn = 12 },
+                                    new StageActor { characterName = CharacterHelper.Slime01, Team = Team.Enemy, SpawnTurn = 12 },
+                                    new StageActor { characterName = CharacterHelper.Slime02, Team = Team.Enemy, SpawnTurn = 14 },
+                                    new StageActor { characterName = CharacterHelper.Slime03, Team = Team.Enemy, SpawnTurn = 14 },
+                                    new StageActor { characterName = CharacterHelper.Scorpion, Level = 10, Team = Team.Enemy, SpawnTurn = 16 },
+
+                                }
+                            },
+                            new StageWave
+                            {
+                                Actors = new List<StageActor>
+                                {
+                                    new StageActor { characterName = CharacterHelper.Yeti, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterHelper.Scorpion, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterHelper.Captain00, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy },
+                                }
+                            },
+
+
                         }
                     }
                 },

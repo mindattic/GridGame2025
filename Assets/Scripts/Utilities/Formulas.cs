@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Models;
 using Game.Behaviors;
 using UnityEngine;
+using Assets.Helpers; // for CombatLogHelper
 
 public enum ElementalDamageType
 {
@@ -41,6 +42,21 @@ public static class Formulas
 
     // Note: Do not keep cached managers here. These helpers must stay pure.
 
+    // ---------------
+    // Logging helpers
+    // ---------------
+    private static void Log(string message)
+    {
+        CombatLogHelper.Write(message);
+    }
+
+    private static string NameOf(ActorInstance a)
+    {
+        if (a == null) return "<null>";
+        if (!string.IsNullOrEmpty(a.characterName)) return a.characterName;
+        return a.name;
+    }
+
     /// <summary>
     /// Returns a small multiplicative tilt based on Luck to bias random variance slightly.
     /// </summary>
@@ -60,9 +76,12 @@ public static class Formulas
         float maxV = 1f + rangeFraction;
 
         float roll = RNG.Float(minV, maxV);
-        float adjusted = roll * LuckTilt(stats);
+        float tilt = LuckTilt(stats);
+        float adjusted = roll * tilt;
+        float result = Mathf.Clamp(adjusted, minV, maxV);
 
-        return Mathf.Clamp(adjusted, minV, maxV);
+        Log($"Variance: range ±{rangeFraction * 100f:F0}% roll={roll:F3} tilt(Luck={stats.Luck})={tilt:F3} -> factor={result:F3}");
+        return result;
     }
 
     /// <summary>
@@ -113,14 +132,22 @@ public static class Formulas
         int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
 
         float hitChance = Mathf.Clamp(accuracy - evade + adv * HitShiftPerLevel, 5f, 95f);
-        if (RNG.Float(0f, 100f) >= hitChance)
+        float hitRoll = RNG.Float(0f, 100f);
+        Log($"HitCheck: {NameOf(attacker)} vs {NameOf(opponent)} | Acc={accuracy:F2} Evade={evade:F2} Adv={adv} -> Hit%={hitChance:F2}, Roll={hitRoll:F2}");
+        if (hitRoll >= hitChance)
+        {
+            Log("Result: Glancing/Weak hit");
             return HitOutcome.Weak;
+        }
 
         float baseCrit = 5f;
         float focus = attacker.Stats.Wisdom * 0.35f;
         float luck = Mathf.Min(20f, attacker.Stats.Luck * 0.25f);
         float critChance = Mathf.Clamp(baseCrit + focus + luck, 0f, 60f);
-        return RNG.Float(0f, 100f) < critChance ? HitOutcome.Critical : HitOutcome.Normal;
+        float critRoll = RNG.Float(0f, 100f);
+        bool isCrit = critRoll < critChance;
+        Log($"CritCheck: base={baseCrit:F1} + WIS*0.35={focus:F2} + LuckAdj={luck:F2} -> Crit%={critChance:F2}, Roll={critRoll:F2} => {(isCrit ? "CRITICAL" : "Normal")}");
+        return isCrit ? HitOutcome.Critical : HitOutcome.Normal;
     }
 
     /// <summary>
@@ -203,6 +230,20 @@ public static class Formulas
         float levelMult = Mathf.Pow(DamageScalePerLevel, adv);
 
         int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied * typeMult * levelMult));
+
+        // Compose a single multi-line log entry to capture the full breakdown
+        var s =
+            $"[PHYS] {NameOf(attacker)} -> {NameOf(opponent)} ({element}, Resist {resistance:+0;-0;0}%)\n" +
+            $"  Offense = STR*2 + Weapon = {attacker.Stats.Strength}*2 + {weaponPower} = {off:F2}\n" +
+            $"  Defense = VIT*1.5 + STA*0.5 + Armor = {opponent.Stats.Vitality}*1.5 + {opponent.Stats.Stamina}*0.5 + {armorRating} = {def:F2}\n" +
+            $"  Raw = Off - Def = {off:F2} - {def:F2} = {raw:F2}\n" +
+            $"  After Resistance({resistance:+0;-0;0}%): {resisted:F2}\n" +
+            $"  Variance factor applied -> Varied = {varied:F2}\n" +
+            $"  HitOutcome: {type} x{typeMult:F2}\n" +
+            $"  LevelAdvantage: {adv} -> DamageScalePerLevel^{adv} = {levelMult:F3}\n" +
+            $"  Final Damage = floor(max(1, Varied * TypeMult * LevelMult)) = {finalDamage}";
+        Log(s);
+
         return new AttackResult(attacker, opponent, finalDamage, type);
     }
 
@@ -228,6 +269,19 @@ public static class Formulas
         float levelMult = Mathf.Pow(DamageScalePerLevel, adv);
 
         int finalDamage = Mathf.Max(1, Mathf.FloorToInt(varied * typeMult * levelMult));
+
+        var s =
+            $"[MAG] {NameOf(caster)} -> {NameOf(target)} ({element}, Resist {resistance:+0;-0;0}%)\n" +
+            $"  MagicOffense = INT*2.5 + WIS*1 = {caster.Stats.Intelligence}*2.5 + {caster.Stats.Wisdom}*1 = {off:F2}\n" +
+            $"  MagicResist = INT*1.5 + WIS*1 + STA*0.5 = {target.Stats.Intelligence}*1.5 + {target.Stats.Wisdom}*1 + {target.Stats.Stamina}*0.5 = {res:F2}\n" +
+            $"  Raw = Off - Res = {off:F2} - {res:F2} = {raw:F2}\n" +
+            $"  After Resistance({resistance:+0;-0;0}%): {resisted:F2}\n" +
+            $"  Variance factor applied -> Varied = {varied:F2}\n" +
+            $"  HitOutcome: {type} x{typeMult:F2}\n" +
+            $"  LevelAdvantage: {adv} -> DamageScalePerLevel^{adv} = {levelMult:F3}\n" +
+            $"  Final Damage = floor(max(1, Varied * TypeMult * LevelMult)) = {finalDamage}";
+        Log(s);
+
         return new AttackResult(caster, target, finalDamage, type);
     }
 
