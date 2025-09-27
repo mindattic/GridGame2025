@@ -916,7 +916,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 616cd2cb0e2a0df4098e3c6a0cfd5ad8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: dd31a40f717e8324286df991bbd9ad3b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1626,7 +1626,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -51.1, y: 50}
+  m_AnchoredPosition: {x: -250, y: 50}
   m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &535048983
@@ -2472,8 +2472,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: X
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
-  m_sharedMaterial: {fileID: 9208542116982176056, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 022e32a7f3183c140afc2abdbbd80887, type: 2}
+  m_sharedMaterial: {fileID: -6702965947189985742, guid: 022e32a7f3183c140afc2abdbbd80887, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4316,7 +4316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -116, y: 50}
+  m_AnchoredPosition: {x: -320, y: 50}
   m_SizeDelta: {x: 64, y: 64}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1653364340
@@ -4844,6 +4844,7 @@ MonoBehaviour:
   dragThreshold: 0
   bumpFocus: 0
   actors: []
+  preselectHero: {fileID: 0}
   selectedActor: {fileID: 0}
   movingHero: {fileID: 0}
   targetActor: {fileID: 0}
@@ -6272,8 +6273,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u2713"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
-  m_sharedMaterial: {fileID: 9208542116982176056, guid: 1c38318769e9ad14299b60ef142b4371, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 022e32a7f3183c140afc2abdbbd80887, type: 2}
+  m_sharedMaterial: {fileID: -6702965947189985742, guid: 022e32a7f3183c140afc2abdbbd80887, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
