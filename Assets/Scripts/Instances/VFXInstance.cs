@@ -32,7 +32,7 @@ public class VFXInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// SpawnRoutine of a VFX at a world position. Optionally runs a routine routine afterward.
+    /// Fire-and-forget spawn of a VFX at a world position. Optionally runs a routine afterward.
     /// </summary>
     public void Spawn(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
     {
@@ -40,11 +40,12 @@ public class VFXInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Yield until this VFX reaches its TriggerAt moment (including Delay). Useful for timing chained spawns.
+    /// Yield until this VFX reaches its Apex moment (includes Delay).
+    /// Uses Unity seconds.
     /// </summary>
     public IEnumerator WaitUntilTrigger(VFXAsset vfx)
     {
-        float wait = Mathf.Max(0f, (vfx?.Delay ?? 0f) + (vfx?.TriggerAt ?? 1f));
+        float wait = Mathf.Max(0f, (vfx?.Apex ?? 1f));
         if (wait <= 0f)
             yield break;
 
@@ -57,7 +58,12 @@ public class VFXInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Yieldable spawn of a VFX at a world position. Plays optional routine routine, then despawns.
+    /// Yieldable spawn of a VFX at a world position.
+    /// Respects:
+    /// - Delay: waits before playing
+    /// - Duration: finite -> waits then auto-despawns
+    /// - Non-looping (Duration <= 0): waits for particle completion (with timeout) then auto-despawns
+    /// Looping with Duration <= 0: persists until manually despawned.
     /// </summary>
     public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
     {
@@ -74,25 +80,21 @@ public class VFXInstance : MonoBehaviour
         // Cache the name now, before any possible destroy by parent
         string instanceName = name;
 
-        // Optional start delay
-        if (vfx.Delay != 0f)
-            yield return new WaitForSeconds(vfx.Delay);
-
-        // Optional routine
+        // Optional chained routine
         if (routine != null)
             yield return StartCoroutine(routine);
 
         bool shouldDespawn = false;
 
-        // Optional lifetime or auto-wait for non-looping particle completion
+        // Duration in seconds: finite lifetime -> wait and despawn
         if (vfx.Duration > 0f)
         {
             yield return new WaitForSeconds(vfx.Duration);
-            shouldDespawn = true; // finite lifetime -> auto-despawn
+            shouldDespawn = true;
         }
         else if (!vfx.IsLoop)
         {
-            // If no explicit duration and not looping, wait until particles finish (with a safety timeout)
+            // Non-looping with no explicit duration: wait until particles finish (with a safety timeout)
             var particleSystems = new List<ParticleSystem>();
             GetRecursively(ref particleSystems, transform);
 
@@ -107,7 +109,7 @@ public class VFXInstance : MonoBehaviour
                 return false;
             }
 
-            // Wait one frame to allow Play On Awake systems to start
+            // Wait a frame to let PlayOnAwake systems start
             yield return null;
 
             while (timeout > 0f && anyAlive())
@@ -116,7 +118,6 @@ public class VFXInstance : MonoBehaviour
                 yield return null;
             }
 
-            // Non-looping with no explicit duration -> auto-despawn when finished
             shouldDespawn = true;
         }
 
@@ -127,7 +128,6 @@ public class VFXInstance : MonoBehaviour
         if (shouldDespawn)
             Despawn(instanceName);
     }
-
 
     /// <summary>
     /// Sets the loop flag on all ParticleSystem components in the transform hierarchy.

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Helper;
 
 [DisallowMultipleComponent]
 //[ExecuteAlways]
@@ -25,12 +26,46 @@ public sealed class CutoutOverlay : MonoBehaviour
     // Lifecycle
     // ---------------------------------------------------------------------
 
-    private void OnEnable()
+    private void Awake()
     {
+        // Cache core components
         _rect = GetComponent<RectTransform>();
         _rootCanvas = GetComponentInParent<Canvas>();
 
-        AutoAssignOrCreateChildren();
+        // Assign serialized references using helper if available
+        // These paths are defined in GameObjectHelper.Game.CutoutOverlay
+        // Fallback to auto-create if any are missing at runtime
+        try
+        {
+            if (topRoot == null) topRoot = GameObjectHelper.Game.CutoutOverlay.TopRoot;
+            if (leftPane == null) leftPane = GameObjectHelper.Game.CutoutOverlay.LeftPaneRect;
+            if (centerPane == null) centerPane = GameObjectHelper.Game.CutoutOverlay.CenterPaneRect;
+            if (rightPane == null) rightPane = GameObjectHelper.Game.CutoutOverlay.RightPaneRect;
+            if (bottomRoot == null) bottomRoot = GameObjectHelper.Game.CutoutOverlay.BottomRoot;
+        }
+        catch
+        {
+            // In case objects are not present by path, create/assign locally
+            AutoAssignOrCreateChildren();
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (_rect == null)
+        {
+            _rect = GetComponent<RectTransform>();
+        }
+        if (_rootCanvas == null)
+        {
+            _rootCanvas = GetComponentInParent<Canvas>();
+        }
+
+        if (topRoot == null || leftPane == null || centerPane == null || rightPane == null || bottomRoot == null)
+        {
+            AutoAssignOrCreateChildren();
+        }
+
         Apply(force: true);
     }
 

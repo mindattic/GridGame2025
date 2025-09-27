@@ -174,6 +174,27 @@ namespace Assets.Helper
                 public static RectTransform Content => GameObject.Find("Canvas/Timeline/Viewport/Content").GetComponent<RectTransform>();
             }
 
+            // NEW: CutoutOverlay helpers
+            public static class CutoutOverlay
+            {
+                public const string Root = "Canvas/CutoutOverlay";
+                public const string Top = Root + "/Top";
+                public const string LeftPane = Top + "/LeftPane";
+                public const string CenterPane = Top + "/CenterPane";
+                public const string RightPane = Top + "/RightPane";
+                public const string Bottom = Root + "/Bottom";
+
+                public static RectTransform RootRect => GameObject.Find(Root).GetComponent<RectTransform>();
+                public static global::CutoutOverlay Instance => GameObject.Find(Root).GetComponent<global::CutoutOverlay>();
+                public static RectTransform TopRoot => GameObject.Find(Top).GetComponent<RectTransform>();
+                public static RectTransform LeftPaneRect => GameObject.Find(LeftPane).GetComponent<RectTransform>();
+                public static RectTransform CenterPaneRect => GameObject.Find(CenterPane).GetComponent<RectTransform>();
+                public static RectTransform RightPaneRect => GameObject.Find(RightPane).GetComponent<RectTransform>();
+                public static RectTransform BottomRoot => GameObject.Find(Bottom).GetComponent<RectTransform>();
+                public static Image TopImage => GameObject.Find(Top).GetComponent<Image>();
+                public static Image BottomImage => GameObject.Find(Bottom).GetComponent<Image>();
+            }
+
         }
 
         // Add TimelineBlock prefab internal paths
