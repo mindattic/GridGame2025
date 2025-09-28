@@ -38,7 +38,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -52,7 +52,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.15f, 0.15f, 0.15f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -66,7 +66,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.15f, 0.15f, 0f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -80,7 +80,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                             Apex = 0.12f,
                             Duration = 0.35f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -94,7 +94,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -108,7 +108,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.08f, 0.08f, 0f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -119,10 +119,10 @@ namespace Assets.Scripts.Libraries
                             Prefab = LoadPrefab("Vfx/BlueSlash4"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
-                            RelativeScale = new Vector3(0.1f, 0.1f, 1f),
-                            Apex = 0.1f,
-                            Duration = 0.35f,
-                            IsLoop = false
+                            RelativeScale = new Vector3(0.2f, 0.2f, 2f),
+                            Apex = 0.08f,
+                            Duration = 0.30f,
+                            IsLooping = false
                         }
                     },
                     {
@@ -136,7 +136,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.12f, 0.08f, 0f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -150,7 +150,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.08f, 0.08f, 0f),
                             Apex = 0f,
                             Duration = 3f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -164,7 +164,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.07f, 0.07f, 0.07f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -178,7 +178,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.07f, 0.07f, 0.07f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -192,7 +192,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.16f, 0.16f, 0f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -206,7 +206,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.12f, 0.12f, 0f),
                             Apex = 0.22f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -220,7 +220,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.1f, 0.1f, 0f),
                             Apex = 0f,
                             Duration = 4f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -234,7 +234,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.07f, 0.07f, 0f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -248,7 +248,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -262,7 +262,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -276,7 +276,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.16f, 0.16f, 0.16f),
                             Apex = 0f,
                             Duration = 6f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -290,7 +290,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.3f, 0.3f, 0f),
                             Apex = 0f,
                             Duration = 3f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -304,7 +304,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.1f, 0.1f, 0f),
                             Apex = 0f,
                             Duration = 3f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -318,7 +318,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.05f, 0.05f, 0f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -332,7 +332,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(4f, 4f, 0f),
                             Apex = 0f,
                             Duration = 3f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -346,7 +346,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.03f, 0.03f, 0.03f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -360,7 +360,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.04f, 0.04f, 0.04f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -374,7 +374,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.2f, 0.2f, 0f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -388,7 +388,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.1f, 0.1f, 0f),
                             Apex = 0f,
                             Duration = 3f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -402,7 +402,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.08f, 0.08f, 0f),
                             Apex = 0f,
                             Duration = 1f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -416,7 +416,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.2f, 0.2f, 0.2f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -430,7 +430,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.25f, 0.25f, 0f),
                             Apex = 0f,
                             Duration = 1f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -444,7 +444,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.15f, 0.15f, 0.15f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
                     {
@@ -458,7 +458,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.2f, 0.2f, 0f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = false
+                            IsLooping = false
                         }
                     },
 
@@ -472,7 +472,7 @@ namespace Assets.Scripts.Libraries
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -484,7 +484,7 @@ namespace Assets.Scripts.Libraries
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -496,7 +496,7 @@ namespace Assets.Scripts.Libraries
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -508,7 +508,7 @@ namespace Assets.Scripts.Libraries
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -520,7 +520,7 @@ namespace Assets.Scripts.Libraries
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -532,7 +532,7 @@ namespace Assets.Scripts.Libraries
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                              RelativeScale = new Vector3(1, 1, 1),
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -544,7 +544,7 @@ namespace Assets.Scripts.Libraries
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(2f, 2f, 0f),
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -556,7 +556,7 @@ namespace Assets.Scripts.Libraries
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -570,7 +570,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(1, 1, 1),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -584,7 +584,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                     {
@@ -598,7 +598,7 @@ namespace Assets.Scripts.Libraries
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                             Apex = 0f,
                             Duration = 2f,
-                            IsLoop = true
+                            IsLooping = true
                         }
                     },
                 };

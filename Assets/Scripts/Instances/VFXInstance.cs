@@ -148,7 +148,7 @@ public class VFXInstance : MonoBehaviour
         child.transform.localScale = Vector3.one;
 
         // Reassign Unity layer if requested so the gameplay camera can see it.
-        ApplyUnityLayerRecursively(unityLayerName);
+        //ApplyUnityLayerRecursively(unityLayerName);
 
         // Gather components for control and sorting.
         CacheComponents();
@@ -171,7 +171,7 @@ public class VFXInstance : MonoBehaviour
 
         // Determine lifetime behavior.
         float duration = vfx.Duration;
-        bool isLooping = vfx.IsLoop;
+        bool isLooping = vfx.IsLooping;
 
         if (duration > 0f)
         {

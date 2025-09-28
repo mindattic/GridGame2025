@@ -16,7 +16,7 @@ public class VFXAsset
         RelativeScale = other.RelativeScale;
         Apex = other.Apex;
         Duration = other.Duration;
-        IsLoop = other.IsLoop;
+        IsLooping = other.IsLooping;
     }
 
 
@@ -36,7 +36,7 @@ public class VFXAsset
     public Vector3 RelativeScale;
 
     // Whether this VFX should loop until manually despawned
-    public bool IsLoop;
+    public bool IsLooping;
 
     // Time since spawn + Delay at which the apex occurs
     public float Apex = 1f;
