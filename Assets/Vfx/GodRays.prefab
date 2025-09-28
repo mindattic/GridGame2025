@@ -50,7 +50,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -4850,14 +4850,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  authoringUnitSize: 1
-  extraScaleMultiplier: 1
-  topDownRotateX: 90
-  applyTopDownRotation: 1
-  forceOnTop: 1
-  sortingLayerName: Default
-  sortingOrderOnTop: 32760
-  defaultTileSize: 1
 --- !u!1 &3102312804401663995
 GameObject:
   m_ObjectHideFlags: 0

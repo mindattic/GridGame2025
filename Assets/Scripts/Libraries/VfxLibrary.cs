@@ -103,7 +103,7 @@ namespace Assets.Scripts.Libraries
                         {
                             Name = "BlueSlash3",
                             Prefab = LoadPrefab("Vfx/BlueSlash3"),
-                            RelativeOffset = new Vector3(0.02f, -0.15f, 0f),
+                            RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(30f, 30f, 0f),
                             RelativeScale = new Vector3(0.08f, 0.08f, 0f),
                             Apex = 0f,
