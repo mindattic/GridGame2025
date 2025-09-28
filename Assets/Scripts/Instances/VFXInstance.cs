@@ -34,21 +34,11 @@ public class VFXInstance : MonoBehaviour
     [Tooltip("If true, applies the top-down rotation automatically.")]
     private bool applyTopDownRotation = false; // Default off to avoid unexpected camera-facing issues
 
-    // Sorting configuration to push the effect above gameplay.
-    [Header("Sorting")]
-    [Tooltip("If true, attempts to force all renderers in this VFX to appear on top.")]
-    private bool forceOnTop = true;
-
     [Tooltip("Sorting layer name to apply when possible. Leave empty to keep existing.")]
     private string sortingLayerName = SortingHelper.Layer.VFX;
 
     [Tooltip("Sorting order for Sprite and Particle renderers.")]
     private int sortingOrderOnTop = SortingHelper.Order.Max;
-
-    // Unity layer override (camera culling). Many prefabs ship on a custom layer hidden by the gameplay camera.
-    [Header("Unity Layer (Culling)")]
-    [Tooltip("If true, reassigns the Unity layer on the spawned hierarchy so the gameplay camera can see it.")]
-    private bool forceUnityLayer = true;
 
     [Tooltip("Unity layer name to assign recursively. 'Default' is safest for visibility.")]
     private string unityLayerName = "Default";
@@ -158,8 +148,7 @@ public class VFXInstance : MonoBehaviour
         child.transform.localScale = Vector3.one;
 
         // Reassign Unity layer if requested so the gameplay camera can see it.
-        if (forceUnityLayer)
-            ApplyUnityLayerRecursively(unityLayerName);
+        ApplyUnityLayerRecursively(unityLayerName);
 
         // Gather components for control and sorting.
         CacheComponents();
@@ -171,8 +160,7 @@ public class VFXInstance : MonoBehaviour
         ApplyTransform(vfx, position, tileSize);
 
         // Sorting push to ensure the effect appears on top.
-        if (forceOnTop)
-            ForceSortingOnTop();
+        ForceSortingOnTop();
 
         // Play the effect across both systems defensively.
         PlayEffect();
