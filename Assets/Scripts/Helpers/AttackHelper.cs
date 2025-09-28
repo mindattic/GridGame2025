@@ -31,10 +31,10 @@ namespace Assets.Helpers
                 yield break;
             }
 
-            // For attacks against enemies, play BlueSlash1 and apply damage at its apex
+            // For attacks against enemies, play and apply damage at its apex
             if (opp.IsEnemy)
             {
-                var vfx = VfxLibrary.Get("BlueSlash1");
+                var vfx = VfxLibrary.Get("BlueSlash4");
                 if (vfx != null)
                 {
                     var inst = g.VfxManager.SpawnInstance(vfx, opp.Position, null);
