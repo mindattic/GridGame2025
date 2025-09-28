@@ -91,11 +91,13 @@
     <Compile Include="Assets\Scripts\Data\Actor\Vampire.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\Scripts\Demo_LevelUpCustom_Manager.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergyStrand.cs" />
     <Compile Include="Assets\Scripts\Models\DropdownSetting.cs" />
     <Compile Include="Assets\Scripts\Helpers\PartySortHelper.cs" />
     <Compile Include="Assets\Scripts\Overworld\Mode7CameraController.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Skills\_Scripts_\MagicAttacks_Manager.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
@@ -114,6 +116,7 @@
     <Compile Include="Assets\Scripts\Canvas\CardInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Scripts\DemoManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier03.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Helpers\AssetHelper.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Skills\_Scripts_\SlashCircle.cs" />
     <Compile Include="Assets\Scripts\Managers\VictoryManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Helpers\AlignmentHelper.cs" />
@@ -131,6 +135,7 @@
     <Compile Include="Assets\Scripts\Libraries\ActorLibrary.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Thief.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Skills\_Scripts_\Slash_Manager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Wolf00.cs" />
     <Compile Include="Assets\Scripts\Helpers\UnitConversionHelper.cs" />
     <Compile Include="Assets\Scripts\Models\VectorStats.cs" />
@@ -143,7 +148,6 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAnimation.cs" />
     <Compile Include="Assets\Scripts\Models\GhostRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\VFXManager.cs" />
-    <Compile Include="Assets\Vefects\Item Pickup VFX URP\Scripts\Demo_FreeCam.cs" />
     <Compile Include="Assets\Scripts\Canvas\Timeline.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DayNightCycle.cs" />
@@ -153,7 +157,6 @@
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
     <Compile Include="Assets\Scripts\Managers\SequenceManager.cs" />
     <Compile Include="Assets\Scripts\Effects\ZoomEffect.cs" />
-    <Compile Include="Assets\Vefects\Smoke Bombs VFX URP\Scripts\DemoManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\ShieldBashSequence.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime02.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
@@ -163,6 +166,8 @@
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Utilities\SceneLoader.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\Scripts\Demo_TextLevelUp.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Item Pickup VFX URP\Scripts\Demo_FreeCam.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Overworld\CloudInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\TargetLineManager.cs" />
@@ -226,9 +231,8 @@
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.cs" />
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPostAttackSequence.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Captain.cs" />
-    <Compile Include="Assets\Vefects\Level Up VFX URP\Scripts\Demo_LevelUpCustom_Manager.cs" />
     <Compile Include="Assets\Scripts\Helpers\SceneHelper.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Captain.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\StatGrowth.cs" />
@@ -238,11 +242,9 @@
     <Compile Include="Assets\Scripts\Libraries\PrefabLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
-    <Compile Include="Assets\Vefects\Stylized VFX URP\Skills\_Scripts_\Slash_Manager.cs" />
     <Compile Include="Assets\Scripts\Libraries\SpriteLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
-    <Compile Include="Assets\Vefects\Stylized VFX URP\Skills\_Scripts_\SlashCircle.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
     <Compile Include="Assets\Scripts\Models\ToggleSetting.cs" />
     <Compile Include="Assets\Scripts\Managers\GameOverManager.cs" />
@@ -264,6 +266,7 @@
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\ParallaxBackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Item Pickup VFX URP\Scripts\Demo_TurningAroundEffect.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Wolf01.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />
@@ -275,9 +278,9 @@
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DebugButtonPanel.cs" />
-    <Compile Include="Assets\Vefects\Item Pickup VFX URP\Scripts\Demo_TurningAroundEffect.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.Animation.cs" />
     <Compile Include="Assets\Scripts\Models\Profile.cs" />
+    <Compile Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Skills\_Scripts_\MagicAttacks_Projectile.cs" />
     <Compile Include="Assets\Scripts\Instances\TileInstance.cs" />
     <Compile Include="Assets\Scripts\Models\Enums.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\BoardInstance.cs" />
@@ -287,11 +290,9 @@
     <Compile Include="Assets\Scripts\Helpers\CoroutineHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\DeathHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
-    <Compile Include="Assets\Vefects\Level Up VFX URP\Scripts\Demo_TextLevelUp.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Models\SliderSetting.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorStats.cs" />
-    <Compile Include="Assets\Vefects\Stylized VFX URP\Skills\_Scripts_\MagicAttacks_Projectile.cs" />
     <Compile Include="Assets\Scripts\Models\CanvasThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Sequences\BattleLostSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileCreateManager.cs" />
@@ -315,7 +316,6 @@
     <Compile Include="Assets\Scripts\Models\TurnSelectionMode.cs" />
     <Compile Include="Assets\Scripts\Overworld\CloudShadowInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
-    <Compile Include="Assets\Vefects\Stylized VFX URP\Skills\_Scripts_\MagicAttacks_Manager.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Managers\ExperienceTracker.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.FollowCursor.cs" />
@@ -359,121 +359,121 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Shader\ThirdParty\Add_CenterGlow 2.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_DoubleSided_URP.shader" />
-    <None Include="Assets\Vefects\Loot VFX URP\VFX\Shaders\SH_Vefects_VFX_Adv_Particle_Move_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_DoubleSided_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Loot VFX URP\VFX\Shaders\SH_Vefects_VFX_Adv_Particle_Move_URP.shader" />
     <None Include="Assets\Shader\ThirdParty\henshuuv_b.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Slash_URP.shader" />
-    <None Include="Assets\Vefects\Loot VFX URP\Demo\Resources\Character\Shaders\SH_Vefects_URP_VFX_Character_Showoff.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Slash_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Loot VFX URP\Demo\Resources\Character\Shaders\SH_Vefects_URP_VFX_Character_Showoff.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Shader\ThirdParty\TileMask.shader" />
     <None Include="Assets\Shader\ThirdParty\dissolve_c.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_Step_Newest.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_Step_Newest.shader" />
     <None Include="Assets\Shader\ThirdParty\ParticleAdd_UV 1.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Dissolve_Newest.shader" />
-    <None Include="Assets\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Fresnel_Bomb.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Demo\Resources\Environment\Shaders\SH_Vefects_Grid_01.shader" />
-    <None Include="Assets\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Stylized_Slash_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Dissolve_Newest.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Fresnel_Bomb.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Demo\Resources\Environment\Shaders\SH_Vefects_Grid_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Stylized_Slash_01.shader" />
     <None Include="Assets\Shader\ThirdParty\Add_DisUV.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_DissolveTex_URP.shader" />
-    <None Include="Assets\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Vefects_Distortion_Slash_01.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Demo\Resources\Character\Shaders\SH_Vefects_URP_VFX_Character_Showoff.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_DissolveTex_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Vefects_Distortion_Slash_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Demo\Resources\Character\Shaders\SH_Vefects_URP_VFX_Character_Showoff.shader" />
     <None Include="Assets\Shader\SpritePan.shader" />
     <None Include="Assets\Shader\ThirdParty\SraeWaveAlphaBlended02.shader" />
     <None Include="Assets\Shader\ThirdParty\MaskUV.shader" />
     <None Include="Assets\Shader\ThirdParty\Particle AddSmooth.shader" />
-    <None Include="Assets\Vefects\Level Up VFX URP\_ Extra\Shaders\SH_Vefects_Extra_Grid_01.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Dissolve_New.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\_ Extra\Shaders\SH_Vefects_Extra_Grid_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Dissolve_New.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
     <None Include="Assets\Shader\ThirdParty\ModelDouble 1.shader" />
     <None Include="Assets\Shader\ThirdParty\Dazed.shader" />
     <None Include="Assets\Vfx\WIP\FX_Slash_Collection\Readme.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
-    <None Include="Assets\Vefects\Loot VFX URP\VFX\Shaders\SH_Vefects_VFX_Fresnel_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Loot VFX URP\VFX\Shaders\SH_Vefects_VFX_Fresnel_URP.shader" />
     <None Include="Assets\Shader\InvertColor.shader" />
     <None Include="Assets\Shader\NorthDepthBlurURP.shader" />
     <None Include="Assets\Shader\ThirdParty\Dissolve_Rimlight.shader" />
-    <None Include="Assets\Vefects\Loot VFX URP\VFX\Shaders\SH_Vefects_VFX_Adv_Particle_URP.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_Newer.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Loot VFX URP\VFX\Shaders\SH_Vefects_VFX_Adv_Particle_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_Newer.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
-    <None Include="Assets\Vefects\Level Up VFX URP\_ Extra\Shaders\SH_Vefects_Extra_Billboard_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\_ Extra\Shaders\SH_Vefects_Extra_Billboard_01.shader" />
     <None Include="Assets\Shader\Shuriken.shader" />
     <None Include="Assets\Shader\ThirdParty\MaskUV 1.shader" />
     <None Include="Assets\Shader\ThirdParty\water_ramp.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_Trail_URP.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Documentation\DISTORTION INFO.txt" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_Trail_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Documentation\DISTORTION INFO.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl" />
     <None Include="Assets\Shader\ThirdParty\Blend_CenterGlow.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_Dissolve_URP.shader" />
-    <None Include="Assets\Vefects\Anime VFX URP\Demo\Scene\Shaders\SH_Vefects_Grid_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_Dissolve_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Anime VFX URP\Demo\Scene\Shaders\SH_Vefects_Grid_01.shader" />
     <None Include="Assets\Shader\ThirdParty\ParticleBlend.shader" />
     <None Include="Assets\Shader\ThirdParty\Innerglow.shader" />
     <None Include="Assets\Shader\ThirdParty\RadialFill.shader" />
-    <None Include="Assets\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Stylized_Dissolve.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_Step_New.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Stylized_Dissolve.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_Step_New.shader" />
     <None Include="Assets\Shader\ThirdParty\kongjianniuqu.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_Dissolve_URP.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_Newest.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_Dissolve_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_Newest.shader" />
     <None Include="Assets\Shader\SpriteOutline.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\_ Extra\Shaders\SH_Vefects_Extra_Billboard_01.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_DissolveTex_URP.shader" />
-    <None Include="Assets\Vefects\Level Up VFX URP\VFX\Shaders\SH_Vefects_VFX_URP_LVL_Up_Custom_Move.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\_ Extra\Shaders\SH_Vefects_Extra_Billboard_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_DissolveTex_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\VFX\Shaders\SH_Vefects_VFX_URP_LVL_Up_Custom_Move.shader" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_FresnelStep_New.shader" />
-    <None Include="Assets\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Heat_Haze_01.shader" />
-    <None Include="Assets\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Particles_Erosion_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_FresnelStep_New.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Heat_Haze_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Particles_Erosion_01.shader" />
     <None Include="Assets\Shader\ThirdParty\StartWaveAlphaBlended.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\Shader\ThirdParty\StencilMasked.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Distortion_01_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Distortion_01_URP.shader" />
     <None Include="Assets\Shader\ThirdParty\uvnoise.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
-    <None Include="Assets\Vefects\Item Pickup VFX URP\VFX\Shaders\SH_Vefects_VFX_Adv_Particle_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Item Pickup VFX URP\VFX\Shaders\SH_Vefects_VFX_Adv_Particle_URP.shader" />
     <None Include="Assets\Shader\ThirdParty\henshuuv.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_DissolveEmissive_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_DissolveEmissive_URP.shader" />
     <None Include="Assets\Shader\ThirdParty\Mobile-Particle-Alpha.shader" />
-    <None Include="Assets\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Vefects_Distortion_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Vefects_Distortion_01.shader" />
     <None Include="Assets\Shader\ThirdParty\UVOffset_Mask_Add_2Side.shader" />
     <None Include="Assets\Shader\ThirdParty\Standard.shader" />
-    <None Include="Assets\Vefects\Flipbook VFX URP\Shared\Shaders\SH_Vefects_Unlit_Flipbook_URP.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Piercing_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Flipbook VFX URP\Shared\Shaders\SH_Vefects_Unlit_Flipbook_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Piercing_URP.shader" />
     <None Include="Assets\Shader\ThirdParty\FX_Diffuse.shader" />
-    <None Include="Assets\Vefects\Level Up VFX URP\VFX\Shaders\SH_Vefects_VFX_URP_LVL_Up_Custom.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_Trail_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\VFX\Shaders\SH_Vefects_VFX_URP_LVL_Up_Custom.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_Trail_URP.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Shader\ThirdParty\Alpha Blended.shader" />
     <None Include="Assets\Shader\ThirdParty\FireDartsOriginalFinal.shader" />
     <None Include="Assets\Shader\ThirdParty\Add_CenterGlow.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_URP.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_Color_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_Color_URP.shader" />
     <None Include="Assets\Shader\ThirdParty\water_add.shader" />
-    <None Include="Assets\Vefects\Level Up VFX URP\Demo\Resources\Environment\Shaders\SH_Vefects_Grid_01.shader" />
-    <None Include="Assets\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Fire_Flames_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\Demo\Resources\Environment\Shaders\SH_Vefects_Grid_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Free Fire VFX URP\Shaders\SH_Vefects_VFX_URP_Fire_Flames_01.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
-    <None Include="Assets\Vefects\Loot VFX URP\Demo\Resources\Environment\Shaders\SH_Vefects_Grid_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Loot VFX URP\Demo\Resources\Environment\Shaders\SH_Vefects_Grid_01.shader" />
     <None Include="Assets\Shader\ThirdParty\pmxg.shader" />
     <None Include="Assets\Shader\ScreenShatterURP.shader" />
     <None Include="Assets\Shader\ThirdParty\Particle Add.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_Color_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_AB_Color_URP.shader" />
     <None Include="Assets\Shader\ThirdParty\Add_CenterGlow 3.shader" />
-    <None Include="Assets\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_URP.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Stylized VFX URP\Stylized VFX Shuriken\Shared\Shaders\SH_VFX_Vefects_Add_URP.shader" />
     <None Include="Assets\Shader\ThirdParty\Additive.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\_ Extra\Shaders\SH_Vefects_Extra_Grid_01.shader" />
-    <None Include="Assets\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Flat.shader" />
-    <None Include="Assets\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Bomb.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\_ Extra\Shaders\SH_Vefects_Extra_Grid_01.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Flat.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Anime VFX URP\Shared\Shaders\SH_VFX_Bomb.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\Shader\ThirdParty\ParticleAdd_UV.shader" />
-    <None Include="Assets\Vefects\Level Up VFX URP\VFX\Shaders\SH_Vefects_VFX_URP_LVL_Up_Test.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\VFX\Shaders\SH_Vefects_VFX_URP_LVL_Up_Test.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\Shader\ThirdParty\GradientTransparency.shader" />
-    <None Include="Assets\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_New.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Smoke Bombs VFX URP\Shared\Shaders\SH_Vefects_VFX_Fresnel_New.shader" />
     <None Include="Assets\Shader\ThirdParty\Add_CenterGlow 1.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
     <None Include="Assets\Shader\ThirdParty\Alpha Blended 1.shader" />
@@ -482,9 +482,9 @@
     <None Include="Assets\Shader\ZoomShaderURP.shader" />
     <None Include="Assets\Shader\CellShading.shader" />
     <None Include="Assets\Shader\ThirdParty\ModelDouble.shader" />
-    <None Include="Assets\Vefects\Level Up VFX URP\Demo\Resources\Character\Shaders\SH_Vefects_URP_VFX_Character_Showoff.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\Demo\Resources\Character\Shaders\SH_Vefects_URP_VFX_Character_Showoff.shader" />
     <None Include="Assets\Shader\ThirdParty\StencilMask.shader" />
-    <None Include="Assets\Vefects\Level Up VFX URP\VFX\Shaders\SH_Vefects_VFX_URP_LVL_Up_Test_Move.shader" />
+    <None Include="Assets\Vfx\WIP\Vefects\Level Up VFX URP\VFX\Shaders\SH_Vefects_VFX_URP_LVL_Up_Test_Move.shader" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Sprite.shader" />
     <None Include="Assets\Shader\ThirdParty\MobileParticleAddMultiColor.shader" />
   </ItemGroup>
@@ -1601,6 +1601,10 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\6000.2.1f1\Editor\Data\NetStandard\compat\2.1.0\shims\netfx\System.Xml.Serialization.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.VisualEffectGraph.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualEffectGraph.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.RenderPipelines.Core.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.RenderPipelines.Core.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1863,6 +1867,10 @@
     </Reference>
     <Reference Include="Unity.VisualScripting.State.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.VisualEffectGraph.Runtime">
+      <HintPath>Library\ScriptAssemblies\Unity.VisualEffectGraph.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Mathematics">
