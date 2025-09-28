@@ -1,10 +1,12 @@
 ﻿using Assets.Helper;
+using Assets.Scripts.Libraries;
 using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Helpers
 {
@@ -12,6 +14,7 @@ namespace Assets.Helpers
     {
         /// <summary>
         /// Applies damage for a single attack result, then yields once.
+        /// If the opponent is an enemy, plays BlueSlash1 and triggers damage at the slash apex.
         /// </summary>
         public static IEnumerator SingleAttackRoutine(AttackResult attackResult)
         {
@@ -23,11 +26,32 @@ namespace Assets.Helpers
             if (attackResult.HitType == HitOutcome.Miss)
             {
                 yield return opp.AttackMissRoutine();
+                // Preserve original yield
+                yield return Wait.None();
+                yield break;
             }
-            else
+
+            // For attacks against enemies, play BlueSlash1 and apply damage at its apex
+            if (opp.IsEnemy)
             {
-                opp.Damage(attackResult);
+                var vfx = VfxLibrary.Get("BlueSlash1");
+                if (vfx != null)
+                {
+                    var inst = g.VfxManager.SpawnInstance(vfx, opp.Position, null);
+                    if (inst != null)
+                    {
+                        // Wait until the slash reaches apex, then apply damage
+                        yield return inst.WaitUntilTrigger(vfx);
+                        opp.Damage(attackResult);
+                        // Optional: let VFX continue; do not block on full duration
+                        yield return Wait.None();
+                        yield break;
+                    }
+                }
             }
+
+            // Fallback: apply damage immediately
+            opp.Damage(attackResult);
 
             // Preserve original yield
             yield return Wait.None();

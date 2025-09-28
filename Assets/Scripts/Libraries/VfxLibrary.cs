@@ -79,7 +79,7 @@ namespace Assets.Scripts.Libraries
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
                             Apex = 0.12f,
-                            Duration = 2f,
+                            Duration = 0.35f,
                             IsLoop = false
                         }
                     },

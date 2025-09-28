@@ -3,29 +3,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using Assets.Helpers; // SortingHelper
 
 public class VFXInstance : MonoBehaviour
 {
     // Transforms for convenience.
-    public Transform parent
+    public Transform Parent
     {
         get => gameObject.transform.parent;
         set => gameObject.transform.SetParent(value, true);
     }
 
-    public Vector3 position
+    public Vector3 Position
     {
         get => gameObject.transform.position;
         set => gameObject.transform.position = value;
     }
 
-    public Quaternion rotation
+    public Quaternion Rotation
     {
         get => gameObject.transform.rotation;
         set => gameObject.transform.rotation = value;
     }
 
-    public Vector3 scale
+    public Vector3 Scale
     {
         get => gameObject.transform.localScale;
         set => gameObject.transform.localScale = value;
@@ -77,6 +78,9 @@ public class VFXInstance : MonoBehaviour
 
         // 3) Apply scale in world space relative to tile size, independent of parent scale
         ApplyWorldScale(g.TileScale, vfx.RelativeScale);
+
+        // 4) Ensure VFX renders on top of actors/board
+        ApplyTopSorting();
 
         // Configure looping and scaling behavior for particle systems
         SetLooping(vfx.IsLoop);
@@ -148,6 +152,21 @@ public class VFXInstance : MonoBehaviour
 
         if (shouldAutoDespawn)
             Despawn(instanceName);
+    }
+
+    /// <summary>
+    /// Force all child renderers to the VFX sorting layer with max order so they appear on top in ortho.
+    /// </summary>
+    private void ApplyTopSorting()
+    {
+        int layerId = SortingLayer.NameToID(SortingHelper.Layer.VFX);
+        var renderers = GetComponentsInChildren<Renderer>(includeInactive: true);
+        foreach (var r in renderers)
+        {
+            if (r == null) continue;
+            r.sortingLayerID = layerId;
+            r.sortingOrder = SortingHelper.Order.Max;
+        }
     }
 
     /// <summary>

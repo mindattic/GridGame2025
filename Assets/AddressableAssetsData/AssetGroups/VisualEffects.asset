@@ -50,13 +50,13 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4a1dc68d5e5bcae4199c381af285909c
-    m_Address: Vfx/BlueSlash1
+  - m_GUID: 5747dc98406759e4ab515bea5b6572d6
+    m_Address: Vfx/BlueYellowSword
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5747dc98406759e4ab515bea5b6572d6
-    m_Address: Vfx/BlueYellowSword
+  - m_GUID: 59ea766e421127d4e9be13914ab69a42
+    m_Address: Vfx/BlueSlash1
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -94,6 +94,6 @@ AssetOrigin:
   serializedVersion: 1
   productId: 293636
   packageName: Game VFX - Slash Collection(URP)
-  packageVersion: 1.0
-  assetPath: Assets/FX_Slash_Collection/Mesh/slash_mesh_005.FBX
-  uploadId: 687537
+  packageVersion: 1.01
+  assetPath: Assets/Mesh/slash_mesh_005.FBX
+  uploadId: 768429

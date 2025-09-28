@@ -12,14 +12,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: yanhuan Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 92a780efd0df0d94dbbb4921a1969343, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 92a780efd0df0d94dbbb4921a1969343, type: 3}
-      propertyPath: m_TagString
-      value: VFX
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 92a780efd0df0d94dbbb4921a1969343, type: 3}
       propertyPath: m_RootOrder
       value: 28

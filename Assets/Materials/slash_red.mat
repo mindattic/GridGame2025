@@ -107,4 +107,3 @@ Material:
     - _SpeedMainTexUVNoiseZW: {r: 0, g: 0, b: 0, a: 0}
     - _TintColor: {r: 0.9117647, g: 0.63689446, b: 0.63689446, a: 0.722}
   m_BuildTextureStacks: []
-  m_AllowLocking: 1

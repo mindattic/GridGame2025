@@ -12,14 +12,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eric_SkashCylinder004 Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: a6f8506ff1022044f82d34dbc18086b1, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: a6f8506ff1022044f82d34dbc18086b1, type: 3}
-      propertyPath: m_TagString
-      value: VFX
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: a6f8506ff1022044f82d34dbc18086b1, type: 3}
       propertyPath: m_RootOrder
       value: 14

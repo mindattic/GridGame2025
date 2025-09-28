@@ -12,14 +12,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: slash_mesh_006 Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 90783c2d0ab99c94e9b8276f80f6e6d0, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 90783c2d0ab99c94e9b8276f80f6e6d0, type: 3}
-      propertyPath: m_TagString
-      value: VFX
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 90783c2d0ab99c94e9b8276f80f6e6d0, type: 3}
       propertyPath: m_RootOrder
       value: 24

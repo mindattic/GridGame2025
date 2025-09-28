@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2662670612837108706}
   - component: {fileID: 966743438783642097}
   - component: {fileID: 6231166429828951247}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Purple_Claw Strike
-  m_TagString: VFX
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -25,7 +25,6 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 93934145140554997}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -47,6 +46,7 @@ Transform:
   - {fileID: 5974135718333152838}
   - {fileID: 4291190050886123702}
   m_Father: {fileID: 0}
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &966743438783642097
 ParticleSystem:
@@ -4801,9 +4801,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4842,15 +4839,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 00010304
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 0}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -4871,7 +4866,7 @@ GameObject:
   - component: {fileID: 8135306891751730335}
   - component: {fileID: 1407106843947593}
   - component: {fileID: 4899636717976220300}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: R_P1 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4885,13 +4880,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 115190446721024444}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.009882851, y: 0.0127271395, z: -0.4124461, w: 0.9108395}
   m_LocalPosition: {x: 0.109999835, y: -0.08000009, z: -1.02}
   m_LocalScale: {x: 0.96588826, y: 1.0000005, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -48.712}
 --- !u!198 &1407106843947593
 ParticleSystem:
@@ -9722,9 +9717,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -9763,15 +9755,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 2709fdd3ed9da6641b15c2e5988b3314, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -9792,7 +9782,7 @@ GameObject:
   - component: {fileID: 3147592583969369948}
   - component: {fileID: 48941173604369667}
   - component: {fileID: 978038986542699121}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: R_P1 (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9806,13 +9796,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324386855111494830}
-  serializedVersion: 2
   m_LocalRotation: {x: -0.012166828, y: 0.01056543, z: -0.9320674, w: -0.36192647}
   m_LocalPosition: {x: 0.14940408, y: 0.2692512, z: -0.7900098}
   m_LocalScale: {x: 0.96588004, y: 0.99999976, z: 1.2138072}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -222.431}
 --- !u!198 &48941173604369667
 ParticleSystem:
@@ -14643,9 +14633,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -14684,15 +14671,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: b5dce77a4189c7044aaeb41c5050fa77, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -14713,7 +14698,7 @@ GameObject:
   - component: {fileID: 4619531358846384642}
   - component: {fileID: 6061131469706060510}
   - component: {fileID: 438137801793343141}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: L_P1 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14727,13 +14712,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 435175661268246309}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.009882851, y: 0.0127271395, z: -0.4124461, w: 0.9108395}
   m_LocalPosition: {x: 0.13, y: -0.13, z: 0.93}
   m_LocalScale: {x: 0.96588826, y: 1.0000005, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -48.712}
 --- !u!198 &6061131469706060510
 ParticleSystem:
@@ -19564,9 +19549,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -19605,15 +19587,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 2709fdd3ed9da6641b15c2e5988b3314, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -19634,7 +19614,7 @@ GameObject:
   - component: {fileID: 7437288195630001139}
   - component: {fileID: 9040186383216796950}
   - component: {fileID: 8557721033145101052}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: L_P1 (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19648,13 +19628,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1650567834169902770}
-  serializedVersion: 2
   m_LocalRotation: {x: -0.012166813, y: 0.01056543, z: -0.9320674, w: -0.3619265}
   m_LocalPosition: {x: 0.11059664, y: 0.15074909, z: 1.1900097}
   m_LocalScale: {x: 0.96588016, y: 1, z: 1.2138071}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -222.431}
 --- !u!198 &9040186383216796950
 ParticleSystem:
@@ -24485,9 +24465,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -24526,15 +24503,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: b5dce77a4189c7044aaeb41c5050fa77, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -24555,7 +24530,7 @@ GameObject:
   - component: {fileID: 790004696785202266}
   - component: {fileID: 7454040612420022812}
   - component: {fileID: 3877838052545302239}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: L_P1-2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24569,13 +24544,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1697753480835271097}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.012247285, y: 0.010471909, z: -0.22021848, w: 0.97531754}
   m_LocalPosition: {x: 0.13059698, y: -0.12925078, z: 0.93000996}
   m_LocalScale: {x: 0.96588826, y: 1.0000005, z: 1.0000006}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -25.435001}
 --- !u!198 &7454040612420022812
 ParticleSystem:
@@ -29397,9 +29372,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -29438,15 +29410,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300002, guid: a6f8506ff1022044f82d34dbc18086b1, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -29467,7 +29437,7 @@ GameObject:
   - component: {fileID: 4291190050886123702}
   - component: {fileID: 5130888670384955405}
   - component: {fileID: 2788408404787675118}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Slash_ADD (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29481,13 +29451,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3248431217227912312}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.9077775, y: -0.41800493, z: 0.031428263, w: 0.0149746565}
   m_LocalPosition: {x: 0.64000016, y: -0.000000014901161, z: 1.3900001}
   m_LocalScale: {x: 1.1811793, y: 1.1610293, z: 1.1954564}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 3.065, y: 177.44402, z: -130.619}
 --- !u!198 &5130888670384955405
 ParticleSystem:
@@ -34318,9 +34288,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -34359,15 +34326,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 1d7007ddec6c00c4e94f85d084558fe3, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -34388,7 +34353,7 @@ GameObject:
   - component: {fileID: 7553960429690385864}
   - component: {fileID: 1334294150230218509}
   - component: {fileID: 4104250126979181717}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: C_P1 (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34402,13 +34367,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3492421965964544883}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.009882955, y: 0.012727318, z: -0.41244575, w: 0.9108397}
   m_LocalPosition: {x: -0.06, y: 0.09, z: 0}
   m_LocalScale: {x: 0.96588063, y: 1, z: 0.5568169}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -48.712}
 --- !u!198 &1334294150230218509
 ParticleSystem:
@@ -39239,9 +39204,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -39280,15 +39242,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 2709fdd3ed9da6641b15c2e5988b3314, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -39309,7 +39269,7 @@ GameObject:
   - component: {fileID: 7628929475031015266}
   - component: {fileID: 1928399929666558561}
   - component: {fileID: 8816677563398663509}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: L_P1 (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39323,13 +39283,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4288298247162380843}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.0098828655, y: 0.012727169, z: -0.41244614, w: 0.9108395}
   m_LocalPosition: {x: 0.12999943, y: -0.13000032, z: 0.9300008}
   m_LocalScale: {x: 0.96588725, y: 1.0000002, z: 0.6000006}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -48.712}
 --- !u!198 &1928399929666558561
 ParticleSystem:
@@ -44160,9 +44120,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -44201,15 +44158,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 2709fdd3ed9da6641b15c2e5988b3314, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -44230,7 +44185,7 @@ GameObject:
   - component: {fileID: 9211937722586468458}
   - component: {fileID: 7649104586582647779}
   - component: {fileID: 8708669244514748895}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: R_P1-2 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44244,13 +44199,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4515403324920427468}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.012247285, y: 0.010471909, z: -0.22021848, w: 0.97531754}
   m_LocalPosition: {x: 0.10940415, y: -0.080748364, z: -1.0200098}
   m_LocalScale: {x: 0.96588826, y: 1.0000005, z: 1.0000006}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -25.435001}
 --- !u!198 &7649104586582647779
 ParticleSystem:
@@ -49072,9 +49027,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -49113,15 +49065,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300002, guid: a6f8506ff1022044f82d34dbc18086b1, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -49142,7 +49092,7 @@ GameObject:
   - component: {fileID: 3012516007785818137}
   - component: {fileID: 1778451024574915913}
   - component: {fileID: 2538922978128298575}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: C_P1 (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49156,13 +49106,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5706352301101790595}
-  serializedVersion: 2
   m_LocalRotation: {x: -0.0121668, y: 0.010565401, z: -0.9320674, w: -0.36192653}
   m_LocalPosition: {x: 0.080000184, y: 0.15999988, z: 0.20000008}
   m_LocalScale: {x: 0.96587956, y: 0.9999994, z: 1.2138072}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -222.431}
 --- !u!198 &1778451024574915913
 ParticleSystem:
@@ -53993,9 +53943,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -54034,15 +53981,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: b5dce77a4189c7044aaeb41c5050fa77, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -54063,7 +54008,7 @@ GameObject:
   - component: {fileID: 3816861565870005986}
   - component: {fileID: 4378833895829006031}
   - component: {fileID: 7398183320468531676}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Slash_ADD (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54077,13 +54022,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6599504953767540219}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.9061538, y: -0.42109594, z: 0.032675374, w: -0.022269186}
   m_LocalPosition: {x: 0.66, y: -0.23, z: -0.65}
   m_LocalScale: {x: 1.1811132, y: 1.1608474, z: 1.1952074}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: -0.73600006, y: 175.52802, z: -130.12201}
 --- !u!198 &4378833895829006031
 ParticleSystem:
@@ -58914,9 +58859,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -58955,15 +58897,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 1d7007ddec6c00c4e94f85d084558fe3, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -58984,7 +58924,7 @@ GameObject:
   - component: {fileID: 1295930274973663288}
   - component: {fileID: 509039219367476838}
   - component: {fileID: 837230400213199168}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Slash_ADD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58998,13 +58938,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6818033490376087484}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.907385, y: -0.4202128, z: 0.007240962, w: -0.004608247}
   m_LocalPosition: {x: 0.4800001, y: -0.28000003, z: 0.11000014}
   m_LocalScale: {x: 1.1810455, y: 1.1606632, z: 1.1949533}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -0.13000001, y: 179.02501, z: -130.30101}
 --- !u!198 &509039219367476838
 ParticleSystem:
@@ -63835,9 +63775,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -63876,15 +63813,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 1d7007ddec6c00c4e94f85d084558fe3, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -63905,7 +63840,7 @@ GameObject:
   - component: {fileID: 9071296668950619695}
   - component: {fileID: 8233522413052781931}
   - component: {fileID: 4785940145757500886}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: C_P1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63919,13 +63854,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6884448550320696274}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.009882965, y: 0.012727348, z: -0.41244572, w: 0.9108397}
   m_LocalPosition: {x: 0.12, y: -0.11, z: 0}
   m_LocalScale: {x: 0.9658815, y: 1.0000004, z: 0.51296365}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -48.712}
 --- !u!198 &8233522413052781931
 ParticleSystem:
@@ -68756,9 +68691,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -68797,15 +68729,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 2709fdd3ed9da6641b15c2e5988b3314, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -68826,7 +68756,7 @@ GameObject:
   - component: {fileID: 774310712679572326}
   - component: {fileID: 1143992123062387723}
   - component: {fileID: 8588204949089926581}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: C_P1-2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68840,13 +68770,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7876604851724075720}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.012247261, y: 0.010471925, z: -0.22021842, w: 0.9753175}
   m_LocalPosition: {x: 0.12, y: -0.1, z: -0.05}
   m_LocalScale: {x: 0.9658815, y: 1.0000004, z: 0.34279427}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -25.435001}
 --- !u!198 &1143992123062387723
 ParticleSystem:
@@ -73668,9 +73598,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -73709,15 +73636,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300002, guid: a6f8506ff1022044f82d34dbc18086b1, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
@@ -73738,7 +73663,7 @@ GameObject:
   - component: {fileID: 5974135718333152838}
   - component: {fileID: 7992790460301167129}
   - component: {fileID: 1065049623538315387}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: R_P1 (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73752,13 +73677,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8372770213077820273}
-  serializedVersion: 2
   m_LocalRotation: {x: 0.0098828655, y: 0.012727169, z: -0.41244614, w: 0.9108395}
   m_LocalPosition: {x: 0.11, y: -0.08, z: -1.02}
   m_LocalScale: {x: 0.96588725, y: 1.0000002, z: 0.6000006}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2662670612837108706}
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 1.6330001, y: 0.86200005, z: -48.712}
 --- !u!198 &7992790460301167129
 ParticleSystem:
@@ -78589,9 +78514,6 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -78630,15 +78552,13 @@ ParticleSystemRenderer:
   m_RenderAlignment: 2
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0, z: 0}
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 0
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
   m_FreeformStretching: 0
   m_RotateWithStretchDirection: 1
-  m_UseCustomVertexStreams: 0
   m_VertexStreams: 0001030405
-  m_UseCustomTrailVertexStreams: 0
-  m_TrailVertexStreams: 00010304
   m_Mesh: {fileID: 4300000, guid: 2709fdd3ed9da6641b15c2e5988b3314, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}

@@ -11,10 +11,10 @@ public class BoardOverlay : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Coroutine runningCoroutine;
 
-    [SerializeField] private float fadeDuration = 0.25f; // Duration of overlay effect
-    [SerializeField] private float minAlpha = Opacity.Transparent; // Fully transparent
-    [SerializeField] private float maxAlpha = Opacity.Translucent.Alpha196; // Maximum opacity
-    [SerializeField] private Color overlayColor = ColorHelper.Translucent.DarkBlack; // Default color
+    private float fadeDuration = 0.25f; // Duration of overlay effect
+    private float minAlpha = Opacity.Transparent; // Fully transparent
+    private float maxAlpha = Opacity.Translucent.Alpha196; // Maximum opacity
+    private Color overlayColor = ColorHelper.Translucent.DarkBlack; // Default color
 
     private void Awake()
     {

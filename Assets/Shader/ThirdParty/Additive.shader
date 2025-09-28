@@ -6,8 +6,8 @@ Shader "Eric/URP Particles/Additive"
 		_Noise("Noise", 2D) = "white" {}
 		_Flow("Flow", 2D) = "white" {}
 		_Mask("Mask", 2D) = "white" {}
-		_FocusMainTexUVNoiseZW("Focus MainTex U/V + Noise Z/W", Vector) = (0,0,0,0)
-		_DistortionFocusXYPowerZ("Distortion Focus XY Power Z", Vector) = (0,0,0,0)
+		_SpeedMainTexUVNoiseZW("Speed MainTex U/V + Noise Z/W", Vector) = (0,0,0,0)
+		_DistortionSpeedXYPowerZ("Distortion Speed XY Power Z", Vector) = (0,0,0,0)
 		_Emission("Emission", Float) = 2
 		_Color("Color", Color) = (0.5,0.5,0.5,1)
 		[Toggle]_Usecenterglow("Use center glow?", Float) = 0
@@ -80,9 +80,9 @@ Shader "Eric/URP Particles/Additive"
 				uniform sampler2D _MainTex;
 				uniform float4 _MainTex_ST;
 				uniform float _Usecenterglow;
-				uniform float4 _FocusMainTexUVNoiseZW;
+				uniform float4 _SpeedMainTexUVNoiseZW;
 				uniform sampler2D _Flow;
-				uniform float4 _DistortionFocusXYPowerZ;
+				uniform float4 _DistortionSpeedXYPowerZ;
 				uniform float4 _Flow_ST;
 				uniform sampler2D _Mask;
 				uniform float4 _Mask_ST;
@@ -127,18 +127,18 @@ Shader "Eric/URP Particles/Additive"
 						i.color.a *= lp;
 					#endif
 
-					float2 appendResult21 = (float2(_FocusMainTexUVNoiseZW.x , _FocusMainTexUVNoiseZW.y));
+					float2 appendResult21 = (float2(_SpeedMainTexUVNoiseZW.x , _SpeedMainTexUVNoiseZW.y));
 					float2 uv0_MainTex = i.texcoord.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 					float2 panner107 = ( 1.0 * _Time.y * appendResult21 + uv0_MainTex);
-					float2 appendResult100 = (float2(_DistortionFocusXYPowerZ.x , _DistortionFocusXYPowerZ.y));
+					float2 appendResult100 = (float2(_DistortionSpeedXYPowerZ.x , _DistortionSpeedXYPowerZ.y));
 					float4 uv0_Flow = i.texcoord;
 					uv0_Flow.xy = i.texcoord.xy * _Flow_ST.xy + _Flow_ST.zw;
 					float2 panner110 = ( 1.0 * _Time.y * appendResult100 + (uv0_Flow).xy);
 					float2 uv_Mask = i.texcoord.xy * _Mask_ST.xy + _Mask_ST.zw;
 					float4 tex2DNode33 = tex2D( _Mask, uv_Mask );
-					float Flowpower102 = _DistortionFocusXYPowerZ.z;
+					float Flowpower102 = _DistortionSpeedXYPowerZ.z;
 					float4 tex2DNode13 = tex2D( _MainTex, ( panner107 - ( (( tex2D( _Flow, panner110 ) * tex2DNode33 )).rg * Flowpower102 ) ) );
-					float2 appendResult22 = (float2(_FocusMainTexUVNoiseZW.z , _FocusMainTexUVNoiseZW.w));
+					float2 appendResult22 = (float2(_SpeedMainTexUVNoiseZW.z , _SpeedMainTexUVNoiseZW.w));
 					float2 uv0_Noise = i.texcoord.xy * _Noise_ST.xy + _Noise_ST.zw;
 					float ur = lerp(0, i.texcoord.w, _Usecustomrandom);
 					float2 panner108 = ( 1.0 * _Time.y * appendResult22 + ( uv0_Noise + ur ));
@@ -161,7 +161,7 @@ Shader "Eric/URP Particles/Additive"
 Version=18933
 241;73;891;650;4473.836;436.2256;1;True;False
 Node;AmplifyShaderEditor.CommentaryNode;104;-4130.993,490.5418;Inherit;False;1910.996;537.6462;Texture distortion;12;91;33;100;102;99;94;95;103;92;59;98;110;;1,1,1,1;0;0
-Node;AmplifyShaderEditor.Vector4Node;99;-3968.293,619.481;Float;False;Property;_DistortionFocusXYPowerZ;Distortion Focus XY Power Z;5;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.Vector4Node;99;-3968.293,619.481;Float;False;Property;_DistortionSpeedXYPowerZ;Distortion Speed XY Power Z;5;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.TextureCoordinatesNode;98;-3920.299,848.9976;Inherit;False;0;91;3;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.DynamicAppendNode;100;-3535.482,654.5021;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.ComponentMaskNode;59;-3583.603,566.496;Inherit;False;True;True;False;False;1;0;FLOAT3;0,0,0;False;1;FLOAT2;0
@@ -171,7 +171,7 @@ Node;AmplifyShaderEditor.SamplerNode;91;-3152.937,567.9764;Inherit;True;Property
 Node;AmplifyShaderEditor.CommentaryNode;109;-3401.27,-330.4436;Inherit;False;1037.896;533.6285;Textures movement;7;107;108;29;21;89;22;15;;1,1,1,1;0;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;102;-3556.945,748.0421;Float;False;Flowpower;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;92;-2762.212,550.0183;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.Vector4Node;15;-3351.27,-101.4007;Float;False;Property;_FocusMainTexUVNoiseZW;Focus MainTex U/V + Noise Z/W;4;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.Vector4Node;15;-3351.27,-101.4007;Float;False;Property;_SpeedMainTexUVNoiseZW;Speed MainTex U/V + Noise Z/W;4;0;Create;True;0;0;0;False;0;False;0,0,0,0;0,0,0,0;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ComponentMaskNode;94;-2609.926,543.6367;Inherit;False;True;True;False;False;1;0;COLOR;0,0,0,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;29;-2856.788,-280.4436;Inherit;False;0;13;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.DynamicAppendNode;21;-2778.501,-153.1786;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0

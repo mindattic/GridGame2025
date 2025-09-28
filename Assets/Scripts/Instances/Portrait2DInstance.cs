@@ -13,9 +13,9 @@ public class Portrait2DInstance : MonoBehaviour
     public RectTransform rectTransform { get; private set; }
     public Image image { get; private set; }
 
-    [SerializeField] public Direction direction;
-    [SerializeField] private float fallbackDuration = 1f;
-    [SerializeField] private AnimationCurve slideCurve;
+    public Direction direction;
+    private float fallbackDuration = 1f;
+    private AnimationCurve slideCurve;
     Vector2 destination;
     public ActorInstance actor;
     private bool isBeingDestroyed = false;
@@ -43,7 +43,7 @@ public class Portrait2DInstance : MonoBehaviour
         set => image.sprite = value;
     }
 
-    private float distance;
+    private float distance; // kept for backward-compat minor offset calc
 
     private void Awake()
     {
@@ -51,6 +51,19 @@ public class Portrait2DInstance : MonoBehaviour
         rectTransform.anchorMin = rectTransform.anchorMax = rectTransform.pivot = new Vector2(0.5f, 0.5f);
         image = GetComponent<Image>();
         distance = c.CanvasRect.rect.height;
+
+        slideCurve = new AnimationCurve(
+            new Keyframe(0.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f),
+            new Keyframe(0.8f, 0.05202637f, 0.0f, 0.0f, 0.33333334f, 0.70263505f),
+            new Keyframe(1.2f, -0.05f, 0.0f, 0.0f, 0.33333334f, 0.33322528f),
+            new Keyframe(1.993103f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f)
+        )
+        {
+            preWrapMode = WrapMode.ClampForever,
+            postWrapMode = WrapMode.ClampForever
+        };
+
+
     }
 
     private void OnDestroy() => isBeingDestroyed = true;
@@ -60,11 +73,27 @@ public class Portrait2DInstance : MonoBehaviour
     /// <summary>
     /// Slides the portrait from off-screen start to off-screen end using slideCurve:
     /// covers full screen span vertically or horizontally, with overshoot and retreat.
+    /// Start/end are positioned just outside the canvas, based on the portrait size, so it appears immediately.
     /// </summary>
     public IEnumerator SlideInRoutine()
     {
+        // Canvas and portrait sizes
+        Rect canvas = c.CanvasRect.rect;
+        float halfCanvasW = canvas.width * 0.5f;
+        float halfCanvasH = canvas.height * 0.5f;
+        float halfPortraitW = rectTransform.rect.width * rectTransform.localScale.x * 0.5f;
+        float halfPortraitH = rectTransform.rect.height * rectTransform.localScale.y * 0.5f;
+        const float padding = 2f; // small epsilon to ensure fully offscreen
+
+        // Offscreen coordinates along each axis (centered coordinate system)
+        float offscreenRightX = halfCanvasW + halfPortraitW + padding;
+        float offscreenLeftX = -offscreenRightX;
+        float offscreenTopY = halfCanvasH + halfPortraitH + padding;
+        float offscreenBottomY = -offscreenTopY;
+
         //Generate random offset (used only if a fixed lane is not provided)
-        float offsetAmount = RNG.Float(0f, distance * Increment.Percent10);
+        float crossSpan = (direction == Direction.East || direction == Direction.West) ? canvas.height : canvas.width; // cross-axis size
+        float offsetAmount = RNG.Float(0f, crossSpan * Increment.Percent10);
         float offset = RNG.Int(1, 2) == 1 ? offsetAmount : -offsetAmount;
         bool isVertical = direction == Direction.North || direction == Direction.South;
 
@@ -72,25 +101,35 @@ public class Portrait2DInstance : MonoBehaviour
         float laneX = isVertical ? (fixedX ?? offset) : 0f;
         float laneY = !isVertical ? (fixedY ?? offset) : 0f;
 
-        // Determine origin (start near center along main axis 0, with lane on cross axis)
-        rectTransform.anchoredPosition = new Vector2(laneX, laneY);
-
-        // Determine destination
+        // Determine destination (end point) so the curve goes from -dest -> +dest
         switch (direction)
         {
             case Direction.East:
-                destination = new Vector2(distance, laneY);
+                destination = new Vector2(offscreenRightX, laneY);
                 break;
             case Direction.West:
-                destination = new Vector2(-distance, laneY);
+                destination = new Vector2(offscreenLeftX, laneY);
                 break;
             case Direction.North:
-                destination = new Vector2(laneX, distance);
+                destination = new Vector2(laneX, offscreenTopY);
                 break;
             case Direction.South:
-                destination = new Vector2(laneX, -distance);
+                destination = new Vector2(laneX, offscreenBottomY);
                 break;
         }
+
+        // Initialize position at the curve start (v at t=0)
+        float startV = slideCurve.Evaluate(0f); // expected -1
+        Vector2 startPos;
+        if (direction == Direction.East || direction == Direction.West)
+        {
+            startPos = new Vector2(destination.x * startV, destination.y);
+        }
+        else
+        {
+            startPos = new Vector2(destination.x, destination.y * startV);
+        }
+        rectTransform.anchoredPosition = startPos;
 
         float startTime = Time.time;
         float curveLength = slideCurve.keys[slideCurve.length - 1].time;

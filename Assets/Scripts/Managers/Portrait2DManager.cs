@@ -65,6 +65,7 @@ public class Portrait2DManager : MonoBehaviour
 
     /// <summary>
     /// Spawns a pair of portraitsContainer sliding in from opposite sides.
+    /// Vertical attacks: lanes on left/right. Horizontal attacks: lanes on top/bottom.
     /// </summary>
     public IEnumerator SpawnPairRoutine(ActorPair actorPair)
     {
@@ -73,23 +74,37 @@ public class Portrait2DManager : MonoBehaviour
 
         var (d1, d2) = GetDirection(actorPair);
 
-        // Compute lanes based on rules
-        float? laneX = null;
-        float? laneY = null;
+        // Compute lanes based on axis and assign per-actor lanes
         if (actorPair.axis == Axis.Vertical)
         {
-            laneX = ComputeVerticalLaneX(actorPair);
+            var (leftX, rightX) = ComputeVerticalLaneXs(actorPair);
+
+            // Decide which actor goes left/right based on board column (x)
+            bool a1Left = actorPair.actor1.location.x <= actorPair.actor2.location.x;
+            float a1X = a1Left ? leftX : rightX;
+            float a2X = a1Left ? rightX : leftX;
+
+            // Run both SlideInRoutine coroutines in parallel with lanes
+            yield return CoroutineHelper.WaitForAll(this,
+                SlideInRoutine(actorPair.actor1, d1, fixedX: a1X, fixedY: null),
+                SlideInRoutine(actorPair.actor2, d2, fixedX: a2X, fixedY: null)
+            );
         }
         else // Horizontal
         {
-            laneY = ComputeHorizontalLaneY(actorPair);
-        }
+            var (bottomY, topY) = ComputeHorizontalLaneYs(actorPair);
 
-        // Run both SlideInRoutine coroutines in parallel with lanes
-        yield return CoroutineHelper.WaitForAll(this,
-            SlideInRoutine(actorPair.actor1, d1, laneX, laneY),
-            SlideInRoutine(actorPair.actor2, d2, laneX, laneY)
-        );
+            // Decide which actor goes bottom/top based on board row (y)
+            bool a1Bottom = actorPair.actor1.location.y <= actorPair.actor2.location.y;
+            float a1Y = a1Bottom ? bottomY : topY;
+            float a2Y = a1Bottom ? topY : bottomY;
+
+            // Run both SlideInRoutine coroutines in parallel with lanes
+            yield return CoroutineHelper.WaitForAll(this,
+                SlideInRoutine(actorPair.actor1, d1, fixedX: null, fixedY: a1Y),
+                SlideInRoutine(actorPair.actor2, d2, fixedX: null, fixedY: a2Y)
+            );
+        }
 
         yield return Wait.For(Intermission.Before.Portrait.SlideIn);
     }
@@ -122,42 +137,25 @@ public class Portrait2DManager : MonoBehaviour
     // Positioning rules
     // ------------------------------------------------------------------
 
-    // Vertical attacks: choose a side lane based on column: cols 1-3 => right, cols 4-6+ => left
-    private float ComputeVerticalLaneX(ActorPair pair)
+    // Vertical attacks: choose 25% and 75% lanes across the canvas width (canvas-local X offsets)
+    private (float leftX, float rightX) ComputeVerticalLaneXs(ActorPair pair)
     {
-        var container = g.PortraitsContainer;
-        if (container == null) return 0f;
+        var parentRect = g.PortraitsContainer as RectTransform;
+        float width = parentRect != null ? parentRect.rect.width : 1920f; // Fallback width
 
-        float halfW = container.rect.width * 0.5f;
-        int colA = Mathf.Max(1, pair.actor1.location.x);
-        int colB = Mathf.Max(1, pair.actor2.location.x);
-        float avgCol = (colA + colB) * 0.5f;
-
-        // Right side positive X, left side negative X (relative to center)
-        bool useRight = avgCol <= 3f; // columns 1-3 => right side; otherwise left
-
-        // Keep inside safe margin so UI is visible
-        float lane = halfW * 0.6f;
-        return useRight ? +lane : -lane;
+        // 25% and 75% of the full width => centered coordinates are -0.25w and +0.25w
+        float lane = width * 0.25f;
+        return (-lane, lane);
     }
 
-    // Horizontal attacks: choose a top/bottom lane so it doesn't overlap the row containing the actors
-    private float ComputeHorizontalLaneY(ActorPair pair)
+    // Horizontal attacks: choose 25% and 75% lanes across the canvas height (canvas-local Y offsets)
+    private (float bottomY, float topY) ComputeHorizontalLaneYs(ActorPair pair)
     {
-        var container = g.PortraitsContainer;
-        if (container == null) return 0f;
+        var parentRect = g.PortraitsContainer as RectTransform;
+        float height = parentRect != null ? parentRect.rect.height : 1080f; // Fallback height
 
-        float halfH = container.rect.height * 0.5f;
-
-        // World midpoint of the two actors
-        Vector3 worldMid = (pair.actor1.Position + pair.actor2.Position) * 0.5f;
-
-        // Convert to this container's local canvas space
-        Vector2 local = Assets.Helpers.UnitConversionHelper.World.ToCanvas(container, worldMid);
-
-        // If the row is in upper half (y >= 0), use a bottom lane; else use a top lane
-        bool rowIsUpperHalf = local.y >= 0f;
-        float lane = halfH * 0.6f;
-        return rowIsUpperHalf ? -lane : +lane;
+        // 25% and 75% of the full height => centered coordinates are -0.25h and +0.25h
+        float lane = height * 0.25f;
+        return (-lane, lane);
     }
 }

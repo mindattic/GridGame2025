@@ -12,14 +12,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: 700001_Slash Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: e3446738b61d1da4ba33572feb037562, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: e3446738b61d1da4ba33572feb037562, type: 3}
-      propertyPath: m_TagString
-      value: VFX
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: e3446738b61d1da4ba33572feb037562, type: 3}
       propertyPath: m_RootOrder
       value: 4

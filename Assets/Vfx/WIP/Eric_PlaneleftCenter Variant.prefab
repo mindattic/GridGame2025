@@ -12,14 +12,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Eric_PlaneleftCenter Variant
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: b2d3cc04297d75448a4bb80e3eb0f717, type: 3}
-      propertyPath: m_Layer
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: b2d3cc04297d75448a4bb80e3eb0f717, type: 3}
-      propertyPath: m_TagString
-      value: VFX
-      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: b2d3cc04297d75448a4bb80e3eb0f717, type: 3}
       propertyPath: m_RootOrder
       value: 11
