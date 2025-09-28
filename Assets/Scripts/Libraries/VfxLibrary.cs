@@ -112,6 +112,20 @@ namespace Assets.Scripts.Libraries
                         }
                     },
                     {
+                        "BlueSlash4",
+                        new VFXAsset
+                        {
+                            Name = "BlueSlash4",
+                            Prefab = LoadPrefab("Vfx/BlueSlash4"),
+                            RelativeOffset = new Vector3(0f, 0f, 0f),
+                            AngularRotation = new Vector3(0f, 0f, 0f),
+                            RelativeScale = new Vector3(0.1f, 0.1f, 1f),
+                            Apex = 0.1f,
+                            Duration = 0.35f,
+                            IsLoop = false
+                        }
+                    },
+                    {
                         "BlueSword",
                         new VFXAsset
                         {

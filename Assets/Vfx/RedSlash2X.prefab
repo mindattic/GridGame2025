@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5822746708378553733}
   - component: {fileID: 2956126273615091521}
   - component: {fileID: 7774539154899911676}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: RedSlash2X
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -4862,6 +4862,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &1438949325126838198
 GameObject:
   m_ObjectHideFlags: 0
@@ -4873,7 +4881,7 @@ GameObject:
   - component: {fileID: 6129224899875572407}
   - component: {fileID: 5162994958314449649}
   - component: {fileID: 1868622384994174852}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9779,7 +9787,7 @@ GameObject:
   - component: {fileID: 4901688319418595885}
   - component: {fileID: 295357744655790114}
   - component: {fileID: 8614898420812527784}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_AlphaBlende
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14685,7 +14693,7 @@ GameObject:
   - component: {fileID: 8549848271498474561}
   - component: {fileID: 644093258071939756}
   - component: {fileID: 6797061874274347114}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: SlashA (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19535,7 +19543,7 @@ GameObject:
   - component: {fileID: 6731717483109496829}
   - component: {fileID: 911512554904229433}
   - component: {fileID: 8689859255092862005}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24445,7 +24453,7 @@ GameObject:
   - component: {fileID: 5469198835143699296}
   - component: {fileID: 2234287776468143429}
   - component: {fileID: 6522932920716559825}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_Blend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29351,7 +29359,7 @@ GameObject:
   - component: {fileID: 2638156387594482039}
   - component: {fileID: 7780440319401924691}
   - component: {fileID: 3125209953773144635}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34239,7 +34247,7 @@ GameObject:
   - component: {fileID: 8330114731898783798}
   - component: {fileID: 17125206335478066}
   - component: {fileID: 4051962481917417023}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_Blend
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39145,7 +39153,7 @@ GameObject:
   - component: {fileID: 7621636918118461356}
   - component: {fileID: 2216176763194890256}
   - component: {fileID: 4726327799045644206}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44033,7 +44041,7 @@ GameObject:
   - component: {fileID: 1489678082262907429}
   - component: {fileID: 8166631078137127537}
   - component: {fileID: 7134440499585640845}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48921,7 +48929,7 @@ GameObject:
   - component: {fileID: 8308457309147912879}
   - component: {fileID: 641261755424372084}
   - component: {fileID: 2845879664381685802}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: SlashA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53775,7 +53783,7 @@ GameObject:
   - component: {fileID: 548433945634940264}
   - component: {fileID: 6313788529985596403}
   - component: {fileID: 8530555763673183771}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58681,7 +58689,7 @@ GameObject:
   - component: {fileID: 1155718618777448963}
   - component: {fileID: 8368677859450673149}
   - component: {fileID: 6359084695831651990}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63569,7 +63577,7 @@ GameObject:
   - component: {fileID: 68197657687586521}
   - component: {fileID: 7772174847715621790}
   - component: {fileID: 7801568476762518383}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_AlphaBlende
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68476,7 +68484,7 @@ GameObject:
   - component: {fileID: 4335440753688559165}
   - component: {fileID: 7376416503189396179}
   - component: {fileID: 1069148509900017325}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73364,7 +73372,7 @@ GameObject:
   - component: {fileID: 7882767447632512548}
   - component: {fileID: 3389335296778981413}
   - component: {fileID: 3593061269220386293}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78252,7 +78260,7 @@ GameObject:
   - component: {fileID: 4340095957631521318}
   - component: {fileID: 5034151335926299554}
   - component: {fileID: 4250533049146310535}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: FX_20003_Skill
   m_TagString: Untagged
   m_Icon: {fileID: 0}

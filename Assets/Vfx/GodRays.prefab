@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6547786315619045642}
   - component: {fileID: 4647046058699093491}
   - component: {fileID: -4038065356294141757}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: GodRays
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -4850,6 +4850,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &3102312804401663995
 GameObject:
   m_ObjectHideFlags: 0
@@ -4861,7 +4869,7 @@ GameObject:
   - component: {fileID: 6036397177177349198}
   - component: {fileID: 6726905414496780294}
   - component: {fileID: 248216479751228563}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: shock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9767,7 +9775,7 @@ GameObject:
   - component: {fileID: 3830073468435699921}
   - component: {fileID: 6434522430753739896}
   - component: {fileID: 3940847677518792639}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14622,7 +14630,7 @@ GameObject:
   - component: {fileID: 4977534111707138260}
   - component: {fileID: 8972124001516096584}
   - component: {fileID: 3461717889396584299}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: floor_ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19537,7 +19545,7 @@ GameObject:
   - component: {fileID: 6666908312793886529}
   - component: {fileID: 7002599297799346938}
   - component: {fileID: 6818763512544283825}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24385,7 +24393,7 @@ GameObject:
   - component: {fileID: 5178391045717089225}
   - component: {fileID: 4626769785559194332}
   - component: {fileID: 1463113461985104923}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: floor_glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29291,7 +29299,7 @@ GameObject:
   - component: {fileID: 7140101005677718533}
   - component: {fileID: 5532722414942586276}
   - component: {fileID: 3952063231872749889}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: floor_shock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34197,7 +34205,7 @@ GameObject:
   - component: {fileID: 1273057597401187649}
   - component: {fileID: 3722548731998664109}
   - component: {fileID: 6423305284594424093}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39103,7 +39111,7 @@ GameObject:
   - component: {fileID: 9059221103604934702}
   - component: {fileID: 199100877943744029}
   - component: {fileID: 2076280047681580992}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: star_fall
   m_TagString: Untagged
   m_Icon: {fileID: 0}

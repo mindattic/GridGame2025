@@ -16,7 +16,7 @@ namespace Assets.Helpers
             public const string BoardOverlay = "BoardOverlay";
             public const string SupportLineAbove = "SupportLineAbove";
             public const string ActorAbove = "ActorAbove";
-            public const string VFX = "VfxManager";
+            public const string VFX = "VFX";
             public const string Coin = "Coin";
             public const string DamageText = "CombatTextManager";
             public const string PortraitPopIn = "PortraitPopIn";

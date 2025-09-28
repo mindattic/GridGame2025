@@ -292,6 +292,7 @@ public enum VFX
     BlueSlash1,
     BlueSlash2,
     BlueSlash3,
+    BlueSlash4,
     BlueSword,
     BlueSword4X,
     BlueYellowSword,

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7167361662804583330}
   - component: {fileID: 6005821361759506549}
   - component: {fileID: 4127564371387597224}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Hit1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4864,7 +4864,7 @@ GameObject:
   - component: {fileID: 418211039123472063}
   - component: {fileID: 2179148258361302660}
   - component: {fileID: 5153918651771133134}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Rotation_slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9595,7 +9595,7 @@ GameObject:
   - component: {fileID: 6102411407158102730}
   - component: {fileID: 90912300457066872}
   - component: {fileID: 2831045743928052753}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14443,7 +14443,7 @@ GameObject:
   - component: {fileID: 8484397854968352916}
   - component: {fileID: 4845423757576645002}
   - component: {fileID: 1485297195896356226}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19291,7 +19291,7 @@ GameObject:
   - component: {fileID: 8911933708681326458}
   - component: {fileID: 885058999611682818}
   - component: {fileID: 3300996267045879922}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24140,7 +24140,7 @@ GameObject:
   - component: {fileID: 4711087393031167228}
   - component: {fileID: 4649476283119738549}
   - component: {fileID: 7511014914235225832}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: RotaryKnife
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -28991,6 +28991,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &6480378769010867108
 GameObject:
   m_ObjectHideFlags: 0
@@ -29002,7 +29010,7 @@ GameObject:
   - component: {fileID: 8163725469041197743}
   - component: {fileID: 2333280959689692199}
   - component: {fileID: 6324950392200665674}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33851,7 +33859,7 @@ GameObject:
   - component: {fileID: 2523725892933443443}
   - component: {fileID: 5087816647213517094}
   - component: {fileID: 8221318353480839948}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38708,7 +38716,7 @@ GameObject:
   - component: {fileID: 3506616489295172183}
   - component: {fileID: 8346617558040104484}
   - component: {fileID: 6304478206201809276}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

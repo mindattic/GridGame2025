@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4917021297879948}
   - component: {fileID: 198271724335273782}
   - component: {fileID: 199773343611859854}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4918,7 +4918,7 @@ GameObject:
   - component: {fileID: 198440865886713884}
   - component: {fileID: 199292160546940692}
   - component: {fileID: -5500544260110670702}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: HexShield
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -9771,6 +9771,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &1625336311509298
 GameObject:
   m_ObjectHideFlags: 0
@@ -9782,7 +9790,7 @@ GameObject:
   - component: {fileID: 4199329300720514}
   - component: {fileID: 198651811770087392}
   - component: {fileID: 199250221945024868}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14630,7 +14638,7 @@ GameObject:
   - component: {fileID: 4855550329180452}
   - component: {fileID: 198342401429693936}
   - component: {fileID: 199830892745279374}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: flare02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19487,7 +19495,7 @@ GameObject:
   - component: {fileID: 4661519052183770}
   - component: {fileID: 198401866624782250}
   - component: {fileID: 199266294944802236}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

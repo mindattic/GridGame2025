@@ -2,12 +2,71 @@ using Assets.Scripts.Models;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 using g = Assets.Helpers.GameHelper;
-using Assets.Helpers; // SortingHelper
+using Assets.Helpers;
 
+/// <summary>
+/// Spawns and normalizes VisualEffect or ParticleSystem prefabs so they render correctly in a top-down game.
+/// Responsibilities:
+/// 1) Scale to the provided tileSize using an authoring size reference.
+/// 2) Apply top-down rotation and any asset rotation.
+/// 3) Position at the requested world position plus asset offset.
+/// 4) Force sorting so the VFX appears on top of gameplay.
+/// 5) Drive lifetime rules:
+///    - If Duration > 0: play and auto-despawn after Duration.
+///    - If IsLoop and Duration <= 0: keep alive until manually despawned by reference.
+///    - Else: wait for natural completion with a safety timeout, then despawn.
+/// </summary>
 public class VFXInstance : MonoBehaviour
 {
-    // Transforms for convenience.
+    // Authoring and orientation configuration used for normalization.
+    [Header("Normalization")]
+    [Tooltip("Authoring world units that equal one tile at scale 1. Used to convert to your tileSize.")]
+    private float authoringUnitSize = 1.0f;
+
+    [Tooltip("Extra global multiplier applied after tile scaling.")]
+    private float extraScaleMultiplier = 1.0f;
+
+    [Tooltip("Rotate X by this many degrees for top-down. 90 is typical.")]
+    private float topDownRotateX = 90.0f;
+
+    [Tooltip("If true, applies the top-down rotation automatically.")]
+    private bool applyTopDownRotation = false; // Default off to avoid unexpected camera-facing issues
+
+    // Sorting configuration to push the effect above gameplay.
+    [Header("Sorting")]
+    [Tooltip("If true, attempts to force all renderers in this VFX to appear on top.")]
+    private bool forceOnTop = true;
+
+    [Tooltip("Sorting layer name to apply when possible. Leave empty to keep existing.")]
+    private string sortingLayerName = SortingHelper.Layer.VFX;
+
+    [Tooltip("Sorting order for Sprite and Particle renderers.")]
+    private int sortingOrderOnTop = SortingHelper.Order.Max;
+
+    // Unity layer override (camera culling). Many prefabs ship on a custom layer hidden by the gameplay camera.
+    [Header("Unity Layer (Culling)")]
+    [Tooltip("If true, reassigns the Unity layer on the spawned hierarchy so the gameplay camera can see it.")]
+    private bool forceUnityLayer = true;
+
+    [Tooltip("Unity layer name to assign recursively. 'Default' is safest for visibility.")]
+    private string unityLayerName = "Default";
+
+    // Optional default tile size for the convenience Spawn overload.
+    [Header("Defaults")]
+    [Tooltip("Default tile size used by Spawn without an explicit tileSize parameter.")]
+    private float defaultTileSize = 1.0f;
+
+    // Cached component references created at spawn time.
+    private VisualEffect[] vfxComponents;
+    private ParticleSystem[] particleSystems;
+    private Renderer[] renderers;
+
+    // -------------------------------------------------------------------------
+    // Transform conveniences
+    // -------------------------------------------------------------------------
+
     public Transform Parent
     {
         get => gameObject.transform.parent;
@@ -32,17 +91,29 @@ public class VFXInstance : MonoBehaviour
         set => gameObject.transform.localScale = value;
     }
 
+    // -------------------------------------------------------------------------
+    // Public API
+    // -------------------------------------------------------------------------
+
     /// <summary>
-    /// Fire-and-forget spawn of a VFX at a world position. Optionally runs a routine afterward.
+    /// Fire and forget spawn at a world position using defaultTileSize.
     /// </summary>
     public void Spawn(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
     {
-        StartCoroutine(SpawnRoutine(vfx, position, routine));
+        StartCoroutine(SpawnRoutine(vfx, position, defaultTileSize, routine));
     }
 
     /// <summary>
-    /// Yield until this VFX reaches its Apex moment (includes Delay).
-    /// Uses Unity seconds.
+    /// Fire and forget spawn at a world position using an explicit tileSize.
+    /// </summary>
+    public void Spawn(VFXAsset vfx, Vector3 position, float tileSize, IEnumerator routine = null)
+    {
+        StartCoroutine(SpawnRoutine(vfx, position, tileSize, routine));
+    }
+
+    /// <summary>
+    /// Yield until the configured Apex moment of the VFX. This is useful
+    /// when gameplay needs to sync with a visual hit or burst.
     /// </summary>
     public IEnumerator WaitUntilTrigger(VFXAsset vfx)
     {
@@ -59,177 +130,306 @@ public class VFXInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Yieldable spawn of a VFX at a world position.
-    /// Respects:
-    /// - Delay: waits before playing
-    /// - Duration: finite -> waits then auto-despawns
-    /// - Non-looping with no Duration: waits for particle completion (with timeout)
-    /// - Looping with Duration <= 0: persists until manually despawned.
+    /// Yieldable spawn that instantiates the asset prefab as a child,
+    /// normalizes transform, manages sorting, plays the effect, and handles lifetime.
     /// </summary>
     public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
     {
-        if (vfx == null) yield break;
+        yield return SpawnRoutine(vfx, position, defaultTileSize, routine);
+    }
 
-        // 1) Place
-        transform.position = position + vfx.RelativeOffset;
-
-        // 2) Apply rotation
-        transform.eulerAngles = vfx.AngularRotation;
-
-        // 3) Apply scale in world space relative to tile size, independent of parent scale
-        ApplyWorldScale(g.TileScale, vfx.RelativeScale);
-
-        // 4) Ensure VFX renders on top of actors/board
-        ApplyTopSorting();
-
-        // Configure looping and scaling behavior for particle systems
-        SetLooping(vfx.IsLoop);
-
-        // Cache the name now, before any possible destroy by parent
-        string instanceName = name;
-
-        // Optional chained routine
-        if (routine != null)
-            yield return StartCoroutine(routine);
-
-        bool shouldAutoDespawn = false;
-
-        // Lifetime handling
-        if (vfx.IsLoop)
-        {
-            // Looping: if a finite duration is provided, respect it, else persist
-            if (vfx.Duration > 0f)
-            {
-                yield return new WaitForSeconds(vfx.Duration);
-                shouldAutoDespawn = true;
-            }
-            else
-            {
-                // Infinite loop: do not auto-despawn
-                shouldAutoDespawn = false;
-            }
-        }
-        else
-        {
-            // Non-looping: if a finite duration is provided, respect it; otherwise wait for particles to finish
-            if (vfx.Duration > 0f)
-            {
-                yield return new WaitForSeconds(vfx.Duration);
-                shouldAutoDespawn = true;
-            }
-            else
-            {
-                var particleSystems = new List<ParticleSystem>();
-                GetRecursively(ref particleSystems, transform);
-
-                // Wait a frame to let PlayOnAwake systems start
-                yield return null;
-
-                float timeout = 5f; // safety cap
-                bool anyAlive()
-                {
-                    foreach (var ps in particleSystems)
-                    {
-                        if (ps != null && ps.IsAlive(true))
-                            return true;
-                    }
-                    return false;
-                }
-
-                while (timeout > 0f && anyAlive())
-                {
-                    timeout -= Time.deltaTime;
-                    yield return null;
-                }
-
-                shouldAutoDespawn = true;
-            }
-        }
-
-        // If this was already destroyed by a parent, stop quietly
-        if (this == null || gameObject == null)
+    /// <summary>
+    /// Yieldable spawn with explicit tileSize.
+    /// Applies Delay, then plays. Handles Duration and completion rules as documented on the class.
+    /// </summary>
+    public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 position, float tileSize, IEnumerator routine = null)
+    {
+        if (vfx == null || vfx.Prefab == null)
             yield break;
 
-        if (shouldAutoDespawn)
-            Despawn(instanceName);
+        // Important: keep the name assigned by the manager so Despawn works.
+        string instanceName = name;
+
+        // Clean any previous children then instantiate the effect under this wrapper.
+        ClearChildren();
+        var child = Instantiate(vfx.Prefab, transform);
+        child.transform.localPosition = Vector3.zero;
+        child.transform.localRotation = Quaternion.identity;
+        child.transform.localScale = Vector3.one;
+
+        // Reassign Unity layer if requested so the gameplay camera can see it.
+        if (forceUnityLayer)
+            ApplyUnityLayerRecursively(unityLayerName);
+
+        // Gather components for control and sorting.
+        CacheComponents();
+
+        // Normalize PS scaling to be affected by transform scale.
+        NormalizeParticleSystems();
+
+        // Normalize transform: rotation, position, and scale relative to tile size.
+        ApplyTransform(vfx, position, tileSize);
+
+        // Sorting push to ensure the effect appears on top.
+        if (forceOnTop)
+            ForceSortingOnTop();
+
+        // Play the effect across both systems defensively.
+        PlayEffect();
+
+        // Optional external routine during playback.
+        if (routine != null)
+            yield return routine;
+
+        // Determine lifetime behavior.
+        float duration = vfx.Duration;
+        bool isLooping = vfx.IsLoop;
+
+        if (duration > 0f)
+        {
+            // Explicit duration wins. Auto-despawn when done.
+            float t = 0f;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            // Return control to manager so it unregisters cleanly.
+            g.VfxManager.Despawn(instanceName);
+            yield break;
+        }
+
+        if (isLooping)
+        {
+            // Looping with no duration must be explicitly despawned by reference.
+            yield break;
+        }
+
+        // Non-looping with no duration: wait for natural completion or safety timeout.
+        const float safetyTimeout = 8.0f;
+        float elapsed = 0f;
+
+        while (HasAliveParticles() && elapsed < safetyTimeout)
+        {
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        g.VfxManager.Despawn(instanceName);
     }
 
     /// <summary>
-    /// Force all child renderers to the VFX sorting layer with max order so they appear on top in ortho.
+    /// Requests despawn from the manager.
     /// </summary>
-    private void ApplyTopSorting()
+    private void Despawn(string name)
     {
-        int layerId = SortingLayer.NameToID(SortingHelper.Layer.VFX);
-        var renderers = GetComponentsInChildren<Renderer>(includeInactive: true);
-        foreach (var r in renderers)
+        g.VfxManager.Despawn(name);
+    }
+
+    // -------------------------------------------------------------------------
+    // Internal helpers
+    // -------------------------------------------------------------------------
+
+    /// <summary>
+    /// Removes all child GameObjects under this wrapper.
+    /// </summary>
+    private void ClearChildren()
+    {
+        for (int i = transform.childCount - 1; i >= 0; i--)
         {
-            if (r == null) continue;
-            r.sortingLayerID = layerId;
-            r.sortingOrder = SortingHelper.Order.Max;
+            var c = transform.GetChild(i);
+            if (Application.isPlaying)
+                Destroy(c.gameObject);
+            else
+                DestroyImmediate(c.gameObject);
         }
     }
 
     /// <summary>
-    /// Compute a world-space scale from tile and relative scales and apply as localScale compensating for parent lossyScale.
+    /// Caches components from the instantiated child hierarchy.
     /// </summary>
-    private void ApplyWorldScale(Vector3 tileScale, Vector3 relativeScale)
+    private void CacheComponents()
     {
-        Vector3 desiredWorld = new Vector3(
-            Mathf.Max(1e-4f, tileScale.x * relativeScale.x),
-            Mathf.Max(1e-4f, tileScale.y * relativeScale.y),
-            Mathf.Max(1e-4f, (relativeScale.z == 0f ? 1f : tileScale.z * relativeScale.z))
-        );
-
-        Vector3 parentLossy = Vector3.one;
-        if (transform.parent != null)
-            parentLossy = transform.parent.lossyScale;
-
-        // Avoid division by zero
-        float ix = parentLossy.x != 0f ? 1f / parentLossy.x : 1f;
-        float iy = parentLossy.y != 0f ? 1f / parentLossy.y : 1f;
-        float iz = parentLossy.z != 0f ? 1f / parentLossy.z : 1f;
-
-        transform.localScale = new Vector3(desiredWorld.x * ix, desiredWorld.y * iy, desiredWorld.z * iz);
+        vfxComponents = GetComponentsInChildren<VisualEffect>(true);
+        particleSystems = GetComponentsInChildren<ParticleSystem>(true);
+        renderers = GetComponentsInChildren<Renderer>(true);
     }
 
     /// <summary>
-    /// Sets the loop flag on all ParticleSystem components in the transform hierarchy
-    /// and enforces Hierarchy scaling so transform scale affects particle size.
+    /// Ensure ParticleSystems scale with transform to honor tile-based scaling.
     /// </summary>
-    private void SetLooping(bool isLoop)
+    private void NormalizeParticleSystems()
     {
-        var particleSystems = new List<ParticleSystem>();
-        GetRecursively(ref particleSystems, transform);
-
-        foreach (var system in particleSystems)
+        if (particleSystems == null) return;
+        for (int i = 0; i < particleSystems.Length; i++)
         {
-            if (system == null)
-                continue;
-
-            var main = system.main;
-            main.loop = isLoop;
+            var ps = particleSystems[i];
+            if (ps == null) continue;
+            var main = ps.main;
             main.scalingMode = ParticleSystemScalingMode.Hierarchy;
         }
     }
 
     /// <summary>
-    /// Collects ParticleSystem components from this transform and all children.
+    /// Applies rotation, position, and uniform tile scaling with asset offsets.
     /// </summary>
-    private void GetRecursively(ref List<ParticleSystem> particleSystems, Transform transform)
+    private void ApplyTransform(VFXAsset vfx, Vector3 worldPosition, float tileSize)
     {
-        var ps = transform.GetComponent<ParticleSystem>();
-        if (ps != null)
-            particleSystems.Add(ps);
+        // Rotation combines top-down and asset rotation.
+        Quaternion topDown = applyTopDownRotation ? Quaternion.Euler(topDownRotateX, 0f, 0f) : Quaternion.identity;
+        Quaternion assetRot = Quaternion.Euler(vfx.AngularRotation);
+        Rotation = topDown * assetRot;
 
-        foreach (Transform child in transform)
-            GetRecursively(ref particleSystems, child);
+        // Position uses world position plus any asset offset in world units.
+        Position = worldPosition + vfx.RelativeOffset;
+
+        // Scale is uniform by tile size then multiplied by per-asset relative scale.
+        float baseScale = ComputeTileScale(tileSize);
+        Vector3 relative = vfx.RelativeScale == Vector3.zero ? Vector3.one : vfx.RelativeScale;
+        Scale = Vector3.one * baseScale;
+        Scale = new Vector3(Scale.x * relative.x, Scale.y * relative.y, Scale.z * relative.z);
     }
 
     /// <summary>
-    /// Requests despawn from the VFX manager.
+    /// Returns a uniform scale factor so one authored unit maps to one tile at the given tileSize.
     /// </summary>
-    private void Despawn(string name)
+    private float ComputeTileScale(float tileSize)
     {
-        g.VfxManager.Despawn(name);
+        float s = authoringUnitSize > 0.0001f ? tileSize / authoringUnitSize : 1.0f;
+        s *= Mathf.Max(0.0001f, extraScaleMultiplier);
+        return s;
+    }
+
+    /// <summary>
+    /// Plays all found VisualEffect and ParticleSystem components defensively.
+    /// </summary>
+    private void PlayEffect()
+    {
+        if (vfxComponents != null)
+        {
+            for (int i = 0; i < vfxComponents.Length; i++)
+            {
+                var v = vfxComponents[i];
+                if (v == null) continue;
+                v.Reinit();
+                v.Play();
+            }
+        }
+
+        if (particleSystems != null)
+        {
+            for (int i = 0; i < particleSystems.Length; i++)
+            {
+                var ps = particleSystems[i];
+                if (ps == null) continue;
+                ps.Play(true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns true while any VisualEffect or ParticleSystem still has live particles.
+    /// </summary>
+    private bool HasAliveParticles()
+    {
+        bool anyAlive = false;
+
+        if (vfxComponents != null)
+        {
+            for (int i = 0; i < vfxComponents.Length; i++)
+            {
+                var v = vfxComponents[i];
+                if (v == null) continue;
+
+#if UNITY_2019_3_OR_NEWER
+                if (v.aliveParticleCount > 0)
+                {
+                    anyAlive = true;
+                    break;
+                }
+#else
+                // Fallback if aliveParticleCount is not available in the target version.
+                anyAlive = true;
+                break;
+#endif
+            }
+        }
+
+        if (!anyAlive && particleSystems != null)
+        {
+            for (int i = 0; i < particleSystems.Length; i++)
+            {
+                var ps = particleSystems[i];
+                if (ps == null) continue;
+                if (ps.IsAlive(true))
+                {
+                    anyAlive = true;
+                    break;
+                }
+            }
+        }
+
+        return anyAlive;
+    }
+
+    /// <summary>
+    /// Attempts to push all renderers in this hierarchy to the front visually.
+    /// Applies sorting layer and order where supported and raises render queues for meshes.
+    /// </summary>
+    private void ForceSortingOnTop()
+    {
+        if (renderers == null || renderers.Length == 0) return;
+
+        int layerId = 0;
+        bool hasLayer = false;
+
+        if (!string.IsNullOrEmpty(sortingLayerName))
+        {
+            layerId = SortingLayer.NameToID(sortingLayerName);
+            hasLayer = layerId != 0 || sortingLayerName == "Default";
+        }
+
+        for (int i = 0; i < renderers.Length; i++)
+        {
+            var r = renderers[i];
+            if (r == null) continue;
+
+            // Sorting layer and order for SpriteRenderer and ParticleSystemRenderer.
+            if (hasLayer)
+                r.sortingLayerID = layerId;
+
+            r.sortingOrder = sortingOrderOnTop;
+
+            // Raise render queue for materials that do not support sorting order.
+            // This instantiates per-renderer materials, which is intended here.
+            var mats = r.materials;
+            for (int m = 0; m < mats.Length; m++)
+            {
+                var mat = mats[m];
+                if (mat == null) continue;
+
+                if (mat.renderQueue < 5000)
+                    mat.renderQueue = 5000;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Assign a Unity layer to this object and all children so the current camera can render it.
+    /// </summary>
+    private void ApplyUnityLayerRecursively(string layerName)
+    {
+        int layerIndex = LayerMask.NameToLayer(layerName);
+        if (layerIndex < 0) return; // unknown layer; skip
+
+        void Recurse(Transform t)
+        {
+            t.gameObject.layer = layerIndex;
+            for (int i = 0; i < t.childCount; i++)
+                Recurse(t.GetChild(i));
+        }
+
+        Recurse(transform);
     }
 }

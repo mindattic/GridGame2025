@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6436477011143602081}
   - component: {fileID: 8213042842756330003}
   - component: {fileID: 4341921479387870438}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4920,7 +4920,7 @@ GameObject:
   - component: {fileID: 6416031541891745896}
   - component: {fileID: 6149082924223594486}
   - component: {fileID: 1739866866766581921}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9826,7 +9826,7 @@ GameObject:
   - component: {fileID: 3104716376764465980}
   - component: {fileID: 347001420939542376}
   - component: {fileID: 7084134750803969311}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Shock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14733,7 +14733,7 @@ GameObject:
   - component: {fileID: 2712063935465714210}
   - component: {fileID: 5703905667675159076}
   - component: {fileID: -5981518256468894517}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: GoldBuff
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -19583,6 +19583,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &6619701263069538151
 GameObject:
   m_ObjectHideFlags: 0
@@ -19594,7 +19602,7 @@ GameObject:
   - component: {fileID: 508507652032187289}
   - component: {fileID: 9010677049240299336}
   - component: {fileID: 797826133431957699}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}

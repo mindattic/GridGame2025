@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1183972305289709407}
   - component: {fileID: 1123369417775090942}
   - component: {fileID: -5232694365565957098}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: LevelUp
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -4862,6 +4862,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &2562713542004227140
 GameObject:
   m_ObjectHideFlags: 0
@@ -4873,7 +4881,7 @@ GameObject:
   - component: {fileID: 5567857461957979968}
   - component: {fileID: 2576951130785498056}
   - component: {fileID: 5679061550849676556}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Sparkles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9908,7 +9916,7 @@ GameObject:
   - component: {fileID: 7647095327382985440}
   - component: {fileID: 3391891584217106779}
   - component: {fileID: 3564959855497878249}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: rune01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14751,7 +14759,7 @@ GameObject:
   - component: {fileID: 5961198171518563639}
   - component: {fileID: 2738922895751849126}
   - component: {fileID: 8700471286996338214}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: rune02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19603,7 +19611,7 @@ GameObject:
   - component: {fileID: 2053078059575717065}
   - component: {fileID: 7267626663220691164}
   - component: {fileID: 6599437273596794487}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Ray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24602,7 +24610,7 @@ GameObject:
   - component: {fileID: 6469171962938244277}
   - component: {fileID: 8126294274999938548}
   - component: {fileID: 9039121083696009036}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29539,7 +29547,7 @@ GameObject:
   - component: {fileID: 8848809656228290015}
   - component: {fileID: 282801290613226472}
   - component: {fileID: 7962715162600724144}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}

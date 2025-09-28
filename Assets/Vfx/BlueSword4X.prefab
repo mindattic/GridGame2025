@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 822103706724113406}
   - component: {fileID: 2268172070852927707}
   - component: {fileID: 3272998412138819595}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: B_star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4917,7 +4917,7 @@ GameObject:
   - component: {fileID: 8517973656897581772}
   - component: {fileID: 2792778752777177620}
   - component: {fileID: 1432363789671653769}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9850,7 +9850,7 @@ GameObject:
   - component: {fileID: 331597257053506750}
   - component: {fileID: 1100148104163639661}
   - component: {fileID: 1988225006487782309}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14783,7 +14783,7 @@ GameObject:
   - component: {fileID: 3513713742654962052}
   - component: {fileID: 1950861451505684726}
   - component: {fileID: 1152093496837861848}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19720,7 +19720,7 @@ GameObject:
   - component: {fileID: 7354412611653483611}
   - component: {fileID: 1029100996500855892}
   - component: {fileID: 4932423278220334697}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Center_flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24577,7 +24577,7 @@ GameObject:
   - component: {fileID: 8629193563293961277}
   - component: {fileID: 7883996492358739584}
   - component: {fileID: 949979927233039486}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Center_flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29434,7 +29434,7 @@ GameObject:
   - component: {fileID: 5188777065631555959}
   - component: {fileID: 2225203270231196195}
   - component: {fileID: 3958491837216890909}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34286,7 +34286,7 @@ GameObject:
   - component: {fileID: 2021434682892393028}
   - component: {fileID: 2657498102096897391}
   - component: {fileID: 3806045926781800550}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Center_flash (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39143,7 +39143,7 @@ GameObject:
   - component: {fileID: 7376399983477711986}
   - component: {fileID: 9121890741114893398}
   - component: {fileID: 1561108014456816987}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: B_star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44049,7 +44049,7 @@ GameObject:
   - component: {fileID: 8549513635085427716}
   - component: {fileID: 6543782049056235641}
   - component: {fileID: 6275311126275679746}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: B_star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48955,7 +48955,7 @@ GameObject:
   - component: {fileID: 3962474814120873110}
   - component: {fileID: 731430673564267088}
   - component: {fileID: 3776293096422668428}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Center_flash (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53812,7 +53812,7 @@ GameObject:
   - component: {fileID: 9048170955422368018}
   - component: {fileID: 7750450737237199766}
   - component: {fileID: 4461759466961482368}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Center_flash (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58669,7 +58669,7 @@ GameObject:
   - component: {fileID: 6214106916586926176}
   - component: {fileID: 1974456094753204772}
   - component: {fileID: 67733323530010158}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Center_flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63526,7 +63526,7 @@ GameObject:
   - component: {fileID: 7806658830100659393}
   - component: {fileID: 71852201273117723}
   - component: {fileID: 5639297444486876526}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68378,7 +68378,7 @@ GameObject:
   - component: {fileID: 7192420772540911688}
   - component: {fileID: 8949773440203758669}
   - component: {fileID: 5986069561403256162}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Center_flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73235,7 +73235,7 @@ GameObject:
   - component: {fileID: 1361124433294157433}
   - component: {fileID: 717889080559434765}
   - component: {fileID: 6554941236632641099}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78087,7 +78087,7 @@ GameObject:
   - component: {fileID: 4153594621713587426}
   - component: {fileID: 4343399374544945543}
   - component: {fileID: 3730258521530369827}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83020,7 +83020,7 @@ GameObject:
   - component: {fileID: 5588550809371340349}
   - component: {fileID: 8896809257684519403}
   - component: {fileID: 1059119582228197161}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87872,7 +87872,7 @@ GameObject:
   - component: {fileID: 8120402227734355251}
   - component: {fileID: 5887115803806925203}
   - component: {fileID: 1908028550326473617}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Center_flash (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92730,7 +92730,7 @@ GameObject:
   - component: {fileID: 2861877638645501662}
   - component: {fileID: 8466548700272362722}
   - component: {fileID: 4781736709562390458}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: BlueSword4X
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -97580,6 +97580,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &8741646549652011452
 GameObject:
   m_ObjectHideFlags: 0
@@ -97591,7 +97599,7 @@ GameObject:
   - component: {fileID: 2881157718214420573}
   - component: {fileID: 5501702777057066704}
   - component: {fileID: 3981113002279848669}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102524,7 +102532,7 @@ GameObject:
   - component: {fileID: 7090371909026553115}
   - component: {fileID: 5774873754819065328}
   - component: {fileID: 3588729190597123675}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: B_star
   m_TagString: Untagged
   m_Icon: {fileID: 0}

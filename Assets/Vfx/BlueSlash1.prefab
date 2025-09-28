@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 598417313080650}
   - component: {fileID: 6678666389050009758}
   - component: {fileID: 2154182975243978174}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: BlueSlash1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ ParticleSystem:
   lengthInSec: 2
   simulationSpeed: 1
   stopAction: 0
-  cullingMode: 1
+  cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
@@ -4868,6 +4868,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VFXInstance
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &2578710639811955707
 GameObject:
   m_ObjectHideFlags: 0
@@ -4879,7 +4887,7 @@ GameObject:
   - component: {fileID: 1957244714495270194}
   - component: {fileID: 6855581488349273919}
   - component: {fileID: 308408925588354943}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: flare06_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4916,7 +4924,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -9785,7 +9793,7 @@ GameObject:
   - component: {fileID: 1934895720268720999}
   - component: {fileID: 7813856871453235881}
   - component: {fileID: 1709894644696447911}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: glow_blue_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9822,7 +9830,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -14691,7 +14699,7 @@ GameObject:
   - component: {fileID: 1744152010266685447}
   - component: {fileID: 3254587049761319415}
   - component: {fileID: 4687943374112084851}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: slash_L01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14728,7 +14736,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -19539,7 +19547,7 @@ GameObject:
   - component: {fileID: 1695257847802153899}
   - component: {fileID: 7707071658999581201}
   - component: {fileID: 6895831662969988110}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: slash01_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19576,7 +19584,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -24387,7 +24395,7 @@ GameObject:
   - component: {fileID: 1035626370624809974}
   - component: {fileID: 8265635386613764131}
   - component: {fileID: 4862644460884546824}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: slash_L01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24424,7 +24432,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -29293,7 +29301,7 @@ GameObject:
   - component: {fileID: 4928487630546535362}
   - component: {fileID: 229841546696881966}
   - component: {fileID: 6767986255967099396}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29330,7 +29338,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -34199,7 +34207,7 @@ GameObject:
   - component: {fileID: 2042041720925665084}
   - component: {fileID: 8624046179502160262}
   - component: {fileID: 206128048608846870}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: flare02_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34236,7 +34244,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0

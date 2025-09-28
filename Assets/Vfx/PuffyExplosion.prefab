@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3969112377419074126}
   - component: {fileID: 7916182722795685342}
   - component: {fileID: 6010404031151488805}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: dust_sheet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4868,7 +4868,7 @@ GameObject:
   - component: {fileID: 3969676167442846279}
   - component: {fileID: 8301883171473396763}
   - component: {fileID: 4873156651646896974}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9725,7 +9725,7 @@ GameObject:
   - component: {fileID: 4756125547691847463}
   - component: {fileID: 3360723080129784245}
   - component: {fileID: 4654763413586039045}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fragments
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14545,7 +14545,7 @@ GameObject:
   - component: {fileID: 9169760652000284843}
   - component: {fileID: 3905113470903375601}
   - component: {fileID: 6224818094541403799}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: firesmoke (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19325,7 +19325,7 @@ GameObject:
   - component: {fileID: 4234858223494728811}
   - component: {fileID: 1771712128571311345}
   - component: {fileID: -8131889595806216717}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: PuffyExplosion
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -24189,6 +24189,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &5833002819103689541
 GameObject:
   m_ObjectHideFlags: 0
@@ -24200,7 +24208,7 @@ GameObject:
   - component: {fileID: 4221480975612210171}
   - component: {fileID: 8647680247595346511}
   - component: {fileID: 4153380839529377832}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: firesmoke (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28979,7 +28987,7 @@ GameObject:
   - component: {fileID: 5771342348289806961}
   - component: {fileID: 6911935055557048022}
   - component: {fileID: 1876765677877941381}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: firesmoke (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

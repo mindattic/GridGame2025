@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1858129209493869714}
   - component: {fileID: 7915774824000732355}
   - component: {fileID: 1353135655829758453}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash_a
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4859,7 +4859,7 @@ GameObject:
   - component: {fileID: 934381806439520104}
   - component: {fileID: 5567613058309668795}
   - component: {fileID: 4308755920974020867}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: dust12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9707,7 +9707,7 @@ GameObject:
   - component: {fileID: 3011755407669422330}
   - component: {fileID: 8175359292170834519}
   - component: {fileID: 567950084685680920}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14561,7 +14561,7 @@ GameObject:
   - component: {fileID: 5051406712310059250}
   - component: {fileID: 4360956422884505536}
   - component: {fileID: 2222023056824786563}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19418,7 +19418,7 @@ GameObject:
   - component: {fileID: 5546791544089354959}
   - component: {fileID: 2257529560685988980}
   - component: {fileID: 5906710707801755590}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24269,7 +24269,7 @@ GameObject:
   - component: {fileID: 6088316493556619994}
   - component: {fileID: 6771511690456724417}
   - component: {fileID: 4544530754612455840}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: dust11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29117,7 +29117,7 @@ GameObject:
   - component: {fileID: 2351060411466588395}
   - component: {fileID: 486850096796574993}
   - component: {fileID: 6745474006771209292}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: A35
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33965,7 +33965,7 @@ GameObject:
   - component: {fileID: 359988808474972123}
   - component: {fileID: 8882337812000633751}
   - component: {fileID: 5996276969082049389}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash_b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38814,7 +38814,7 @@ GameObject:
   - component: {fileID: 5868287803320711442}
   - component: {fileID: 1383944011767432959}
   - component: {fileID: 8530806602101489085}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: OrangeSlash
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -43665,6 +43665,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &8401746018351874136
 GameObject:
   m_ObjectHideFlags: 0
@@ -43676,7 +43684,7 @@ GameObject:
   - component: {fileID: 1678143197401056655}
   - component: {fileID: 7844074212786986900}
   - component: {fileID: 868801427332088086}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: stone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48533,7 +48541,7 @@ GameObject:
   - component: {fileID: 7012705978700252822}
   - component: {fileID: 3101684991266440801}
   - component: {fileID: 2054149583171140574}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53381,7 +53389,7 @@ GameObject:
   - component: {fileID: 218625911921947360}
   - component: {fileID: 3504239324330433355}
   - component: {fileID: 6796095178112559486}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow_floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6375563682040031217}
   - component: {fileID: 5943989667769940376}
   - component: {fileID: 2206280851084528622}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: shock_plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5002,7 +5002,7 @@ GameObject:
   - component: {fileID: 2319650778244934657}
   - component: {fileID: 4597376803973067648}
   - component: {fileID: 3790592281162416017}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Flare (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9917,7 +9917,7 @@ GameObject:
   - component: {fileID: 4868462698760049156}
   - component: {fileID: 6270941787298495237}
   - component: {fileID: 4598055927136228023}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: charge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14772,7 +14772,7 @@ GameObject:
   - component: {fileID: 6436040255225454733}
   - component: {fileID: 1243352623208186118}
   - component: {fileID: 8641929799909175067}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring2 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19629,7 +19629,7 @@ GameObject:
   - component: {fileID: 8807264758093902896}
   - component: {fileID: 5340706783843638503}
   - component: {fileID: 4700961196792419236}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: impact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24544,7 +24544,7 @@ GameObject:
   - component: {fileID: 1597678623431885201}
   - component: {fileID: 6086947958145607906}
   - component: {fileID: 7412625771925683416}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lightning_center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29392,7 +29392,7 @@ GameObject:
   - component: {fileID: 738036255776693267}
   - component: {fileID: 5746875188438904367}
   - component: {fileID: 1863291109840035987}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: particle_flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34114,7 +34114,7 @@ GameObject:
   - component: {fileID: 8447345219071421278}
   - component: {fileID: 499999814967943636}
   - component: {fileID: 7600757051925122147}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38989,7 +38989,7 @@ GameObject:
   - component: {fileID: 903315915262366755}
   - component: {fileID: 8138746420725903392}
   - component: {fileID: 1701609884256957734}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43864,7 +43864,7 @@ GameObject:
   - component: {fileID: 6328019786602540895}
   - component: {fileID: 1866831488002695491}
   - component: {fileID: 841386305070039694}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: FireSmkA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48752,7 +48752,7 @@ GameObject:
   - component: {fileID: 1858227472961769957}
   - component: {fileID: 6296375188988520807}
   - component: {fileID: 311408300058858517}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lightning_plane (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53600,7 +53600,7 @@ GameObject:
   - component: {fileID: 2416160294550404969}
   - component: {fileID: 4468289921781619723}
   - component: {fileID: 5239693829086621150}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: electro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58448,7 +58448,7 @@ GameObject:
   - component: {fileID: 1175968588461678930}
   - component: {fileID: 5375319306749169003}
   - component: {fileID: 7673323440703794661}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63363,7 +63363,7 @@ GameObject:
   - component: {fileID: 789201268406575621}
   - component: {fileID: 4332031165705326918}
   - component: {fileID: 4443057068155450280}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: impact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68278,7 +68278,7 @@ GameObject:
   - component: {fileID: 7190502546368074113}
   - component: {fileID: 7714967208676609356}
   - component: {fileID: 5793293828957908489}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73184,7 +73184,7 @@ GameObject:
   - component: {fileID: 7158875917135254444}
   - component: {fileID: 8520886623043941830}
   - component: {fileID: 9185169626714659788}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78035,7 +78035,7 @@ GameObject:
   - component: {fileID: 3585711529649365745}
   - component: {fileID: 7586361318971850370}
   - component: {fileID: 4435873280844686461}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring01_out
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82950,7 +82950,7 @@ GameObject:
   - component: {fileID: 791833654692569190}
   - component: {fileID: 4221823531638630886}
   - component: {fileID: 4219049213121721946}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87865,7 +87865,7 @@ GameObject:
   - component: {fileID: 7217488850271224483}
   - component: {fileID: 7410321253107067177}
   - component: {fileID: 2582046178197999955}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Glow2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92771,7 +92771,7 @@ GameObject:
   - component: {fileID: 3400980874249163013}
   - component: {fileID: 9035634413052031428}
   - component: {fileID: 3899603530696711618}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: shock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97677,7 +97677,7 @@ GameObject:
   - component: {fileID: 6128034257727962096}
   - component: {fileID: 6138003282013424961}
   - component: {fileID: 3469596366955810177}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: shock_plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102668,7 +102668,7 @@ GameObject:
   - component: {fileID: 3331049398342150602}
   - component: {fileID: 3786427948328023189}
   - component: {fileID: 5831877150729540924}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: bl_purple
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107610,7 +107610,7 @@ GameObject:
   - component: {fileID: 4533939863139806762}
   - component: {fileID: 7832488634142638772}
   - component: {fileID: 1128805267071850795}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112467,7 +112467,7 @@ GameObject:
   - component: {fileID: 5164393127783303170}
   - component: {fileID: 1782771067594899892}
   - component: {fileID: 1403807273479409729}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lightning_plane (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117315,7 +117315,7 @@ GameObject:
   - component: {fileID: 6969356302754791927}
   - component: {fileID: 5913839424984110661}
   - component: {fileID: 1472369349779699610}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: electro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122163,7 +122163,7 @@ GameObject:
   - component: {fileID: 8633206292150301407}
   - component: {fileID: 1379749790193828267}
   - component: {fileID: 5643866244717967406}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127069,7 +127069,7 @@ GameObject:
   - component: {fileID: 5414751484955058948}
   - component: {fileID: 1757035778246829308}
   - component: {fileID: 7460808388681239166}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131990,7 +131990,7 @@ GameObject:
   - component: {fileID: 5781156680958595918}
   - component: {fileID: 3202262569201630731}
   - component: {fileID: 5023105048798287081}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lightning_plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136838,7 +136838,7 @@ GameObject:
   - component: {fileID: 54723700083352513}
   - component: {fileID: 1559595452648443246}
   - component: {fileID: 8337590272666888580}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141686,7 +141686,7 @@ GameObject:
   - component: {fileID: 9048561523486381728}
   - component: {fileID: 4547237837963023884}
   - component: {fileID: 6184519610019130738}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -146603,7 +146603,7 @@ GameObject:
   - component: {fileID: 7817608626072646837}
   - component: {fileID: 8406444208224842485}
   - component: {fileID: 2171239922676608776}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: LightningExplosion
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -151475,6 +151475,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &6192700498681236068
 GameObject:
   m_ObjectHideFlags: 0
@@ -151486,7 +151494,7 @@ GameObject:
   - component: {fileID: 3187186647567633738}
   - component: {fileID: 4545770667709165453}
   - component: {fileID: 6036616961146142780}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Flare (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156419,7 +156427,7 @@ GameObject:
   - component: {fileID: 242668148566995853}
   - component: {fileID: 3510595768479868511}
   - component: {fileID: 547276623654882074}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161352,7 +161360,7 @@ GameObject:
   - component: {fileID: 5176190734238718115}
   - component: {fileID: 8966488395662067490}
   - component: {fileID: 4652044189197933901}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Sheet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166276,7 +166284,7 @@ GameObject:
   - component: {fileID: 5958422727418356626}
   - component: {fileID: 4656016799263803285}
   - component: {fileID: 4913592360714724838}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: end_dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -170998,7 +171006,7 @@ GameObject:
   - component: {fileID: 7263824451345999040}
   - component: {fileID: 5182869673145116662}
   - component: {fileID: 5989000824001687811}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow_b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -175913,7 +175921,7 @@ GameObject:
   - component: {fileID: 262508242110975859}
   - component: {fileID: 4222676788913806381}
   - component: {fileID: 7837226122099826846}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180828,7 +180836,7 @@ GameObject:
   - component: {fileID: 698548657999328020}
   - component: {fileID: 3311187203155022271}
   - component: {fileID: 1720784167385798638}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185761,7 +185769,7 @@ GameObject:
   - component: {fileID: 6570917687094086820}
   - component: {fileID: 8901910046369420298}
   - component: {fileID: 1157989914994291670}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: wave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -190685,7 +190693,7 @@ GameObject:
   - component: {fileID: 1710670767751492369}
   - component: {fileID: 8593950256865943105}
   - component: {fileID: 755007264808892932}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195591,7 +195599,7 @@ GameObject:
   - component: {fileID: 2148631270436829994}
   - component: {fileID: 4565120623709315521}
   - component: {fileID: 1206942888745016035}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200466,7 +200474,7 @@ GameObject:
   - component: {fileID: 4367766836030366821}
   - component: {fileID: 3744155968547486272}
   - component: {fileID: 5792647863844660068}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: circle_p
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205381,7 +205389,7 @@ GameObject:
   - component: {fileID: 7725254210631622565}
   - component: {fileID: 6214226370676341488}
   - component: {fileID: 3719194501778367130}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring2 (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210238,7 +210246,7 @@ GameObject:
   - component: {fileID: 2625129712865529259}
   - component: {fileID: 1695825122885329693}
   - component: {fileID: 4809230281360700809}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215181,7 +215189,7 @@ GameObject:
   - component: {fileID: 6400102573550593065}
   - component: {fileID: 3820465507319291319}
   - component: {fileID: 2859286696063374399}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Ray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219948,7 +219956,7 @@ GameObject:
   - component: {fileID: 2252543565253984891}
   - component: {fileID: 6070544555705654294}
   - component: {fileID: 3798549565878069272}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow_b (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

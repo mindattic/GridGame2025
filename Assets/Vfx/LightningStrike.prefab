@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1567371662334629795}
   - component: {fileID: 5144301554364113094}
   - component: {fileID: 8962689288160106289}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: elertic (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4917,7 +4917,7 @@ GameObject:
   - component: {fileID: 7587911584940851951}
   - component: {fileID: 8967953289131928289}
   - component: {fileID: 4740239696758060236}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: fragment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9832,7 +9832,7 @@ GameObject:
   - component: {fileID: 3042150941671552952}
   - component: {fileID: 7351394176829319502}
   - component: {fileID: 6743914489767261656}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lighting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14738,7 +14738,7 @@ GameObject:
   - component: {fileID: 3410711317632613694}
   - component: {fileID: 2991028671357053321}
   - component: {fileID: 6326277766166501520}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: elertic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19644,7 +19644,7 @@ GameObject:
   - component: {fileID: 1530033578588159031}
   - component: {fileID: 7504878046221437977}
   - component: {fileID: 5725390000406245685}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24559,7 +24559,7 @@ GameObject:
   - component: {fileID: 1561733019666559597}
   - component: {fileID: 8819096293486524456}
   - component: {fileID: 4659317127940021306}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29416,7 +29416,7 @@ GameObject:
   - component: {fileID: 2834913776324532415}
   - component: {fileID: 6120162026662952286}
   - component: {fileID: 2761265886477175635}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34331,7 +34331,7 @@ GameObject:
   - component: {fileID: 7794060071629553797}
   - component: {fileID: 6721077838641009055}
   - component: {fileID: 3018006868588384704}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39283,7 +39283,7 @@ GameObject:
   - component: {fileID: 9027695206168157687}
   - component: {fileID: 73218672208998111}
   - component: {fileID: 9009174881333117493}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: LightningStrike
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -44121,6 +44121,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &8485331901294260431
 GameObject:
   m_ObjectHideFlags: 0
@@ -44132,7 +44140,7 @@ GameObject:
   - component: {fileID: 2252527477726198278}
   - component: {fileID: 2043218383329593363}
   - component: {fileID: 4268717288385570646}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow_dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49047,7 +49055,7 @@ GameObject:
   - component: {fileID: 7412847283568619414}
   - component: {fileID: 5116376381109344130}
   - component: {fileID: 6207734859844687431}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lighting_glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}

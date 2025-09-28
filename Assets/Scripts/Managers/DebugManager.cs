@@ -612,6 +612,13 @@ public class DebugManager : MonoBehaviour
         g.VfxManager.Spawn(vfx, hero2.Position);
     }
 
+    public void VFXTest_BlueSlash4()
+    {
+        var vfx = VfxLibrary.VisualEffects["BlueSlash4"];
+        g.VfxManager.Spawn(vfx, hero1.Position);
+        g.VfxManager.Spawn(vfx, hero2.Position);
+    }
+
     public void VFXTest_BlueSword()
     {
         var vfx = VfxLibrary.VisualEffects["BlueSword"];

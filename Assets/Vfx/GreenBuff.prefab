@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8943432672125823062}
   - component: {fileID: 4950481632235390956}
   - component: {fileID: 4510025471550089183}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lensflare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4737,7 +4737,7 @@ GameObject:
   - component: {fileID: 7233361642700860142}
   - component: {fileID: 6277734687287075511}
   - component: {fileID: 3846562445469105935}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Circle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9616,7 +9616,7 @@ GameObject:
   - component: {fileID: 4363988417696113899}
   - component: {fileID: 2690889494845631747}
   - component: {fileID: 3974124611004617852}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: flare (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14464,7 +14464,7 @@ GameObject:
   - component: {fileID: 3567299072453449036}
   - component: {fileID: 6181251434277354159}
   - component: {fileID: 1403289215296831512}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: up
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19371,7 +19371,7 @@ GameObject:
   - component: {fileID: 7769749756638176600}
   - component: {fileID: 3370900135046927100}
   - component: {fileID: 8914729356722405315}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: GreenBuff
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -24221,6 +24221,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &4475093484128752349
 GameObject:
   m_ObjectHideFlags: 0
@@ -24232,7 +24240,7 @@ GameObject:
   - component: {fileID: 9071326918629612629}
   - component: {fileID: 7285830622779198402}
   - component: {fileID: 7560367279108415781}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29138,7 +29146,7 @@ GameObject:
   - component: {fileID: 7689864281523997600}
   - component: {fileID: 1378289754536494063}
   - component: {fileID: 300496710868668889}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: open_rune
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34035,7 +34043,7 @@ GameObject:
   - component: {fileID: 2074095405422543277}
   - component: {fileID: 2917519213704839553}
   - component: {fileID: 5606905327066373603}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: up_air
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38941,7 +38949,7 @@ GameObject:
   - component: {fileID: 569693878758342997}
   - component: {fileID: 8183920760357084473}
   - component: {fileID: 2475347748899750074}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: rune
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43847,7 +43855,7 @@ GameObject:
   - component: {fileID: 5889978869019284121}
   - component: {fileID: 6183170486554373939}
   - component: {fileID: 9136651221092019487}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48708,7 +48716,7 @@ GameObject:
   - component: {fileID: 6396724343351104406}
   - component: {fileID: 2791023431381988620}
   - component: {fileID: 4143356700944341579}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Ray
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53533,7 +53541,7 @@ GameObject:
   - component: {fileID: 7804227293825346861}
   - component: {fileID: 5007512413534665841}
   - component: {fileID: 4248034626153326596}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: twinkle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58232,7 +58240,7 @@ GameObject:
   - component: {fileID: 4149076439856074347}
   - component: {fileID: 4164636309811309574}
   - component: {fileID: 4492856417478238199}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63129,7 +63137,7 @@ GameObject:
   - component: {fileID: 8690591531641652649}
   - component: {fileID: 8652241853023654973}
   - component: {fileID: 231948988532296135}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: galaxy_floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68044,7 +68052,7 @@ GameObject:
   - component: {fileID: 5689402068398472636}
   - component: {fileID: 2983389347678291060}
   - component: {fileID: 5733400884776595272}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: open_ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}

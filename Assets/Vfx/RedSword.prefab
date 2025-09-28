@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 452404871140074640}
   - component: {fileID: 890726526146449631}
   - component: {fileID: 6996619538742930685}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: red_flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4868,7 +4868,7 @@ GameObject:
   - component: {fileID: 6925852480784391462}
   - component: {fileID: 2391520308585909528}
   - component: {fileID: 3263858623851810802}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9725,7 +9725,7 @@ GameObject:
   - component: {fileID: 1262378225941656541}
   - component: {fileID: 4747021773065423463}
   - component: {fileID: 7736560822894686713}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14582,7 +14582,7 @@ GameObject:
   - component: {fileID: 2796181118300377555}
   - component: {fileID: 2094437828339316900}
   - component: {fileID: 9000887284392311116}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19439,7 +19439,7 @@ GameObject:
   - component: {fileID: 2902623299857810888}
   - component: {fileID: 3016764297885798093}
   - component: {fileID: 6457538309133613714}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24296,7 +24296,7 @@ GameObject:
   - component: {fileID: 214392625897341460}
   - component: {fileID: 6879680570029280046}
   - component: {fileID: 1121706124716779907}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29153,7 +29153,7 @@ GameObject:
   - component: {fileID: 7245802511500731634}
   - component: {fileID: 8375020555763417792}
   - component: {fileID: 8841646435755451185}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: red_flash (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34010,7 +34010,7 @@ GameObject:
   - component: {fileID: 207887990801655424}
   - component: {fileID: 2824264568649903291}
   - component: {fileID: 8502977600358616139}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38917,7 +38917,7 @@ GameObject:
   - component: {fileID: 7029802476670450245}
   - component: {fileID: 4637348207013251722}
   - component: {fileID: 8714981714320114515}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: RedSword
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -43785,6 +43785,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &7872518297571282046
 GameObject:
   m_ObjectHideFlags: 0
@@ -43796,7 +43804,7 @@ GameObject:
   - component: {fileID: 8775648764133089419}
   - component: {fileID: 8836734555106748641}
   - component: {fileID: 385414886818302525}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48653,7 +48661,7 @@ GameObject:
   - component: {fileID: 727109953027712262}
   - component: {fileID: 7582436172414315694}
   - component: {fileID: 6279733625683453765}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: lb (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

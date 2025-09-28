@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9079202099828768596}
   - component: {fileID: 2389687951159746305}
   - component: {fileID: 8984762431071395921}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4867,7 +4867,7 @@ GameObject:
   - component: {fileID: 7903406191080603473}
   - component: {fileID: 8328950800510460711}
   - component: {fileID: 982610023628646243}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: PinkSpark
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -9717,6 +9717,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &1725425841433547509
 GameObject:
   m_ObjectHideFlags: 0
@@ -9728,7 +9736,7 @@ GameObject:
   - component: {fileID: 8597936883725068282}
   - component: {fileID: 2217600469025085991}
   - component: {fileID: 5143733956135440529}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow_G (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14585,7 +14593,7 @@ GameObject:
   - component: {fileID: 2909431516760921996}
   - component: {fileID: 33951093412678038}
   - component: {fileID: 4416427688078398688}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: star
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19433,7 +19441,7 @@ GameObject:
   - component: {fileID: 7164748119261223814}
   - component: {fileID: 3689320753078754102}
   - component: {fileID: 6717247494317049867}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24339,7 +24347,7 @@ GameObject:
   - component: {fileID: 5801226885178353380}
   - component: {fileID: 2008438889006738138}
   - component: {fileID: 1099535449447380897}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29245,7 +29253,7 @@ GameObject:
   - component: {fileID: 8899039054501377255}
   - component: {fileID: 4969124182835481268}
   - component: {fileID: 2935451125218012599}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: flare (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34151,7 +34159,7 @@ GameObject:
   - component: {fileID: 2890478038833673517}
   - component: {fileID: 3438832748847280118}
   - component: {fileID: 2102109173112945469}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: spotlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38999,7 +39007,7 @@ GameObject:
   - component: {fileID: 238435110905135274}
   - component: {fileID: 2664467845039096273}
   - component: {fileID: 2836279230193496244}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ring (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

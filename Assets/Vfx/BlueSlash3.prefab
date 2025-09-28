@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7285593477840076195}
   - component: {fileID: 3975649643118760364}
   - component: {fileID: 2174282553577111930}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4917,7 +4917,7 @@ GameObject:
   - component: {fileID: 3887667038971196733}
   - component: {fileID: 116356975819574819}
   - component: {fileID: 5075632178740720445}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: imp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9805,7 +9805,7 @@ GameObject:
   - component: {fileID: 3781004778524155596}
   - component: {fileID: 255467164301318741}
   - component: {fileID: 3848678919553804050}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: AX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14711,7 +14711,7 @@ GameObject:
   - component: {fileID: 2489307769158348635}
   - component: {fileID: 892639265435958186}
   - component: {fileID: 2879995184368411597}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: slash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19617,7 +19617,7 @@ GameObject:
   - component: {fileID: 4018595903330542303}
   - component: {fileID: 1831823609050474199}
   - component: {fileID: 6979245759010037334}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Rim
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24505,7 +24505,7 @@ GameObject:
   - component: {fileID: 6301076005654930116}
   - component: {fileID: 8342169505963815674}
   - component: {fileID: 8627109926966248448}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_b
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29411,7 +29411,7 @@ GameObject:
   - component: {fileID: 8931113906451240669}
   - component: {fileID: 1730322827199490422}
   - component: {fileID: 7390401029165719928}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34267,7 +34267,7 @@ GameObject:
   - component: {fileID: 727254656122951318}
   - component: {fileID: 1809972155057588876}
   - component: {fileID: 665251182633902406}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: BlueSlash3
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -39117,6 +39117,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &8338358813987005375
 GameObject:
   m_ObjectHideFlags: 0
@@ -39128,7 +39136,7 @@ GameObject:
   - component: {fileID: 6299940810782470114}
   - component: {fileID: 1585001688573037729}
   - component: {fileID: 3436492706933345900}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glowlight
   m_TagString: Untagged
   m_Icon: {fileID: 0}

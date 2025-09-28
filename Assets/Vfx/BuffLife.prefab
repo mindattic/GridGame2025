@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7244203999733326038}
   - component: {fileID: 5507914000909422985}
   - component: {fileID: 1000040908996810156}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4918,7 +4918,7 @@ GameObject:
   - component: {fileID: 50342869651241508}
   - component: {fileID: 8096201641217720157}
   - component: {fileID: 2850607398462089301}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: BuffLife
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -9770,6 +9770,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 0
+  forceOnTop: 1
+  sortingLayerName: VfxManager
+  sortingOrderOnTop: 999
+  defaultTileSize: 1
 --- !u!1 &6607999288188014392
 GameObject:
   m_ObjectHideFlags: 0
@@ -9781,7 +9789,7 @@ GameObject:
   - component: {fileID: 6144253440580851109}
   - component: {fileID: 4941540020467787381}
   - component: {fileID: 7817262299186793006}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: shock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14687,7 +14695,7 @@ GameObject:
   - component: {fileID: 9170151844123613293}
   - component: {fileID: 5579605963969912346}
   - component: {fileID: 6021800992939369557}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: cross
   m_TagString: Untagged
   m_Icon: {fileID: 0}

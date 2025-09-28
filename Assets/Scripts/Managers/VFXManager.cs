@@ -10,27 +10,23 @@ public class VfxManager : MonoBehaviour
     private readonly Dictionary<string, VFXInstance> collection = new Dictionary<string, VFXInstance>();
 
     /// <summary>
-    /// Instantiates a VFX at a world position, parents it to the board or an override,
-    /// registers it, and returns the VFXInstance component. Returns null on invalid asset.
+    /// Creates a wrapper GameObject that hosts a VFXInstance. The VFXInstance will instantiate the asset prefab itself.
     /// </summary>
     private VFXInstance CreateInstance(VFXAsset asset, Vector3 position, Transform parentOverride = null)
     {
-        if (asset == null || asset.Prefab == null)
+        if (asset == null)
             return null;
 
-        GameObject go = Instantiate(asset.Prefab, position, Quaternion.identity);
+        var go = new GameObject();
+        string key = $"VFX_{asset.Name}_{Guid.NewGuid():N}";
+        go.name = key;
+        go.transform.position = position;
 
         Transform parent = parentOverride != null ? parentOverride : (g.Board != null ? g.Board.transform : null);
         if (parent != null)
             go.transform.SetParent(parent, worldPositionStays: true);
 
-        VFXInstance instance = go.GetComponent<VFXInstance>();
-        if (instance == null)
-            instance = go.AddComponent<VFXInstance>();
-
-        string key = $"VFX_{asset.Name}_{Guid.NewGuid():N}";
-        instance.name = key;
-
+        var instance = go.AddComponent<VFXInstance>();
         if (!collection.ContainsKey(key))
             collection.Add(key, instance);
 
@@ -46,7 +42,8 @@ public class VfxManager : MonoBehaviour
         if (instance == null)
             return;
 
-        instance.Spawn(asset, position, routine);
+        float tileSize = Mathf.Max(0.0001f, g.TileScale.x);
+        instance.Spawn(asset, position, tileSize, routine);
     }
 
     /// <summary>
@@ -59,7 +56,8 @@ public class VfxManager : MonoBehaviour
         if (instance == null)
             yield break;
 
-        yield return instance.SpawnRoutine(asset, position, routine);
+        float tileSize = Mathf.Max(0.0001f, g.TileScale.x);
+        yield return instance.SpawnRoutine(asset, position, tileSize, routine);
     }
 
     /// <summary>
@@ -70,7 +68,8 @@ public class VfxManager : MonoBehaviour
         var inst = CreateInstance(asset, position, parentOverride);
         if (inst == null)
             return (null, null);
-        return (inst, inst.SpawnRoutine(asset, position, routine));
+        float tileSize = Mathf.Max(0.0001f, g.TileScale.x);
+        return (inst, inst.SpawnRoutine(asset, position, tileSize, routine));
     }
 
     /// <summary>
@@ -83,7 +82,8 @@ public class VfxManager : MonoBehaviour
         if (instance == null)
             return null;
 
-        instance.Spawn(asset, position, routine);
+        float tileSize = Mathf.Max(0.0001f, g.TileScale.x);
+        instance.Spawn(asset, position, tileSize, routine);
         return instance;
     }
 
@@ -107,5 +107,7 @@ public class VfxManager : MonoBehaviour
         var instances = GameObject.FindObjectsByType<VFXInstance>(FindObjectsSortMode.None);
         foreach (var instance in instances)
             Destroy(instance.gameObject);
+
+        collection.Clear();
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6016983670335809934}
   - component: {fileID: 1409236244261168703}
   - component: {fileID: 5318126123128850099}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: SlashB
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4862,7 +4862,7 @@ GameObject:
   - component: {fileID: 124860084726484888}
   - component: {fileID: 8118242221588488208}
   - component: {fileID: 2220472454477958266}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9750,7 +9750,7 @@ GameObject:
   - component: {fileID: 3156291538741928285}
   - component: {fileID: 1722888019552613228}
   - component: {fileID: 7906892515666713204}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14638,7 +14638,7 @@ GameObject:
   - component: {fileID: 1647648636063712226}
   - component: {fileID: 4676371004999739267}
   - component: {fileID: 3418375749237897788}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19548,7 +19548,7 @@ GameObject:
   - component: {fileID: 7740188773916774081}
   - component: {fileID: 3600259482163435461}
   - component: {fileID: 8957069969370233224}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24436,7 +24436,7 @@ GameObject:
   - component: {fileID: 6613114598678179391}
   - component: {fileID: 2213714703265484707}
   - component: {fileID: 2737071082763900518}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29324,7 +29324,7 @@ GameObject:
   - component: {fileID: 348655309277374195}
   - component: {fileID: 1206213821268949524}
   - component: {fileID: 46361894107059658}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34234,7 +34234,7 @@ GameObject:
   - component: {fileID: 5713134399537639153}
   - component: {fileID: 525711328573474154}
   - component: {fileID: 4650608363171440494}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_LightLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39140,7 +39140,7 @@ GameObject:
   - component: {fileID: 5082414215850106596}
   - component: {fileID: 828117226237227046}
   - component: {fileID: 8015283448492992110}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44028,7 +44028,7 @@ GameObject:
   - component: {fileID: 9032227645684434344}
   - component: {fileID: 7798072939641021199}
   - component: {fileID: 6609208125189675574}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48916,7 +48916,7 @@ GameObject:
   - component: {fileID: 1531559997236839682}
   - component: {fileID: 4163960244237011278}
   - component: {fileID: 6795733468900515132}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_AlphaBlende
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53823,7 +53823,7 @@ GameObject:
   - component: {fileID: 1425408074698870809}
   - component: {fileID: 6024120147960822620}
   - component: {fileID: 1835562433015480084}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58729,7 +58729,7 @@ GameObject:
   - component: {fileID: 2800784051776447154}
   - component: {fileID: 6112980682735439874}
   - component: {fileID: 3903855321128335873}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_AlphaBlende
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -63636,7 +63636,7 @@ GameObject:
   - component: {fileID: 2410427007388088862}
   - component: {fileID: 2752005812476511871}
   - component: {fileID: 6667573042795893011}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68542,7 +68542,7 @@ GameObject:
   - component: {fileID: 2897215754707193952}
   - component: {fileID: 2168269595662681253}
   - component: {fileID: 1123941355968678230}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73452,7 +73452,7 @@ GameObject:
   - component: {fileID: 1096322762596083485}
   - component: {fileID: 1215604224210176215}
   - component: {fileID: 8364804103934056013}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: SlashA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -78303,7 +78303,7 @@ GameObject:
   - component: {fileID: 4020626601097254050}
   - component: {fileID: 7188123826449493647}
   - component: {fileID: 1943452546294722219}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83191,7 +83191,7 @@ GameObject:
   - component: {fileID: 61580672698685368}
   - component: {fileID: 6774929913790438832}
   - component: {fileID: 3851546235609505164}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_Add
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88097,7 +88097,7 @@ GameObject:
   - component: {fileID: 9134898329334900486}
   - component: {fileID: 7319599234059502032}
   - component: {fileID: 2806430194009624627}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93003,7 +93003,7 @@ GameObject:
   - component: {fileID: 1370468248799630538}
   - component: {fileID: 4280399730994941650}
   - component: {fileID: 5540454619300951249}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97854,7 +97854,7 @@ GameObject:
   - component: {fileID: 4432073316775727218}
   - component: {fileID: 5643163771162509285}
   - component: {fileID: 3868997592835707345}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_LightLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102760,7 +102760,7 @@ GameObject:
   - component: {fileID: 3921359017152475360}
   - component: {fileID: 3818507457963707835}
   - component: {fileID: 2437916325649547962}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_AlphaBlende
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -107667,7 +107667,7 @@ GameObject:
   - component: {fileID: 2908149553115654438}
   - component: {fileID: 1987925815468329144}
   - component: {fileID: 5615913613141520903}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: SlashC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112519,7 +112519,7 @@ GameObject:
   - component: {fileID: 5417308771468748877}
   - component: {fileID: 4419406508012514002}
   - component: {fileID: -9131176507292234604}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: BlueYellowSword3X
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -117357,6 +117357,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &6371016252213621284
 GameObject:
   m_ObjectHideFlags: 0
@@ -117368,7 +117376,7 @@ GameObject:
   - component: {fileID: 436970035134548843}
   - component: {fileID: 573944518842496233}
   - component: {fileID: 6899891175541802203}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -122256,7 +122264,7 @@ GameObject:
   - component: {fileID: 422404959959450551}
   - component: {fileID: 610374033582086669}
   - component: {fileID: 608318568120298552}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Fire_Light2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127144,7 +127152,7 @@ GameObject:
   - component: {fileID: 803995013320872994}
   - component: {fileID: 5370946132956664541}
   - component: {fileID: 5591405584468862533}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_Add
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132050,7 +132058,7 @@ GameObject:
   - component: {fileID: 8613996545137358923}
   - component: {fileID: 4633719442104747465}
   - component: {fileID: 5072674397351410860}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_LightLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136956,7 +136964,7 @@ GameObject:
   - component: {fileID: 1184074955184961854}
   - component: {fileID: 1867711845520917783}
   - component: {fileID: 3306103940398577769}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_Add
   m_TagString: Untagged
   m_Icon: {fileID: 0}

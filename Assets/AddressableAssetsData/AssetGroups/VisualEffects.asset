@@ -70,6 +70,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5f3601c19e437ef47abfc0f2004d21cb
+    m_Address: Vfx/BlueSlash4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 6e0be8351479eda44bf898242ef51602
     m_Address: Vfx/RayBlast
     m_ReadOnly: 0

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7559715285986753589}
   - component: {fileID: 6430618107335155604}
   - component: {fileID: 7950384592322299460}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4868,7 +4868,7 @@ GameObject:
   - component: {fileID: 1524701877485263511}
   - component: {fileID: 7158821473892197163}
   - component: {fileID: 1969601197187966150}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Pos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9719,7 +9719,7 @@ GameObject:
   - component: {fileID: 6462775707762514579}
   - component: {fileID: 2997856009221954204}
   - component: {fileID: -4523599398727998595}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: ToxicCloud
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -14569,6 +14569,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &9128164468078652623
 GameObject:
   m_ObjectHideFlags: 0
@@ -14580,7 +14588,7 @@ GameObject:
   - component: {fileID: 4663369517431863625}
   - component: {fileID: 1389024226480357782}
   - component: {fileID: 5487520848253383424}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}

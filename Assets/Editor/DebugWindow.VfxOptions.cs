@@ -25,6 +25,7 @@ public partial class DebugWindow
             case VFX.BlueSlash1: g.DebugManager.VFXTest_BlueSlash1(); break;
             case VFX.BlueSlash2: g.DebugManager.VFXTest_BlueSlash2(); break;
             case VFX.BlueSlash3: g.DebugManager.VFXTest_BlueSlash3(); break;
+            case VFX.BlueSlash4: g.DebugManager.VFXTest_BlueSlash4(); break;
             case VFX.BlueSword: g.DebugManager.VFXTest_BlueSword(); break;
             case VFX.BlueSword4X: g.DebugManager.VFXTest_BlueSword4X(); break;
             case VFX.BloodClaw: g.DebugManager.VFXTest_BloodClaw(); break;

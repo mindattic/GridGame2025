@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1930263364436754473}
   - component: {fileID: 7005469325468577372}
   - component: {fileID: -6499493375084076546}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: BlueSlash2
   m_TagString: VFX
   m_Icon: {fileID: 0}
@@ -4850,6 +4850,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d03afed6f1e6dd74eae6f47eec7d62ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  authoringUnitSize: 1
+  extraScaleMultiplier: 1
+  topDownRotateX: 90
+  applyTopDownRotation: 1
+  forceOnTop: 1
+  sortingLayerName: Default
+  sortingOrderOnTop: 32760
+  defaultTileSize: 1
 --- !u!1 &2131268893968662827
 GameObject:
   m_ObjectHideFlags: 0
@@ -4861,7 +4869,7 @@ GameObject:
   - component: {fileID: 4202299585135891034}
   - component: {fileID: 1967500193691167674}
   - component: {fileID: 7289475189952233738}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_Add
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9767,7 +9775,7 @@ GameObject:
   - component: {fileID: 6946112750261786513}
   - component: {fileID: 8720461184763906154}
   - component: {fileID: 9055406531557246199}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_LightLine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14673,7 +14681,7 @@ GameObject:
   - component: {fileID: 2877672910716691065}
   - component: {fileID: 4184669327174471073}
   - component: {fileID: 2812340613358875074}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: Slash_AlphaBlende
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19579,7 +19587,7 @@ GameObject:
   - component: {fileID: 223868076632646514}
   - component: {fileID: 8748219306431562671}
   - component: {fileID: 4778024282103165983}
-  m_Layer: 9
+  m_Layer: 16
   m_Name: SlashA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
