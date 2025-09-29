@@ -67,7 +67,7 @@ namespace Assets.Helper
 
             public static class TimerBar
             {
-                public static TimerBar2D Instance => GameObject.Find("Canvas/TimerBar2D").GetComponent<TimerBar2D>();
+                public static global::TimerBar Instance => GameObject.Find("Canvas/TimerBar2D").GetComponent<global::TimerBar>();
                 public static Image Back => GameObject.Find("Canvas/TimerBar2D/Back").GetComponent<Image>();
                 public static Image Fill => GameObject.Find("Canvas/TimerBar2D/Fill").GetComponent<Image>();
                 public static TextMeshProUGUI CountdownLabel => GameObject.Find("Canvas/TimerBar2D/Fill/Countdown").GetComponent<TextMeshProUGUI>();

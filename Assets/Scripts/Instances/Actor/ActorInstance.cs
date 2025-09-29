@@ -544,7 +544,7 @@ public partial class ActorInstance : MonoBehaviour
             }
         }
 
-        g.Portrait3DManager.Dissolve(this);
+        g.PortraitManager.Dissolve(this);
         g.AudioManager.Play("Death");
         g.CoinManager.SpawnBurst(Position, Mathf.RoundToInt((ExperienceHelper.Calculate(this)) * s.CoinCountMulitiplier));
 

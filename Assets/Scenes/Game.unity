@@ -4816,7 +4816,7 @@ MonoBehaviour:
   tileManager: {fileID: 0}
   footstepManager: {fileID: 0}
   audioManager: {fileID: 0}
-  vfxManager: {fileID: 0}
+  visualEffectManager: {fileID: 0}
   coinManager: {fileID: 0}
   pauseMenu: {fileID: 0}
   debugManager: {fileID: 0}
@@ -5279,7 +5279,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1751276275}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e8b632a57187a74a922b4c81f6dc3cf, type: 3}
+  m_Script: {fileID: 11500000, guid: e6b70eb1205a32e49b5abcc1ca179702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1751276304

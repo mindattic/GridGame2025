@@ -62,8 +62,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AttackLineManager attackLineManager;
     [HideInInspector] public CombatTextManager combatTextManager;
     [HideInInspector] public GhostManager ghostManager;
-    [HideInInspector] public Portrait2DManager portrait2DManager;
-    [HideInInspector] public Portrait3DManager portrait3DManager;
+    [HideInInspector] public PortraitManager portraitManager;
     [HideInInspector] public ActorManager actorManager;
     [HideInInspector] public SelectionManager selectedHeroManager;
     [HideInInspector] public HeroManager heroManager;
@@ -128,7 +127,7 @@ public class GameManager : Singleton<GameManager>
 
     // Instances
     [HideInInspector] public TileMap tileMap;
-    [HideInInspector] public TimerBar2D timerBar2D;
+    [HideInInspector] public TimerBar timerBar;
     [HideInInspector] public RectTransform portraitsRect;
     [HideInInspector] public RectTransform timelineContainer;
     [HideInInspector] public RectTransform timelineViewport;
@@ -184,7 +183,7 @@ public class GameManager : Singleton<GameManager>
         // Canvas
         card = GameObjectHelper.Game.Card.Instance;
         canvas3D = GameObjectHelper.Game.Canvas3D;
-        timerBar2D = GameObjectHelper.Game.TimerBar.Instance;
+        timerBar = GameObjectHelper.Game.TimerBar.Instance;
         portraitsRect = GameObjectHelper.Game.Portraits;
         titleBar = GameObjectHelper.Game.TitleBar.Instance;
 
@@ -220,8 +219,7 @@ public class GameManager : Singleton<GameManager>
         attackLineManager = gameRoot.GetComponent<AttackLineManager>();
         combatTextManager = gameRoot.GetComponent<CombatTextManager>();
         ghostManager = gameRoot.GetComponent<GhostManager>();
-        portrait2DManager = gameRoot.GetComponent<Portrait2DManager>();
-        portrait3DManager = gameRoot.GetComponent<Portrait3DManager>();
+        portraitManager = gameRoot.GetComponent<PortraitManager>();
         selectedHeroManager = gameRoot.GetComponent<SelectionManager>();
         heroManager = gameRoot.GetComponent<HeroManager>();
         enemyManager = gameRoot.GetComponent<EnemyManager>();
@@ -281,7 +279,7 @@ public class GameManager : Singleton<GameManager>
         if (stageManager != null) stageManager.Initialize();
         if (targetModeOverlay != null) targetModeOverlay.Initialize();
         if (timeline != null) timeline.Initialize();
-        if (timerBar2D != null) timerBar2D.Initialize();
+        if (timerBar != null) timerBar.Initialize();
         if (turnManager != null) turnManager.Initialize();
 
         GameReady.Confirm();

@@ -221,7 +221,8 @@ namespace Assets.Scripts.Instances.Actor
 
             //Bump has reached it's apex:
             if (routine != null)
-                instance.StartCoroutine(routine);
+                // BLOCK until the impact routine completes (e.g., dodge on miss)
+                yield return instance.StartCoroutine(routine);
 
 
             elapsedTime = 0f;

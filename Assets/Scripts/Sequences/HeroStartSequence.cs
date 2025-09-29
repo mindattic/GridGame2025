@@ -18,7 +18,7 @@ namespace Assets.Scripts.Sequences
 
             // Put input back into hero mode and refill the turn timer UI
             g.InputManager.InputMode = InputMode.PlayerTurn;
-            g.TimerBar2D.Refill();   // resets fill to full and timeRemaining to max
+            g.TimerBar.Refill();   // resets fill to full and timeRemaining to max
 
             // If you restore AP on hero start, do it here
             // foreach (var hero in g.Actors.Heroes) hero.RestoreAP();

@@ -7,7 +7,7 @@ using TMPro;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
-public class TimerBar2D : MonoBehaviour
+public class TimerBar : MonoBehaviour
 {
     private RectTransform rootRect;
     private Image back;

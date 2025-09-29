@@ -79,7 +79,6 @@
     <Compile Include="Assets\Scripts\Helpers\BezierCurveHelper.cs" />
     <Compile Include="Assets\Scripts\Libraries\FontLibrary.cs" />
     <Compile Include="Assets\Scripts\Libraries\MaterialLibrary.cs" />
-    <Compile Include="Assets\Scripts\Canvas\TimerBar2D.cs" />
     <Compile Include="Assets\Scripts\Models\ShakeIntensity.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
@@ -180,7 +179,6 @@
     <Compile Include="Assets\Scripts\Helpers\TouchHelper.cs" />
     <Compile Include="Assets\Scripts\Instances\AbilityButton.cs" />
     <Compile Include="Assets\Scripts\Managers\LogManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\Portrait3DInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\FadeOverlayHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\LocationHelper.cs" />
@@ -208,7 +206,7 @@
     <Compile Include="Assets\Scripts\Managers\ProjectileManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\HeroExperiencePane.cs" />
     <Compile Include="Assets\Scripts\Managers\SynergyLineManager.cs" />
-    <Compile Include="Assets\Scripts\Instances\Portrait2DInstance.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TimerBar.cs" />
     <Compile Include="Assets\Scripts\Overworld\BushInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\SelectionRules.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergySpark.cs" />
@@ -234,9 +232,9 @@
     <Compile Include="Assets\Scripts\Data\Actor\Captain.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\StatGrowth.cs" />
     <Compile Include="Assets\Scripts\Canvas\TimelineBlockInstance.cs" />
-    <Compile Include="Assets\Scripts\Managers\Portrait2DManager.cs" />
     <Compile Include="Assets\Scripts\Overworld\GrassInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\PrefabLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
@@ -259,7 +257,6 @@
     <Compile Include="Assets\Scripts\Helpers\CharacterHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EndTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Overworld\OffscreenArrowIndicator.cs" />
-    <Compile Include="Assets\Scripts\Managers\Portrait3DManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\BattleWonSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
@@ -299,6 +296,7 @@
     <Compile Include="Assets\Scripts\Models\ProjectileNode.cs" />
     <Compile Include="Assets\Scripts\Serialization\MapPropEditorBootstrapper.cs" />
     <Compile Include="Assets\Scripts\Helpers\SettingsHelper.cs" />
+    <Compile Include="Assets\Scripts\Instances\PortraitInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\TutorialLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\AbilityLibrary.cs" />

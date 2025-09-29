@@ -110,9 +110,9 @@ public class SelectionManager : MonoBehaviour
             g.Actors.MovingHero = pendingActor; // promote the active hero to selected player
             g.SortingManager.OnHeroDrag();
 
-            g.TimerBar2D.SetDuration(6f);
-            g.TimerBar2D.ResetToFull();
-            g.TimerBar2D.Play();
+            g.TimerBar.SetDuration(6f);
+            g.TimerBar.ResetToFull();
+            g.TimerBar.Play();
 
             g.Card.Clear();
             g.AudioManager.Play("Click");
@@ -147,7 +147,7 @@ public class SelectionManager : MonoBehaviour
             return;
         }
 
-        g.TimerBar2D.Pause();
+        g.TimerBar.Pause();
 
         var hero = g.Actors.MovingHero;
         hero.Move.ToLocation();

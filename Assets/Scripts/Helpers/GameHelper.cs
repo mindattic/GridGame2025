@@ -35,8 +35,7 @@ namespace Assets.Helpers
         public static AttackLineManager AttackLineManager => gm != null ? gm.attackLineManager : null;
         public static CombatTextManager CombatTextManager => gm != null ? gm.combatTextManager : null;
         public static GhostManager GhostManager => gm != null ? gm.ghostManager : null;
-        public static Portrait2DManager Portrait2DManager => gm != null ? gm.portrait2DManager : null;
-        public static Portrait3DManager Portrait3DManager => gm != null ? gm.portrait3DManager : null;
+        public static PortraitManager PortraitManager => gm != null ? gm.portraitManager : null;
         public static TileManager TileManager => gm != null ? gm.tileManager : null;
         public static FootstepManager FootstepManager => gm != null ? gm.footstepManager : null;
         public static AudioManager AudioManager => gm != null ? gm.audioManager : null;
@@ -124,7 +123,7 @@ namespace Assets.Helpers
         }
 
         public static TileMap TileMap => gm != null ? gm.tileMap : null;
-        public static TimerBar2D TimerBar2D => gm != null ? gm.timerBar2D : null;
+        public static TimerBar TimerBar => gm != null ? gm.timerBar : null;
         public static BoardInstance Board => gm != null ? gm.board : null;
         public static List<TileInstance> Tiles => gm != null ? gm.tiles : null;
         public static RectTransform PortraitsContainer => gm != null ? gm.portraitsRect : null;

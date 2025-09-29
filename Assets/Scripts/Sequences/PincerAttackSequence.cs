@@ -22,8 +22,8 @@ namespace Assets.Scripts.Sequences
             if (pair.attackResults1?.Any() != true || pair.attackResults2?.Any() != true)
                 yield break;
 
-            // Display attackers
-            yield return g.Portrait2DManager.SpawnPairRoutine(
+            // Display attackers portraits
+            yield return g.PortraitManager.SpawnPair2DRoutine(
                 new ActorPair(pair.attacker1, pair.attacker2)
             );
 

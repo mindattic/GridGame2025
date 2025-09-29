@@ -50,6 +50,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4c1ede3908543dc4b94584babde68921
+    m_Address: VisualEffects/TechSword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5747dc98406759e4ab515bea5b6572d6
     m_Address: VisualEffects/BlueYellowSword
     m_ReadOnly: 0

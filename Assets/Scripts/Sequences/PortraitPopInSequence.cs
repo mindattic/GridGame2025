@@ -23,7 +23,7 @@ namespace Assets.Scripts.Sequences
             else
                 scale = 0.1666f;
 
-            yield return g.Portrait3DManager.PopInRoutine(actor, scale);
+            yield return g.PortraitManager.PopInRoutine(actor, scale);
         }
     }
 

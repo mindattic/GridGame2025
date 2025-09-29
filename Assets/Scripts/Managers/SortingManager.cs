@@ -154,7 +154,7 @@ public class SortingManager : MonoBehaviour
         synergyLineInstance.SetSorting(layer);
     }
 
-    public void OnPortraitPopIn(Portrait3DInstance portrait)
+    public void OnPortraitPopIn(PortraitInstance portrait)
     {
         portrait.SetSorting(SortingHelper.Layer.PortraitPopIn, SortingHelper.Order.Max);
     }

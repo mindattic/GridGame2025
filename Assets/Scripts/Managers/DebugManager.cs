@@ -369,14 +369,14 @@ public class DebugManager : MonoBehaviour
     {
         var hero = RNG.Hero;
         var direction = RNG.AdjacentDirection;
-        g.Portrait2DManager.SlideIn(hero, direction);
+        g.PortraitManager.SlideIn2D(hero, direction);
     }
 
     public void Portrait3DSlideIn()
     {
         var hero = RNG.Hero;
         var direction = RNG.AdjacentDirection;
-        g.Portrait3DManager.SlideIn(hero, direction);
+        g.PortraitManager.SlideIn3D(hero, direction);
     }
 
     public void PortraitPopIn()

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 295096559303956081}
   - component: {fileID: -7110142054549742974}
   - component: {fileID: -1661209053830835658}
-  - component: {fileID: 2103234158193041051}
+  - component: {fileID: 8750666942834765374}
   m_Layer: 0
   m_Name: Portrait2DPrefab
   m_TagString: Untagged
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2103234158193041051
+--- !u!114 &8750666942834765374
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -85,51 +85,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5315972412366644378}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 760d0e21a4615db429e8ad938970733a, type: 3}
+  m_Script: {fileID: 11500000, guid: fb95a70c0be7ca944b1e068a0f068d39, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::PortraitInstance
   direction: 0
-  fallbackDuration: 1
-  slideCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: -1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.8
-      value: 0.05202637
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.70263505
-    - serializedVersion: 3
-      time: 1.2
-      value: -0.05
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33322528
-    - serializedVersion: 3
-      time: 1.993103
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   actor: {fileID: 0}
+  speedMultiplier: 1.75
+  startTime: 0
+  startPosition: {x: 0, y: 0}

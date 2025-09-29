@@ -13,7 +13,7 @@ namespace Assets.Scripts.Sequences
 
         public override IEnumerator ProcessRoutine()
         {
-            yield return g.Portrait3DManager.PopOutRoutine(actor);
+            yield return g.PortraitManager.PopOutRoutine(actor);
         }
     }
 
