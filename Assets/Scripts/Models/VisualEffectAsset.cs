@@ -3,11 +3,11 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 [Serializable]
-public class VFXAsset
+public class VisualEffectAsset
 {
-    public VFXAsset() { }
+    public VisualEffectAsset() { }
 
-    public VFXAsset(VFXAsset other)
+    public VisualEffectAsset(VisualEffectAsset other)
     {
         Name = other.Name;
         Prefab = other.Prefab;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5983481895687299746}
   - component: {fileID: 8425511823498597992}
   m_Layer: 0
-  m_Name: SM_VFX_Background_Plate_01
+  m_Name: SM_VFX_Background_Plate_01 6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

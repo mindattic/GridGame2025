@@ -16,7 +16,7 @@ namespace Assets.Scripts.Models
 
         private float t;
 
-        private VFXInstance trail;
+        private VisualEffectInstance trail;
         private string trailName;
         private bool trailSpawned;
 
@@ -71,12 +71,12 @@ namespace Assets.Scripts.Models
         /// <summary>
         /// Parents a single trail instance to this node. Only spawns once.
         /// </summary>
-        public void AttachTrail(VFXAsset asset)
+        public void AttachTrail(VisualEffectAsset asset)
         {
             if (trailSpawned) return;
             trailSpawned = true;
 
-            var instance = g.VfxManager.SpawnInstance(asset, transform.position, transform, null);
+            var instance = g.VisualEffectManager.SpawnInstance(asset, transform.position, transform, null);
             trail = instance;
             trailName = instance != null ? instance.name : null;
 
@@ -132,7 +132,7 @@ namespace Assets.Scripts.Models
 
                 // Despawn the trail via VfxManager so it's unregistered
                 if (!string.IsNullOrEmpty(trailName))
-                    g.VfxManager?.Despawn(trailName);
+                    g.VisualEffectManager?.Despawn(trailName);
                 else if (trail != null && trail.gameObject != null)
                     GameObject.Destroy(trail.gameObject);
 

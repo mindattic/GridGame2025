@@ -53,6 +53,7 @@ public partial class DebugWindow
             case VFX.BlueYellowSword: g.DebugManager.VFXTest_BlueYellowSword(); break;
             case VFX.BlueYellowSword3X: g.DebugManager.VFXTest_BlueYellowSword3X(); break;
             case VFX.RedSword: g.DebugManager.VFXTest_RedSword(); break;
+            case VFX.TechSword: g.DebugManager.VFXTest_TechSword(); break;
             default: Debug.LogWarning("OnPlayVFXClick failed."); break;
         }
     }

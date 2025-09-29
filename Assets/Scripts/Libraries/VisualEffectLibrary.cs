@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Assets.Scripts.Libraries
 {
-    public static class VfxLibrary
+    public static class VisualEffectLibrary
     {
-        private static Dictionary<string, VFXAsset> visualEffects;
+        private static Dictionary<string, VisualEffectAsset> visualEffects;
         private static bool isLoaded = false;
 
-        public static Dictionary<string, VFXAsset> VisualEffects
+        public static Dictionary<string, VisualEffectAsset> VisualEffects
         {
             get
             {
@@ -25,14 +25,14 @@ namespace Assets.Scripts.Libraries
 
             GameObject LoadPrefab(string key) => AssetHelper.LoadAsset<GameObject>(key);
 
-            visualEffects = new Dictionary<string, VFXAsset>
+            visualEffects = new Dictionary<string, VisualEffectAsset>
                 {
                     {
                         "AcidSplash",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "AcidSplash",
-                            Prefab = LoadPrefab("Vfx/AcidSplash"),
+                            Prefab = LoadPrefab("VisualEffects/AcidSplash"),
                             RelativeOffset = new Vector3(0f, 0.01f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -43,10 +43,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "AirSlash",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "AirSlash",
-                            Prefab = LoadPrefab("Vfx/AirSlash"),
+                            Prefab = LoadPrefab("VisualEffects/AirSlash"),
                             RelativeOffset = new Vector3(0.01f, -0.15f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.15f, 0.15f, 0.15f),
@@ -57,10 +57,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BloodClaw",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BloodClaw",
-                            Prefab = LoadPrefab("Vfx/BloodClaw"),
+                            Prefab = LoadPrefab("VisualEffects/BloodClaw"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.15f, 0.15f, 0f),
@@ -71,10 +71,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BlueSlash1",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueSlash1",
-                            Prefab = LoadPrefab("Vfx/BlueSlash1"),
+                            Prefab = LoadPrefab("VisualEffects/BlueSlash1"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -85,10 +85,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BlueSlash2",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueSlash2",
-                            Prefab = LoadPrefab("Vfx/BlueSlash2"),
+                            Prefab = LoadPrefab("VisualEffects/BlueSlash2"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -99,10 +99,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BlueSlash3",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueSlash3",
-                            Prefab = LoadPrefab("Vfx/BlueSlash3"),
+                            Prefab = LoadPrefab("VisualEffects/BlueSlash3"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(30f, 30f, 0f),
                             RelativeScale = new Vector3(0.08f, 0.08f, 0f),
@@ -113,10 +113,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BlueSlash4",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueSlash4",
-                            Prefab = LoadPrefab("Vfx/BlueSlash4"),
+                            Prefab = LoadPrefab("VisualEffects/BlueSlash4"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.2f, 0.2f, 2f),
@@ -127,10 +127,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BlueSword",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueSword",
-                            Prefab = LoadPrefab("Vfx/BlueSword"),
+                            Prefab = LoadPrefab("VisualEffects/BlueSword"),
                             RelativeOffset = new Vector3(0f, 0.05f, 0f),
                             AngularRotation = new Vector3(30f, 30f, 0f),
                             RelativeScale = new Vector3(0.12f, 0.08f, 0f),
@@ -141,10 +141,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BlueSword4X",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueSword4X",
-                            Prefab = LoadPrefab("Vfx/BlueSword4X"),
+                            Prefab = LoadPrefab("VisualEffects/BlueSword4X"),
                             RelativeOffset = new Vector3(-0.05f, -0.1f, 0f),
                             AngularRotation = new Vector3(30f, 30f, 0f),
                             RelativeScale = new Vector3(0.08f, 0.08f, 0f),
@@ -155,10 +155,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BlueYellowSword",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueYellowSword",
-                            Prefab = LoadPrefab("Vfx/BlueYellowSword"),
+                            Prefab = LoadPrefab("VisualEffects/BlueYellowSword"),
                             RelativeOffset = new Vector3(0.03f, 0.01f, 0f),
                             AngularRotation = new Vector3(60f, 0f, 0f),
                             RelativeScale = new Vector3(0.07f, 0.07f, 0.07f),
@@ -169,10 +169,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BlueYellowSword3X",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueYellowSword3X",
-                            Prefab = LoadPrefab("Vfx/BlueYellowSword3X"),
+                            Prefab = LoadPrefab("VisualEffects/BlueYellowSword3X"),
                             RelativeOffset = new Vector3(0.02f, -0.05f, 0f),
                             AngularRotation = new Vector3(60f, 0f, 0f),
                             RelativeScale = new Vector3(0.07f, 0.07f, 0.07f),
@@ -183,10 +183,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "BuffLife",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BuffLife",
-                            Prefab = LoadPrefab("Vfx/BuffLife"),
+                            Prefab = LoadPrefab("VisualEffects/BuffLife"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.16f, 0.16f, 0f),
@@ -197,10 +197,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "DoubleClaw",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "DoubleClaw",
-                            Prefab = LoadPrefab("Vfx/DoubleClaw"),
+                            Prefab = LoadPrefab("VisualEffects/DoubleClaw"),
                             RelativeOffset = new Vector3(-0.03f, -0.1f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.12f, 0.12f, 0f),
@@ -211,10 +211,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "FireRain",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "FireRain",
-                            Prefab = LoadPrefab("Vfx/FireRain"),
+                            Prefab = LoadPrefab("VisualEffects/FireRain"),
                             RelativeOffset = new Vector3(0.03f, -0.05f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.1f, 0.1f, 0f),
@@ -225,10 +225,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "GodRays",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "GodRays",
-                            Prefab = LoadPrefab("Vfx/GodRays"),
+                            Prefab = LoadPrefab("VisualEffects/GodRays"),
                             RelativeOffset = new Vector3(0f, -0.25f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.07f, 0.07f, 0f),
@@ -239,10 +239,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "GoldBuff",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "GoldBuff",
-                            Prefab = LoadPrefab("Vfx/GoldBuff"),
+                            Prefab = LoadPrefab("VisualEffects/GoldBuff"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
@@ -253,10 +253,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "GreenBuff",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "GreenBuff",
-                            Prefab = LoadPrefab("Vfx/GreenBuff"),
+                            Prefab = LoadPrefab("VisualEffects/GreenBuff"),
                             RelativeOffset = new Vector3(0.02f, -0.25f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
@@ -267,10 +267,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "HexShield",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "HexShield",
-                            Prefab = LoadPrefab("Vfx/HexShield"),
+                            Prefab = LoadPrefab("VisualEffects/HexShield"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.16f, 0.16f, 0.16f),
@@ -281,10 +281,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "LevelUp",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "LevelUp",
-                            Prefab = LoadPrefab("Vfx/LevelUp"),
+                            Prefab = LoadPrefab("VisualEffects/LevelUp"),
                             RelativeOffset = new Vector3(0f, -0.15f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.3f, 0.3f, 0f),
@@ -295,10 +295,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "LightningExplosion",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "LightningExplosion",
-                            Prefab = LoadPrefab("Vfx/LightningExplosion"),
+                            Prefab = LoadPrefab("VisualEffects/LightningExplosion"),
                             RelativeOffset = new Vector3(0f, -0.1f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.1f, 0.1f, 0f),
@@ -309,10 +309,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "LightningStrike",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "LightningStrike",
-                            Prefab = LoadPrefab("Vfx/LightningStrike"),
+                            Prefab = LoadPrefab("VisualEffects/LightningStrike"),
                             RelativeOffset = new Vector3(-0.07f, 0.1f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.05f, 0.05f, 0f),
@@ -323,10 +323,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "MoonFeather",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "MoonFeather",
-                            Prefab = LoadPrefab("Vfx/MoonFeather"),
+                            Prefab = LoadPrefab("VisualEffects/MoonFeather"),
                             RelativeOffset = new Vector3(0f, -0.02f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(4f, 4f, 0f),
@@ -337,10 +337,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "OrangeSlash",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "OrangeSlash",
-                            Prefab = LoadPrefab("Vfx/OrangeSlash"),
+                            Prefab = LoadPrefab("VisualEffects/OrangeSlash"),
                             RelativeOffset = new Vector3(-0.12f, 0.01f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.03f, 0.03f, 0.03f),
@@ -351,10 +351,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "PinkSpark",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "PinkSpark",
-                            Prefab = LoadPrefab("Vfx/PinkSpark"),
+                            Prefab = LoadPrefab("VisualEffects/PinkSpark"),
                             RelativeOffset = new Vector3(0f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.04f, 0.04f, 0.04f),
@@ -365,10 +365,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "PuffyExplosion",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "PuffyExplosion",
-                            Prefab = LoadPrefab("Vfx/PuffyExplosion"),
+                            Prefab = LoadPrefab("VisualEffects/PuffyExplosion"),
                             RelativeOffset = new Vector3(-0.02f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.2f, 0.2f, 0f),
@@ -379,10 +379,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "RayBlast",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "RayBlast",
-                            Prefab = LoadPrefab("Vfx/RayBlast"),
+                            Prefab = LoadPrefab("VisualEffects/RayBlast"),
                             RelativeOffset = new Vector3(0.02f, -0.02f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.1f, 0.1f, 0f),
@@ -393,10 +393,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "RedSlash2X",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "RedSlash2X",
-                            Prefab = LoadPrefab("Vfx/RedSlash2X"),
+                            Prefab = LoadPrefab("VisualEffects/RedSlash2X"),
                             RelativeOffset = new Vector3(0.05f, -0.07f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.08f, 0.08f, 0f),
@@ -407,10 +407,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "RedSword",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "RedSword",
-                            Prefab = LoadPrefab("Vfx/RedSword"),
+                            Prefab = LoadPrefab("VisualEffects/RedSword"),
                             RelativeOffset = new Vector3(-0.06f, 0.05f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 142f),
                             RelativeScale = new Vector3(0.2f, 0.2f, 0.2f),
@@ -421,10 +421,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "RotaryKnife",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "RotaryKnife",
-                            Prefab = LoadPrefab("Vfx/RotaryKnife"),
+                            Prefab = LoadPrefab("VisualEffects/RotaryKnife"),
                             RelativeOffset = new Vector3(0.03f, -0.05f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.25f, 0.25f, 0f),
@@ -435,10 +435,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "ToxicCloud",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "ToxicCloud",
-                            Prefab = LoadPrefab("Vfx/ToxicCloud"),
+                            Prefab = LoadPrefab("VisualEffects/ToxicCloud"),
                             RelativeOffset = new Vector3(-0.02f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.15f, 0.15f, 0.15f),
@@ -449,10 +449,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "YellowHit",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "YellowHit",
-                            Prefab = LoadPrefab("Vfx/YellowHit"),
+                            Prefab = LoadPrefab("VisualEffects/YellowHit"),
                             RelativeOffset = new Vector3(-0.02f, 0f, 0f),
                             AngularRotation = new Vector3(0f, 0f, 0f),
                             RelativeScale = new Vector3(0.2f, 0.2f, 0f),
@@ -465,10 +465,10 @@ namespace Assets.Scripts.Libraries
                     // Looping VFX
                     {
                         "BlueGlow",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "BlueGlow",
-                            Prefab = LoadPrefab("Vfx/Loop/BlueGlow"),
+                            Prefab = LoadPrefab("VisualEffects/BlueGlow"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
@@ -477,10 +477,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "Bubble",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "Bubble",
-                            Prefab = LoadPrefab("Vfx/Loop/Bubble"),
+                            Prefab = LoadPrefab("VisualEffects/Bubble"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
@@ -489,10 +489,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "Feather",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "Feather",
-                            Prefab = LoadPrefab("Vfx/Loop/Feather"),
+                            Prefab = LoadPrefab("VisualEffects/Feather"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
@@ -501,10 +501,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "Fireball",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "Fireball",
-                            Prefab = LoadPrefab("Vfx/Loop/Fireball"),
+                            Prefab = LoadPrefab("VisualEffects/Fireball"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
@@ -513,10 +513,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "Flame",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "Flame",
-                            Prefab = LoadPrefab("Vfx/Loop/Flame"),
+                            Prefab = LoadPrefab("VisualEffects/Flame"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
@@ -525,10 +525,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "GoldSparkle",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "GoldSparkle",
-                            Prefab = LoadPrefab("Vfx/Loop/GoldSparkle"),
+                            Prefab = LoadPrefab("VisualEffects/GoldSparkle"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                              RelativeScale = new Vector3(1, 1, 1),
@@ -537,10 +537,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "GreenSparkle",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "GreenSparkle",
-                            Prefab = LoadPrefab("Vfx/Loop/GreenSparkle"),
+                            Prefab = LoadPrefab("VisualEffects/GreenSparkle"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(2f, 2f, 0f),
@@ -549,10 +549,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "IceSparkle",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "IceSparkle",
-                            Prefab = LoadPrefab("Vfx/Loop/IceSparkle"),
+                            Prefab = LoadPrefab("VisualEffects/IceSparkle"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
@@ -561,10 +561,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "PinkDust",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "PinkDust",
-                            Prefab = LoadPrefab("Vfx/Loop/PinkDust"),
+                            Prefab = LoadPrefab("VisualEffects/PinkDust"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(1, 1, 1),
@@ -575,10 +575,10 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "RosePetal",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "RosePetal",
-                            Prefab = LoadPrefab("Vfx/Loop/RosePetal"),
+                            Prefab = LoadPrefab("VisualEffects/RosePetal"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
@@ -589,13 +589,27 @@ namespace Assets.Scripts.Libraries
                     },
                     {
                         "StarSparkle",
-                        new VFXAsset
+                        new VisualEffectAsset
                         {
                             Name = "StarSparkle",
-                            Prefab = LoadPrefab("Vfx/Loop/StarSparkle"),
+                            Prefab = LoadPrefab("VisualEffects/StarSparkle"),
                             RelativeOffset = Vector3.zero,
                             AngularRotation = Vector3.zero,
                             RelativeScale = new Vector3(0.1f, 0.1f, 0.1f),
+                            Apex = 0f,
+                            Duration = 2f,
+                            IsLooping = true
+                        }
+                    },
+                    {
+                        "TechSword",
+                        new VisualEffectAsset
+                        {
+                            Name = "TechSword",
+                            Prefab = LoadPrefab("VisualEffects/TechSword"),
+                            RelativeOffset = new Vector3(0.02f, 0, 0),
+                            AngularRotation = Vector3.zero,
+                            RelativeScale = new Vector3(0.08f, 0.08f, 0.08f),
                             Apex = 0f,
                             Duration = 2f,
                             IsLooping = true
@@ -606,13 +620,13 @@ namespace Assets.Scripts.Libraries
             isLoaded = true;
         }
 
-        public static VFXAsset Get(string name)
+        public static VisualEffectAsset Get(string name)
         {
             if (!isLoaded) Load();
             var data = visualEffects.ContainsKey(name) ? visualEffects[name] : null;
             if (data == null)
                 Debug.LogError($"Unable to retrieve visual effect for `{name}`");
-            return data != null ? new VFXAsset(data) : null;
+            return data != null ? new VisualEffectAsset(data) : null;
         }
     }
 }

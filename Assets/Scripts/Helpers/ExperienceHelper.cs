@@ -85,8 +85,8 @@ namespace Assets.Helpers
             actor.HealthBar.Update();
 
             g.CombatTextManager?.Spawn("Level Up!", actor.Position, "Heal");
-            if (VfxLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
-                g.VfxManager?.Spawn(vfx, actor.Position);
+            if (VisualEffectLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
+                g.VisualEffectManager?.Spawn(vfx, actor.Position);
         }
 
         private static void SaveHeroProgress(ActorInstance actor)

@@ -18,7 +18,7 @@ using Assets.Helpers;
 ///    - If IsLoop and Duration <= 0: keep alive until manually despawned by reference.
 ///    - Else: wait for natural completion with a safety timeout, then despawn.
 /// </summary>
-public class VFXInstance : MonoBehaviour
+public class VisualEffectInstance : MonoBehaviour
 {
     // Authoring and orientation configuration used for normalization.
     [Header("Normalization")]
@@ -88,7 +88,7 @@ public class VFXInstance : MonoBehaviour
     /// <summary>
     /// Fire and forget spawn at a world position using defaultTileSize.
     /// </summary>
-    public void Spawn(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
+    public void Spawn(VisualEffectAsset vfx, Vector3 position, IEnumerator routine = null)
     {
         StartCoroutine(SpawnRoutine(vfx, position, defaultTileSize, routine));
     }
@@ -96,7 +96,7 @@ public class VFXInstance : MonoBehaviour
     /// <summary>
     /// Fire and forget spawn at a world position using an explicit tileSize.
     /// </summary>
-    public void Spawn(VFXAsset vfx, Vector3 position, float tileSize, IEnumerator routine = null)
+    public void Spawn(VisualEffectAsset vfx, Vector3 position, float tileSize, IEnumerator routine = null)
     {
         StartCoroutine(SpawnRoutine(vfx, position, tileSize, routine));
     }
@@ -105,7 +105,7 @@ public class VFXInstance : MonoBehaviour
     /// Yield until the configured Apex moment of the VFX. This is useful
     /// when gameplay needs to sync with a visual hit or burst.
     /// </summary>
-    public IEnumerator WaitUntilTrigger(VFXAsset vfx)
+    public IEnumerator WaitUntilTrigger(VisualEffectAsset vfx)
     {
         float wait = Mathf.Max(0f, (vfx?.Apex ?? 1f));
         if (wait <= 0f)
@@ -123,7 +123,7 @@ public class VFXInstance : MonoBehaviour
     /// Yieldable spawn that instantiates the asset prefab as a child,
     /// normalizes transform, manages sorting, plays the effect, and handles lifetime.
     /// </summary>
-    public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 position, IEnumerator routine = null)
+    public IEnumerator SpawnRoutine(VisualEffectAsset vfx, Vector3 position, IEnumerator routine = null)
     {
         yield return SpawnRoutine(vfx, position, defaultTileSize, routine);
     }
@@ -132,7 +132,7 @@ public class VFXInstance : MonoBehaviour
     /// Yieldable spawn with explicit tileSize.
     /// Applies Delay, then plays. Handles Duration and completion rules as documented on the class.
     /// </summary>
-    public IEnumerator SpawnRoutine(VFXAsset vfx, Vector3 position, float tileSize, IEnumerator routine = null)
+    public IEnumerator SpawnRoutine(VisualEffectAsset vfx, Vector3 position, float tileSize, IEnumerator routine = null)
     {
         if (vfx == null || vfx.Prefab == null)
             yield break;
@@ -184,7 +184,7 @@ public class VFXInstance : MonoBehaviour
             }
 
             // Return control to manager so it unregisters cleanly.
-            g.VfxManager.Despawn(instanceName);
+            g.VisualEffectManager.Despawn(instanceName);
             yield break;
         }
 
@@ -204,7 +204,7 @@ public class VFXInstance : MonoBehaviour
             yield return null;
         }
 
-        g.VfxManager.Despawn(instanceName);
+        g.VisualEffectManager.Despawn(instanceName);
     }
 
     /// <summary>
@@ -212,7 +212,7 @@ public class VFXInstance : MonoBehaviour
     /// </summary>
     private void Despawn(string name)
     {
-        g.VfxManager.Despawn(name);
+        g.VisualEffectManager.Despawn(name);
     }
 
     // -------------------------------------------------------------------------
@@ -262,7 +262,7 @@ public class VFXInstance : MonoBehaviour
     /// <summary>
     /// Applies rotation, position, and uniform tile scaling with asset offsets.
     /// </summary>
-    private void ApplyTransform(VFXAsset vfx, Vector3 worldPosition, float tileSize)
+    private void ApplyTransform(VisualEffectAsset vfx, Vector3 worldPosition, float tileSize)
     {
         // Rotation combines top-down and asset rotation.
         Quaternion topDown = applyTopDownRotation ? Quaternion.Euler(topDownRotateX, 0f, 0f) : Quaternion.identity;

@@ -8,6 +8,6 @@ namespace Assets.Scripts.Behaviors.Actor
 {
     public class ActorVFX
     {
-        public VFXAsset Attack;
+        public VisualEffectAsset Attack;
     }
 }

@@ -41,8 +41,8 @@ namespace Assets.Scripts.Sequences
             yield return new FireProjectileSequence(projectile).ProcessRoutine();
 
             // 2) Apply status effect VFX (loop) on the target
-            var status = VfxLibrary.Get("BlueGlow"); // looping
-            var inst = g.VfxManager.SpawnInstance(status, target.Position, target.transform);
+            var status = VisualEffectLibrary.Get("BlueGlow"); // looping
+            var inst = g.VisualEffectManager.SpawnInstance(status, target.Position, target.transform);
             if (inst != null)
             {
                 target.Flags.RootedVfxInstanceName = inst.name;

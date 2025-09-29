@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-public class VfxManager : MonoBehaviour
+public class VisualEffectManager : MonoBehaviour
 {
     // Holds active VFX instances by unique name.
-    private readonly Dictionary<string, VFXInstance> collection = new Dictionary<string, VFXInstance>();
+    private readonly Dictionary<string, VisualEffectInstance> collection = new Dictionary<string, VisualEffectInstance>();
 
     /// <summary>
     /// Creates a wrapper GameObject that hosts a VFXInstance. The VFXInstance will instantiate the asset prefab itself.
     /// </summary>
-    private VFXInstance CreateInstance(VFXAsset asset, Vector3 position, Transform parentOverride = null)
+    private VisualEffectInstance CreateInstance(VisualEffectAsset asset, Vector3 position, Transform parentOverride = null)
     {
         if (asset == null)
             return null;
@@ -26,7 +26,7 @@ public class VfxManager : MonoBehaviour
         if (parent != null)
             go.transform.SetParent(parent, worldPositionStays: true);
 
-        var instance = go.AddComponent<VFXInstance>();
+        var instance = go.AddComponent<VisualEffectInstance>();
         if (!collection.ContainsKey(key))
             collection.Add(key, instance);
 
@@ -36,7 +36,7 @@ public class VfxManager : MonoBehaviour
     /// <summary>
     /// Fire-and-forget spawn at a world position. Optionally runs a routine after its own sequence.
     /// </summary>
-    public void Spawn(VFXAsset asset, Vector3 position, IEnumerator routine = null)
+    public void Spawn(VisualEffectAsset asset, Vector3 position, IEnumerator routine = null)
     {
         var instance = CreateInstance(asset, position, null);
         if (instance == null)
@@ -50,7 +50,7 @@ public class VfxManager : MonoBehaviour
     /// Spawns a VFX and yields until its lifecycle finishes (including optional routine and duration).
     /// Use this when subsequent gameplay should wait for the impact to complete.
     /// </summary>
-    public IEnumerator PlayRoutine(VFXAsset asset, Vector3 position, IEnumerator routine = null)
+    public IEnumerator PlayRoutine(VisualEffectAsset asset, Vector3 position, IEnumerator routine = null)
     {
         var instance = CreateInstance(asset, position, null);
         if (instance == null)
@@ -63,7 +63,7 @@ public class VfxManager : MonoBehaviour
     /// <summary>
     /// Spawn an instance and return it, while also providing a yieldable routine to wait for completion.
     /// </summary>
-    public (VFXInstance instance, IEnumerator routine) SpawnAndWait(VFXAsset asset, Vector3 position, Transform parentOverride = null, IEnumerator routine = null)
+    public (VisualEffectInstance instance, IEnumerator routine) SpawnAndWait(VisualEffectAsset asset, Vector3 position, Transform parentOverride = null, IEnumerator routine = null)
     {
         var inst = CreateInstance(asset, position, parentOverride);
         if (inst == null)
@@ -76,7 +76,7 @@ public class VfxManager : MonoBehaviour
     /// Spawns a VFX, parents it to the provided transform so it follows movement,
     /// starts its lifecycle, and returns the VFXInstance.
     /// </summary>
-    public VFXInstance SpawnInstance(VFXAsset asset, Vector3 position, Transform parent, IEnumerator routine = null)
+    public VisualEffectInstance SpawnInstance(VisualEffectAsset asset, Vector3 position, Transform parent, IEnumerator routine = null)
     {
         var instance = CreateInstance(asset, position, parent);
         if (instance == null)
@@ -104,7 +104,7 @@ public class VfxManager : MonoBehaviour
     /// </summary>
     public void Clear()
     {
-        var instances = GameObject.FindObjectsByType<VFXInstance>(FindObjectsSortMode.None);
+        var instances = GameObject.FindObjectsByType<VisualEffectInstance>(FindObjectsSortMode.None);
         foreach (var instance in instances)
             Destroy(instance.gameObject);
 

@@ -113,8 +113,8 @@ public class ProjectileManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(instanceName)) return;
 
-        if (g.VfxManager != null)
-            g.VfxManager.Despawn(instanceName);
+        if (g.VisualEffectManager != null)
+            g.VisualEffectManager.Despawn(instanceName);
     }
 
     /// <summary>
@@ -140,12 +140,12 @@ public class ProjectileManager : MonoBehaviour
         Vector3 start = s.startPosition;
 
         // Optional spawn VFX gate at start
-        if (!string.IsNullOrEmpty(s.spawnVfxKey) && g.VfxManager != null)
+        if (!string.IsNullOrEmpty(s.spawnVfxKey) && g.VisualEffectManager != null)
         {
-            var spawnAsset = VfxLibrary.Get(s.spawnVfxKey);
+            var spawnAsset = VisualEffectLibrary.Get(s.spawnVfxKey);
             if (spawnAsset != null)
             {
-                var (spawnInst, spawnRoutine) = g.VfxManager.SpawnAndWait(spawnAsset, start);
+                var (spawnInst, spawnRoutine) = g.VisualEffectManager.SpawnAndWait(spawnAsset, start);
                 // Wait until the spawn reaches its apex
                 if (spawnInst != null)
                     yield return spawnInst.WaitUntilTrigger(spawnAsset);
@@ -194,7 +194,7 @@ public class ProjectileManager : MonoBehaviour
     {
         if (string.IsNullOrEmpty(trailKey)) return;
 
-        var trailAsset = VfxLibrary.Get(trailKey);
+        var trailAsset = VisualEffectLibrary.Get(trailKey);
         node.AttachTrail(trailAsset);
     }
 
@@ -204,9 +204,9 @@ public class ProjectileManager : MonoBehaviour
     /// </summary>
     private IEnumerator SpawnImpactRoutine(string vfxKey, Vector3 position, ProjectileSettings s)
     {
-        if (string.IsNullOrEmpty(vfxKey) || g.VfxManager == null) yield break;
+        if (string.IsNullOrEmpty(vfxKey) || g.VisualEffectManager == null) yield break;
 
-        var vfx = VfxLibrary.Get(vfxKey);
+        var vfx = VisualEffectLibrary.Get(vfxKey);
         if (vfx == null || vfx.Prefab == null)
         {
             Debug.LogError($"ProjectileManager: VFX `{vfxKey}` not found or prefab is null.");
@@ -214,7 +214,7 @@ public class ProjectileManager : MonoBehaviour
         }
 
         // Play and wait full lifecycle
-        var (inst, routine) = g.VfxManager.SpawnAndWait(vfx, position);
+        var (inst, routine) = g.VisualEffectManager.SpawnAndWait(vfx, position);
         if (inst != null)
         {
             // Wait apex to trigger gameplay side effects (e.g. heal)

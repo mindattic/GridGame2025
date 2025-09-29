@@ -319,7 +319,7 @@ public partial class ActorInstance : MonoBehaviour
             Render.SetParallaxSprite(SpriteLibrary.Seamless["WhiteFire2"]);
             Render.SetParallaxMaterial(MaterialLibrary.Materials["PlayerParallax"], Thumbnail.texture);
             Render.SetParallaxAlpha(Opacity.Percent50);
-            Vfx.Attack = VfxLibrary.VisualEffects["BlueSlash1"];
+            Vfx.Attack = VisualEffectLibrary.VisualEffects["BlueSlash1"];
             Render.SetTurnDelayTextAlpha(Opacity.Transparent);
             Render.SetTurnDelayText(-1);
         }
@@ -332,7 +332,7 @@ public partial class ActorInstance : MonoBehaviour
             Render.SetParallaxMaterial(MaterialLibrary.Materials["EnemyParallax"], Thumbnail.texture);
             Render.SetParallaxAlpha(Opacity.Percent50);
             Render.SetFrameColor(ColorHelper.Solid.GunMetal);
-            Vfx.Attack = VfxLibrary.VisualEffects["DoubleClaw"];
+            Vfx.Attack = VisualEffectLibrary.VisualEffects["DoubleClaw"];
 
             // No TurnDelay assignment. Timeline seeds and displays countdowns.
             Render.SetTurnDelayText(-1);
@@ -583,8 +583,8 @@ public partial class ActorInstance : MonoBehaviour
         HealthBar.Update();
 
         // Feedback
-        if (VfxLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
-            g.VfxManager.Spawn(vfx, Position);
+        if (VisualEffectLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
+            g.VisualEffectManager.Spawn(vfx, Position);
         g.CombatTextManager.Spawn("Level Up!", Position, "Heal");
         Animation.Grow();
 

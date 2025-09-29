@@ -24,11 +24,11 @@ namespace Assets.Scripts.Sequences
                 yield break;
 
             // Choose a bright explosion-like effect from VfxLibrary. "LightningExplosion" is suitable.
-            var vfx = VfxLibrary.Get("LightningExplosion");
+            var vfx = VisualEffectLibrary.Get("LightningExplosion");
             if (vfx != null)
             {
                 // Play and wait for completion before continuing
-                yield return g.VfxManager.PlayRoutine(vfx, target.Position);
+                yield return g.VisualEffectManager.PlayRoutine(vfx, target.Position);
             }
 
             // Optional: show holy themed combat text

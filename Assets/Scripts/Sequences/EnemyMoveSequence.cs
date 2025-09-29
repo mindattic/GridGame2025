@@ -31,7 +31,7 @@ namespace Assets.Scripts.Sequences
                 // If root just ended, despawn the looping VFX if present
                 if (enemy.Flags.RootedTurnsRemaining == 0 && !string.IsNullOrEmpty(enemy.Flags.RootedVfxInstanceName))
                 {
-                    g.VfxManager?.Despawn(enemy.Flags.RootedVfxInstanceName);
+                    g.VisualEffectManager?.Despawn(enemy.Flags.RootedVfxInstanceName);
                     enemy.Flags.RootedVfxInstanceName = null;
                 }
 

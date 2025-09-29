@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 6354a96e8b629de4f8e62bab290a972a
+guid: d28260b07ea310d41862f6cb6627ed64
 AssetOrigin:
   serializedVersion: 1
   productId: 251914
   packageName: Speedlines Particle Effects
   packageVersion: 1.0
-  assetPath: Assets/Speedline Particles/Materials/2D Horizontal Speed Lines/512_Soft_Cricle.png
+  assetPath: Assets/Speedline Particles/Materials/Anime Speed Lines Classic/1024x128_LongTriangle.png
   uploadId: 587905
 TextureImporter:
   internalIDToNameTable: []
@@ -154,6 +154,19 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 4
     buildTarget: WindowsStoreApps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: VisionOS
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1

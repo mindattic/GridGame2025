@@ -40,7 +40,7 @@ namespace Assets.Helpers
         public static TileManager TileManager => gm != null ? gm.tileManager : null;
         public static FootstepManager FootstepManager => gm != null ? gm.footstepManager : null;
         public static AudioManager AudioManager => gm != null ? gm.audioManager : null;
-        public static VfxManager VfxManager => gm != null ? gm.vfxManager : null;
+        public static VisualEffectManager VisualEffectManager => gm != null ? gm.visualEffectManager : null;
         public static CoinManager CoinManager => gm != null ? gm.coinManager : null;
         public static DebugManager DebugManager => gm != null ? gm.debugManager : null;
         public static ConsoleManager ConsoleManager => gm != null ? gm.consoleManager : null;

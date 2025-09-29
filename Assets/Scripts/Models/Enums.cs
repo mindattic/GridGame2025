@@ -314,6 +314,7 @@ public enum VFX
     PuffyExplosion,
     RedSlash2X,
     RedSword,
+    TechSword,
     RotaryKnife,
     ToxicCloud,
     VFXTest_Ray_Blast,

@@ -34,10 +34,10 @@ namespace Assets.Helpers
             // For attacks against enemies, play and apply damage at its apex
             if (opp.IsEnemy)
             {
-                var vfx = VfxLibrary.Get("BlueSlash4");
+                var vfx = VisualEffectLibrary.Get("BlueSlash4");
                 if (vfx != null)
                 {
-                    var inst = g.VfxManager.SpawnInstance(vfx, opp.Position, null);
+                    var inst = g.VisualEffectManager.SpawnInstance(vfx, opp.Position, null);
                     if (inst != null)
                     {
                         // Wait until the slash reaches apex, then apply damage

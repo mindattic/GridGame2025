@@ -92578,7 +92578,7 @@ GameObject:
   - component: {fileID: 2861877638645501662}
   - component: {fileID: 8466548700272362722}
   m_Layer: 0
-  m_Name: Blue_Sword_4Time
+  m_Name: Blue_Sword_4Time 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
