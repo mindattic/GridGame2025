@@ -2821,7 +2821,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1043321230}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 783016e37fde5be49b00be6b875ad554, type: 3}
+  m_Script: {fileID: 11500000, guid: 11fa19a08a4228c44b32b0489fa72f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxDuration: 6
@@ -4720,8 +4720,6 @@ GameObject:
   - component: {fileID: 1751276290}
   - component: {fileID: 1751276285}
   - component: {fileID: 1751276289}
-  - component: {fileID: 1751276321}
-  - component: {fileID: 1751276288}
   - component: {fileID: 1751276296}
   - component: {fileID: 1751276295}
   - component: {fileID: 1751276294}
@@ -4743,6 +4741,7 @@ GameObject:
   - component: {fileID: 1751276322}
   - component: {fileID: 1751276323}
   - component: {fileID: 1751276324}
+  - component: {fileID: 1751276325}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -4807,8 +4806,7 @@ MonoBehaviour:
   attackLineManager: {fileID: 0}
   combatTextManager: {fileID: 0}
   ghostManager: {fileID: 0}
-  portrait2DManager: {fileID: 0}
-  portrait3DManager: {fileID: 0}
+  portraitManager: {fileID: 0}
   actorManager: {fileID: 0}
   selectedHeroManager: {fileID: 0}
   heroManager: {fileID: 0}
@@ -4848,7 +4846,7 @@ MonoBehaviour:
   selectedActor: {fileID: 0}
   movingHero: {fileID: 0}
   targetActor: {fileID: 0}
-  timerBar2D: {fileID: 0}
+  timerBar: {fileID: 0}
   portraitsRect: {fileID: 0}
   timelineContainer: {fileID: 0}
   timelineViewport: {fileID: 0}
@@ -4934,20 +4932,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99837d18580e2c84ab4a03eafcd0ef37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1751276288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751276275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecac3ddf0267d184c8f2af968e95b7c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actor: {fileID: 0}
-  sortingOrder: 1
 --- !u!114 &1751276289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5425,20 +5409,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f6797da0728b74f9676378a39a3db0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1751276321
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751276275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7755d85bbd22e4b9d908b319b482bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actor: {fileID: 0}
-  sortingOrder: 0
 --- !u!114 &1751276322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5481,6 +5451,18 @@ MonoBehaviour:
   perTurnGain: 5
   onAttackGain: 5
   onHitGain: 3
+--- !u!114 &1751276325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751276275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1bdeebb2fa530649ae10ea09aab4993, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PortraitManager
 --- !u!1 &1754065672
 GameObject:
   m_ObjectHideFlags: 0
