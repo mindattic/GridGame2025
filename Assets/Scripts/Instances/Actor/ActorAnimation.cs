@@ -102,8 +102,8 @@ namespace Assets.Scripts.Instances.Actor
             var rotationCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
             var scaleCurve = AnimationCurve.EaseInOut(0, 1, 1, 0.9f);
 
-            float duration = 0.125f;
-            float returnDuration = 0.125f;
+            float duration = 0.075f;
+            float returnDuration = 0.2f;
 
             var startRotation = Vector3.zero;
             var targetRotation = new Vector3(15f, 70f, 15f);
@@ -131,7 +131,7 @@ namespace Assets.Scripts.Instances.Actor
 
                 rotation = Geometry.Rotation(currentRotation);
 
-                yield return Wait.OneTick();
+                yield return Wait.None();
             }
 
             // Run additional routine (if provided)
