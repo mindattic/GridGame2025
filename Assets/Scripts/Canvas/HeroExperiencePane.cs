@@ -34,11 +34,16 @@ public class HeroExperiencePane : MonoBehaviour
         if (!XPBar) XPBar = transform.Find("XPBar")?.GetComponent<Slider>();
         if (!XPText) XPText = transform.Find("XPText")?.GetComponent<TextMeshProUGUI>();
         if (!LevelUpLabel) LevelUpLabel = transform.Find("LevelUp")?.GetComponent<TextMeshProUGUI>();
+
+        // Ensure the XP bar is not interactable in editor when wiring
+        MakeXPBarReadOnly();
     }
 
     private void Awake()
     {
         Reset();
+        // Extra safety at runtime
+        MakeXPBarReadOnly();
     }
 
     public void Build(string character, int xpGained, bool highlight)
@@ -74,6 +79,8 @@ public class HeroExperiencePane : MonoBehaviour
         if (XPBar)
         {
             XPBar.minValue = 0; XPBar.maxValue = needed; XPBar.wholeNumbers = true; XPBar.value = Mathf.Clamp(currentXP, 0, needed);
+            // Ensure the bar is not user-interactive even if prefab defaults differ
+            MakeXPBarReadOnly();
         }
         if (XPText) XPText.text = $"EXP: {currentXP} / {needed} (+{xpGained})";
         if (LevelUpLabel) LevelUpLabel.color = new Color(1f, 0.95f, 0.3f, 0f);
@@ -83,6 +90,17 @@ public class HeroExperiencePane : MonoBehaviour
 
         // Defer layout one frame so parent layout (width) established
        // StartCoroutine(DeferredLayout());
+    }
+
+    private void MakeXPBarReadOnly()
+    {
+        if (!XPBar) return;
+        XPBar.interactable = false; // blocks pointer/controller interaction
+        // Disable navigation so it cannot be focused via keyboard/gamepad
+        var nav = new Navigation { mode = Navigation.Mode.None };
+        XPBar.navigation = nav;
+        // Remove visual transition highlights
+        XPBar.transition = Selectable.Transition.None;
     }
 
     private IEnumerator DeferredLayout()
