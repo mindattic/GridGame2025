@@ -8,10 +8,11 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Assets.Helper.GameObjectHelper;
 using c = Assets.Helpers.CanvasHelper;
 using g = Assets.Helpers.GameHelper;
 
-public class CardInstance : MonoBehaviour
+public class ActorCard : MonoBehaviour
 {
     // ----- Cached RectTransforms -----
     private RectTransform card;
@@ -84,7 +85,29 @@ public class CardInstance : MonoBehaviour
         // Set content immediately
         portrait.GetComponent<Image>().sprite = actorData.Portrait;
         title.GetComponent<TextMeshProUGUI>().text = actorName;
-        details.GetComponent<TextMeshProUGUI>().text = actorData.Details.Card;
+
+
+
+        // Gather stats for display
+        var s = g.Actors.SelectedActor.Stats;
+        int lvl = Mathf.RoundToInt(s.Level);
+        int hp = Mathf.RoundToInt(s.HP);
+        int maxHp = Mathf.RoundToInt(s.MaxHP);
+        int atk = Mathf.FloorToInt(Formulas.Offense(s, 0f));
+        int def = Mathf.FloorToInt(Formulas.Defense(s, 0f));
+        int spd = Mathf.FloorToInt(s.Speed);
+        //int crit = Mathf.RoundToInt(Formulas.CriticalHitPercent(actor, actor)); // opponent ignored in simplified model
+
+        // Build a compact card line. Uses fixed-width-ish spacing; tweak as needed for your TMP font.
+        var sb = new System.Text.StringBuilder();
+        sb.AppendLine("LVL   HP         ATK  DEF  SPD");
+        sb.AppendLine($"{lvl,-5} {hp}/{maxHp,-8} {atk,3}  {def,3}  {spd,3}");
+
+        details.GetComponent<TextMeshProUGUI>().text = sb.ToString();
+
+
+
+
 
         // Ensure full visibility and placement
         portrait.anchoredPosition = new Vector2(PortraitPosX, PortraitPosY);
@@ -311,4 +334,6 @@ public class CardInstance : MonoBehaviour
     {
         CycleHero(1);
     }
+
+
 }

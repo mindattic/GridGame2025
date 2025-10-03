@@ -41,7 +41,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime03}"),
-                Details = new ActorDetails { Description = "Tries to get lucky.", Card = "Occasional crits, still fragile." }
+                Card = "Occasional crits, still fragile."
             };
         }
     }

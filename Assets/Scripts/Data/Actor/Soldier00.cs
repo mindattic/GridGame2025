@@ -54,11 +54,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Soldier00}"),
-                Details = new ActorDetails
-                {
-                    Description = "A low-ranked fort guard.",
-                    Card = "Basic soldier. Vulnerable but alert.",
-                }
+                Card = "Basic soldier. Vulnerable but alert.",
             };
         }
     }

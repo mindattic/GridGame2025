@@ -55,16 +55,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Vampire}"),
-                Details = new ActorDetails
-                {
-                    Description = "A shadowy predator who thrives in darkness.",
-                    Card = "Heals for 30% of magic damage dealt. Resistant to [Dark].",
-                    Trivia = new List<string>
-                    {
-                        "Sleeps in a crate",
-                        "Allergic to dawn"
-                    }
-                }
+                Card = "Heals for 30% of magic damage dealt. Resistant to [Dark].",
             };
         }
     }

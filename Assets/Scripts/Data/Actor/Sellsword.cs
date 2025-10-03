@@ -54,11 +54,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Sellsword}"),
-                Details = new ActorDetails
-                {
-                    Description = "A blade-for-hire who fights for coin.",
-                    Card = "Steady DPS baseline. Always ready for work.",
-                }
+                Card = "Steady DPS baseline. Always ready for work.",
             };
         }
     }

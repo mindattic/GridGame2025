@@ -54,16 +54,13 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Soldier01}"),
-                Details = new ActorDetails
-                {
-                    Description = "A rookie trying too hard.",
-                    Card = "Faster than most soldiers, but fragile.",
-                    Trivia = new List<string>
+               
+                Card = "Faster than most soldiers, but fragile.",
+                Trivia = new List<string>
                     {
                         "Broke 3 spears in training",
                         "Carries lucky bone charm"
                     }
-                }
             };
         }
     }

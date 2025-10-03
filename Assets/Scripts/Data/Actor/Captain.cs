@@ -54,17 +54,13 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Captain00}"),
-                Details = new ActorDetails
-                {
-                    Description = "A captain.",
-                    Card = "A captain.",
-                    Trivia = new List<string>
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Captain00}"),      
+                Card = "A captain.",
+                Trivia = new List<string>
                     {
                         "Likes jerky",
                         "Hates Reptiles"
                     }
-                }
             };
         }
     }

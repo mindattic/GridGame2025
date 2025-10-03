@@ -2,7 +2,6 @@ using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
 
 namespace Assets.Data.Actor
@@ -62,11 +61,10 @@ namespace Assets.Data.Actor
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
 
-                Details = new ActorDetails
-                {
-                    Description = "A hulking brute with a barbed tail and armored shell.",
-                    Card = "Takes [reduced damage] from frontal attacks. Has a chance to [counterattack] when hit.",
-                }
+
+
+                Card = "Takes [reduced damage] from frontal attacks. Has a chance to [counterattack] when hit.",
+
             };
         }
     }

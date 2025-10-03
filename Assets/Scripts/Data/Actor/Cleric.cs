@@ -60,11 +60,7 @@ namespace Assets.Data.Actor
                     AbilityLibrary.Heal(),
                     AbilityLibrary.Smite()
                 },
-                Details = new ActorDetails
-                {
-                    Description = "A strict adherent to the church.",
-                    Card = "Calls down healing light and protective wards."
-                }
+                Card = "Calls down healing light and protective wards."
             };
         }
     }

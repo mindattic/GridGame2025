@@ -55,16 +55,12 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Pugilist}"),
-                Details = new ActorDetails
-                {
-                    Description = "A disciplined master of martial strikes.",
-                    Card = "Has a chance to counterattack with [Flurry] when evading an attack.",
-                    Trivia = new List<string>
+                Card = "Has a chance to counterattack with [Flurry] when evading an attack.",
+                Trivia = new List<string>
                     {
                         "Once punched a bear",
                         "Trains in silence"
                     }
-                }
             };
         }
     }

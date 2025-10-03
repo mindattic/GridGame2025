@@ -55,16 +55,13 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Bat}"),
-                Details = new ActorDetails
-                {
-                    Description = "A flying menace.",
-                    Card = "Intermittently goes [Berserk] attacking multiple nearby enemies.",
-                    Trivia = new List<string>
+               
+                Card = "Intermittently goes [Berserk] attacking multiple nearby enemies.",
+                Trivia = new List<string>
                     {
                         "Echolocation expert",
                         "Sleeps upside down"
                     }
-                }
             };
         }
     }

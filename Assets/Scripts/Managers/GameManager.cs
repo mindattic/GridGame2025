@@ -42,7 +42,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AudioSource musicSource;
 
     // Canvas
-    [HideInInspector] public CardInstance card;
+    [HideInInspector] public ActorCard card;
     [HideInInspector] public TutorialPopup tutorialPopup;
     [HideInInspector] public Vector2 viewport;
     [HideInInspector] public float tileSize;

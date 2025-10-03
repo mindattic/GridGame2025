@@ -54,16 +54,12 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Soldier03}"),
-                Details = new ActorDetails
-                {
-                    Description = "A washed-up old fighter.",
-                    Card = "Takes a hit better than he gives one.",
-                    Trivia = new List<string>
+                Card = "Takes a hit better than he gives one.",
+                Trivia = new List<string>
                     {
                         "Once held rank",
                         "Talks in riddles"
                     }
-                }
             };
         }
     }

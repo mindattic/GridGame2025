@@ -55,11 +55,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime}"),
-                Details = new ActorDetails
-                {
-                    Description = "A jiggly nuisance barely held together.",
-                    Card = "Lowest Stats in the game. Designed to die in one hit.",
-                }
+                Card = "Lowest Stats in the game. Designed to die in one hit.",
             };
         }
     }

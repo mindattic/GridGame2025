@@ -70,7 +70,7 @@ namespace Assets.Helpers
         //Cancas
         public static WaveAnnouncement WaveAnnouncement => gm != null ? gm.waveAnnouncement : null;
         public static TargetModeOverlay TargetModeOverlay => gm != null ? gm.targetModeOverlay : null;
-        public static CardInstance Card => gm != null ? gm.card : null;
+        public static ActorCard Card => gm != null ? gm.card : null;
         public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;
         public static Timeline Timeline => gm != null ? gm.timeline : null;
         public static TitleBarInstance TitleBar => gm != null ? gm.titleBar : null;

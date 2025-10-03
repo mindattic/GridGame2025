@@ -8,9 +8,7 @@ public class ActorData
 {
     public int Level = 1;
     public string Character;
-    public string Description;
-    public string Expectations;
-    public string Lore;
+
 
     // Base XP awarded when this actor is defeated. Can be overridden per actor Data().
     public int BonusXP = 10;
@@ -26,13 +24,18 @@ public class ActorData
 
     public ThumbnailSettings ThumbnailSettings;
     public CanvasThumbnailSettings CanvasThumbnailSettings; // New: Canvas-specific cropping for timeline blocks
-    public ActorDetails Details;
     public Sprite Portrait;
 
 
     public List<Ability> Abilities = new List<Ability>();
 
     private const int DefaultMilestoneWindow = 5;
+
+    public string Description;
+    public string Expectations;
+    public string Lore;
+    public string Card;
+    public List<string> Trivia = new List<string>();
 
     public ActorData() { }
 
@@ -62,10 +65,6 @@ public class ActorData
         CanvasThumbnailSettings = other.CanvasThumbnailSettings != null
             ? new CanvasThumbnailSettings(other.CanvasThumbnailSettings)
             : new CanvasThumbnailSettings();
-
-        Details = other.Details != null
-            ? new ActorDetails(other.Details)
-            : new ActorDetails();
 
         Portrait = other.Portrait;
 

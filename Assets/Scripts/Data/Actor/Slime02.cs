@@ -41,7 +41,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime02}"),
-                Details = new ActorDetails { Description = "Goo mass with momentum.", Card = "Barely tanky by slime standards." }
+                Card = "Barely tanky by slime standards."
             };
         }
     }

@@ -55,16 +55,12 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Thief}"),
-                Details = new ActorDetails
-                {
-                    Description = "A nimble rogue with sticky fingers.",
-                    Card = "Has a high chance to evade. Can steal from enemies.",
-                    Trivia = new List<string>
+                Card = "Has a high chance to evade. Can steal from enemies.",
+                Trivia = new List<string>
                     {
                         "Loves coin",
                         "Allergic to jail cells"
                     }
-                }
             };
         }
     }

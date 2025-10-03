@@ -42,7 +42,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime01}"),
-                Details = new ActorDetails { Description = "Quick to flee.", Card = "Evasive but still a pushover." }
+                Card = "Evasive but still a pushover."
             };
         }
     }

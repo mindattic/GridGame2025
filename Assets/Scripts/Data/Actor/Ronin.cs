@@ -55,16 +55,12 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Ronin}"),
-                Details = new ActorDetails
-                {
-                    Description = "A masterless warrior guided by honor.",
-                    Card = "Has a chance to [Counter] when attacked. Deals extra damage on the first strike.",
-                    Trivia = new List<string>
+                Card = "Has a chance to [Counter] when attacked. Deals extra damage on the first strike.",
+                Trivia = new List<string>
                     {
                         "Once served a great house",
                         "Walks the path of redemption"
                     }
-                }
             };
         }
     }

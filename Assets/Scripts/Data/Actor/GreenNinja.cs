@@ -54,11 +54,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.GreenNinja}"),
-                Details = new ActorDetails
-                {
-                    Description = "A swift and elusive assassin.",
-                    Card = "Prefers to crit and move on."
-                }
+                Card = "Prefers to crit and move on."
             };
         }
     }

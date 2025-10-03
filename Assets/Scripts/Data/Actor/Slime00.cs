@@ -43,7 +43,9 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime00}"),
-                Details = new ActorDetails { Description = "Barely a monster.", Card = "Dies in one hit most of the time." }
+
+
+                Card = "Dies in one hit most of the time."
             };
         }
     }

@@ -55,11 +55,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.RedNinja}"),
-                Details = new ActorDetails
-                {
-                    Description = "A deadly assassin wielding forbidden arts.",
-                    Card = "Applies [Poison] with melee attacks. May [Vanish] when hit.",
-                }
+                Card = "Applies [Poison] with melee attacks. May [Vanish] when hit.",
             };
         }
     }

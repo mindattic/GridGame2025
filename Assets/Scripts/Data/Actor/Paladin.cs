@@ -55,11 +55,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Paladin}"),
-                Details = new ActorDetails
-                {
-                    Description = "A holy warrior clad in armor.",
-                    Card = "Shields nearby allies with [Radiant Guard]. Takes reduced [Physical] and [Dark] damage.",
-                }
+                Card = "Shields nearby allies with [Radiant Guard]. Takes reduced [Physical] and [Dark] damage.",
             };
         }
     }

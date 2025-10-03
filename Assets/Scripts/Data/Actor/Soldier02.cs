@@ -54,16 +54,13 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Soldier02}"),
-                Details = new ActorDetails
-                {
-                    Description = "A jittery scout with sharp eyes.",
-                    Card = "Fast to act, quick to flee.",
-                    Trivia = new List<string>
+
+                Card = "Fast to act, quick to flee.",
+                Trivia = new List<string>
                     {
                         "Sniffs everything",
                         "Allergic to slime"
                     }
-                }
             };
         }
     }

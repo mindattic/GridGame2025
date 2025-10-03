@@ -2,7 +2,6 @@ using Assets.Helpers;
 using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
-using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
 
 namespace Assets.Data.Actor
@@ -54,16 +53,12 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Yeti}"),
-                Details = new ActorDetails
-                {
-                    Description = "A towering beast of cold fury.",
-                    Card = "Delivers powerful [Ice] attacks that ignore 25% of defense.",
-                    Trivia = new List<string>
+                Card = "Delivers powerful [Ice] attacks that ignore 25% of defense.",
+                Trivia = new List<string>
                     {
                         "Hates heat",
                         "Used to be a myth"
                     }
-                }
             };
         }
     }

@@ -144,7 +144,7 @@ namespace Assets.Helper
             public static class Card
             {
                 public static RectTransform Rect => GameObject.Find("Canvas/Card").GetComponent<RectTransform>();
-                public static CardInstance Instance => GameObject.Find("Canvas/Card").GetComponent<CardInstance>();
+                public static ActorCard Instance => GameObject.Find("Canvas/Card").GetComponent<ActorCard>();
                 public static RectTransform Backdrop => GameObject.Find("Canvas/Card/Backdrop").GetComponent<RectTransform>();
                 public static RectTransform Portrait => GameObject.Find("Canvas/Card/Portrait").GetComponent<RectTransform>();
                 public static RectTransform Title => GameObject.Find("Canvas/Card/Title").GetComponent<RectTransform>();

@@ -43,7 +43,7 @@ namespace Assets.Data.Actor
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Wolf01}"),
-                Details = new ActorDetails { Description = "Fast but fragile.", Card = "Acts often; dies fast." }
+                Card = "Acts often; dies fast."
             };
         }
     }

@@ -83,7 +83,6 @@
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
-    <Compile Include="Assets\Scripts\Models\ActorDetails.cs" />
     <Compile Include="Assets\Scripts\Overworld\RockInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\VisualEffectInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\FolderHelper.cs" />
@@ -112,7 +111,6 @@
     <Compile Include="Assets\Scripts\Helpers\ProjectileHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
-    <Compile Include="Assets\Scripts\Canvas\CardInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier03.cs" />
@@ -307,6 +305,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\VisualEffects\WIP\Vefects\Stylized VFX URP\Skills\_Scripts_\SlashCircle.cs" />
+    <Compile Include="Assets\Scripts\Canvas\ActorCard.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\TurnSelectionMode.cs" />
