@@ -12,9 +12,6 @@ namespace Assets.Helpers
             if (attackResult.HitType == HitOutcome.Critical)
                 return "CriticalHit"; // big, yellow
 
-            if (attackResult.HitType == HitOutcome.Weak)
-                return "GlancingBlow"; // small, gray
-
             return "Damage"; // normal damage style
         }
     }

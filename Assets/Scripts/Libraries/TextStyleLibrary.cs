@@ -26,7 +26,7 @@ namespace Assets.Scripts.Libraries
             if (isLoaded) return;
             textStyles = new Dictionary<string, TextStyle>
             {
-                { "Damage", new TextStyle("Damage", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.White, TextMotion.Bounce) },
+                { "Damage", new TextStyle("Damage", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.White, TextMotion.Float) },
                 { "Heal", new TextStyle("Heal", FontLibrary.Get("Heal"), 24, ColorHelper.Solid.Green, TextMotion.Float) },
                 { "CriticalHit", new TextStyle("CriticalHit", FontLibrary.Get("Damage"), 32, ColorHelper.Solid.Yellow, TextMotion.Bounce) },
                 { "GlancingBlow", new TextStyle("GlancingBlow", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.Gray, TextMotion.Float) },

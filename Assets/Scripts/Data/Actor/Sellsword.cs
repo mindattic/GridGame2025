@@ -20,32 +20,31 @@ namespace Assets.Data.Actor
                 BaseStats = new ActorStats
                 {
                     Level = 1,
-                    Strength = 6f,
+                    Strength = 9f,  // +3
                     Vitality = 6f,
                     Agility = 5f,
-                    Speed = 5f,
+                    Speed = 6f,     // +1
                     Stamina = 4f,
                     Intelligence = 3f,
                     Wisdom = 3f,
-                    Luck = 5f
+                    Luck = 6f       // +1
                 },
                 StatGrowth = new StatGrowth
                 {
-                    Strength = 1.5f,
+                    Strength = 1.8f, // was 1.5f
                     Vitality = 1.5f,
-                    Agility = 1.1f,
-                    Speed = 1.1f,
+                    Agility = 1.2f,
+                    Speed = 1.2f,
                     Stamina = 0.9f,
                     Intelligence = 0.6f,
                     Wisdom = 0.6f,
-                    Luck = 1.1f
+                    Luck = 1.3f      // was 1.1f
                 },
                 MilestoneStatGrowth = new Dictionary<int, StatGrowth>
                 {
-                    { 5,  new StatGrowth { Strength = 1.9f, Vitality = 1.9f, Agility = 1.4f, Speed = 1.4f, Stamina = 1.1f, Intelligence = 0.8f, Wisdom = 0.8f, Luck = 1.4f } },
-                    { 10, new StatGrowth { Strength = 2.4f, Vitality = 2.4f, Agility = 1.6f, Speed = 1.6f, Stamina = 1.3f, Intelligence = 1.0f, Wisdom = 1.0f, Luck = 1.8f } },
-                    { 20, new StatGrowth { Strength = 3.3f, Vitality = 3.3f, Agility = 2.0f, Speed = 2.0f, Stamina = 1.8f, Intelligence = 1.5f, Wisdom = 1.5f, Luck = 2.3f } },
-                    { 40, new StatGrowth { Strength = 4.3f, Vitality = 4.3f, Agility = 2.8f, Speed = 2.8f, Stamina = 2.3f, Intelligence = 2.0f, Wisdom = 2.0f, Luck = 2.8f } }
+                    { 5,  new StatGrowth { Strength = 2.2f, Vitality = 1.9f, Agility = 1.5f, Speed = 1.5f, Stamina = 1.1f, Intelligence = 0.8f, Wisdom = 0.8f, Luck = 1.6f } },
+                    { 10, new StatGrowth { Strength = 2.7f, Vitality = 2.4f, Agility = 1.8f, Speed = 1.8f, Stamina = 1.3f, Intelligence = 1.0f, Wisdom = 1.0f, Luck = 2.0f } },
+                    { 20, new StatGrowth { Strength = 3.7f, Vitality = 3.3f, Agility = 2.2f, Speed = 2.2f, Stamina = 1.8f, Intelligence = 1.5f, Wisdom = 1.5f, Luck = 2.6f } }
                 },
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
@@ -58,12 +57,7 @@ namespace Assets.Data.Actor
                 Details = new ActorDetails
                 {
                     Description = "A blade-for-hire who fights for coin.",
-                    Card = "Can equip a wide variety of weapons. Passive chance to gain [Extra Gold] after battle.",
-                    Trivia = new List<string>
-                    {
-                        "Loyal only to coin",
-                        "Prefers contracts over causes"
-                    }
+                    Card = "Steady DPS baseline. Always ready for work.",
                 }
             };
         }

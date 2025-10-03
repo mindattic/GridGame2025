@@ -24,32 +24,30 @@ public enum HitOutcome
 {
     Normal,
     Critical,
-    Weak,
     Miss
 }
 
 /// <summary>
-/// Centralized numeric formulas for combat, movement pacing, and stat conversions.
+/// Simple, FF-like formulas using only: Speed (turn order), Luck (tilt), Attack, Defense,
+/// CritChance, HitChance. Clear caps, light level tilt, small variance, no evasion stat.
 /// All methods are pure utilities and must not mutate game state.
-/// Calculations use float throughout and convert to int only at the final step where required.
 /// </summary>
 public static class Formulas
 {
-    // Add explicit level advantage so +5 feels "nearly impossible"
-    private const float HitShiftPerLevel = 4f;        // +4% hit per level advantage
-    private const float DamageScalePerLevel = 1.10f;  // +10% damage per level advantage
+    // Small level influence: feels meaningful without runaway
+    private const float HitShiftPerLevel = 3f;        // +3% hit per level advantage
+    private const float DamageScalePerLevel = 1.07f;  // +7% damage per level advantage
+
     private static int LevelAdvantage(ActorStats atk, ActorStats def)
         => Mathf.RoundToInt(atk.Level - def.Level);
 
-    // Weak near-miss tuning (A)
-    private const float WeakBandBase = 6f;
-    private const float WeakBandPerLuck = 0.2f; // per Luck point
+    // Outcome multipliers
+    private const float CritMultiplier = 1.60f;       // was 1.50f -> slightly spikier crits
 
-    // Outcome multipliers (keep Crit as-is, bump Weak to 0.70 as suggested)
-    private const float CritMultiplier = 1.5f;
-    private const float WeakMultiplier = 0.70f; // was 0.50
-
-    // Note: Do not keep cached managers here. These helpers must stay pure.
+    //Knobs for tuning mitigation curve
+    private const float DefenseMitigation = 0.35f;    // was 0.50f -> less defense shaving
+    private const float PenetrationFromAttack = 0.25f; // Offense pierces a slice of Defense
+    private const float OffenseFloorFraction = 0.20f; // at least 20% of Offense gets through
 
     // ---------------
     // Logging helpers
@@ -66,18 +64,33 @@ public static class Formulas
         return a.name;
     }
 
+    // ----------------------------
+    // Minimal stat accessors (6x)
+    // ----------------------------
+    private static float Atk(ActorStats s) => s.Strength;  // Attack
+    private static float Def(ActorStats s) => s.Vitality;  // Defense
+    private static float Spd(ActorStats s) => s.Speed;     // Speed
+    private static float Lck(ActorStats s) => s.Luck;      // Luck
+
+    // Hit%: raise the base a bit to reduce early whiffs
+    private static float HitPercent(ActorStats s)
+        => Mathf.Clamp(80f + Spd(s) * 0.5f + Lck(s) * 0.2f, 5f, 95f); // base was 70f
+
+    // Crit%: small bump to base crit so early hits feel better
+    private static float CritPercent(ActorStats s)
+        => Mathf.Clamp(8f + Lck(s) * 0.4f, 0f, 50f); // base was 5f
+
     /// <summary>
-    /// Returns a small multiplicative tilt based on Luck to bias random variance slightly.
+    /// Tiny multiplicative tilt from Luck to bias variance slightly.
     /// </summary>
     private static float LuckTilt(ActorStats stats)
     {
-        float t = Mathf.Clamp01(stats.Luck / 100f);
-        return Mathf.Lerp(0.98f, 1.02f, t);
+        float t = Mathf.Clamp01(Lck(stats) / 100f);
+        return Mathf.Lerp(0.99f, 1.01f, t);
     }
 
     /// <summary>
     /// Samples a multiplicative variance in [1 - range, 1 + range], slightly biased by Luck.
-    /// No rounding occurs here.
     /// </summary>
     private static float SampleVarianceWithLuck(ActorStats stats, float rangeFraction)
     {
@@ -89,144 +102,66 @@ public static class Formulas
         float adjusted = roll * tilt;
         float result = Mathf.Clamp(adjusted, minV, maxV);
 
-        Log($"Variance: range ±{rangeFraction * 100f:F0}% roll={roll:F3} tilt(Luck={stats.Luck})={tilt:F3} -> factor={result:F3}");
+        Log($"Variance: ±{rangeFraction * 100f:F0}% roll={roll:F3} tilt(Luck={Lck(stats):F0})={tilt:F3} -> factor={result:F3}");
         return result;
     }
 
-    /// <summary>
-    /// Returns a small additive modifier from Luck.
-    /// </summary>
-    public static float LuckModifier(ActorStats stats)
-    {
-        // Make Luck a small additive bonus, not a huge RNG spike that scales with Level.
-        // ~0–20 points at 0–100 Luck
-        return Mathf.Clamp(stats.Luck * 0.2f, 0f, 20f);
-    }
+    // -----------------------
+    // Simple core percentages
+    // -----------------------
+    public static float Accuracy(ActorStats stats) => HitPercent(stats);
+    public static float Evasion(ActorStats stats) => 0f;
 
     /// <summary>
-    /// Attacker hit accuracy score before compare with defender evasion.
-    /// Pure float math; no rounding.
-    /// </summary>
-    public static float Accuracy(ActorStats stats)
-    {
-        float baseAccuracy = 75f + stats.Level * 0.25f; // slightly softer level scaling
-        float precision = stats.Wisdom * 0.8f;          // lower coeff to avoid easy 95% caps
-        float luck = LuckModifier(stats);
-        return baseAccuracy + precision + luck;
-    }
-
-    /// <summary>
-    /// Defender evasion score before compare with attacker accuracy.
-    /// Pure float math; no rounding.
-    /// </summary>
-    public static float Evasion(ActorStats stats)
-    {
-        // Keep Agility primary but avoid trivial 5%/95% saturation
-        float agility = stats.Agility * 1.4f;
-        float speed = stats.Speed * 0.9f;
-        float staminaBonus = stats.Stamina * 0.3f;
-        float luck = Mathf.Min(10f, LuckModifier(stats)); // cap Luck influence on evasion
-        return agility + speed + staminaBonus + luck;
-    }
-
-    /// <summary>
-    /// Rolls outcome using a single uniform roll and a narrow near-miss band.
-    /// Order: Crit -> Normal -> Weak -> Miss.
-    /// Uses float comparisons only; no integer conversions here.
+    /// Rolls outcome with a single uniform roll: Crit -> Normal -> Miss.
     /// </summary>
     public static HitOutcome CalculateHitType(ActorInstance attacker, ActorInstance opponent)
     {
-        float accuracy = Accuracy(attacker.Stats);
-        float evade = Evasion(opponent.Stats);
         int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
 
-        float hitChance = Mathf.Clamp(accuracy - evade + adv * HitShiftPerLevel, 5f, 95f);
-
-        // Crit chance (unchanged math), absolute threshold on the roll table
-        float baseCrit = 5f;
-        float focus = attacker.Stats.Wisdom * 0.35f;
-        float luckCrit = Mathf.Min(20f, attacker.Stats.Luck * 0.25f);
-        float critChance = Mathf.Clamp(baseCrit + focus + luckCrit, 0f, 60f);
-
-        // Weak near-miss band after Hit threshold
-        float weakBand = WeakBandBase + attacker.Stats.Luck * WeakBandPerLuck;
-        float effectiveWeakCap = Mathf.Max(0f, 100f - hitChance); // cannot extend past 100
-        float effectiveWeakBand = Mathf.Clamp(weakBand, 0f, effectiveWeakCap);
+        float hitChance = Mathf.Clamp(Accuracy(attacker.Stats) + adv * HitShiftPerLevel, 5f, 95f);
+        float critChance = CritPercent(attacker.Stats);
 
         float roll = RNG.Float(0f, 100f);
-        Log($"HitOutcome roll: {NameOf(attacker)} vs {NameOf(opponent)} | Acc={accuracy:F2} Evade={evade:F2} Adv={adv} -> Hit%={hitChance:F2}, Crit%={critChance:F2}, WeakBand={weakBand:F1} (eff {effectiveWeakBand:F1}), Roll={roll:F2}");
+        Log($"HitOutcome roll: {NameOf(attacker)} vs {NameOf(opponent)} | Hit%={hitChance:F1}, Crit%={critChance:F1}, Adv={adv}, Roll={roll:F2}");
 
-        if (roll <= critChance)
-        {
-            Log("Result: CRITICAL");
-            return HitOutcome.Critical;
-        }
-        else if (roll <= hitChance)
-        {
-            Log("Result: Normal hit");
-            return HitOutcome.Normal;
-        }
-        else if (roll <= hitChance + effectiveWeakBand)
-        {
-            Log("Result: Weak (near-miss)");
-            return HitOutcome.Weak;
-        }
-        else
-        {
-            Log("Result: MISS");
-            return HitOutcome.Miss;
-        }
+        if (roll <= critChance) return HitOutcome.Critical;
+        if (roll <= hitChance) return HitOutcome.Normal;
+        return HitOutcome.Miss;
     }
 
     /// <summary>
-    /// Derived max health from core Stats.
-    /// Pure float math; callers decide if they need rounding for display.
+    /// Derived max health: keep very simple.
     /// </summary>
     public static float Health(ActorStats stats)
     {
-        return Mathf.Floor(50f + stats.Vitality * 10f + stats.Level * 2f);
+        // Lower baseline HP so early fights are punchy. Tweak per class as needed.
+        const float baseHP = 12f;   // was 50f
+        const float perVit = 5f;    // was 10f
+        const float perLvl = 1f;    // was 2f
+        return Mathf.Floor(baseHP + Def(stats) * perVit + stats.Level * perLvl);
     }
 
-    /// <summary>
-    /// Physical offense score including optional Weapon power.
-    /// FloatRoutine only; no rounding.
-    /// </summary>
     public static float Offense(ActorStats stats, float weaponPower = 0f)
     {
-        return stats.Strength * 2f + weaponPower;
+        return Atk(stats) + weaponPower;
     }
 
-    /// <summary>
-    /// Physical defense score including optional armor rating.
-    /// FloatRoutine only; no rounding.
-    /// </summary>
     public static float Defense(ActorStats stats, float armorRating = 0f)
     {
-        return stats.Vitality * 1.5f + stats.Stamina * 0.5f + armorRating;
+        return Def(stats) + armorRating;
     }
 
-    /// <summary>
-    /// Magical offense score from Intelligence and Wisdom.
-    /// FloatRoutine only; no rounding.
-    /// </summary>
     public static float MagicOffense(ActorStats stats)
     {
-        return stats.Intelligence * 2.5f + stats.Wisdom * 1f;
+        return Atk(stats);
     }
 
-    /// <summary>
-    /// Magical resistance score from Intelligence, Wisdom, and Stamina.
-    /// FloatRoutine only; no rounding.
-    /// </summary>
     public static float MagicResistance(ActorStats stats)
     {
-        return stats.Intelligence * 1.5f + stats.Wisdom * 1f + stats.Stamina * 0.5f;
+        return Def(stats);
     }
 
-    /// <summary>
-    /// Applies positive or negative resistance to a base value as a float multiplier.
-    /// No rounding here.
-    /// </summary>
     public static float ApplyResistance(float baseValue, float resistance)
     {
         if (resistance >= 0f)
@@ -236,8 +171,7 @@ public static class Formulas
     }
 
     /// <summary>
-    /// Computes a fully populated physical AttackResult for attacker vs opponent.
-    /// All math remains float until the final conversion to int damage.
+    /// Computes a physical AttackResult using the adjusted, more-forgiving low-level model.
     /// </summary>
     public static AttackResult CalculateAttackResult(
         ActorInstance attacker, ActorInstance opponent,
@@ -247,35 +181,38 @@ public static class Formulas
         float off = Offense(attacker.Stats, weaponPower);
         float def = Defense(opponent.Stats, armorRating);
 
-        // (B1) Defense soft cap relative to current Offense
-        float effDef = Mathf.Min(def, off * 0.8f);
-        float raw = off - effDef;
+        // New mitigation shape:
+        // 1) Attack-based penetration lowers effective Defense.
+        // 2) Remaining Defense mitigates with a lighter coefficient.
+        // 3) A floor ensures at least a fraction of Offense gets through.
+        float pen = off * PenetrationFromAttack;
+        float effDef = Mathf.Max(0f, def - pen);
+        float reduced = off - effDef * DefenseMitigation;
+        float floorBase = off * OffenseFloorFraction;
+        float raw = Mathf.Max(1f, Mathf.Max(reduced, floorBase));
 
         float resisted = ApplyResistance(raw, resistance);
-        float varied = resisted * SampleVarianceWithLuck(attacker.Stats, 0.20f); // ±20%
+        float varied = resisted * SampleVarianceWithLuck(attacker.Stats, 0.10f); // ±10%
 
         HitOutcome type = CalculateHitType(attacker, opponent);
-        float typeMult = type == HitOutcome.Critical ? CritMultiplier : (type == HitOutcome.Weak ? WeakMultiplier : 1f);
+        float typeMult = type == HitOutcome.Critical ? CritMultiplier : 1f;
 
         int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
         float levelMult = Mathf.Pow(DamageScalePerLevel, adv);
 
-        // Miss does 0 damage
         int finalDamage = (type == HitOutcome.Miss)
             ? 0
             : Mathf.Max(1, Mathf.FloorToInt(varied * typeMult * levelMult));
 
-        // Compose a single multi-line log entry to capture the full breakdown
         var s =
             $"[PHYS] {NameOf(attacker)} -> {NameOf(opponent)} ({element}, Resist {resistance:+0;-0;0}%)\n" +
-            $"  Offense = STR*2 + Weapon = {attacker.Stats.Strength}*2 + {weaponPower} = {off:F2}\n" +
-            $"  Defense = VIT*1.5 + STA*0.5 + Armor = {opponent.Stats.Vitality}*1.5 + {opponent.Stats.Stamina}*0.5 + {armorRating} = {def:F2}\n" +
-            $"  EffectiveDefense (soft cap 0.8*Off) = min({def:F2}, {off:F2}*0.8) = {effDef:F2}\n" +
-            $"  Raw = Off - EffDef = {off:F2} - {effDef:F2} = {raw:F2}\n" +
-            $"  After Resistance({resistance:+0;-0;0}%): {resisted:F2}\n" +
-            $"  Variance factor applied -> Varied = {varied:F2}\n" +
-            $"  HitOutcome: {type} x{(type == HitOutcome.Critical ? CritMultiplier : (type == HitOutcome.Weak ? WeakMultiplier : 1f)):F2}\n" +
-            $"  LevelAdvantage: {adv} -> DamageScalePerLevel^{adv} = {levelMult:F3}\n" +
+            $"  Offense = {off:F1}, Defense = {def:F1}, Penetration({PenetrationFromAttack:P0}) = {pen:F1} -> EffDef {effDef:F1}\n" +
+            $"  Reduced = Off - EffDef*{DefenseMitigation:F2} = {reduced:F2}, Floor({OffenseFloorFraction:P0} of Off) = {floorBase:F2}\n" +
+            $"  Raw = max(1, max(Reduced, Floor)) = {raw:F2}\n" +
+            $"  After Resistance: {resisted:F2}\n" +
+            $"  Variance applied -> {varied:F2}\n" +
+            $"  HitOutcome: {type} x{(type == HitOutcome.Critical ? CritMultiplier : 1f):F2}\n" +
+            $"  LevelAdvantage: {adv} -> Scale {levelMult:F3}\n" +
             $"  Final Damage = {(type == HitOutcome.Miss ? 0 : Mathf.FloorToInt(varied * typeMult * levelMult))} {(type == HitOutcome.Miss ? "(MISS)" : string.Empty)}";
         Log(s);
 
@@ -283,8 +220,7 @@ public static class Formulas
     }
 
     /// <summary>
-    /// Computes a fully populated magical AttackResult for caster vs target.
-    /// All math remains float until the final conversion to int damage.
+    /// Computes magical AttackResult using the same adjusted mitigation.
     /// </summary>
     public static AttackResult CalculateMagicDamage(
         ActorInstance caster, ActorInstance target,
@@ -293,15 +229,17 @@ public static class Formulas
         float off = MagicOffense(caster.Stats);
         float res = MagicResistance(target.Stats);
 
-        // (B1) Resistance soft cap relative to current MagicOffense
-        float effRes = Mathf.Min(res, off * 0.8f);
-        float raw = off - effRes;
+        float pen = off * PenetrationFromAttack;
+        float effRes = Mathf.Max(0f, res - pen);
+        float reduced = off - effRes * DefenseMitigation;
+        float floorBase = off * OffenseFloorFraction;
+        float raw = Mathf.Max(1f, Mathf.Max(reduced, floorBase));
 
         float resisted = ApplyResistance(raw, resistance);
-        float varied = resisted * SampleVarianceWithLuck(caster.Stats, 0.20f);
+        float varied = resisted * SampleVarianceWithLuck(caster.Stats, 0.10f);
 
         HitOutcome type = CalculateHitType(caster, target);
-        float typeMult = type == HitOutcome.Critical ? CritMultiplier : (type == HitOutcome.Weak ? WeakMultiplier : 1f);
+        float typeMult = type == HitOutcome.Critical ? CritMultiplier : 1f;
 
         int adv = LevelAdvantage(caster.Stats, target.Stats);
         float levelMult = Mathf.Pow(DamageScalePerLevel, adv);
@@ -312,63 +250,31 @@ public static class Formulas
 
         var s =
             $"[MAG] {NameOf(caster)} -> {NameOf(target)} ({element}, Resist {resistance:+0;-0;0}%)\n" +
-            $"  MagicOffense = INT*2.5 + WIS*1 = {caster.Stats.Intelligence}*2.5 + {caster.Stats.Wisdom}*1 = {off:F2}\n" +
-            $"  MagicResist = INT*1.5 + WIS*1 + STA*0.5 = {target.Stats.Intelligence}*1.5 + {target.Stats.Wisdom}*1 + {target.Stats.Stamina}*0.5 = {res:F2}\n" +
-            $"  EffectiveResist (soft cap 0.8*Off) = min({res:F2}, {off:F2}*0.8) = {effRes:F2}\n" +
-            $"  Raw = Off - EffRes = {off:F2} - {effRes:F2} = {raw:F2}\n" +
-            $"  After Resistance({resistance:+0;-0;0}%): {resisted:F2}\n" +
-            $"  Variance factor applied -> Varied = {varied:F2}\n" +
-            $"  HitOutcome: {type} x{(type == HitOutcome.Critical ? CritMultiplier : (type == HitOutcome.Weak ? WeakMultiplier : 1f)):F2}\n" +
-            $"  LevelAdvantage: {adv} -> DamageScalePerLevel^{adv} = {levelMult:F3}\n" +
+            $"  M.Offense = {off:F1}, M.Resist = {res:F1}, Penetration({PenetrationFromAttack:P0}) = {pen:F1} -> EffRes {effRes:F1}\n" +
+            $"  Reduced = Off - EffRes*{DefenseMitigation:F2} = {reduced:F2}, Floor({OffenseFloorFraction:P0} of Off) = {floorBase:F2}\n" +
+            $"  Raw = max(1, max(Reduced, Floor)) = {raw:F2}\n" +
+            $"  After Resistance: {resisted:F2}\n" +
+            $"  Variance applied -> {varied:F2}\n" +
+            $"  HitOutcome: {type} x{(type == HitOutcome.Critical ? CritMultiplier : 1f):F2}\n" +
+            $"  LevelAdvantage: {adv} -> Scale {levelMult:F3}\n" +
             $"  Final Damage = {(type == HitOutcome.Miss ? 0 : Mathf.FloorToInt(varied * typeMult * levelMult))} {(type == HitOutcome.Miss ? "(MISS)" : string.Empty)}";
         Log(s);
 
         return new AttackResult(caster, target, finalDamage, type);
     }
 
-    /// <summary>
-    /// Clamps HP to nonnegative values while alive. FloatRoutine domain.
-    /// </summary>
     public static float ClampAlive(float hp)
     {
         return hp < 1f ? 0f : hp;
     }
 
-    /// <summary>
-    /// Action point regeneration per tick based on Intelligence, Stamina, and Level. FloatRoutine domain.
-    /// </summary>
     public static float APRegen(ActorStats stats)
     {
-        return 5f + stats.Intelligence * 0.6f + stats.Stamina * 0.4f + stats.Level * 0.2f;
+        return 3f + Spd(stats) * 0.6f + stats.Level * 0.2f;
     }
 
-    /// <summary>
-    /// Returns the percentage chance (0–100) of landing a critical hit, based on attacker Stats.
-    /// Matches CalculateHitType's crit determination (absolute threshold on roll).
-    /// </summary>
     public static float CriticalHitPercent(ActorInstance attacker, ActorInstance opponent)
     {
-        // Crit chance formula from CalculateHitType.
-        float baseCrit = 5f;
-        float focus = attacker.Stats.Wisdom * 0.35f;
-        float luck = Mathf.Min(20f, attacker.Stats.Luck * 0.25f);
-        return Mathf.Clamp(baseCrit + focus + luck, 0f, 60f);
-    }
-
-    /// <summary>
-    /// Returns the percentage chance (0–100) of a weak (glancing) hit using the near-miss band.
-    /// This approximates the band size after hit chance.
-    /// </summary>
-    public static float GlancingBlowPercent(ActorInstance attacker, ActorInstance opponent)
-    {
-        float accuracy = Accuracy(attacker.Stats);
-        float evade = Evasion(opponent.Stats);
-        int adv = LevelAdvantage(attacker.Stats, opponent.Stats);
-
-        float hitChance = Mathf.Clamp(accuracy - evade + adv * HitShiftPerLevel, 5f, 95f);
-        float weakBand = WeakBandBase + attacker.Stats.Luck * WeakBandPerLuck;
-        float effectiveWeakCap = Mathf.Max(0f, 100f - hitChance);
-        float effectiveWeakBand = Mathf.Clamp(weakBand, 0f, effectiveWeakCap);
-        return Mathf.Clamp(effectiveWeakBand, 0f, 100f);
+        return CritPercent(attacker.Stats);
     }
 }

@@ -21,32 +21,32 @@ namespace Assets.Data.Actor
                 BaseStats = new ActorStats
                 {
                     Level = 1,
-                    Strength = 2f,
+                    Strength = 6f,  // +4: still support, but can 1–2 shot Slimes
                     Vitality = 5f,
                     Agility = 3f,
-                    Speed = 3f,
+                    Speed = 4f,     // +1: better cadence
                     Stamina = 2f,
                     Intelligence = 3f,
                     Wisdom = 2f,
-                    Luck = 9f
+                    Luck = 10f      // +1: high hit/crit identity
                 },
                 StatGrowth = new StatGrowth
                 {
-                    Strength = 0.4f,
+                    Strength = 1.2f, // was 0.4f
                     Vitality = 1.2f,
                     Agility = 0.6f,
-                    Speed = 0.8f,
+                    Speed = 1.0f,    // was 0.8f
                     Stamina = 0.5f,
-                    Intelligence = 0.8f,
-                    Wisdom = 0.8f,
-                    Luck = 2.3f
+                    Intelligence = 0.9f, // was 0.8f
+                    Wisdom = 0.9f,       // was 0.8f
+                    Luck = 2.5f          // was 2.3f
                 },
                 MilestoneStatGrowth = new Dictionary<int, StatGrowth>
                 {
-                    { 5,  new StatGrowth { Strength = 0.0f, Vitality = 1.0f, Agility = 0.4f, Speed = 0.0f, Stamina = 0.5f, Intelligence = 0.0f, Wisdom = 0.0f, Luck = 2.8f } },
-                    { 10, new StatGrowth { Strength = 0.5f, Vitality = 1.5f, Agility = 0.6f, Speed = 0.0f, Stamina = 0.5f, Intelligence = 0.9f, Wisdom = 0.9f, Luck = 3.6f } },
-                    { 20, new StatGrowth { Strength = 1.0f, Vitality = 2.0f, Agility = 0.9f, Speed = 1.0f, Stamina = 1.0f, Intelligence = 1.4f, Wisdom = 1.4f, Luck = 4.5f } },
-                    { 40, new StatGrowth { Strength = 1.5f, Vitality = 2.5f, Agility = 1.2f, Speed = 2.0f, Stamina = 2.0f, Intelligence = 1.9f, Wisdom = 1.9f, Luck = 5.5f } }
+                    { 5,  new StatGrowth { Strength = 0.8f, Vitality = 1.0f, Agility = 0.5f, Speed = 0.3f, Stamina = 0.6f, Intelligence = 0.6f, Wisdom = 0.6f, Luck = 3.0f } },
+                    { 10, new StatGrowth { Strength = 1.4f, Vitality = 1.6f, Agility = 0.7f, Speed = 0.5f, Stamina = 0.7f, Intelligence = 1.1f, Wisdom = 1.1f, Luck = 3.8f } },
+                    { 20, new StatGrowth { Strength = 1.8f, Vitality = 2.2f, Agility = 1.0f, Speed = 1.2f, Stamina = 1.1f, Intelligence = 1.6f, Wisdom = 1.6f, Luck = 4.8f } },
+                    { 40, new StatGrowth { Strength = 2.4f, Vitality = 2.8f, Agility = 1.4f, Speed = 2.2f, Stamina = 2.1f, Intelligence = 2.1f, Wisdom = 2.1f, Luck = 6.0f } }
                 },
                 Stats = new ActorStats(),
                 ThumbnailSettings = new ThumbnailSettings
@@ -57,8 +57,8 @@ namespace Assets.Data.Actor
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
                 Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Cleric}"),
                 Abilities = new List<Ability>() {
-                    AbilityLibrary.Heal(), 
-                    AbilityLibrary.Smite() 
+                    AbilityLibrary.Heal(),
+                    AbilityLibrary.Smite()
                 },
                 Details = new ActorDetails
                 {
