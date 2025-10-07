@@ -63,7 +63,7 @@ public class WaveAnnouncement : MonoBehaviour
     /// </summary>
     public void ShowEndless(int currentWave)
     {
-        SetText($"Wave {currentWave}/\u221E");
+        SetText($"Wave {currentWave}/{TextSymbol.Infinity}");
         SetLabelAlpha(255);
         RestartAnimation();
     }

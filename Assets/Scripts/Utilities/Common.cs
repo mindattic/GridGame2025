@@ -12,6 +12,22 @@ public static class Common
     public const int MaxPartyMemberCount = 6;
 }
 
+public static class TextSymbol
+{
+    public const string Infinity = "\u221E";         
+    public const string Bullet = "\u2022";             
+    public const string Ellipsis = "\u2026";           
+    public const string EnDash = "\u2013";             
+    public const string EmDash = "\u2014";             
+    public const string LeftDoubleQuote = "\u201C";    
+    public const string RightDoubleQuote = "\u201D";   
+    public const string LeftSingleQuote = "\u2018";    
+    public const string RightSingleQuote = "\u2019";   
+    public const string Trademark = "\u2122";          
+    public const string Copyright = "\u00A9";          
+    public const string Registered = "\u00AE";         
+}
+
 /// <summary>
 /// Standard date format strings.
 /// </summary>

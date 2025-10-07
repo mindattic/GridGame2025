@@ -20,7 +20,7 @@ namespace Assets.Scripts.Sequences
             var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Defeat") ? SoundEffectLibrary.SoundEffects["Defeat"] : null;
             if (sfx != null)
                 yield return Wait.For(sfx.length);
-            // Route to PostBattleScreen so XP is still awarded on defeat
+            // Route to PostBattleScreen so XP is awarded on defeat
             scene.Fade.ToPostBattleScreen();
         }
     }
