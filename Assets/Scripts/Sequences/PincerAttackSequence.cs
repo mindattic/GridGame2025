@@ -49,9 +49,23 @@ namespace Assets.Scripts.Sequences
             var routine1 = AttackHelper.MultiAttackRoutine(pair.attackResults1);
             var routine2 = AttackHelper.MultiAttackRoutine(pair.attackResults2);
 
-            // Run bumps toward each attacker's own adjacent opponent
-            yield return pair.attacker1.Animation.BumpRoutine(opp1, routine1);
-            yield return pair.attacker2.Animation.BumpRoutine(opp2, routine2);
+            // If an opponent isDying, spin instead of bump and show Respite at apex
+            if (opp1 != null && opp1.IsDying)
+                yield return pair.attacker1.Animation.Spin360AndWaitRoutine(RespiteRoutine(opp1));
+            else
+                yield return pair.attacker1.Animation.BumpRoutine(opp1, routine1);
+
+            if (opp2 != null && opp2.IsDying)
+                yield return pair.attacker2.Animation.Spin360AndWaitRoutine(RespiteRoutine(opp2));
+            else
+                yield return pair.attacker2.Animation.BumpRoutine(opp2, routine2);
+        }
+
+        private IEnumerator RespiteRoutine(ActorInstance opponent)
+        {
+            if (opponent != null)
+                g.CombatTextManager.Spawn("Respite", opponent.Position, "Heal");
+            yield return null;
         }
 
     }

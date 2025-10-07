@@ -79,7 +79,7 @@ public class LoadingScreenLore : MonoBehaviour
         if (lore.Count == 0 || loreText == null)
             return;
 
-        int index = RNG.Int(0, lore.Count);
+        int index = RNG.Int(0, lore.Count - 1);
         loreText.text = lore[index];
     }
 }

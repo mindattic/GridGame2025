@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using Assets.Helper;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 /// <summary>
 /// Displays "Wave X/Y" text with a rotate-in, hold, rotate-out animation.
@@ -17,6 +18,7 @@ public class WaveAnnouncement : MonoBehaviour
     private Coroutine animationRoutine;
 
     GameObject root;
+    Image image;
     TextMeshProUGUI back;
     TextMeshProUGUI front;
 
@@ -28,6 +30,7 @@ public class WaveAnnouncement : MonoBehaviour
     {
         // Resolve labels using GameObjectHelper strongly-typed paths.
         root = GameObjectHelper.Game.WaveAnnouncement.Root;
+        image = GameObjectHelper.Game.WaveAnnouncement.Image;
         back = GameObjectHelper.Game.WaveAnnouncement.Back;
         front = GameObjectHelper.Game.WaveAnnouncement.Front;
     }
@@ -129,6 +132,13 @@ public class WaveAnnouncement : MonoBehaviour
 
     private void SetLabelAlpha(byte a)
     {
+        if (image != null)
+        {
+            var c = (Color32)image.color;
+            c.a = a;
+            image.color = c;
+        }
+
         if (back != null)
         {
             var c = (Color32)back.color;

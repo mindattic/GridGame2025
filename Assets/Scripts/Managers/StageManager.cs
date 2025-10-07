@@ -12,6 +12,7 @@ using scene = Assets.Helpers.SceneHelper;
 using Assets.Scripts.Managers; // added
 using Assets.Scripts.Sequences;
 using Assets.Scripts.Libraries; // NEW
+using System.Collections.Generic; // added
 
 public class StageManager : MonoBehaviour
 {
@@ -245,10 +246,31 @@ public class StageManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when an actor dies. Triggers checks for game over or stage completion.
+    /// When an actor dies we may need to: pull-forward pending spawns to avoid empty enemy turns,
+    /// advance waves, or trigger win/lose states.
     /// </summary>
     public void OnActorDeath()
     {
+        // 1) If there are no enemies currently playing but there are pending (not yet spawned)
+        //    enemies scheduled for future turns, pull the next batch forward to the current turn
+        //    so the board is never empty of enemies.
+        var enemiesPlaying = g.Actors.Enemies.Any(e => e != null && e.IsPlaying);
+        var pending = g.Actors.Enemies.Where(e => e != null && !e.Flags.HasSpawned).ToList();
+        if (!enemiesPlaying && pending.Count > 0)
+        {
+            int currentTurn = g.TurnManager.CurrentTurn;
+            int nextSpawnTurn = pending.Min(e => e.spawnTurn);
+            var nextBatch = pending.Where(e => e.spawnTurn == nextSpawnTurn).ToList();
+            foreach (var e in nextBatch)
+                e.spawnTurn = currentTurn;
+
+            // Activate immediately and refresh timeline
+            OnTurnAdvanced();
+            g.Timeline?.RebuildFuturePreservingCurrent();
+            return; // do not advance wave/stage; we just filled the gap
+        }
+
+        // 2) Otherwise continue with standard flow
         CheckBattleLost();
         if (IsEndless) CheckEndlessWaveComplete(); else CheckWaveComplete();
     }

@@ -373,6 +373,17 @@ namespace Assets.Scripts.Instances.Actor
         }
 
         /// <summary>
+        /// New: same as Spin360 but yields until the spin completes, for sequence control.
+        /// </summary>
+        public IEnumerator Spin360AndWaitRoutine(IEnumerator routine = null)
+        {
+            if (!isActive || !isAlive)
+                yield break;
+
+            yield return Spin360Routine(routine);
+        }
+
+        /// <summary>
         /// Rotates the actor 360 degrees around Y. If a routine routine is provided,
         /// it runs once after passing 240 degrees.
         /// </summary>

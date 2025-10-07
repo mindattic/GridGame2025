@@ -45,6 +45,14 @@ namespace Assets.Scripts.Sequences
             {
                 foreach (var opponent in defendingHeroes)
                 {
+                    // If opponent is in a dying state, do a 360 spin instead of bump
+                    if (opponent.IsDying)
+                    {
+                        IEnumerator respite = RespiteRoutine(opponent);
+                        yield return attacker.Animation.Spin360AndWaitRoutine(respite);
+                        continue;
+                    }
+
                     var attackResult = Formulas.CalculateAttackResult(attacker, opponent);
 
                     if (attackResult == null
@@ -53,13 +61,19 @@ namespace Assets.Scripts.Sequences
                         || attackResult.Opponent.IsDead)
                         continue;
 
-                    //var impactRoutine = ImpactRoutineWithParry(attackResult, opponent);
                     var singleAttack = AttackHelper.SingleAttackRoutine(attackResult);
                     yield return attacker.Animation.BumpRoutine(opponent, singleAttack);
                 }
             }
 
             attacker.ActionBar.Reset();
+        }
+
+        private IEnumerator RespiteRoutine(ActorInstance opponent)
+        {
+            if (opponent != null)
+                g.CombatTextManager.Spawn("Respite", opponent.Position, "Heal");
+            yield return null;
         }
 
         /// <summary>
