@@ -62,7 +62,15 @@ namespace Assets.Helper
             public static Canvas Canvas3D => GameObject.Find("Canvas3D").GetComponent<Canvas>();
 
 
-            public const string WaveAnnouncement = "Canvas/WaveAnnouncement";
+
+            public static class WaveAnnouncement
+            {
+                public static GameObject Root => GameObject.Find("Canvas/WaveAnnouncement");
+                public static TextMeshProUGUI Back => GameObject.Find("Canvas/WaveAnnouncement/Back").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI Front => GameObject.Find("Canvas/WaveAnnouncement/Front").GetComponent<TextMeshProUGUI>();
+            }
+
+
             public const string TimelineContainer = "Canvas/Timeline";
 
             public static class TimerBar

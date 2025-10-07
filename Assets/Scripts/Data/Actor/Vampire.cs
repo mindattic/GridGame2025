@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Vampire,
+                CharacterClass = CharacterClass.Vampire,
+                Tags = Tag.Hero | Tag.Humanoid | Tag.Undead,
                 Description = "A shadowy predator who thrives in darkness.",
                 Expectations = "Sustained magic DPS with life steal. Wants to fight from safety and drain foes down.",
                 Lore = "The last heir of a night-court, more rumor than citizen.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Vampire}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Vampire}"),
                 Card = "Heals for 30% of magic damage dealt. Resistant to [Dark].",
             };
         }

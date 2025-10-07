@@ -14,6 +14,7 @@ using UnityEngine.Rendering;
 using static Assets.Helper.GameObjectHelper;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Assets.Scripts.Managers; // added for EndlessModeRuntime
 
 /// <summary>
 /// Runtime actor instance for both heroes and enemies.
@@ -357,6 +358,20 @@ public partial class ActorInstance : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Activate this actor if its spawn turn has arrived.
+    /// </summary>
+    public void ActivateIfSpawnable()
+    {
+        if (!Flags.HasSpawned && spawnTurn <= g.TurnManager.CurrentTurn)
+        {
+            gameObject.SetActive(true);
+            Flags.HasSpawned = true;
+            Animation.FadeIn();
+            Animation.Spin360();
+        }
+    }
+
     #endregion
 
     #region Combat API
@@ -513,12 +528,13 @@ public partial class ActorInstance : MonoBehaviour
         if (HealthBar.isDraining)
             yield return new WaitUntil(() => HealthBar.isEmpty);
 
-        // Award XP only when an enemy dies; do not apply to stats now (accumulate for VictoryScreen)
+        // Award XP only when an enemy dies
         if (this.IsEnemy)
         {
             int baseXp = ExperienceHelper.Calculate(this);
             if (baseXp > 0)
             {
+                // Accumulate to ExperienceTracker for Victory screen (both modes)
                 var save = ProfileHelper.CurrentProfile?.CurrentSave;
                 var party = save?.Party?.Members?.Select(m => m.Character).ToHashSet() ?? new HashSet<string>();
                 var roster = save?.Roster?.Members?.Select(m => m.Character).ToList() ?? new System.Collections.Generic.List<string>();

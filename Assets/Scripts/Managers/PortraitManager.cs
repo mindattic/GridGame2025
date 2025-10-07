@@ -188,7 +188,7 @@ public class PortraitManager : MonoBehaviour
         StartCoroutine(instance.DissolveRoutine(routine));
     }
 
-    public IEnumerator SpawnPairWorldRoutine(ActorPair actorPair)
+    public IEnumerator SpawnPair3DRoutine(ActorPair actorPair)
     {
         yield return Wait.For(Intermission.Before.Player.Attack);
         g.AudioManager.Play("Click");

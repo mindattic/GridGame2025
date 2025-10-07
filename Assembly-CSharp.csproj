@@ -96,6 +96,7 @@
     <Compile Include="Assets\Scripts\Helpers\PartySortHelper.cs" />
     <Compile Include="Assets\Scripts\Overworld\Mode7CameraController.cs" />
     <Compile Include="Assets\Scripts\Managers\AttackLineManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\EndlessWaveGenerator.cs" />
     <Compile Include="Assets\Scripts\Models\RectInt.cs" />
     <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
@@ -153,6 +154,7 @@
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
     <Compile Include="Assets\Scripts\Managers\SequenceManager.cs" />
     <Compile Include="Assets\Scripts\Effects\ZoomEffect.cs" />
+    <Compile Include="Assets\Scripts\Helpers\CharacterClass.cs" />
     <Compile Include="Assets\Scripts\Sequences\ShieldBashSequence.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Slime02.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
@@ -242,7 +244,6 @@
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
     <Compile Include="Assets\Scripts\Models\ToggleSetting.cs" />
-    <Compile Include="Assets\Scripts\Managers\GameOverManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorHealthBar.cs" />
     <Compile Include="Assets\Scripts\Managers\HeroManager.cs" />
     <Compile Include="Assets\Scripts\Managers\SaveFileSelectManager.cs" />
@@ -252,7 +253,6 @@
     <Compile Include="Assets\Scripts\Helpers\YSortUtility.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorRenderers.cs" />
     <Compile Include="Assets\Scripts\Managers\SortingManager.cs" />
-    <Compile Include="Assets\Scripts\Helpers\CharacterHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EndTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Overworld\OffscreenArrowIndicator.cs" />
     <Compile Include="Assets\Scripts\Sequences\BattleWonSequence.cs" />
@@ -329,6 +329,7 @@
     <Compile Include="Assets\Scripts\Models\TutorialModels.cs" />
     <Compile Include="Assets\Scripts\Canvas\TargetModeOverlay.cs" />
     <Compile Include="Assets\Scripts\Models\RectFloat.cs" />
+    <Compile Include="Assets\Scripts\Helpers\GameModeHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\PincerAttackSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\SoundEffectLibrary.cs" />

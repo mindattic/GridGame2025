@@ -57,16 +57,16 @@ public class AbilityButtonManager : MonoBehaviour
     private List<Ability> GetAbilitiesFor(string characterName)
     {
         var list = new List<Ability>();
-        if (characterName == CharacterHelper.Cleric)
+        if (characterName == CharacterClass.Cleric)
         {
             list.Add(AbilityLibrary.Heal());
             list.Add(AbilityLibrary.Smite());
         }
-        else if (characterName == CharacterHelper.Paladin)
+        else if (characterName == CharacterClass.Paladin)
         {
             list.Add(AbilityLibrary.ShieldRush());
         }
-        else if (characterName == CharacterHelper.Barbarian)
+        else if (characterName == CharacterClass.Barbarian)
         {
             list.Add(AbilityLibrary.Trap());
         }

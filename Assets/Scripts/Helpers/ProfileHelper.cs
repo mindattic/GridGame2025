@@ -45,16 +45,16 @@ namespace Assets.Helpers
         {
             Members = new List<CharacterLevelPair>()
             {
-                new CharacterLevelPair(CharacterHelper.Paladin),
-                new CharacterLevelPair(CharacterHelper.Barbarian),
-                new CharacterLevelPair(CharacterHelper.Cleric),
-                new CharacterLevelPair(CharacterHelper.GreenNinja),
-                new CharacterLevelPair(CharacterHelper.Pugilist),
-                new CharacterLevelPair(CharacterHelper.RedNinja),
-                new CharacterLevelPair(CharacterHelper.Ronin),
-                new CharacterLevelPair(CharacterHelper.Sellsword),
-                new CharacterLevelPair(CharacterHelper.Thief),
-                new CharacterLevelPair(CharacterHelper.Vampire),
+                new CharacterLevelPair(CharacterClass.Paladin),
+                new CharacterLevelPair(CharacterClass.Barbarian),
+                new CharacterLevelPair(CharacterClass.Cleric),
+                new CharacterLevelPair(CharacterClass.GreenNinja),
+                new CharacterLevelPair(CharacterClass.Pugilist),
+                new CharacterLevelPair(CharacterClass.RedNinja),
+                new CharacterLevelPair(CharacterClass.Ronin),
+                new CharacterLevelPair(CharacterClass.Sellsword),
+                new CharacterLevelPair(CharacterClass.Thief),
+                new CharacterLevelPair(CharacterClass.Vampire),
             }
         };
 
@@ -62,9 +62,9 @@ namespace Assets.Helpers
         {
             Members = new List<CharacterLevelPair>()
             {
-                new CharacterLevelPair(CharacterHelper.Paladin),
-                new CharacterLevelPair(CharacterHelper.Barbarian),
-                new CharacterLevelPair(CharacterHelper.Cleric),
+                new CharacterLevelPair(CharacterClass.Paladin),
+                new CharacterLevelPair(CharacterClass.Barbarian),
+                new CharacterLevelPair(CharacterClass.Cleric),
             }
         };
 

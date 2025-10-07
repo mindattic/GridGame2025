@@ -6,7 +6,7 @@ using scene = Assets.Helpers.SceneHelper;
 namespace Assets.Scripts.Sequences
 {
     /// <summary>
-    /// Plays the defeat SFX then routes to GameOverScreen.
+    /// Plays the defeat SFX then routes to VictoryScreen to award XP.
     /// Disables player input while sequence runs.
     /// </summary>
     public class BattleLostSequence : SequenceEvent
@@ -20,7 +20,8 @@ namespace Assets.Scripts.Sequences
             var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Defeat") ? SoundEffectLibrary.SoundEffects["Defeat"] : null;
             if (sfx != null)
                 yield return Wait.For(sfx.length);
-            scene.Fade.ToGameOverScreen();
+            // Route to Victory screen so XP is still awarded on defeat
+            scene.Fade.ToVictoryScreen();
         }
     }
 }

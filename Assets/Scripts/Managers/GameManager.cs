@@ -194,7 +194,7 @@ public class GameManager : Singleton<GameManager>
         timeline = timelineContainer.GetComponent<Timeline>();
 
         coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
-        waveAnnouncement = GameObject.Find(GameObjectHelper.Game.WaveAnnouncement).GetComponent<WaveAnnouncement>();
+        waveAnnouncement = GameObjectHelper.Game.WaveAnnouncement.Root.GetComponent<WaveAnnouncement>();
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
         // Board

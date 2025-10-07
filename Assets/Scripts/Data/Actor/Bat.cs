@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Bat,
+                CharacterClass = CharacterClass.Bat,
+                Tags = Tag.Enemy | Tag.Beast | Tag.Flying,
                 Description = "A flying menace.",
                 Expectations = "Evasive magic harasser. Relies on spells and high speed to peck away. Avoids direct trades with heavy melee.",
                 Lore = "Flock-runner of the midnight caves, guided by echoes and hunger.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(2.0f, 2.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Bat}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Bat}"),
                
                 Card = "Intermittently goes [Berserk] attacking multiple nearby enemies.",
                 Trivia = new List<string>

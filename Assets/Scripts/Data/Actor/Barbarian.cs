@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,9 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Barbarian,
+                CharacterName = "Barbarian",
+                CharacterClass = CharacterClass.Barbarian,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A warrior driven by rage.",
                 Expectations = "High single target physical DPS that ramps steadily. Low magic. Expects to delete fragile targets and trade evenly into tanks when Rage is stacked.",
                 Lore = "Raised in the border wilds, the barbarian believes strength settles all debts.",
@@ -54,7 +57,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5f, 5f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Barbarian}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Barbarian}"),
       
                 Card = "Gains [Rage] when attacking or being attacked. Will eventually go [Berserk] and attack multiple nearby enemies."
 

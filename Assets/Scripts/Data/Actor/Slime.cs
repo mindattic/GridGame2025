@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Slime,
+                CharacterClass = CharacterClass.Slime,
+                Tags = Tag.Enemy,
                 Description = "A jiggly nuisance barely held together.",
                 Expectations = "Training dummy. Exists to make heroes feel strong.",
                 Lore = "Somewhere between a pet and a puddle.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(2.0f, 2.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime}"),
                 Card = "Lowest Stats in the game. Designed to die in one hit.",
             };
         }

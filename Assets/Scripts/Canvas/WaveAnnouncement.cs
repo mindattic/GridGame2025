@@ -2,18 +2,23 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using Assets.Helper;
+using System.Collections.Generic;
 
 /// <summary>
 /// Displays "Wave X/Y" text with a rotate-in, hold, rotate-out animation.
+/// Supports multiple TextMeshPro - Text (UI) children under the WaveAnnouncement root.
 /// </summary>
 public class WaveAnnouncement : MonoBehaviour
 {
-    // Reference to the TMP label that shows the "Wave X/Y" text.
-    // You can assign in the inspector. If left null, Awake will try to find it.
-    public TextMeshProUGUI label;
-
     // Controls how quickly the banner rotates toward its target angle.
     public float rotationFocus = 200f;
+
+    // Track the currently running animation to prevent overlapping.
+    private Coroutine animationRoutine;
+
+    GameObject root;
+    TextMeshProUGUI back;
+    TextMeshProUGUI front;
 
     // ------------------------------------------------------------------------
     // Unity lifecycle
@@ -21,23 +26,19 @@ public class WaveAnnouncement : MonoBehaviour
 
     private void Awake()
     {
-        // If not wired in the inspector, try to find a TMP label in children
-        // Include inactive children so prefabs with disabled text still resolve.
-        if (label == null)
-            label = GetComponentInChildren<TextMeshProUGUI>(true);
-
-        // Log a clear error once if we still could not find it.
-        if (label == null)
-            Debug.LogError("[WaveAnnouncement] Missing TextMeshProUGUI child. Assign 'label' in the inspector or add a TMP component under this object.");
+        // Resolve labels using GameObjectHelper strongly-typed paths.
+        root = GameObjectHelper.Game.WaveAnnouncement.Root;
+        back = GameObjectHelper.Game.WaveAnnouncement.Back;
+        front = GameObjectHelper.Game.WaveAnnouncement.Front;
     }
 
     private void Start()
     {
         // Ensure the initial rotation is -90 degrees so it is hidden off-axis.
-        transform.rotation = Quaternion.Euler(-90f, 0f, 0f);
+        transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
 
-        // Keep the object hidden until shown.
-        gameObject.SetActive(false);
+        // Keep object active; hide by alpha.
+        SetLabelAlpha(0);
     }
 
     // ------------------------------------------------------------------------
@@ -49,22 +50,35 @@ public class WaveAnnouncement : MonoBehaviour
     /// </summary>
     public void Show(int currentWave, int totalWaves)
     {
-        // Do nothing if the label is missing to avoid null exceptions at runtime.
-        if (label == null)
-            return;
+        SetText($"Wave {currentWave}/{totalWaves}");
+        SetLabelAlpha(255);
+        RestartAnimation();
+    }
 
-        gameObject.SetActive(true);
-        label.text = $"Wave {currentWave}/{totalWaves}";
-
-        StartCoroutine(AnimateWaveTextRoutine());
+    /// <summary>
+    /// Shows Wave current/ for Endless mode.
+    /// </summary>
+    public void ShowEndless(int currentWave)
+    {
+        SetText($"Wave {currentWave}/\u221E");
+        SetLabelAlpha(255);
+        RestartAnimation();
     }
 
     // ------------------------------------------------------------------------
     // Animation
     // ------------------------------------------------------------------------
 
+    private void RestartAnimation()
+    {
+        if (animationRoutine != null)
+            StopCoroutine(animationRoutine);
+
+        animationRoutine = StartCoroutine(AnimateWaveTextRoutine());
+    }
+
     /// <summary>
-    /// Rotate in, wait, then rotate out and hide.
+    /// Rotate in, wait, then rotate out and hide (by alpha).
     /// </summary>
     private IEnumerator AnimateWaveTextRoutine()
     {
@@ -77,8 +91,9 @@ public class WaveAnnouncement : MonoBehaviour
         // Rotate out of view
         yield return RotateToRoutine(-90f);
 
-        // Hide after leaving
-        gameObject.SetActive(false);
+        // Hide by alpha after leaving
+        SetLabelAlpha(0);
+        animationRoutine = null;
     }
 
     /// <summary>
@@ -88,10 +103,10 @@ public class WaveAnnouncement : MonoBehaviour
     {
         Quaternion target = Quaternion.Euler(targetX, 0f, 0f);
 
-        while (Quaternion.Angle(transform.rotation, target) > 0.1f)
+        while (Quaternion.Angle(transform.localRotation, target) > 0.1f)
         {
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
+            transform.localRotation = Quaternion.RotateTowards(
+                transform.localRotation,
                 target,
                 rotationFocus * Time.deltaTime
             );
@@ -99,6 +114,33 @@ public class WaveAnnouncement : MonoBehaviour
         }
 
         // Snap exactly to the target to avoid tiny residual angles.
-        transform.rotation = target;
+        transform.localRotation = target;
+    }
+
+    // ------------------------------------------------------------------------
+    // Helpers
+    // ------------------------------------------------------------------------
+
+    private void SetText(string value)
+    {
+        if (back != null) back.text = value;
+        if (front != null) front.text = value;
+    }
+
+    private void SetLabelAlpha(byte a)
+    {
+        if (back != null)
+        {
+            var c = (Color32)back.color;
+            c.a = a;
+            back.color = c;
+        }
+
+        if (front != null)
+        {
+            var c = (Color32)front.color;
+            c.a = a;
+            front.color = c;
+        }
     }
 }

@@ -40,10 +40,10 @@ namespace Assets.Scripts.Libraries
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
                         Waves = GenerateWaves(1, new List<string> {
-                            CharacterHelper.Slime00,
-                            CharacterHelper.Slime01,
-                            CharacterHelper.Slime02,
-                            CharacterHelper.Slime03,
+                            CharacterClass.Slime00,
+                            CharacterClass.Slime01,
+                            CharacterClass.Slime02,
+                            CharacterClass.Slime03,
                         })
                     }
                 },
@@ -54,10 +54,10 @@ namespace Assets.Scripts.Libraries
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
                         Waves = GenerateWaves(1, new List<string> {
-                            CharacterHelper.Wolf00,
-                            CharacterHelper.Wolf01,
-                            CharacterHelper.Wolf02,
-                            CharacterHelper.Wolf03,
+                            CharacterClass.Wolf00,
+                            CharacterClass.Wolf01,
+                            CharacterClass.Wolf02,
+                            CharacterClass.Wolf03,
                         })
                     }
                 },
@@ -73,54 +73,54 @@ namespace Assets.Scripts.Libraries
                             {
                                 Actors = new List<StageActor>
                                 {
-                                    new StageActor { characterName = CharacterHelper.Soldier00, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier01, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier02, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier03, Team = Team.Enemy }
+                                    new StageActor { characterName = CharacterClass.Soldier00, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier01, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier02, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier03, Team = Team.Enemy }
                                 }
                             },
                             new StageWave
                             {
                                 Actors = new List<StageActor>
                                 {
-                                    new StageActor { characterName = CharacterHelper.Soldier00, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier01, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier02, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier03, Team = Team.Enemy }
+                                    new StageActor { characterName = CharacterClass.Soldier00, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier01, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier02, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier03, Team = Team.Enemy }
                                 }
                             },
                             new StageWave
                             {
                                 Actors = new List<StageActor>
                                 {
-                                    new StageActor { characterName = CharacterHelper.Soldier00, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier01, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier02, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Soldier03, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Captain00, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier00, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier01, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier02, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Soldier03, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Captain00, Team = Team.Enemy },
                                 }
                             },
                             new StageWave
                             {
                                 Actors = new List<StageActor>
                                 {
-                                    new StageActor { characterName = CharacterHelper.Slime00, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Slime01, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Slime02, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Slime03, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Slime00, Team = Team.Enemy, SpawnTurn = 4 },
-                                    new StageActor { characterName = CharacterHelper.Slime01, Team = Team.Enemy, SpawnTurn = 4 },
-                                    new StageActor { characterName = CharacterHelper.Slime02, Team = Team.Enemy, SpawnTurn = 4 },
-                                    new StageActor { characterName = CharacterHelper.Slime03, Team = Team.Enemy, SpawnTurn = 4 },
-                                    new StageActor { characterName = CharacterHelper.Slime00, Team = Team.Enemy, SpawnTurn = 8 },
-                                    new StageActor { characterName = CharacterHelper.Slime01, Team = Team.Enemy, SpawnTurn = 8 },
-                                    new StageActor { characterName = CharacterHelper.Slime02, Team = Team.Enemy, SpawnTurn = 10 },
-                                    new StageActor { characterName = CharacterHelper.Slime03, Team = Team.Enemy, SpawnTurn = 10 },
-                                    new StageActor { characterName = CharacterHelper.Slime00, Team = Team.Enemy, SpawnTurn = 12 },
-                                    new StageActor { characterName = CharacterHelper.Slime01, Team = Team.Enemy, SpawnTurn = 12 },
-                                    new StageActor { characterName = CharacterHelper.Slime02, Team = Team.Enemy, SpawnTurn = 14 },
-                                    new StageActor { characterName = CharacterHelper.Slime03, Team = Team.Enemy, SpawnTurn = 14 },
-                                    new StageActor { characterName = CharacterHelper.Scorpion, Level = 10, Team = Team.Enemy, SpawnTurn = 16 },
+                                    new StageActor { characterName = CharacterClass.Slime00, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Slime01, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Slime02, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Slime03, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Slime00, Team = Team.Enemy, SpawnTurn = 4 },
+                                    new StageActor { characterName = CharacterClass.Slime01, Team = Team.Enemy, SpawnTurn = 4 },
+                                    new StageActor { characterName = CharacterClass.Slime02, Team = Team.Enemy, SpawnTurn = 4 },
+                                    new StageActor { characterName = CharacterClass.Slime03, Team = Team.Enemy, SpawnTurn = 4 },
+                                    new StageActor { characterName = CharacterClass.Slime00, Team = Team.Enemy, SpawnTurn = 8 },
+                                    new StageActor { characterName = CharacterClass.Slime01, Team = Team.Enemy, SpawnTurn = 8 },
+                                    new StageActor { characterName = CharacterClass.Slime02, Team = Team.Enemy, SpawnTurn = 10 },
+                                    new StageActor { characterName = CharacterClass.Slime03, Team = Team.Enemy, SpawnTurn = 10 },
+                                    new StageActor { characterName = CharacterClass.Slime00, Team = Team.Enemy, SpawnTurn = 12 },
+                                    new StageActor { characterName = CharacterClass.Slime01, Team = Team.Enemy, SpawnTurn = 12 },
+                                    new StageActor { characterName = CharacterClass.Slime02, Team = Team.Enemy, SpawnTurn = 14 },
+                                    new StageActor { characterName = CharacterClass.Slime03, Team = Team.Enemy, SpawnTurn = 14 },
+                                    new StageActor { characterName = CharacterClass.Scorpion, Level = 10, Team = Team.Enemy, SpawnTurn = 16 },
 
                                 }
                             },
@@ -128,11 +128,11 @@ namespace Assets.Scripts.Libraries
                             {
                                 Actors = new List<StageActor>
                                 {
-                                    new StageActor { characterName = CharacterHelper.Yeti, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Scorpion, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Captain00, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy },
-                                    new StageActor { characterName = CharacterHelper.Bat, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Yeti, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Scorpion, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Captain00, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Bat, Team = Team.Enemy },
+                                    new StageActor { characterName = CharacterClass.Bat, Team = Team.Enemy },
                                 }
                             },
 
@@ -146,7 +146,7 @@ namespace Assets.Scripts.Libraries
                         Description = "DefeatAllEnemies",
                         CompletionCondition = "DefeatAllEnemies",
                         CompletionValue = 0,
-                        Waves = GenerateWaves(4, new List<string> { CharacterHelper.Slime, CharacterHelper.Scorpion, CharacterHelper.Bat })
+                        Waves = GenerateWaves(4, new List<string> { CharacterClass.Slime, CharacterClass.Scorpion, CharacterClass.Bat })
                     }
                 },
             };

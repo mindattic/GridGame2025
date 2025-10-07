@@ -3,6 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -12,7 +13,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Yeti,
+                CharacterClass = CharacterClass.Yeti,
+                Tags = Tag.Enemy | Tag.Beast,
                 Description = "A towering beast of cold fury.",
                 Expectations = "Heavy hitter with armor-chunking swings. Slow turns but high impact.",
                 Lore = "Snow moves around it as if afraid to touch.",
@@ -52,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Yeti}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Yeti}"),
                 Card = "Delivers powerful [Ice] attacks that ignore 25% of defense.",
                 Trivia = new List<string>
                     {

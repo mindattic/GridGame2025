@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Sellsword,
+                CharacterClass = CharacterClass.Sellsword,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A blade-for-hire who fights for coin.",
                 Expectations = "Flexible baseline combatant. Never the best, rarely the worst. Trades consistently into most foes.",
                 Lore = "Signed more contracts than most nobles sign letters.",
@@ -53,7 +55,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Sellsword}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Sellsword}"),
                 Card = "Steady DPS baseline. Always ready for work.",
             };
         }

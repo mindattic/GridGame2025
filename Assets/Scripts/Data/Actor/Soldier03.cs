@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper; // Added alias
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,8 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Soldier03,
-                Groups = ActorGroup.Soldier | ActorGroup.Humanoid,
+                CharacterClass = CharacterClass.Soldier03,
+                Tags = Tag.Enemy | Tag.Soldier | Tag.Humanoid,
                 Description = "A washed-up old fighter.",
                 Expectations = "Sturdy baseline with weak offense.",
                 Lore = "Claims to have trained captains when captains were young.",
@@ -53,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Soldier03}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Soldier03}"),
                 Card = "Takes a hit better than he gives one.",
                 Trivia = new List<string>
                     {

@@ -23,7 +23,7 @@ namespace Assets.Scripts.Sequences
                 yield break;
 
             // Display attackers portraits
-            yield return g.PortraitManager.SpawnPair2DRoutine(
+            yield return g.PortraitManager.SpawnPair3DRoutine(
                 new ActorPair(pair.attacker1, pair.attacker2)
             );
 

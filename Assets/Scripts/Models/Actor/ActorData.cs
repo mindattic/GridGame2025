@@ -6,14 +6,16 @@ using UnityEngine;
 [Serializable]
 public class ActorData
 {
+
+    public string CharacterName;
     public int Level = 1;
-    public string Character;
+    public string CharacterClass;
 
 
     // Base XP awarded when this actor is defeated. Can be overridden per actor Data().
     public int BonusXP = 10;
 
-    public ActorGroup Groups { get; set; }
+    public ActorTag Tags { get; set; }
 
 
     public ActorStats BaseStats;
@@ -44,7 +46,7 @@ public class ActorData
         if (other == null) return;
 
         Level = other.Level;
-        Character = other.Character;
+        CharacterClass = other.CharacterClass;
         Description = other.Description;
         Expectations = other.Expectations;
         Lore = other.Lore;
@@ -195,8 +197,8 @@ public class ActorData
     /// <summary>
     /// Returns true if the actor has all groups in mask.
     /// </summary>
-    public bool InGroups(ActorGroup mask) => (Groups & mask) == mask;
-    public void AddGroups(ActorGroup groups) => Groups |= groups;
-    public void RemoveGroups(ActorGroup groups) => Groups &= ~groups;
+    public bool InGroups(ActorTag mask) => (Tags & mask) == mask;
+    public void AddGroups(ActorTag groups) => Tags |= groups;
+    public void RemoveGroups(ActorTag groups) => Tags &= ~groups;
 
 }

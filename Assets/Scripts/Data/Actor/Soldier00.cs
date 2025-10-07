@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper; // Added alias
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,8 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Soldier00,
-                Groups = ActorGroup.Soldier | ActorGroup.Humanoid,
+                CharacterClass = CharacterClass.Soldier00,
+                Tags = Tag.Enemy | Tag.Soldier | Tag.Humanoid,
                 Description = "A low-ranked fort guard.",
                 Expectations = "Entry level foe. Falls off quickly at higher levels.",
                 Lore = "Knows every watchpost in the fort by name.",
@@ -53,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Soldier00}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Soldier00}"),
                 Card = "Basic soldier. Vulnerable but alert.",
             };
         }

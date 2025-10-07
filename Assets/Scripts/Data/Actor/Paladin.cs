@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Paladin,
+                CharacterClass = CharacterClass.Paladin,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A holy warrior clad in armor.",
                 Expectations = "Durable frontliner with moderate DPS and high accuracy. Expects to outlast and win long trades.",
                 Lore = "Knight of the Lightbearer Council, shield raised against every darkness.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Paladin}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Paladin}"),
                 Card = "Shields nearby allies with [Radiant Guard]. Takes reduced [Physical] and [Dark] damage.",
             };
         }

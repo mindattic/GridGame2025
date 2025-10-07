@@ -353,21 +353,23 @@ public enum VSyncCount
 }
 
 [Flags]
-public enum ActorGroup : uint
+public enum ActorTag : uint
 {
     None = 0,
-    Soldier = 1u << 0,
-    Goblin = 1u << 1,
-    Undead = 1u << 2,
-    Beast = 1u << 3,
-    Boss = 1u << 4,
-    Humanoid = 1u << 5,
-    Mechanical = 1u << 6,
-    Elite = 1u << 7,
-    Flying = 1u << 8,
-    Ranged = 1u << 9,
-    Melee = 1u << 10
+    Hero = 1u << 0,
+    Enemy = 1u << 1,
+    Soldier = 1u << 2,
+    Goblin = 1u << 3,
+    Undead = 1u << 4,
+    Beast = 1u << 5,
+    Boss = 1u << 6,
+    Humanoid = 1u << 7,
+    Mechanical = 1u << 8,
+    Elite = 1u << 9,
+    Flying = 1u << 10,
+    Insect = 1u << 11,
 }
+
 
 enum DefenseTiming { None, Dodge, Parry }
 
@@ -388,4 +390,11 @@ public enum OverworldCameraMode
 {
     FollowHero,
     FreeCamera,
+}
+
+// New: Game mode for progression
+public enum GameMode
+{
+    Campaign,
+    Endless
 }

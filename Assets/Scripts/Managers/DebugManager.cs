@@ -246,7 +246,7 @@ public class DebugManager : MonoBehaviour
         // Ensure at least one slime exists
         SpawnSlime();
 
-        var slime = g.Actors.Enemies.FirstOrDefault(x => x != null && x.characterName == CharacterHelper.Slime);
+        var slime = g.Actors.Enemies.FirstOrDefault(x => x != null && x.characterName == CharacterClass.Slime);
         if (slime == null)
         {
             Debug.LogError("ArrangeSurroundCombo: No slime found to place in center.");
@@ -504,27 +504,27 @@ public class DebugManager : MonoBehaviour
 
     public ActorInstance SpawnSlime()
     {
-        return g.StageManager.AddEnemy(CharacterHelper.Slime);
+        return g.StageManager.AddEnemy(CharacterClass.Slime);
     }
 
     public ActorInstance SpawnBat()
     {
-        return g.StageManager.AddEnemy(CharacterHelper.Bat);
+        return g.StageManager.AddEnemy(CharacterClass.Bat);
     }
 
     public ActorInstance SpawnScorpion()
     {
-        return g.StageManager.AddEnemy(CharacterHelper.Scorpion);
+        return g.StageManager.AddEnemy(CharacterClass.Scorpion);
     }
 
     public ActorInstance SpawnYeti()
     {
-        return g.StageManager.AddEnemy(CharacterHelper.Yeti);
+        return g.StageManager.AddEnemy(CharacterClass.Yeti);
     }
 
     public ActorInstance SpawnSoldier()
     {
-        return SpawnRandomByGroup(ActorGroup.Soldier | ActorGroup.Soldier);
+        return SpawnRandomByGroup(ActorTag.Soldier | ActorTag.Soldier);
     }
 
 
@@ -541,7 +541,7 @@ public class DebugManager : MonoBehaviour
     /// Spawns a random enemy whose ActorData matches all requested groups.
     /// Example: SpawnRandomByGroup(ActorGroup.Soldier | ActorGroup.Elite)
     /// </summary>
-    public ActorInstance SpawnRandomByGroup(ActorGroup requiredGroups)
+    public ActorInstance SpawnRandomByGroup(ActorTag requiredGroups)
     {
         var actorData = ActorLibrary.Actors
             .Where(x => x.Value.InGroups(requiredGroups)).ToList()
@@ -549,7 +549,7 @@ public class DebugManager : MonoBehaviour
 
         if (actorData == null) return null;
 
-        return g.StageManager.AddEnemy(actorData.Character);
+        return g.StageManager.AddEnemy(actorData.CharacterClass);
     }
 
 

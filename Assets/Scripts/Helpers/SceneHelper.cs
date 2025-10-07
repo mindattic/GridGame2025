@@ -29,9 +29,8 @@ namespace Assets.Helpers
         public const string Settings = "Settings";
         public const string StageSelect = "StageSelect";
         public const string TitleScreen = "TitleScreen";
-        public const string VictoryScreen = "VictoryScreen"; // added earlier
-        public const string GameOverScreen = "GameOverScreen"; // NEW
-
+        public const string VictoryScreen = "VictoryScreen";
+     
         /// <summary>
         /// Returns true if the active scene matches the provided name.
         /// </summary>
@@ -137,7 +136,6 @@ namespace Assets.Helpers
             public static void ToStageSelect() => To(StageSelect);
             public static void ToTitleScreen() => To(TitleScreen);
             public static void ToVictoryScreen() => To(VictoryScreen);
-            public static void ToGameOverScreen() => To(GameOverScreen); // NEW
         }
 
         /// <summary>
@@ -182,7 +180,6 @@ namespace Assets.Helpers
             public static void ToStageSelect() => To(StageSelect);
             public static void ToTitleScreen() => To(TitleScreen);
             public static void ToVictoryScreen() => To(VictoryScreen);
-            public static void ToGameOverScreen() => To(GameOverScreen); // NEW
         }
 
     }

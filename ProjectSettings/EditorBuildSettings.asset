@@ -44,9 +44,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/VictoryScreen.unity
     guid: f79147aa5ee0b6c439c81211f2352af9
-  - enabled: 1
-    path: Assets/Scenes/GameOverScreen.unity
-    guid: 87e0cab40198aff4682a3f3ea2b88d16
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: d2635e6bd816c834798f0eb915bff615, type: 2}
     com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: f258b48ffa2c5304298ed30f33b2843f, type: 2}

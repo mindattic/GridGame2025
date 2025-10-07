@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Captain00,
+                CharacterClass = CharacterClass.Captain00,
+                Tags = Tag.Enemy | Tag.Soldier | Tag.Humanoid,
                 Description = "A captain.",
                 Expectations = "Frontline commander with strong early Stats and respectable scaling. Wins sustained trades but does not burst.",
                 Lore = "Veteran of two sieges, known for steady hands and short speeches.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Captain00}"),      
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Captain00}"),      
                 Card = "A captain.",
                 Trivia = new List<string>
                     {

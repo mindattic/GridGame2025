@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Slime00,
+                CharacterClass = CharacterClass.Slime00,
+                Tags = Tag.Enemy,
                 Description = "A tiny, wobbling blob.",
                 Expectations = "Falls over to a stiff breeze.",
                 Lore = "Jellied life with no ambition.",
@@ -42,7 +44,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime00}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime00}"),
 
 
                 Card = "Dies in one hit most of the time."

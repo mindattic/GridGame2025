@@ -7,7 +7,7 @@ using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Helpers
 {
-    public static class CharacterHelper
+    public static class CharacterClass
     {
 
         //TODO: Put this into an Enum??

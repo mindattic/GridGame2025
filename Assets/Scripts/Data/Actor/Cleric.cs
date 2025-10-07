@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -14,7 +15,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Cleric,
+                CharacterClass = CharacterClass.Cleric,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A strict adherent to the church.",
                 Expectations = "Support mage. Damage is steady rather than explosive. Excels when kept safe and allowed to cast.",
                 Lore = "Ordained in the Lightbearer Orthodoxy, sworn to mend and to judge.",
@@ -55,7 +57,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Cleric}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Cleric}"),
                 Abilities = new List<Ability>() {
                     AbilityLibrary.Heal(),
                     AbilityLibrary.Smite()

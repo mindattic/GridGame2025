@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper; // Added alias
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Slime01,
+                CharacterClass = CharacterClass.Slime01,
+                Tags = Tag.Enemy,
                 Description = "A spry little slime.",
                 Expectations = "Still fragile, just wigglier.",
                 Lore = "Developed a taste for bouncing.",
@@ -41,7 +43,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime01}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime01}"),
                 Card = "Evasive but still a pushover."
             };
         }

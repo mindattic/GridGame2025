@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Thief,
+                CharacterClass = CharacterClass.Thief,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A nimble rogue with sticky fingers.",
                 Expectations = "Mobile crit fisher. Leans on evasion and luck to win long trades. Avoids armored foes.",
                 Lore = "Knows three hundred pockets by heart.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.3f, 5.3f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Thief}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Thief}"),
                 Card = "Has a high chance to evade. Can steal from enemies.",
                 Trivia = new List<string>
                     {

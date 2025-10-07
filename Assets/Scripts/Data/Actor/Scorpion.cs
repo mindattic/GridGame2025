@@ -3,6 +3,7 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -12,7 +13,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Scorpion,
+                CharacterClass = CharacterClass.Scorpion,
+                Tags = Tag.Enemy | Tag.Insect,
                 Description = "A hulking brute with a barbed tail and armored shell.",
                 Expectations = "Slow bruiser with very high durability. Damage is steady. Punishes opponents who stay in front.",
                 Lore = "Ancient desert crawler whose shell rings like iron under the moon.",
@@ -59,7 +61,7 @@ namespace Assets.Data.Actor
                 },
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Scorpion}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Scorpion}"),
 
 
 

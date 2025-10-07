@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Ronin,
+                CharacterClass = CharacterClass.Ronin,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A masterless warrior guided by honor.",
                 Expectations = "Reliable duelist. Open strong, stays even over time. Few weaknesses, few tricks.",
                 Lore = "Once sworn to a fallen house, now sworn to the road.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Ronin}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Ronin}"),
                 Card = "Has a chance to [Counter] when attacked. Deals extra damage on the first strike.",
                 Trivia = new List<string>
                     {

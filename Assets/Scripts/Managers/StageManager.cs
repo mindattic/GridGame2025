@@ -23,6 +23,9 @@ public class StageManager : MonoBehaviour
     public Stage currentStage;
     private int currentWave = 0; // Track the current wave
 
+    // Endless state
+    private bool IsEndless => GameModeHelper.IsEndless;
+
     public void Awake()
     {
         actorPrefab = PrefabLibrary.Prefabs["ActorPrefab"];
@@ -41,12 +44,77 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        // Begin a new XP session for this battle with current party participants
+        // Begin a new XP session with current party participants (shared flow)
         var participants = ProfileHelper.CurrentProfile.CurrentSave?.Party?.Members?.Select(m => m.Character);
         ExperienceTracker.StartSession(participants);
 
+        if (IsEndless)
+        {
+            InitializeEndless();
+            return;
+        }
+
         currentStage = StageLibrary.Get(latestSave.Stage.CurrentStage);
         RestartStage();
+    }
+
+    private void InitializeEndless()
+    {
+        // Reset
+        currentWave = 0;
+        g.ActorManager.Clear();
+        g.DottedLineManager.Clear();
+        g.SynergyLineManager.Clear();
+        g.CoinCounter.Refresh();
+        g.TileManager.Reset();
+
+        // Build a nominal stage placeholder
+        currentStage = new Stage
+        {
+            Name = "Endless",
+            Description = "Endless",
+            CompletionCondition = "Endless",
+            CompletionValue = 0,
+            Waves = new System.Collections.Generic.List<StageWave>()
+        };
+
+        // Spawn party heroes from the save directly (no PartyManager / no level overrides)
+        foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)
+        {
+            var hero = ActorLibrary.Actors[partyMember.Character];
+            int level = Mathf.Max(1, partyMember.Level);
+            var stageActor = new StageActor(partyMember.Character, Team.Hero, level, location: RNG.UnoccupiedLocation);
+            SpawnActor(stageActor, rebuildTimeline: false);
+        }
+
+        // Generate and load wave 1
+        LoadEndlessWave(0);
+
+        // After all actors for the initial setup are spawned, rebuild timeline once
+        g.Timeline?.RebuildFromScene();
+
+        scene.FadeIn();
+    }
+
+    private void LoadEndlessWave(int waveIndex)
+    {
+        int nextWaveNumber = waveIndex + 1;
+        var wave = Assets.Scripts.Managers.EndlessWaveGenerator.Generate(nextWaveNumber, GameModeHelper.Tags);
+
+        // Track current index
+        currentWave = waveIndex;
+
+        // Pre-spawn actors; those with SpawnTurn > current will stay inactive until turn threshold
+        foreach (var stageActor in wave.Actors)
+        {
+            SpawnActor(stageActor, rebuildTimeline: false);
+        }
+
+        // Recalculate timeline once per wave start
+        g.Timeline?.RebuildFuturePreservingCurrent();
+
+        // Announcement (total unknown/infinite)
+        g.WaveAnnouncement.ShowEndless(nextWaveNumber);
     }
 
     /// <summary>
@@ -165,12 +233,37 @@ public class StageManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Called once per turn advance (from TurnManager) to activate any actors whose spawnTurn has arrived.
+    /// </summary>
+    public void OnTurnAdvanced()
+    {
+        foreach (var a in g.Actors.All)
+        {
+            if (a == null) continue;
+            a.ActivateIfSpawnable();
+        }
+    }
+
+    /// <summary>
     /// Called when an actor dies. Triggers checks for game over or stage completion.
     /// </summary>
     public void OnActorDeath()
     {
         CheckBattleLost();
-        CheckWaveComplete();
+        if (IsEndless) CheckEndlessWaveComplete(); else CheckWaveComplete();
+    }
+
+    /// <summary>
+    /// Endless flow: when all enemies are dead, generate and load the next wave.
+    /// </summary>
+    private void CheckEndlessWaveComplete()
+    {
+        bool allEnemiesDead = g.Actors.Enemies.All(x => x.Flags.HasSpawned && x.IsDead);
+        if (!allEnemiesDead)
+            return;
+
+        currentWave++;
+        LoadEndlessWave(currentWave);
     }
 
     /// <summary>

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Pugilist,
+                CharacterClass = CharacterClass.Pugilist,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A disciplined master of martial strikes.",
                 Expectations = "Evasive sustained DPS. Performs best in long fights where counters and flurries add up.",
                 Lore = "A monk from the Stone Steppe, speechless but eloquent in motion.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Pugilist}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Pugilist}"),
                 Card = "Has a chance to counterattack with [Flurry] when evading an attack.",
                 Trivia = new List<string>
                     {

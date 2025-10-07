@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Slime03,
+                CharacterClass = CharacterClass.Slime03,
+                Tags = Tag.Enemy,
                 Description = "A mischievous wobble.",
                 Expectations = "Still weak; might dodge once.",
                 Lore = "Learns tricks by imitation.",
@@ -40,7 +42,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime03}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime03}"),
                 Card = "Occasional crits, still fragile."
             };
         }

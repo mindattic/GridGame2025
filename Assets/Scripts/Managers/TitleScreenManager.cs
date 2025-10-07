@@ -18,6 +18,9 @@ public class TitleScreenManager : MonoBehaviour
 
     private void Awake()
     {
+        // Always default to Campaign on title load
+        GameModeHelper.ToCampaignMode();
+
         //Verify that game is ready to run
         if (!ProfileHelper.HasProfiles())
             return;
@@ -45,6 +48,16 @@ public class TitleScreenManager : MonoBehaviour
     public void OnNewGameButtonClicked()
     {
         scene.Fade.ToProfileCreate();
+    }
+
+    public void OnEndlessModeClicked()
+    {
+        GameModeHelper.ToEndlessMode();
+    }
+
+    public void OnPartyManagerClicked()
+    {
+        scene.Fade.ToPartyManager();
     }
 
     public void OnSettingsButtonClicked()

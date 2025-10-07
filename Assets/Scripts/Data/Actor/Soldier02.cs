@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,8 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Soldier02,
-                Groups = ActorGroup.Soldier | ActorGroup.Humanoid,
+                CharacterClass = CharacterClass.Soldier02,
+                Tags = Tag.Enemy | Tag.Soldier | Tag.Humanoid,
                 Description = "A jittery scout with sharp eyes.",
                 Expectations = "Skirmisher with good initiative but poor staying power.",
                 Lore = "Never stops scanning the horizon.",
@@ -53,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(3.0f, 3.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Soldier02}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Soldier02}"),
 
                 Card = "Fast to act, quick to flee.",
                 Trivia = new List<string>

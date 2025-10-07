@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper; // Added alias
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Slime02,
+                CharacterClass = CharacterClass.Slime02,
+                Tags = Tag.Enemy,
                 Description = "A thicker, stickier slime.",
                 Expectations = "Sometimes survives the opening hit.",
                 Lore = "Extra goo, extra stubborn.",
@@ -40,7 +42,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f) 
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Slime02}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime02}"),
                 Card = "Barely tanky by slime standards."
             };
         }

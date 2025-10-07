@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper; // Added alias
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,8 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Soldier01,
-                Groups = ActorGroup.Soldier | ActorGroup.Humanoid,
+                CharacterClass = CharacterClass.Soldier01,
+                Tags = Tag.Enemy | Tag.Soldier | Tag.Humanoid,
                 Description = "A rookie trying too hard.",
                 Expectations = "Quick but fragile. Dangerous in groups.",
                 Lore = "Painted his shield by hand the night before deployment.",
@@ -53,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5f, 5f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Soldier01}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Soldier01}"),
                
                 Card = "Faster than most soldiers, but fragile.",
                 Trivia = new List<string>

@@ -3,7 +3,8 @@ using Assets.Scripts.Models;
 using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
-using s = Assets.Helpers.SettingsHelper; // Added alias
+using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.GreenNinja,
+                CharacterClass = CharacterClass.GreenNinja,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A swift and elusive assassin.",
                 Expectations = "Skirmisher that relies on speed and crits. Low base damage per hit but high turn economy.",
                 Lore = "Silent courier of the Jade Clique, paid to make problems vanish.",
@@ -53,7 +55,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.GreenNinja}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.GreenNinja}"),
                 Card = "Prefers to crit and move on."
             };
         }

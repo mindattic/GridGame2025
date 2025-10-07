@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,7 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.RedNinja,
+                CharacterClass = CharacterClass.RedNinja,
+                Tags = Tag.Hero | Tag.Humanoid,
                 Description = "A deadly assassin wielding forbidden arts.",
                 Expectations = "Ambusher with burst windows. Leans on poison and vanish to reset fights.",
                 Lore = "Blade-broker of the Crimson Pact, paid in secrets as often as coin.",
@@ -54,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.RedNinja}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.RedNinja}"),
                 Card = "Applies [Poison] with melee attacks. May [Vanish] when hit.",
             };
         }

@@ -53,6 +53,9 @@ namespace Assets.Scripts.Managers
         {
             CurrentTurn++;
 
+            // New: allow the StageManager to activate deferred spawns scheduled by SpawnTurn
+            g.StageManager?.OnTurnAdvanced();
+
             g.Timeline?.NextBlock();
             ResolveActiveFromTimeline();
 

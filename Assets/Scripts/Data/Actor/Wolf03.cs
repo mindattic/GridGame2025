@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,8 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Wolf03,
-                Groups = ActorGroup.Beast | ActorGroup.Melee,
+                CharacterClass = CharacterClass.Wolf03,
+                Tags = Tag.Enemy | Tag.Beast,
                 Description = "A bold pack runner.",
                 Expectations = "Hardest-hitting of the low wolves.",
                 Lore = "Tests prey before committing.",
@@ -42,7 +43,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(2f, 2f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Wolf03}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Wolf03}"),
                 Card = "High damage, low staying power."
             };
         }

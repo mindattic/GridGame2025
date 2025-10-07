@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,8 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Wolf01,
-                Groups = ActorGroup.Beast | ActorGroup.Melee,
+                CharacterClass = CharacterClass.Wolf01,
+                Tags = Tag.Enemy | Tag.Beast,
                 Description = "A skittish young wolf.",
                 Expectations = "High speed, paper hide.",
                 Lore = "Survives by running faster than the pack.",
@@ -42,7 +43,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(2f, 2f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Wolf01}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Wolf01}"),
                 Card = "Acts often; dies fast."
             };
         }

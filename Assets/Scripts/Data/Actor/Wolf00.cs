@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using s = Assets.Helpers.SettingsHelper;
+using Tag = ActorTag;
 
 namespace Assets.Data.Actor
 {
@@ -13,8 +14,8 @@ namespace Assets.Data.Actor
         {
             return new ActorData
             {
-                Character = CharacterHelper.Wolf00,
-                Groups = ActorGroup.Beast | ActorGroup.Melee,
+                CharacterClass = CharacterClass.Wolf00,
+                Tags = Tag.Enemy | Tag.Beast,
                 Description = "A hungry stray wolf.",
                 Expectations = "Quick nip; folds in 1–2 hits.",
                 Lore = "Hunts alone at the edge of the woods.",
@@ -42,7 +43,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(3f, 3f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterHelper.Wolf00}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Wolf00}"),
                 Card = "Fast, low durability."
             };
         }
