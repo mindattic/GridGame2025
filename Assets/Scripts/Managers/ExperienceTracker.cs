@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Managers
 {
-    // Holds per-battle XP gains and participants, persisted across scene loads until consumed by VictoryScreen.
+    // Holds per-battle XP gains and participants, persisted across scene loads until consumed by PostBattleScreen.
     public static class ExperienceTracker
     {
         public class Entry
@@ -15,7 +15,7 @@ namespace Assets.Scripts.Managers
         private static readonly Dictionary<string, int> characterXP = new Dictionary<string, int>();
         private static readonly HashSet<string> participants = new HashSet<string>();
 
-        public static string NextSceneAfterVictory = Assets.Helpers.SceneHelper.Overworld; // configurable default
+        public static string NextSceneAfterPostBattleScreen = Assets.Helpers.SceneHelper.Overworld; // configurable default
 
         public static void StartSession(IEnumerable<string> participantCharacters)
         {

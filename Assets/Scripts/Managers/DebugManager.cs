@@ -329,9 +329,9 @@ public class DebugManager : MonoBehaviour
         g.StageManager.OnActorDeath();
     }
 
-    public void GotoVictoryScreen()
+    public void GotoPostBattleScreen()
     {
-        // Seed XP for participating heroes and route to Victory screen for accumulation
+        // Seed XP for participating heroes and route to PostBattleScreen for accumulation
         var save = ProfileHelper.CurrentProfile?.CurrentSave;
 
         // Prefer the party list from the save; fall back to active heroes in scene
@@ -361,8 +361,8 @@ public class DebugManager : MonoBehaviour
             ExperienceTracker.AddXP(ch, amount);
         }
 
-        // Jump to Victory screen so the UI can display and then apply gains
-        scene.Fade.ToVictoryScreen();
+        // Jump to PostBattle screen so the UI can display and then apply gains
+        scene.Fade.ToPostBattleScreen();
     }
 
     public void Portrait2DSlideIn()

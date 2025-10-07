@@ -91,7 +91,7 @@ public enum DebugOptions
     Heal,
     KillEnemies,
     KillHeroes,
-    GotoVictoryScreen,
+    GotoPostBattleScreen,
     PortraitPopIn,
     Portrait2DSlideIn,
     Portrait3DSlideIn,

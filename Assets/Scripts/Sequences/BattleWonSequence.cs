@@ -21,7 +21,7 @@ namespace Assets.Scripts.Sequences
             var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Victory") ? SoundEffectLibrary.SoundEffects["Victory"] : null;
             if (sfx != null)
                 yield return Wait.For(sfx.length);
-            scene.Fade.ToVictoryScreen();
+            scene.Fade.ToPostBattleScreen();
         }
     }
 }

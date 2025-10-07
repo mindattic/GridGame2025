@@ -9,7 +9,7 @@ using scene = Assets.Helpers.SceneHelper;
 using Assets.Helper;
 using Assets.Scripts.Libraries; // GameObjectHelper
 
-public class VictoryManager : MonoBehaviour
+public class PostBattleManager : MonoBehaviour
 {
     // Constants / configuration (no inspector exposure)
     private const float AutoEnableDelay = 0.25f;   // delay before enabling Next after all panes animate
@@ -57,18 +57,18 @@ public class VictoryManager : MonoBehaviour
 
     private void ResolveSceneReferences()
     {
-        var contentGO = GameObject.Find(GameObjectHelper.VictoryScreen.Content);
+        var contentGO = GameObject.Find(GameObjectHelper.PostBattleScreen.Content);
         if (contentGO == null)
         {
-            Debug.LogError("VictoryManager: Could not find content at path: " + GameObjectHelper.VictoryScreen.Content);
+            Debug.LogError("PostBattleManager: Could not find content at path: " + GameObjectHelper.PostBattleScreen.Content);
             return;
         }
         _scrollContent = contentGO.GetComponent<RectTransform>();
 
-        var nextGO = GameObject.Find(GameObjectHelper.VictoryScreen.NextButton);
+        var nextGO = GameObject.Find(GameObjectHelper.PostBattleScreen.NextButton);
         if (nextGO == null)
         {
-            Debug.LogError("VictoryManager: Could not find NextButton at path: " + GameObjectHelper.VictoryScreen.NextButton);
+            Debug.LogError("PostBattleManager: Could not find NextButton at path: " + GameObjectHelper.PostBattleScreen.NextButton);
         }
         else
         {
@@ -83,9 +83,9 @@ public class VictoryManager : MonoBehaviour
     {
         _heroExperiencePanePrefab = PrefabLibrary.Get("HeroExperiencePane");
         if (_heroExperiencePanePrefab == null)
-            Debug.LogError("VictoryManager: HeroExperiencePane prefab not found in PrefabLibrary.");
+            Debug.LogError("PostBattleManager: HeroExperiencePane prefab not found in PrefabLibrary.");
 
-        _nextSceneName = ExperienceTracker.NextSceneAfterVictory;
+        _nextSceneName = ExperienceTracker.NextSceneAfterPostBattleScreen;
         if (string.IsNullOrEmpty(_nextSceneName))
             _nextSceneName = SceneHelper.Overworld;
     }
@@ -193,9 +193,9 @@ public class VictoryManager : MonoBehaviour
                     int cur = Mathf.Max(0, entry.CurrentXP);
                     int total = Mathf.Max(0, entry.TotalXP);
                     cur += gained; total += gained;
-                    while (cur >= Assets.Helpers.ExperienceHelper.NextLevel(level))
+                    while (cur >= ExperienceHelper.NextLevel(level))
                     {
-                        cur -= Assets.Helpers.ExperienceHelper.NextLevel(level);
+                        cur -= ExperienceHelper.NextLevel(level);
                         level += 1;
                     }
                     entry.Level = level; entry.CurrentXP = cur; entry.TotalXP = total;

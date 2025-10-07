@@ -29,7 +29,7 @@ namespace Assets.Helpers
         public const string Settings = "Settings";
         public const string StageSelect = "StageSelect";
         public const string TitleScreen = "TitleScreen";
-        public const string VictoryScreen = "VictoryScreen";
+        public const string PostBattleScreen = "PostBattleScreen";
      
         /// <summary>
         /// Returns true if the active scene matches the provided name.
@@ -135,7 +135,7 @@ namespace Assets.Helpers
             public static void ToSettings() => To(Settings);
             public static void ToStageSelect() => To(StageSelect);
             public static void ToTitleScreen() => To(TitleScreen);
-            public static void ToVictoryScreen() => To(VictoryScreen);
+            public static void ToPostBattleScreen() => To(PostBattleScreen);
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace Assets.Helpers
             public static void ToSettings() => To(Settings);
             public static void ToStageSelect() => To(StageSelect);
             public static void ToTitleScreen() => To(TitleScreen);
-            public static void ToVictoryScreen() => To(VictoryScreen);
+            public static void ToPostBattleScreen() => To(PostBattleScreen);
         }
 
     }

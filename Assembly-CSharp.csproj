@@ -122,7 +122,6 @@
     <Compile Include="Assets\Scripts\Managers\PointerManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PauseMenu.cs" />
     <Compile Include="Assets\Scripts\Helpers\AssetHelper.cs" />
-    <Compile Include="Assets\Scripts\Managers\VictoryManager.cs" />
     <Compile Include="Assets\Scripts\Models\Rarity.cs" />
     <Compile Include="Assets\Scripts\Helpers\AlignmentHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopInSequence.cs" />
@@ -318,6 +317,7 @@
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Pugilist.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Paladin.cs" />
+    <Compile Include="Assets\Scripts\Managers\PostBattleManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\ExperienceHelper.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleInstance.cs" />

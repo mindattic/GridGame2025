@@ -534,7 +534,7 @@ public partial class ActorInstance : MonoBehaviour
             int baseXp = ExperienceHelper.Calculate(this);
             if (baseXp > 0)
             {
-                // Accumulate to ExperienceTracker for Victory screen (both modes)
+                // Accumulate to ExperienceTracker for PostBattle screen (both modes)
                 var save = ProfileHelper.CurrentProfile?.CurrentSave;
                 var party = save?.Party?.Members?.Select(m => m.Character).ToHashSet() ?? new HashSet<string>();
                 var roster = save?.Roster?.Members?.Select(m => m.Character).ToList() ?? new System.Collections.Generic.List<string>();

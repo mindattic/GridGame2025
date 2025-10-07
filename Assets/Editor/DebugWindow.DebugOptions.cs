@@ -35,7 +35,7 @@ public partial class DebugWindow
             case DebugOptions.KillEnemies: g.DebugManager.KillEnemies(); break;
             case DebugOptions.KillHeroes: g.DebugManager.KillHeroes(); break;
 
-            case DebugOptions.GotoVictoryScreen: g.DebugManager.GotoVictoryScreen(); break;
+            case DebugOptions.GotoPostBattleScreen: g.DebugManager.GotoPostBattleScreen(); break;
             case DebugOptions.PortraitPopIn: g.DebugManager.PortraitPopIn(); break;
             case DebugOptions.Portrait2DSlideIn: g.DebugManager.Portrait2DSlideIn(); break;
             case DebugOptions.Portrait3DSlideIn: g.DebugManager.Portrait3DSlideIn(); break;

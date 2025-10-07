@@ -395,8 +395,7 @@ namespace Assets.Helper
             public const string ButtonNo = ConfirmationContainer + "/ButtonNo";
         }
 
-        // NEW: VictoryScreen standardized paths
-        public static class VictoryScreen
+        public static class PostBattleScreen
         {
             public const string ScrollView = "Canvas/ScrollView";
             public const string Content = "Canvas/ScrollView/Viewport/Content";

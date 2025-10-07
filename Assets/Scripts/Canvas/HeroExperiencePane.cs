@@ -24,6 +24,10 @@ public class HeroExperiencePane : MonoBehaviour
     private const float PORTRAIT_HEIGHT = 96f;
     private const float BAR_HEIGHT = 18f;
 
+    // Fill pacing constants
+    private const int FILL_STEPS_PER_LEVEL = 50;          // target steps per level bar
+    private const float FILL_STEP_DELAY = Interval.FiveTicks; // delay per step (0.05s)
+
     private void Reset()
     {
         // Auto-wire on add (editor convenience)
@@ -81,6 +85,25 @@ public class HeroExperiencePane : MonoBehaviour
             XPBar.minValue = 0; XPBar.maxValue = needed; XPBar.wholeNumbers = true; XPBar.value = Mathf.Clamp(currentXP, 0, needed);
             // Ensure the bar is not user-interactive even if prefab defaults differ
             MakeXPBarReadOnly();
+
+            // Force fill to render on top and fully opaque to avoid looking dark
+            var fillArea = XPBar.transform.Find("Fill Area");
+            var background = XPBar.transform.Find("Background");
+            if (fillArea != null)
+            {
+                // Ensure Fill Area renders after Background
+                if (background != null && fillArea.GetSiblingIndex() < background.GetSiblingIndex())
+                    fillArea.SetSiblingIndex(background.GetSiblingIndex() + 1);
+
+                var fillImg = fillArea.Find("Fill")?.GetComponent<Image>();
+                if (fillImg != null)
+                {
+                    var c = fillImg.color; c.a = 1f; fillImg.color = c; // full opacity
+                    fillImg.maskable = false; // avoid unintended mask tinting
+                    // Ensure default UI material
+                    if (fillImg.material != null) fillImg.material = null;
+                }
+            }
         }
         if (XPText) XPText.text = $"EXP: {currentXP} / {needed} (+{xpGained})";
         if (LevelUpLabel) LevelUpLabel.color = new Color(1f, 0.95f, 0.3f, 0f);
@@ -184,7 +207,10 @@ public class HeroExperiencePane : MonoBehaviour
         int remaining = gained;
         while (remaining > 0)
         {
-            int step = Mathf.Min(remaining, Mathf.Max(1, needed / 30));
+            // Compute a step based on desired steps-per-level pacing
+            int stepPerLevel = Mathf.Max(1, Mathf.CeilToInt((float)needed / FILL_STEPS_PER_LEVEL));
+            int step = Mathf.Min(remaining, stepPerLevel);
+
             cur += step; remaining -= step;
             if (cur >= needed)
             {
@@ -194,7 +220,7 @@ public class HeroExperiencePane : MonoBehaviour
             }
             XPBar.value = cur;
             if (XPText) XPText.text = $"EXP: {cur} / {needed} (+{gained})";
-            yield return null;
+            yield return Wait.For(FILL_STEP_DELAY);
         }
         IsFillComplete = true;
     }

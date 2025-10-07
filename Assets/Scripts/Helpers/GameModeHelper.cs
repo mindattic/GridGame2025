@@ -31,7 +31,7 @@ namespace Assets.Helpers
             }
             CurrentMode = GameMode.Endless;
 
-            ExperienceTracker.NextSceneAfterVictory = SceneHelper.TitleScreen;
+            ExperienceTracker.NextSceneAfterPostBattleScreen = SceneHelper.TitleScreen;
             SceneHelper.Fade.ToGame();
         }
     }
