@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\Overworld\RockInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\VisualEffectInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\FolderHelper.cs" />
+    <Compile Include="Assets\Scripts\Canvas\ScrollingRawImage.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Vampire.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
@@ -240,6 +241,7 @@
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Libraries\SpriteLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
+    <Compile Include="Assets\Scripts\Canvas\ScrollingImage.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceEvent.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\TargetIndicator.cs" />
     <Compile Include="Assets\Scripts\Models\ToggleSetting.cs" />
@@ -257,7 +259,6 @@
     <Compile Include="Assets\Scripts\Sequences\BattleWonSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorActionBar.cs" />
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
-    <Compile Include="Assets\Scripts\Canvas\ParallaxBackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Wolf01.cs" />

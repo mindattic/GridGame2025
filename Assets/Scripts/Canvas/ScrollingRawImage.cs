@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using Assets.Scripts.Utilities;
 using g = Assets.Helpers.GameHelper;
 
-public class ParallaxBackgroundInstance : MonoBehaviour
+public class ScrollingRawImage : MonoBehaviour
 {
     public Vector2 scrollFocus = new Vector2(0f, 0f);
     private Vector2 scrollFocusMin = new Vector2(-0.02f, -0.02f);
