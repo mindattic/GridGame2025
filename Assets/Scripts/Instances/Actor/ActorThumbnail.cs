@@ -153,7 +153,7 @@ public class ActorThumbnail : MonoBehaviour
         }
 
         float textureSize = Mathf.Max(tex.width, tex.height);
-        rangeMultiplier = 0.05f * (textureSize / s.TextureResolution.ToFloat());
+        rangeMultiplier = 0.05f * (textureSize / 1024f);
     }
 
     private void ResetCycle()

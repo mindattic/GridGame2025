@@ -69,15 +69,15 @@ public class SettingsManager : MonoBehaviour
     };
 
     // Dropdown settings
-    private static readonly List<DropdownSetting> Dropdowns = new List<DropdownSetting>
-    {
-        new DropdownSetting(
-            "Texture Resolution",
-            "Sets the texture resolution quality.",
-            typeof(TextureResolution),
-            s => (object)s.TextureResolution,
-            (s, o) => s.TextureResolution = (TextureResolution)o),
-    };
+    //private static readonly List<DropdownSetting> Dropdowns = new List<DropdownSetting>
+    //{
+    //    new DropdownSetting(
+    //        "Texture Resolution",
+    //        "Sets the texture resolution quality.",
+    //        typeof(TextureResolution),
+    //        s => (object)s.TextureResolution,
+    //        (s, o) => s.TextureResolution = (TextureResolution)o),
+    //};
 
     /// <summary>
     /// Initializes prefab and content roots, then builds the UI from the active profile.
@@ -141,15 +141,15 @@ public class SettingsManager : MonoBehaviour
         }
 
         // Dropdowns
-        foreach (var x in Dropdowns)
-        {
-            CreateDropdown(
-                x.FriendlyName,
-                x.TooltipText,
-                x.EnumType,
-                x.Getter(settings),
-                val => { x.Setter(settings, val); });
-        }
+        //foreach (var x in Dropdowns)
+        //{
+        //    CreateDropdown(
+        //        x.FriendlyName,
+        //        x.TooltipText,
+        //        x.EnumType,
+        //        x.Getter(settings),
+        //        val => { x.Setter(settings, val); });
+        //}
     }
 
     /// <summary>

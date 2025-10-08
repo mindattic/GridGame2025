@@ -56,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.3f, 5.3f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Thief}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Thief}"),
                 Card = "Has a high chance to evade. Can steal from enemies.",
                 Trivia = new List<string>
                     {

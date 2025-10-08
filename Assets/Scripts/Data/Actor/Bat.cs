@@ -56,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(2.0f, 2.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Bat}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Bat}"),
                
                 Card = "Intermittently goes [Berserk] attacking multiple nearby enemies.",
                 Trivia = new List<string>

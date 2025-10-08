@@ -54,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(3.0f, 3.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Soldier02}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Soldier02}"),
 
                 Card = "Fast to act, quick to flee.",
                 Trivia = new List<string>

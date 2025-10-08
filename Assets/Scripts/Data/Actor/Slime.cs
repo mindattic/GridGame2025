@@ -56,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(2.0f, 2.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Slime}"),
                 Card = "Lowest Stats in the game. Designed to die in one hit.",
             };
         }

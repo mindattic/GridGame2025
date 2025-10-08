@@ -43,7 +43,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime01}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Slime01}"),
                 Card = "Evasive but still a pushover."
             };
         }

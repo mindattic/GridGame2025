@@ -45,8 +45,8 @@ public class ProfileSettings
 
 
     // Enum settings
-    [SettingDisplayName("Texture Resolution")]
-    public TextureResolution TextureResolution;
+    //[SettingDisplayName("Texture Resolution")]
+    //public TextureResolution TextureResolution;
 
     public ProfileSettings() { }
 
@@ -58,7 +58,6 @@ public class ProfileSettings
         CoinCountMultiplier = other.CoinCountMultiplier;
         ApplyMovementTilt = other.ApplyMovementTilt;
         ReloadThumbnailSettings = other.ReloadThumbnailSettings;
-        TextureResolution = other.TextureResolution;
     }
 }
 

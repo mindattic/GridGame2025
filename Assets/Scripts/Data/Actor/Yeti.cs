@@ -54,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Yeti}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Yeti}"),
                 Card = "Delivers powerful [Ice] attacks that ignore 25% of defense.",
                 Trivia = new List<string>
                     {

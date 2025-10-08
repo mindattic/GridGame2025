@@ -56,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Paladin}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Paladin}"),
                 Card = "Shields nearby allies with [Radiant Guard]. Takes reduced [Physical] and [Dark] damage.",
             };
         }

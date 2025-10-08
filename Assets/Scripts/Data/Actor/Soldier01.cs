@@ -54,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5f, 5f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Soldier01}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Soldier01}"),
                
                 Card = "Faster than most soldiers, but fragile.",
                 Trivia = new List<string>

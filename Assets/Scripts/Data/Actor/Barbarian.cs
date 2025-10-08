@@ -57,7 +57,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5f, 5f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Barbarian}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Barbarian}"),
       
                 Card = "Gains [Rage] when attacking or being attacked. Will eventually go [Berserk] and attack multiple nearby enemies."
 

@@ -332,12 +332,6 @@ public enum WeaponType
     Wand
 }
 
-public enum TextureResolution
-{
-    NormalResolution = 1024,
-    HighResolution = 4096
-}
-
 public enum TargetFrameRate
 {
     Fps60 = 60,

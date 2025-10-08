@@ -60,6 +60,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1c6e9ab36b3c07c48a4a729a475b59f6
+    m_Address: Sprites/DottedLine
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1cbcbf2795bc96441952b0a623beaeac
     m_Address: Sprites/TutorialPages/Tutorial.1-2
     m_ReadOnly: 0
@@ -112,6 +117,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 38046f430cc691342aaaab1202d2de9e
     m_Address: Sprites/WeaponTypes/Sword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39005a360618d6f43b13954739818ba2
+    m_Address: Sprites/DottedLineTurn
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -242,6 +252,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 79ee61618e9f4a846be932ad9a857450
     m_Address: Sprites/GUI/TimelineDivider
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7b8647357d607cd4eba22bb28a7f370e
+    m_Address: Sprites/DottedLineArrow
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

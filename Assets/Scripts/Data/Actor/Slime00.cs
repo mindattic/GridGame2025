@@ -44,7 +44,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime00}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Slime00}"),
 
 
                 Card = "Dies in one hit most of the time."

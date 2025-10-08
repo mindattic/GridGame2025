@@ -21,7 +21,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public string deviceType;
 
     // Settings
-    [HideInInspector] public TextureResolution textureResolution = TextureResolution.NormalResolution;
     [HideInInspector] public TargetFrameRate targetFramerate = TargetFrameRate.Fps60;
     [HideInInspector] public VSyncCount vSyncCount = VSyncCount.VSync1;
     [HideInInspector] public float dragSensitivity = 0.05f;

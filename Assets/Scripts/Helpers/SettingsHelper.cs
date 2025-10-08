@@ -69,18 +69,5 @@ namespace Assets.Helpers
                 }
             }
         }
-
-        public static TextureResolution TextureResolution
-        {
-            get => Settings?.TextureResolution ?? ProfileHelper.DefaultSettings.TextureResolution;
-            set
-            {
-                if (Settings != null)
-                {
-                    Settings.TextureResolution = value;
-                }
-            }
-        }
-
     }
 }

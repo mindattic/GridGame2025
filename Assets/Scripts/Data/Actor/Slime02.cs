@@ -42,7 +42,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector2(2f, 2f) 
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Slime02}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Slime02}"),
                 Card = "Barely tanky by slime standards."
             };
         }

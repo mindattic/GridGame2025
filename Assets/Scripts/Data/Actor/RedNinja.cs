@@ -56,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.RedNinja}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.RedNinja}"),
                 Card = "Applies [Poison] with melee attacks. May [Vanish] when hit.",
             };
         }

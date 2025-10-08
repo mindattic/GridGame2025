@@ -26,8 +26,7 @@ namespace Assets.Helpers
             DragSensitivity = 0.05f,
             CoinCountMultiplier = 0.05f,
             ApplyMovementTilt = false,
-            ReloadThumbnailSettings = false,
-            TextureResolution = TextureResolution.NormalResolution,
+            ReloadThumbnailSettings = false
         };
 
         public static GlobalSaveData DefaultGlobal = new GlobalSaveData()

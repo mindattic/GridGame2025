@@ -55,7 +55,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.GreenNinja}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.GreenNinja}"),
                 Card = "Prefers to crit and move on."
             };
         }

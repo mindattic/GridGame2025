@@ -43,7 +43,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(2f, 2f, 0f),
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Wolf02}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Wolf02}"),
                 Card = "Still goes down fast."
             };
         }

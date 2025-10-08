@@ -56,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Ronin}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Ronin}"),
                 Card = "Has a chance to [Counter] when attacked. Deals extra damage on the first strike.",
                 Trivia = new List<string>
                     {

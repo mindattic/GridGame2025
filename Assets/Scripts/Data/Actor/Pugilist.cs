@@ -56,7 +56,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Pugilist}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Pugilist}"),
                 Card = "Has a chance to counterattack with [Flurry] when evading an attack.",
                 Trivia = new List<string>
                     {

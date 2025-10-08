@@ -61,7 +61,7 @@ namespace Assets.Data.Actor
                 },
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Scorpion}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Scorpion}"),
 
 
 

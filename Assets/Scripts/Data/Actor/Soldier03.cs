@@ -54,7 +54,7 @@ namespace Assets.Data.Actor
                     Scale = new Vector3(5.0f, 5.0f, 0f)
                 },
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
-                Portrait = AssetHelper.LoadAsset<Sprite>($"{s.TextureResolution.ToInt()}/{CharacterClass.Soldier03}"),
+                Portrait = AssetHelper.LoadAsset<Sprite>($"{CharacterClass.Soldier03}"),
                 Card = "Takes a hit better than he gives one.",
                 Trivia = new List<string>
                     {
