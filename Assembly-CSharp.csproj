@@ -62,17 +62,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\Serialization\MapPropEditor.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Wolf03.cs" />
     <Compile Include="Assets\Scripts\Canvas\MapTerrain.cs" />
     <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
     <Compile Include="Assets\Scripts\Managers\SupportLineManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingWindow.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Cleric.cs" />
     <Compile Include="Assets\Scripts\Overworld\CanopyInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\MapIcon.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\RedNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\StageWave.cs" />
@@ -88,7 +85,6 @@
     <Compile Include="Assets\Scripts\Helpers\FolderHelper.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScrollingRawImage.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Vampire.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Utilities\Demo_FreeCam.cs" />
@@ -102,7 +98,6 @@
     <Compile Include="Assets\Scripts\Models\ProjectileSettings.cs" />
     <Compile Include="Assets\Scripts\Managers\CoinManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\MessageBox.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Bat.cs" />
     <Compile Include="Assets\Scripts\Sequences\SmiteSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemySpawnSequence.cs" />
     <Compile Include="Assets\Scripts\Models\TileMap.cs" />
@@ -115,7 +110,6 @@
     <Compile Include="Assets\Scripts\Managers\TitleScreenManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorFlags.cs" />
     <Compile Include="Assets\Scripts\Helpers\ColorHelper.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Soldier03.cs" />
     <Compile Include="Assets\Scripts\Managers\AbilityManager.cs" />
     <Compile Include="Assets\Scripts\Models\VisualEffectAsset.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorVFX.cs" />
@@ -129,14 +123,10 @@
     <Compile Include="Assets\Scripts\Managers\VisualEffectManager.cs" />
     <Compile Include="Assets\Scripts\Instances\CombatTextInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\CylinderManager.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Scorpion.cs" />
     <Compile Include="Assets\Scripts\Libraries\ActorLibrary.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameObjectHelper.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Thief.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Wolf00.cs" />
     <Compile Include="Assets\Scripts\Helpers\UnitConversionHelper.cs" />
     <Compile Include="Assets\Scripts\Models\VectorStats.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Slime00.cs" />
     <Compile Include="Assets\Scripts\Canvas\VirtualJoystick.cs" />
     <Compile Include="Assets\Scripts\Managers\CameraManager.cs" />
     <Compile Include="Assets\Scripts\Managers\CreditsManager.cs" />
@@ -156,10 +146,8 @@
     <Compile Include="Assets\Scripts\Effects\ZoomEffect.cs" />
     <Compile Include="Assets\Scripts\Helpers\CharacterClass.cs" />
     <Compile Include="Assets\Scripts\Sequences\ShieldBashSequence.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Slime02.cs" />
     <Compile Include="Assets\Scripts\Managers\EnemyManager.cs" />
     <Compile Include="Assets\Scripts\Managers\DebugManager.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Slime01.cs" />
     <Compile Include="Assets\Scripts\Helpers\GameHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPreAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
@@ -170,7 +158,6 @@
     <Compile Include="Assets\Scripts\Helpers\CombatLogHelper.cs" />
     <Compile Include="Assets\Scripts\Libraries\MapLibrary.cs" />
     <Compile Include="Assets\Scripts\Managers\SettingsManager.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Soldier02.cs" />
     <Compile Include="Assets\Scripts\Sequences\DeathSequence.cs" />
     <Compile Include="Assets\Scripts\Sequences\FireProjectileSequence.cs" />
     <Compile Include="Assets\Scripts\Helpers\CombatTextHelper.cs" />
@@ -185,7 +172,6 @@
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
     <Compile Include="Assets\Scripts\Utilities\Demo_TurningAroundEffect.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Slime03.cs" />
     <Compile Include="Assets\Scripts\Utilities\GameReady.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
@@ -196,7 +182,6 @@
     <Compile Include="Assets\Scripts\Libraries\MusicTrackLibrary.cs" />
     <Compile Include="Assets\VisualEffects\WIP\Vefects\Stylized VFX URP\Skills\_Scripts_\MagicAttacks_Projectile.cs" />
     <Compile Include="Assets\Scripts\Sequences\SequenceCallback.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Soldier01.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Utilities\RNG.cs" />
     <Compile Include="Assets\Scripts\Instances\DottedLineInstance.cs" />
@@ -210,14 +195,12 @@
     <Compile Include="Assets\Scripts\Overworld\BushInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\SelectionRules.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergySpark.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Slime.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\Overworld\SoilInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\PositionHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\AnimationCurveHelper.cs" />
     <Compile Include="Assets\Scripts\Canvas\TitleBarInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\TooltipInstance.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Barbarian.cs" />
     <Compile Include="Assets\Scripts\Instances\Board\BoardOverlay.cs" />
     <Compile Include="Assets\Scripts\Effects\ScreenShatter.cs" />
     <Compile Include="Assets\Scripts\Models\ThumbnailSettings.cs" />
@@ -229,7 +212,6 @@
     <Compile Include="Assets\Scripts\Utilities\Geometry.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyPostAttackSequence.cs" />
     <Compile Include="Assets\Scripts\Helpers\SceneHelper.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Captain.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorLayer.cs" />
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
@@ -238,6 +220,7 @@
     <Compile Include="Assets\Scripts\Overworld\GrassInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\PrefabLibrary.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
+    <Compile Include="Assets\Scripts\Data\Actors.cs" />
     <Compile Include="Assets\Scripts\Models\StageLineRenderer.cs" />
     <Compile Include="Assets\Scripts\Libraries\SpriteLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\Singleton.cs" />
@@ -261,8 +244,6 @@
     <Compile Include="Assets\Scripts\Instances\ProjectileInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\ActorManager.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Wolf01.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />
     <Compile Include="Assets\Scripts\Models\Stage.cs" />
     <Compile Include="Assets\Scripts\Canvas\Clock.cs" />
     <Compile Include="Assets\Scripts\Instances\FpsMonitor.cs" />
@@ -302,11 +283,9 @@
     <Compile Include="Assets\Scripts\Canvas\DestinationMarker.cs" />
     <Compile Include="Assets\Scripts\Helpers\TextureHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\SelectionManager.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\GreenNinja.cs" />
     <Compile Include="Assets\Scripts\Instances\WorldMapInstance.cs" />
     <Compile Include="Assets\VisualEffects\WIP\Vefects\Stylized VFX URP\Skills\_Scripts_\SlashCircle.cs" />
     <Compile Include="Assets\Scripts\Canvas\ActorCard.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\TurnSelectionMode.cs" />
     <Compile Include="Assets\Scripts\Overworld\CloudShadowInstance.cs" />
@@ -316,13 +295,10 @@
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.FollowCursor.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Pugilist.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Paladin.cs" />
     <Compile Include="Assets\Scripts\Managers\PostBattleManager.cs" />
     <Compile Include="Assets\Scripts\Helpers\ExperienceHelper.cs" />
     <Compile Include="Assets\Scripts\Models\StageActor.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleInstance.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Wolf02.cs" />
     <Compile Include="Assets\Scripts\Utilities\Extensions.cs" />
     <Compile Include="Assets\Scripts\Models\AttackResult.cs" />
     <Compile Include="Assets\Scripts\Effects\ShardMeshBuilder.cs" />
@@ -335,7 +311,6 @@
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\SoundEffectLibrary.cs" />
     <Compile Include="Assets\Scripts\Models\SaveFile.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Ronin.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorMovement.cs" />
     <Compile Include="Assets\Scripts\Canvas\CutoutOverlay.cs" />
     <Compile Include="Assets\Scripts\Helpers\SortingHelper.cs" />
@@ -344,7 +319,6 @@
     <Compile Include="Assets\Scripts\Instances\CoinInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\StageManager.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorThumbnail.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Yeti.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyTakeTurnSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\ManaPoolManager.cs" />

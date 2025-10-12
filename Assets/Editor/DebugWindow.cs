@@ -172,6 +172,7 @@ public partial class DebugWindow : EditorWindow
             {
                 RenderGameStats();
                 RenderThumbnailSettings();
+                RenderCanvasThumbnailSettings();
                 RenderProjectileOptions();
                 RenderGameSpeedOptions();
                 RenderDebugOptions();

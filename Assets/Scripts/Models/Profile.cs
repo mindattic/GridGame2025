@@ -171,18 +171,14 @@ namespace Game.Models.Profile
     public class CharacterLevelPair
     {
         public string Character;
-        public int Level;
 
-        // New: per-hero XP persistence
-        public int CurrentXP;
+        // Persist only the accumulated (lifetime) XP. Level and current XP are derived at runtime.
         public int TotalXP;
 
         public CharacterLevelPair() { }
-        public CharacterLevelPair(string character, int level = 1, int currentXP = 0, int totalXP = 0)
+        public CharacterLevelPair(string character, int totalXP = 0)
         {
             Character = character;
-            Level = level;
-            CurrentXP = currentXP;
             TotalXP = totalXP;
         }
     }

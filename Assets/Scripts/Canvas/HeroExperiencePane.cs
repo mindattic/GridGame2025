@@ -67,14 +67,15 @@ public class HeroExperiencePane : MonoBehaviour
             }
         }
 
-        // Save lookup
+        // Save lookup (derive level/current from TotalXP)
         int level = 1, currentXP = 0;
         var save = ProfileHelper.CurrentProfile?.CurrentSave;
         var entry = save?.Party?.Members?.Find(m => m.Character == character) ?? save?.Roster?.Members?.Find(m => m.Character == character);
         if (entry != null)
         {
-            level = Mathf.Max(1, entry.Level);
-            currentXP = Mathf.Max(0, entry.CurrentXP);
+            var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, entry.TotalXP));
+            level = Mathf.Max(1, derived.level);
+            currentXP = Mathf.Max(0, derived.currentXP);
         }
         int needed = ExperienceHelper.NextLevel(level);
 

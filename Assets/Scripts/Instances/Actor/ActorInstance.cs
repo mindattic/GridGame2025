@@ -571,41 +571,35 @@ public partial class ActorInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Increase this hero's level and refresh stats and visuals. Persists to the current save.
+    /// Increase this hero's level by granting enough XP to reach the target number of levels.
+    /// Persists by updating TotalXP only. Level is always derived at runtime.
     /// </summary>
     public void LevelUp(int levels = 1)
     {
         if (!IsHero || string.IsNullOrEmpty(characterName) || levels == 0)
             return;
 
-        // Update save data (party member level)
-        var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
-        var entry = party?.FirstOrDefault(m => m != null && m.Character == characterName);
-        if (entry == null)
-            return;
+        // Compute current derived state from TotalXP
+        int totalXP = Mathf.Max(0, Stats.TotalXP);
+        var (curLevel, curRemainder) = ExperienceHelper.DeriveFromTotalXP(totalXP);
 
-        int oldLevel = entry.Level;
-        int newLevel = Mathf.Max(1, oldLevel + levels);
-        entry.Level = newLevel;
+        int targetLevels = Mathf.Abs(levels);
+        int levelsToGain = targetLevels;
+        int xpToAdd = 0;
 
-        // Recalculate stats keeping current HP ratio
-        var actorData = ActorLibrary.Actors[characterName];
-        var newStats = actorData.GetStats(newLevel);
+        while (levelsToGain > 0)
+        {
+            int neededForNext = ExperienceHelper.NextLevel(curLevel) - curRemainder;
+            xpToAdd += Mathf.Max(0, neededForNext);
+            curLevel += 1;
+            curRemainder = 0;
+            levelsToGain--;
+        }
 
-        float hpRatio = (Stats.MaxHP > 0f) ? Mathf.Clamp01(Stats.HP / Stats.MaxHP) : 1f;
-        Stats = new ActorStats(newStats);
-        Stats.HP = Stats.MaxHP;
-        Stats.PreviousHP = Stats.HP;
-        HealthBar.Update();
-
-        // Feedback
-        if (VisualEffectLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
-            g.VisualEffectManager.Spawn(vfx, Position);
-        g.CombatTextManager.Spawn("Level Up!", Position, "Heal");
-        Animation.Grow();
-
-        // Persist
-        //ProfileHelper.Save(true);
+        if (xpToAdd > 0)
+        {
+            ExperienceHelper.Gain(this, xpToAdd);
+        }
     }
 
     #endregion

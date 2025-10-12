@@ -40,53 +40,56 @@ namespace Assets.Helpers
             return reward;
         }
 
-        // Add XP to an actor. CurrentXP tracks progress since last level-up, TotalXP is lifetime.
+        // Add XP to an actor. TotalXP is the source of truth; Level and CurrentXP are derived from it.
         public static void Gain(ActorInstance actor, int amount)
         {
             if (actor == null || amount <= 0) return;
 
-            actor.Stats.TotalXP += amount;
-            actor.Stats.CurrentXP += amount;
+            actor.Stats.TotalXP = Mathf.Max(0, actor.Stats.TotalXP + amount);
 
-            // Level-up loop while we have enough XP for next level
-            while (actor.Stats.CurrentXP >= NextLevel(actor.Stats.Level))
+            // Derive target level and currentXP from TotalXP and rebuild stats accordingly.
+            int prevLevel = Mathf.Max(1, actor.Stats.Level);
+            int prevCur = Mathf.Max(0, actor.Stats.CurrentXP);
+            var (level, currentXP) = DeriveFromTotalXP(actor.Stats.TotalXP);
+
+            // Apply any level ups by rebuilding stats at the new level
+            if (level != prevLevel)
             {
-                int needed = NextLevel(actor.Stats.Level);
-                actor.Stats.CurrentXP -= needed;
-                ApplyLevelUp(actor);
+                var data = ActorLibrary.Get(actor.characterName);
+                if (data != null)
+                {
+                    var next = data.GetStats(level);
+                    actor.Stats = new ActorStats(next)
+                    {
+                        CurrentXP = currentXP,
+                        TotalXP = actor.Stats.TotalXP,
+                        HP = next.MaxHP,
+                        PreviousHP = next.MaxHP
+                    };
+
+                    actor.HealthBar.Update();
+
+                    g.CombatTextManager?.Spawn("Level Up!", actor.Position, "Heal");
+                    if (VisualEffectLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
+                        g.VisualEffectManager?.Spawn(vfx, actor.Position);
+                }
+                else
+                {
+                    // Fallback if no data -- still set derived level/xp
+                    actor.Stats.Level = level;
+                    actor.Stats.CurrentXP = currentXP;
+                }
+            }
+            else
+            {
+                // Same level, just update the CurrentXP field to reflect TotalXP remainder
+                actor.Stats.Level = level;
+                actor.Stats.CurrentXP = currentXP;
             }
 
             // Persist hero progress unless Endless mode (Campaign only)
             if (actor.IsHero && !GameModeHelper.IsEndless)
                 SaveHeroProgress(actor);
-        }
-
-        // Single level-up: bump level, rebuild stats template, carry CurrentXP & TotalXP
-        private static void ApplyLevelUp(ActorInstance actor)
-        {
-            actor.Stats.Level = Mathf.Max(1, actor.Stats.Level + 1);
-
-            var data = ActorLibrary.Get(actor.characterName);
-            if (data == null) return;
-
-            var next = data.GetStats(actor.Stats.Level);
-
-            int carryXp = actor.Stats.CurrentXP;
-            int totalXp = actor.Stats.TotalXP;
-
-            actor.Stats = new ActorStats(next)
-            {
-                CurrentXP = carryXp,
-                TotalXP = totalXp,
-                HP = next.MaxHP,
-                PreviousHP = next.MaxHP
-            };
-
-            actor.HealthBar.Update();
-
-            g.CombatTextManager?.Spawn("Level Up!", actor.Position, "Heal");
-            if (VisualEffectLibrary.VisualEffects.TryGetValue("LevelUp", out var vfx))
-                g.VisualEffectManager?.Spawn(vfx, actor.Position);
         }
 
         private static void SaveHeroProgress(ActorInstance actor)
@@ -97,11 +100,31 @@ namespace Assets.Helpers
             var entry = party.FirstOrDefault(m => m != null && m.Character == actor.characterName);
             if (entry == null) return;
 
-            entry.Level = actor.Stats.Level;
-            entry.CurrentXP = actor.Stats.CurrentXP;
-            entry.TotalXP = actor.Stats.TotalXP;
+            // Persist only TotalXP. Level and CurrentXP are derived at runtime.
+            entry.TotalXP = Mathf.Max(0, actor.Stats.TotalXP);
 
             //ProfileHelper.Save(true);
+        }
+
+        // Derive current level and current (post-level) XP from lifetime TotalXP.
+        public static (int level, int currentXP) DeriveFromTotalXP(int totalXP)
+        {
+            int level = 1;
+            int cur = Mathf.Max(0, totalXP);
+
+            while (cur >= NextLevel(level))
+            {
+                cur -= NextLevel(level);
+                level++;
+            }
+
+            return (level, cur);
+        }
+
+        // Convenience: normalize a pair to match TotalXP (useful when you want to sync save fields).
+        public static void NormalizeFromTotal(ref int level, ref int currentXP, int totalXP)
+        {
+            (level, currentXP) = DeriveFromTotalXP(totalXP);
         }
     }
 }

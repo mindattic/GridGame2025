@@ -299,7 +299,8 @@ public class PartyManager : MonoBehaviour
     private void UpdateStatsDisplay(string character)
     {
         var rosterMember = ProfileHelper.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.Character == character).First();
-        Load(rosterMember.Character, rosterMember.Level);
+        var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, rosterMember.TotalXP));
+        Load(rosterMember.Character, Mathf.Max(1, derived.level));
     }
 
     private void UpdatePartyMemberLabel(bool isInParty)

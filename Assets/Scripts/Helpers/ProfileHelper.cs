@@ -685,7 +685,7 @@ namespace Assets.Helpers
             if (party.Any(hero => hero.Character == character))
                 return;
 
-            party.Add(new CharacterLevelPair(character, 1));
+            party.Add(new CharacterLevelPair(character));
             Save(true);
         }
 

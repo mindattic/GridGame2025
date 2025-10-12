@@ -189,16 +189,7 @@ public class PostBattleManager : MonoBehaviour
                 var entry = save.Party.Members.FirstOrDefault(m => m.Character == id) ?? save.Roster.Members.FirstOrDefault(m => m.Character == id);
                 if (entry != null)
                 {
-                    int level = Mathf.Max(1, entry.Level);
-                    int cur = Mathf.Max(0, entry.CurrentXP);
-                    int total = Mathf.Max(0, entry.TotalXP);
-                    cur += gained; total += gained;
-                    while (cur >= ExperienceHelper.NextLevel(level))
-                    {
-                        cur -= ExperienceHelper.NextLevel(level);
-                        level += 1;
-                    }
-                    entry.Level = level; entry.CurrentXP = cur; entry.TotalXP = total;
+                    entry.TotalXP = Mathf.Max(0, entry.TotalXP + gained);
                 }
             }
             ProfileHelper.Save(true);

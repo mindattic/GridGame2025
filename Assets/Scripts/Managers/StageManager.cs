@@ -68,7 +68,7 @@ public class StageManager : MonoBehaviour
         g.SynergyLineManager.Clear();
         g.CoinCounter.Refresh();
         g.TileManager.Reset();
-
+        
         // Build a nominal stage placeholder
         currentStage = new Stage
         {
@@ -83,7 +83,8 @@ public class StageManager : MonoBehaviour
         foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)
         {
             var hero = ActorLibrary.Actors[partyMember.Character];
-            int level = Mathf.Max(1, partyMember.Level);
+            var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, partyMember.TotalXP));
+            int level = Mathf.Max(1, derived.level);
             var stageActor = new StageActor(partyMember.Character, Team.Hero, level, location: RNG.UnoccupiedLocation);
             SpawnActor(stageActor, rebuildTimeline: false);
         }
@@ -135,8 +136,10 @@ public class StageManager : MonoBehaviour
         // Show persistent hero actors from ProfileHelper
         foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)
         {
-            var hero = ActorLibrary.Actors[partyMember.Character];
-            var stageActor = new StageActor(partyMember.Character, Team.Hero, hero.Level, location: RNG.UnoccupiedLocation);
+            // Derive level from TotalXP in save
+            var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, partyMember.TotalXP));
+            int level = Mathf.Max(1, derived.level);
+            var stageActor = new StageActor(partyMember.Character, Team.Hero, level, location: RNG.UnoccupiedLocation);
             // Defer timeline rebuild during bulk spawns
             SpawnActor(stageActor, rebuildTimeline: false);
         }
@@ -208,6 +211,25 @@ public class StageManager : MonoBehaviour
 
         // Stats and metadata
         instance.Stats = ActorLibrary.Actors[stageActor.characterName].GetStats(stageActor.Level);
+
+        // Seed hero progress from save: derive Level/CurrentXP from TotalXP
+        if (stageActor.Team == Team.Hero)
+        {
+            var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
+            if (party != null)
+            {
+                var entry = party.FirstOrDefault(m => m != null && m.Character == stageActor.characterName);
+                if (entry != null)
+                {
+                    var (lvl, cur) = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, entry.TotalXP));
+                    // Ensure consistency
+                    instance.Stats.Level = Mathf.Max(1, lvl);
+                    instance.Stats.CurrentXP = Mathf.Max(0, cur);
+                    instance.Stats.TotalXP = Mathf.Max(0, entry.TotalXP);
+                }
+            }
+        }
+
         instance.transform.localScale = GameManager.instance.tileScale;
         instance.spawnTurn = stageActor.SpawnTurn;
 
