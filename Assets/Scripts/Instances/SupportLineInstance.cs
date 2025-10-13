@@ -75,8 +75,24 @@ public class SupportLineInstance : MonoBehaviour
         get => GetComponent<SortingGroup>();
     }
 
+    // Particle system to show sparks moving from supporter -> attacker
+    private ParticleSystem particles;
+    private const float SparkSpeed = 6f; // units/sec along the line
+
+    // Cache last endpoints to avoid redundant work
+    private Vector3 _lastP0, _lastP1;
+
+    // Freeze updating endpoints (e.g., during fade-out after lane change)
+    private bool _freezeEndpoints;
+
+    // Track initial lanes (world Y at spawn) to detect lane changes
+    private float _supporterLaneY;
+    private float _attackerLaneY;
+
+
     /// <summary>
     /// Cache component and configure initial renderer properties.
+    /// Ensure particle systems do not auto-play at origin.
     /// </summary>
     private void Awake()
     {
@@ -90,7 +106,24 @@ public class SupportLineInstance : MonoBehaviour
         lineRenderer.alignment = LineAlignment.View;
 
         lineRenderer.positionCount = 2;
+
+        // Get the ParticleSystem from this object or any child (prefab may place it as a child)
+        particles = GetComponentInChildren<ParticleSystem>();
+
+        // Prevent particles from emitting at origin before endpoints are set
+        if (particles != null)
+        {
+            var main = particles.main;
+            main.playOnAwake = false; // disable auto-play on enable
+
+            var emission = particles.emission;
+            emission.enabled = false; // we will enable after first valid endpoints
+
+            particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            particles.Clear(true);
+        }
     }
+
 
     /// <summary>
     /// Configure sorting layer and order.
@@ -99,10 +132,19 @@ public class SupportLineInstance : MonoBehaviour
     {
         sortingGroup.sortingLayerID = SortingLayer.NameToID(sortingLayer);
         sortingGroup.sortingOrder = sortingOrder;
+
+        // Apply sorting to all particle renderers in self and children
+        var renderers = GetComponentsInChildren<ParticleSystemRenderer>(true);
+        foreach (var pr in renderers)
+        {
+            pr.sortingLayerID = sortingGroup.sortingLayerID;
+            pr.sortingOrder = sortingOrder;
+        }
     }
 
     /// <summary>
-    /// Initializes the support line between two actors and starts overlay in.
+    /// Initializes the support line between two actors.
+    /// Positions are set to the centers of the actors' tiles, not their current transforms.
     /// </summary>
     public void Spawn(ActorInstance supporter, ActorInstance attacker)
     {
@@ -115,21 +157,124 @@ public class SupportLineInstance : MonoBehaviour
         // Unique name for debugging
         name = $"SupportLine_{Guid.NewGuid():N}";
 
-        lineRenderer.SetPosition(0, supporter.Position);
-        lineRenderer.SetPosition(1, attacker.Position);
+        // Record initial lanes (world Y) to detect lane changes later
+        _supporterLaneY = (supporter?.currentTile != null ? supporter.currentTile.position.y : supporter.Position.y);
+        _attackerLaneY = (attacker?.currentTile != null ? attacker.currentTile.position.y : attacker.Position.y);
+        _freezeEndpoints = false;
+
+        // Ensure particles are reset before first update
+        if (particles != null)
+        {
+            particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            particles.Clear(true);
+            var emission = particles.emission; emission.enabled = false;
+        }
+
+        UpdateEndpoints(force: true);
 
         g.SortingManager.OnSupportLineSpawn(this);
 
-        // Begin overlay in effect
-        StartCoroutine(FadeInRoutine());
+        // No fade-in: show at max alpha immediately
+        alpha = maxAlpha;
+        UpdateLineAlpha(alpha);
     }
 
     /// <summary>
-    /// Fades from transparent to maxAlpha.
+    /// Keep endpoints aligned to tile centers each frame.
     /// </summary>
-    private IEnumerator FadeInRoutine()
+    private void LateUpdate()
     {
-        yield return FadeRoutine(minAlpha, maxAlpha, null);
+        if (supporter == null || attacker == null)
+            return;
+
+        UpdateEndpoints();
+    }
+
+    /// <summary>
+    /// Recompute endpoints to follow the actors' tile centers. Also adjusts the spark direction and lifetime.
+    /// Guard against invalid positions (e.g., Vector3.zero) to prevent particles from spawning at origin.
+    /// </summary>
+    public void UpdateEndpoints(bool force = false)
+    {
+        if (_freezeEndpoints) return;
+        if (lineRenderer == null) return;
+
+        var p0 = supporter?.currentTile != null ? supporter.currentTile.position : supporter.Position;
+        var p1 = attacker?.currentTile != null ? attacker.currentTile.position : attacker.Position;
+
+        // If either actor changed lanes (Y differs from spawn), freeze and destroy immediately without moving endpoints
+        const float laneEpsilon = 0.01f;
+        float curSupporterLaneY = supporter?.currentTile != null ? supporter.currentTile.position.y : supporter.Position.y;
+        float curAttackerLaneY = attacker?.currentTile != null ? attacker.currentTile.position.y : attacker.Position.y;
+        if (Mathf.Abs(curSupporterLaneY - _supporterLaneY) > laneEpsilon || Mathf.Abs(curAttackerLaneY - _attackerLaneY) > laneEpsilon)
+        {
+            _freezeEndpoints = true;
+            // Disable visuals instantly
+            if (lineRenderer != null) lineRenderer.enabled = false;
+            StopAndClearParticles();
+            // Immediate destroy (no fade)
+            Despawn();
+            return;
+        }
+
+        // Skip if unchanged and not forced
+        if (!force && (p0 == _lastP0) && (p1 == _lastP1))
+            return;
+
+        _lastP0 = p0; _lastP1 = p1;
+
+        // Block when any endpoint is at Vector3.zero to avoid spawning particles at origin
+        bool invalidEndpoints = (p0 == Vector3.zero) || (p1 == Vector3.zero);
+        if (invalidEndpoints)
+        {
+            if (lineRenderer.enabled) lineRenderer.enabled = false;
+            StopAndClearParticles();
+            return; // keep previous endpoints until valid
+        }
+        else if (!lineRenderer.enabled)
+        {
+            lineRenderer.enabled = true;
+        }
+
+        lineRenderer.SetPosition(0, p0);
+        lineRenderer.SetPosition(1, p1);
+
+        // Position particles at supporter and aim toward attacker
+        if (particles != null)
+        {
+            particles.transform.position = p0;
+
+            // Aim particle cone forward vector along the 2D direction
+            Vector3 dir = (p1 - p0);
+            float dist = dir.magnitude;
+            if (dist > 0.001f)
+            {
+                dir.Normalize();
+                // Forward in XY plane
+                particles.transform.rotation = Quaternion.LookRotation(new Vector3(dir.x, dir.y, 0f), Vector3.forward);
+
+                var main = particles.main;
+                main.startSpeed = SparkSpeed;
+                main.startLifetime = dist / SparkSpeed;
+
+                var emission = particles.emission;
+                emission.enabled = true;
+                emission.rateOverTime = 30f;
+
+                // Ensure no leftover particles from any prior state
+                particles.Clear(false);
+                if (!particles.isPlaying)
+                    particles.Play(true);
+            }
+            else
+            {
+                var emission = particles.emission;
+                emission.enabled = false;
+                emission.rateOverTime = 0f;
+                if (particles.isPlaying)
+                    particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
+        }
     }
 
     /// <summary>
@@ -137,21 +282,27 @@ public class SupportLineInstance : MonoBehaviour
     /// </summary>
     public void Despawn()
     {
-        StartCoroutine(DespawnRoutine());
+        if (isStatic)
+            return;
+
+        // Disable visuals immediately
+        if (lineRenderer != null) lineRenderer.enabled = false;
+        StopAndClearParticles();
+
+        // Immediate destroy; no fade-out
+        g.SupportLineManager.Destroy(supporter, attacker);
     }
 
-    /// <summary>
-    /// Fades from maxAlpha to transparent, then informs the manager to destroy.
-    /// </summary>
-    public IEnumerator DespawnRoutine()
+    private void StopAndClearParticles()
     {
-        if (isStatic)
-            yield break;
-
-        yield return FadeRoutine(maxAlpha, minAlpha, () =>
+        // Stop and clear all particle systems in the hierarchy to prevent lingering particles
+        var systems = GetComponentsInChildren<ParticleSystem>(true);
+        foreach (var ps in systems)
         {
-            g.SupportLineManager.Destroy(supporter, attacker);
-        });
+            var em = ps.emission; em.enabled = false;
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            ps.Clear(true);
+        }
     }
 
     /// <summary>
@@ -170,28 +321,5 @@ public class SupportLineInstance : MonoBehaviour
     public void Destroy()
     {
         Destroy(gameObject);
-    }
-
-    /// <summary>
-    /// Consolidated overlay routine used by FadeInRoutine and DespawnRoutine.
-    /// Interpolates alpha from startAlpha to targetAlpha over fadeDuration.
-    /// Calls onComplete after finishing if provided.
-    /// </summary>
-    private IEnumerator FadeRoutine(float startAlpha, float targetAlpha, Action onComplete)
-    {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < fadeDuration)
-        {
-            elapsedTime += Time.deltaTime;
-            alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsedTime / fadeDuration);
-            UpdateLineAlpha(alpha);
-            yield return Wait.None();
-        }
-
-        alpha = targetAlpha;
-        UpdateLineAlpha(alpha);
-
-        onComplete?.Invoke();
     }
 }

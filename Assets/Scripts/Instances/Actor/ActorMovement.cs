@@ -73,7 +73,19 @@ namespace Assets.Scripts.Instances.Actor
                 ApplyTilt(instance.Position - previousPosition);
                 CheckLocationChanged();
 
+                // New: Update dynamic support lines for the currently moving hero
+                if (isSelectedHero)
+                {
+                    g.SupportLineManager.UpdateForSelectedHeroLocation(instance);
+                }
+
                 yield return Wait.None();
+            }
+
+            // Leaving movement: clear any dynamic lines related to this hero
+            if (isSelectedHero)
+            {
+                g.SupportLineManager.ClearFor(instance);
             }
 
             flags.IsMoving = false;
@@ -114,6 +126,12 @@ namespace Assets.Scripts.Instances.Actor
 
                     CheckLocationChanged();
 
+                    // New: Update support lines while sliding to destination as well
+                    if (isSelectedHero)
+                    {
+                        g.SupportLineManager.UpdateForSelectedHeroLocation(instance);
+                    }
+
                     elapsed += Time.deltaTime;
                     iterations++;
 
@@ -148,6 +166,12 @@ namespace Assets.Scripts.Instances.Actor
 
                     CheckLocationChanged();
 
+                    // New: Update support lines while sliding to destination as well
+                    if (isSelectedHero)
+                    {
+                        g.SupportLineManager.UpdateForSelectedHeroLocation(instance);
+                    }
+
                     elapsed += Time.deltaTime;
                     iterations++;
 
@@ -162,6 +186,12 @@ namespace Assets.Scripts.Instances.Actor
 
                 previousPosition = instance.Position;
                 position = new Vector3(position.x, destination.y, position.z).ClampToBoard();
+            }
+
+            // Done moving: clear any dynamic support lines
+            if (isSelectedHero)
+            {
+                g.SupportLineManager.ClearFor(instance);
             }
 
             flags.IsMoving = false;

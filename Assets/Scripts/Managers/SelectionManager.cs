@@ -142,6 +142,9 @@ public class SelectionManager : MonoBehaviour
                 g.Actors.SelectedActor.transform.localRotation = Quaternion.Euler(Vector3.zero);
             }
 
+            // Always despawn all support lines on drop
+            g.SupportLineManager.Clear();
+
             hasPendingDrag = false;
             pendingActor = null;
             return;
@@ -153,6 +156,9 @@ public class SelectionManager : MonoBehaviour
         hero.Move.ToLocation();
         hero.Flags.IsMoving = false;
         g.SortingManager.OnSelectedHeroDrop();
+
+        // Always despawn all support lines on drop
+        g.SupportLineManager.Clear();
 
         // Suspend all touch input until the turn system restores it
         g.InputManager.InputMode = InputMode.None;

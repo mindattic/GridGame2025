@@ -2637,6 +2637,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa0702608d7aaa45bbc477f2af5fb1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  scrollSpeed: {x: 0.1, y: 0}
+  useUnscaledTime: 1
+  textureProperty: _MainTex
 --- !u!1 &941664376
 GameObject:
   m_ObjectHideFlags: 0
@@ -5047,7 +5050,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deviceType: 
-  textureResolution: 1024
   targetFramerate: 60
   vSyncCount: 0
   dragSensitivity: 0.05
