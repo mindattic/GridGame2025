@@ -14,6 +14,8 @@ public class WaveAnnouncement : MonoBehaviour
     // Controls how quickly the banner rotates toward its target angle.
     public float rotationFocus = 200f;
 
+    public float holdDuration = 2f;
+
     // Track the currently running animation to prevent overlapping.
     private Coroutine animationRoutine;
 
@@ -89,7 +91,7 @@ public class WaveAnnouncement : MonoBehaviour
         yield return RotateToRoutine(0f);
 
         // Hold on screen briefly
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(holdDuration);
 
         // Rotate out of view
         yield return RotateToRoutine(-90f);

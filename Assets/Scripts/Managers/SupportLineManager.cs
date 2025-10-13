@@ -167,34 +167,9 @@ public class SupportLineManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Unbuffered aligned heroes: nearest hero in each cardinal direction with no blockers.
-    /// Always reflects current lane truth without any margin. Used to keep existing lines stable
-    /// while the hero transitions across tiles but remains in the same lane.
-    /// </summary>
-    private IEnumerable<ActorInstance> GetAlignedHeroesStrict(ActorInstance movingHero)
-    {
-        var dirs = new Vector2Int[] { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
-        foreach (var d in dirs)
-        {
-            var loc = movingHero.location + d;
-            while (g.TileMap.ContainsLocation(loc))
-            {
-                var occupant = g.Actors.All.FirstOrDefault(a => a != null && a.IsPlaying && a.location == loc);
-                if (occupant != null)
-                {
-                    if (occupant.IsHero)
-                        yield return occupant; // first occupant is a hero -> aligned with no actors between
-                    break; // stop at first occupied tile
-                }
-                loc += d;
-            }
-        }
-    }
-
-    /// <summary>
     /// Buffered aligned heroes: returns nearest hero in each cardinal direction with no other actors between,
     /// only if the moving hero is sufficiently inside the lane band (buffer from tile edges) for that direction.
-    /// Used for spawning, so new lines appear only after the hero is well inside a tile to avoid end overlap.
+    /// Used for both spawning and retention so the line never overlaps visibly.
     /// </summary>
     private IEnumerable<ActorInstance> GetAlignedHeroesBuffered(ActorInstance movingHero)
     {
@@ -211,8 +186,8 @@ public class SupportLineManager : MonoBehaviour
                 if (occupant != null)
                 {
                     if (occupant.IsHero)
-                        yield return occupant;
-                    break;
+                        yield return occupant; // first occupant is a hero -> aligned with no actors between
+                    break; // stop at first occupied tile
                 }
                 loc += d;
             }
@@ -221,18 +196,17 @@ public class SupportLineManager : MonoBehaviour
 
     /// <summary>
     /// Spawn/maintain lines only for strictly horizontal/vertical alignment (no diagonals) with no actors between.
-    /// Use buffered spawn to prevent visible end overlap, but keep existing lines until the hero actually leaves the lane.
+    /// Use buffered list for both spawn and despawn to ensure ends never overlap while crossing tile boundaries.
     /// </summary>
     public void UpdateForSelectedHeroLocation(ActorInstance movingHero)
     {
         if (movingHero == null || !movingHero.IsHero || !movingHero.IsPlaying)
             return;
 
-        var alignedForSpawn = GetAlignedHeroesBuffered(movingHero).ToList();
-        var alignedNoBuffer = GetAlignedHeroesStrict(movingHero).ToList();
+        var alignedBuffered = GetAlignedHeroesBuffered(movingHero).ToList();
 
-        // Update or spawn lines for aligned heroes (buffered so they appear a bit later)
-        foreach (var supporter in alignedForSpawn)
+        // Update or spawn lines for aligned heroes
+        foreach (var supporter in alignedBuffered)
         {
             var key = GetKey(supporter, movingHero);
             if (supportLines.TryGetValue(key, out var inst) && inst != null)
@@ -245,7 +219,7 @@ public class SupportLineManager : MonoBehaviour
             }
         }
 
-        // Despawn lines only when hero left the lane (unbuffered check)
+        // Despawn lines not aligned anymore per buffered rule
         var existingKeys = supportLines.Keys.ToList();
         foreach (var key in existingKeys)
         {
@@ -253,7 +227,7 @@ public class SupportLineManager : MonoBehaviour
             if (!involvesHero) continue;
 
             var supporter = key.Item1;
-            bool stillAligned = alignedNoBuffer.Contains(supporter);
+            bool stillAligned = alignedBuffered.Contains(supporter);
             if (!stillAligned)
             {
                 Despawn(key.Item1, key.Item2);
