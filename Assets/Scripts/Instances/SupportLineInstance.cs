@@ -29,8 +29,8 @@ public class SupportLineInstance : MonoBehaviour
     /// <summary>
     /// Duration for overlay in and overlay out.
     /// </summary>
-    [SerializeField]
-    private float fadeDuration = 0.1f;
+
+    private float fadeDuration = 0.05f;
 
     /// <summary>
     /// Minimum alpha value (fully transparent).
@@ -40,7 +40,7 @@ public class SupportLineInstance : MonoBehaviour
     /// <summary>
     /// Maximum alpha value (semi transparent).
     /// </summary>
-    private float maxAlpha = Opacity.Percent50;
+    private float maxAlpha = Opacity.Transparent;
 
     /// <summary>
     /// First actor endpoint for the line.
@@ -75,9 +75,12 @@ public class SupportLineInstance : MonoBehaviour
         get => GetComponent<SortingGroup>();
     }
 
-    // Particle system to show sparks moving from supporter -> attacker
+    // Legacy cone particles (disabled by default)
     private ParticleSystem particles;
     private const float SparkSpeed = 6f; // units/sec along the line
+
+    // Shared spark system with SynergyStrand
+    private SynergySpark sparkSystem = new SynergySpark();
 
     // Cache last endpoints to avoid redundant work
     private Vector3 _lastP0, _lastP1;
@@ -107,21 +110,22 @@ public class SupportLineInstance : MonoBehaviour
 
         lineRenderer.positionCount = 2;
 
-        // Get the ParticleSystem from this object or any child (prefab may place it as a child)
+        // Legacy particle system (if present) is force-disabled; SynergySpark replaces it
         particles = GetComponentInChildren<ParticleSystem>();
-
-        // Prevent particles from emitting at origin before endpoints are set
         if (particles != null)
         {
-            var main = particles.main;
-            main.playOnAwake = false; // disable auto-play on enable
-
-            var emission = particles.emission;
-            emission.enabled = false; // we will enable after first valid endpoints
-
+            var main = particles.main; main.playOnAwake = false;
+            var emission = particles.emission; emission.enabled = false;
             particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particles.Clear(true);
         }
+
+        // Initialize shared spark system
+        sparkSystem.Init(transform);
+
+        // Set initial tint similar to support line color
+        var sparkTint = new Color(0.25f, 1f, 0.25f, 1f);
+        sparkSystem.SetTint(sparkTint);
     }
 
 
@@ -140,6 +144,9 @@ public class SupportLineInstance : MonoBehaviour
             pr.sortingLayerID = sortingGroup.sortingLayerID;
             pr.sortingOrder = sortingOrder;
         }
+
+        // Sort SynergySpark above the line slightly
+        sparkSystem.SetSorting(sortingLayer, sortingOrder + 1);
     }
 
     /// <summary>
@@ -162,12 +169,12 @@ public class SupportLineInstance : MonoBehaviour
         _attackerLaneY = (attacker?.currentTile != null ? attacker.currentTile.position.y : attacker.Position.y);
         _freezeEndpoints = false;
 
-        // Ensure particles are reset before first update
+        // Ensure legacy particles are cleared and disabled
         if (particles != null)
         {
+            var emission = particles.emission; emission.enabled = false;
             particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             particles.Clear(true);
-            var emission = particles.emission; emission.enabled = false;
         }
 
         UpdateEndpoints(force: true);
@@ -177,6 +184,9 @@ public class SupportLineInstance : MonoBehaviour
         // No fade-in: show at max alpha immediately
         alpha = maxAlpha;
         UpdateLineAlpha(alpha);
+
+        // Prewarm the spark system a bit so it looks settled on first frame
+        sparkSystem.Prewarm(1.0f, 8, false, t => transform.position, _ => 0f); // samplers replaced next update
     }
 
     /// <summary>
@@ -191,7 +201,7 @@ public class SupportLineInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Recompute endpoints to follow the actors' tile centers. Also adjusts the spark direction and lifetime.
+    /// Recompute endpoints to follow the actors' tile centers. Also updates the shared spark system along the straight path.
     /// Guard against invalid positions (e.g., Vector3.zero) to prevent particles from spawning at origin.
     /// </summary>
     public void UpdateEndpoints(bool force = false)
@@ -212,6 +222,7 @@ public class SupportLineInstance : MonoBehaviour
             // Disable visuals instantly
             if (lineRenderer != null) lineRenderer.enabled = false;
             StopAndClearParticles();
+            sparkSystem.Clear();
             // Immediate destroy (no fade)
             Despawn();
             return;
@@ -219,7 +230,11 @@ public class SupportLineInstance : MonoBehaviour
 
         // Skip if unchanged and not forced
         if (!force && (p0 == _lastP0) && (p1 == _lastP1))
+        {
+            // Update spark system even when points unchanged (so it animates)
+            DriveSparksStraight(_lastP0, _lastP1);
             return;
+        }
 
         _lastP0 = p0; _lastP1 = p1;
 
@@ -229,6 +244,7 @@ public class SupportLineInstance : MonoBehaviour
         {
             if (lineRenderer.enabled) lineRenderer.enabled = false;
             StopAndClearParticles();
+            sparkSystem.Clear();
             return; // keep previous endpoints until valid
         }
         else if (!lineRenderer.enabled)
@@ -239,42 +255,36 @@ public class SupportLineInstance : MonoBehaviour
         lineRenderer.SetPosition(0, p0);
         lineRenderer.SetPosition(1, p1);
 
-        // Position particles at supporter and aim toward attacker
-        if (particles != null)
+        // Drive Synergy sparks along the straight line
+        DriveSparksStraight(p0, p1);
+    }
+
+    private void DriveSparksStraight(Vector3 p0, Vector3 p1)
+    {
+        // Ensure Z=0 for 2D
+        p0.z = 0f; p1.z = 0f;
+        float dist = (p1 - p0).magnitude;
+        if (dist <= 0.001f)
         {
-            particles.transform.position = p0;
-
-            // Aim particle cone forward vector along the 2D direction
-            Vector3 dir = (p1 - p0);
-            float dist = dir.magnitude;
-            if (dist > 0.001f)
-            {
-                dir.Normalize();
-                // Forward in XY plane
-                particles.transform.rotation = Quaternion.LookRotation(new Vector3(dir.x, dir.y, 0f), Vector3.forward);
-
-                var main = particles.main;
-                main.startSpeed = SparkSpeed;
-                main.startLifetime = dist / SparkSpeed;
-
-                var emission = particles.emission;
-                emission.enabled = true;
-                emission.rateOverTime = 30f;
-
-                // Ensure no leftover particles from any prior state
-                particles.Clear(false);
-                if (!particles.isPlaying)
-                    particles.Play(true);
-            }
-            else
-            {
-                var emission = particles.emission;
-                emission.enabled = false;
-                emission.rateOverTime = 0f;
-                if (particles.isPlaying)
-                    particles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            }
+            sparkSystem.Clear();
+            return;
         }
+
+        System.Func<float, Vector3> sampler = (t) => Vector3.Lerp(p0, p1, Mathf.Clamp01(t));
+        System.Func<float, float> radius = (t) => 0f; // centerline
+
+        // Keep tint consistent with the line
+        var sparkTint = new Color(0.25f, 1f, 0.25f, 1f);
+        sparkSystem.SetTint(sparkTint);
+
+        // Animate sparks
+        sparkSystem.Tick(
+            fade: 1f,
+            revActive: false,
+            samplePos: sampler,
+            radiusAtT: radius,
+            dt: Time.deltaTime
+        );
     }
 
     /// <summary>
@@ -288,6 +298,7 @@ public class SupportLineInstance : MonoBehaviour
         // Disable visuals immediately
         if (lineRenderer != null) lineRenderer.enabled = false;
         StopAndClearParticles();
+        sparkSystem.Clear();
 
         // Immediate destroy; no fade-out
         g.SupportLineManager.Destroy(supporter, attacker);

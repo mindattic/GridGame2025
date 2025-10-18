@@ -16,7 +16,11 @@ namespace Assets.Scripts.Sequences
             // Disable input
             g.InputManager.InputMode = InputMode.None;
 
-            g.AudioManager.Play("Victory");
+           
+
+            // Show Victory announcement when the victory sound is played
+            g.VictoryAnnouncement?.Show();
+
             // Wait until clip length (approx) using a simple delay if available
             var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Victory") ? SoundEffectLibrary.SoundEffects["Victory"] : null;
             if (sfx != null)

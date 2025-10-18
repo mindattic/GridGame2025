@@ -16,7 +16,11 @@ namespace Assets.Scripts.Sequences
             // Disable input
             g.InputManager.InputMode = InputMode.None;
 
-            g.AudioManager.Play("Defeat");
+       
+
+            // Show Defeat announcement when the defeat sound is played
+            g.DefeatAnnouncement?.Show();
+
             var sfx = SoundEffectLibrary.SoundEffects.ContainsKey("Defeat") ? SoundEffectLibrary.SoundEffects["Defeat"] : null;
             if (sfx != null)
                 yield return Wait.For(sfx.length);

@@ -25,8 +25,9 @@ public class HeroExperiencePane : MonoBehaviour
     private const float BAR_HEIGHT = 18f;
 
     // Fill pacing constants
-    private const int FILL_STEPS_PER_LEVEL = 50;          // target steps per level bar
-    private const float FILL_STEP_DELAY = Interval.FiveTicks; // delay per step (0.05s)
+    // Increased steps per level for more granular accumulation (was 50)
+    private const int FILL_STEPS_PER_LEVEL = 255;          // target steps per level bar (more ticks)
+    private const float FILL_STEP_DELAY = Interval.OneTick; // delay per step
 
     private void Reset()
     {

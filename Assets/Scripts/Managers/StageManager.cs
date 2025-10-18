@@ -116,7 +116,7 @@ public class StageManager : MonoBehaviour
         g.Timeline?.RebuildFuturePreservingCurrent();
 
         // Announcement (total unknown/infinite)
-        g.WaveAnnouncement.ShowEndless(nextWaveNumber);
+        g.WaveAnnouncement?.ShowEndless(nextWaveNumber);
     }
 
     /// <summary>
@@ -145,7 +145,7 @@ public class StageManager : MonoBehaviour
         }
 
         // Load the wave based on currentWave.
-        if (currentStage.Waves.Count > 0)
+        if (currentStage.Waves != null && currentStage.Waves.Count > 0)
         {
             LoadWave(currentWave);
         }
@@ -165,6 +165,12 @@ public class StageManager : MonoBehaviour
     /// </summary>
     private void LoadWave(int waveIndex)
     {
+        if (currentStage == null || currentStage.Waves == null)
+        {
+            Debug.LogError("LoadWave: currentStage or Waves is null.");
+            return;
+        }
+
         if (waveIndex >= currentStage.Waves.Count)
         {
             Debug.LogError($"Wave index {waveIndex} is out of bounds for stage {currentStage.Name}.");
@@ -174,24 +180,32 @@ public class StageManager : MonoBehaviour
         StageWave wave = currentStage.Waves[waveIndex];
 
         // Show actors for this wave
-        foreach (var stageActor in wave.Actors)
+        var actors = wave?.Actors;
+        if (actors != null)
         {
-            // Defer timeline rebuild until all spawns are finished
-            SpawnActor(stageActor, rebuildTimeline: false);
+            foreach (var stageActor in actors)
+            {
+                // Defer timeline rebuild until all spawns are finished
+                SpawnActor(stageActor, rebuildTimeline: false);
+            }
         }
 
         // Show dotted supportLines' for this wave
-        foreach (var stageDottedLine in wave.DottedLines)
+        var dottedLines = wave?.DottedLines;
+        if (dottedLines != null)
         {
-            var segment = stageDottedLine.Segment;
-            var location = stageDottedLine.Location;
-            g.DottedLineManager.Spawn(segment, location);
+            foreach (var stageDottedLine in dottedLines)
+            {
+                var segment = stageDottedLine.Segment;
+                var location = stageDottedLine.Location;
+                g.DottedLineManager.Spawn(segment, location);
+            }
         }
 
         // Recalculate timeline once per wave start
         g.Timeline?.RebuildFuturePreservingCurrent();
 
-        g.WaveAnnouncement.Show(waveIndex + 1, currentStage.Waves.Count);
+        g.WaveAnnouncement?.Show(waveIndex + 1, currentStage.Waves.Count);
     }
 
 

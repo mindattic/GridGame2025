@@ -65,10 +65,28 @@ namespace Assets.Helper
 
             public static class WaveAnnouncement
             {
-                public static GameObject Root => GameObject.Find("Canvas/WaveAnnouncement");
-                public static Image Image => GameObject.Find("Canvas/WaveAnnouncement/Image").GetComponent<Image>();
-                public static TextMeshProUGUI Back => GameObject.Find("Canvas/WaveAnnouncement/Back").GetComponent<TextMeshProUGUI>();
-                public static TextMeshProUGUI Front => GameObject.Find("Canvas/WaveAnnouncement/Front").GetComponent<TextMeshProUGUI>();
+                public static GameObject Root => GameObject.Find("Canvas/Announcements/WaveAnnouncement");
+                public static Image Image => GameObject.Find("Canvas/Announcements/WaveAnnouncement/Image").GetComponent<Image>();
+                public static TextMeshProUGUI Back => GameObject.Find("Canvas/Announcements/WaveAnnouncement/Back").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI Front => GameObject.Find("Canvas/Announcements/WaveAnnouncement/Front").GetComponent<TextMeshProUGUI>();
+            }
+
+            // NEW: VictoryAnnouncement
+            public static class VictoryAnnouncement
+            {
+                public static GameObject Root => GameObject.Find("Canvas/Announcements/VictoryAnnouncement");
+                public static Image Image => GameObject.Find("Canvas/Announcements/VictoryAnnouncement/Image").GetComponent<Image>();
+                public static TextMeshProUGUI Back => GameObject.Find("Canvas/Announcements/VictoryAnnouncement/Back").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI Front => GameObject.Find("Canvas/Announcements/VictoryAnnouncement/Front").GetComponent<TextMeshProUGUI>();
+            }
+
+            // NEW: DefeatAnnouncement
+            public static class DefeatAnnouncement
+            {
+                public static GameObject Root => GameObject.Find("Canvas/Announcements/DefeatAnnouncement");
+                public static Image Image => GameObject.Find("Canvas/Announcements/DefeatAnnouncement/Image").GetComponent<Image>();
+                public static TextMeshProUGUI Back => GameObject.Find("Canvas/Announcements/DefeatAnnouncement/Back").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI Front => GameObject.Find("Canvas/Announcements/DefeatAnnouncement/Front").GetComponent<TextMeshProUGUI>();
             }
 
 

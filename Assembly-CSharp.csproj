@@ -173,6 +173,7 @@
     <Compile Include="Assets\Scripts\Utilities\Demo_TurningAroundEffect.cs" />
     <Compile Include="Assets\Scripts\Utilities\Common.cs" />
     <Compile Include="Assets\Scripts\Utilities\GameReady.cs" />
+    <Compile Include="Assets\Scripts\Canvas\DefeatAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
@@ -265,6 +266,7 @@
     <Compile Include="Assets\Scripts\Instances\Actor\ActorParallax.cs" />
     <Compile Include="Assets\Scripts\Sequences\HealSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Models\SliderSetting.cs" />
+    <Compile Include="Assets\Scripts\Canvas\VictoryAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\ActorStats.cs" />
     <Compile Include="Assets\Scripts\Models\CanvasThumbnailSettings.cs" />
     <Compile Include="Assets\Scripts\Sequences\BattleLostSequence.cs" />

@@ -74,6 +74,9 @@ namespace Assets.Helpers
         public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;
         public static Timeline Timeline => gm != null ? gm.timeline : null;
         public static TitleBarInstance TitleBar => gm != null ? gm.titleBar : null;
+        public static VictoryAnnouncement VictoryAnnouncement => gm != null ? gm.victoryAnnouncement : null;
+        // NEW: DefeatAnnouncement shortcut
+        public static DefeatAnnouncement DefeatAnnouncement => gm != null ? gm.defeatAnnouncement : null;
 
 
         //Touch

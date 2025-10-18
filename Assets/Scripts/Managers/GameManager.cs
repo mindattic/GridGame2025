@@ -50,6 +50,9 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public WaveAnnouncement waveAnnouncement;
     [HideInInspector] public TargetModeOverlay targetModeOverlay;
     [HideInInspector] public TitleBarInstance titleBar;
+    // NEW: Victory/Defeat Announcement references
+    [HideInInspector] public VictoryAnnouncement victoryAnnouncement;
+    [HideInInspector] public DefeatAnnouncement defeatAnnouncement;
 
     // Managers
     [HideInInspector] public InputManager inputManager;
@@ -86,7 +89,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public SynergyLineManager synergyLineManager;
     [HideInInspector] public ManaPoolManager manaPoolManager;
     
-
 
     [HideInInspector] public Timeline timeline;
     [HideInInspector] public BackgroundInstance background;
@@ -194,6 +196,11 @@ public class GameManager : Singleton<GameManager>
 
         coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
         waveAnnouncement = GameObjectHelper.Game.WaveAnnouncement.Root.GetComponent<WaveAnnouncement>();
+        // NEW: wire Victory/Defeat Announcement
+        if (GameObjectHelper.Game.VictoryAnnouncement.Root != null)
+            victoryAnnouncement = GameObjectHelper.Game.VictoryAnnouncement.Root.GetComponent<VictoryAnnouncement>();
+        if (GameObjectHelper.Game.DefeatAnnouncement.Root != null)
+            defeatAnnouncement = GameObjectHelper.Game.DefeatAnnouncement.Root.GetComponent<DefeatAnnouncement>();
         background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
 
         // Board
