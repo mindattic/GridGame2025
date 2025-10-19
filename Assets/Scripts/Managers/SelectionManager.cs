@@ -7,7 +7,7 @@ using g = Assets.Helpers.GameHelper;
 /// <summary>
 /// Handles focus, drag, and drop for heroes during the hero turn using a single SelectedActor.
 /// States: Idle (just clicked), PickedUp (held but not beyond threshold), Moving (beyond threshold with countdown), Dropped (on drop start).
-/// Touch and hold enables Drop for the SelectedActor; releasing triggers Drop() for both PickedUp and Moving.
+/// Touch and hold enables Drop for the SelectedActor; releasing triggers Drop() for Moving.
 /// </summary>
 public class SelectionManager : MonoBehaviour
 {
@@ -141,7 +141,7 @@ public class SelectionManager : MonoBehaviour
             g.TurnManager.IsHeroTurn &&
             actor != null &&
             actor.IsHero &&
-            (selectedState == SelectedActorState.PickedUp || selectedState == SelectedActorState.Moving);
+            selectedState == SelectedActorState.Moving;
 
         if (!canDrop)
         {
