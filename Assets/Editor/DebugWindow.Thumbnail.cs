@@ -7,11 +7,12 @@ using s = Assets.Helpers.SettingsHelper;
 
 public partial class DebugWindow
 {
-    // Class-level fields
-    private string thumbnailPositionX = "0.5";
-    private string thumbnailPositionY = "-1.4";
+    // Class-level fields (now using pixel focus instead of offset)
+    private string thumbnailPixelX = "512";
+    private string thumbnailPixelY = "512";
     private string thumbnailScaleX = "5";
     private string thumbnailScaleY = "5";
+    private string thumbnailTextureSize = "1024";
 
     private void RenderThumbnailSettings()
     {
@@ -25,10 +26,20 @@ public partial class DebugWindow
         if (s.ReloadThumbnailSettings && g.Actors.HasSelectedActor)
         {
             var t = g.Actors.SelectedActor.Thumbnail;
-            thumbnailPositionX = t.settings.Position.x.ToString("F2");
-            thumbnailPositionY = t.settings.Position.y.ToString("F2");
+            int texSize = 1024;
+            if (t != null && t.sprite != null && t.sprite.texture != null)
+            {
+                // Prefer larger dimension as canonical size
+                var tex = t.sprite.texture;
+                texSize = Mathf.Max(tex.width, tex.height);
+            }
+
+            // Load from current settings
+            thumbnailPixelX = t.settings.PixelPosition.x.ToString();
+            thumbnailPixelY = t.settings.PixelPosition.y.ToString();
             thumbnailScaleX = t.settings.Scale.x.ToString("F2");
             thumbnailScaleY = t.settings.Scale.y.ToString("F2");
+            thumbnailTextureSize = texSize.ToString();
             s.ReloadThumbnailSettings = false;
         }
 
@@ -38,57 +49,73 @@ public partial class DebugWindow
         GUILayout.BeginVertical(GUILayout.Width(containerWidth));
 
         // Parse values
-        float.TryParse(thumbnailPositionX, out float pX);
-        float.TryParse(thumbnailPositionY, out float pY);
+        int.TryParse(thumbnailPixelX, out int pX);
+        int.TryParse(thumbnailPixelY, out int pY);
         float.TryParse(thumbnailScaleX, out float sX);
         float.TryParse(thumbnailScaleY, out float sY);
+        int.TryParse(thumbnailTextureSize, out int tSize);
 
-        float oldPX = pX, oldPY = pY, oldSX = sX, oldSY = sY;
+        int oldPX = pX, oldPY = pY, oldT = tSize;
+        float oldSX = sX, oldSY = sY;
 
-        // InputManager fields
-        pX = EditorGUILayout.FloatField("pX", pX);
-        pY = EditorGUILayout.FloatField("pY", pY);
-        sX = EditorGUILayout.FloatField("sX", sX);
-        sY = EditorGUILayout.FloatField("sY", sY);
+        // Inputs
+        pX = EditorGUILayout.IntField("pixelX", pX);
+        pY = EditorGUILayout.IntField("pixelY", pY);
+        sX = EditorGUILayout.FloatField("scaleX", sX);
+        sY = EditorGUILayout.FloatField("scaleY", sY);
+        tSize = Mathf.Max(1, EditorGUILayout.IntField("textureSize", Mathf.Max(1, tSize)));
 
-        void update()
+        void apply()
         {
-            if (GameManager.instance.selectedActor != null)
+            var selected = GameManager.instance.selectedActor;
+            if (selected != null && selected.Thumbnail != null)
             {
-                var position = new Vector3(pX, pY, 0f);
-                var scale = new Vector3(sX, sY, 1f);
-                GameManager.instance.selectedActor.Thumbnail.Set(position, scale);
+                var ts = new Assets.Scripts.Models.ThumbnailSettings(new Vector2Int(pX, pY), new Vector2(sX, sY), tSize);
+                selected.Thumbnail.settings = ts;
+
+                // Apply to transform for immediate preview in world
+                selected.Thumbnail.transform.localPosition = ts.Offset;
+                selected.Thumbnail.transform.localScale = ts.Scale;
             }
         }
 
-        if (!Mathf.Approximately(pX, oldPX) ||
-            !Mathf.Approximately(pY, oldPY) ||
+        if (pX != oldPX || pY != oldPY ||
             !Mathf.Approximately(sX, oldSX) ||
-            !Mathf.Approximately(sY, oldSY))
+            !Mathf.Approximately(sY, oldSY) ||
+            tSize != oldT)
         {
-            update();
+            apply();
         }
 
         // Save back to strings
-        thumbnailPositionX = pX.ToString("F2");
-        thumbnailPositionY = pY.ToString("F2");
+        thumbnailPixelX = pX.ToString();
+        thumbnailPixelY = pY.ToString();
         thumbnailScaleX = sX.ToString("F2");
         thumbnailScaleY = sY.ToString("F2");
+        thumbnailTextureSize = tSize.ToString();
 
         // Buttons
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Update", GUILayout.Width(64))) update();
+        if (GUILayout.Button("Update", GUILayout.Width(64))) apply();
 
         if (GUILayout.Button("Export", GUILayout.Width(64)))
         {
+            // Export snippet using pixel-based constructor
             string exportText =
-                $"    Position = new Vector3({pX}f, {pY}f, 0f),\n" +
-                $"    Scale = new Vector3({sX}f, {sY}f, 0f),";
+                $"    ThumbnailSettings = new ThumbnailSettings(new Vector2Int({pX}, {pY}), new Vector2({sX}f, {sY}f), {tSize}),";
 
             EditorGUIUtility.systemCopyBuffer = exportText;
-            Debug.Log($"Copied `{GameManager.instance.selectedActor.characterClass}` ThumbnailSettings to clipboard.");
+            Debug.Log($"Copied `{GameManager.instance.selectedActor.characterClass}` ThumbnailSettings (pixel-based) to clipboard.");
         }
         GUILayout.EndHorizontal();
+
+        // Info: show derived offset (read-only) for reference
+        var sel = GameManager.instance.selectedActor;
+        if (sel != null && sel.Thumbnail != null && sel.Thumbnail.settings != null)
+        {
+            var off = sel.Thumbnail.settings.Offset;
+            EditorGUILayout.LabelField("derivedOffset", $"({off.x:F2}, {off.y:F2})");
+        }
 
         GUILayout.Space(10);
         GUILayout.EndVertical();

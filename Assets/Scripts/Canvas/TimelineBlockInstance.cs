@@ -330,8 +330,8 @@ namespace Assets.Scripts.Canvas.Timeline
                 float h = Mathf.Max(1f, s * appliedThumbnail.Scale.y);
                 pr.sizeDelta = new Vector2(w, h);
 
-                float px = appliedThumbnail.Position.x * s;
-                float py = appliedThumbnail.Position.y * s;
+                float px = appliedThumbnail.Offset.x * s;
+                float py = appliedThumbnail.Offset.y * s;
                 pr.anchoredPosition = new Vector2(px, py);
 
                 pr.localScale = Vector3.one;

@@ -63,7 +63,7 @@ public class ActorThumbnail : MonoBehaviour
         if (settings == null)
         {
             settings = new ThumbnailSettings(Vector2.zero, Vector2.one);
-            transform.localPosition = settings.Position;
+            transform.localPosition = settings.Offset;
             transform.localScale = settings.Scale;
         }
     }
@@ -71,7 +71,7 @@ public class ActorThumbnail : MonoBehaviour
     public void Set(Vector3 position, Vector3 scale)
     {
         settings = new ThumbnailSettings(position, scale);
-        transform.localPosition = settings.Position;
+        transform.localPosition = settings.Offset;
         transform.localScale = settings.Scale;
     }
 
@@ -88,7 +88,7 @@ public class ActorThumbnail : MonoBehaviour
         }
 
         settings = new ThumbnailSettings(actorData.ThumbnailSettings);
-        transform.localPosition = settings.Position;
+        transform.localPosition = settings.Offset;
         transform.localScale = settings.Scale;
 
         RecalculateRangeMultiplier();

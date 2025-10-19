@@ -131,7 +131,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -199,7 +199,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -267,7 +267,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.83f, -1.24f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -335,7 +335,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -402,11 +402,7 @@ namespace Assets.Data.Actor
 
                 Stats = new ActorStats(),
 
-                ThumbnailSettings = new ThumbnailSettings
-                {
-                    Position = new Vector3(0.52f, 0.56f, 0f),
-                    Scale = new Vector3(2f, 2f, 0f),
-                },
+                ThumbnailSettings = new ThumbnailSettings(new Vector2Int(235, 796), new Vector2(2f, 2f), 1024),
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
 
@@ -472,7 +468,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -540,7 +536,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -607,7 +603,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -675,7 +671,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -743,7 +739,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(5f, 5f, 0f),
                 },
 
@@ -811,7 +807,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -879,7 +875,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -947,7 +943,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1015,7 +1011,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1081,11 +1077,7 @@ namespace Assets.Data.Actor
 
                 Stats = new ActorStats(),
 
-                ThumbnailSettings = new ThumbnailSettings
-                {
-                    Position = new Vector3(0.51f, -1.39f, 0f),
-                    Scale = new Vector3(5f, 5f, 0f),
-                },
+                ThumbnailSettings = new ThumbnailSettings(new Vector2Int(414, 230), new Vector2(5f, 5f), 1024),
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
 
@@ -1151,7 +1143,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1219,7 +1211,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1287,7 +1279,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1355,7 +1347,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1423,7 +1415,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1491,7 +1483,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1559,7 +1551,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1627,7 +1619,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1695,7 +1687,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1763,7 +1755,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1831,7 +1823,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1899,7 +1891,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -1967,7 +1959,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2035,7 +2027,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2103,7 +2095,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2171,7 +2163,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2239,7 +2231,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2307,7 +2299,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2375,7 +2367,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2443,7 +2435,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2511,7 +2503,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2579,7 +2571,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2647,7 +2639,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2715,7 +2707,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2783,7 +2775,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2851,7 +2843,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2919,7 +2911,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -2987,7 +2979,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3055,7 +3047,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3123,7 +3115,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3191,7 +3183,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3259,7 +3251,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3327,7 +3319,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3395,7 +3387,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3463,7 +3455,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3531,7 +3523,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3599,7 +3591,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3667,7 +3659,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3735,7 +3727,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3803,7 +3795,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3871,7 +3863,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -3939,7 +3931,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4008,7 +4000,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4076,7 +4068,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4144,7 +4136,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4212,7 +4204,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4280,7 +4272,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4348,7 +4340,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4416,7 +4408,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4484,7 +4476,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4552,7 +4544,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4620,7 +4612,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4688,7 +4680,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4756,7 +4748,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4824,7 +4816,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4892,7 +4884,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -4960,7 +4952,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5028,7 +5020,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5096,7 +5088,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5164,7 +5156,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5232,7 +5224,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5300,7 +5292,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5368,7 +5360,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5436,7 +5428,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5504,7 +5496,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5572,7 +5564,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5640,7 +5632,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5708,7 +5700,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5774,11 +5766,7 @@ namespace Assets.Data.Actor
 
                 Stats = new ActorStats(),
 
-                ThumbnailSettings = new ThumbnailSettings
-                {
-                    Position = new Vector3(0.4f, -1.43f, 0f),
-                    Scale = new Vector3(5f, 5f, 0f),
-                },
+                ThumbnailSettings = new ThumbnailSettings(new Vector2Int(428, 230), new Vector2(5f, 5f), 1024),
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
 
@@ -5843,7 +5831,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5911,7 +5899,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -5979,7 +5967,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6047,7 +6035,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6115,7 +6103,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6183,7 +6171,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6251,7 +6239,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6319,7 +6307,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6387,7 +6375,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6455,7 +6443,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6523,7 +6511,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6591,7 +6579,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6659,7 +6647,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6727,7 +6715,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6795,7 +6783,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6863,7 +6851,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6931,7 +6919,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -6999,7 +6987,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7067,7 +7055,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7135,7 +7123,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7203,7 +7191,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7271,7 +7259,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7339,7 +7327,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7407,7 +7395,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7475,7 +7463,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7541,11 +7529,7 @@ namespace Assets.Data.Actor
 
                 Stats = new ActorStats(),
 
-                ThumbnailSettings = new ThumbnailSettings
-                {
-                    Position = new Vector3(0.67f, 0.34f, 0f),
-                    Scale = new Vector3(2f, 2f, 0f),
-                },
+                ThumbnailSettings = new ThumbnailSettings(new Vector2Int(214, 588), new Vector2(3f, 3f), 1024),
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
 
@@ -7611,7 +7595,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7679,7 +7663,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7747,7 +7731,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7815,7 +7799,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7883,7 +7867,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -7951,7 +7935,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8019,7 +8003,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8087,7 +8071,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.76f, 0.55f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(2f, 2f, 0f),
                 },
 
@@ -8155,7 +8139,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.76f, 0.55f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(2f, 2f, 0f),
                 },
 
@@ -8223,7 +8207,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.76f, 0.55f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(2f, 2f, 0f),
                 },
 
@@ -8291,7 +8275,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.76f, 0.55f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(2f, 2f, 0f),
                 },
 
@@ -8359,7 +8343,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0.76f, 0.55f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(2f, 2f, 0f),
                 },
 
@@ -8426,7 +8410,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8494,7 +8478,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8562,7 +8546,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8630,7 +8614,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8698,7 +8682,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8766,7 +8750,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8835,7 +8819,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8903,7 +8887,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -8971,7 +8955,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9039,7 +9023,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9106,7 +9090,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9173,7 +9157,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9241,7 +9225,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9309,7 +9293,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9377,7 +9361,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9445,7 +9429,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9513,7 +9497,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9581,7 +9565,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9650,7 +9634,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9718,7 +9702,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9786,7 +9770,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9854,7 +9838,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9922,7 +9906,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -9990,7 +9974,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10058,7 +10042,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10126,7 +10110,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10194,7 +10178,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10262,7 +10246,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10330,7 +10314,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10398,7 +10382,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10467,7 +10451,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10536,7 +10520,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10604,7 +10588,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10673,7 +10657,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10741,7 +10725,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10809,7 +10793,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10877,7 +10861,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -10946,7 +10930,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11014,7 +10998,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11082,7 +11066,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11150,7 +11134,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11218,7 +11202,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11285,7 +11269,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11352,7 +11336,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11419,7 +11403,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11487,7 +11471,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11554,7 +11538,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11622,7 +11606,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11690,7 +11674,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
@@ -11758,7 +11742,7 @@ namespace Assets.Data.Actor
 
                 ThumbnailSettings = new ThumbnailSettings
                 {
-                    Position = new Vector3(0f, 0f, 0f),
+                    PixelPosition = new Vector2Int(512, 140),
                     Scale = new Vector3(1f, 1f, 0f)
                 },
 
