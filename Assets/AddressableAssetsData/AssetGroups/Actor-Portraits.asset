@@ -530,11 +530,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 9dd1e802313025b43bbd98ab8408ca31
-    m_Address: Slime
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9e3cd1bed5f1dee4481c333c10494b48
     m_Address: PrizeFighter
     m_ReadOnly: 0
