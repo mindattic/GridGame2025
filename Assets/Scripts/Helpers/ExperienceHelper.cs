@@ -16,10 +16,10 @@ namespace Assets.Helpers
 
         public static int Calculate(ActorInstance defeated)
         {
-            if (defeated == null || string.IsNullOrEmpty(defeated.characterName))
+            if (defeated == null || defeated.characterClass == CharacterClass.None)
                 return 0;
 
-            var actorData = ActorLibrary.Get(defeated.characterName);
+            var actorData = ActorLibrary.Get(defeated.characterClass);
             if (actorData == null)
                 return 0;
 
@@ -55,7 +55,7 @@ namespace Assets.Helpers
             // Apply any level ups by rebuilding stats at the new level
             if (level != prevLevel)
             {
-                var data = ActorLibrary.Get(actor.characterName);
+                var data = ActorLibrary.Get(actor.characterClass);
                 if (data != null)
                 {
                     var next = data.GetStats(level);
@@ -97,7 +97,7 @@ namespace Assets.Helpers
             var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
             if (party == null) return;
 
-            var entry = party.FirstOrDefault(m => m != null && m.Character == actor.characterName);
+            var entry = party.FirstOrDefault(m => m != null && m.CharacterClass == actor.characterClass);
             if (entry == null) return;
 
             // Persist only TotalXP. Level and CurrentXP are derived at runtime.

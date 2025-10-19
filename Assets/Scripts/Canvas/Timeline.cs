@@ -55,7 +55,20 @@ public sealed class Timeline : MonoBehaviour
         viewport = GameObjectHelper.Game.Timeline.Viewport;
         content = GameObjectHelper.Game.Timeline.Content;
 
-        blockPrefab = PrefabLibrary.Prefabs["TimelineBlockPrefab"].GetComponent<TimelineBlockInstance>();
+        // Load block prefab via library with guard
+        var blockGo = PrefabLibrary.Get("TimelineBlockPrefab");
+        if (blockGo == null)
+        {
+            Debug.LogError("Timeline: 'TimelineBlockPrefab' not found or is null in PrefabLibrary.");
+            blockPrefab = null;
+            return;
+        }
+
+        blockPrefab = blockGo.GetComponent<TimelineBlockInstance>();
+        if (blockPrefab == null)
+        {
+            Debug.LogError("Timeline: 'TimelineBlockPrefab' is missing TimelineBlockInstance component.");
+        }
     }
 
     private class Block
@@ -90,6 +103,13 @@ public sealed class Timeline : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
+        // Guard against missing references/prefabs
+        if (content == null || viewport == null || blockPrefab == null)
+        {
+            Debug.LogError("Timeline.Initialize aborted: missing content/viewport or TimelineBlockPrefab.");
+            return;
+        }
+
         RebuildFromScene();
         UpdateSelectionHighlight();
     }
@@ -100,6 +120,12 @@ public sealed class Timeline : MonoBehaviour
     /// </summary>
     public void RebuildFromScene()
     {
+        if (content == null || viewport == null || blockPrefab == null)
+        {
+            Debug.LogError("Timeline.RebuildFromScene aborted: missing content/viewport or TimelineBlockPrefab.");
+            return;
+        }
+
         Clear();
 
         BuildSim();
@@ -119,6 +145,12 @@ public sealed class Timeline : MonoBehaviour
     /// </summary>
     public void RebuildFuturePreservingCurrent()
     {
+        if (content == null || viewport == null || blockPrefab == null)
+        {
+            Debug.LogError("Timeline.RebuildFuturePreservingCurrent aborted: missing content/viewport or TimelineBlockPrefab.");
+            return;
+        }
+
         if (blocks.Count == 0)
         {
             // Nothing yet, just do a full rebuild.
@@ -251,7 +283,8 @@ public sealed class Timeline : MonoBehaviour
         float step = slideBase * Time.deltaTime + slideScale * Time.deltaTime * dist;
         contentX = Mathf.MoveTowards(contentX, targetContentX, step);
 
-        content.anchoredPosition = new Vector2(contentX, 0f);
+        if (content != null)
+            content.anchoredPosition = new Vector2(contentX, 0f);
     }
 
     // -------------- Forecast build --------------
@@ -394,6 +427,8 @@ public sealed class Timeline : MonoBehaviour
 
     private void SetupLayout()
     {
+        if (content == null || viewport == null) return;
+
         // Position and size each view.
         for (int i = 0; i < blocks.Count; i++)
         {
@@ -412,13 +447,15 @@ public sealed class Timeline : MonoBehaviour
 
     private void AddActorBlock(ActorInstance actor)
     {
+        if (blockPrefab == null || content == null) return;
+
         var b = new Block
         {
             isHero = actor.IsHero,
             isDivider = false,
             actor = actor,
             color = (actor.IsHero ? ColorHelper.Solid.White : ColorHelper.Solid.GunMetal),
-            label = string.IsNullOrEmpty(actor.characterName) ? (actor.IsHero ? "Hero" : "Enemy") : actor.characterName,
+            label = actor.characterClass.ToString(),
             portrait = actor.Render.thumbnail.sprite
         };
 
@@ -429,7 +466,7 @@ public sealed class Timeline : MonoBehaviour
 
         go.SetBackSprite(SpriteLibrary.GUI["TimelineBlock"], b.color);
 
-        var data = ActorLibrary.Get(actor.characterName);
+        var data = ActorLibrary.Get(actor.characterClass);
         var crop = data != null && data.CanvasThumbnailSettings != null ? data.CanvasThumbnailSettings : CanvasThumbnailSettings.Default;
         go.ApplyCanvasCrop(crop);
 
@@ -443,6 +480,8 @@ public sealed class Timeline : MonoBehaviour
 
     private void AddRoundDivider(int currentRound)
     {
+        if (blockPrefab == null || content == null) return;
+
         var b = new Block { isHero = false, isDivider = true, actor = null, label = $"Round {currentRound}", portrait = null };
         var go = Instantiate(blockPrefab, content);
         go.SetOwner(null);
@@ -518,7 +557,8 @@ public sealed class Timeline : MonoBehaviour
     {
         var snap = GetTargetXForIndex(currentIndex);
         contentX = targetContentX = snap;
-        content.anchoredPosition = new Vector2(contentX, 0f);
+        if (content != null)
+            content.anchoredPosition = new Vector2(contentX, 0f);
     }
 
     private void Clear()

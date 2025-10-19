@@ -1,3 +1,4 @@
+using Assets.Helpers;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,12 +13,12 @@ namespace Assets.Scripts.Managers
             public int XPGained;
         }
 
-        private static readonly Dictionary<string, int> characterXP = new Dictionary<string, int>();
-        private static readonly HashSet<string> participants = new HashSet<string>();
+        private static readonly Dictionary<CharacterClass, int> characterXP = new Dictionary<CharacterClass, int>();
+        private static readonly HashSet<CharacterClass> participants = new HashSet<CharacterClass>();
 
         public static string NextSceneAfterPostBattleScreen = Assets.Helpers.SceneHelper.Overworld; // configurable default
 
-        public static void StartSession(IEnumerable<string> participantCharacters)
+        public static void StartSession(IEnumerable<CharacterClass> participantCharacters)
         {
             characterXP.Clear();
             participants.Clear();
@@ -25,34 +26,34 @@ namespace Assets.Scripts.Managers
             {
                 foreach (var c in participantCharacters)
                 {
-                    if (!string.IsNullOrEmpty(c)) participants.Add(c);
+                    if (c != CharacterClass.None) participants.Add(c);
                 }
             }
         }
 
-        public static void AddParticipant(string character)
+        public static void AddParticipant(CharacterClass character)
         {
-            if (string.IsNullOrEmpty(character)) return;
+            if (character == CharacterClass.None) return;
             participants.Add(character);
         }
 
-        public static void AddXP(string character, int amount)
+        public static void AddXP(CharacterClass character, int amount)
         {
-            if (string.IsNullOrEmpty(character) || amount <= 0) return;
+            if (character == CharacterClass.None || amount <= 0) return;
             if (characterXP.TryGetValue(character, out var cur))
                 characterXP[character] = cur + amount;
             else
                 characterXP[character] = amount;
         }
 
-        public static int GetXPGained(string character)
+        public static int GetXPGained(CharacterClass characterClass)
         {
-            if (string.IsNullOrEmpty(character)) return 0;
-            return characterXP.TryGetValue(character, out var v) ? v : 0;
+            if (characterClass == CharacterClass.None) return 0;
+            return characterXP.TryGetValue(characterClass, out var v) ? v : 0;
         }
 
-        public static IReadOnlyDictionary<string, int> AllGains => characterXP;
-        public static IReadOnlyCollection<string> Participants => participants;
+        public static IReadOnlyDictionary<CharacterClass, int> AllGains => characterXP;
+        public static IReadOnlyCollection<CharacterClass> Participants => participants;
 
         public static void Clear()
         {

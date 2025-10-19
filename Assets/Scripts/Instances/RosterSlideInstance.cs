@@ -1,9 +1,10 @@
+using Assets.Helpers;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RosterSlideInstance : MonoBehaviour
 {
-    [HideInInspector] public string Key;
+    [HideInInspector] public CharacterClass CharacterClass;
     [HideInInspector] public float Width;
     [HideInInspector] public float Height;
 
@@ -45,10 +46,10 @@ public class RosterSlideInstance : MonoBehaviour
         centerButtonWidth = Width * 0.33f;
     }
 
-    public void Initialize(string key, Sprite sprite, float width, float height, System.Action onClick, bool isInParty)
+    public void Initialize(CharacterClass characterClass, Sprite sprite, float width, float height, System.Action onClick, bool isInParty)
     {
         // Show key and dimensions
-        Key = key;
+        CharacterClass = characterClass;
         Width = width;
         Height = height;
 

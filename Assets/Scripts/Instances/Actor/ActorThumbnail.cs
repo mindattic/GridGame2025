@@ -79,7 +79,7 @@ public class ActorThumbnail : MonoBehaviour
     {
         instance = parentInstance;
 
-        var actorData = ActorLibrary.Get(instance.characterName);
+        var actorData = ActorLibrary.Get(instance.characterClass);
 
         spriteRenderer.sprite = actorData.Portrait;
         if (spriteRenderer.sprite != null)

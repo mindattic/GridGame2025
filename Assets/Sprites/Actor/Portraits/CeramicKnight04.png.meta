@@ -1,31 +1,13 @@
 fileFormatVersion: 2
-guid: 90e669a2322537f4b97ea4100fecc95d
+guid: c22cb3b5e901fec4f80d3910ea5fda00
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5642401861706389723
-    second: Skelepede_0
+      213: 3629876182426275671
+    second: CeramicKnight04_0
   - first:
-      213: -4266695960396387471
-    second: Skelepede_1
-  - first:
-      213: 4639050789476799281
-    second: Skelepede_2
-  - first:
-      213: 4641723357791381805
-    second: Skelepede_3
-  - first:
-      213: 4197349894846838404
-    second: Skelepede_4
-  - first:
-      213: 146998905425817789
-    second: Skelepede_5
-  - first:
-      213: 4812743854351206970
-    second: Skelepede_6
-  - first:
-      213: 8622787906672257710
-    second: Skelepede_7
+      213: 7907281044561061033
+    second: CeramicKnight04_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -199,13 +181,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Skelepede_0
+      name: CeramicKnight04_0
       rect:
         serializedVersion: 2
-        x: 25
-        y: 15
-        width: 29
-        height: 20
+        x: 326
+        y: 27
+        width: 510
+        height: 977
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -214,20 +196,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 527ecf8c66922b1b0800000000000000
-      internalID: -5642401861706389723
+      spriteID: 75f4b20f729ef5230800000000000000
+      internalID: 3629876182426275671
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Skelepede_1
+      name: CeramicKnight04_1
       rect:
         serializedVersion: 2
-        x: 57
-        y: 29
-        width: 10
-        height: 6
+        x: 690
+        y: 28
+        width: 155
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -236,140 +218,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 17baaf341a6a9c4c0800000000000000
-      internalID: -4266695960396387471
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Skelepede_2
-      rect:
-        serializedVersion: 2
-        x: 88
-        y: 8
-        width: 874
-        height: 1007
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 13392c14d18316040800000000000000
-      internalID: 4639050789476799281
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Skelepede_3
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 16
-        width: 20
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: d29e9ce0dc6ba6040800000000000000
-      internalID: 4641723357791381805
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Skelepede_4
-      rect:
-        serializedVersion: 2
-        x: 77
-        y: 14
-        width: 52
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 4867e58ad7bff3a30800000000000000
-      internalID: 4197349894846838404
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Skelepede_5
-      rect:
-        serializedVersion: 2
-        x: 964
-        y: 17
-        width: 27
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: db0f644c9be3a0200800000000000000
-      internalID: 146998905425817789
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Skelepede_6
-      rect:
-        serializedVersion: 2
-        x: 451
-        y: 0
-        width: 40
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a3a4c89590d4ac240800000000000000
-      internalID: 4812743854351206970
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Skelepede_7
-      rect:
-        serializedVersion: 2
-        x: 776
-        y: 4
-        width: 17
-        height: 6
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: eaaebb66aeb4aa770800000000000000
-      internalID: 8622787906672257710
+      spriteID: 9a4ed38273e4cbd60800000000000000
+      internalID: 7907281044561061033
       vertices: []
       indices: 
       edges: []
@@ -388,14 +238,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Skelepede_0: -5642401861706389723
-      Skelepede_1: -4266695960396387471
-      Skelepede_2: 4639050789476799281
-      Skelepede_3: 4641723357791381805
-      Skelepede_4: 4197349894846838404
-      Skelepede_5: 146998905425817789
-      Skelepede_6: 4812743854351206970
-      Skelepede_7: 8622787906672257710
+      CeramicKnight04_0: 3629876182426275671
+      CeramicKnight04_1: 7907281044561061033
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -673,35 +673,35 @@ namespace Assets.Helpers
         /// <summary>
         /// Adds a character to the party if not already present. Saves on success.
         /// </summary>
-        public static void AddToParty(string character)
+        public static void AddToParty(CharacterClass characterClass)
         {
-            if (!HasCurrentSave || string.IsNullOrWhiteSpace(character))
+            if (!HasCurrentSave || characterClass == CharacterClass.None)
                 return;
 
             var party = CurrentProfile.CurrentSave.Party?.Members;
             if (party == null)
                 return;
 
-            if (party.Any(hero => hero.Character == character))
+            if (party.Any(hero => hero.CharacterClass == characterClass ))
                 return;
 
-            party.Add(new CharacterLevelPair(character));
+            party.Add(new CharacterLevelPair(characterClass));
             Save(true);
         }
 
         /// <summary>
         /// Removes a character from the party if present. Saves on success.
         /// </summary>
-        public static void RemoveFromParty(string character)
+        public static void RemoveFromParty(CharacterClass characterClass)
         {
-            if (!HasCurrentSave || string.IsNullOrWhiteSpace(character))
+            if (!HasCurrentSave || characterClass == CharacterClass.None)
                 return;
 
             var party = CurrentProfile.CurrentSave.Party?.Members;
             if (party == null)
                 return;
 
-            if (party.RemoveAll(hero => hero.Character == character) > 0)
+            if (party.RemoveAll(hero => hero.CharacterClass == characterClass) > 0)
                 Save(true);
         }
 

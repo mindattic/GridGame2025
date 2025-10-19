@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Libraries;
+﻿using Assets.Helpers;
+using Assets.Scripts.Libraries;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -170,15 +171,15 @@ namespace Game.Models.Profile
     [Serializable]
     public class CharacterLevelPair
     {
-        public string Character;
+        public CharacterClass CharacterClass;
 
         // Persist only the accumulated (lifetime) XP. Level and current XP are derived at runtime.
         public int TotalXP;
 
         public CharacterLevelPair() { }
-        public CharacterLevelPair(string character, int totalXP = 0)
+        public CharacterLevelPair(CharacterClass characterClass, int totalXP = 0)
         {
-            Character = character;
+            CharacterClass = characterClass;
             TotalXP = totalXP;
         }
     }

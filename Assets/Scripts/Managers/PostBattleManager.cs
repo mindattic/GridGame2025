@@ -135,8 +135,8 @@ public class PostBattleManager : MonoBehaviour
             Destroy(_scrollContent.GetChild(i).gameObject);
 
         var save = ProfileHelper.CurrentProfile.CurrentSave;
-        var party = save.Party?.Members?.Select(m => m.Character).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
-        var roster = save.Roster?.Members?.Select(m => m.Character).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
+        var party = save.Party?.Members?.Select(m => m.CharacterClass).Where(s => s != CharacterClass.None).ToList() ?? new List<CharacterClass>();
+        var roster = save.Roster?.Members?.Select(m => m.CharacterClass).Where(s => s != CharacterClass.None).ToList() ?? new List<CharacterClass>();
 
         _panes.Clear();
 
@@ -150,7 +150,7 @@ public class PostBattleManager : MonoBehaviour
             StartCoroutine(EnableNextSoon());
     }
 
-    private void CreatePane(string character, bool inParty, int xpGained)
+    private void CreatePane(CharacterClass character, bool inParty, int xpGained)
     {
         if (_heroExperiencePanePrefab == null || _scrollContent == null) return;
         var go = Instantiate(_heroExperiencePanePrefab, _scrollContent);
@@ -180,13 +180,14 @@ public class PostBattleManager : MonoBehaviour
 
     private void OnNext()
     {
-        var save = ProfileHelper.CurrentProfile?.CurrentSave;
+        var save = ProfileHelper.CurrentProfile.CurrentSave;
         if (save != null)
         {
             foreach (var kv in ExperienceTracker.AllGains)
             {
-                var id = kv.Key; var gained = kv.Value;
-                var entry = save.Party.Members.FirstOrDefault(m => m.Character == id) ?? save.Roster.Members.FirstOrDefault(m => m.Character == id);
+                var id = kv.Key; 
+                var gained = kv.Value;
+                var entry = save.Party.Members.FirstOrDefault(m => m.CharacterClass == id) ?? save.Roster.Members.FirstOrDefault(m => m.CharacterClass == id);
                 if (entry != null)
                 {
                     entry.TotalXP = Mathf.Max(0, entry.TotalXP + gained);

@@ -41,7 +41,7 @@ public class PortraitManager : MonoBehaviour
         instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.PortraitsContainer;
-        instance.sprite = ActorLibrary.Actors[actor.characterName].Portrait;
+        instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.scale = new Vector3(1f, 1f, 1f);
         if (instance.image != null) instance.image.color = new Color(1f, 1f, 1f, 1);
 
@@ -103,7 +103,7 @@ public class PortraitManager : MonoBehaviour
         instance.direction = direction;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
-        instance.sprite = ActorLibrary.Actors[actor.characterName].Portrait;
+        instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         if (instance.spriteRenderer != null)
             instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);
@@ -126,7 +126,7 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         g.SortingManager.OnPortraitPopIn(instance);
-        instance.sprite = ActorLibrary.Actors[actor.characterName].Portrait;
+        instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.transform.localScale = new Vector3(scale, scale, 1);
         if (instance.spriteRenderer != null)
             instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
@@ -150,7 +150,7 @@ public class PortraitManager : MonoBehaviour
         instance.name = $"Portrait3D_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
         g.SortingManager.OnPortraitPopIn(instance);
-        instance.sprite = ActorLibrary.Actors[actor.characterName].Portrait;
+        instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.transform.localScale = new Vector3(scale, scale, 1);
         if (instance.spriteRenderer != null)
             instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Transparent);
@@ -177,7 +177,7 @@ public class PortraitManager : MonoBehaviour
         instance.actor = actor;
         instance.name = $"Portrait_{Guid.NewGuid():N}";
         instance.parent = g.Board.transform;
-        instance.sprite = ActorLibrary.Actors[actor.characterName].Portrait;
+        instance.sprite = ActorLibrary.Actors[actor.characterClass].Portrait;
         instance.transform.localScale = new Vector3(0.25f, 0.25f, 1);
         if (instance.spriteRenderer != null)
             instance.spriteRenderer.color = new Color(1, 1, 1, Opacity.Percent90);

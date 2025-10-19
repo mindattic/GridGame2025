@@ -73,8 +73,8 @@ public class ActorCard : MonoBehaviour
     {
         if (!g.Actors.HasSelectedActor) return;
 
-        var actorName = g.Actors.SelectedActor.characterName;
-        var actorData = ActorLibrary.Get(actorName);
+        var characterClass = g.Actors.SelectedActor.characterClass;
+        var actorData = ActorLibrary.Get(characterClass);
 
         // Always visible
         backdrop.gameObject.SetActive(true);
@@ -84,7 +84,7 @@ public class ActorCard : MonoBehaviour
 
         // Set content immediately
         portrait.GetComponent<Image>().sprite = actorData.Portrait;
-        title.GetComponent<TextMeshProUGUI>().text = actorName;
+        title.GetComponent<TextMeshProUGUI>().text = characterClass.ToString();
 
 
 

@@ -1,76 +1,183 @@
-﻿using System.Collections.Generic;
-using System;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.TextCore.Text;
-using g = Assets.Helpers.GameHelper;
+﻿using System;
 
 namespace Assets.Helpers
 {
-    public static class CharacterClass
+    // Converted from static class of string constants to an enum.
+    // Values match the previous string names exactly so ToString() yields the same keys.
+    public enum CharacterClass
     {
-
-        //TODO: Put this into an Enum??
-        public const string Barbarian = "Barbarian";
-        public const string Bat = "Bat";
-        public const string Cleric = "Cleric";
-        public const string Captain00 = "Captain00";
-        public const string GreenNinja = "GreenNinja";
-        public const string Paladin = "Paladin";
-        public const string PandaGirl = "PandaGirl";
-        public const string Pugilist = "Pugilist";
-        public const string RedNinja = "RedNinja";
-        public const string Ronin = "Ronin";
-        public const string Sellsword = "Sellsword";
-        public const string Scorpion = "Scorpion";
-        public const string Soldier00 = "Soldier00";
-        public const string Soldier01 = "Soldier01";
-        public const string Soldier02 = "Soldier02";
-        public const string Soldier03 = "Soldier03";
-        public const string Slime = "Slime";
-        public const string Slime00 = "Slime00";
-        public const string Slime01 = "Slime01";
-        public const string Slime02 = "Slime02";
-        public const string Slime03 = "Slime03";
-        public const string Thief = "Thief";
-        public const string Vampire = "Vampire";
-        public const string Wolf00 = "Wolf00";
-        public const string Wolf01 = "Wolf01";
-        public const string Wolf02 = "Wolf02";
-        public const string Wolf03 = "Wolf03";
-        public const string Yeti = "Yeti";
-
-
-        public static IReadOnlyList<string> AllCharacters { get; } = new[]
-        {
-            Barbarian,
-            Bat,
-            Cleric,
-            Captain00,
-            GreenNinja,
-            Paladin,
-            PandaGirl,
-            Pugilist,
-            RedNinja,
-            Ronin,
-            Sellsword,
-            Scorpion,
-            Soldier00,
-            Soldier01,
-            Soldier02,
-            Soldier03,
-            Slime,
-            Slime00,
-            Slime01,
-            Slime02,
-            Slime03,
-            Thief,
-            Vampire,
-            Wolf00,
-            Wolf01,
-            Wolf02,
-            Wolf03,
-            Yeti,
-        };
+        None = 0,
+        Alchemist,
+        Assassain,
+        Barbarian,
+        Basher,
+        Bat00,
+        Bat01,
+        Bat02,
+        BlackNinja,
+        BlackWitch,
+        BlueLion,
+        BlueNinja,
+        Bruiser,
+        Captain,
+        CeramicKnight00,
+        CeramicKnight01,
+        CeramicKnight02,
+        CeramicKnight03,
+        CeramicKnight04,
+        CeramicKnight05,
+        CeramicKnight06,
+        ChromaNinja,
+        Cleric,
+        Courier,
+        CyberZombie00,
+        CyberZombie01,
+        CyberZombie02,
+        CyberZombie03,
+        CyberZombie04,
+        Cyclops00,
+        Cyclops01,
+        Cyclops02,
+        Cyclops03,
+        Cyclops04,
+        Cyclops06,
+        DarkTemplar,
+        Defender,
+        DemonLord,
+        Dervish,
+        Doctor,
+        Drifter,
+        Duelist,
+        Engineer,
+        Fencer,
+        Fighter,
+        FlyingMonkey,
+        Frog00,
+        Frog01,
+        Frog02,
+        Frog03,
+        Ganger00,
+        Ganger01,
+        Ganger02,
+        Ganger03,
+        Ganger04,
+        Ganger05,
+        Ganger06,
+        Ghost,
+        GoblinThug00,
+        GreenNinja,
+        Hag00,
+        Hag01,
+        Hag02,
+        Hag03,
+        Harbinger,
+        IceMauler,
+        JadeKnight,
+        Knight,
+        Lancer,
+        Lurker00,
+        Lurker01,
+        Lurker02,
+        Machinist,
+        Mannequin,
+        MarshShambler00,
+        MarshShambler01,
+        MarshShambler03,
+        MartialArtist,
+        MechaArmor00,
+        MechaArmor01,
+        MechaArmor02,
+        Monk,
+        MountainTroll,
+        Myrmidon,
+        Naga00,
+        NightHunter,
+        Odachi,
+        Oni00,
+        Oni01,
+        Oni02,
+        Operative,
+        Paladin,
+        PandaGirl,
+        Phantom,
+        PrizeFighter,
+        Pugilist,
+        PurplePrototype00,
+        PurplePrototype01,
+        PurplePrototype02,
+        PurplePrototype03,
+        PurplePrototype04,
+        Raider,
+        Reaper,
+        RedMage,
+        RedNinja,
+        Ripper,
+        Ritualist,
+        Ronin,
+        Sage,
+        SandMaw,
+        Scorpion,
+        Sellsword,
+        ShieldMaiden,
+        Sister,
+        Skelepede00,
+        Skelepede01,
+        Skelepede02,
+        Slasher,
+        Slime00,
+        Slime01,
+        Slime02,
+        Slime03,
+        Soldier00,
+        Soldier01,
+        Soldier02,
+        Soldier03,
+        Speedster,
+        SteppinRazor00,
+        SteppinRazor01,
+        SteppinRazor02,
+        SteppinRazor04,
+        SteppinRazor05,
+        StreetFighter,
+        Striker,
+        SwampMistress00,
+        SwordMaster,
+        Tank,
+        TechGremlin00,
+        TechGremlin01,
+        TechGremlin02,
+        Technician,
+        Templar00,
+        Templar01,
+        Templar02,
+        Templar03,
+        Templar04,
+        Templar05,
+        Thief,
+        Tinkerer,
+        Toad00,
+        TreeGolem00,
+        TreeGolem01,
+        TreeGolem02,
+        TreeGolem03,
+        TreeGolem04,
+        TreeGolem06,
+        Undead00,
+        Undead01,
+        Undead02,
+        Undead04,
+        Vampire,
+        Vulture,
+        WarChief,
+        Werewolf00,
+        WhiteNinja,
+        WhiteWitch,
+        WildChild,
+        Wolf00,
+        Wolf01,
+        Wolf02,
+        Wolf03,
+        YellowNinja,
+        Yeti
     }
 }

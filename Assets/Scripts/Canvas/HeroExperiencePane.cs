@@ -51,7 +51,7 @@ public class HeroExperiencePane : MonoBehaviour
         MakeXPBarReadOnly();
     }
 
-    public void Build(string character, int xpGained, bool highlight)
+    public void Build(CharacterClass characterClass, int xpGained, bool highlight)
     {
         IsFillComplete = false;
         if (Panel)
@@ -60,7 +60,7 @@ public class HeroExperiencePane : MonoBehaviour
         // Portrait
         if (Portrait)
         {
-            var actor = ActorLibrary.Get(character);
+            var actor = ActorLibrary.Get(characterClass);
             if (actor != null && actor.Portrait != null)
             {
                 Portrait.sprite = actor.Portrait;
@@ -71,7 +71,8 @@ public class HeroExperiencePane : MonoBehaviour
         // Save lookup (derive level/current from TotalXP)
         int level = 1, currentXP = 0;
         var save = ProfileHelper.CurrentProfile?.CurrentSave;
-        var entry = save?.Party?.Members?.Find(m => m.Character == character) ?? save?.Roster?.Members?.Find(m => m.Character == character);
+        var entry = save.Party.Members.Find(m => m.CharacterClass == characterClass) 
+            ?? save?.Roster?.Members?.Find(m => m.CharacterClass == characterClass);
         if (entry != null)
         {
             var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, entry.TotalXP));
@@ -80,7 +81,7 @@ public class HeroExperiencePane : MonoBehaviour
         }
         int needed = ExperienceHelper.NextLevel(level);
 
-        if (NameLabel) NameLabel.text = character;
+        if (NameLabel) NameLabel.text = characterClass.ToString();
         if (LevelLabel) LevelLabel.text = $"Lvl. {level}";
         if (XPBar)
         {

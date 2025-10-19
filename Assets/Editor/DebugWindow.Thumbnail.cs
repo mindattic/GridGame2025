@@ -86,7 +86,7 @@ public partial class DebugWindow
                 $"    Scale = new Vector3({sX}f, {sY}f, 0f),";
 
             EditorGUIUtility.systemCopyBuffer = exportText;
-            Debug.Log($"Copied `{GameManager.instance.selectedActor.characterName}` ThumbnailSettings to clipboard.");
+            Debug.Log($"Copied `{GameManager.instance.selectedActor.characterClass}` ThumbnailSettings to clipboard.");
         }
         GUILayout.EndHorizontal();
 

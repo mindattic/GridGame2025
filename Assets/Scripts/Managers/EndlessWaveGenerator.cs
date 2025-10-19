@@ -34,27 +34,18 @@ namespace Assets.Scripts.Managers
                 DottedLines = new List<StageDottedLine>()
             };
 
-            // Decide immediate spawns
             int initialCount = Mathf.Clamp(picked.Count / 2, MinInitialSpawns, MaxInitialSpawns);
 
             for (int i = 0; i < picked.Count; i++)
             {
-                var ch = picked[i];
-                int spawnTurn;
-                if (i < initialCount)
-                {
-                    spawnTurn = 0;
-                }
-                else
-                {
-                    // Trickles over time in small batches
-                    int batchIndex = (i - initialCount) / Mathf.Max(1, (TrickleBatchMin + TrickleBatchMax) / 2);
-                    spawnTurn = (batchIndex + 1) * TrickleEveryTurns;
-                }
+                var characterClass = picked[i];
+                int spawnTurn = i < initialCount
+                    ? 0
+                    : ((i - initialCount) / Mathf.Max(1, (TrickleBatchMin + TrickleBatchMax) / 2) + 1) * TrickleEveryTurns;
 
                 wave.Actors.Add(new StageActor
                 {
-                    characterName = ch,
+                    CharacterClass = characterClass,
                     Team = Team.Enemy,
                     Level = enemyLevel,
                     SpawnTurn = spawnTurn,
@@ -64,50 +55,43 @@ namespace Assets.Scripts.Managers
             return wave;
         }
 
-        private static List<string> GetCandidatesByTags(ActorTag tags)
+        private static List<CharacterClass> GetCandidatesByTags(ActorTag tags)
         {
-            // If no tags provided, allow all actors
             if (tags == ActorTag.None)
             {
                 return ActorLibrary.Actors.Keys.ToList();
             }
 
-            // Filter by any overlapping tags
-            var result = new List<string>();
+            var result = new List<CharacterClass>();
             foreach (var kv in ActorLibrary.Actors)
             {
                 var data = kv.Value;
                 if (data == null) continue;
 
-                // ActorData is decorated with ActorTag; include if any requested bits match
                 if ((data.Tags & tags) != ActorTag.None)
                 {
                     result.Add(kv.Key);
                 }
             }
 
-            // Fallback if filtering resulted in nothing: use all actors
             if (result.Count == 0)
                 result = ActorLibrary.Actors.Keys.ToList();
 
             return result;
         }
 
-        private static List<string> PickByBudget(List<string> candidates, int level, int budget)
+        private static List<CharacterClass> PickByBudget(List<CharacterClass> candidates, int level, int budget)
         {
-            // Precompute scores
             var scored = candidates
                 .Select(id => (id, score: Mathf.Max(1, ScoreFor(id, level))))
                 .OrderBy(s => s.score)
                 .ToList();
 
-            var result = new List<string>();
+            var result = new List<CharacterClass>();
             int remaining = budget;
 
-            // Greedy: pick from random among the lowest scoring until budget is filled
             while (remaining > 0 && result.Count < 32 && scored.Count > 0)
             {
-                // Choose a random candidate from the lowest 1/3 of the list to keep variety
                 int window = Mathf.Max(1, scored.Count / 3);
                 int index = RNG.Int(0, window - 1);
                 var pick = scored[index];
@@ -118,7 +102,6 @@ namespace Assets.Scripts.Managers
                 }
                 else
                 {
-                    // try a cheaper one or break if none fits
                     var cheaper = scored.FirstOrDefault(s => s.score <= remaining);
                     if (cheaper.id != null)
                     {
@@ -131,13 +114,11 @@ namespace Assets.Scripts.Managers
                     }
                 }
 
-                // reduce duplicates a bit
                 scored.RemoveAt(index);
             }
 
             if (result.Count == 0)
             {
-                // ensure at least one enemy
                 var pick = scored.FirstOrDefault();
                 if (pick.id != null) result.Add(pick.id);
             }
@@ -145,9 +126,9 @@ namespace Assets.Scripts.Managers
             return result;
         }
 
-        private static int ScoreFor(string character, int level)
+        private static int ScoreFor(CharacterClass characterClass, int level)
         {
-            var data = ActorLibrary.Get(character);
+            var data = ActorLibrary.Get(characterClass);
             if (data == null) return 1;
             var stats = data.GetStats(level);
 

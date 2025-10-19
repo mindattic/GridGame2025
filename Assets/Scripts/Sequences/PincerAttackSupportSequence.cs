@@ -18,7 +18,7 @@ namespace Assets.Scripts.Sequences
         public override IEnumerator ProcessRoutine()
         {
             // If supporter is a Cleric, heal the attacker
-            if (supporter.characterName == CharacterClass.Cleric)
+            if (supporter.characterClass == CharacterClass.Cleric)
                 yield return new HealSupportSequence(supporter.Position, attacker).ProcessRoutine();
         }
     }

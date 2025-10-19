@@ -246,7 +246,7 @@ public class DebugManager : MonoBehaviour
         // Ensure at least one slime exists
         SpawnSlime();
 
-        var slime = g.Actors.Enemies.FirstOrDefault(x => x != null && x.characterName == CharacterClass.Slime);
+        var slime = g.Actors.Enemies.FirstOrDefault(x => x != null && x.characterClass == CharacterClass.Slime00);
         if (slime == null)
         {
             Debug.LogError("ArrangeSurroundCombo: No slime found to place in center.");
@@ -335,16 +335,16 @@ public class DebugManager : MonoBehaviour
         var save = ProfileHelper.CurrentProfile?.CurrentSave;
 
         // Prefer the party list from the save; fall back to active heroes in scene
-        var participants = (save?.Party?.Members?.Select(m => m.Character)
-                                .Where(ch => !string.IsNullOrEmpty(ch))
+        var participants = (save?.Party?.Members?.Select(m => m.CharacterClass)
+                                .Where(ch => ch != CharacterClass.None)
                                 .ToList())
-                           ?? new List<string>();
+                           ?? new List<CharacterClass>();
 
         if (participants.Count == 0)
         {
             participants = g.Actors.Heroes
-                .Where(h => h != null && !string.IsNullOrEmpty(h.characterName))
-                .Select(h => h.characterName)
+                .Where(h => h != null && h.characterClass != CharacterClass.None)
+                .Select(h => h.characterClass)
                 .Distinct()
                 .ToList();
         }
@@ -504,12 +504,12 @@ public class DebugManager : MonoBehaviour
 
     public ActorInstance SpawnSlime()
     {
-        return g.StageManager.AddEnemy(CharacterClass.Slime);
+        return g.StageManager.AddEnemy(CharacterClass.Slime00);
     }
 
     public ActorInstance SpawnBat()
     {
-        return g.StageManager.AddEnemy(CharacterClass.Bat);
+        return g.StageManager.AddEnemy(CharacterClass.Bat00);
     }
 
     public ActorInstance SpawnScorpion()

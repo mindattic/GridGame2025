@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: cc94f176368901044ad3a29a7e3403df
+guid: a1d83b6a8c95f474093a3965af1b1824
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -445808867132995673
-    second: Operator_0
+      213: -2267109305731077693
+    second: CeramicKnight01_0
+  - first:
+      213: 8342858829008156937
+    second: CeramicKnight01_1
+  - first:
+      213: 1867821269766143441
+    second: CeramicKnight01_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -178,13 +184,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Operator_0
+      name: CeramicKnight01_0
       rect:
         serializedVersion: 2
-        x: 332
-        y: 23
-        width: 376
-        height: 980
+        x: 321
+        y: 28
+        width: 510
+        height: 958
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,8 +199,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7a781d4823b20d9f0800000000000000
-      internalID: -445808867132995673
+      spriteID: 3c9aaec191c9980e0800000000000000
+      internalID: -2267109305731077693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CeramicKnight01_1
+      rect:
+        serializedVersion: 2
+        x: 798
+        y: 30
+        width: 17
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 909334217e9c7c370800000000000000
+      internalID: 8342858829008156937
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CeramicKnight01_2
+      rect:
+        serializedVersion: 2
+        x: 826
+        y: 35
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1dd74587c85dbe910800000000000000
+      internalID: 1867821269766143441
       vertices: []
       indices: 
       edges: []
@@ -213,7 +263,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Operator_0: -445808867132995673
+      CeramicKnight01_0: -2267109305731077693
+      CeramicKnight01_1: 8342858829008156937
+      CeramicKnight01_2: 1867821269766143441
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

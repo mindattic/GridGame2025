@@ -60,7 +60,7 @@ public static class Formulas
     private static string NameOf(ActorInstance a)
     {
         if (a == null) return "<null>";
-        if (!string.IsNullOrEmpty(a.characterName)) return a.characterName;
+        if (a.characterClass != CharacterClass.None) return a.characterClass.ToString();
         return a.name;
     }
 

@@ -1,4 +1,5 @@
 using Assets.Helper;
+using Assets.Helpers;
 using Assets.Scripts.Canvas.Timeline;
 using Assets.Scripts.Libraries;
 using Assets.Scripts.Models;
@@ -15,7 +16,7 @@ public partial class DebugWindow
     private string canvasH = "96";
     private string canvasScaleX = "4";
     private string canvasScaleY = "4";
-    private string lastCanvasKey = null;
+    private CharacterClass lastCanvasKey = CharacterClass.None;
 
     private void RenderCanvasThumbnailSettings()
     {
@@ -26,9 +27,9 @@ public partial class DebugWindow
 #if UNITY_EDITOR
         // Load values from the selected actor's ActorData when selection changes
         var selected = g.Actors.SelectedActor;
-        string key = selected != null ? selected.characterName : null;
+        CharacterClass key = selected != null ? selected.characterClass : CharacterClass.None;
 
-        if (!string.IsNullOrEmpty(key) && key != lastCanvasKey)
+        if (key != CharacterClass.None && key != lastCanvasKey)
         {
             var data = ActorLibrary.Get(key);
             var crop = (data != null && data.CanvasThumbnailSettings != null)
@@ -108,7 +109,7 @@ public partial class DebugWindow
             string text =
                 $"CanvasThumbnailSettings = new CanvasThumbnailSettings({x}f, {y}f, {w}, {h}, new Vector2({sX}f, {sY}f));";
             EditorGUIUtility.systemCopyBuffer = text;
-            if (!string.IsNullOrEmpty(key))
+            if (key != CharacterClass.None)
                 Debug.Log($"Copied `{key}` CanvasThumbnailSettings to clipboard.");
         }
 
@@ -153,7 +154,7 @@ public partial class DebugWindow
         var actor = g.Actors.SelectedActor;
         if (actor == null) return;
 
-        var data = ActorLibrary.Get(actor.characterName);
+        var data = ActorLibrary.Get(actor.characterClass);
         if (data == null) return;
 
         data.CanvasThumbnailSettings = new CanvasThumbnailSettings(x, y, w, h, new Vector2(sx, sy));

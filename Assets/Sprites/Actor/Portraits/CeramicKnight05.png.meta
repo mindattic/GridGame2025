@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 7004a07c683d9434b8d9359f7c47be85
+guid: 62f279b3c2503894fb878c58dc50d1e4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2917069171490668800
-    second: PalladiumKnight03_0
+      213: -3760498068856467685
+    second: CeramicKnight05_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -178,13 +178,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: PalladiumKnight03_0
+      name: CeramicKnight05_0
       rect:
         serializedVersion: 2
-        x: 325
-        y: 28
-        width: 512
-        height: 972
+        x: 338
+        y: 23
+        width: 528
+        height: 987
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 00f3e083b0d7487d0800000000000000
-      internalID: -2917069171490668800
+      spriteID: b1f844b2ee600dbc0800000000000000
+      internalID: -3760498068856467685
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      PalladiumKnight03_0: -2917069171490668800
+      CeramicKnight05_0: -3760498068856467685
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 254500738c7e26d4eabf60be371a90c6
+guid: a095135ea4efe9d4ba009751d7705c08
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 9108501438698107440
-    second: Yeti00_0
+      213: -3692829978859728124
+    second: Frog03_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -178,7 +178,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Yeti00_0
+      name: Frog03_0
       rect:
         serializedVersion: 2
         x: 0
@@ -193,8 +193,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0323cb1bcc5e76e70800000000000000
-      internalID: 9108501438698107440
+      spriteID: 403172e13be60ccc0800000000000000
+      internalID: -3692829978859728124
       vertices: []
       indices: 
       edges: []
@@ -213,7 +213,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Yeti00_0: 9108501438698107440
+      Frog03_0: -3692829978859728124
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

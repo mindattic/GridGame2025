@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using Assets.Helpers;
 
 [Serializable]
 public class ActorData
@@ -9,7 +10,7 @@ public class ActorData
 
     public string CharacterName;
     public int Level = 1;
-    public string CharacterClass;
+    public CharacterClass CharacterClass; // now enum for internal consistency
 
 
     // Base XP awarded when this actor is defeated. Can be overridden per actor Data().
@@ -132,7 +133,6 @@ public class ActorData
             }
         }
 
-        // Accumulate exact fractional growth
         for (int L = 2; L <= level; L++)
         {
             stats.Level = L;
@@ -176,7 +176,6 @@ public class ActorData
             }
         }
 
-        // Floor once at the end to avoid shaving each level
         stats.Strength = Mathf.Floor(stats.Strength);
         stats.Vitality = Mathf.Floor(stats.Vitality);
         stats.Agility = Mathf.Floor(stats.Agility);
@@ -194,9 +193,6 @@ public class ActorData
         return stats;
     }
 
-    /// <summary>
-    /// Returns true if the actor has all groups in mask.
-    /// </summary>
     public bool InGroups(ActorTag mask) => (Tags & mask) == mask;
     public void AddGroups(ActorTag groups) => Tags |= groups;
     public void RemoveGroups(ActorTag groups) => Tags &= ~groups;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using g = Assets.Helpers.GameHelper;
 using Assets.Scripts.Libraries;
+using Assets.Helpers;
 
 
 /// <summary>
@@ -99,13 +100,13 @@ public class SynergyLineManager : MonoBehaviour
     {
         if (a == null || b == null) return null;
 
-        string na = a.characterName;
-        string nb = b.characterName;
+        CharacterClass na = a.characterClass;
+        CharacterClass nb = b.characterClass;
 
         // Order independent by sorting the names
-        bool aFirst = string.CompareOrdinal(na, nb) <= 0;
-        string first = aFirst ? na : nb;
-        string second = aFirst ? nb : na;
+        bool aFirst = string.CompareOrdinal(na.ToString(), nb.ToString()) <= 0;
+        string first = aFirst ? na.ToString() : nb.ToString();
+        string second = aFirst ? nb.ToString() : na.ToString();
 
         return $"SynergyLine_{first}{second}";
     }

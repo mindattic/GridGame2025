@@ -22,7 +22,7 @@ public class PartyManager : MonoBehaviour
     private float dragThreshold = 15f;
     private float wrapThresholdMultiplier = 1.5f;
 
-    private Dictionary<string, RosterSlideInstance> slides = new Dictionary<string, RosterSlideInstance>();
+    private Dictionary<CharacterClass, RosterSlideInstance> slides = new Dictionary<CharacterClass, RosterSlideInstance>();
 
     private Vector2 touchStart;
     private bool dragging = false;
@@ -50,9 +50,9 @@ public class PartyManager : MonoBehaviour
     private RectTransform lckRow;
     private float centeredX;
 
-    private bool IsInParty(string character)
+    private bool IsInParty(CharacterClass characterClass)
     {
-        return ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Any(x => x.Character == character);
+        return ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Any(x => x.CharacterClass == characterClass);
     }
 
     //Properties
@@ -149,24 +149,31 @@ public class PartyManager : MonoBehaviour
         var rosterMembers = ProfileHelper.CurrentProfile.CurrentSave.Roster.Members;
         foreach (var member in rosterMembers)
         {
+            if (member == null || member.CharacterClass == CharacterClass.None)
+                continue;
+
+            var actorData = ActorLibrary.Get(member.CharacterClass);
+            if (actorData == null)
+            {
+                Debug.LogWarning($"Skipping roster member with invalid class: {member.CharacterClass}");
+                continue;
+            }
+
             // Instantiate the slide prefab and retrieve the RosterSlideInstance script
             GameObject slide = Instantiate(slidePrefab, rosterPanel);
             var instance = slide.GetComponent<RosterSlideInstance>();
 
             // Show the slide name
-            slide.name = $"RosterSlide_{member.Character}";
-
-            // Load the sprite asynchronously
-            var actorData = ActorLibrary.Get(member.Character);
+            slide.name = $"RosterSlide_{member.CharacterClass}";
 
             // Load the instance with all required variables
             instance.Initialize(
-                key: member.Character,
+                characterClass: member.CharacterClass,
                 sprite: actorData.Portrait,
                 width: 512f,
                 height: 512f,
                 onClick: () => CenterOn(instance),
-                isInParty: IsInParty(member.Character)
+                isInParty: IsInParty(member.CharacterClass)
             );
 
             // Add the instance to the roster
@@ -287,20 +294,20 @@ public class PartyManager : MonoBehaviour
         scrollingToCenter = true;
 
         // Update the title
-        title.GetComponent<TextMeshProUGUI>().text = slide.Key;
+        title.GetComponent<TextMeshProUGUI>().text = slide.CharacterClass.ToString();
 
         // Update the button text and functionality
-        UpdateAddRemoveButton(slide.Key);
+        UpdateAddRemoveButton(slide.CharacterClass);
 
         // Update the Stats display
-        UpdateStatsDisplay(slide.Key);
+        UpdateStatsDisplay(slide.CharacterClass);
     }
 
-    private void UpdateStatsDisplay(string character)
+    private void UpdateStatsDisplay(CharacterClass characterClass)
     {
-        var rosterMember = ProfileHelper.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.Character == character).First();
+        var rosterMember = ProfileHelper.CurrentProfile.CurrentSave.Roster.Members.Where(x => x.CharacterClass == characterClass).First();
         var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, rosterMember.TotalXP));
-        Load(rosterMember.Character, Mathf.Max(1, derived.level));
+        Load(rosterMember.CharacterClass, Mathf.Max(1, derived.level));
     }
 
     private void UpdatePartyMemberLabel(bool isInParty)
@@ -313,36 +320,36 @@ public class PartyManager : MonoBehaviour
         partyMemberCountLabel.text = $"{partyMemberCount}/{Common.MaxPartyMemberCount}";
     }
 
-    private void UpdateSlideCheckmark(string characterName, bool isInParty)
+    private void UpdateSlideCheckmark(CharacterClass characterClass, bool isInParty)
     {
         // Update the checkmark for the slide
-        if (slides.TryGetValue(characterName, out var slide))
+        if (slides.TryGetValue(characterClass, out var slide))
         {
             slide.SetCheckmark(isInParty);
         }
     }
 
-    private void UpdateAddRemoveButton(string characterName)
+    private void UpdateAddRemoveButton(CharacterClass characterClass)
     {
-        bool isInParty = IsInParty(characterName);
+        bool isInParty = IsInParty(characterClass);
         UpdatePartyMemberLabel(isInParty);
         UpdatePartyMemberCountLabel();
-        UpdateSlideCheckmark(characterName, isInParty);
+        UpdateSlideCheckmark(characterClass, isInParty);
 
         // Update the button functionality
         var button = addRemovePartyMemberButton.GetComponent<Button>();
         button.onClick.RemoveAllListeners(); // Hide previous listeners
         if (isInParty)
         {
-            button.onClick.AddListener(() => RemoveFromParty(characterName));
+            button.onClick.AddListener(() => RemoveFromParty(characterClass));
         }
         else
         {
-            button.onClick.AddListener(() => AddToParty(characterName));
+            button.onClick.AddListener(() => AddToParty(characterClass));
         }
     }
 
-    private void AddToParty(string characterName)
+    private void AddToParty(CharacterClass characterClass)
     {
         if (partyMemberCount >= Common.MaxPartyMemberCount)
         {
@@ -350,30 +357,31 @@ public class PartyManager : MonoBehaviour
             return;
         }
 
-        ProfileHelper.AddToParty(characterName);
-        UpdateAddRemoveButton(characterName); // Refresh button state
+        ProfileHelper.AddToParty(characterClass);
+        UpdateAddRemoveButton(characterClass); // Refresh button state
     }
 
 
 
-
-    private void RemoveFromParty(string characterName)
+    private void RemoveFromParty(CharacterClass characterClass)
     {
-        ProfileHelper.RemoveFromParty(characterName);
-        UpdateAddRemoveButton(characterName); // Refresh button state
+        ProfileHelper.RemoveFromParty(characterClass);
+        UpdateAddRemoveButton(characterClass); // Refresh button state
     }
 
     public void AddItem(RosterSlideInstance slide)
     {
-        if (!slides.ContainsKey(slide.Key))
+        if (!slides.ContainsKey(slide.CharacterClass))
         {
-            slides.Add(slide.Key, slide);
+            slides.Add(slide.CharacterClass, slide);
         }
     }
 
-    public void Load(string character, int level)
+    public void Load(CharacterClass characterClass, int level)
     {
-        var actorData = ActorLibrary.Actors[character];
+        if (characterClass == CharacterClass.None) return;
+        var actorData = ActorLibrary.Get(characterClass);
+        if (actorData == null) return;
         var stats = actorData.GetStats(level);
 
         // Update each stat row

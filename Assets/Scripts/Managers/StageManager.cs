@@ -46,7 +46,7 @@ public class StageManager : MonoBehaviour
         }
 
         // Begin a new XP session with current party participants (shared flow)
-        var participants = ProfileHelper.CurrentProfile.CurrentSave?.Party?.Members?.Select(m => m.Character);
+        var participants = ProfileHelper.CurrentProfile.CurrentSave.Party.Members.Select(m => m.CharacterClass);
         ExperienceTracker.StartSession(participants);
 
         if (IsEndless)
@@ -82,10 +82,11 @@ public class StageManager : MonoBehaviour
         // Spawn party heroes from the save directly (no PartyManager / no level overrides)
         foreach (var partyMember in ProfileHelper.CurrentProfile.CurrentSave.Party.Members)
         {
-            var hero = ActorLibrary.Actors[partyMember.Character];
+            var hero = ActorLibrary.Get(partyMember.CharacterClass);
+            if (hero == null) { Debug.LogWarning($"Skipping party member with invalid class: {partyMember.CharacterClass}"); continue; }
             var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, partyMember.TotalXP));
             int level = Mathf.Max(1, derived.level);
-            var stageActor = new StageActor(partyMember.Character, Team.Hero, level, location: RNG.UnoccupiedLocation);
+            var stageActor = new StageActor(partyMember.CharacterClass, Team.Hero, level, location: RNG.UnoccupiedLocation);
             SpawnActor(stageActor, rebuildTimeline: false);
         }
 
@@ -139,7 +140,7 @@ public class StageManager : MonoBehaviour
             // Derive level from TotalXP in save
             var derived = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, partyMember.TotalXP));
             int level = Mathf.Max(1, derived.level);
-            var stageActor = new StageActor(partyMember.Character, Team.Hero, level, location: RNG.UnoccupiedLocation);
+            var stageActor = new StageActor(partyMember.CharacterClass, Team.Hero, level, location: RNG.UnoccupiedLocation);
             // Defer timeline rebuild during bulk spawns
             SpawnActor(stageActor, rebuildTimeline: false);
         }
@@ -215,16 +216,29 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public ActorInstance SpawnActor(StageActor stageActor, bool rebuildTimeline = true)
     {
+        if (stageActor == null || stageActor.CharacterClass == CharacterClass.None)
+        {
+            Debug.LogWarning("SpawnActor called with null or None CharacterClass. Skipping spawn.");
+            return null;
+        }
+
+        var data = ActorLibrary.Get(stageActor.CharacterClass);
+        if (data == null)
+        {
+            Debug.LogWarning($"Actor data not found for CharacterClass {stageActor.CharacterClass}. Skipping spawn.");
+            return null;
+        }
+
         // Instantiate and parent under the board
         var go = Instantiate(actorPrefab, Vector2.zero, Quaternion.identity);
         var instance = go.GetComponent<ActorInstance>();
         instance.transform.SetParent(g.Board.transform, false);
-        instance.name = $"{stageActor.characterName}_{Guid.NewGuid():N}";
-        instance.characterName = stageActor.characterName;
+        instance.name = $"{stageActor.CharacterClass}_{Guid.NewGuid():N}";
+        instance.characterClass = stageActor.CharacterClass;
         instance.team = stageActor.Team;
 
         // Stats and metadata
-        instance.Stats = ActorLibrary.Actors[stageActor.characterName].GetStats(stageActor.Level);
+        instance.Stats = data.GetStats(stageActor.Level);
 
         // Seed hero progress from save: derive Level/CurrentXP from TotalXP
         if (stageActor.Team == Team.Hero)
@@ -232,7 +246,7 @@ public class StageManager : MonoBehaviour
             var party = ProfileHelper.CurrentProfile?.CurrentSave?.Party?.Members;
             if (party != null)
             {
-                var entry = party.FirstOrDefault(m => m != null && m.Character == stageActor.characterName);
+                var entry = party.FirstOrDefault(m => m != null && m.CharacterClass == stageActor.CharacterClass);
                 if (entry != null)
                 {
                     var (lvl, cur) = ExperienceHelper.DeriveFromTotalXP(Mathf.Max(0, entry.TotalXP));
@@ -378,10 +392,10 @@ public class StageManager : MonoBehaviour
     /// <summary>
     /// Convenience method for adding a new attacker actor.
     /// </summary>
-    /// <param name="character">characterName type for the attacker.</param>
-    public ActorInstance AddEnemy(string character)
+    /// <param name="characterClass">characterName type for the attacker.</param>
+    public ActorInstance AddEnemy(CharacterClass characterClass)
     {
-        var stageActor = new StageActor(character, Team.Enemy, level: 1, location: RNG.UnoccupiedLocation);
+        var stageActor = new StageActor(characterClass, Team.Enemy, level: 1, location: RNG.UnoccupiedLocation);
         return SpawnActor(stageActor);
     }
 

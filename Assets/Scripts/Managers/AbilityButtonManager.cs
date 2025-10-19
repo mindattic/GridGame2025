@@ -13,7 +13,7 @@ public class AbilityButtonManager : MonoBehaviour
     private GameObject abilityButtonPrefab;
     private Transform abilityButtonContainer;
 
-    private readonly Dictionary<string, List<AbilityButton>> buttonsByHero = new();
+    private readonly Dictionary<CharacterClass, List<AbilityButton>> buttonsByHero = new();
     private readonly List<AbilityButton> allButtons = new();
 
     public void Awake()
@@ -45,35 +45,35 @@ public class AbilityButtonManager : MonoBehaviour
         var heroes = g.Actors.Heroes.Where(h => h != null).ToList();
         foreach (var hero in heroes)
         {
-            var name = hero.characterName;
-            if (string.IsNullOrEmpty(name)) continue;
-            if (buttonsByHero.ContainsKey(name)) continue; // already built (e.g., duplicates)
+            var characterClass = hero.characterClass;
+            if (characterClass == CharacterClass.None) continue;
+            if (buttonsByHero.ContainsKey(characterClass)) continue; // already built (e.g., duplicates)
 
-            var abilities = GetAbilitiesFor(name);
-            CreateButtonsForHero(name, abilities);
+            var abilities = GetAbilitiesFor(characterClass);
+            CreateButtonsForHero(characterClass, abilities);
         }
     }
 
-    private List<Ability> GetAbilitiesFor(string characterName)
+    private List<Ability> GetAbilitiesFor(CharacterClass characterClass)
     {
         var list = new List<Ability>();
-        if (characterName == CharacterClass.Cleric)
+        if (characterClass == CharacterClass.Cleric)
         {
             list.Add(AbilityLibrary.Heal());
             list.Add(AbilityLibrary.Smite());
         }
-        else if (characterName == CharacterClass.Paladin)
+        else if (characterClass == CharacterClass.Paladin)
         {
             list.Add(AbilityLibrary.ShieldRush());
         }
-        else if (characterName == CharacterClass.Barbarian)
+        else if (characterClass == CharacterClass.Barbarian)
         {
             list.Add(AbilityLibrary.Trap());
         }
         return list;
     }
 
-    private void CreateButtonsForHero(string heroName, List<Ability> abilities)
+    private void CreateButtonsForHero(CharacterClass characterClass, List<Ability> abilities)
     {
         var list = new List<AbilityButton>();
         foreach (var ability in abilities)
@@ -88,7 +88,7 @@ public class AbilityButtonManager : MonoBehaviour
 
             var instance = go.GetComponent<AbilityButton>();
             if (instance == null) instance = go.AddComponent<AbilityButton>();
-            instance.name = $"AbilityButton_{heroName}_{ability.name.Replace(" ", "_")}";
+            instance.name = $"AbilityButton_{characterClass}_{ability.name.Replace(" ", "_")}";
             var image = instance.GetComponent<Image>();
             if (image != null) image.sprite = ability.button;
             var label = instance.GetComponentInChildren<TextMeshProUGUI>();
@@ -98,7 +98,7 @@ public class AbilityButtonManager : MonoBehaviour
             list.Add(instance);
             allButtons.Add(instance);
         }
-        buttonsByHero[heroName] = list;
+        buttonsByHero[characterClass] = list;
     }
 
     public void Show(ActorInstance actor)
@@ -106,7 +106,7 @@ public class AbilityButtonManager : MonoBehaviour
         HideAll();
         if (actor == null || !actor.IsPlaying || actor.IsEnemy) return;
 
-        var name = actor.characterName;
+        var name = actor.characterClass;
         if (!buttonsByHero.TryGetValue(name, out var list))
         {
             // If a new hero enters mid-stage, build on demand

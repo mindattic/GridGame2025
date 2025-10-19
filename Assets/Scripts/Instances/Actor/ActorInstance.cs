@@ -174,7 +174,7 @@ public partial class ActorInstance : MonoBehaviour
     public Vector2Int location;
     public Team team = Team.Neutral;
     public int spawnTurn = 0;
-    public string characterName;
+    public CharacterClass characterClass;
 
     public ActorRenderers Render = new ActorRenderers();
     public ActorStats Stats = new ActorStats();
@@ -339,7 +339,7 @@ public partial class ActorInstance : MonoBehaviour
             Render.SetTurnDelayText(-1);
         }
 
-        Render.SetNameTagText(characterName);
+        Render.SetNameTagText(characterClass.ToString());
         Render.SetNameTagEnabled(isEnabled: g.DebugManager.showActorNameTag);
 
         HealthBar.Update();
@@ -536,12 +536,12 @@ public partial class ActorInstance : MonoBehaviour
             {
                 // Accumulate to ExperienceTracker for PostBattle screen (both modes)
                 var save = ProfileHelper.CurrentProfile?.CurrentSave;
-                var party = save?.Party?.Members?.Select(m => m.Character).ToHashSet() ?? new HashSet<string>();
-                var roster = save?.Roster?.Members?.Select(m => m.Character).ToList() ?? new System.Collections.Generic.List<string>();
+                var party = save.Party.Members.Select(m => m.CharacterClass).ToHashSet() ?? new HashSet<CharacterClass>();
+                var roster = save.Roster.Members.Select(m => m.CharacterClass).ToList() ?? new System.Collections.Generic.List<CharacterClass>();
 
                 foreach (var character in roster)
                 {
-                    if (string.IsNullOrEmpty(character)) continue;
+                    if (character == CharacterClass.None) continue;
                     int amount = baseXp;
                     bool inParty = party.Contains(character);
 
@@ -549,7 +549,7 @@ public partial class ActorInstance : MonoBehaviour
                     {
                         amount = Mathf.FloorToInt(baseXp * 0.5f); // half for non-party roster
                     }
-                    else if (_lastAttacker != null && _lastAttacker.characterName == character)
+                    else if (_lastAttacker != null && _lastAttacker.characterClass == character)
                     {
                         amount = Mathf.RoundToInt(baseXp * 1.1f); // +10% killer bonus
                     }
@@ -576,7 +576,7 @@ public partial class ActorInstance : MonoBehaviour
     /// </summary>
     public void LevelUp(int levels = 1)
     {
-        if (!IsHero || string.IsNullOrEmpty(characterName) || levels == 0)
+        if (!IsHero || characterClass == CharacterClass.None || levels == 0)
             return;
 
         // Compute current derived state from TotalXP

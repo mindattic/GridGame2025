@@ -17,7 +17,8 @@ public class SelectionManager : MonoBehaviour
 
     public void Awake()
     {
-        dragThreshold = g.TileMap.tileSize / 2f;
+        // Use GameHelper.TileSize which is safe even if TileMap is not present in the scene
+        dragThreshold = g.TileSize / 2f;
     }
 
     public void Select(ActorInstance actor = null)
