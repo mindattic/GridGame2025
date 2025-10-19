@@ -56,7 +56,7 @@ public class VictoryAnnouncement : MonoBehaviour
             rect.anchoredPosition = offscreenStart;
 
         // Keep object active; hide by alpha initially
-        SetLabelAlpha(0);
+        SetLabelAlpha(0f);
     }
 
     /// <summary>
@@ -69,7 +69,7 @@ public class VictoryAnnouncement : MonoBehaviour
 
         g.AudioManager.Play("Victory");
         SetText("Victory!");
-        SetLabelAlpha(255);
+        SetLabelAlpha(1f);
         RestartAnimation();
     }
 
@@ -115,25 +115,25 @@ public class VictoryAnnouncement : MonoBehaviour
         if (front != null) front.text = value;
     }
 
-    private void SetLabelAlpha(byte a)
+    private void SetLabelAlpha(float a)
     {
         if (image != null)
         {
-            var c = (Color32)image.color;
+            var c = image.color;
             c.a = a;
             image.color = c;
         }
 
         if (back != null)
         {
-            var c = (Color32)back.color;
+            var c = back.color;
             c.a = a;
             back.color = c;
         }
 
         if (front != null)
         {
-            var c = (Color32)front.color;
+            var c = front.color;
             c.a = a;
             front.color = c;
         }

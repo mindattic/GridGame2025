@@ -218,7 +218,7 @@ public class TimerBar : MonoBehaviour
         }
 
         // Time expired, perform drop and block input until release
-        g.SelectedHeroManager.Drop();
+        g.SelectionManager.Drop();
         g.InputManager.RequireTouchRelease();
 
         // Clear handle

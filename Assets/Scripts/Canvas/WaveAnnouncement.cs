@@ -43,7 +43,7 @@ public class WaveAnnouncement : MonoBehaviour
         transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
 
         // Keep object active; hide by alpha.
-        SetLabelAlpha(0);
+        SetLabelAlpha(0f);
     }
 
     // ------------------------------------------------------------------------
@@ -56,7 +56,7 @@ public class WaveAnnouncement : MonoBehaviour
     public void Show(int currentWave, int totalWaves)
     {
         SetText($"Wave {currentWave}/{totalWaves}");
-        SetLabelAlpha(255);
+        SetLabelAlpha(1f);
         RestartAnimation();
     }
 
@@ -66,7 +66,7 @@ public class WaveAnnouncement : MonoBehaviour
     public void ShowEndless(int currentWave)
     {
         SetText($"Wave {currentWave}/{TextSymbol.Infinity}");
-        SetLabelAlpha(255);
+        SetLabelAlpha(1f);
         RestartAnimation();
     }
 
@@ -97,7 +97,7 @@ public class WaveAnnouncement : MonoBehaviour
         yield return RotateToRoutine(-90f);
 
         // Hide by alpha after leaving
-        SetLabelAlpha(0);
+        SetLabelAlpha(0f);
         animationRoutine = null;
     }
 
@@ -132,25 +132,25 @@ public class WaveAnnouncement : MonoBehaviour
         if (front != null) front.text = value;
     }
 
-    private void SetLabelAlpha(byte a)
+    private void SetLabelAlpha(float a)
     {
         if (image != null)
         {
-            var c = (Color32)image.color;
+            var c = image.color;
             c.a = a;
             image.color = c;
         }
 
         if (back != null)
         {
-            var c = (Color32)back.color;
+            var c = back.color;
             c.a = a;
             back.color = c;
         }
 
         if (front != null)
         {
-            var c = (Color32)front.color;
+            var c = front.color;
             c.a = a;
             front.color = c;
         }

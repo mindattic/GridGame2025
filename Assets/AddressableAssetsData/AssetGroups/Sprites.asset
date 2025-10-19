@@ -195,6 +195,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 56e1a25be80e0f14d953e335b9d18ee6
+    m_Address: Sprites/White32x32
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 596a0c093539bb54b8d15e3b1f3c7097
     m_Address: Sprites/Backgrounds/CyberNecropolis/06
     m_ReadOnly: 0
@@ -306,7 +311,7 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 8d84dfdba620a0145829a4855d50b252
-    m_Address: Sprites/Black16x16
+    m_Address: Sprites/Black32x32
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -377,6 +382,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b7550198cfd5e9b44a8ddbca3e064252
     m_Address: Sprites/Backgrounds/UnderTheBridge/03
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7594be46d6d2844aabce305ea160329
+    m_Address: Sprites/Transparent32x32
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

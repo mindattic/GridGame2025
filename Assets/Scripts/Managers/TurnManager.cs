@@ -38,7 +38,7 @@ namespace Assets.Scripts.Managers
         {
             if (ActiveActor != null)
             {
-                g.SelectedHeroManager.Select(ActiveActor);
+                g.SelectionManager.Select(ActiveActor);
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace Assets.Scripts.Managers
             var any = g.Actors.Heroes?.FirstOrDefault(a => a != null && a.IsPlaying)
                       ?? g.Actors.All?.FirstOrDefault(a => a != null && a.IsPlaying);
             if (any != null)
-                g.SelectedHeroManager.Select(any);
+                g.SelectionManager.Select(any);
         }
 
         public void NextTurn()

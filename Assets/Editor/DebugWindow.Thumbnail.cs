@@ -1,4 +1,5 @@
 ﻿using Assets.Helper;
+using Assets.Helpers;
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -14,6 +15,9 @@ public partial class DebugWindow
     private string thumbnailScaleY = "5";
     private string thumbnailTextureSize = "1024";
 
+    // Track last selected actor to auto-load values into the UI when selection changes
+    private CharacterClass lastThumbKey = CharacterClass.None;
+
     private void RenderThumbnailSettings()
     {
 
@@ -22,10 +26,15 @@ public partial class DebugWindow
         GUILayout.EndHorizontal();
 
 #if UNITY_EDITOR
+        // Auto-populate fields when selection changes or when a reload flag is set
+        var selected = g.Actors.SelectedActor;
+        CharacterClass key = selected != null ? selected.characterClass : CharacterClass.None;
 
-        if (s.ReloadThumbnailSettings && g.Actors.HasSelectedActor)
+        bool selectionChanged = key != CharacterClass.None && key != lastThumbKey;
+        bool reloadRequested = s.ReloadThumbnailSettings && key != CharacterClass.None;
+        if ((selectionChanged || reloadRequested) && selected != null)
         {
-            var t = g.Actors.SelectedActor.Thumbnail;
+            var t = selected.Thumbnail;
             int texSize = 1024;
             if (t != null && t.sprite != null && t.sprite.texture != null)
             {
@@ -35,11 +44,13 @@ public partial class DebugWindow
             }
 
             // Load from current settings
-            thumbnailPixelX = t.settings.PixelPosition.x.ToString();
-            thumbnailPixelY = t.settings.PixelPosition.y.ToString();
-            thumbnailScaleX = t.settings.Scale.x.ToString("F2");
-            thumbnailScaleY = t.settings.Scale.y.ToString("F2");
+            thumbnailPixelX = t != null && t.settings != null ? t.settings.PixelPosition.x.ToString() : "512";
+            thumbnailPixelY = t != null && t.settings != null ? t.settings.PixelPosition.y.ToString() : "512";
+            thumbnailScaleX = t != null && t.settings != null ? t.settings.Scale.x.ToString("F2") : "5.00";
+            thumbnailScaleY = t != null && t.settings != null ? t.settings.Scale.y.ToString("F2") : "5.00";
             thumbnailTextureSize = texSize.ToString();
+
+            lastThumbKey = key;
             s.ReloadThumbnailSettings = false;
         }
 
@@ -67,15 +78,15 @@ public partial class DebugWindow
 
         void apply()
         {
-            var selected = GameManager.instance.selectedActor;
-            if (selected != null && selected.Thumbnail != null)
+            var sel = g.Actors.SelectedActor;
+            if (sel != null && sel.Thumbnail != null)
             {
                 var ts = new Assets.Scripts.Models.ThumbnailSettings(new Vector2Int(pX, pY), new Vector2(sX, sY), tSize);
-                selected.Thumbnail.settings = ts;
+                sel.Thumbnail.settings = ts;
 
                 // Apply to transform for immediate preview in world
-                selected.Thumbnail.transform.localPosition = ts.Offset;
-                selected.Thumbnail.transform.localScale = ts.Scale;
+                sel.Thumbnail.transform.localPosition = ts.Offset;
+                sel.Thumbnail.transform.localScale = ts.Scale;
             }
         }
 
@@ -105,15 +116,16 @@ public partial class DebugWindow
                 $"    ThumbnailSettings = new ThumbnailSettings(new Vector2Int({pX}, {pY}), new Vector2({sX}f, {sY}f), {tSize}),";
 
             EditorGUIUtility.systemCopyBuffer = exportText;
-            Debug.Log($"Copied `{GameManager.instance.selectedActor.characterClass}` ThumbnailSettings (pixel-based) to clipboard.");
+            if (key != CharacterClass.None)
+                Debug.Log($"Copied `{key}` ThumbnailSettings (pixel-based) to clipboard.");
         }
         GUILayout.EndHorizontal();
 
         // Info: show derived offset (read-only) for reference
-        var sel = GameManager.instance.selectedActor;
-        if (sel != null && sel.Thumbnail != null && sel.Thumbnail.settings != null)
+        var selRef = g.Actors.SelectedActor;
+        if (selRef != null && selRef.Thumbnail != null && selRef.Thumbnail.settings != null)
         {
-            var off = sel.Thumbnail.settings.Offset;
+            var off = selRef.Thumbnail.settings.Offset;
             EditorGUILayout.LabelField("derivedOffset", $"({off.x:F2}, {off.y:F2})");
         }
 

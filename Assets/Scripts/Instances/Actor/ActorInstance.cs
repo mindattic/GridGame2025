@@ -505,7 +505,7 @@ public partial class ActorInstance : MonoBehaviour
     /// </summary>
     public IEnumerator AttackMissRoutine()
     {
-        g.CombatTextManager.Spawn("Miss", Position);
+        //g.CombatTextManager.Spawn("Miss", Position);
         yield return Animation.DodgeRoutine();
     }
 

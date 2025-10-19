@@ -5,20 +5,26 @@ using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
 /// <summary>
-/// Handles focus, drag, and drop for heroes during the hero turn.
-/// Promotes SelectedActor to MovingHero once the drag moved at least half a tile.
-/// Focus is independent from the active actor; you can inspect any actor.
+/// Handles focus, drag, and drop for heroes during the hero turn using a single SelectedActor.
+/// States: Idle (just clicked), PickedUp (held but not beyond threshold), Moving (beyond threshold with countdown), Dropped (on drop start).
+/// Touch and hold enables Drop for the SelectedActor; releasing triggers Drop() for both PickedUp and Moving.
 /// </summary>
 public class SelectionManager : MonoBehaviour
 {
-    private ActorInstance pendingActor;
-    private bool hasPendingDrag;
+    public enum SelectedActorState
+    {
+        Idle,
+        PickedUp,
+        Moving,
+        Dropped
+    }
+
     private float dragThreshold;
+    private SelectedActorState selectedState = SelectedActorState.Idle;
 
     public void Awake()
     {
-        // Use GameHelper.TileSize which is safe even if TileMap is not present in the scene
-        dragThreshold = g.TileSize / 2f;
+        dragThreshold = g.TileSize * 0.25f;
     }
 
     public void Select(ActorInstance actor = null)
@@ -32,31 +38,39 @@ public class SelectionManager : MonoBehaviour
             return;
         }
 
-        // If unchanged, just refresh visuals
+        // If unchanged, just refresh visuals and make sure card shows
         if (g.Actors.SelectedActor == target)
         {
             g.Timeline?.RefreshSelectionHighlight();
+            // Ensure card shows when clicking an already-selected actor
+            g.Card.Assign();
+#if UNITY_EDITOR
+            GameManager.instance.reloadThumbnailSettings = true;
+#endif
             return;
         }
 
-        g.AbilityButtonManager.Hide();
         g.Actors.SelectedActor = target;
         g.SortingManager.OnActorFocus();
 
         // Show abilities only when a hero is focused
         if (g.Actors.SelectedActor.IsHero)
             g.AbilityButtonManager.Show(g.Actors.SelectedActor);
+        else
+            g.AbilityButtonManager.Hide();
 
         g.TouchOffset = g.Actors.SelectedActor.Position - g.TouchPosition3D;
 
-        hasPendingDrag = false;
-        pendingActor = null;
+        // Reset unified state and compatibility fields
+        selectedState = SelectedActorState.Idle;
+        g.Actors.MovingHero = null;
 
         // Board: toggle focus indicators
         g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(x == g.Actors.SelectedActor));
         // Timeline: toggle focus highlight across all blocks
         g.Timeline?.RefreshSelectionHighlight();
 
+        // Always assign card when selecting
         g.Card.Assign();
 
 #if UNITY_EDITOR
@@ -66,16 +80,13 @@ public class SelectionManager : MonoBehaviour
 
     public void Drag()
     {
-        // Only allow dragging during hero turn and when focused actor is the active actor and is a hero
-        if (!g.TurnManager.IsHeroTurn || !g.Actors.HasSelectedActor)
+        // Only allow dragging during hero turn and when selected actor is a hero
+        if (!g.TurnManager.IsHeroTurn || g.Actors.SelectedActor == null || g.Actors.SelectedActor.IsEnemy)
             return;
 
-        var actor = g.Actors.SelectedActor;
-        if (actor == null || actor.IsEnemy) return;
-
-        // In ActiveOnly mode, restrict dragging to the current ActiveActor. In other modes allow any hero.
         var mode = g.TurnSelectionMode;
         bool restrictToActive = mode == Assets.Scripts.Models.TurnSelectionMode.ActiveOnly;
+        var actor = g.Actors.SelectedActor;
         if (restrictToActive && actor != g.TurnManager.ActiveActor)
             return;
 
@@ -83,32 +94,32 @@ public class SelectionManager : MonoBehaviour
         bool pressing = Input.GetMouseButton(0) || Input.touchCount > 0;
         if (!pressing) return;
 
-        // Do not require the pointer to remain over the actor after initial focus.
-        // Focus() was set when the press began on the actor; allow drag to proceed smoothly.
-
-        if (!hasPendingDrag || pendingActor != actor)
+        // Initial pickup: transition to PickedUp and start following cursor softly
+        if (selectedState == SelectedActorState.Idle)
         {
-            hasPendingDrag = true;
-            pendingActor = actor;
-
+            selectedState = SelectedActorState.PickedUp;
+            g.Actors.MovingHero = actor; // maintain compatibility with systems that track MovingHero
             g.TouchOffset = actor.Position - g.TouchPosition3D;
 
-            if (!pendingActor.Flags.IsMoving)
-                pendingActor.Move.MoveTowardCursor();
+            if (!actor.Flags.IsMoving)
+                actor.Move.MoveTowardCursor();
 
             return;
         }
 
-        if (!pendingActor.Flags.IsMoving)
-            pendingActor.Move.MoveTowardCursor();
+        // Continue to follow the cursor while pressed
+        if (!actor.Flags.IsMoving)
+            actor.Move.MoveTowardCursor();
 
-        if (g.Actors.HasMovingHero)
+        // If already moving, no need to re-evaluate threshold
+        if (selectedState == SelectedActorState.Moving)
             return;
 
-        float moved = Vector3.Distance(pendingActor.Position, pendingActor.currentTile.position);
+        float moved = Vector3.Distance(actor.Position, actor.currentTile.position);
         if (moved >= dragThreshold)
         {
-            g.Actors.MovingHero = pendingActor; // promote the active hero to selected player
+            // Promote to Moving: begin countdown and visuals
+            selectedState = SelectedActorState.Moving;
             g.SortingManager.OnHeroDrag();
 
             g.TimerBar.SetDuration(6f);
@@ -123,39 +134,44 @@ public class SelectionManager : MonoBehaviour
 
     public void Drop()
     {
-        bool validSelectedMove =
-            g.TurnManager.IsHeroTurn &&
-            g.Actors.HasMovingHero &&
-            g.Actors.MovingHero.Flags.IsMoving;
+        var actor = g.Actors.SelectedActor;
 
-        if (!validSelectedMove)
+        // Only drop if we have a selected hero in PickedUp or Moving state during hero turn
+        bool canDrop =
+            g.TurnManager.IsHeroTurn &&
+            actor != null &&
+            actor.IsHero &&
+            (selectedState == SelectedActorState.PickedUp || selectedState == SelectedActorState.Moving);
+
+        if (!canDrop)
         {
-            if (hasPendingDrag && pendingActor != null)
+            // If something was moving, snap back to location gracefully
+            if (actor != null && actor.Flags.IsMoving)
             {
-                pendingActor.Move.ToLocation();
-                pendingActor.Flags.IsMoving = false;
-                pendingActor.transform.localRotation = Quaternion.Euler(Vector3.zero);
-            }
-            else if (g.Actors.HasSelectedActor)
-            {
-                g.Actors.SelectedActor.Move.ToLocation();
-                g.Actors.SelectedActor.Flags.IsMoving = false;
-                g.Actors.SelectedActor.transform.localRotation = Quaternion.Euler(Vector3.zero);
+                actor.Move.ToLocation();
+                actor.Flags.IsMoving = false;
+                actor.transform.localRotation = Quaternion.Euler(Vector3.zero);
             }
 
             // Always despawn all support lines on drop
             g.SupportLineManager.Clear();
 
-            hasPendingDrag = false;
-            pendingActor = null;
+            // Reset to idle if we had any non-idle state
+            if (selectedState != SelectedActorState.Idle)
+                selectedState = SelectedActorState.Idle;
+
+            g.Actors.MovingHero = null; // clear compatibility field
             return;
         }
 
+        // Transition to Dropped
+        selectedState = SelectedActorState.Dropped;
+
+        // Pause countdown if it was running
         g.TimerBar.Pause();
 
-        var hero = g.Actors.MovingHero;
-        hero.Move.ToLocation();
-        hero.Flags.IsMoving = false;
+        actor.Move.ToLocation();
+        actor.Flags.IsMoving = false;
         g.SortingManager.OnSelectedHeroDrop();
 
         // Always despawn all support lines on drop
@@ -164,17 +180,29 @@ public class SelectionManager : MonoBehaviour
         // Suspend all touch input until the turn system restores it
         g.InputManager.InputMode = InputMode.None;
 
+        // Clear compatibility field at the start of resolution
         g.Actors.MovingHero = null;
-        hasPendingDrag = false;
-        pendingActor = null;
 
-        bool anyPincer = g.PincerAttackManager.Check(Team.Hero, hero);
+        bool anyPincer = g.PincerAttackManager.Check(Team.Hero, actor);
 
         if (!anyPincer)
         {
             g.SequenceManager.Add(new DeathSequence());
             g.SequenceManager.Add(new EndTurnSequence());
             g.SequenceManager.Execute();
+            // If nothing special happens, return to Idle immediately
+            selectedState = SelectedActorState.Idle;
+        }
+        else
+        {
+            // When sequences finish (pincer flow), return to Idle
+            System.Action handler = null;
+            handler = () =>
+            {
+                selectedState = SelectedActorState.Idle;
+                g.SequenceManager.OnSequenceComplete -= handler;
+            };
+            g.SequenceManager.OnSequenceComplete += handler;
         }
     }
 }

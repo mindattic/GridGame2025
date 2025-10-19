@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using Assets.Helper;
 using UnityEngine.EventSystems;
+using g = Assets.Helpers.GameHelper;
 
 namespace Assets.Scripts.Canvas.Timeline
 {
@@ -379,9 +380,8 @@ namespace Assets.Scripts.Canvas.Timeline
         public void OnPointerClick(PointerEventData eventData)
         {
             if (Owner == null) return;
-            // Focus this actor via SelectedHeroManager, which also refreshes timeline selections
-            var mgr = Assets.Helpers.GameHelper.SelectedHeroManager;
-            if (mgr != null) mgr.Select(Owner);
+            // Focus this actor via SelectionManager, which also refreshes timeline selections
+            g.SelectionManager?.Select(Owner);
         }
     }
 }

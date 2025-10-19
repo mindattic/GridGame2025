@@ -117,7 +117,7 @@ public class InputManager : MonoBehaviour
         switch (touch.phase)
         {
             case TouchPhase.Began:
-                g.SelectedHeroManager.Select();
+                g.SelectionManager.Select();
                 initialTouchPosition = g.TouchPosition3D;
                 break;
 
@@ -127,13 +127,13 @@ public class InputManager : MonoBehaviour
                     // Prevent drag if selected hero is rooted (futureproof if heroes can be rooted)
                     if (g.Actors.HasMovingHero && g.Actors.MovingHero.Flags.RootedTurnsRemaining > 0)
                         return;
-                    g.SelectedHeroManager.Drag();
+                    g.SelectionManager.Drag();
                 }
                 break;
 
             case TouchPhase.Ended:
             case TouchPhase.Canceled:
-                g.SelectedHeroManager.Drop();
+                g.SelectionManager.Drop();
                 break;
         }
     }
@@ -231,9 +231,9 @@ public class InputManager : MonoBehaviour
                     }
                     break;
                 case InputMode.PlayerTurn:
-                    if (Input.GetMouseButtonDown(0)) { g.SelectedHeroManager.Select(); initialTouchPosition = g.TouchPosition3D; }
-                    else if (Input.GetMouseButton(0)) { if (Vector3.Distance(initialTouchPosition, g.TouchPosition3D) > dragThreshold) g.SelectedHeroManager.Drag(); }
-                    else if (Input.GetMouseButtonUp(0)) { g.SelectedHeroManager.Drop(); }
+                    if (Input.GetMouseButtonDown(0)) { g.SelectionManager.Select(); initialTouchPosition = g.TouchPosition3D; }
+                    else if (Input.GetMouseButton(0)) { if (Vector3.Distance(initialTouchPosition, g.TouchPosition3D) > dragThreshold) g.SelectionManager.Drag(); }
+                    else if (Input.GetMouseButtonUp(0)) { g.SelectionManager.Drop(); }
                     break;
                 case InputMode.EnemyTurn:
                     if (Input.GetMouseButtonDown(0))

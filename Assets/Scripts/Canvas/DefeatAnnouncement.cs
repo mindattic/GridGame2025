@@ -51,7 +51,7 @@ public class DefeatAnnouncement : MonoBehaviour
             startPos = centerPos + new Vector2(0f, Mathf.Abs(startOffsetY));
             rect.anchoredPosition = startPos;
         }
-        SetLabelAlpha(0);
+        SetLabelAlpha(0f);
     }
 
     /// <summary>
@@ -82,7 +82,7 @@ public class DefeatAnnouncement : MonoBehaviour
             rect.anchoredPosition = startPos;
 
         // Prepare fade in
-        SetLabelAlpha(0);
+        SetLabelAlpha(0f);
 
         float totalDist = rect != null ? Vector2.Distance(startPos, centerPos) : 1f;
         if (totalDist <= 0.01f) totalDist = 1f;
@@ -95,7 +95,7 @@ public class DefeatAnnouncement : MonoBehaviour
             // Fade in proportionally to progress
             float remaining = Vector2.Distance(rect.anchoredPosition, centerPos);
             float progress = Mathf.Clamp01(1f - (remaining / totalDist));
-            byte a = (byte)Mathf.RoundToInt(progress * 255f);
+            float a = progress;
             SetLabelAlpha(a);
 
             yield return Wait.None();
@@ -103,7 +103,7 @@ public class DefeatAnnouncement : MonoBehaviour
 
         if (rect != null)
             rect.anchoredPosition = centerPos;
-        SetLabelAlpha(255);
+        SetLabelAlpha(1f);
 
         animationRoutine = null;
     }
@@ -118,25 +118,25 @@ public class DefeatAnnouncement : MonoBehaviour
         if (front != null) front.text = value;
     }
 
-    private void SetLabelAlpha(byte a)
+    private void SetLabelAlpha(float a)
     {
         if (image != null)
         {
-            var c = (Color32)image.color;
+            var c = image.color;
             c.a = a;
             image.color = c;
         }
 
         if (back != null)
         {
-            var c = (Color32)back.color;
+            var c = back.color;
             c.a = a;
             back.color = c;
         }
 
         if (front != null)
         {
-            var c = (Color32)front.color;
+            var c = front.color;
             c.a = a;
             front.color = c;
         }

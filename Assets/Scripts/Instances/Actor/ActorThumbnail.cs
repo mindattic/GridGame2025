@@ -63,16 +63,14 @@ public class ActorThumbnail : MonoBehaviour
         if (settings == null)
         {
             settings = new ThumbnailSettings(Vector2.zero, Vector2.one);
-            transform.localPosition = settings.Offset;
-            transform.localScale = settings.Scale;
+            ApplySettingsToTransform();
         }
     }
 
     public void Set(Vector3 position, Vector3 scale)
     {
         settings = new ThumbnailSettings(position, scale);
-        transform.localPosition = settings.Offset;
-        transform.localScale = settings.Scale;
+        ApplySettingsToTransform();
     }
 
     public void Initialize(ActorInstance parentInstance)
@@ -88,8 +86,7 @@ public class ActorThumbnail : MonoBehaviour
         }
 
         settings = new ThumbnailSettings(actorData.ThumbnailSettings);
-        transform.localPosition = settings.Offset;
-        transform.localScale = settings.Scale;
+        ApplySettingsToTransform();
 
         RecalculateRangeMultiplier();
 
@@ -97,6 +94,19 @@ public class ActorThumbnail : MonoBehaviour
         range = new Vector2(0.1f, 0.1f);
         wobbleAmplitudeFactorX = 0.25f;
         wobbleAmplitudeFactorY = 0.25f;
+    }
+
+    private void ApplySettingsToTransform()
+    {
+        // Clamp localPosition so portrait cannot be pushed beyond the mask edges based on scale.
+        var off = settings.Offset;
+        float maxOX = Mathf.Max(0f, (settings.Scale.x - 1f) * 0.5f);
+        float maxOY = Mathf.Max(0f, (settings.Scale.y - 1f) * 0.5f);
+        off.x = Mathf.Clamp(off.x, -maxOX, maxOX);
+        off.y = Mathf.Clamp(off.y, -maxOY, maxOY);
+
+        transform.localPosition = off;
+        transform.localScale = settings.Scale;
     }
 
     private void Update()

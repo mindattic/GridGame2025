@@ -45,7 +45,7 @@ namespace Assets.Helpers
         public static ConsoleManager ConsoleManager => gm != null ? gm.consoleManager : null;
         public static LogManager LogManager => gm != null ? gm.logManager : null;
         public static ActorManager ActorManager => gm != null ? gm.actorManager : null;
-        public static SelectionManager SelectedHeroManager => gm != null ? gm.selectedHeroManager : null;
+        public static SelectionManager SelectionManager => gm != null ? gm.selectedHeroManager : null;
         public static DottedLineManager DottedLineManager => gm != null ? gm.dottedLineManager : null;
         public static ProjectileManager ProjectileManager => gm != null ? gm.projectileManager : null;
         public static SequenceManager SequenceManager => gm != null ? gm.sequenceManager : null;
@@ -69,14 +69,15 @@ namespace Assets.Helpers
 
         //Cancas
         public static WaveAnnouncement WaveAnnouncement => gm != null ? gm.waveAnnouncement : null;
+        public static VictoryAnnouncement VictoryAnnouncement => gm != null ? gm.victoryAnnouncement : null;
+        public static DefeatAnnouncement DefeatAnnouncement => gm != null ? gm.defeatAnnouncement : null;
+
         public static TargetModeOverlay TargetModeOverlay => gm != null ? gm.targetModeOverlay : null;
         public static ActorCard Card => gm != null ? gm.card : null;
         public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;
         public static Timeline Timeline => gm != null ? gm.timeline : null;
         public static TitleBarInstance TitleBar => gm != null ? gm.titleBar : null;
-        public static VictoryAnnouncement VictoryAnnouncement => gm != null ? gm.victoryAnnouncement : null;
-        // NEW: DefeatAnnouncement shortcut
-        public static DefeatAnnouncement DefeatAnnouncement => gm != null ? gm.defeatAnnouncement : null;
+      
 
 
         //Touch

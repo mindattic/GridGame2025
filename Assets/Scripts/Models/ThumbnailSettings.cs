@@ -85,14 +85,27 @@ namespace Assets.Scripts.Models
         public void OffsetFromPixels()
         {
             int T = Mathf.Max(1, TextureSize);
+
+            // Clamp the pixel focus to the texture bounds so offsets don't explode (e.g., negative X)
+            int clampedPX = Mathf.Clamp(PixelPosition.x, 0, T - 1);
+            int clampedPY = Mathf.Clamp(PixelPosition.y, 0, T - 1);
+            PixelPosition = new Vector2Int(clampedPX, clampedPY);
+
             float cx = T * 0.5f;
             float cy = T * 0.5f;
-            float px = PixelPosition.x;
-            float py = PixelPosition.y;
+            float px = clampedPX;
+            float py = clampedPY;
 
             // Convert pixel focus into normalized offset from center, scaled by portrait scale.
             float ox = (cx - px) * (Scale.x / T);
             float oy = (py - cy) * (Scale.y / T);
+
+            // To keep the portrait covering the mask, clamp offset so it can't push the image past the mask edges.
+            // Given portrait width = Scale.x * s and mask width = s, the max safe center offset is (Scale.x - 1)/2 (in mask-size units).
+            float maxOX = Mathf.Max(0f, (Scale.x - 1f) * 0.5f);
+            float maxOY = Mathf.Max(0f, (Scale.y - 1f) * 0.5f);
+            ox = Mathf.Clamp(ox, -maxOX, maxOX);
+            oy = Mathf.Clamp(oy, -maxOY, maxOY);
 
             offset = new Vector2(ox, oy);
         }

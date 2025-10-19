@@ -51,6 +51,7 @@ namespace Assets.Scripts.Libraries
             actors = new Dictionary<CharacterClass, ActorData>()
             {
                 { CharacterClass.Alchemist, Alchemist.Data() },
+                { CharacterClass.Barbarian, Barbarian.Data() },
                 { CharacterClass.Basher, Basher.Data() },
                 { CharacterClass.Bat00, Bat00.Data() },
                 { CharacterClass.Bat01, Bat01.Data() },
@@ -220,7 +221,6 @@ namespace Assets.Scripts.Libraries
                 { CharacterClass.Wolf03, Wolf03.Data() },
                 { CharacterClass.YellowNinja, YellowNinja.Data() },
                 { CharacterClass.Yeti, Yeti.Data() },
-                { CharacterClass.Barbarian, Barbarian.Data() },
             };
 
             isLoaded = true;

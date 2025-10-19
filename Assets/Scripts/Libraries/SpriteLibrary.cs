@@ -117,8 +117,10 @@ namespace Assets.Scripts.Libraries
                 { "Pause", AssetHelper.LoadAsset<Sprite>("Sprites/Pause") },
                 { "Paused", AssetHelper.LoadAsset<Sprite>("Sprites/Paused") },
                 { "Forest", AssetHelper.LoadAsset<Sprite>("Sprites/Forest") },
-                { "Black16x16", AssetHelper.LoadAsset<Sprite>("Sprites/Black16x16") },
+                { "Black32x32", AssetHelper.LoadAsset<Sprite>("Sprites/Black32x32") },
                 { "SynergySpark", AssetHelper.LoadAsset<Sprite>("Sprites/SynergySpark") },
+                { "White32x32", AssetHelper.LoadAsset<Sprite>("Sprites/White32x32") },
+                { "Transparent32x32", AssetHelper.LoadAsset<Sprite>("Sprites/Transparent32x32") },
             };
 
             weaponTypes = new Dictionary<string, Sprite>

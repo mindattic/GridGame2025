@@ -320,7 +320,7 @@ public class ActorCard : MonoBehaviour
         var target = heroes[next];
         if (target == null) return;
 
-        g.SelectedHeroManager?.Select(target);
+        g.SelectionManager?.Select(target);
         g.AudioManager?.Play("Click");
     }
 
