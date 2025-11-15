@@ -1,6 +1,5 @@
 using Assets.Helper;
 using Assets.Helpers;
-using Assets.Scripts.Canvas.Timeline;
 using Assets.Scripts.Libraries;
 using Assets.Scripts.Models;
 using UnityEditor;
@@ -134,19 +133,7 @@ public partial class DebugWindow
 
     private void PreviewCanvasCrop(float x, float y, int w, int h, float sx, float sy)
     {
-        var actor = g.Actors.SelectedActor;
-        if (actor == null || g.Timeline == null)
-            return;
-
-        // Find the timeline block for this actor and apply the crop live
-        var blocks = g.Timeline.GetComponentsInChildren<TimelineBlockInstance>(true);
-        foreach (var b in blocks)
-        {
-            if (b != null && b.Owner == actor)
-            {
-                b.ApplyCanvasCrop(new CanvasThumbnailSettings(x, y, w, h, new Vector2(sx, sy)));
-            }
-        }
+        // timeline removed: no live preview
     }
 
     private void ApplyCanvasCropToData(float x, float y, int w, int h, float sx, float sy)
@@ -158,8 +145,5 @@ public partial class DebugWindow
         if (data == null) return;
 
         data.CanvasThumbnailSettings = new CanvasThumbnailSettings(x, y, w, h, new Vector2(sx, sy));
-
-        // Rebuild future so new settings propagate to newly built blocks; keep current turn stable.
-        g.Timeline?.RebuildFuturePreservingCurrent();
     }
 }

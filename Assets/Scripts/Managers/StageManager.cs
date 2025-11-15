@@ -93,9 +93,6 @@ public class StageManager : MonoBehaviour
         // Generate and load wave 1
         LoadEndlessWave(0);
 
-        // After all actors for the initial setup are spawned, rebuild timeline once
-        g.Timeline?.RebuildFromScene();
-
         scene.FadeIn();
     }
 
@@ -112,9 +109,6 @@ public class StageManager : MonoBehaviour
         {
             SpawnActor(stageActor, rebuildTimeline: false);
         }
-
-        // Recalculate timeline once per wave start
-        g.Timeline?.RebuildFuturePreservingCurrent();
 
         // Announcement (total unknown/infinite)
         g.WaveAnnouncement?.ShowEndless(nextWaveNumber);
@@ -154,9 +148,6 @@ public class StageManager : MonoBehaviour
         {
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
-
-        // After all actors for the initial setup are spawned, rebuild timeline once
-        g.Timeline?.RebuildFromScene();
 
         scene.FadeIn();
     }
@@ -202,9 +193,6 @@ public class StageManager : MonoBehaviour
                 g.DottedLineManager.Spawn(segment, location);
             }
         }
-
-        // Recalculate timeline once per wave start
-        g.Timeline?.RebuildFuturePreservingCurrent();
 
         g.WaveAnnouncement?.Show(waveIndex + 1, currentStage.Waves.Count);
     }
@@ -274,12 +262,6 @@ public class StageManager : MonoBehaviour
         // Register the new actor
         g.Actors.All.Add(instance);
 
-        // If requested, rebuild the timeline after spawning (useful for ad-hoc spawns)
-        if (rebuildTimeline)
-        {
-            g.Timeline?.RebuildFuturePreservingCurrent();
-        }
-
         return instance;
     }
 
@@ -316,7 +298,6 @@ public class StageManager : MonoBehaviour
 
             // Activate immediately and refresh timeline
             OnTurnAdvanced();
-            g.Timeline?.RebuildFuturePreservingCurrent();
             return; // do not advance wave/stage; we just filled the gap
         }
 

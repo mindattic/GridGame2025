@@ -4,11 +4,6 @@ using Assets.Scripts.Sequences;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 
-/// <summary>
-/// Handles focus, drag, and drop for heroes during the hero turn using a single SelectedActor.
-/// States: Idle (just clicked), PickedUp (held but not beyond threshold), Moving (beyond threshold with countdown), Dropped (on drop start).
-/// Touch and hold enables Drop for the SelectedActor; releasing triggers Drop() for Moving.
-/// </summary>
 public class SelectionManager : MonoBehaviour
 {
     public enum SelectedActorState
@@ -29,7 +24,6 @@ public class SelectionManager : MonoBehaviour
 
     public void Select(ActorInstance actor = null)
     {
-        // Allow focusing at any time to inspect stats
         var target = actor ?? TouchHelper.GetActorAtTouchPosition();
 
         // Do not unselect when clicking outside of an actor anymore.
@@ -41,8 +35,6 @@ public class SelectionManager : MonoBehaviour
         // If unchanged, just refresh visuals and make sure card shows
         if (g.Actors.SelectedActor == target)
         {
-            g.Timeline?.RefreshSelectionHighlight();
-            // Ensure card shows when clicking an already-selected actor
             g.Card.Assign();
 #if UNITY_EDITOR
             GameManager.instance.reloadThumbnailSettings = true;
@@ -67,8 +59,6 @@ public class SelectionManager : MonoBehaviour
 
         // Board: toggle focus indicators
         g.Actors.All.ForEach(x => x.Render.SetFocusIndicatorEnabled(x == g.Actors.SelectedActor));
-        // Timeline: toggle focus highlight across all blocks
-        g.Timeline?.RefreshSelectionHighlight();
 
         // Always assign card when selecting
         g.Card.Assign();

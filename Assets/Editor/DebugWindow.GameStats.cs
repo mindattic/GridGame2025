@@ -11,14 +11,14 @@ public partial class DebugWindow
     {
         GUILayout.BeginHorizontal();
 
-        var focusedActor = g.Actors.SelectedActor != null ? g.Actors.SelectedActor.characterClass : CharacterClass.None;
-        GUILayout.Label($"Focused Actor: {focusedActor}", GUILayout.Width(Screen.width * 0.25f));
+        var selected = (g.ActorManager != null && g.Actors.SelectedActor != null) ? g.Actors.SelectedActor.characterClass : CharacterClass.None;
+        GUILayout.Label($"Focused Actor: {selected}", GUILayout.Width(Screen.width *0.25f));
 
-        var inputMode = g.InputManager.InputMode;
-        GUILayout.Label($"Input Mode: {inputMode}", GUILayout.Width(Screen.width * 0.25f));
+        var mode = g.InputManager != null ? g.InputManager.InputMode : InputMode.None;
+        GUILayout.Label($"Input Mode: {mode}", GUILayout.Width(Screen.width *0.25f));
 
-        var currentTurn = g.TurnManager.IsHeroTurn ? "Player" : "Opponent";
-        GUILayout.Label($"Current Turn: {currentTurn}", GUILayout.Width(Screen.width * 0.25f));
+        var turnText = g.TurnManager != null ? (g.TurnManager.IsHeroTurn ? "Player" : "Opponent") : "-";
+        GUILayout.Label($"Current Turn: {turnText}", GUILayout.Width(Screen.width *0.25f));
 
         GUILayout.EndHorizontal();
         GUILayout.Space(10);

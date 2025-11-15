@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Game.Models.Profile; // Added for Profile access
+using Assets.Scripts.Canvas; // for TimelineBarInstance
 
 namespace Assets.Helpers
 {
@@ -75,7 +76,7 @@ namespace Assets.Helpers
         public static TargetModeOverlay TargetModeOverlay => gm != null ? gm.targetModeOverlay : null;
         public static ActorCard Card => gm != null ? gm.card : null;
         public static TutorialPopup TutorialPopup => gm != null ? gm.tutorialPopup : null;
-        public static Timeline Timeline => gm != null ? gm.timeline : null;
+        public static TimelineBarInstance TimelineBar => gm != null ? gm.timelineBar : null; // new accessor
         public static TitleBarInstance TitleBar => gm != null ? gm.titleBar : null;
       
 

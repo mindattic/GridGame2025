@@ -20,10 +20,6 @@ namespace Assets.Scripts.Sequences
             g.InputManager.InputMode = InputMode.PlayerTurn;
             g.TimerBar.Refill();   // resets fill to full and timeRemaining to max
 
-            // If you restore AP on hero start, do it here
-            // foreach (var hero in g.Actors.Heroes) hero.RestoreAP();
-            g.Timeline.FocusOnHero();
-
             yield break;
         }
     }

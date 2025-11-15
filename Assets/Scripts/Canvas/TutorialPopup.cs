@@ -26,7 +26,7 @@ namespace Assets.Scripts.GUI
 
         //Properties
         bool hasPages => pages != null && pages.Count > 0;
-        int lastPage => pages?.Count - 1 ?? 0;
+        int lastPage => pages != null && pages.Count > 0 ? pages.Count - 1 : 0;
 
         private bool initialized;
 
@@ -51,14 +51,16 @@ namespace Assets.Scripts.GUI
         private void Start()
         {
             if (!initialized) Initialize();
-            panel.SetActive(GameManager.instance.debugManager.showTutorials);
+            bool show = g.DebugManager != null && g.DebugManager.showTutorials;
+            if (panel != null) panel.SetActive(show);
         }
 
         public void Load(Tutorial tutorial, bool show = true)
         {
-            if (!g.DebugManager.showTutorials || tutorial == null || tutorial.Pages.Count < 1) return;
+            if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
+            if (tutorial == null || tutorial.Pages == null || tutorial.Pages.Count < 1) return;
 
-            this.pages = tutorial.Pages;
+            pages = tutorial.Pages;
             currentPage = 0;
 
             if (show)
@@ -67,26 +69,25 @@ namespace Assets.Scripts.GUI
 
         public void Show(int currentPage = 0)
         {
-            if (!g.DebugManager.showTutorials || !hasPages) return;
-
-            //Time.timeScale = 0f;
-            this.currentPage = currentPage;
-            panel.SetActive(true);
+            if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
+            if (!hasPages) return;
+            if (panel != null) panel.SetActive(true);
+            this.currentPage = Mathf.Clamp(currentPage, 0, lastPage);
             Navigate();
         }
 
         private void Navigate()
         {
-            if (!g.DebugManager.showTutorials || !hasPages) return;
-
-            image.sprite = SpriteLibrary.TutorialPages[pages[currentPage].TextureKey];
-            title.text = pages[currentPage].Title;
-            content.text = pages[currentPage].Content;
-
-            //Manage Button Visibility
-            previousButton.gameObject.SetActive(currentPage > 0);
-            nextButton.gameObject.SetActive(currentPage < lastPage);
-            closeButton.gameObject.SetActive(currentPage == lastPage);
+            if (g.DebugManager == null || !g.DebugManager.showTutorials) return;
+            if (!hasPages) return;
+            var page = pages[currentPage];
+            if (image != null && page != null && SpriteLibrary.TutorialPages != null && SpriteLibrary.TutorialPages.ContainsKey(page.TextureKey))
+                image.sprite = SpriteLibrary.TutorialPages[page.TextureKey];
+            if (title != null) title.text = page.Title ?? string.Empty;
+            if (content != null) content.text = page.Content ?? string.Empty;
+            if (previousButton != null) previousButton.gameObject.SetActive(currentPage > 0);
+            if (nextButton != null) nextButton.gameObject.SetActive(currentPage < lastPage);
+            if (closeButton != null) closeButton.gameObject.SetActive(currentPage == lastPage);
         }
 
         public void PreviousPage()
@@ -111,8 +112,7 @@ namespace Assets.Scripts.GUI
 
         public void Close()
         {
-            //Time.timeScale = 1f;
-            panel.SetActive(false);
+            if (panel != null) panel.SetActive(false);
         }
 
     }

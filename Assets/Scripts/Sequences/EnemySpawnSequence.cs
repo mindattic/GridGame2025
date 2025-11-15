@@ -20,9 +20,13 @@ namespace Assets.Scripts.Sequences
             // Allow spawn visuals to apply
             yield return Wait.None();
 
-            // Chain into the attacker start-of-turn and RUN it now
-            g.SequenceManager.Add(new EnemyStartSequence());
-            g.SequenceManager.Execute();
+            // If currently in enemy turn and no active actor set, pick first spawned enemy
+            if (g.TurnManager.IsEnemyTurn && g.TurnManager.ActiveActor == null)
+            {
+                var first = spawnableEnemies.FirstOrDefault(e => e != null && e.IsPlaying);
+                if (first != null)
+                    g.TurnManager.BeginEnemyTurn(first);
+            }
         }
     }
 }

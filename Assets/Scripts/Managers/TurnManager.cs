@@ -8,149 +8,95 @@ using System.Collections.Generic;
 
 namespace Assets.Scripts.Managers
 {
-    public class TurnManager : MonoBehaviour
-    {
-        public bool IsHeroTurn { get; private set; }
-        public bool IsEnemyTurn => !IsHeroTurn;
-        public int CurrentTurn = 0;
-        public ActorInstance ActiveActor { get; private set; }
+ public class TurnManager : MonoBehaviour
+ {
+ public bool IsHeroTurn { get; private set; }
+ public bool IsEnemyTurn => !IsHeroTurn;
+ public int CurrentTurn =0;
+ public ActorInstance ActiveActor { get; private set; }
 
-        private ManaPoolManager GetMana()
-        {
-            var go = GameObject.Find("Game");
-            return go != null ? go.GetComponent<ManaPoolManager>() : null;
-        }
+ private ActorInstance queuedEnemyAfterHero;
+ private ActorInstance lastEnemy;
 
-        public void Initialize()
-        {
-            ResolveActiveFromTimeline();
-            StartTurn();
-        }
+ private ManaPoolManager GetMana()
+ {
+ var go = GameObject.Find("Game");
+ return go != null ? go.GetComponent<ManaPoolManager>() : null;
+ }
 
-        private void ResolveActiveFromTimeline()
-        {
-            var enemy = g.Timeline != null ? g.Timeline.GetCurrentEnemy() : null;
-            IsHeroTurn = enemy == null;
-            ActiveActor = IsHeroTurn ? g.Timeline?.GetCurrentHero() : enemy;
-        }
+ public void Initialize() { BeginHeroWindow(); }
 
-        private void SelectActiveOrFallback()
-        {
-            if (ActiveActor != null)
-            {
-                g.SelectionManager.Select(ActiveActor);
-                return;
-            }
+ public void QueueEnemyAfterHero(ActorInstance enemy)
+ {
+ if (enemy != null && enemy.IsEnemy) queuedEnemyAfterHero = enemy;
+ }
 
-            // Fallback: pick any playing hero first, otherwise any playing actor
-            var any = g.Actors.Heroes?.FirstOrDefault(a => a != null && a.IsPlaying)
-                      ?? g.Actors.All?.FirstOrDefault(a => a != null && a.IsPlaying);
-            if (any != null)
-                g.SelectionManager.Select(any);
-        }
+ private void SelectActiveOrFallback()
+ {
+ if (ActiveActor != null) { g.SelectionManager.Select(ActiveActor); return; }
+ var any = g.Actors.Heroes?.FirstOrDefault(a => a != null && a.IsPlaying) ?? g.Actors.All?.FirstOrDefault(a => a != null && a.IsPlaying);
+ if (any != null) g.SelectionManager.Select(any);
+ }
 
-        public void NextTurn()
-        {
-            CurrentTurn++;
+ public void NextTurn()
+ {
+ CurrentTurn++;
+ g.StageManager?.OnTurnAdvanced();
 
-            // New: allow the StageManager to activate deferred spawns scheduled by SpawnTurn
-            g.StageManager?.OnTurnAdvanced();
+ // If an enemy was queued (from timeline tag hit) take their turn now
+ if (queuedEnemyAfterHero != null && queuedEnemyAfterHero.IsPlaying)
+ {
+ var enemy = queuedEnemyAfterHero; queuedEnemyAfterHero = null;
+ BeginEnemyTurn(enemy);
+ return;
+ }
 
-            g.Timeline?.NextBlock();
-            ResolveActiveFromTimeline();
+ BeginHeroWindow();
+ }
 
-            if (g.Timeline != null)
-            {
-                if (IsHeroTurn) g.Timeline.FocusOnHero();
-                else g.Timeline.FocusOnEnemy(ActiveActor);
-            }
+ private void BeginHeroWindow()
+ {
+ IsHeroTurn = true;
+ ActiveActor = null;
+ var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Hero);
+ g.InputManager.InputMode = InputMode.PlayerTurn;
+ SelectActiveOrFallback();
+ UpdateActiveIndicators();
+ g.SequenceManager.Add(new HeroStartSequence());
+ g.SequenceManager.Execute();
+ }
 
-            var mana = GetMana();
-            if (mana != null) mana.OnTurnStarted(IsHeroTurn ? Team.Hero : Team.Enemy);
+ public void BeginEnemyTurn(ActorInstance enemy)
+ {
+ if (enemy == null || !enemy.IsPlaying) return;
+ IsHeroTurn = false; ActiveActor = enemy; lastEnemy = enemy;
+ var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Enemy);
+ g.InputManager.InputMode = InputMode.EnemyTurn;
+ g.SelectionManager.Select(enemy);
+ UpdateActiveIndicators();
+ // Notify bar that enemy has started
+ g.TimelineBar?.OnEnemyTurnStarted(enemy);
+ g.SequenceManager.Add(new EnemyTakeTurnSequence(enemy));
+ g.SequenceManager.Execute();
+ }
 
-            // Always set input mode for the side taking the new turn
-            g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
+ private void UpdateActiveIndicators()
+ {
+ foreach (var a in g.Actors.All)
+ {
+ if (a == null || !a.IsPlaying) continue;
+ a.Render.SetActiveIndicatorEnabled(a == ActiveActor);
+ }
+ }
 
-            // Ensure a selection exists and matches the actor whose turn it is
-            SelectActiveOrFallback();
+ // Optional hook: call from outside after EndTurnSequence if needed
+ public void NotifyEnemyTurnFinished()
+ {
+ if (lastEnemy != null) g.TimelineBar?.OnEnemyTurnFinished(lastEnemy);
+ }
 
-            UpdateActiveIndicators();
-            HandleHeroTurnFocus();
-
-            if (IsHeroTurn)
-            {
-                g.SequenceManager.Add(new HeroStartSequence());
-            }
-            else
-            {
-                g.SequenceManager.Add(new EnemyTakeTurnSequence(ActiveActor));
-            }
-        }
-
-        private void StartTurn()
-        {
-            if (g.Timeline != null)
-            {
-                var enemyAtCursor = g.Timeline.GetCurrentEnemy();
-                IsHeroTurn = enemyAtCursor == null;
-                ActiveActor = IsHeroTurn ? g.Timeline.GetCurrentHero() : enemyAtCursor;
-
-                if (IsHeroTurn) g.Timeline.FocusOnHero();
-                else g.Timeline.FocusOnEnemy(enemyAtCursor);
-            }
-
-            var mana = GetMana();
-            if (mana != null) mana.OnTurnStarted(IsHeroTurn ? Team.Hero : Team.Enemy);
-
-            // Ensure input mode matches the side at the start
-            g.InputManager.InputMode = IsHeroTurn ? InputMode.PlayerTurn : InputMode.EnemyTurn;
-
-            // Ensure a selection exists and matches the actor whose turn it is
-            SelectActiveOrFallback();
-
-            UpdateActiveIndicators();
-            HandleHeroTurnFocus();
-
-            if (IsHeroTurn)
-            {
-                g.SequenceManager.Add(new HeroStartSequence());
-            }
-            else
-            {
-                g.SequenceManager.Add(new EnemyTakeTurnSequence(ActiveActor));
-            }
-        }
-
-        private void UpdateActiveIndicators()
-        {
-            foreach (var a in g.Actors.All)
-            {
-                if (a == null || !a.IsPlaying) continue;
-                a.Render.SetActiveIndicatorEnabled(a == ActiveActor);
-            }
-
-            g.Timeline?.RefreshSelectionHighlight();
-        }
-
-        private void HandleHeroTurnFocus()
-        {
-            if (!IsHeroTurn) return;
-
-            if (g.TurnSelectionMode == TurnSelectionMode.ActiveOnly)
-            {
-                if (ActiveActor != null)
-                {
-                    // Selection already set to ActiveActor; just add hero-specific VFX
-                    ActiveActor.Glow?.Play();
-                }
-            }
-            else
-            {
-                g.HeroManager?.Glow();
-            }
-        }
-
-        public void ApplyHeroTurnDesaturation(List<ActorInstance> ignoreList = null) { }
-        public void RestoreFullSaturation(List<ActorInstance> ignoreList = null) { }
-    }
+ private void HandleHeroTurnFocus() { }
+ public void ApplyHeroTurnDesaturation(List<ActorInstance> ignoreList = null) { }
+ public void RestoreFullSaturation(List<ActorInstance> ignoreList = null) { }
+ }
 }

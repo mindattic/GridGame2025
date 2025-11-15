@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Canvas; // added for TimelineBarInstance
 
 public class GameManager : Singleton<GameManager>
 {
@@ -23,11 +24,11 @@ public class GameManager : Singleton<GameManager>
     // Settings
     [HideInInspector] public TargetFrameRate targetFramerate = TargetFrameRate.Fps60;
     [HideInInspector] public VSyncCount vSyncCount = VSyncCount.VSync1;
-    [HideInInspector] public float dragSensitivity = 0.05f;
-    [HideInInspector] public float coinCountMultiplier = 0.05f;
+    [HideInInspector] public float dragSensitivity =0.05f;
+    [HideInInspector] public float coinCountMultiplier =0.05f;
 
 
-    public float gameSpeed = 1.0f;
+    public float gameSpeed =1.0f;
     public bool applyMovementTilt = false;
 
     // Selection behavior toggle for hero control during hero turns
@@ -88,9 +89,10 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public AbilityManager abilityManager;
     [HideInInspector] public SynergyLineManager synergyLineManager;
     [HideInInspector] public ManaPoolManager manaPoolManager;
-    
 
-    [HideInInspector] public Timeline timeline;
+    // New timeline bar (replaces old block timeline)
+    [HideInInspector] public TimelineBarInstance timelineBar;
+
     [HideInInspector] public BackgroundInstance background;
 
     // Board
@@ -130,9 +132,6 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public TileMap tileMap;
     [HideInInspector] public TimerBar timerBar;
     [HideInInspector] public RectTransform portraitsRect;
-    [HideInInspector] public RectTransform timelineContainer;
-    [HideInInspector] public RectTransform timelineViewport;
-    [HideInInspector] public RectTransform timelineContent;
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
     [HideInInspector] public List<SupportLineInstance> supportLines;
@@ -142,8 +141,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public CoinCounter coinCounter;
 
     // Audio indices
-    [HideInInspector] public const int SoundSourceIndex = 0;
-    [HideInInspector] public const int MusicSourceIndex = 1;
+    [HideInInspector] public const int SoundSourceIndex =0;
+    [HideInInspector] public const int MusicSourceIndex =1;
 
 
     // Debug
@@ -156,11 +155,11 @@ public class GameManager : Singleton<GameManager>
 
         var canvasRoot = GameObject.Find("Canvas");
 
-        var go = Instantiate(PrefabLibrary.Get("PauseMenu"), canvasRoot.transform);
+        var go = Instantiate(PrefabLibrary.Get("PauseMenu"), canvasRoot?.transform);
         go.name = "PauseMenu";
         pauseMenu = go.GetComponent<PauseMenu>();
 
-        go = Instantiate(PrefabLibrary.Get("TutorialPopup"), canvasRoot.transform);
+        go = Instantiate(PrefabLibrary.Get("TutorialPopup"), canvasRoot?.transform);
         go.name = "TutorialPopup";
         tutorialPopup = go.GetComponent<TutorialPopup>();
 
@@ -168,16 +167,16 @@ public class GameManager : Singleton<GameManager>
         Application.targetFrameRate = targetFramerate.ToInt();
         QualitySettings.vSyncCount = VSyncCount.VSync1.ToInt();
 
-        float width97Percent = UnitConversionHelper.World.VisibleRect().width * 0.97f;
-        tileSize = width97Percent / 6f;
-        tileScale = new Vector3(tileSize, tileSize, 1f);
+        float width97Percent = UnitConversionHelper.World.VisibleRect().width *0.97f;
+        tileSize = width97Percent /6f;
+        tileScale = new Vector3(tileSize, tileSize,1f);
         tileMap = new TileMap();
 
-        cursorFocus = tileSize * 0.5f;
-        swapFocus = tileSize * 0.1666f;
-        moveFocus = tileSize * 0.125f;
-        bumpFocus = tileSize * 0.08f;
-        dragThreshold = tileSize * 0.125f;
+        cursorFocus = tileSize *0.5f;
+        swapFocus = tileSize *0.1666f;
+        moveFocus = tileSize *0.125f;
+        bumpFocus = tileSize *0.08f;
+        dragThreshold = tileSize *0.125f;
 
         ShakeIntensity.Initialize(tileSize);
 
@@ -188,20 +187,28 @@ public class GameManager : Singleton<GameManager>
         portraitsRect = GameObjectHelper.Game.Portraits;
         titleBar = GameObjectHelper.Game.TitleBar.Instance;
 
-        // Timeline children
-        timelineContainer = GameObject.Find(GameObjectHelper.Game.TimelineContainer).GetComponent<RectTransform>();
-        timelineViewport = timelineContainer.Find("Viewport").GetComponent<RectTransform>();
-        timelineContent = timelineViewport.Find("Content").GetComponent<RectTransform>();
-        timeline = timelineContainer.GetComponent<Timeline>();
+        var coinCounterGO = GameObject.Find(GameObjectHelper.Game.CoinCounter);
+        if (coinCounterGO != null)
+            coinCounter = coinCounterGO.GetComponent<CoinCounter>();
 
-        coinCounter = GameObject.Find(GameObjectHelper.Game.CoinCounter).GetComponent<CoinCounter>();
-        waveAnnouncement = GameObjectHelper.Game.WaveAnnouncement.Root.GetComponent<WaveAnnouncement>();
+        var waveRoot = GameObjectHelper.Game.WaveAnnouncement.Root;
+        if (waveRoot != null)
+            waveAnnouncement = waveRoot.GetComponent<WaveAnnouncement>();
+
         // NEW: wire Victory/Defeat Announcement
-        if (GameObjectHelper.Game.VictoryAnnouncement.Root != null)
-            victoryAnnouncement = GameObjectHelper.Game.VictoryAnnouncement.Root.GetComponent<VictoryAnnouncement>();
-        if (GameObjectHelper.Game.DefeatAnnouncement.Root != null)
-            defeatAnnouncement = GameObjectHelper.Game.DefeatAnnouncement.Root.GetComponent<DefeatAnnouncement>();
-        background = GameObject.Find(GameObjectHelper.Game.Background.Root).GetComponent<BackgroundInstance>();
+        var victoryRoot = GameObjectHelper.Game.VictoryAnnouncement.Root;
+        if (victoryRoot != null)
+            victoryAnnouncement = victoryRoot.GetComponent<VictoryAnnouncement>();
+        var defeatRoot = GameObjectHelper.Game.DefeatAnnouncement.Root;
+        if (defeatRoot != null)
+            defeatAnnouncement = defeatRoot.GetComponent<DefeatAnnouncement>();
+
+        var bgRoot = GameObjectHelper.Game.Background.Root;
+        if (!string.IsNullOrEmpty(bgRoot))
+        {
+            var bgGo = GameObject.Find(bgRoot);
+            if (bgGo != null) background = bgGo.GetComponent<BackgroundInstance>();
+        }
 
         // Board
         board = GameObjectHelper.Game.Board.Instance;
@@ -211,43 +218,57 @@ public class GameManager : Singleton<GameManager>
         var gameRoot = GameObject.Find("Game");
 
         // Audio
-        soundSource = gameRoot.GetComponents<AudioSource>()[SoundSourceIndex];
-        musicSource = gameRoot.GetComponents<AudioSource>()[MusicSourceIndex];
+        if (gameRoot != null)
+        {
+            var sources = gameRoot.GetComponents<AudioSource>();
+            if (sources != null && sources.Length > MusicSourceIndex)
+            {
+                soundSource = sources[SoundSourceIndex];
+                musicSource = sources[MusicSourceIndex];
+            }
+        }
 
         // Managers
-        cameraManager = gameRoot.GetComponent<CameraManager>();
-        stageManager = gameRoot.GetComponent<StageManager>();
-        boardManager = gameRoot.GetComponent<BoardManager>();
-        turnManager = gameRoot.GetComponent<TurnManager>();
-        inputManager = gameRoot.GetComponent<InputManager>();
-        actorManager = gameRoot.GetComponent<ActorManager>();
-        supportLineManager = gameRoot.GetComponent<SupportLineManager>();
-        attackLineManager = gameRoot.GetComponent<AttackLineManager>();
-        combatTextManager = gameRoot.GetComponent<CombatTextManager>();
-        ghostManager = gameRoot.GetComponent<GhostManager>();
-        portraitManager = gameRoot.GetComponent<PortraitManager>();
-        selectedHeroManager = gameRoot.GetComponent<SelectionManager>();
-        heroManager = gameRoot.GetComponent<HeroManager>();
-        enemyManager = gameRoot.GetComponent<EnemyManager>();
-        tileManager = gameRoot.GetComponent<TileManager>();
-        footstepManager = gameRoot.GetComponent<FootstepManager>();
-        audioManager = gameRoot.GetComponent<AudioManager>();
-        debugManager = gameRoot.GetComponent<DebugManager>();
-        consoleManager = gameRoot.GetComponent<ConsoleManager>();
-        logManager = gameRoot.GetComponent<LogManager>();
-        visualEffectManager = gameRoot.GetComponent<VisualEffectManager>();
-        coinManager = gameRoot.GetComponent<CoinManager>();
-        dottedLineManager = gameRoot.GetComponent<DottedLineManager>();
-        projectileManager = gameRoot.GetComponent<ProjectileManager>();
-        sequenceManager = gameRoot.GetComponent<SequenceManager>();
-        pincerAttackManager = gameRoot.GetComponent<PincerAttackManager>();
-        sortingManager = gameRoot.GetComponent<SortingManager>();
-        targetLineManager = gameRoot.GetComponent<TargetLineManager>();
-        abilityButtonManager = gameRoot.GetComponent<AbilityButtonManager>();
-        abilityManager = gameRoot.GetComponent<AbilityManager>();
-        synergyLineManager = gameRoot.GetComponent<SynergyLineManager>();
-        manaPoolManager = gameRoot.GetComponent<ManaPoolManager>();
+        if (gameRoot != null)
+        {
+            cameraManager = gameRoot.GetComponent<CameraManager>();
+            stageManager = gameRoot.GetComponent<StageManager>();
+            boardManager = gameRoot.GetComponent<BoardManager>();
+            turnManager = gameRoot.GetComponent<TurnManager>();
+            inputManager = gameRoot.GetComponent<InputManager>();
+            actorManager = gameRoot.GetComponent<ActorManager>();
+            supportLineManager = gameRoot.GetComponent<SupportLineManager>();
+            attackLineManager = gameRoot.GetComponent<AttackLineManager>();
+            combatTextManager = gameRoot.GetComponent<CombatTextManager>();
+            ghostManager = gameRoot.GetComponent<GhostManager>();
+            portraitManager = gameRoot.GetComponent<PortraitManager>();
+            selectedHeroManager = gameRoot.GetComponent<SelectionManager>();
+            heroManager = gameRoot.GetComponent<HeroManager>();
+            enemyManager = gameRoot.GetComponent<EnemyManager>();
+            tileManager = gameRoot.GetComponent<TileManager>();
+            footstepManager = gameRoot.GetComponent<FootstepManager>();
+            audioManager = gameRoot.GetComponent<AudioManager>();
+            debugManager = gameRoot.GetComponent<DebugManager>();
+            consoleManager = gameRoot.GetComponent<ConsoleManager>();
+            logManager = gameRoot.GetComponent<LogManager>();
+            visualEffectManager = gameRoot.GetComponent<VisualEffectManager>();
+            coinManager = gameRoot.GetComponent<CoinManager>();
+            dottedLineManager = gameRoot.GetComponent<DottedLineManager>();
+            projectileManager = gameRoot.GetComponent<ProjectileManager>();
+            sequenceManager = gameRoot.GetComponent<SequenceManager>();
+            pincerAttackManager = gameRoot.GetComponent<PincerAttackManager>();
+            sortingManager = gameRoot.GetComponent<SortingManager>();
+            targetLineManager = gameRoot.GetComponent<TargetLineManager>();
+            abilityButtonManager = gameRoot.GetComponent<AbilityButtonManager>();
+            abilityManager = gameRoot.GetComponent<AbilityManager>();
+            synergyLineManager = gameRoot.GetComponent<SynergyLineManager>();
+            manaPoolManager = gameRoot.GetComponent<ManaPoolManager>();
+        }
 
+        // Find TimelineBar in Canvas (expects object named "TimelineBar" under Canvas)
+        var timelineBarGO = GameObject.Find("Canvas/TimelineBar");
+        if (timelineBarGO != null)
+            timelineBar = timelineBarGO.GetComponent<TimelineBarInstance>();
 
         // Platform-dependent compilation
 #if UNITY_STANDALONE_WIN
@@ -284,9 +305,11 @@ public class GameManager : Singleton<GameManager>
         if (board != null) board.Initialize();
         if (stageManager != null) stageManager.Initialize();
         if (targetModeOverlay != null) targetModeOverlay.Initialize();
-        if (timeline != null) timeline.Initialize();
         if (timerBar != null) timerBar.Initialize();
         if (turnManager != null) turnManager.Initialize();
+
+        // Spawn initial tags for existing enemies
+        timelineBar?.SpawnInitialForAllEnemies();
 
         GameReady.Confirm();
     }

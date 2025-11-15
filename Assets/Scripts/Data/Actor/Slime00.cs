@@ -62,7 +62,7 @@ namespace Assets.Data.Actor
 
                 Stats = new ActorStats(),
 
-                ThumbnailSettings = new ThumbnailSettings(new Vector2Int(306, 357), new Vector2(3f, 3f), 1024),
+                ThumbnailSettings = new ThumbnailSettings(new Vector2Int(397, 683), new Vector2(3f, 3f), 1024),
 
                 CanvasThumbnailSettings = CanvasThumbnailSettings.SetDefault(),
 

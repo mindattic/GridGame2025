@@ -14,10 +14,12 @@ public static class SelectionRules
         if (mode == TurnSelectionMode.FreeSelect)
             return true;
 
-        // Active only: must match the current hero on the timeline
+        // Active only: must match the current hero controlled by TurnManager
         if (mode == TurnSelectionMode.ActiveOnly)
         {
-            var activeHero = GameHelper.Timeline != null ? GameHelper.Timeline.GetCurrentHero() : null;
+            var activeHero = GameHelper.TurnManager != null && GameHelper.TurnManager.ActiveActor != null && GameHelper.TurnManager.ActiveActor.IsHero
+                ? GameHelper.TurnManager.ActiveActor
+                : null;
             return activeHero != null && candidate == activeHero;
         }
 

@@ -18,29 +18,20 @@ namespace Assets.Scripts.Sequences
 
             g.InputManager.InputMode = InputMode.None;
 
-            // Ask the Timeline which enemy is acting on the current block.
-            var actingEnemy = g.Timeline.GetCurrentEnemy();
+            var actingEnemy = g.TurnManager.ActiveActor;
             if (actingEnemy == null || !actingEnemy.IsPlaying)
             {
-                // No enemy on this block (or dead): end turn cleanly.
                 g.SequenceManager.Add(new EndTurnSequence());
                 g.SequenceManager.Execute();
                 yield break;
             }
 
-            // Snap focus to the acting enemy's block for clarity.
-            g.Timeline.FocusOnEnemy(actingEnemy);
-
-            // Execute the enemy's behavior.
             g.SequenceManager.Add(new EnemyMoveSequence(actingEnemy));
             g.SequenceManager.Add(new EnemyPreAttackSequence(actingEnemy));
             g.SequenceManager.Add(new EnemyAttackSequence(actingEnemy));
             g.SequenceManager.Add(new EnemyPostAttackSequence(actingEnemy));
-
-            // Cleanup and advance one block.
             g.SequenceManager.Add(new DeathSequence());
             g.SequenceManager.Add(new EndTurnSequence());
-
             g.SequenceManager.Execute();
         }
     }

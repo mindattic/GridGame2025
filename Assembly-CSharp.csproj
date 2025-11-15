@@ -78,8 +78,8 @@
     <Compile Include="Assets\Scripts\Data\Actor\StreetFighter.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Cyclops01.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Skelepede01.cs" />
-    <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\RedNinja.cs" />
+    <Compile Include="Assets\Scripts\Instances\FootstepInstance.cs" />
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\StageWave.cs" />
     <Compile Include="Assets\Scripts\Helpers\BezierCurveHelper.cs" />
@@ -95,12 +95,13 @@
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\SteppinRazor05.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Templar00.cs" />
-    <Compile Include="Assets\Scripts\Overworld\RockInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Machinist.cs" />
+    <Compile Include="Assets\Scripts\Overworld\RockInstance.cs" />
     <Compile Include="Assets\Scripts\Instances\VisualEffectInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Technician.cs" />
     <Compile Include="Assets\Scripts\Helpers\FolderHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\PurplePrototype03.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TimelineTag.cs" />
     <Compile Include="Assets\Scripts\Canvas\ScrollingRawImage.cs" />
     <Compile Include="Assets\Scripts\Utilities\Formulas.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Vampire.cs" />
@@ -109,8 +110,8 @@
     <Compile Include="Assets\Scripts\Models\Actor\BaseStats.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\CeramicKnight03.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\PurplePrototype04.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\MarshShambler00.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Cyclops03.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\MarshShambler00.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorWeapon.cs" />
     <Compile Include="Assets\Scripts\Utilities\Demo_FreeCam.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Striker.cs" />
@@ -198,7 +199,6 @@
     <Compile Include="Assets\Scripts\Data\Actor\Bruiser.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\TechGremlin02.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Frog01.cs" />
-    <Compile Include="Assets\Scripts\Canvas\Timeline.cs" />
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DayNightCycle.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
@@ -220,6 +220,7 @@
     <Compile Include="Assets\Scripts\Canvas\WaveAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Utilities\SceneLoader.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Hag03.cs" />
+    <Compile Include="Assets\Scripts\Canvas\TimelineBarInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Ganger01.cs" />
     <Compile Include="Assets\Scripts\Managers\GhostManager.cs" />
     <Compile Include="Assets\Scripts\Overworld\CloudInstance.cs" />
@@ -322,7 +323,6 @@
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\StatGrowth.cs" />
-    <Compile Include="Assets\Scripts\Canvas\TimelineBlockInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\MechaArmor02.cs" />
     <Compile Include="Assets\Scripts\Overworld\GrassInstance.cs" />
     <Compile Include="Assets\Scripts\Libraries\PrefabLibrary.cs" />
@@ -419,8 +419,8 @@
     <Compile Include="Assets\Scripts\Managers\CombatTextManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\AbilityLibrary.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\MountainTroll.cs" />
-    <Compile Include="Assets\Scripts\Overworld\OverworldHero.Collision.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\BlackNinja.cs" />
+    <Compile Include="Assets\Scripts\Overworld\OverworldHero.Collision.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\SteppinRazor01.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Fighter.cs" />
     <Compile Include="Assets\Scripts\Canvas\DestinationMarker.cs" />
@@ -437,8 +437,8 @@
     <Compile Include="Assets\Scripts\Data\Actor\Soldier00.cs" />
     <Compile Include="Assets\Scripts\Instances\TargetLineInstance.cs" />
     <Compile Include="Assets\Scripts\Models\TurnSelectionMode.cs" />
-    <Compile Include="Assets\Scripts\Overworld\CloudShadowInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\PandaGirl.cs" />
+    <Compile Include="Assets\Scripts\Overworld\CloudShadowInstance.cs" />
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Managers\ExperienceTracker.cs" />
@@ -465,8 +465,8 @@
     <Compile Include="Assets\Scripts\Helpers\GameModeHelper.cs" />
     <Compile Include="Assets\Scripts\Sequences\PincerAttackSupportSequence.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Lurker00.cs" />
-    <Compile Include="Assets\Scripts\Data\Actor\Frog00.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Basher.cs" />
+    <Compile Include="Assets\Scripts\Data\Actor\Frog00.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Drifter.cs" />
     <Compile Include="Assets\Scripts\Managers\ConsoleManager.cs" />
     <Compile Include="Assets\Scripts\Libraries\SoundEffectLibrary.cs" />
