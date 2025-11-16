@@ -18,7 +18,6 @@ namespace Assets.Scripts.Sequences
 
             // Put input back into hero mode and refill the turn timer UI
             g.InputManager.InputMode = InputMode.PlayerTurn;
-            g.TimerBar.Refill();   // resets fill to full and timeRemaining to max
 
             yield break;
         }

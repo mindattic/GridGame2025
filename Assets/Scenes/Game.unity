@@ -3349,7 +3349,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fa19a08a4228c44b32b0489fa72f71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxDuration: 6
   isCentered: 0
 --- !u!1 &1044859620
 GameObject:
@@ -7051,7 +7050,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 16}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2014384095
@@ -7643,10 +7642,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Assets.Scripts.Canvas.TimelineBarInstance
   barRect: {fileID: 6348271054741024797}
-  spawnRect: {fileID: 674357626852936186}
-  leftLine: {fileID: 797617824689001122}
   tagsRoot: {fileID: 1962362947}
   tagPrefab: {fileID: 1681995068934765685, guid: 0c2284c3ff453ec468d1bd87e98ca545, type: 3}
+  triggerPointRect: {fileID: 0}
+  spawnPointRect: {fileID: 0}
+  canvasPercent: 0.97
   baseUnitsPerSec: 0.08
   perSpeedUnitsPerSec: 0.02
   tagRowHeight: 14

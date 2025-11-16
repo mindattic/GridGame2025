@@ -128,7 +128,6 @@ namespace Assets.Helpers
         }
 
         public static TileMap TileMap => gm != null ? gm.tileMap : null;
-        public static TimerBar TimerBar => gm != null ? gm.timerBar : null;
         public static BoardInstance Board => gm != null ? gm.board : null;
         public static List<TileInstance> Tiles => gm != null ? gm.tiles : null;
         public static RectTransform PortraitsContainer => gm != null ? gm.portraitsRect : null;

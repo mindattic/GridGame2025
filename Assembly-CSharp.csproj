@@ -291,7 +291,6 @@
     <Compile Include="Assets\Scripts\Managers\SynergyLineManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\CeramicKnight04.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Hag01.cs" />
-    <Compile Include="Assets\Scripts\Canvas\TimerBar.cs" />
     <Compile Include="Assets\Scripts\Overworld\BushInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\SelectionRules.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Monk.cs" />

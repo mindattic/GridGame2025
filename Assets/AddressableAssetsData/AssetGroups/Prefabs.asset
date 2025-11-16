@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: 764698fc62482f24687b22443d200806
   m_SerializeEntries:
   - m_GUID: 0c2284c3ff453ec468d1bd87e98ca545
-    m_Address: Assets/Prefabs/TimelineTagPrefab
+    m_Address: Prefabs/TimelineTagPrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

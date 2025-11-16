@@ -112,9 +112,7 @@ public class SelectionManager : MonoBehaviour
             selectedState = SelectedActorState.Moving;
             g.SortingManager.OnHeroDrag();
 
-            // Display-only timer: sync once; do NOT start a countdown that drives turn logic
-            g.TimerBar.SyncToTimeline(resetToFull: true);
-
+       
             // Start the enemy timeline countdown (tags slide left)
             g.TimelineBar?.OnHeroStartMove();
 
@@ -162,8 +160,7 @@ public class SelectionManager : MonoBehaviour
         // Transition to Dropped
         selectedState = SelectedActorState.Dropped;
 
-        // Pause display-only timer
-        g.TimerBar.Pause();
+   
 
         actor.Move.ToLocation();
         actor.Flags.IsMoving = false;

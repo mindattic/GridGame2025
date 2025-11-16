@@ -130,7 +130,6 @@ public class GameManager : Singleton<GameManager>
 
     // Instances
     [HideInInspector] public TileMap tileMap;
-    [HideInInspector] public TimerBar timerBar;
     [HideInInspector] public RectTransform portraitsRect;
     [HideInInspector] public BoardInstance board;
     [HideInInspector] public List<TileInstance> tiles;
@@ -183,7 +182,6 @@ public class GameManager : Singleton<GameManager>
         // Canvas
         card = GameObjectHelper.Game.Card.Instance;
         canvas3D = GameObjectHelper.Game.Canvas3D;
-        timerBar = GameObjectHelper.Game.TimerBar.Instance;
         portraitsRect = GameObjectHelper.Game.Portraits;
         titleBar = GameObjectHelper.Game.TitleBar.Instance;
 
@@ -305,7 +303,6 @@ public class GameManager : Singleton<GameManager>
         if (board != null) board.Initialize();
         if (stageManager != null) stageManager.Initialize();
         if (targetModeOverlay != null) targetModeOverlay.Initialize();
-        if (timerBar != null) timerBar.Initialize();
         if (turnManager != null) turnManager.Initialize();
 
         // Spawn initial tags for existing enemies

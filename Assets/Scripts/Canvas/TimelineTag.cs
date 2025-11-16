@@ -2,6 +2,7 @@ using Assets.Scripts.Models;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Assets.Scripts.Canvas
 {
@@ -10,8 +11,10 @@ namespace Assets.Scripts.Canvas
     public sealed class TimelineTag : MonoBehaviour
     {
         [Header("Parts")]
-        [SerializeField] private Image body;
+        [SerializeField] private Image image;
         [SerializeField] private CanvasGroup canvasGroup; // for fade-out
+        [Tooltip("Optional: Text label (TMP) shown below the tag to display seconds remaining.")]
+        [SerializeField] private TextMeshProUGUI label;
 
         [Header("Runtime")]
         public ActorInstance Owner; // enemy owning this tag
@@ -36,6 +39,27 @@ namespace Assets.Scripts.Canvas
             Rect = GetComponent<RectTransform>();
             if (canvasGroup == null)
                 canvasGroup = GetComponent<CanvasGroup>();
+
+            // Prefer exact-name children, then fall back to any in-tree
+            if (image == null)
+            {
+                var imgTf = transform.Find("Image");
+                image = imgTf != null ? imgTf.GetComponent<Image>() : GetComponentInChildren<Image>(true);
+                if (image == null)
+                    Debug.LogWarning("TimelineTag: Child Image not found. Add an Image child or assign `body`.", this);
+            }
+            if (label == null)
+            {
+                var lblTf = transform.Find("Label");
+                label = lblTf != null ? lblTf.GetComponent<TextMeshProUGUI>() : GetComponentInChildren<TextMeshProUGUI>(true);
+                if (label == null)
+                    Debug.LogWarning("TimelineTag: Child Label (TextMeshProUGUI) not found. Add a Label child or assign `label`.", this);
+            }
+
+            // Optional: do not intercept clicks
+            if (image != null) image.raycastTarget = false;
+            if (label != null) label.raycastTarget = false;
+
             // Left-edge pivot so anchoredPosition.x represents the tag's LEFT edge exactly
             if (Rect != null)
             {
@@ -51,8 +75,20 @@ namespace Assets.Scripts.Canvas
 
         public void Wire(Image bodyImage, CanvasGroup group)
         {
-            if (bodyImage != null) body = bodyImage;
+            if (bodyImage != null) image = bodyImage;
             if (group != null) canvasGroup = group;
+            if (label == null)
+            {
+                var lblTf = transform.Find("Label");
+                label = lblTf != null ? lblTf.GetComponent<TextMeshProUGUI>() : GetComponentInChildren<TextMeshProUGUI>(true);
+            }
+            if (image == null)
+            {
+                var imgTf = transform.Find("Image");
+                image = imgTf != null ? imgTf.GetComponent<Image>() : GetComponentInChildren<Image>(true);
+            }
+            if (image != null) image.raycastTarget = false;
+            if (label != null) label.raycastTarget = false;
         }
 
         // Initialize using normalized coordinates and speed
@@ -69,6 +105,7 @@ namespace Assets.Scripts.Canvas
             paused = true; // start paused; TimelineBar controls advance
             fired = false;
             ApplyPosition();
+            UpdateLabel();
         }
 
         // Backward-compatible initializer
@@ -86,6 +123,7 @@ namespace Assets.Scripts.Canvas
             leftX = newLeftX;
             spawnX = Mathf.Max(newSpawnX, newLeftX + 1f);
             ApplyPosition();
+            UpdateLabel();
         }
 
         public void Pause() => paused = true;
@@ -96,6 +134,7 @@ namespace Assets.Scripts.Canvas
         public void ResetForNextCycle()
         {
             fired = false;
+            UpdateLabel();
         }
 
         // Set anchored x from normalized u (left-edge pivot guarantees alignment)
@@ -120,12 +159,14 @@ namespace Assets.Scripts.Canvas
                 var lp = transform.localPosition;
                 transform.localPosition = new Vector3(xLeft, lp.y, lp.z);
             }
+            UpdateLabel();
         }
 
         public void SetU(float value)
         {
             u = Mathf.Clamp01(value);
             ApplyPosition();
+            UpdateLabel();
         }
 
         public float GetU() => u;
@@ -134,10 +175,14 @@ namespace Assets.Scripts.Canvas
 
         private void Update()
         {
-            if (isFading || paused) return;
-            // Move toward left (u =0)
-            u = Mathf.MoveTowards(u, 0f, uPerSec * Time.deltaTime);
-            ApplyPosition();
+            if (!isFading && !paused)
+            {
+                // Move toward left (u =0)
+                u = Mathf.MoveTowards(u, 0f, uPerSec * Time.deltaTime);
+                ApplyPosition();
+            }
+            // Update label after we potentially moved this frame
+            UpdateLabel();
 
             // Left-edge strict check using anchoredPosition.x (left pivot)
             if (!fired && Rect != null && Rect.anchoredPosition.x <= leftX + ReachTolerance)
@@ -145,6 +190,13 @@ namespace Assets.Scripts.Canvas
                 fired = true;
                 onReached?.Invoke(this);
             }
+        }
+
+        private void UpdateLabel()
+        {
+            if (label == null) return;
+            float sec = GetSecondsRemaining();
+            label.text = sec.ToString("0.0");
         }
 
         public void FadeAndDestroy(float duration = 0.25f)
@@ -163,7 +215,7 @@ namespace Assets.Scripts.Canvas
                 t += Time.deltaTime;
                 float a = Mathf.Lerp(start, 0f, Mathf.Clamp01(t / duration));
                 if (canvasGroup != null) canvasGroup.alpha = a;
-                else if (body != null) body.color = new Color(body.color.r, body.color.g, body.color.b, a);
+                else if (image != null) image.color = new Color(image.color.r, image.color.g, image.color.b, a);
                 yield return null;
             }
             Destroy(gameObject);

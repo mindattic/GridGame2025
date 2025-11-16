@@ -92,14 +92,6 @@ namespace Assets.Helper
 
             public const string TimelineContainer = "Canvas/Timeline";
 
-            public static class TimerBar
-            {
-                public static global::TimerBar Instance => GameObject.Find("Canvas/TimerBar2D").GetComponent<global::TimerBar>();
-                public static Image Back => GameObject.Find("Canvas/TimerBar2D/Back").GetComponent<Image>();
-                public static Image Fill => GameObject.Find("Canvas/TimerBar2D/Fill").GetComponent<Image>();
-                public static TextMeshProUGUI CountdownLabel => GameObject.Find("Canvas/TimerBar2D/Fill/Countdown").GetComponent<TextMeshProUGUI>();
-                public static Image Front => GameObject.Find("Canvas/TimerBar2D/Front").GetComponent<Image>();              
-            }
 
             public static RectTransform Portraits => GameObject.Find("Canvas/Portraits").GetComponent<RectTransform>();
 
