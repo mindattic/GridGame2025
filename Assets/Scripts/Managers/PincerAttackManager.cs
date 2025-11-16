@@ -9,6 +9,9 @@ using g = Assets.Helpers.GameHelper;
 
 public class PincerAttackManager : MonoBehaviour
 {
+    // Fires once when a pincer resolution finishes (after sequences execute and cleanup).
+    public event System.Action OnResolved;
+
     /// <summary>
     /// Entry point for resolving pincer attacks for a team.
     /// Returns true if any pincer work was enqueued, false if none.
@@ -263,7 +266,8 @@ public class PincerAttackManager : MonoBehaviour
         g.SynergyLineManager.Clear();
         participants.Clear();
 
-        // Do not enqueue EndTurnSequence here. Caller (SelectionManager) decides based on timeline state.
+        // Signal completion to listeners (e.g., SelectionManager) so they can decide next step.
+        OnResolved?.Invoke();
     }
 
     private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opponent)
