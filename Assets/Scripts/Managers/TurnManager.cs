@@ -40,6 +40,9 @@ namespace Assets.Scripts.Managers
 
  public void NextTurn()
  {
+ // end-of-window housekeeping
+ bool endingEnemyTurn = !IsHeroTurn; // if we were in enemy turn before advancing
+
  CurrentTurn++;
  g.StageManager?.OnTurnAdvanced();
 
@@ -51,6 +54,12 @@ namespace Assets.Scripts.Managers
  return;
  }
 
+ // If we are finishing an enemy's turn, reset that enemy's timeline state before returning to hero
+ if (endingEnemyTurn)
+ {
+ NotifyEnemyTurnFinished();
+ }
+
  BeginHeroWindow();
  }
 
@@ -60,6 +69,12 @@ namespace Assets.Scripts.Managers
  ActiveActor = null;
  var mana = GetMana(); if (mana != null) mana.OnTurnStarted(Team.Hero);
  g.InputManager.InputMode = InputMode.PlayerTurn;
+
+ // Make sure the timeline shows all enemies for the upcoming planning window
+ g.TimelineBar?.EnsureTagsForAllEnemies(true);
+ // Timeline movement is player-driven; keep it paused until the hero starts moving
+ g.TimelineBar?.OnHeroStopMove();
+
  SelectActiveOrFallback();
  UpdateActiveIndicators();
  g.SequenceManager.Add(new HeroStartSequence());

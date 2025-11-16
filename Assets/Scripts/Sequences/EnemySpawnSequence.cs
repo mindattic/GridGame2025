@@ -20,6 +20,9 @@ namespace Assets.Scripts.Sequences
             // Allow spawn visuals to apply
             yield return Wait.None();
 
+            // Ensure new enemies are represented on the timeline
+            g.TimelineBar?.EnsureTagsForAllEnemies(false);
+
             // If currently in enemy turn and no active actor set, pick first spawned enemy
             if (g.TurnManager.IsEnemyTurn && g.TurnManager.ActiveActor == null)
             {

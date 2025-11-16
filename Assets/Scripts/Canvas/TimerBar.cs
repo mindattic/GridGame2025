@@ -65,11 +65,20 @@ public class TimerBar : MonoBehaviour
         UpdateCountdownLabel();
     }
 
-    //private void OnDestroy()
-    //{
-    //    if (g.InputManager != null)
-    //        g.InputManager.OnInputModeChanged -= HandleModeChanged;
-    //}
+    /// <summary>
+    /// Immediately sets the timer to zero, updates UI, and stops any running coroutine.
+    /// </summary>
+    public void ForceComplete()
+    {
+        timeRemaining = 0f;
+        UpdateFill();
+        UpdateCountdownLabel();
+        if (runningCoroutine != null)
+        {
+            StopCoroutine(runningCoroutine);
+            runningCoroutine = null;
+        }
+    }
 
     /// <summary>
     /// Prepares layout, subscribes to mode changes, and positions the bar.

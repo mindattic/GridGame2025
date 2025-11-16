@@ -93,6 +93,9 @@ public class StageManager : MonoBehaviour
         // Generate and load wave 1
         LoadEndlessWave(0);
 
+        // After spawns, seed timeline tags for current enemies
+        g.TimelineBar?.EnsureTagsForAllEnemies(true);
+
         scene.FadeIn();
     }
 
@@ -112,6 +115,9 @@ public class StageManager : MonoBehaviour
 
         // Announcement (total unknown/infinite)
         g.WaveAnnouncement?.ShowEndless(nextWaveNumber);
+
+        // Refresh timeline tags
+        g.TimelineBar?.EnsureTagsForAllEnemies(true);
     }
 
     /// <summary>
@@ -148,6 +154,9 @@ public class StageManager : MonoBehaviour
         {
             Debug.LogError($"Stage {currentStage.Name} has no waves defined.");
         }
+
+        // Ensure timeline tags exist
+        g.TimelineBar?.EnsureTagsForAllEnemies(true);
 
         scene.FadeIn();
     }
@@ -193,6 +202,9 @@ public class StageManager : MonoBehaviour
                 g.DottedLineManager.Spawn(segment, location);
             }
         }
+
+        // Refresh tags for currently spawned enemies
+        g.TimelineBar?.EnsureTagsForAllEnemies(true);
 
         g.WaveAnnouncement?.Show(waveIndex + 1, currentStage.Waves.Count);
     }
@@ -262,6 +274,12 @@ public class StageManager : MonoBehaviour
         // Register the new actor
         g.Actors.All.Add(instance);
 
+        // If requested, seed timeline tags immediately (useful for single off-cycle spawns)
+        if (rebuildTimeline)
+        {
+            g.TimelineBar?.EnsureTagsForAllEnemies(false);
+        }
+
         return instance;
     }
 
@@ -283,6 +301,9 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void OnActorDeath()
     {
+        // Immediately refresh timeline so dead enemies' tags are removed
+        g.TimelineBar?.EnsureTagsForAllEnemies(false);
+
         // 1) If there are no enemies currently playing but there are pending (not yet spawned)
         //    enemies scheduled for future turns, pull the next batch forward to the current turn
         //    so the board is never empty of enemies.
@@ -298,6 +319,7 @@ public class StageManager : MonoBehaviour
 
             // Activate immediately and refresh timeline
             OnTurnAdvanced();
+            g.TimelineBar?.EnsureTagsForAllEnemies(false);
             return; // do not advance wave/stage; we just filled the gap
         }
 
