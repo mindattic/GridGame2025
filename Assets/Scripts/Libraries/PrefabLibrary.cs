@@ -53,12 +53,12 @@ namespace Assets.Scripts.Libraries
                 { "TargetLinePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TargetLinePrefab") },
                 { "TilePrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TilePrefab") },
                 { "TooltipPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TooltipPrefab") },
-                { "TimelineBlockPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TimelineBlockPrefab") },
                 { "HeroExperiencePane", AssetHelper.LoadAsset<GameObject>("Prefabs/HeroExperiencePane") },
                 { "SettingSlider", AssetHelper.LoadAsset<GameObject>("Prefabs/SettingSlider") },
                 { "SettingToggle", AssetHelper.LoadAsset<GameObject>("Prefabs/SettingToggle") },
                 { "SettingDropdown", AssetHelper.LoadAsset<GameObject>("Prefabs/SettingDropdown") },
                 { "PauseMenu", AssetHelper.LoadAsset<GameObject>("Prefabs/PauseMenu") },
+                { "TimelineTagPrefab", AssetHelper.LoadAsset<GameObject>("Prefabs/TimelineTagPrefab") },
                 { "TutorialPopup", AssetHelper.LoadAsset<GameObject>("Prefabs/TutorialPopup") },
             };
             isLoaded = true;

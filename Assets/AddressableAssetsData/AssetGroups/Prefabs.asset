@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Prefabs
   m_GUID: 764698fc62482f24687b22443d200806
   m_SerializeEntries:
+  - m_GUID: 0c2284c3ff453ec468d1bd87e98ca545
+    m_Address: Assets/Prefabs/TimelineTagPrefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0dc55c1e3bb517c4da449a8973b4f7fb
     m_Address: Prefabs/FootstepPrefab
     m_ReadOnly: 0
@@ -87,11 +92,6 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 526e3799f58cd824ea4aa7e143bdf827
     m_Address: Prefabs/SynergyStrandPrefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 54d93e22376e7c54e844e233d4084d1e
-    m_Address: Prefabs/TimelineBlockPrefab
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

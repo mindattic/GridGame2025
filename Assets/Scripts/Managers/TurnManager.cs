@@ -18,6 +18,9 @@ namespace Assets.Scripts.Managers
  private ActorInstance queuedEnemyAfterHero;
  private ActorInstance lastEnemy;
 
+ // Expose whether an enemy is queued due to a timeline tag reaching TriggerX
+ public bool HasQueuedEnemyAfterHero => queuedEnemyAfterHero != null && queuedEnemyAfterHero.IsPlaying;
+
  private ManaPoolManager GetMana()
  {
  var go = GameObject.Find("Game");

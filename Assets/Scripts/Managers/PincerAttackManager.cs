@@ -193,7 +193,7 @@ public class PincerAttackManager : MonoBehaviour
 
     /// <summary>
     /// Main enqueue routine. Spawns visuals, builds sequences, resolves deaths once,
-    /// then ends the turn exactly once via EndTurnSequence.
+    /// leaves turn advancement decision to the caller (SelectionManager) based on timeline.
     /// </summary>
     private IEnumerator EnqueueRoutine(PincerAttackParticipants participants)
     {
@@ -263,8 +263,7 @@ public class PincerAttackManager : MonoBehaviour
         g.SynergyLineManager.Clear();
         participants.Clear();
 
-        g.SequenceManager.Add(new EndTurnSequence());
-        g.SequenceManager.Execute();
+        // Do not enqueue EndTurnSequence here. Caller (SelectionManager) decides based on timeline state.
     }
 
     private AttackResult CreateAttackResult(ActorInstance attacker, ActorInstance opponent)

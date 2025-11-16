@@ -16,15 +16,14 @@ public class TimerBar : MonoBehaviour
     private RectTransform fillRect;
     private TextMeshProUGUI countdownLabel; // new
 
-    [Header("Duration")]
-    [Tooltip("Total time in seconds for a full fill to drain to zero.")]
-    [SerializeField] private float maxDuration = 6f;
-
     [Tooltip("If true, the bar shrinks symmetrically into the center. If false, it drains from right to left.")]
     [SerializeField] private bool isCentered = false;
 
-    // Use 97% of canvas width.
-    private const float CanvasPercent = 0.97f;
+    // Use97% of canvas width.
+    private const float CanvasPercent =0.97f;
+
+    // Display duration in seconds for a full bar. Driven by TimelineBar's next tag time.
+    private float maxDuration =6f; // not serialized; synced from TimelineBar
 
     private float timeRemaining;
     private float maxWidth;
@@ -47,22 +46,35 @@ public class TimerBar : MonoBehaviour
         if (isCentered)
         {
             // Drain toward the center by keeping the fill centered
-            fillRect.anchorMin = new Vector2(0.5f, 0.5f);
-            fillRect.anchorMax = new Vector2(0.5f, 0.5f);
-            fillRect.pivot = new Vector2(0.5f, 0.5f);
+            fillRect.anchorMin = new Vector2(0.5f,0.5f);
+            fillRect.anchorMax = new Vector2(0.5f,0.5f);
+            fillRect.pivot = new Vector2(0.5f,0.5f);
         }
         else
         {
             // Drain from right to left by anchoring the left edge
-            fillRect.anchorMin = new Vector2(0f, 0.5f);
-            fillRect.anchorMax = new Vector2(0f, 0.5f);
-            fillRect.pivot = new Vector2(0f, 0.5f);
+            fillRect.anchorMin = new Vector2(0f,0.5f);
+            fillRect.anchorMax = new Vector2(0f,0.5f);
+            fillRect.pivot = new Vector2(0f,0.5f);
         }
         fillRect.anchoredPosition = Vector2.zero;
 
-        // Initialize timer value
-        timeRemaining = maxDuration;
-        UpdateCountdownLabel();
+        // Initialize timer value from current timeline state
+        SyncToTimeline(resetToFull: true);
+    }
+
+    private void Update()
+    {
+        // Passive sync: when timeline is advancing, show remaining time visually
+        if (g.TimelineBar != null && g.TimelineBar.IsAdvancing)
+        {
+            float sec = g.TimelineBar.GetSecondsUntilNextEnemyReachesLeft();
+            // Keep the current maxDuration for scaling (do not jitter aggressively)
+            // Only update remaining time for fill/label
+            timeRemaining = Mathf.Clamp(sec,0f, Mathf.Max(0.01f, maxDuration));
+            UpdateFill();
+            UpdateCountdownLabel();
+        }
     }
 
     /// <summary>
@@ -70,7 +82,7 @@ public class TimerBar : MonoBehaviour
     /// </summary>
     public void ForceComplete()
     {
-        timeRemaining = 0f;
+        timeRemaining =0f;
         UpdateFill();
         UpdateCountdownLabel();
         if (runningCoroutine != null)
@@ -98,13 +110,14 @@ public class TimerBar : MonoBehaviour
         // Position the bar at the top edge of the board in screen space.
         if (rootRect != null && g.Board != null && g.Board.screenEdges != null)
         {
-            rootRect.pivot = new Vector2(0.5f, 0f); // bottom center
-            rootRect.position = g.Board.screenEdges.Top + new Vector3(0, 100);
+            rootRect.pivot = new Vector2(0.5f,0f); // bottom center
+            rootRect.position = g.Board.screenEdges.Top + new Vector3(0,100);
         }
     }
 
     /// <summary>
-    /// Starts the countdown from the current remaining time.
+    /// Starts the countdown and synchronizes duration from the next timeline tag time.
+    /// The bar is display-only and will be updated passively in Update().
     /// </summary>
     public void Play()
     {
@@ -114,11 +127,13 @@ public class TimerBar : MonoBehaviour
             runningCoroutine = null;
         }
 
-        runningCoroutine = StartCoroutine(CountdownRoutine());
+        // Always sync duration from TimelineBar before starting
+        SyncToTimeline(resetToFull: true);
     }
 
     /// <summary>
-    /// Pauses the countdown without resetting time.
+    /// Pauses the countdown without resetting time. Not strictly needed with passive update,
+    /// but kept for API compatibility.
     /// </summary>
     public void Pause()
     {
@@ -130,7 +145,7 @@ public class TimerBar : MonoBehaviour
     }
 
     /// <summary>
-    /// Refills to full and resets the timer to maxDuration. Also tints layers back to white.
+    /// Refills to full and resets the timer to the current duration. Also tints layers back to white.
     /// </summary>
     public void Refill()
     {
@@ -138,9 +153,8 @@ public class TimerBar : MonoBehaviour
         if (fill != null) fill.color = ColorHelper.Solid.White;
         if (front != null) front.color = ColorHelper.Solid.White;
 
-        timeRemaining = maxDuration;
-        UpdateFill();
-        UpdateCountdownLabel();
+        // Keep maxDuration in sync with timeline when refilling
+        SyncToTimeline(resetToFull: true);
     }
 
     /// <summary>
@@ -154,14 +168,14 @@ public class TimerBar : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the countdown duration in seconds. Does not start playback.
-    /// Clamps current remaining time to the new duration and updates the fill.
+    /// Sets the countdown duration in seconds. Display-only. Clamps and updates the fill.
+    /// Prefer using SyncToTimeline() to derive from timeline automatically.
     /// </summary>
     public void SetDuration(float seconds)
     {
         maxDuration = Mathf.Max(0.01f, seconds);
         if (timeRemaining > maxDuration)
-            timeRemaining = maxDuration;
+        timeRemaining = maxDuration;
 
         UpdateFill();
         UpdateCountdownLabel();
@@ -176,6 +190,22 @@ public class TimerBar : MonoBehaviour
         timeRemaining = maxDuration;
         UpdateFill();
         UpdateCountdownLabel();
+    }
+
+    /// <summary>
+    /// Synchronize the display duration to the time until the next enemy tag reaches the left.
+    /// If resetToFull is true, also refill the bar.
+    /// </summary>
+    public void SyncToTimeline(bool resetToFull)
+    {
+        float sec = ComputeNextEnemyTime();
+        maxDuration = Mathf.Max(0.01f, sec);
+        if (resetToFull)
+        {
+            timeRemaining = maxDuration;
+            UpdateFill();
+            UpdateCountdownLabel();
+        }
     }
 
     // =================================================================================================
@@ -201,37 +231,36 @@ public class TimerBar : MonoBehaviour
     }
 
     /// <summary>
-    /// Main countdown loop that decrements timeRemaining and updates the fill each frame.
+    /// Main countdown loop that used to drive the timer. Retained for compatibility but unused now.
     /// </summary>
     private IEnumerator CountdownRoutine()
     {
-        while (timeRemaining > 0f)
+        while (timeRemaining >0f)
         {
-            // Respect infinite timer debug mode
             if (g.DebugManager.isTimerInfinite)
             {
                 yield return Wait.None();
                 continue;
             }
-
-            // Decrement timer and clamp
             timeRemaining -= Time.deltaTime;
-            if (timeRemaining < 0f) timeRemaining = 0f;
-
-            // Update UI width and label
+            if (timeRemaining <0f) timeRemaining =0f;
             UpdateFill();
             UpdateCountdownLabel();
-
-            // Wait one frame
             yield return Wait.None();
         }
-
-        // Time expired, perform drop and block input until release
-        g.SelectionManager.Drop();
-        g.InputManager.RequireTouchRelease();
-
-        // Clear handle
         runningCoroutine = null;
+    }
+
+    /// <summary>
+    /// Computes time until next enemy tag reaches the left edge.
+    /// </summary>
+    private float ComputeNextEnemyTime()
+    {
+        if (g.TimelineBar == null) return maxDuration;
+        float sec = g.TimelineBar.GetSecondsUntilNextEnemyReachesLeft();
+        // Provide a reasonable fallback if nothing is active
+        if (sec <=0f || float.IsNaN(sec) || float.IsInfinity(sec)) sec = maxDuration;
+        return sec;
     }
 
     /// <summary>
@@ -241,7 +270,7 @@ public class TimerBar : MonoBehaviour
     {
         if (fillRect == null) return;
 
-        float t = Mathf.Approximately(maxDuration, 0f) ? 0f : Mathf.Clamp01(timeRemaining / maxDuration);
+        float t = Mathf.Approximately(maxDuration,0f) ?0f : Mathf.Clamp01(timeRemaining / maxDuration);
         float width = maxWidth * t;
 
         Vector2 size = fillRect.sizeDelta;
@@ -256,7 +285,7 @@ public class TimerBar : MonoBehaviour
     {
         if (countdownLabel == null) return;
 
-        // Show whole seconds with one decimal place, minimum 0.0
+        // Show whole seconds with one decimal place, minimum0.0
         float display = Mathf.Max(0f, timeRemaining);
         countdownLabel.text = display.ToString("0.0");
     }
@@ -298,8 +327,8 @@ public class TimerBar : MonoBehaviour
         if (rt == null) return;
 
         Vector2 sz = rt.sizeDelta;
-        if (width >= 0f) sz.x = width;
-        if (height > 0f) sz.y = height;
+        if (width >=0f) sz.x = width;
+        if (height >0f) sz.y = height;
         rt.sizeDelta = sz;
     }
 }
