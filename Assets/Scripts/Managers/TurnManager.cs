@@ -34,6 +34,14 @@ namespace Assets.Scripts.Managers
  if (enemy != null && enemy.IsEnemy) queuedEnemyAfterHero = enemy;
  }
 
+ // NEW: force start an enemy turn immediately, clearing any queued reference
+ public void ForceBeginEnemyTurn(ActorInstance enemy)
+ {
+ if (enemy == null || !enemy.IsPlaying) return;
+ queuedEnemyAfterHero = null;
+ BeginEnemyTurn(enemy);
+ }
+
  private void SelectActiveOrFallback()
  {
  if (ActiveActor != null) { g.SelectionManager.Select(ActiveActor); return; }

@@ -210,7 +210,21 @@ namespace Assets.Scripts.Canvas
 
         public void OnHeroStartMove() { Recalculate(); ResumeAll(); }
         public void OnHeroStopMove() { PauseAll(); }
-        public void OnEnemyTurnStarted(ActorInstance enemy) { PauseAll(); }
+        public void OnEnemyTurnStarted(ActorInstance enemy) { 
+            PauseAll(); 
+            // Lock any tags that are already at/past the trigger to the exact trigger position
+            UpdateAllEndpoints();
+            float left = TriggerX;
+            foreach (var t in activeTags)
+            {
+                if (t == null || t.Rect == null) continue;
+                if (t.Rect.anchoredPosition.x <= left + 0.25f)
+                {
+                    t.SetU(0f); // snaps exactly to leftX via ApplyPosition clamp
+                    t.Pause();
+                }
+            }
+        }
         public void OnEnemyTurnFinished(ActorInstance enemy)
         {
             var tag = activeTags.FirstOrDefault(t => t != null && t.Owner == enemy);
@@ -230,6 +244,8 @@ namespace Assets.Scripts.Canvas
             g.InputManager.InputMode = InputMode.None;
             g.TurnManager.QueueEnemyAfterHero(tag.Owner);
             g.SelectionManager.Drop();
+            // Lock the arriving tag exactly at the trigger
+            tag.SetU(0f);
             PauseAll();
         }
 
@@ -246,6 +262,54 @@ namespace Assets.Scripts.Canvas
                 if (sec < min) min = sec;
             }
             return float.IsInfinity(min) ? 0f : Mathf.Max(0f, min);
+        }
+
+        // NEW: Advance all tags by a number of seconds instantly (banking mechanic)
+        // Returns true if at least one tag reached the trigger point.
+        public bool AdvanceBySeconds(float seconds)
+        {
+            seconds = Mathf.Max(0f, seconds);
+            if (seconds <= 0f || activeTags.Count == 0) return false;
+            bool anyReached = false;
+            foreach (var t in activeTags)
+            {
+                if (t == null) continue;
+                float u = t.GetU();
+                float uPerSec = Mathf.Max(0.0001f, t.GetUPerSec());
+                float newU = Mathf.Max(0f, u - uPerSec * seconds);
+                t.SetU(newU);
+                // If moved to (or past) left edge, TimelineTag will invoke its callback next Update frame.
+                if (Mathf.Approximately(newU, 0f)) anyReached = true;
+            }
+            return anyReached;
+        }
+
+        // NEW: Bank directly to next arriving tag, queue its owner immediately and return it.
+        public ActorInstance BankToNextTrigger(out float secondsUsed)
+        {
+            secondsUsed = 0f;
+            if (activeTags.Count == 0) return null;
+
+            // Find earliest tag by seconds remaining
+            TimelineTag earliest = null;
+            float minSec = float.PositiveInfinity;
+            foreach (var t in activeTags)
+            {
+                if (t == null || t.Owner == null || !t.Owner.IsPlaying) continue;
+                float sec = t.GetSecondsRemaining();
+                if (sec < minSec)
+                {
+                    minSec = sec; earliest = t;
+                }
+            }
+            if (earliest == null || float.IsInfinity(minSec) || minSec <= 0f) return null;
+
+            secondsUsed = Mathf.Max(0f, minSec);
+            // Advance everyone by minSec
+            AdvanceBySeconds(secondsUsed);
+            // Explicitly queue arrival for the earliest tag now
+            OnTagReachedLeft(earliest);
+            return earliest.Owner;
         }
 
         private void SpawnTag(ActorInstance enemy, float startU)
@@ -283,7 +347,10 @@ namespace Assets.Scripts.Canvas
                     if (t == null || t.Rect == null) continue;
                     t.UpdateEndpoints(left, spawn);
                     var p = t.Rect.anchoredPosition;
-                    if (p.x <= left) t.SetU(1f); // if passed left edge, loop back to right (safety)
+                    // Only auto-loop tags that slipped past the left edge during HERO turns.
+                    // During enemy turns, keep the tag at TriggerX until OnEnemyTurnFinished resets it.
+                    bool isHeroTurn = g.TurnManager == null || g.TurnManager.IsHeroTurn;
+                    if (isHeroTurn && p.x <= left) t.SetU(1f);
                 }
             }
         }

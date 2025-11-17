@@ -160,6 +160,14 @@ namespace Assets.Helper
                 public static TargetModeOverlay TargetModeOverlay => GameObject.Find("Board/TargetModeOverlay").GetComponent<TargetModeOverlay>();
             }
 
+            public static class ManaPool
+            {
+                public static ManaPoolManager Instance => GameObject.Find("ManaPoolManager").GetComponent<ManaPoolManager>();
+                public static Button BankButton => GameObject.Find("Canvas/ManaPool/BankButton").GetComponent<Button>();
+                public static TextMeshProUGUI HeroMana => GameObject.Find("Canvas/ManaPool/HeroMana").GetComponent<TextMeshProUGUI>();
+                public static TextMeshProUGUI EnemyMana => GameObject.Find("Canvas/ManaPool/EnemyMana").GetComponent<TextMeshProUGUI>();
+            }
+
             public static class Card
             {
                 public static RectTransform Rect => GameObject.Find("Canvas/Card").GetComponent<RectTransform>();
@@ -170,8 +178,8 @@ namespace Assets.Helper
                 public static RectTransform Details => GameObject.Find("Canvas/Card/Details").GetComponent<RectTransform>();
                 public static RectTransform AbilityButtonContainer => GameObject.Find("Canvas/Card/AbilityButtonContainer").GetComponent<RectTransform>();
 
-                public static TextMeshProUGUI HeroMana => GameObject.Find("Canvas/Card/HeroMana").GetComponent<TextMeshProUGUI>();
-                public static TextMeshProUGUI EnemyMana => GameObject.Find("Canvas/Card/EnemyMana").GetComponent<TextMeshProUGUI>();
+               
+            
             }
 
 

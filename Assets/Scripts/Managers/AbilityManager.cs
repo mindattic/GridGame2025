@@ -170,7 +170,7 @@ namespace Assets.Scripts.Managers
             var mana = GetMana();
             if (mana != null)
             {
-                if (!mana.TrySpend(currentUser.IsHero ? Team.Hero : Team.Enemy, Mathf.Max(0, currentAbility.ManaCost)))
+                if (!mana.Spend(currentUser.IsHero ? Team.Hero : Team.Enemy, Mathf.Max(0, currentAbility.ManaCost)))
                 {
                     return;
                 }

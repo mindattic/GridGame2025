@@ -2,34 +2,74 @@ using TMPro;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
+using UnityEngine.UI;
+using Assets.Scripts.Canvas; // for TimelineBarInstance
+using Assets.Scripts.Sequences; // to enqueue EndTurnSequence
 
 public class ManaPoolManager : MonoBehaviour
 {
     [Header("Config")]
-    public int maxMana = 100;
-    public int heroMana = 0;
-    public int enemyMana = 0;
+    public float maxMana = 100f;
+    public float heroMana = 0f;
+    public float enemyMana = 0f;
 
     [Header("Gain Rates")]
-    public int perTurnGain = 5;     // passive gain each turn start
-    public int onAttackGain = 5;    // gain when dealing damage
-    public int onHitGain = 3;       // gain when taking damage
+    public float perTurnGain = 5f;     // passive gain each turn start
+    public float onAttackGain = 5f;    // gain when dealing damage
+    public float onHitGain = 3f;       // gain when taking damage
 
+    private Button BankButton;
     private TextMeshProUGUI HeroLabel;
     private TextMeshProUGUI EnemyLabel;
 
     private void Awake()
     {
-        HeroLabel = GameObjectHelper.Game.Card.HeroMana;
-        EnemyLabel = GameObjectHelper.Game.Card.EnemyMana;
+        heroMana = 0f; enemyMana = 0f; // ensure start at zero
+        BankButton = GameObjectHelper.Game.ManaPool.BankButton;
+        HeroLabel = GameObjectHelper.Game.ManaPool.HeroMana;
+        EnemyLabel = GameObjectHelper.Game.ManaPool.EnemyMana;
 
-        // Start hero team with 100 MP (clamped to max)
-        heroMana = Mathf.Clamp(100, 0, maxMana);
-        enemyMana = Mathf.Clamp(enemyMana, 0, maxMana);
+        if (BankButton != null) BankButton.onClick.AddListener(OnBankButtonClicked);
+
         RefreshUI();
     }
 
-    public bool TrySpend(Team team, int cost)
+    private void OnDestroy()
+    {
+        if (BankButton != null)
+            BankButton.onClick.RemoveListener(OnBankButtonClicked);
+    }
+
+    private TimelineBarInstance GetTimeline() => g.TimelineBar;
+
+    public void OnBankButtonClicked()
+    {
+        // Only usable during hero planning window
+        if (!g.TurnManager.IsHeroTurn) return;
+        var bar = GetTimeline();
+        if (bar == null) return;
+
+        // Bank: move all tags left by the exact remaining time of the nearest tag
+        float secondsUsed;
+        var arrivingEnemy = bar.BankToNextTrigger(out secondsUsed);
+        if (arrivingEnemy == null || secondsUsed <= 0f)
+            return;
+
+        // Add MP to hero based on seconds used
+        Accumulate(Team.Hero, secondsUsed);
+        RefreshUI();
+
+        // Ensure correct handoff through the Sequence system (avoids race conditions)
+        g.InputManager.InputMode = InputMode.None;
+        g.SelectionManager.Drop();
+        // Make sure the enemy we computed is queued (BankToNextTrigger already queues, but be explicit)
+        if (arrivingEnemy != null) g.TurnManager.QueueEnemyAfterHero(arrivingEnemy);
+        // End the hero turn via sequence so TurnManager.NextTurn consumes the queued enemy immediately
+        g.SequenceManager.Add(new EndTurnSequence());
+        g.SequenceManager.Execute();
+    }
+
+    public bool Spend(Team team, float cost)
     {
         cost = Mathf.Max(0, cost);
         if (team == Team.Hero)
@@ -46,7 +86,7 @@ public class ManaPoolManager : MonoBehaviour
         return true;
     }
 
-    public void Gain(Team team, int amount)
+    public void Accumulate(Team team, float amount)
     {
         amount = Mathf.Max(0, amount);
         if (team == Team.Hero)
@@ -58,16 +98,16 @@ public class ManaPoolManager : MonoBehaviour
 
     public void OnTurnStarted(Team team)
     {
-        Gain(team, perTurnGain);
+        Accumulate(team, perTurnGain);
     }
 
     // Optional hooks you can call where appropriate
-    public void OnDealtDamage(Team team) => Gain(team, onAttackGain);
-    public void OnTookDamage(Team team) => Gain(team, onHitGain);
+    public void OnDealtDamage(Team team) => Accumulate(team, onAttackGain);
+    public void OnTookDamage(Team team) => Accumulate(team, onHitGain);
 
     public void RefreshUI()
     {
-        if (HeroLabel != null) HeroLabel.text = $"MP: {heroMana}";
-        if (EnemyLabel != null) EnemyLabel.text = $"MP: {enemyMana}";
+        if (HeroLabel != null) HeroLabel.text = $"MP: {heroMana.ToString("0.00")}";
+        if (EnemyLabel != null) EnemyLabel.text = $"MP: {enemyMana.ToString("0.00")}";
     }
 }

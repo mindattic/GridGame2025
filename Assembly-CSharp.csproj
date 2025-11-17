@@ -491,6 +491,7 @@
     <Compile Include="Assets\Scripts\Canvas\ConfirmationDialogInstance.cs" />
     <Compile Include="Assets\Scripts\Managers\ManaPoolManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Odachi.cs" />
+    <Compile Include="Assets\Scripts\Canvas\BankButton.cs" />
     <Compile Include="Assets\Scripts\Instances\GhostInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Werewolf00.cs" />
     <Compile Include="Assets\Scripts\Managers\SplashScreenManager.cs" />

@@ -142,6 +142,8 @@ namespace Assets.Scripts.Canvas
         {
             if (Rect == null) return;
             float xLeft = Mathf.Lerp(leftX, spawnX, Mathf.Clamp01(u));
+            // Prevent ever going past the trigger point; lock exactly at leftX when u<=0
+            if (xLeft < leftX) xLeft = leftX;
             var p = Rect.anchoredPosition;
             Rect.anchoredPosition = new Vector2(xLeft, p.y);
         }
@@ -150,14 +152,17 @@ namespace Assets.Scripts.Canvas
         {
             if (Rect != null)
             {
+                // Clamp to never cross the trigger to the left
+                float clamped = Mathf.Max(leftX, xLeft);
                 var p = Rect.anchoredPosition;
-                Rect.anchoredPosition = new Vector2(xLeft, p.y);
-                u = (spawnX - leftX) > 0.0001f ? Mathf.InverseLerp(leftX, spawnX, xLeft) : u;
+                Rect.anchoredPosition = new Vector2(clamped, p.y);
+                u = (spawnX - leftX) > 0.0001f ? Mathf.InverseLerp(leftX, spawnX, clamped) : u;
             }
             else
             {
                 var lp = transform.localPosition;
-                transform.localPosition = new Vector3(xLeft, lp.y, lp.z);
+                float clamped = Mathf.Max(leftX, xLeft);
+                transform.localPosition = new Vector3(clamped, lp.y, lp.z);
             }
             UpdateLabel();
         }
@@ -181,6 +186,12 @@ namespace Assets.Scripts.Canvas
                 u = Mathf.MoveTowards(u, 0f, uPerSec * Time.deltaTime);
                 ApplyPosition();
             }
+            // Ensure we never drift past the trigger point due to float jitter
+            if (Rect != null && Rect.anchoredPosition.x < leftX)
+            {
+                SetX(leftX);
+            }
+
             // Update label after we potentially moved this frame
             UpdateLabel();
 
