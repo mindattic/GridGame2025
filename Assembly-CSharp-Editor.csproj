@@ -64,6 +64,7 @@
     <Compile Include="Assets\Editor\DebugWindow.ProjectileOptions.cs" />
     <Compile Include="Assets\Editor\DebugWindow.ActorStats.cs" />
     <Compile Include="Assets\Scripts\Editor\TimelinePrefabGenerator.cs" />
+    <Compile Include="Assets\Editor\DebugWindow.TextStyles.cs" />
     <Compile Include="Assets\Editor\DebugWindow.SpawnOptions.cs" />
     <Compile Include="Assets\Editor\DebugWindow.Keyboard.cs" />
     <Compile Include="Assets\Editor\EightWayAnimatorGenerator.cs" />

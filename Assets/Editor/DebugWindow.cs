@@ -183,6 +183,7 @@ public partial class DebugWindow : EditorWindow
                 RenderScenes();
                 RenderSpawnOptions();
                 RenderActorStats();
+                RenderTextStyles(); // NEW section for experimenting with floating text styles
             }
             finally
             {

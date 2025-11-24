@@ -544,7 +544,7 @@ public enum ActorTag : uint
     Aquatic = 1u << 25,
     PlantBased = 1u << 26,
     ShadowCreature = 1u << 27,
-
+    Healer = 1u << 28,
 
 }
 

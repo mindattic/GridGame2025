@@ -30,6 +30,7 @@ namespace Assets.Helpers
         public const string StageSelect = "StageSelect";
         public const string TitleScreen = "TitleScreen";
         public const string PostBattleScreen = "PostBattleScreen";
+        public const string Hub = "Hub"; 
      
         /// <summary>
         /// Returns true if the active scene matches the provided name.
@@ -136,6 +137,7 @@ namespace Assets.Helpers
             public static void ToStageSelect() => To(StageSelect);
             public static void ToTitleScreen() => To(TitleScreen);
             public static void ToPostBattleScreen() => To(PostBattleScreen);
+            public static void ToHub() => To(Hub); // new helper
         }
 
         /// <summary>
@@ -180,6 +182,7 @@ namespace Assets.Helpers
             public static void ToStageSelect() => To(StageSelect);
             public static void ToTitleScreen() => To(TitleScreen);
             public static void ToPostBattleScreen() => To(PostBattleScreen);
+            public static void ToHub() => To(Hub); 
         }
 
     }

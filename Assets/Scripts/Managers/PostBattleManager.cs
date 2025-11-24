@@ -22,8 +22,8 @@ public class PostBattleManager : MonoBehaviour
     // Prefab (fetched from PrefabLibrary at runtime)
     private GameObject _heroExperiencePanePrefab;
 
-    // Destination scene decided at runtime (defaults to tracker hint, fallback to overworld)
-    private string _nextSceneName;
+    // Destination scene decided at runtime (defaults to tracker hint, fallback to Hub)
+    private string nextSceneName;
 
     // Runtime state
     private readonly List<HeroExperiencePane> _panes = new List<HeroExperiencePane>();
@@ -85,9 +85,9 @@ public class PostBattleManager : MonoBehaviour
         if (_heroExperiencePanePrefab == null)
             Debug.LogError("PostBattleManager: HeroExperiencePane prefab not found in PrefabLibrary.");
 
-        _nextSceneName = ExperienceTracker.NextSceneAfterPostBattleScreen;
-        if (string.IsNullOrEmpty(_nextSceneName))
-            _nextSceneName = SceneHelper.Overworld;
+        nextSceneName = ExperienceTracker.NextSceneAfterPostBattleScreen;
+        if (string.IsNullOrEmpty(nextSceneName))
+            nextSceneName = SceneHelper.Hub; // go to Hub by default
     }
 
     private void ConfigureLayout()
@@ -196,6 +196,6 @@ public class PostBattleManager : MonoBehaviour
             ProfileHelper.Save(true);
         }
         ExperienceTracker.Clear();
-        SceneHelper.Fade.To(_nextSceneName);
+        SceneHelper.Fade.To(nextSceneName);
     }
 }

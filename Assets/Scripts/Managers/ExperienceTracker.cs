@@ -16,7 +16,7 @@ namespace Assets.Scripts.Managers
         private static readonly Dictionary<CharacterClass, int> characterXP = new Dictionary<CharacterClass, int>();
         private static readonly HashSet<CharacterClass> participants = new HashSet<CharacterClass>();
 
-        public static string NextSceneAfterPostBattleScreen = Assets.Helpers.SceneHelper.Overworld; // configurable default
+        public static string NextSceneAfterPostBattleScreen = Assets.Helpers.SceneHelper.Hub; // default to Hub
 
         public static void StartSession(IEnumerable<CharacterClass> participantCharacters)
         {

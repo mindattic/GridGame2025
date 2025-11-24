@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Assets.Scripts.Libraries; // for ActorLibrary
 
 namespace Assets.Scripts.Canvas
 {
@@ -11,10 +12,10 @@ namespace Assets.Scripts.Canvas
     public sealed class TimelineTag : MonoBehaviour
     {
         [Header("Parts")]
-        [SerializeField] private Image image;
-        [SerializeField] private CanvasGroup canvasGroup; // for fade-out
-        [Tooltip("Optional: Text label (TMP) shown below the tag to display seconds remaining.")]
-        [SerializeField] private TextMeshProUGUI label;
+        [SerializeField] private Image Tag;
+        [SerializeField] private Image Icon; 
+        [SerializeField] private TextMeshProUGUI Label;
+        [SerializeField] private CanvasGroup CanvasGroup; // for fade-out
 
         [Header("Runtime")]
         public ActorInstance Owner; // enemy owning this tag
@@ -32,40 +33,58 @@ namespace Assets.Scripts.Canvas
         private bool fired;
 
         // Tolerance for deciding a tag reached the left edge (in local pixels)
-        private const float ReachTolerance = 0.25f;
+        private const float ReachTolerance =0.25f;
 
         private void Awake()
         {
             Rect = GetComponent<RectTransform>();
-            if (canvasGroup == null)
-                canvasGroup = GetComponent<CanvasGroup>();
+            if (CanvasGroup == null)
+                CanvasGroup = GetComponent<CanvasGroup>();
 
             // Prefer exact-name children, then fall back to any in-tree
-            if (image == null)
+            if (Tag == null)
             {
-                var imgTf = transform.Find("Image");
-                image = imgTf != null ? imgTf.GetComponent<Image>() : GetComponentInChildren<Image>(true);
-                if (image == null)
-                    Debug.LogWarning("TimelineTag: Child Image not found. Add an Image child or assign `body`.", this);
+                // Prefer a child named "Tag"; fall back to legacy name or first Image found
+                var tagTransform = transform.Find("Tag") ?? transform.Find("Image");
+                Tag = tagTransform != null ? tagTransform.GetComponent<Image>() : GetComponentInChildren<Image>(true);
+                if (Tag == null)
+                    Debug.LogWarning("TimelineTag: Child Tag Image not found. Add a Tag child or assign `Tag`.", this);
             }
-            if (label == null)
+            if (Icon == null)
             {
-                var lblTf = transform.Find("Label");
-                label = lblTf != null ? lblTf.GetComponent<TextMeshProUGUI>() : GetComponentInChildren<TextMeshProUGUI>(true);
-                if (label == null)
-                    Debug.LogWarning("TimelineTag: Child Label (TextMeshProUGUI) not found. Add a Label child or assign `label`.", this);
+                var iconTransform = transform.Find("Icon");
+                Icon = iconTransform != null ? iconTransform.GetComponent<Image>() : null;
+                if (Icon == null)
+                {
+                    // Try to find by name among all Images as a last resort
+                    var images = GetComponentsInChildren<Image>(true);
+                    foreach (var img in images)
+                    {
+                        if (img != null && img.name == "Icon") { Icon = img; break; }
+                    }
+                }
+                if (Icon == null)
+                    Debug.LogWarning("TimelineTag: Child Icon Image not found. Add an Icon child or assign `Icon`.", this);
+            }
+            if (Label == null)
+            {
+                var LabelTransform = transform.Find("Label");
+                Label = LabelTransform != null ? LabelTransform.GetComponent<TextMeshProUGUI>() : GetComponentInChildren<TextMeshProUGUI>(true);
+                if (Label == null)
+                    Debug.LogWarning("TimelineTag: Child Label (TextMeshProUGUI) not found. Add a Label child or assign `Label`.", this);
             }
 
             // Optional: do not intercept clicks
-            if (image != null) image.raycastTarget = false;
-            if (label != null) label.raycastTarget = false;
+            if (Tag != null) Tag.raycastTarget = false;
+            if (Icon != null) Icon.raycastTarget = false;
+            if (Label != null) Label.raycastTarget = false;
 
             // Left-edge pivot so anchoredPosition.x represents the tag's LEFT edge exactly
             if (Rect != null)
             {
-                Rect.anchorMin = new Vector2(0f, 0.5f);
-                Rect.anchorMax = new Vector2(0f, 0.5f);
-                Rect.pivot = new Vector2(0f, 0.5f); // changed from0.5f to0f for precise alignment
+                Rect.anchorMin = new Vector2(0f,0.5f);
+                Rect.anchorMax = new Vector2(0f,0.5f);
+                Rect.pivot = new Vector2(0f,0.5f); // changed from0.5f to0f for precise alignment
             }
             // Ignore layout so manual positioning is preserved
             var le = gameObject.GetComponent<LayoutElement>();
@@ -73,37 +92,54 @@ namespace Assets.Scripts.Canvas
             le.ignoreLayout = true;
         }
 
-        public void Wire(Image bodyImage, CanvasGroup group)
+        public void Wire(Image tagImage, CanvasGroup group)
         {
-            if (bodyImage != null) image = bodyImage;
-            if (group != null) canvasGroup = group;
-            if (label == null)
+            if (tagImage != null) Tag = tagImage;
+            if (group != null) CanvasGroup = group;
+            if (Label == null)
             {
-                var lblTf = transform.Find("Label");
-                label = lblTf != null ? lblTf.GetComponent<TextMeshProUGUI>() : GetComponentInChildren<TextMeshProUGUI>(true);
+                var labelTransform = transform.Find("Label");
+                Label = labelTransform != null ? labelTransform.GetComponent<TextMeshProUGUI>() : GetComponentInChildren<TextMeshProUGUI>(true);
             }
-            if (image == null)
+            if (Tag == null)
             {
-                var imgTf = transform.Find("Image");
-                image = imgTf != null ? imgTf.GetComponent<Image>() : GetComponentInChildren<Image>(true);
+                var tagTransform = transform.Find("Tag");
+                Tag = tagTransform != null ? tagTransform.GetComponent<Image>() : GetComponentInChildren<Image>(true);
             }
-            if (image != null) image.raycastTarget = false;
-            if (label != null) label.raycastTarget = false;
+            if (Icon == null)
+            {
+                var iconTransform = transform.Find("Icon");
+                Icon = iconTransform != null ? iconTransform.GetComponent<Image>() : null;
+            }
+            if (Tag != null) Tag.raycastTarget = false;
+            if (Icon != null) Icon.raycastTarget = false;
+            if (Label != null) Label.raycastTarget = false;
         }
 
         // Initialize using normalized coordinates and speed
-        public void InitializeNormalized(ActorInstance owner, float leftX, float spawnX, float startU, float uPerSec, System.Action<TimelineTag> onReached)
+        public void InitializeNormalized(ActorInstance owner, float triggerX, float spawnX, float startU, float uPerSec, System.Action<TimelineTag> onReached)
         {
             Owner = owner;
-            this.leftX = leftX;
-            this.spawnX = Mathf.Max(spawnX, leftX + 1f);
+            this.leftX = triggerX;
+            this.spawnX = Mathf.Max(spawnX, triggerX +1f);
             this.u = Mathf.Clamp01(startU);
             this.uPerSec = Mathf.Max(0.0001f, uPerSec);
             this.onReached = onReached;
-            if (canvasGroup != null) canvasGroup.alpha = 1f;
+            if (CanvasGroup != null) CanvasGroup.alpha =1f;
             isFading = false;
             paused = true; // start paused; TimelineBar controls advance
             fired = false;
+
+            // Assign the owner's portrait sprite to the Icon image if available
+            if (Icon != null && Owner != null)
+            {
+                var data = ActorLibrary.Get(Owner.characterClass);
+                var sprite = data != null ? data.Portrait : null;
+                Icon.sprite = sprite;
+                Icon.enabled = sprite != null; // hide if no sprite
+                Icon.preserveAspect = true;
+            }
+
             ApplyPosition();
             UpdateLabel();
         }
@@ -121,14 +157,14 @@ namespace Assets.Scripts.Canvas
         {
             // Preserve normalized u while endpoints shift
             leftX = newLeftX;
-            spawnX = Mathf.Max(newSpawnX, newLeftX + 1f);
+            spawnX = Mathf.Max(newSpawnX, newLeftX +1f);
             ApplyPosition();
             UpdateLabel();
         }
 
         public void Pause() => paused = true;
         public void Resume() => paused = false;
-        public void SetAlpha(float a) { if (canvasGroup != null) canvasGroup.alpha = Mathf.Clamp01(a); }
+        public void SetAlpha(float a) { if (CanvasGroup != null) CanvasGroup.alpha = Mathf.Clamp01(a); }
 
         // Reset this tag's trigger state so it can fire on the next cycle
         public void ResetForNextCycle()
@@ -156,7 +192,7 @@ namespace Assets.Scripts.Canvas
                 float clamped = Mathf.Max(leftX, xLeft);
                 var p = Rect.anchoredPosition;
                 Rect.anchoredPosition = new Vector2(clamped, p.y);
-                u = (spawnX - leftX) > 0.0001f ? Mathf.InverseLerp(leftX, spawnX, clamped) : u;
+                u = (spawnX - leftX) >0.0001f ? Mathf.InverseLerp(leftX, spawnX, clamped) : u;
             }
             else
             {
@@ -176,14 +212,14 @@ namespace Assets.Scripts.Canvas
 
         public float GetU() => u;
         public float GetUPerSec() => uPerSec;
-        public float GetSecondsRemaining() => uPerSec <= 0f ? 0f : Mathf.Max(0f, u / uPerSec);
+        public float GetSecondsRemaining() => uPerSec <=0f ?0f : Mathf.Max(0f, u / uPerSec);
 
         private void Update()
         {
             if (!isFading && !paused)
             {
                 // Move toward left (u =0)
-                u = Mathf.MoveTowards(u, 0f, uPerSec * Time.deltaTime);
+                u = Mathf.MoveTowards(u,0f, uPerSec * Time.deltaTime);
                 ApplyPosition();
             }
             // Ensure we never drift past the trigger point due to float jitter
@@ -205,12 +241,12 @@ namespace Assets.Scripts.Canvas
 
         private void UpdateLabel()
         {
-            if (label == null) return;
+            if (Label == null) return;
             float sec = GetSecondsRemaining();
-            label.text = sec.ToString("0.0");
+            Label.text = sec.ToString("0.0");
         }
 
-        public void FadeAndDestroy(float duration = 0.25f)
+        public void FadeAndDestroy(float duration =0.25f)
         {
             if (isFading) return;
             isFading = true;
@@ -219,14 +255,14 @@ namespace Assets.Scripts.Canvas
 
         private IEnumerator FadeOutAndDestroy(float duration)
         {
-            float t = 0f;
-            float start = canvasGroup != null ? canvasGroup.alpha : 1f;
+            float t =0f;
+            float start = CanvasGroup != null ? CanvasGroup.alpha :1f;
             while (t < duration)
             {
                 t += Time.deltaTime;
-                float a = Mathf.Lerp(start, 0f, Mathf.Clamp01(t / duration));
-                if (canvasGroup != null) canvasGroup.alpha = a;
-                else if (image != null) image.color = new Color(image.color.r, image.color.g, image.color.b, a);
+                float a = Mathf.Lerp(start,0f, Mathf.Clamp01(t / duration));
+                if (CanvasGroup != null) CanvasGroup.alpha = a;
+                else if (Tag != null) Tag.color = new Color(Tag.color.r, Tag.color.g, Tag.color.b, a);
                 yield return null;
             }
             Destroy(gameObject);

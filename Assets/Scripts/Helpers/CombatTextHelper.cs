@@ -11,6 +11,8 @@ namespace Assets.Helpers
         {
             if (attackResult.HitType == HitOutcome.Critical)
                 return "CriticalHit"; // big, yellow
+            if (attackResult.HitType == HitOutcome.Miss)
+                return "Miss"; // use Miss style
 
             return "Damage"; // normal damage style
         }

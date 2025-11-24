@@ -1,4 +1,7 @@
 ﻿using Assets.Helper;
+using Assets.Scripts.Libraries; // for TextStyleLibrary
+using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
@@ -57,4 +60,5 @@ public partial class DebugWindow
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
     }
+
 }

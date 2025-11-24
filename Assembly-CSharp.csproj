@@ -83,6 +83,7 @@
     <Compile Include="Assets\Scripts\Models\PincerAttackPair.cs" />
     <Compile Include="Assets\Scripts\Models\StageWave.cs" />
     <Compile Include="Assets\Scripts\Helpers\BezierCurveHelper.cs" />
+    <Compile Include="Assets\Scripts\Inventory\PlayerInventory.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\SteppinRazor00.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Frog03.cs" />
     <Compile Include="Assets\Scripts\Libraries\FontLibrary.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Assets\Scripts\Models\Actor\ActorData.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\SwordMaster.cs" />
     <Compile Include="Assets\Scripts\Canvas\CanvasParticleEmitter.cs" />
+    <Compile Include="Assets\Scripts\Hub\PartySectionController.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProfileHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\SteppinRazor05.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Templar00.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="Assets\Scripts\Models\QueueCollection.cs" />
     <Compile Include="Assets\Scripts\Helpers\CanvasHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\StageSelectManager.cs" />
+    <Compile Include="Assets\Scripts\Hub\BlacksmithSectionController.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Oni01.cs" />
     <Compile Include="Assets\VisualEffects\WIP\Vefects\Stylized VFX URP\Skills\_Scripts_\MagicAttacks_Manager.cs" />
     <Compile Include="Assets\Scripts\Helpers\ProjectileHelper.cs" />
@@ -176,6 +179,7 @@
     <Compile Include="Assets\Scripts\Helpers\GameObjectHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Fencer.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Thief.cs" />
+    <Compile Include="Assets\Scripts\Hub\HubManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Wolf00.cs" />
     <Compile Include="Assets\Scripts\Helpers\UnitConversionHelper.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Templar02.cs" />
@@ -202,6 +206,7 @@
     <Compile Include="Assets\Scripts\Instances\SupportLineInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DayNightCycle.cs" />
     <Compile Include="Assets\Scripts\Models\ActorPair.cs" />
+    <Compile Include="Assets\Scripts\Hub\ShopSectionController.cs" />
     <Compile Include="Assets\Scripts\Canvas\SwingingLogo.cs" />
     <Compile Include="Assets\Scripts\Instances\StageButtonInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\TutorialPopup.cs" />
@@ -242,6 +247,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\Cyclops04.cs" />
     <Compile Include="Assets\Scripts\Helpers\CombatTextHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\DateTimeHelper.cs" />
+    <Compile Include="Assets\Scripts\Data\Skills\SkillData_Basic.cs" />
     <Compile Include="Assets\Scripts\Effects\ScreenGrabber.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Bat00.cs" />
     <Compile Include="Assets\Scripts\Helpers\TouchHelper.cs" />
@@ -252,6 +258,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\Toad00.cs" />
     <Compile Include="Assets\Scripts\Instances\AttackLineInstance.cs" />
     <Compile Include="Assets\Scripts\Helpers\FadeOverlayHelper.cs" />
+    <Compile Include="Assets\Scripts\Data\Items\ItemData_Healing.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\JadeKnight.cs" />
     <Compile Include="Assets\Scripts\Helpers\LocationHelper.cs" />
     <Compile Include="Assets\Scripts\Managers\PartyManager.cs" />
@@ -264,6 +271,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\ShieldMaiden.cs" />
     <Compile Include="Assets\Scripts\Canvas\DefeatAnnouncement.cs" />
     <Compile Include="Assets\Scripts\Instances\LoadingScreenManager.cs" />
+    <Compile Include="Assets\Scripts\Data\Items\ItemData_Equipment.cs" />
     <Compile Include="Assets\Scripts\Sequences\PortraitPopOutSequence.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorInstance.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Ganger03.cs" />
@@ -295,8 +303,10 @@
     <Compile Include="Assets\Scripts\Helpers\SelectionRules.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Monk.cs" />
     <Compile Include="Assets\Scripts\Instances\SynergyLine\SynergySpark.cs" />
+    <Compile Include="Assets\Scripts\Data\Items\ItemDefinition.cs" />
     <Compile Include="Assets\Scripts\Models\Size.cs" />
     <Compile Include="Assets\Scripts\Overworld\SoilInstance.cs" />
+    <Compile Include="Assets\Scripts\Data\Skills\SkillLibrary.cs" />
     <Compile Include="Assets\Scripts\Helpers\PositionHelper.cs" />
     <Compile Include="Assets\Scripts\Helpers\AnimationCurveHelper.cs" />
     <Compile Include="Assets\Scripts\Canvas\TitleBarInstance.cs" />
@@ -322,8 +332,10 @@
     <Compile Include="Assets\Scripts\Managers\ProfileSelectManager.cs" />
     <Compile Include="Assets\Scripts\Managers\PortraitManager.cs" />
     <Compile Include="Assets\Scripts\Models\Actor\StatGrowth.cs" />
+    <Compile Include="Assets\Scripts\Data\Items\ItemLibrary.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\MechaArmor02.cs" />
     <Compile Include="Assets\Scripts\Overworld\GrassInstance.cs" />
+    <Compile Include="Assets\Scripts\Hub\MedicalSectionController.cs" />
     <Compile Include="Assets\Scripts\Libraries\PrefabLibrary.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\MechaArmor01.cs" />
     <Compile Include="Assets\Scripts\Canvas\CityScroll.cs" />
@@ -369,6 +381,7 @@
     <Compile Include="Assets\Scripts\Canvas\ScalableControl.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Wolf01.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Sellsword.cs" />
+    <Compile Include="Assets\Scripts\Hub\ResidenceSectionController.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\PurplePrototype01.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Skelepede02.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\CeramicKnight00.cs" />
@@ -381,6 +394,7 @@
     <Compile Include="Assets\Scripts\Sequences\TrapSequence.cs" />
     <Compile Include="Assets\Scripts\Managers\TurnManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\CeramicKnight02.cs" />
+    <Compile Include="Assets\Scripts\Inventory\HeroLoadout.cs" />
     <Compile Include="Assets\Scripts\Instances\RosterSlideInstance.cs" />
     <Compile Include="Assets\Scripts\Canvas\DebugButtonPanel.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\Oni02.cs" />
@@ -441,6 +455,7 @@
     <Compile Include="Assets\Scripts\Sequences\EnemyMoveSequence.cs" />
     <Compile Include="Assets\Scripts\Canvas\CoinCounter.cs" />
     <Compile Include="Assets\Scripts\Managers\ExperienceTracker.cs" />
+    <Compile Include="Assets\Scripts\Data\Skills\SkillDefinition.cs" />
     <Compile Include="Assets\Scripts\Overworld\OverworldHero.FollowCursor.cs" />
     <Compile Include="Assets\Scripts\Managers\PincerAttackManager.cs" />
     <Compile Include="Assets\Scripts\Managers\BoardManager.cs" />

@@ -31,7 +31,8 @@ namespace Assets.Scripts.Libraries
                 { "CriticalHit", new TextStyle("CriticalHit", FontLibrary.Get("Damage"), 32, ColorHelper.Solid.Yellow, TextMotion.Bounce) },
                 { "GlancingBlow", new TextStyle("GlancingBlow", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.Gray, TextMotion.Float) },
                 { "LevelUp", new TextStyle("LevelUp", FontLibrary.Get("GainExperience"), 40, ColorHelper.Solid.Cyan, TextMotion.Bounce) },
-                { "GainExperience", new TextStyle("GainExperience", FontLibrary.Get("GainExperience"), 12, ColorHelper.Solid.White, TextMotion.Float) }
+                { "GainExperience", new TextStyle("GainExperience", FontLibrary.Get("GainExperience"), 12, ColorHelper.Solid.White, TextMotion.Float) },
+                { "Miss", new TextStyle("Miss", FontLibrary.Get("Damage"), 24, ColorHelper.Solid.Gray, TextMotion.Float) },
             };
             isLoaded = true;
         }

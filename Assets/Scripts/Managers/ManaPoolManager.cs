@@ -4,7 +4,7 @@ using g = Assets.Helpers.GameHelper;
 using Assets.Helper;
 using UnityEngine.UI;
 using Assets.Scripts.Canvas; // for TimelineBarInstance
-using Assets.Scripts.Sequences; // to enqueue EndTurnSequence
+using System.Collections; // for coroutine
 
 public class ManaPoolManager : MonoBehaviour
 {
@@ -59,14 +59,31 @@ public class ManaPoolManager : MonoBehaviour
         Accumulate(Team.Hero, secondsUsed);
         RefreshUI();
 
-        // Ensure correct handoff through the Sequence system (avoids race conditions)
+        // Handoff on the next frame to avoid colliding with any in-flight sequences
+        StartCoroutine(BeginEnemyTurnNextFrame(arrivingEnemy));
+    }
+
+    private IEnumerator BeginEnemyTurnNextFrame(ActorInstance enemy)
+    {
+        // Mirror tag trigger behavior
         g.InputManager.InputMode = InputMode.None;
         g.SelectionManager.Drop();
-        // Make sure the enemy we computed is queued (BankToNextTrigger already queues, but be explicit)
-        if (arrivingEnemy != null) g.TurnManager.QueueEnemyAfterHero(arrivingEnemy);
-        // End the hero turn via sequence so TurnManager.NextTurn consumes the queued enemy immediately
-        g.SequenceManager.Add(new EndTurnSequence());
-        g.SequenceManager.Execute();
+        // wait one frame to settle any UI/sequence
+        yield return null;
+
+        // Primary: start enemy turn immediately
+        if (enemy != null && g.TurnManager != null)
+        {
+            g.TurnManager.ForceBeginEnemyTurn(enemy);
+        }
+
+        // Fallback: if still in hero turn for any reason, use queued-advance path
+        yield return null; // give BeginEnemyTurn a frame to flip state
+        if (g.TurnManager != null && g.TurnManager.IsHeroTurn)
+        {
+            if (enemy != null) g.TurnManager.QueueEnemyAfterHero(enemy);
+            g.TurnManager.NextTurn();
+        }
     }
 
     public bool Spend(Team team, float cost)
@@ -98,6 +115,12 @@ public class ManaPoolManager : MonoBehaviour
 
     public void OnTurnStarted(Team team)
     {
+        // Skip the very first hero window so MP starts at 0.00
+        if (team == Team.Hero && g.TurnManager != null && g.TurnManager.CurrentTurn == 0)
+        {
+            RefreshUI();
+            return;
+        }
         Accumulate(team, perTurnGain);
     }
 

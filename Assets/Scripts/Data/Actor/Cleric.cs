@@ -15,7 +15,7 @@ namespace Assets.Data.Actor
             {
                 CharacterName = "Cleric",
                 CharacterClass = CharacterClass.Cleric, // If this enum does not exist, replace accordingly.
-                Tags = Tag.Hero | Tag.Humanoid,
+                Tags = Tag.Hero | Tag.Healer | Tag.Humanoid,
 
                 Description = "A battlefield support that sustains allies and manipulates tempo.",
                 Expectations = "Backline support. Uses [heal], [cleanse], and [buff] to stabilize fights.",

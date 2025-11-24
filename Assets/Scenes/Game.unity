@@ -7539,8 +7539,8 @@ MonoBehaviour:
   triggerPointRect: {fileID: 0}
   spawnPointRect: {fileID: 0}
   canvasPercent: 0.97
-  baseUnitsPerSec: 0.08
-  perSpeedUnitsPerSec: 0.02
+  baseUnitsPerSec: 0.04
+  perSpeedUnitsPerSec: 0.01
   tagRowHeight: 14
   debugLogs: 0
 --- !u!1 &6319708406170623193

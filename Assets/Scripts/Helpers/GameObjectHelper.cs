@@ -178,8 +178,8 @@ namespace Assets.Helper
                 public static RectTransform Details => GameObject.Find("Canvas/Card/Details").GetComponent<RectTransform>();
                 public static RectTransform AbilityButtonContainer => GameObject.Find("Canvas/Card/AbilityButtonContainer").GetComponent<RectTransform>();
 
-               
-            
+
+
             }
 
 
@@ -279,7 +279,7 @@ namespace Assets.Helper
 
         public static class ProfileCreate
         {
-           
+
         }
 
 
@@ -420,5 +420,24 @@ namespace Assets.Helper
             public const string NextButton = "Canvas/BottomBar/NextButton";
         }
 
+        // Add Hub navigation + panel paths (use simple names; adjust if scene hierarchy differs).
+        public static class Hub
+        {
+            // Buttons
+            public const string PartyButton = "Canvas/NavBar/PartyButton";
+            public const string ShopButton = "Canvas/NavBar/ShopButton";
+            public const string MedicalButton = "Canvas/NavBar/MedicalButton";
+            public const string ResidenceButton = "Canvas/NavBar/ResidenceButton";
+            public const string BlacksmithButton = "Canvas/NavBar/BlacksmithButton";
+            public const string OverworldButton = "Canvas/NavBar/OverworldButton";
+            public const string BattleButton = "Canvas/NavBar/BattleButton";
+
+            // Panels (root containers for each section)
+            public const string PartyPanel = "Canvas/ContentPanel/PartyPanel";
+            public const string ShopPanel = "Canvas/ContentPanel/ShopPanel";
+            public const string MedicalPanel = "Canvas/ContentPanel/MedicalPanel";
+            public const string ResidencePanel = "Canvas/ContentPanel/ResidencePanel";
+            public const string BlacksmithPanel = "Canvas/ContentPanel/BlacksmithPanel";
+        }
     }
 }
