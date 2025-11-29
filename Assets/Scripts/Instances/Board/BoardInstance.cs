@@ -2,11 +2,8 @@ using Assets.Scripts.Libraries;
 using Game.Models;
 using UnityEngine;
 using g = Assets.Helpers.GameHelper;
+using Assets.Helpers; // for UnitConversionHelper
 
-/// <summary>
-/// BoardInstance manages the game board grid. It calculates board offset and bounds,
-/// generates tiles, and provides convenient world-edge accessors.
-/// </summary>
 public class BoardInstance : MonoBehaviour
 {
     // Fields
@@ -32,17 +29,37 @@ public class BoardInstance : MonoBehaviour
     }
 
     /// <summary>
-    /// Calculates and applies the board's world-space origin offset so the board is centered.
+    /// Calculates and applies the board's world-space origin offset so the board is centered horizontally
+    /// and vertically within the usable band (after reserving top/bottom UI space).
     /// </summary>
     private void AssignPosition()
     {
         if (this == null) return;
 
-        // Center horizontally: shift left by half the board width.
-        var x = -(g.TileSize * 3) - g.TileSize * 0.5f;
+        // Visible world rect and GameManager layout reserves
+        Rect vr = UnitConversionHelper.World.VisibleRect();
+        var gm = GameManager.instance;
+        float topReserve = 0f;
+        float bottomReserve = 0f;
+        if (gm != null)
+        {
+            topReserve = vr.height * Mathf.Clamp01(gm.topReservePercent);
+            bottomReserve = vr.height * Mathf.Clamp01(gm.bottomReservePercent);
+        }
 
-        // Place vertically: shift down from the origin by half a tile from the top row.
-        var y = (g.TileSize * 4) + g.TileSize * 0.5f;
+        // Compute usable band and its vertical center
+        float usableMinY = vr.yMin + bottomReserve;
+        float usableMaxY = vr.yMax - topReserve;
+        float usableCenterY = (usableMinY + usableMaxY) * 0.5f;
+        float usableCenterX = vr.center.x;
+
+        float t = g.TileSize;
+
+        // Solve for offset so board center == usable center
+        // CenterX = offset.x + (cols*t)/2 + t/2 => offset.x = usableCenterX - (cols*t)/2 - t/2
+        float x = usableCenterX - (columnCount * t) * 0.5f - t * 0.5f;
+        // CenterY = offset.y - (rows*t)/2 - t/2 => offset.y = usableCenterY + (rows*t)/2 + t/2
+        float y = usableCenterY + (rowCount * t) * 0.5f + t * 0.5f;
 
         offset = new Vector2(x, y);
 

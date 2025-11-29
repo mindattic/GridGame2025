@@ -424,20 +424,21 @@ namespace Assets.Helper
         public static class Hub
         {
             // Buttons
-            public const string PartyButton = "Canvas/NavBar/PartyButton";
-            public const string ShopButton = "Canvas/NavBar/ShopButton";
-            public const string MedicalButton = "Canvas/NavBar/MedicalButton";
-            public const string ResidenceButton = "Canvas/NavBar/ResidenceButton";
-            public const string BlacksmithButton = "Canvas/NavBar/BlacksmithButton";
-            public const string OverworldButton = "Canvas/NavBar/OverworldButton";
-            public const string BattleButton = "Canvas/NavBar/BattleButton";
+            public const string PartyButton = "PartyButton";
+            public const string ShopButton = "ShopButton";
+            public const string MedicalButton = "MedicalButton";
+            public const string ResidenceButton = "ResidenceButton";
+            public const string BlacksmithButton = "BlacksmithButton";
+            public const string OverworldButton = "OverworldButton";
+            public const string BattleButton = "BattleButton";
 
             // Panels (root containers for each section)
-            public const string PartyPanel = "Canvas/ContentPanel/PartyPanel";
-            public const string ShopPanel = "Canvas/ContentPanel/ShopPanel";
-            public const string MedicalPanel = "Canvas/ContentPanel/MedicalPanel";
-            public const string ResidencePanel = "Canvas/ContentPanel/ResidencePanel";
-            public const string BlacksmithPanel = "Canvas/ContentPanel/BlacksmithPanel";
+            public const string PartyPanel = "PartyPanel";
+            public const string ShopPanel = "ShopPanel";
+            public const string MedicalPanel = "MedicalPanel";
+            public const string ResidencePanel = "ResidencePanel";
+            public const string BlacksmithPanel = "BlacksmithPanel";
         }
+
     }
 }

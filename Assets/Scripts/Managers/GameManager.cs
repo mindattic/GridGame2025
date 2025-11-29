@@ -24,11 +24,11 @@ public class GameManager : Singleton<GameManager>
     // Settings
     [HideInInspector] public TargetFrameRate targetFramerate = TargetFrameRate.Fps60;
     [HideInInspector] public VSyncCount vSyncCount = VSyncCount.VSync1;
-    [HideInInspector] public float dragSensitivity =0.05f;
-    [HideInInspector] public float coinCountMultiplier =0.05f;
+    [HideInInspector] public float dragSensitivity = 0.05f;
+    [HideInInspector] public float coinCountMultiplier = 0.05f;
 
 
-    public float gameSpeed =1.0f;
+    public float gameSpeed = 1.0f;
     public bool applyMovementTilt = false;
 
     // Selection behavior toggle for hero control during hero turns
@@ -54,6 +54,15 @@ public class GameManager : Singleton<GameManager>
     // NEW: Victory/Defeat Announcement references
     [HideInInspector] public VictoryAnnouncement victoryAnnouncement;
     [HideInInspector] public DefeatAnnouncement defeatAnnouncement;
+
+    // Board layout tuning (Inspector adjustable)
+    [Header("Board Layout")]
+    [Tooltip("Horizontal fraction of visible world width the board may occupy (for width limit).")]
+    public float boardHorizontalPercent = 0.96f;
+    [Tooltip("Top reserved fraction of visible world height for UI (TimerBar/CoinBar/etc).")]
+    public float topReservePercent = 0.12f;
+    [Tooltip("Bottom reserved fraction of visible world height for UI (Card, etc).")]
+    public float bottomReservePercent = 0.15f;
 
     // Managers
     [HideInInspector] public InputManager inputManager;
@@ -140,8 +149,8 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public CoinCounter coinCounter;
 
     // Audio indices
-    [HideInInspector] public const int SoundSourceIndex =0;
-    [HideInInspector] public const int MusicSourceIndex =1;
+    [HideInInspector] public const int SoundSourceIndex = 0;
+    [HideInInspector] public const int MusicSourceIndex = 1;
 
 
     // Debug
@@ -166,16 +175,34 @@ public class GameManager : Singleton<GameManager>
         Application.targetFrameRate = targetFramerate.ToInt();
         QualitySettings.vSyncCount = VSyncCount.VSync1.ToInt();
 
-        float width97Percent = UnitConversionHelper.World.VisibleRect().width *0.97f;
-        tileSize = width97Percent /6f;
-        tileScale = new Vector3(tileSize, tileSize,1f);
+        // Compute a robust tileSize using both width and height constraints,
+        // reserving space for top/bottom UI and clamping across aspect ratios.
+        Rect visible = UnitConversionHelper.World.VisibleRect();
+        float worldWidth = visible.width;
+        float worldHeight = visible.height;
+
+        // Board logical dimensions (must match BoardInstance defaults)
+        const int columns = 6;
+        const int rows = 8;
+
+        // Horizontal available width and vertical available height after UI reserves
+        float availableW = worldWidth * Mathf.Clamp01(boardHorizontalPercent);
+        float clampedTop = Mathf.Clamp01(topReservePercent);
+        float clampedBottom = Mathf.Clamp01(bottomReservePercent);
+        float availableH = worldHeight * Mathf.Max(0f, 1f - clampedTop - clampedBottom);
+
+        float tileSizeFromWidth = availableW / columns;
+        float tileSizeFromHeight = availableH / rows;
+        tileSize = Mathf.Min(tileSizeFromWidth, tileSizeFromHeight);
+
+        tileScale = new Vector3(tileSize, tileSize, 1f);
         tileMap = new TileMap();
 
-        cursorFocus = tileSize *0.5f;
-        swapFocus = tileSize *0.1666f;
-        moveFocus = tileSize *0.125f;
-        bumpFocus = tileSize *0.08f;
-        dragThreshold = tileSize *0.125f;
+        cursorFocus = tileSize * 0.5f;
+        swapFocus = tileSize * 0.1666f;
+        moveFocus = tileSize * 0.125f;
+        bumpFocus = tileSize * 0.08f;
+        dragThreshold = tileSize * 0.125f;
 
         ShakeIntensity.Initialize(tileSize);
 

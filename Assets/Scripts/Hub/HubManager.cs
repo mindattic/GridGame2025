@@ -4,12 +4,6 @@ using UnityEngine.UI;
 using scene = Assets.Helpers.SceneHelper;
 using Assets.Helper;
 
-/// <summary>
-/// HubManager coordinates navigation and section activation on the Hub.
-/// It owns references to all section panels and their controllers and exposes entry points
-/// for transitioning to other scenes (overworld, battle). Only one section panel is active
-/// at a time. TODO hooks integrate with PartyManager, save/load, currencies, and scene flow.
-/// </summary>
 public class HubManager : MonoBehaviour
 {
     // Navigation buttons (resolved at runtime; no inspector assignment required)
@@ -41,7 +35,9 @@ public class HubManager : MonoBehaviour
     private void Awake()
     {
         ResolveSceneObjects();
+        AttachTiltParallax();
         InitializeSections();
+        WireButtonListeners();
 
         // Ensure a clean start state: disable all panels then show Party.
         GoToPartySection();
@@ -84,6 +80,24 @@ public class HubManager : MonoBehaviour
         blacksmithPanel = GameObject.Find(GameObjectHelper.Hub.BlacksmithPanel)?.GetComponent<RectTransform>();
     }
 
+    private void AttachTiltParallax()
+    {
+        void Ensure(RectTransform rt)
+        {
+            if (rt == null) return;
+            var t = rt.GetComponent<TiltParallax>();
+            if (t == null) t = rt.gameObject.AddComponent<TiltParallax>();
+            t.amplitude = 12f;
+            t.smoothing = 6f;
+            t.deadzone = 0.015f;
+        }
+        Ensure(partyPanel);
+        Ensure(shopPanel);
+        Ensure(medicalPanel);
+        Ensure(residencePanel);
+        Ensure(blacksmithPanel);
+    }
+
     /// <summary>
     /// Collect all section panels (non-null) for iteration.
     /// </summary>
@@ -94,6 +108,17 @@ public class HubManager : MonoBehaviour
         if (medicalPanel != null) yield return medicalPanel;
         if (residencePanel != null) yield return residencePanel;
         if (blacksmithPanel != null) yield return blacksmithPanel;
+    }
+
+    private void WireButtonListeners()
+    {
+        if (partyButton != null) { partyButton.onClick.RemoveListener(GoToPartySection); partyButton.onClick.AddListener(GoToPartySection); }
+        if (shopButton != null) { shopButton.onClick.RemoveListener(GoToShopSection); shopButton.onClick.AddListener(GoToShopSection); }
+        if (medicalButton != null) { medicalButton.onClick.RemoveListener(GoToMedicalSection); medicalButton.onClick.AddListener(GoToMedicalSection); }
+        if (residenceButton != null) { residenceButton.onClick.RemoveListener(GoToResidenceSection); residenceButton.onClick.AddListener(GoToResidenceSection); }
+        if (blacksmithButton != null) { blacksmithButton.onClick.RemoveListener(GoToBlacksmithSection); blacksmithButton.onClick.AddListener(GoToBlacksmithSection); }
+        if (overworldButton != null) { overworldButton.onClick.RemoveListener(GoToOverworld); overworldButton.onClick.AddListener(GoToOverworld); }
+        if (battleButton != null) { battleButton.onClick.RemoveListener(GoToBattle); battleButton.onClick.AddListener(GoToBattle); }
     }
 
     /// <summary>

@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\Data\Actor\Wolf03.cs" />
     <Compile Include="Assets\Scripts\Canvas\MapTerrain.cs" />
     <Compile Include="Assets\Scripts\Instances\BackgroundInstance.cs" />
+    <Compile Include="Assets\Scripts\Hub\TiltParallax.cs" />
     <Compile Include="Assets\Scripts\Managers\AudioManager.cs" />
     <Compile Include="Assets\Scripts\Data\Actor\CyberZombie02.cs" />
     <Compile Include="Assets\Scripts\Instances\Actor\ActorAttributes.cs" />
